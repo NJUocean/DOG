@@ -1,8 +1,8 @@
 # Exposing Coverage Bugs via Control Flow Constraint Checking
 
 
-###DOG:
+### DOG/DOG:
   source code
   
-###result:
+### DOG/result:
   result
