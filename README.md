@@ -7,7 +7,7 @@
 ### DOG/result:
   result
 
-### Bug Found
+### Bugs Found
 #### gcov:
 |  ID  |  STATUS  |  TYPE  |  VIOLATED CONSTRAINT  | 
 |  ----  |  ----  |  ----  |  ----  |
