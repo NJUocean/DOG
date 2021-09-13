@@ -2,10 +2,10 @@
 
 
 ### DOG/DOG:
-  source code
+  Source code
   
 ### DOG/result:
-  result
+  Results that need to be manually checked
 
 ### Bugs Found
 #### gcov:
