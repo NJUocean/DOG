@@ -6,9 +6,9 @@
 
 
 ## 1.Folder Introduction:
-  - [`Testsuite`](https://github.com/NJUocean/DOG/Testsuite) 
-  - [`Script`](https://github.com/NJUocean/DOG/Script)
-  - [`Result`](https://github.com/NJUocean/DOG/Result)
+  - [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite) It contains four tests uite can be directly fed to DOG. `ManuanalTests` and `RandomTests` are two testsuites for uncovering new bugs. `Gcov-bugs-old` and llvm-cov-bugs-old` are two testsuites containing those bugs revealed in old versions by existing methods 
+  - [`Script`](https://github.com/NJUocean/DOG/tree/main/Script) It currently contains `DOG.py`, i.e.,the DOG prototype.
+  - [`Result`](https://github.com/NJUocean/DOG/tree/main/Result) It contains the results of using `DOG.py` to test `Gcov` and `llvm-cov` with the four input sets in [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite).
 
 ## 2.Execution Command:
   `python3 DOG.py --testsuite [path of test inputs] --compiler [type of related compiler]`
@@ -16,7 +16,7 @@
 
 
 ## 3.Bugs Found
-#### Gcov bugs:
+#### `Gcov` bugs:
 |  ID  |  REPORT STATUS  |  BUG STATUS  |
 |  ----  |  ----  |  ----  | 
 [#99440](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99440)  |  NEW  |  Confirmed 
@@ -32,7 +32,7 @@
 [#101569](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101569)  |  UNCONFIRMED  |  Pending  
 [#101618](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101618)  |  RESOLVED FIXED  |  Fixed 
 [#101644](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101644)  |  UNCONFIRMED  |  Pending 
-#### llvm-cov bugs:
+#### `llvm-cov` bugs:
 |  ID  |  REPORT STATUS  |  BUG STATUS  |
 |  ----  |  ----  |  ----  | 
 [#48767](https://github.com/llvm/llvm-project/issues/48767)  |  Closed  |  Fixed  |
