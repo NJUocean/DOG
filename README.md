@@ -6,12 +6,13 @@
 
 
 ## 1.Folder Introduction:
-  - Testsuite
-  - Script
-  - result
+  - [`Testsuite`](https://github.com/NJUocean/DOG/Testsuite) 
+  - [`Script`](https://github.com/NJUocean/DOG/Script)
+  - [`Result`](https://github.com/NJUocean/DOG/Result)
 
 ## 2.Execution Command:
-  python3 DOG.py --testsuite [path of test inputs] --compiler [type of related compiler]
+  `python3 DOG.py --testsuite [path of test inputs] --compiler [type of related compiler]`
+  
 
 
 ## 3.Bugs Found
