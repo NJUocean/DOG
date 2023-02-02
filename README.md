@@ -1,1 +1,3 @@
-# Exposing-Coverage-Bugs-via-Control-Flow-Constraint-Checking
+# The replication kit of DOG
+# Title: Uncovering bugs in code coverage profilers via control flow constraint solving
+This 
