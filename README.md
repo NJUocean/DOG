@@ -6,14 +6,16 @@
 
 
 ## 1.Folder Introduction:
-  - [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite) It contains four tests uite can be directly fed to DOG. `ManuanalTests` and `RandomTests` are two testsuites for uncovering new bugs. `Gcov-bugs-old` and llvm-cov-bugs-old` are two testsuites containing those bugs revealed in old versions by existing methods 
+  - [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite) It contains four tests uite can be directly fed to DOG. `ManuanalTests` and `RandomTests` are two testsuites for uncovering new bugs. `Gcov-bugs-old` and `llvm-cov-bugs-old` are two testsuites containing trigger programs of those bugs revealed in old versions by existing methods.
   - [`Script`](https://github.com/NJUocean/DOG/tree/main/Script) It currently contains `DOG.py`, i.e.,the DOG prototype.
   - [`Result`](https://github.com/NJUocean/DOG/tree/main/Result) It contains the results of using `DOG.py` to test `Gcov` and `llvm-cov` with the four input sets in [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite).
 
 ## 2.Execution Command:
-  `python3 DOG.py --testsuite [path of test inputs] --compiler [type of related compiler]`
+  `python3 DOG.py --testsuite [test inputs] --compiler [compiler]`
   
-
+  In above command,
+-	`[test inputs]` indicates the absolute path of a test input set.
+-	`[compiler]` indicates the type of compiler associated with the coverage profiler under test. `gcc` corresponds to `Gcov` and `clang` to `llvm-cov`.
 
 ## 3.Bugs Found
 #### `Gcov` bugs:
