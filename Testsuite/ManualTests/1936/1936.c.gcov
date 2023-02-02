@@ -1,0 +1,24 @@
+        -:    0:Source:1936.c
+        -:    0:Graph:1936.gcno
+        -:    0:Data:1936.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:int f[100];
+        -:    5:int g[100];
+        1:    6:unsigned char f1(int a, int b) {
+        -:    7:  __SIZE_TYPE__ ix;
+        1:    8:  if (a)
+    #####:    9:    return 1;
+        5:   10:  for (ix = 4; ix--;)
+        4:   11:    if (f[ix] != g[ix])
+    #####:   12:      return 0;
+        1:   13:  return 1;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  if (!f1(0, 2))
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

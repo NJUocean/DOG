@@ -1,0 +1,67 @@
+    1|       |struct tmp {
+    2|       |  long long int pad : 12;
+    3|       |  long long int field : 52;
+    4|       |};
+    5|       |
+    6|       |struct tmp2 {
+    7|       |  long long int field : 52;
+    8|       |  long long int pad : 12;
+    9|       |};
+   10|       |
+   11|       |struct tmp3 {
+   12|       |  long long int pad : 11;
+   13|       |  long long int field : 53;
+   14|       |};
+   15|       |
+   16|       |struct tmp4 {
+   17|       |  long long int field : 53;
+   18|       |  long long int pad : 11;
+   19|       |};
+   20|       |
+   21|      1|struct tmp sub(struct tmp tmp) {
+   22|      1|  tmp.field ^= 0x0008765412345678LL;
+   23|      1|  return tmp;
+   24|      1|}
+   25|       |
+   26|      1|struct tmp2 sub2(struct tmp2 tmp2) {
+   27|      1|  tmp2.field ^= 0x0008765412345678LL;
+   28|      1|  return tmp2;
+   29|      1|}
+   30|       |
+   31|      1|struct tmp3 sub3(struct tmp3 tmp3) {
+   32|      1|  tmp3.field ^= 0x0018765412345678LL;
+   33|      1|  return tmp3;
+   34|      1|}
+   35|       |
+   36|      1|struct tmp4 sub4(struct tmp4 tmp4) {
+   37|      1|  tmp4.field ^= 0x0018765412345678LL;
+   38|      1|  return tmp4;
+   39|      1|}
+   40|       |
+   41|       |struct tmp tmp = {0x123, 0x123456789ABCDLL};
+   42|       |struct tmp2 tmp2 = {0x123456789ABCDLL, 0x123};
+   43|       |struct tmp3 tmp3 = {0x123, 0x1FFFF00000000LL};
+   44|       |struct tmp4 tmp4 = {0x1FFFF00000000LL, 0x123};
+   45|       |
+   46|      1|main() {
+   47|      1|
+   48|      1|  if (sizeof(long long) != 8)
+   49|      0|    exit(0);
+   50|      1|
+   51|      1|  tmp = sub(tmp);
+   52|      1|  tmp2 = sub2(tmp2);
+   53|      1|
+   54|      1|  if (tmp.pad != 0x123 || tmp.field != 0xFFF9551175BDFDB5LL)
+   55|      0|    abort();
+   56|      1|  if (tmp2.pad != 0x123 || tmp2.field != 0xFFF9551175BDFDB5LL)
+   57|      0|    abort();
+   58|      1|
+   59|      1|  tmp3 = sub3(tmp3);
+   60|      1|  tmp4 = sub4(tmp4);
+   61|      1|  if (tmp3.pad != 0x123 || tmp3.field != 0xFFF989AB12345678LL)
+   62|      0|    abort();
+   63|      1|  if (tmp4.pad != 0x123 || tmp4.field != 0xFFF989AB12345678LL)
+   64|      0|    abort();
+   65|      1|  exit(0);
+   66|      1|}
+

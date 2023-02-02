@@ -1,0 +1,37 @@
+    1|       |/* PR c/46921  lost side effect when struct initializer expr uses comma
+    2|       |      operator  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "" } */
+    6|       |
+    7|       |extern int printf(const char *, ...);
+    8|       |extern void abort(void);
+    9|       |
+   10|       |typedef struct __uws_0 {
+   11|       |} uw_unit;
+   12|       |uw_unit uw_unit_v = {};
+   13|       |
+   14|       |struct __uws_1 {
+   15|       |  struct __uws_0 __uwf_1;
+   16|       |  struct __uws_1 *__uwf_2;
+   17|       |};
+   18|       |
+   19|       |static int left_hand_eval = 0;
+   20|       |
+   21|      1|static void foo(const char *s) {
+   22|      1|  ++left_hand_eval;
+   23|      1|  printf("%s", s);
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  struct __uws_1 tmp = {(foo("Inner\n"), uw_unit_v)};
+   28|      1|
+   29|      1|  printf("Outer\n");
+   30|      1|  /* left hand expression in comma operator initializer must always be
+   31|      1|     evaluated if there are side effects.  */
+   32|      1|  if (!left_hand_eval)
+   33|      0|    abort();
+   34|      1|
+   35|      1|  return 0;
+   36|      1|}
+

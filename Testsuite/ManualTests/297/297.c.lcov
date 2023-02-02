@@ -1,0 +1,42 @@
+    1|       |/* PR debug/29609 */
+    2|       |/* Verify that breakpoint on both goto failure; stmts is hit.  */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-O0 -gdwarf -dA" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |int x;
+    8|       |
+    9|      3|int foo(void) { return 0 ^ x; }
+   10|       |
+   11|      2|int bar(void) { return 1 ^ x; }
+   12|       |
+   13|      3|int baz(void) {
+   14|      3|  int c;
+   15|      3|
+   16|      3|  if (!foo())
+   17|      1|    goto failure;
+   18|      2|
+   19|      2|  if (!bar())
+   20|      1|    goto failure;
+   21|      1|
+   22|      1|  return 0;
+   23|      2|
+   24|      2|failure:
+   25|      2|  return 1;
+   26|      1|}
+   27|       |
+   28|      1|int main(void) {
+   29|      1|  if (baz() != 1)
+   30|      0|    abort();
+   31|      1|  x = 1;
+   32|      1|  if (baz() != 1)
+   33|      0|    abort();
+   34|      1|  x = 2;
+   35|      1|  if (baz() != 0)
+   36|      0|    abort();
+   37|      1|  return 0;
+   38|      1|}
+   39|       |
+   40|       |/* { dg-final { scan-assembler "pr29609-2.c:27" } } */
+   41|       |/* { dg-final { scan-assembler "pr29609-2.c:30" } } */
+

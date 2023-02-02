@@ -1,0 +1,34 @@
+        -:    0:Source:3780.c
+        -:    0:Graph:3780.gcno
+        -:    0:Data:3780.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:/* { dg-options "-fno-strict-overflow" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:__attribute__((noinline)) void foo(short unsigned int *p1,
+        -:    8:                                   short unsigned int *p2) {
+        -:    9:  short unsigned int x1, x4;
+        -:   10:  int x2, x3, x5, x6;
+        -:   11:  unsigned int x7;
+        -:   12:
+        1:   13:  x1 = *p1;
+        1:   14:  x2 = (int)x1;
+        1:   15:  x3 = x2 * 65536;
+        1:   16:  x4 = *p2;
+        1:   17:  x5 = (int)x4;
+        1:   18:  x6 = x3 + x4;
+        1:   19:  x7 = (unsigned int)x6;
+        1:   20:  if (x7 <= 268435455U)
+    #####:   21:    abort();
+        1:   22:  exit(0);
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  short unsigned int x, y;
+        1:   27:  x = -5;
+        1:   28:  y = -10;
+        1:   29:  foo(&x, &y);
+        -:   30:}

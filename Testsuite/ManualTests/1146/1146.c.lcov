@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fipa-sra" } */
+    3|       |
+    4|       |struct __attribute__((scalar_storage_order("little-endian"))) LE {
+    5|       |  int i;
+    6|       |  int j;
+    7|       |};
+    8|       |
+    9|       |struct __attribute__((scalar_storage_order("big-endian"))) BE {
+   10|       |  int i;
+   11|       |  int j;
+   12|       |};
+   13|       |
+   14|       |struct LE gle;
+   15|       |struct BE gbe;
+   16|       |
+   17|      4|#define VAL 0x12345678
+   18|       |
+   19|      1|void __attribute__((noipa)) fill(void) {
+   20|      1|  gle.i = VAL;
+   21|      1|  gle.j = 0xdeadbeef;
+   22|      1|  gbe.i = VAL;
+   23|      1|  gbe.j = 0x11223344;
+   24|      1|}
+   25|       |
+   26|      1|static int __attribute__((noinline)) readLE(struct LE p) { return p.i; }
+   27|       |
+   28|      1|static int __attribute__((noinline)) readBE(struct BE p) { return p.i; }
+   29|       |
+   30|      1|int main(int argc, char *argv[]) {
+   31|      1|  int r;
+   32|      1|  fill();
+   33|      1|
+   34|      1|  r = readLE(gle);
+   35|      1|  if (r != VAL)
+   36|      1|    __builtin_abort();
+   37|      1|  r = readBE(gbe);
+   38|      1|  if (r != VAL)
+   39|      1|    __builtin_abort();
+   40|      1|
+   41|      1|  return 0;
+   42|      1|}
+

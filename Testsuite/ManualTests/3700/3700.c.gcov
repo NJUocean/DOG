@@ -1,0 +1,16 @@
+        -:    0:Source:3700.c
+        -:    0:Graph:3700.gcno
+        -:    0:Data:3700.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/46019 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  unsigned long long l = 0x40000000000ULL;
+        -:    7:  int n;
+        9:    8:  for (n = 0; n < 8; n++)
+        8:    9:    if (l / (0x200000000ULL << n) != (0x200 >> n))
+    #####:   10:      abort();
+        1:   11:  return 0;
+        -:   12:}

@@ -1,0 +1,33 @@
+        -:    0:Source:892.c
+        -:    0:Graph:892.gcno
+        -:    0:Data:892.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static uint16_t g_2[3][1] = {{0x7862L}, {0x7862L}, {0x7862L}};
+        -:    7:
+        -:    8:static int32_t func_1(void);
+        -:    9:
+        1:   10:static int32_t func_1(void) { return g_2[0][0]; }
+        -:   11:
+        1:   12:int main(int argc, char *argv[]) {
+        -:   13:  int i, j;
+        1:   14:  int print_hash_value = 0;
+       1*:   15:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   16:    print_hash_value = 1;
+        1:   17:  platform_main_begin();
+        1:   18:  crc32_gentab();
+        1:   19:  func_1();
+        4:   20:  for (i = 0; i < 3; i++) {
+        6:   21:    for (j = 0; j < 1; j++) {
+        3:   22:      transparent_crc(g_2[i][j], "g_2[i][j]", print_hash_value);
+        3:   23:      if (print_hash_value)
+    #####:   24:        printf("index = [%d][%d]\n", i, j);
+        -:   25:    }
+        -:   26:  }
+        1:   27:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   28:  return 0;
+        -:   29:}

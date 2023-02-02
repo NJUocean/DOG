@@ -1,0 +1,37 @@
+        -:    0:Source:3996.c
+        -:    0:Graph:3996.gcno
+        -:    0:Data:3996.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/85095 */
+        -:    2:
+        4:    3:__attribute__((noipa)) unsigned long f1(unsigned long a, unsigned long b) {
+        4:    4:  unsigned long i = __builtin_add_overflow(a, b, &a);
+        4:    5:  return a + i;
+        -:    6:}
+        -:    7:
+        4:    8:__attribute__((noipa)) unsigned long f2(unsigned long a, unsigned long b) {
+        4:    9:  unsigned long i = __builtin_add_overflow(a, b, &a);
+        4:   10:  return a - i;
+        -:   11:}
+        -:   12:
+        4:   13:__attribute__((noipa)) unsigned long f3(unsigned int a, unsigned int b) {
+        4:   14:  unsigned int i = __builtin_add_overflow(a, b, &a);
+        4:   15:  return a + i;
+        -:   16:}
+        -:   17:
+        4:   18:__attribute__((noipa)) unsigned long f4(unsigned int a, unsigned int b) {
+        4:   19:  unsigned int i = __builtin_add_overflow(a, b, &a);
+        4:   20:  return a - i;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        2:   24:  if (f1(16UL, -18UL) != -2UL || f1(16UL, -17UL) != -1UL ||
+        3:   25:      f1(16UL, -16UL) != 1UL || f1(16UL, -15UL) != 2UL ||
+        3:   26:      f2(24UL, -26UL) != -2UL || f2(24UL, -25UL) != -1UL ||
+        3:   27:      f2(24UL, -24UL) != -1UL || f2(24UL, -23UL) != 0UL ||
+        3:   28:      f3(32U, -34U) != -2U || f3(32U, -33U) != -1U || f3(32U, -32U) != 1U ||
+        3:   29:      f3(32U, -31U) != 2U || f4(35U, -37U) != -2U || f4(35U, -36U) != -1U ||
+        2:   30:      f4(35U, -35U) != -1U || f4(35U, -34U) != 0U)
+    #####:   31:    __builtin_abort();
+        1:   32:  return 0;
+        -:   33:}

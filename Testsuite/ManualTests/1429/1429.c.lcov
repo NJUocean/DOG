@@ -1,0 +1,32 @@
+    1|       |/* PR fortran/55633 */
+    2|       |/* { dg-do run { target int128 } } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|__attribute__((noinline, noclone)) void bar(__int128_t *x) {
+    7|      1|  int c = sizeof(__int128_t) * __CHAR_BIT__;
+    8|      1|  if (c > 127)
+    9|      1|    c = 127;
+   10|      1|  if (*x != c)
+   11|      0|    abort();
+   12|      1|}
+   13|       |
+   14|      1|__attribute__((noinline)) void foo(void) {
+   15|      1|  __int128_t m, ma;
+   16|      1|  ma = 0;
+   17|      1|  m = 0;
+   18|      1|  m = ~m;
+   19|    128|  do {
+   20|    128|    if (m == 0 || ma > 126)
+   21|      1|      break;
+   22|    127|    ma = ma + 1;
+   23|    127|    m = ((__uint128_t)m) >> 1;
+   24|    127|  } while (1);
+   25|      1|  bar(&ma);
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  foo();
+   30|      1|  return 0;
+   31|      1|}
+

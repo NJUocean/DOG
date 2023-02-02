@@ -1,0 +1,45 @@
+        -:    0:Source:19.c
+        -:    0:Graph:19.gcno
+        -:    0:Data:19.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-options "-O2 -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    4: * } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:struct A {
+        -:   10:  char p[6];
+        -:   11:} __attribute__((packed));
+        -:   12:struct B {
+        -:   13:  struct A a;
+        -:   14:  void *const b;
+        -:   15:  struct A const *const c;
+        -:   16:  struct A const *d;
+        -:   17:};
+        -:   18:
+        -:   19:char v;
+        -:   20:
+        1:   21:int __attribute__((noinline)) foo(struct B *b) {
+        -:   22:  int i;
+        7:   23:  for (i = 0; i < 6; ++i)
+        6:   24:    if (b->a.p[i])
+    #####:   25:      abort();
+        1:   26:  if (b->b != &v || b->c || b->d)
+    #####:   27:    abort();
+        1:   28:  return 12;
+        -:   29:}
+        -:   30:
+        1:   31:int __attribute__((noinline)) bar(void *x) {
+        1:   32:  __asm __volatile("" : "=r"(x) : "0"(x));
+        1:   33:  struct B y = {.b = x, .c = (void *)0};
+        1:   34:  return foo(&y) + 1;
+        -:   35:}
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  if (bar(&v) != 13)
+    #####:   39:    abort();
+        1:   40:  exit(0);
+        -:   41:}

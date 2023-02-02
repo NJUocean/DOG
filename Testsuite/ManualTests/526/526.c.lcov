@@ -1,0 +1,63 @@
+    1|       |/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-options "-g -mgeneral-regs-only" } */
+    3|       |
+    4|       |extern void exit(int);
+    5|       |
+    6|       |typedef unsigned int uword_t __attribute__((mode(__word__)));
+    7|       |
+    8|      1|#define ERROR 0x12345670
+    9|      1|#define IP 0x12345671
+   10|      1|#define CS 0x12345672
+   11|      1|#define FLAGS 0x12345673
+   12|      1|#define SP 0x12345674
+   13|      1|#define SS 0x12345675
+   14|       |
+   15|       |#define STRING(x) XSTRING(x)
+   16|       |#define XSTRING(x) #x
+   17|       |#define ASMNAME(cname) ASMNAME2(__USER_LABEL_PREFIX__, cname)
+   18|       |#define ASMNAME2(prefix, cname) XSTRING(prefix) cname
+   19|       |
+   20|       |struct interrupt_frame {
+   21|       |  uword_t ip;
+   22|       |  uword_t cs;
+   23|       |  uword_t flags;
+   24|       |  uword_t sp;
+   25|       |  uword_t ss;
+   26|       |};
+   27|       |
+   28|       |__attribute__((interrupt, used)) void fn(struct interrupt_frame *frame,
+   29|      1|                                         uword_t error) {
+   30|      1|  if (ERROR != error) /* BREAK */
+   31|      0|    __builtin_abort();
+   32|      1|  if (IP != frame->ip)
+   33|      0|    __builtin_abort();
+   34|      1|  if (CS != frame->cs)
+   35|      0|    __builtin_abort();
+   36|      1|  if (FLAGS != frame->flags)
+   37|      0|    __builtin_abort();
+   38|      1|  if (SP != frame->sp)
+   39|      0|    __builtin_abort();
+   40|      1|  if (SS != frame->ss)
+   41|      0|    __builtin_abort();
+   42|      1|
+   43|      1|  exit(0);
+   44|      1|}
+   45|       |
+   46|      1|int main() {
+   47|      1|  asm("push	$" STRING(SS) ";		\
+   48|      1|	push	$" STRING(SP) ";		\
+   49|      1|	push	$" STRING(FLAGS) ";		\
+   50|      1|	push	$" STRING(CS) ";		\
+   51|      1|	push	$" STRING(IP) ";		\
+   52|      1|	push	$" STRING(ERROR) ";		\
+   53|      1|	jmp	 " ASMNAME("fn"));
+   54|      1|  return 0;
+   55|      1|}
+   56|       |
+   57|       |/* { dg-final { gdb-test 33 "error" "0x12345670" } } */
+   58|       |/* { dg-final { gdb-test 33 "frame->ip" "0x12345671" } } */
+   59|       |/* { dg-final { gdb-test 33 "frame->cs" "0x12345672" } } */
+   60|       |/* { dg-final { gdb-test 33 "frame->flags" "0x12345673" } } */
+   61|       |/* { dg-final { gdb-test 33 "frame->sp" "0x12345674" } } */
+   62|       |/* { dg-final { gdb-test 33 "frame->ss" "0x12345675" } } */
+

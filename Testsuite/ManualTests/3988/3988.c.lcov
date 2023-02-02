@@ -1,0 +1,42 @@
+    1|       |struct twelve {
+    2|       |  int a;
+    3|       |  int b;
+    4|       |  int c;
+    5|       |};
+    6|       |
+    7|       |struct pair {
+    8|       |  int first;
+    9|       |  int second;
+   10|       |};
+   11|       |
+   12|      0|struct pair g() {
+   13|      0|  struct pair p;
+   14|      0|  return p;
+   15|      0|}
+   16|       |
+   17|      1|static void f() {
+   18|      1|  int i;
+   19|      2|  for (i = 0; i < 1; i++) {
+   20|      1|    int j;
+   21|      2|    for (j = 0; j < 1; j++) {
+   22|      1|      if (0) {
+   23|      0|        int k;
+   24|      0|        for (k = 0; k < 1; k++) {
+   25|      0|          struct pair e = g();
+   26|      0|        }
+   27|      1|      } else {
+   28|      1|        struct twelve a, b;
+   29|      1|        if ((((char *)&b - (char *)&a) < 0
+   30|      1|                 ? (-((char *)&b - (char *)&a))
+   31|      1|                 : ((char *)&b - (char *)&a)) < sizeof(a))
+   32|      0|          abort();
+   33|      1|      }
+   34|      1|    }
+   35|      1|  }
+   36|      1|}
+   37|       |
+   38|      1|main() {
+   39|      1|  f();
+   40|      1|  exit(0);
+   41|      1|}
+

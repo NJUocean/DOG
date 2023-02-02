@@ -1,0 +1,22 @@
+        -:    0:Source:898.c
+        -:    0:Graph:898.gcno
+        -:    0:Data:898.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -ffast-math -lm -fno-ident" } */
+        -:    3:
+        -:    4:#include <math.h>
+        -:    5:
+        1:    6:int main(int argc, char *argv[]) {
+        -:    7:  volatile double result;
+        -:    8:
+        1:    9:  result = pow(-0.0, 3.0);
+        1:   10:  result = pow(26.47, -2.0);
+        1:   11:  result = pow(0.0, 0.0);
+        1:   12:  result = pow(22.3, 1.0);
+        1:   13:  result = pow(33.2, -1.0);
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-assembler-not {pow\M} } } */

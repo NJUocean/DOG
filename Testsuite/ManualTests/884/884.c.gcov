@@ -1,0 +1,33 @@
+        -:    0:Source:884.c
+        -:    0:Graph:884.gcno
+        -:    0:Data:884.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/44404
+        -:    2:   foo() used to be miscompiled on ARM due to a bug in auto-inc-dec.c,
+        -:    3:   which resulted in "strb r1, [r1], #-36".  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:/* { dg-options "-O2 -fno-unroll-loops" } */
+        -:    7:
+        -:    8:extern char *strcpy(char *, const char *);
+        -:    9:extern int strcmp(const char *, const char *);
+        -:   10:extern void abort(void);
+        -:   11:
+        -:   12:char buf[128];
+        -:   13:
+        1:   14:void __attribute__((noinline)) bar(int a, const char *p) {
+        1:   15:  if (strcmp(p, "0123456789abcdefghijklmnopqrstuvwxyz") != 0)
+    #####:   16:    abort();
+        1:   17:}
+        -:   18:
+        1:   19:void __attribute__((noinline)) foo(int a) {
+        1:   20:  if (a)
+    #####:   21:    bar(0, buf);
+        1:   22:  strcpy(buf, "0123456789abcdefghijklmnopqrstuvwxyz");
+        1:   23:  bar(0, buf);
+        1:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  foo(0);
+        1:   28:  return 0;
+        -:   29:}

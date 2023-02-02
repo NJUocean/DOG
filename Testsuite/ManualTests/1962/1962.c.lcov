@@ -1,0 +1,41 @@
+    1|       |/* PR tree-optimization/61839.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fdump-tree-vrp1 -fdisable-tree-evrp -fdump-tree-optimized"
+    4|       | * } */
+    5|       |/* { dg-require-effective-target int32plus } */
+    6|       |
+    7|      1|__attribute__((noinline)) int foo() {
+    8|      1|  int a = -1;
+    9|      1|  volatile unsigned b = 1U;
+   10|      1|  int c = 1;
+   11|      1|  c = (a + 972195718) >> (1LU <= b);
+   12|      1|  if (c == 486097858)
+   13|      1|    ;
+   14|      0|  else
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|      1|__attribute__((noinline)) int bar() {
+   20|      1|  int a = -1;
+   21|      1|  volatile unsigned b = 1U;
+   22|      1|  int c = 1;
+   23|      1|  c = (a + 972195718) >> (b ? 2 : 3);
+   24|      1|  if (c == 243048929)
+   25|      1|    ;
+   26|      0|  else
+   27|      0|    __builtin_abort();
+   28|      1|  return 0;
+   29|      1|}
+   30|       |
+   31|      1|int main() {
+   32|      1|  foo();
+   33|      1|  bar();
+   34|      1|}
+   35|       |
+   36|       |/* Scan for c = 972195717) >> [0, 1] in function foo.  */
+   37|       |/* { dg-final { scan-tree-dump-times "486097858 : 972195717" 1  "vrp1" } } */
+   38|       |/* Scan for c = 972195717) >> [2, 3] in function bar.  */
+   39|       |/* { dg-final { scan-tree-dump-times "243048929 : 121524464" 2  "vrp1" } } */
+   40|       |/* { dg-final { scan-tree-dump-times "486097858" 0  "optimized" } } */
+

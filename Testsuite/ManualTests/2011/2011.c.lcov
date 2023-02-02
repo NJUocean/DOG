@@ -1,0 +1,14 @@
+    1|       |/* PR rtl-optimization/28634.  On targets with delayed branches,
+    2|       |   dbr_schedule could do the next iteration's addition in the
+    3|       |   branch delay slot, then subtract the value again if the branch
+    4|       |   wasn't taken.  This can lead to rounding errors.  */
+    5|       |double x = -0x1.0p53;
+    6|       |double y = 1;
+    7|      1|int main(void) {
+    8|      2|  while (y > 0)
+    9|      1|    y += x;
+   10|      1|  if (y != x + 1)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

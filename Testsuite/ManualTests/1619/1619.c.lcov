@@ -1,0 +1,15 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=shift -w" } */
+    3|       |
+    4|       |struct S {
+    5|       |  unsigned long long int b : 40;
+    6|       |} s;
+    7|       |
+    8|      1|int main() {
+    9|      1|  s.b = 2;
+   10|      1|  s.b <<= 120;
+   11|      1|  return 0;
+   12|      1|}
+   13|       |
+   14|       |/* { dg-output "shift exponent 120 is too large" } */
+

@@ -1,0 +1,10 @@
+    1|      1|char *f(char *s, unsigned int i) { return &s[i + 3 - 1]; }
+    2|       |
+    3|      1|main() {
+    4|      1|  char *str = "abcdefghijkl";
+    5|      1|  char *x2 = f(str, 12);
+    6|      1|  if (str + 14 != x2)
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

@@ -1,0 +1,31 @@
+        -:    0:Source:1245.c
+        -:    0:Graph:1245.gcno
+        -:    0:Data:1245.gcda
+        -:    0:Runs:1
+        -:    1:/* Test whether bit field boundaries aren't advanced if bit field type
+        -:    2:   has alignment large enough.  */
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        -:    6:struct A {
+        -:    7:  unsigned short a : 5;
+        -:    8:  unsigned short b : 5;
+        -:    9:  unsigned short c : 6;
+        -:   10:};
+        -:   11:
+        -:   12:struct B {
+        -:   13:  unsigned short a : 5;
+        -:   14:  unsigned short b : 3;
+        -:   15:  unsigned short c : 8;
+        -:   16:};
+        -:   17:
+        1:   18:int main() {
+        -:   19:  /* If short is not at least 16 bits wide, don't test anything.  */
+        -:   20:  if ((unsigned short)65521 != 65521)
+        -:   21:    exit(0);
+        -:   22:
+        -:   23:  if (sizeof(struct A) != sizeof(struct B))
+        -:   24:    abort();
+        -:   25:
+        1:   26:  exit(0);
+        -:   27:}

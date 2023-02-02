@@ -1,0 +1,20 @@
+        -:    0:Source:1246.c
+        -:    0:Graph:1246.gcno
+        -:    0:Data:1246.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined" } */
+        -:    3:
+        -:    4:long long int __attribute__((noinline, noclone))
+        1:    5:foo(long long int i, long long int j) {
+        1:    6:  asm("");
+        1:    7:  return i + j;
+        -:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  foo(2LL, __LONG_LONG_MAX__);
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-output "signed integer overflow: 2 \\+ 9223372036854775807 cannot be
+        -:   16: * represented in type 'long long int'" } */

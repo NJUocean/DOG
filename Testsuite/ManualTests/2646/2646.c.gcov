@@ -1,0 +1,46 @@
+        -:    0:Source:2646.c
+        -:    0:Graph:2646.gcno
+        -:    0:Data:2646.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/50725 */
+        -:    2:/* { dg-do run { target avx_runtime } } */
+        -:    3:/* { dg-options "-O2 -mavx" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:typedef int __attribute__((vector_size(32))) m256i;
+        -:    8:
+        2:    9:__attribute__((noinline, noclone)) void foo(int *x, m256i *y) {
+        2:   10:  asm volatile("" : : "r"(x), "r"(y) : "memory");
+        2:   11:}
+        -:   12:
+        2:   13:__attribute__((noinline, noclone)) int bar(int x) {
+        2:   14:  if (x > 20)
+        1:   15:    return 24;
+        -:   16:  m256i i;
+        1:   17:  foo(__builtin_alloca(x), &i);
+        1:   18:  return 128;
+        -:   19:}
+        -:   20:
+        2:   21:__attribute__((noinline, noclone)) int baz(int d0, int d1, int d2, int d3,
+        -:   22:                                           int d4, int d5, int x) {
+        2:   23:  if (x > 20)
+        1:   24:    return 24;
+        -:   25:  m256i i;
+        1:   26:  d0 += d1 + d2 + d3 + d4 + d5;
+        1:   27:  d1 += d0;
+        1:   28:  foo(__builtin_alloca(x), &i);
+        1:   29:  return 128;
+        -:   30:}
+        -:   31:
+        1:   32:int main() {
+        1:   33:  if (bar(22) != 24 || bar(20) != 128)
+    #####:   34:    abort();
+        -:   35:#ifdef __x86_64__
+        1:   36:  register long long r10 __asm__("r10") = 0xdeadbeefdeadbeefULL;
+        1:   37:  asm volatile("" : "+r"(r10));
+        -:   38:#endif
+        1:   39:  if (baz(0, 0, 0, 0, 0, 0, 22) != 24 || baz(0, 0, 0, 0, 0, 0, 20) != 128)
+    #####:   40:    abort();
+        1:   41:  return 0;
+        -:   42:}

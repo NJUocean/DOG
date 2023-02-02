@@ -1,0 +1,29 @@
+        -:    0:Source:1819.c
+        -:    0:Graph:1819.gcno
+        -:    0:Data:1819.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  int re;
+        -:    3:  int im;
+        -:    4:} T;
+        -:    5:
+        -:    6:T f(int, int);
+        -:    7:
+        -:    8:#if COMPILER != 1
+        1:    9:T f(int arg1, int arg2) {
+        -:   10:  T x;
+        1:   11:  x.re = arg1;
+        1:   12:  x.im = arg2;
+        1:   13:  return x;
+        -:   14:}
+        -:   15:#endif
+        -:   16:
+        -:   17:#if COMPILER != 2
+        1:   18:main() {
+        -:   19:  T result;
+        1:   20:  result = f(3, 4);
+        1:   21:  if (result.re != 3 || result.im != 4)
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}
+        -:   25:#endif

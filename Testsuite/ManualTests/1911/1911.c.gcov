@@ -1,0 +1,53 @@
+        -:    0:Source:1911.c
+        -:    0:Graph:1911.gcno
+        -:    0:Data:1911.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-stack-size "8*111*1111" } */
+        -:    4:/* { dg-skip-if "too big stack" { avr-*-* visium-*-* } } */
+        -:    5:
+        -:    6:/* Copied from graphite/interchange-7.c */
+        -:    7:
+        -:    8:#define DEBUG 0
+        -:    9:#if DEBUG
+        -:   10:#include <stdio.h>
+        -:   11:#endif
+        -:   12:
+        -:   13:#define N 111
+        -:   14:#define M 1111
+        -:   15:
+        1:   16:static int __attribute__((noinline)) foo(double *a) {
+        -:   17:  int i, j;
+        1:   18:  int r = 0;
+        -:   19:
+      112:   20:  for (i = 0; i < N; ++i)
+   123432:   21:    for (j = 0; j < M; ++j)
+   123321:   22:      r += a[j * N + i];
+        -:   23:
+        1:   24:  return r;
+        -:   25:}
+        -:   26:
+        -:   27:extern void abort();
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  double A[N * M];
+        -:   31:  int i, res;
+        -:   32:
+   123322:   33:  for (i = 0; i < N * M; i++)
+   123321:   34:    A[i] = 2;
+        -:   35:
+        1:   36:  res = foo(A);
+        -:   37:
+        -:   38:#if DEBUG
+        -:   39:  fprintf(stderr, "res = %d \n", res);
+        -:   40:#endif
+        -:   41:
+        1:   42:  if (res != 246642)
+    #####:   43:    abort();
+        -:   44:
+        1:   45:  return 0;
+        -:   46:}
+        -:   47:
+        -:   48:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   49: * interchanged" 1 "linterchange" { xfail *-*-* } } } */

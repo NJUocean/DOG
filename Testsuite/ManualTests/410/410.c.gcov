@@ -1,0 +1,54 @@
+        -:    0:Source:410.c
+        -:    0:Graph:410.gcno
+        -:    0:Data:410.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:/* Formerly known as ltrans-2.c */
+        -:    4:
+        -:    5:#define DEBUG 0
+        -:    6:#if DEBUG
+        -:    7:#include <stdio.h>
+        -:    8:#endif
+        -:    9:
+        -:   10:double u[1782225];
+        -:   11:
+        1:   12:static void __attribute__((noinline)) foo(int N, int *res) {
+        -:   13:  unsigned int i, j;
+        1:   14:  double sum = 0;
+        -:   15:
+        -:   16:  /* This loop should be converted to a perfect nest and
+        -:   17:     interchanged.  */
+     1336:   18:  for (i = 0; i < N; i++) {
+  1783560:   19:    for (j = 0; j < N; j++) {
+  1782225:   20:      sum = sum + u[i + 1335 * j];
+  1782225:   21:      if (j == N - 1)
+     1335:   22:        u[1336 * i] *= 2;
+        -:   23:    }
+        -:   24:  }
+        -:   25:
+        1:   26:  *res = sum + N + u[1336 * 2] + u[1336];
+        1:   27:}
+        -:   28:
+        -:   29:extern void abort();
+        -:   30:
+        1:   31:int main(void) {
+        -:   32:  int i, j, res;
+        -:   33:
+  1782226:   34:  for (i = 0; i < 1782225; i++)
+  1782225:   35:    u[i] = 2;
+        -:   36:
+        1:   37:  foo(1335, &res);
+        -:   38:
+        -:   39:#if DEBUG
+        -:   40:  fprintf(stderr, "res = %d \n", res);
+        -:   41:#endif
+        -:   42:
+        1:   43:  if (res != 3565793)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}
+        -:   48:
+        -:   49:/* { dg-final { scan-tree-dump-times "will be interchanged" 1 "graphite" { xfail
+        -:   50: * *-*-* } } } */

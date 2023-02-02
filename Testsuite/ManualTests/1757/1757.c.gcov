@@ -1,0 +1,34 @@
+        -:    0:Source:1757.c
+        -:    0:Graph:1757.gcno
+        -:    0:Data:1757.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fdump-tree-ealias -Wno-attributes" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "-O0" } { "" } } */
+        -:    4:
+        -:    5:struct X {
+        -:    6:  long l1;
+        -:    7:  struct Y {
+        -:    8:    long l2;
+        -:    9:    int *p;
+        -:   10:  } y;
+        -:   11:};
+        -:   12:int i;
+        -:   13:static int __attribute__((always_inline)) foo(struct X *x) {
+        1:   14:  struct Y y = x->y;
+        -:   15:  /* In the inlined instance the dereferenced pointer needs to point to i.  */
+        1:   16:  *y.p = 0;
+        1:   17:  i = 1;
+        1:   18:  return *y.p;
+        -:   19:}
+        -:   20:extern void abort(void);
+        1:   21:int main() {
+        -:   22:  struct X x;
+        1:   23:  x.y.p = &i;
+        1:   24:  if (foo(&x) != 1)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-tree-dump "y.* = { i }" "ealias" } } */
+        -:   30:/* { dg-final { scan-tree-dump "y.*, points-to vars: { D..... }" "ealias" } } */

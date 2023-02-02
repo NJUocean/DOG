@@ -1,0 +1,22 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:
+        1:    3:void Test(long long Val, int Amt)
+        -:    4:{
+        1:    5:  printf("  lshr: 0x%llx \t\t shl: 0x%llx\n", Val >> Amt, Val << Amt);
+        1:    6:  printf("  lshr: 0x%llx\t\tshl: 0x%llx\n",
+        -:    7:    Val >> Amt, Val << Amt);
+        2:    8:  printf("  lshr: 0x%llx \t\t shl: 0x%llx\n",
+        1:    9:    (unsigned long long)Val >> Amt, Val << Amt);
+        1:   10:}
+        -:   11:
+        1:   12:int main()
+        -:   13:{
+        1:   14:  Test(10, 4);
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

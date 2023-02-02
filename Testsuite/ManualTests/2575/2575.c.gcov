@@ -1,0 +1,43 @@
+        -:    0:Source:2575.c
+        -:    0:Graph:2575.gcno
+        -:    0:Data:2575.gcda
+        -:    0:Runs:1
+        -:    1:/* This bug exists in gcc-2.95, egcs-1.1.2, gcc-2.7.2 and probably
+        -:    2:   every other version as well.  */
+        -:    3:
+        -:    4:typedef struct int3 {
+        -:    5:  int a, b, c;
+        -:    6:} int3;
+        -:    7:
+        1:    8:int3 one(void) { return (int3){1, 1, 1}; }
+        -:    9:
+        1:   10:int3 zero(void) { return (int3){0, 0, 0}; }
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int3 a;
+        -:   14:
+        -:   15:  /* gcc allocates a temporary for the inner expression statement
+        -:   16:     to store the return value of `one'.
+        -:   17:
+        -:   18:     gcc frees the temporaries for the inner expression statement.
+        -:   19:
+        -:   20:     gcc realloates the same temporary slot to store the return
+        -:   21:     value of `zero'.
+        -:   22:
+        -:   23:     gcc expands the call to zero ahead of the expansion of the
+        -:   24:     statement expressions.  The temporary gets the value of `zero'.
+        -:   25:
+        -:   26:     gcc expands statement expressions and the stale temporary is
+        -:   27:     clobbered with the value of `one'.  The bad value is copied from
+        -:   28:     the temporary into *&a.  */
+        -:   29:
+        -:   30:  *({
+        -:   31:    ({
+        1:   32:      one();
+        1:   33:      &a;
+        -:   34:    });
+        1:   35:  }) = zero();
+       1*:   36:  if (a.a && a.b && a.c)
+    #####:   37:    abort();
+        1:   38:  exit(0);
+        -:   39:}

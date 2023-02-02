@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |struct X {
+    6|       |  int a;
+    7|       |  struct Y {
+    8|       |    int b[4];
+    9|       |  } b;
+   10|       |  struct Y c;
+   11|       |} m;
+   12|       |
+   13|       |struct X n;
+   14|       |
+   15|      1|foo(int i) {
+   16|      1|  struct Y *p = (i > 10) ? &m.b : &n.c;
+   17|      1|  p->b[2] = 10;
+   18|      1|  m.b.b[3] = 6;
+   19|      1|  n.c.b[2] = 3;
+   20|      1|  return p->b[2] + n.c.b[2] + m.b.b[3];
+   21|      1|}
+   22|       |
+   23|      1|main() {
+   24|      1|  if (foo(3) != 12)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

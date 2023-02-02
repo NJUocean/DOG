@@ -1,0 +1,45 @@
+    1|       |/* PR tree-optimization/93213 - wrong code on a multibyte store with
+    2|       |   -Og -foptimize-strlen
+    3|       |   { dg-require-effective-target int128 }
+    4|       |   { dg-additional-options "-Og -foptimize-strlen" } */
+    5|       |
+    6|       |typedef unsigned __INT16_TYPE__ u16;
+    7|       |typedef unsigned __INT32_TYPE__ u32;
+    8|       |typedef unsigned __int128 u128;
+    9|       |
+   10|      1|static inline u128 foo(u16 u16_1, u32 u32_1, u128 u128_1) {
+   11|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   12|      1|  u128 u128_0 = 0;
+   13|      1|  u128_1 -= __builtin_mul_overflow(u32_1, u16_1, &u32_1);
+   14|      1|  __builtin_memmove(&u16_1, &u128_0, 2);
+   15|      1|  __builtin_memmove(&u16_1, &u128_1, 1);
+   16|      1|  return u16_1;
+   17|       |#else
+   18|       |  return 0xff;
+   19|       |#endif
+   20|      1|}
+   21|       |
+   22|      1|__attribute__((noipa)) void bar(void) {
+   23|      1|  char a[] = {1, 2};
+   24|      1|  const char b[] = {0, 0};
+   25|      1|  const char c[] = {2};
+   26|      1|  __builtin_memcpy(a, b, 2);
+   27|      1|  // The above is transformed into
+   28|      1|  //   MEM <short unsigned int> [(char * {ref-all})&a] = 0;
+   29|      1|  // which was then dropped because of the non-nul store below.
+   30|      1|  __builtin_memcpy(a, c, 1);
+   31|      1|
+   32|      1|  volatile char *p = a;
+   33|      1|  if (p[0] != 2 || p[1] != 0)
+   34|      0|    __builtin_abort();
+   35|      1|}
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  u16 x = foo(-1, -1, 0);
+   39|      1|  if (x != 0xff)
+   40|      0|    __builtin_abort();
+   41|      1|
+   42|      1|  bar();
+   43|      1|  return 0;
+   44|      1|}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:3499.c
+        -:    0:Graph:3499.gcno
+        -:    0:Data:3499.gcda
+        -:    0:Runs:1
+        -:    1:/* This used to fail as we would convert f into just return (unsigned
+        -:    2:   int)usVlanID which is wrong. */
+        -:    3:
+        -:    4:int f(unsigned short usVlanID) __attribute__((noinline, noclone));
+        2:    5:int f(unsigned short usVlanID) {
+        2:    6:  unsigned int uiVlanID = 0xffffffff;
+        -:    7:  int i;
+        2:    8:  if ((unsigned short)0xffff != usVlanID)
+        1:    9:    uiVlanID = (unsigned int)usVlanID;
+        2:   10:  return uiVlanID;
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  if (f(1) != 1)
+    #####:   15:    __builtin_abort();
+        1:   16:  if (f(0xffff) != -1)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

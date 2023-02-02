@@ -1,0 +1,34 @@
+    1|       |/* PR 15262.  Similar to pr15262-1.c but with no obvious addresses
+    2|       |   being taken in function foo().  Without IPA, by only looking inside
+    3|       |   foo() we cannot tell for certain whether 'q' and 'b' alias each
+    4|       |   other.  */
+    5|       |struct A {
+    6|       |  int t;
+    7|       |  int i;
+    8|       |};
+    9|       |
+   10|       |struct B {
+   11|       |  int *p;
+   12|       |  float b;
+   13|       |};
+   14|       |
+   15|       |float X;
+   16|       |
+   17|      1|foo(struct B b, struct A *q, float *h) {
+   18|      1|  X += *h;
+   19|      1|  *(b.p) = 3;
+   20|      1|  q->t = 2;
+   21|      1|  return *(b.p);
+   22|      1|}
+   23|       |
+   24|      1|main() {
+   25|      1|  struct A a;
+   26|      1|  struct B b;
+   27|      1|
+   28|      1|  b.p = &a.t;
+   29|      1|  if (foo(b, &a, &X) == 3)
+   30|      0|    abort();
+   31|      1|
+   32|      1|  return 0;
+   33|      1|}
+

@@ -1,0 +1,33 @@
+    1|       |#ifdef __UINT64_TYPE__
+    2|       |typedef __UINT64_TYPE__ uint64_t;
+    3|       |#else
+    4|       |typedef unsigned long long uint64_t;
+    5|       |#endif
+    6|       |
+    7|       |#ifndef __SIZEOF_INT128__
+    8|       |#define __int128 long long
+    9|       |#endif
+   10|       |
+   11|       |/* Some version of bswap optimization would ICE when analyzing a mask constant
+   12|       |   too big for an uint64_t variable (PR210931).  */
+   13|       |
+   14|       |__attribute__((noinline, noclone)) uint64_t
+   15|      1|uint128_central_bitsi_ior(unsigned __int128 in1, uint64_t in2) {
+   16|      1|  __int128 mask = (__int128)0xffff << 56;
+   17|      1|  return ((in1 & mask) >> 56) | in2;
+   18|      1|}
+   19|       |
+   20|      1|int main(int argc, char **argv) {
+   21|      1|  __int128 in = 1;
+   22|      1|#ifdef __SIZEOF_INT128__
+   23|      1|  in <<= 64;
+   24|      1|#endif
+   25|      1|  if (sizeof(uint64_t) * __CHAR_BIT__ != 64)
+   26|      0|    return 0;
+   27|      1|  if (sizeof(unsigned __int128) * __CHAR_BIT__ != 128)
+   28|      0|    return 0;
+   29|      1|  if (uint128_central_bitsi_ior(in, 2) != 0x102)
+   30|      0|    __builtin_abort();
+   31|      1|  return 0;
+   32|      1|}
+

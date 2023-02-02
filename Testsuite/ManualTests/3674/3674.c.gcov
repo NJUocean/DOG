@@ -1,0 +1,32 @@
+        -:    0:Source:3674.c
+        -:    0:Graph:3674.gcno
+        -:    0:Data:3674.gcda
+        -:    0:Runs:1
+        -:    1:int g_21;
+        -:    2:int g_211;
+        -:    3:int g_261;
+        -:    4:
+        1:    5:static void __attribute__((noinline, noclone)) func_32(int b) {
+        1:    6:  if (b) {
+    #####:    7:  lbl_370:
+    #####:    8:    g_21 = 1;
+        -:    9:  }
+        -:   10:
+        1:   11:  for (g_261 = -1; g_261 > -2; g_261--) {
+        1:   12:    if (g_211 + 1) {
+        1:   13:      return;
+        -:   14:    } else {
+    #####:   15:      g_21 = 1;
+    #####:   16:      goto lbl_370;
+        -:   17:    }
+        -:   18:  }
+        -:   19:}
+        -:   20:
+        -:   21:extern void abort(void);
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  func_32(0);
+        1:   25:  if (g_261 != -1)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

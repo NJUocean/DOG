@@ -1,0 +1,14 @@
+    1|       |// { dg-do run }
+    2|       |// { dg-additional-options "--param asan-stack=0" }
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  char *ptr;
+    6|      1|  {
+    7|      1|    char my_char[9];
+    8|      1|    ptr = &my_char[0];
+    9|      1|  }
+   10|      1|
+   11|      1|  *ptr = 'c';
+   12|      1|  return 0;
+   13|      1|}
+

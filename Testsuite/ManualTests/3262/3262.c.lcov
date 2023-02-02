@@ -1,0 +1,16 @@
+    1|       |struct s {
+    2|       |  int f[4];
+    3|       |};
+    4|       |
+    5|      1|int foo(struct s s, int x1, int x2, int x3, int x4, int x5, int x6, int x7) {
+    6|      1|  return s.f[3] + x7;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  struct s s = {1, 2, 3, 4};
+   11|      1|
+   12|      1|  if (foo(s, 100, 200, 300, 400, 500, 600, 700) != 704)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

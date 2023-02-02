@@ -1,0 +1,24 @@
+        -:    0:Source:498.c
+        -:    0:Graph:498.gcno
+        -:    0:Data:498.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/41353 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        -:    5:int varh;
+        -:    6:int vari __attribute__((used)) = 17, varj;
+        -:    7:
+        1:    8:__attribute__((noinline)) int f1(void) {
+        1:    9:  int vari1 = 2 * vari; /* { dg-final { gdb-test .+2 "vari1" "2 * 17" } } */
+        1:   10:  int vari2 = 3 * vari; /* { dg-final { gdb-test .+1 "vari2" "3 * 17" } } */
+        1:   11:  return varj;
+        -:   12:}
+        -:   13:
+        -:   14:int (*volatile fnp1)(void) = f1;
+        -:   15:
+        1:   16:int main(int argc, char *argv[]) {
+        1:   17:  asm volatile("" : : "r"(&fnp1) : "memory");
+        1:   18:  fnp1();
+        1:   19:  return 0;
+        -:   20:}

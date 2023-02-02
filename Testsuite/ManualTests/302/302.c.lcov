@@ -1,0 +1,37 @@
+    1|       |/* PR debug/37616 */
+    2|       |/* Test that one can put breakpoints onto continue, exitlab and break
+    3|       |   and actually see program reaching those breakpoints.  */
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-options "-O0 -gdwarf -dA" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|      2|int foo(int parm) {
+   10|      2|  int varj, varm;
+   11|      2|
+   12|     18|  for (varj = 0; varj < 10; varj++) {
+   13|     18|    if (varj == 5)
+   14|      2|      continue;
+   15|     16|    if (varj == 7 && !parm)
+   16|      1|      goto exitlab;
+   17|     15|    if (varj == 9)
+   18|      1|      break;
+   19|     14|    varm = varj;
+   20|     14|  }
+   21|      2|
+   22|      2|exitlab:
+   23|      2|  return varm;
+   24|      2|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  if (foo(0) != 6)
+   28|      0|    abort();
+   29|      1|  if (foo(1) != 8)
+   30|      0|    abort();
+   31|      1|  return 0;
+   32|      1|}
+   33|       |
+   34|       |/* { dg-final { scan-assembler "pr37616.c:17" } } */
+   35|       |/* { dg-final { scan-assembler "pr37616.c:19" } } */
+   36|       |/* { dg-final { scan-assembler "pr37616.c:21" } } */
+

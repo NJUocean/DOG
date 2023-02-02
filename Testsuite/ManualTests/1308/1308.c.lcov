@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-ftree-vrp" } */
+    3|       |
+    4|       |struct S {
+    5|       |  struct S *field;
+    6|       |};
+    7|       |struct S True, False, Z;
+    8|      1|static inline int f(void) { return 1; }
+    9|      1|static inline int g(struct S **obj) { return f() && *obj == &Z; }
+   10|      1|struct S **h(struct S **x) {
+   11|      1|  if (x)
+   12|      1|    return g(x) ? &True.field : &False.field;
+   13|      0|  else
+   14|      0|    return &True.field;
+   15|      1|}
+   16|       |extern void abort(void);
+   17|      1|int main() {
+   18|      1|  if (h(&False.field) != &False.field)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

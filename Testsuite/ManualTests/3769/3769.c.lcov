@@ -1,0 +1,14 @@
+    1|       |int a[251];
+    2|    252|__attribute__((noinline)) t(int i) {
+    3|    252|  if (i == 0)
+    4|      1|    exit(0);
+    5|    251|  if (i > 255)
+    6|      0|    abort();
+    7|    251|}
+    8|      1|main() {
+    9|      1|  unsigned int i;
+   10|    252|  for (i = 0;; i++) {
+   11|    252|    a[i] = t((unsigned char)(i + 5));
+   12|    252|  }
+   13|      1|}
+

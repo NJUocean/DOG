@@ -1,0 +1,28 @@
+        -:    0:Source:3488.c
+        -:    0:Graph:3488.gcno
+        -:    0:Data:3488.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/51994 */
+        -:    2:/* Testcase by Uros Bizjak <ubizjak@gmail.com> */
+        -:    3:
+        -:    4:extern char *strcpy(char *, const char *);
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:char __attribute__((noinline)) test(int a) {
+        -:    8:  char buf[16];
+        1:    9:  char *output = buf;
+        -:   10:
+        1:   11:  strcpy(&buf[0], "0123456789");
+        -:   12:
+        1:   13:  output += a;
+        1:   14:  output -= 1;
+        -:   15:
+        1:   16:  return output[0];
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  if (test(2) != '1')
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

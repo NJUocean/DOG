@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target sync_char_short } */
+    3|       |/* { dg-options "-mcpu=v9" { target sparc*-*-* } } */
+    4|       |
+    5|       |/* This testcase failed on s390 because no compare instruction for
+    6|       |   the check of FLAG was emitted.  */
+    7|       |
+    8|       |unsigned short int count = 0;
+    9|       |int flag = 1;
+   10|       |
+   11|       |extern void abort(void);
+   12|       |extern void exit(int);
+   13|       |
+   14|      1|int main() {
+   15|      1|  __sync_add_and_fetch(&count, -1);
+   16|      1|
+   17|      1|  if (!flag)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

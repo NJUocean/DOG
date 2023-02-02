@@ -1,0 +1,53 @@
+        -:    0:Source:2926.c
+        -:    0:Graph:2926.gcno
+        -:    0:Data:2926.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3  -march=z10 --save-temps -mindirect-branch-table" } */
+        -:    3:
+        -:    4:int gl;
+        -:    5:
+        1:    6:void __attribute__((noinline, noclone)) foo(int a) { gl = a + 40; }
+        -:    7:
+        1:    8:int __attribute__((noinline, noclone)) foo_value(int a) { return a + 40; }
+        -:    9:
+        2:   10:void *__attribute__((noinline, noclone)) get_fptr(int a) {
+        2:   11:  switch (a) {
+        1:   12:  case 0:
+        1:   13:    return &foo;
+        -:   14:    break;
+        1:   15:  case 1:
+        1:   16:    return &foo_value;
+        -:   17:    break;
+    #####:   18:  default:
+    #####:   19:    __builtin_abort();
+        -:   20:  }
+        -:   21:}
+        -:   22:
+        -:   23:void (*f)(int);
+        -:   24:int (*g)(int);
+        -:   25:
+        1:   26:int __attribute__((indirect_branch_call("thunk"))) main() {
+        -:   27:  int res;
+        -:   28:
+        1:   29:  f = get_fptr(0);
+        1:   30:  f(2);
+        1:   31:  if (gl != 42)
+    #####:   32:    __builtin_abort();
+        -:   33:
+        1:   34:  g = get_fptr(1);
+        1:   35:  if (g(2) != 42)
+    #####:   36:    __builtin_abort();
+        -:   37:
+        1:   38:  return 0;
+        -:   39:}
+        -:   40:
+        -:   41:/* 2 x main
+        -:   42:/* { dg-final { scan-assembler-times "brasl\t%r\[0-9\]*,__s390_indirect_jump" 2
+        -:   43:} } */
+        -:   44:/* { dg-final { scan-assembler "exrl" } } */
+        -:   45:
+        -:   46:/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+        -:   47:/* { dg-final { scan-assembler     "section\t.s390_indirect_call" } } */
+        -:   48:/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+        -:   49:/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */

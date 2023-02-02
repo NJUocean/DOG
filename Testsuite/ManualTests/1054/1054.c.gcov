@@ -1,0 +1,34 @@
+        -:    0:Source:1054.c
+        -:    0:Graph:1054.gcno
+        -:    0:Data:1054.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/85376 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:/* { dg-options "-Og -fno-dce -fgcse -fno-tree-ccp -fno-tree-copy-prop
+        -:    4: * -Wno-psabi" } */
+        -:    5:
+        -:    6:typedef unsigned int U __attribute__((vector_size(64)));
+        -:    7:typedef unsigned __int128 V __attribute__((vector_size(64)));
+        -:    8:unsigned int e, i, l;
+        -:    9:unsigned char f;
+        -:   10:U g, h, k, j;
+        -:   11:
+        1:   12:static inline V foo(unsigned char n, unsigned short o, unsigned int p, U q, U r,
+        -:   13:                    U s) {
+        -:   14:  unsigned int t;
+        1:   15:  o <<= 5;
+        1:   16:  q[7] >>= __builtin_add_overflow(0xfffffff0, __builtin_ffs(n), &s[5]);
+        1:   17:  t = __builtin_ffs(g[7]);
+        1:   18:  e *= __builtin_sub_overflow(o, t, &f);
+        1:   19:  return f + (V)g + (V)h + (V)q + i + (V)j + (V)s + (V)k + l;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        -:   23:  if (__SIZEOF_INT128__ != 16 || __SIZEOF_INT__ != 4 || __CHAR_BIT__ != 8)
+        -:   24:    return 0;
+        1:   25:  V x = foo(0, 1, 5, (U){}, (U){}, (U){});
+        5:   26:  for (unsigned i = 0; i < 4; i++)
+        4:   27:    if ((unsigned int)x[i] != 0x20)
+    #####:   28:      __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

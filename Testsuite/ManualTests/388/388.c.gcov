@@ -1,0 +1,55 @@
+        -:    0:Source:388.c
+        -:    0:Graph:388.gcno
+        -:    0:Data:388.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:/* { dg-require-effective-target run_expensive_tests }  PR testsuite/48283 */
+        -:    3:
+        -:    4:#define DEBUG 0
+        -:    5:#if DEBUG
+        -:    6:#include <stdio.h>
+        -:    7:#endif
+        -:    8:
+        -:    9:#define N 200
+        -:   10:
+        -:   11:int A[N][N], B[N][N], C[N][N];
+        -:   12:
+        1:   13:static void __attribute__((noinline)) matmult(void) {
+        -:   14:  int i, j, k;
+        -:   15:
+        -:   16:  /* This should be blocked.  */
+      201:   17:  for (i = 0; i < N; i++)
+    40200:   18:    for (j = 0; j < N; j++) {
+    40000:   19:      A[i][j] = 0;
+  8040000:   20:      for (k = 0; k < N; k++)
+  8000000:   21:        A[i][j] += B[i][k] * C[k][j];
+        -:   22:    }
+        1:   23:}
+        -:   24:
+        -:   25:extern void abort();
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  int i, j, res = 0;
+        -:   29:
+      201:   30:  for (i = 0; i < N; i++)
+    40200:   31:    for (j = 0; j < N; j++) {
+    40000:   32:      B[i][j] = j;
+    40000:   33:      C[i][j] = i;
+        -:   34:    }
+        -:   35:
+        1:   36:  matmult();
+        -:   37:
+      201:   38:  for (i = 0; i < N; i++)
+      200:   39:    res += A[i][i];
+        -:   40:
+        -:   41:#if DEBUG
+        -:   42:  fprintf(stderr, "res = %d \n", res);
+        -:   43:#endif
+        -:   44:
+        1:   45:  if (res != 529340000)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  return 0;
+        -:   49:}
+        -:   50:
+        -:   51:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

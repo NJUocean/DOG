@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/70127 */
+    2|       |
+    3|       |struct S {
+    4|       |  int f;
+    5|       |  signed int g : 2;
+    6|       |} a[1], c = {5, 1}, d;
+    7|       |short b;
+    8|       |
+    9|      1|__attribute__((noinline, noclone)) void foo(int x) {
+   10|      1|  if (x != 1)
+   11|      0|    __builtin_abort();
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      2|  while (b++ <= 0) {
+   16|      1|    struct S e = {1, 1};
+   17|      1|    d = e = a[0] = c;
+   18|      1|  }
+   19|      1|  foo(a[0].g);
+   20|      1|  return 0;
+   21|      1|}
+

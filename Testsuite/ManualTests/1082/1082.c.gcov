@@ -1,0 +1,26 @@
+        -:    0:Source:1082.c
+        -:    0:Graph:1082.gcno
+        -:    0:Data:1082.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/89679 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Og -frerun-cse-after-loop -fno-tree-fre" } */
+        -:    4:
+        -:    5:unsigned short g;
+        -:    6:
+        1:    7:void foo(unsigned long long x) {
+        1:    8:  if (x != 0xffff)
+    #####:    9:    __builtin_abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:#if __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+        1:   14:  unsigned short d = 0;
+        1:   15:  unsigned long long x, c = ~0;
+        1:   16:  c = c >> d;
+        1:   17:  __builtin_memset(&d, c, 2);
+        1:   18:  x = d + g;
+        1:   19:  foo(x);
+        -:   20:#endif
+        1:   21:  return 0;
+        -:   22:}

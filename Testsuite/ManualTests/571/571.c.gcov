@@ -1,0 +1,24 @@
+        -:    0:Source:571.c
+        -:    0:Graph:571.gcno
+        -:    0:Data:571.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized -fno-inline"  } */
+        -:    3:
+        1:    4:void destroy(void) { __asm__ __volatile__("" : : : "memory"); }
+        -:    5:
+        1:    6:void remove(void) { __asm__ __volatile__("" : : : "memory"); }
+        -:    7:
+        1:    8:void remove2(void) { __asm__ __volatile__("" : : :); }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  destroy();
+        1:   12:  remove();
+        1:   13:  remove2();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-ipa-dump "Semantic equality
+        -:   19: * hit:destroy/\[0-9+\]+->remove/\[0-9+\]+" "icf"  } } */
+        -:   20:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

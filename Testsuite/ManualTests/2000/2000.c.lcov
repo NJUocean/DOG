@@ -1,0 +1,23 @@
+    1|       |/* Tail call optimizations would convert func() into the moral equivalent of:
+    2|       |
+    3|       |       double acc = 0.0;
+    4|       |       for (int i = 0; i <= n; i++)
+    5|       |         acc += d;
+    6|       |       return acc;
+    7|       |
+    8|       |   which mishandles the case where 'd' is -0.  They also initialised 'acc'
+    9|       |   to a zero int rather than a zero double.  */
+   10|       |
+   11|     11|double func(double d, int n) {
+   12|     11|  if (n == 0)
+   13|      1|    return d;
+   14|     10|  else
+   15|     10|    return d + func(d, n - 1);
+   16|     11|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  if (__builtin_copysign(1.0, func(0.0 / -5.0, 10)) != -1.0)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

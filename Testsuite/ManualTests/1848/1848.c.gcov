@@ -1,0 +1,30 @@
+        -:    0:Source:1848.c
+        -:    0:Graph:1848.gcno
+        -:    0:Data:1848.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-rtl-expand -mtune=core2" } */
+        -:    2:/* { dg-skip-if "" { ! { i?86-*-* x86_64-*-* } } } */
+        -:    3:
+        -:    4:long buffer1[128], buffer2[128];
+        -:    5:char *x;
+        -:    6:
+    10000:    7:void foo(long *r) {
+    10000:    8:  x = (char *)r;
+    10000:    9:  asm volatile("" ::: "memory");
+    10000:   10:}
+        -:   11:
+    10000:   12:void __attribute__((noinline)) compute() {
+    10000:   13:  volatile int n = 24;
+    10000:   14:  __builtin_memcpy(buffer1, buffer2, n);
+    10000:   15:  foo(&buffer1[0]);
+    10000:   16:}
+        -:   17:
+        1:   18:int main() {
+    10001:   19:  for (unsigned i = 0; i < 10000; i++)
+    10000:   20:    compute();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final-use-not-autofdo { scan-rtl-dump "Selected stringop expansion
+        -:   26: * strategy: rep_byte" "expand" } } */

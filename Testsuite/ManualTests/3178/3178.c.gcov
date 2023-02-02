@@ -1,0 +1,20 @@
+        -:    0:Source:3178.c
+        -:    0:Graph:3178.gcno
+        -:    0:Data:3178.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  int i[18];
+        -:    3:  char f;
+        -:    4:  char b[2];
+        -:    5:};
+        -:    6:
+        -:    7:struct s s1;
+        -:    8:
+        1:    9:int main() {
+        -:   10:  struct s s2;
+        1:   11:  s2.b[0] = 100;
+        1:   12:  __builtin_memcpy(&s2, &s1, ((unsigned int)&((struct s *)0)->b));
+        1:   13:  if (s2.b[0] != 100)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

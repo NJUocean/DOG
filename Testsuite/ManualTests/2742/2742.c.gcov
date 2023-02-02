@@ -1,0 +1,18 @@
+        -:    0:Source:2742.c
+        -:    0:Graph:2742.gcno
+        -:    0:Data:2742.gcda
+        -:    0:Runs:1
+        -:    1:/* Integer reductions.  */
+        -:    2:
+        -:    3:#define n 1000
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:  int v1;
+        -:    7:
+        -:    8:#pragma acc parallel reduction(+:v1) private(v1) /* { dg-error "invalid private reduction" } */
+        -:    9:  ;
+        -:   10:#pragma acc parallel reduction(+:v1) firstprivate(v1) /* { dg-error "invalid private reduction" } */
+        -:   11:  ;
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

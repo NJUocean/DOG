@@ -1,0 +1,39 @@
+    1|       |/* PR optimization/11864
+    2|       | * Reporter: Kazumoto Kojima <kkojima@gcc.gnu.org>
+    3|       | * Summary: [3.3/3.4 regression] miscompiles zero extension and test
+    4|       | * Description:
+    5|       | * gcc-3.3/3.4 -O2 for sh target may miscompile the combination of zero
+    6|       | * extension and test if it's zero.
+    7|       | *
+    8|       | * Testcase tweaked by dank@kegel.com.  Not marked as xfail because it's a
+    9|       | * regression.
+   10|       | */
+   11|       |/* { dg-do run } */
+   12|       |/* { dg-options "-O2" } */
+   13|       |
+   14|       |extern void abort(void);
+   15|       |
+   16|       |int val = 0xff00;
+   17|       |
+   18|      3|int f(void) { return val; }
+   19|       |
+   20|       |unsigned char a[1];
+   21|       |
+   22|      1|void foo(void) {
+   23|      1|  a[0] = f() & 255;
+   24|      1|
+   25|      1|  if (!a[0])
+   26|      1|    a[0] = f() & 255;
+   27|      1|
+   28|      1|  if (!a[0])
+   29|      1|    a[0] = 1 + (f() & 127);
+   30|      1|}
+   31|       |
+   32|      1|int main(int argc, char **argv) {
+   33|      1|  foo();
+   34|      1|  if (!a[0])
+   35|      0|    abort();
+   36|      1|
+   37|      1|  return 0;
+   38|      1|}
+

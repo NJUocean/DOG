@@ -1,0 +1,10 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options { { -flto } { -flto -g } } } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  {
+    6|      1|    union A {
+    7|      1|    } v;
+    8|      1|  }
+    9|      1|}
+

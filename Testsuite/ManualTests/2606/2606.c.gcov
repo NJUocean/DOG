@@ -1,0 +1,35 @@
+        -:    0:Source:2606.c
+        -:    0:Graph:2606.gcno
+        -:    0:Data:2606.gcda
+        -:    0:Runs:1
+        -:    1:struct a;
+        -:    2:
+        -:    3:extern int baz(struct a *__restrict x);
+        -:    4:
+        -:    5:struct a {
+        -:    6:  long v;
+        -:    7:  long w;
+        -:    8:};
+        -:    9:
+        -:   10:struct b {
+        -:   11:  struct a c;
+        -:   12:  struct a d;
+        -:   13:};
+        -:   14:
+        1:   15:int bar(int x, const struct b *__restrict y, struct b *__restrict z) {
+        1:   16:  if (y->c.v || y->c.w != 250000 || y->d.v || y->d.w != 250000)
+    #####:   17:    abort();
+        1:   18:}
+        -:   19:
+        1:   20:void foo(void) {
+        -:   21:  struct b x;
+        1:   22:  x.c.v = 0;
+        1:   23:  x.c.w = 250000;
+        1:   24:  x.d = x.c;
+        1:   25:  bar(0, &x, ((void *)0));
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  foo();
+        1:   30:  exit(0);
+        -:   31:}

@@ -1,0 +1,16 @@
+        -:    0:Source:1249.c
+        -:    0:Graph:1249.gcno
+        -:    0:Data:1249.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow
+        -:    3: * -fno-sanitize-recover=signed-integer-overflow" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  long long int a = 14;
+        1:    7:  long int b = 9;
+        1:    8:  asm volatile("" : "+r"(a), "+r"(b));
+        1:    9:  if ((a - b) != 5)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

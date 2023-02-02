@@ -1,0 +1,11 @@
+        -:    0:Source:2170.c
+        -:    0:Graph:2170.gcno
+        -:    0:Data:2170.gcda
+        -:    0:Runs:1
+        1:    1:foo(long long x) {
+        1:    2:  if (x--)
+    #####:    3:    return 255;
+        1:    4:  return 0;
+        -:    5:}
+        -:    6:
+        1:    7:main() { printf("%d\n", foo(0)); }

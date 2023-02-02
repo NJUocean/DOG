@@ -1,0 +1,61 @@
+        -:    0:Source:477.c
+        -:    0:Graph:477.gcno
+        -:    0:Data:477.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define NMAX 2000
+        -:    9:
+        -:   10:static unsigned int x1[NMAX], x2[NMAX], a[NMAX][NMAX], y1[NMAX], y2[NMAX];
+        -:   11:
+        1:   12:static unsigned int __attribute__((noinline)) mvt(long N) {
+        -:   13:
+        -:   14:  int i, j;
+        -:   15:
+     2001:   16:  for (i = 0; i < N; i++)
+  4002000:   17:    for (j = 0; j < N; j++)
+  4000000:   18:      x1[i] = x1[i] + a[i][j] * y1[j];
+        -:   19:
+        -:   20:  /* These two loops should be interchanged.  */
+     2001:   21:  for (i = 0; i < N; i++)
+  4002000:   22:    for (j = 0; j < N; j++)
+  4000000:   23:      x2[i] = x2[i] + a[j][i] * y2[j];
+        -:   24:
+        1:   25:  return x1[0] + x2[0];
+        -:   26:}
+        -:   27:
+        -:   28:extern void abort();
+        -:   29:
+        1:   30:int main(void) {
+        -:   31:  int i, j;
+        -:   32:  unsigned int res;
+        -:   33:
+     2001:   34:  for (i = 0; i < NMAX; i++)
+  4002000:   35:    for (j = 0; j < NMAX; j++)
+  4000000:   36:      a[i][j] = i + j;
+        -:   37:
+     2001:   38:  for (i = 0; i < NMAX; i++) {
+     2000:   39:    x1[i] = 0;
+     2000:   40:    x2[i] = 2 * i;
+     2000:   41:    y1[i] = 100 - i;
+     2000:   42:    y2[i] = i;
+        -:   43:  }
+        -:   44:
+        1:   45:  res = mvt(NMAX);
+        -:   46:
+        -:   47:#if DEBUG
+        -:   48:  fprintf(stderr, "res = %d \n", res);
+        -:   49:#endif
+        -:   50:
+        1:   51:  if (res != 199900000)
+    #####:   52:    abort();
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}
+        -:   56:
+        -:   57:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

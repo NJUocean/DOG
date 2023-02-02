@@ -1,0 +1,24 @@
+        -:    0:Source:1302.c
+        -:    0:Graph:1302.gcno
+        -:    0:Data:1302.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    3:
+        1:    4:int __attribute__((noinline, noclone)) h(int a) {
+        1:    5:  return 2 * (a * (__INT_MAX__ / 2 + 1));
+        -:    6:}
+        1:    7:int __attribute__((noinline, noclone)) i(int a) {
+        1:    8:  return (2 * a) * (__INT_MAX__ / 2 + 1);
+        -:    9:}
+        1:   10:int __attribute__((noinline, noclone)) j(int a, int b) {
+        1:   11:  return (b * a) * (__INT_MAX__ / 2 + 1);
+        -:   12:}
+        1:   13:int __attribute__((noinline, noclone)) k(int a, int b) { return (2 * a) * b; }
+        1:   14:int main() {
+        1:   15:  volatile int tem = h(-1);
+        1:   16:  tem = i(-1);
+        1:   17:  tem = j(-1, 2);
+        1:   18:  tem = k(-1, __INT_MAX__ / 2 + 1);
+        1:   19:  return 0;
+        -:   20:}

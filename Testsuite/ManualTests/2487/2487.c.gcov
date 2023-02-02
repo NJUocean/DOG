@@ -1,0 +1,64 @@
+        -:    0:Source:2487.c
+        -:    0:Graph:2487.gcno
+        -:    0:Data:2487.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:#include <string.h>
+        -:    4:
+        -:    5:#if defined(STACK_SIZE)
+        -:    6:#define MEMCPY_SIZE (STACK_SIZE / 3)
+        -:    7:#else
+        -:    8:#define MEMCPY_SIZE (1 << 17)
+        -:    9:#endif
+        -:   10:
+        2:   11:void *copy(void *o, const void *i, unsigned l) { return memcpy(o, i, l); }
+        -:   12:
+        1:   13:main() {
+        -:   14:  unsigned i;
+        -:   15:  unsigned char src[MEMCPY_SIZE];
+        -:   16:  unsigned char dst[MEMCPY_SIZE];
+        -:   17:
+   131073:   18:  for (i = 0; i < MEMCPY_SIZE; i++)
+   131072:   19:    src[i] = (unsigned char)i, dst[i] = 0;
+        -:   20:
+        1:   21:  (void)memcpy(dst, src, MEMCPY_SIZE / 128);
+        -:   22:
+     1025:   23:  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+     1024:   24:    if (dst[i] != (unsigned char)i)
+    #####:   25:      abort();
+        -:   26:
+        1:   27:  (void)memset(dst, 1, MEMCPY_SIZE / 128);
+        -:   28:
+     1025:   29:  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+     1024:   30:    if (dst[i] != 1)
+    #####:   31:      abort();
+        -:   32:
+        1:   33:  (void)memcpy(dst, src, MEMCPY_SIZE);
+        -:   34:
+   131073:   35:  for (i = 0; i < MEMCPY_SIZE; i++)
+   131072:   36:    if (dst[i] != (unsigned char)i)
+    #####:   37:      abort();
+        -:   38:
+        1:   39:  (void)memset(dst, 0, MEMCPY_SIZE);
+        -:   40:
+   131073:   41:  for (i = 0; i < MEMCPY_SIZE; i++)
+   131072:   42:    if (dst[i] != 0)
+    #####:   43:      abort();
+        -:   44:
+        1:   45:  (void)copy(dst, src, MEMCPY_SIZE / 128);
+        -:   46:
+     1025:   47:  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+     1024:   48:    if (dst[i] != (unsigned char)i)
+    #####:   49:      abort();
+        -:   50:
+        1:   51:  (void)memset(dst, 0, MEMCPY_SIZE);
+        -:   52:
+        1:   53:  (void)copy(dst, src, MEMCPY_SIZE);
+        -:   54:
+   131073:   55:  for (i = 0; i < MEMCPY_SIZE; i++)
+   131072:   56:    if (dst[i] != (unsigned char)i)
+    #####:   57:      abort();
+        -:   58:
+        1:   59:  exit(0);
+        -:   60:}

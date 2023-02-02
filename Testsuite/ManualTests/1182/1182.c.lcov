@@ -1,0 +1,23 @@
+    1|       |/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+    2|       |/* Verify that alloca storage is sufficiently aligned.  */
+    3|       |/* ??? May fail if BIGGEST_ALIGNMENT > STACK_BOUNDARY.  Which, I guess
+    4|       |   can only happen on !STRICT_ALIGNMENT targets.  */
+    5|       |
+    6|       |typedef __SIZE_TYPE__ size_t;
+    7|       |
+    8|       |struct dummy {
+    9|       |  int x __attribute__((aligned));
+   10|       |};
+   11|      1|#define BIGGEST_ALIGNMENT __alignof__(struct dummy)
+   12|       |
+   13|      1|_Bool foo(void) {
+   14|      1|  char *p = __builtin_alloca(32);
+   15|      1|  return ((size_t)p & (BIGGEST_ALIGNMENT - 1)) == 0;
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  if (!foo())
+   20|      0|    abort();
+   21|      1|  return 0;
+   22|      1|}
+

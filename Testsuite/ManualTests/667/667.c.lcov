@@ -1,0 +1,16 @@
+    1|       |/* Verify unaligned address aliasing on Alpha EV[45].  */
+    2|       |
+    3|       |static unsigned short x, y;
+    4|       |
+    5|      1|void foo() {
+    6|      1|  x = 0x345;
+    7|      1|  y = 0x567;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  foo();
+   12|      1|  if (x != 0x345 || y != 0x567)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

@@ -1,0 +1,27 @@
+        -:    0:Source:3715.c
+        -:    0:Graph:3715.gcno
+        -:    0:Data:3715.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/48197 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:static int y = 0x8000;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned int x = (short)y;
+        -:    8:  if (sizeof(0LL) == sizeof(0U))
+        -:    9:    return 0;
+        -:   10:  if (0LL > (0U ^ (short)-0x8000))
+        -:   11:    abort();
+        -:   12:  if (0LL > (0U ^ x))
+        -:   13:    abort();
+        -:   14:  if (0LL > (0U ^ (short)y))
+        -:   15:    abort();
+        -:   16:  if ((0U ^ (short)-0x8000) < 0LL)
+        -:   17:    abort();
+        -:   18:  if ((0U ^ x) < 0LL)
+        -:   19:    abort();
+        -:   20:  if ((0U ^ (short)y) < 0LL)
+        -:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

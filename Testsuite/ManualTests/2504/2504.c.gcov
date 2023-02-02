@@ -1,0 +1,27 @@
+        -:    0:Source:2504.c
+        -:    0:Graph:2504.gcno
+        -:    0:Data:2504.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/92 from Simon Marlow <t-simonm@microsoft.com>, adapted
+        -:    2:   to a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+        -:    3:*/
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:} empty;
+        -:    7:
+        -:    8:typedef struct {
+        -:    9:  int i;
+        -:   10:  empty e;
+        -:   11:  int i2;
+        -:   12:} st;
+        -:   13:
+        -:   14:st s = {.i = 0, .i2 = 1};
+        -:   15:
+        -:   16:extern void abort(void);
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  if (s.i2 == 1)
+        1:   20:    exit(0);
+        -:   21:  else
+    #####:   22:    abort();
+        -:   23:}

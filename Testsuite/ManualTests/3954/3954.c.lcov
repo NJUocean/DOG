@@ -1,0 +1,19 @@
+    1|       |/* PR ipa/78791 */
+    2|       |
+    3|       |int val;
+    4|       |
+    5|       |int *ptr = &val;
+    6|       |float *ptr2 = &val;
+    7|       |
+    8|       |static __attribute__((always_inline, optimize("-fno-strict-aliasing")))
+    9|      1|typepun() {
+   10|      1|  *ptr2 = 0;
+   11|      1|}
+   12|       |
+   13|      1|main() {
+   14|      1|  *ptr = 1;
+   15|      1|  typepun();
+   16|      1|  if (*ptr)
+   17|      0|    __builtin_abort();
+   18|      1|}
+

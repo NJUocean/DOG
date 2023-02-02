@@ -1,0 +1,43 @@
+    1|       |/* PR rtl-optimization/61673 */
+    2|       |
+    3|       |char e;
+    4|       |
+    5|      2|__attribute__((noinline, noclone)) void bar(char x) {
+    6|      2|  if (x != 0x54 && x != (char)0x87)
+    7|      0|    __builtin_abort();
+    8|      2|}
+    9|       |
+   10|      2|__attribute__((noinline, noclone)) void foo(const char *x) {
+   11|      2|  char d = x[0];
+   12|      2|  int c = d;
+   13|      2|  if ((c >= 0 && c <= 0x7f) == 0)
+   14|      1|    e = d;
+   15|      2|  bar(d);
+   16|      2|}
+   17|       |
+   18|      2|__attribute__((noinline, noclone)) void baz(const char *x) {
+   19|      2|  char d = x[0];
+   20|      2|  int c = d;
+   21|      2|  if ((c >= 0 && c <= 0x7f) == 0)
+   22|      1|    e = d;
+   23|      2|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  const char c[] = {0x54, 0x87};
+   27|      1|  e = 0x21;
+   28|      1|  foo(c);
+   29|      1|  if (e != 0x21)
+   30|      0|    __builtin_abort();
+   31|      1|  foo(c + 1);
+   32|      1|  if (e != (char)0x87)
+   33|      0|    __builtin_abort();
+   34|      1|  e = 0x21;
+   35|      1|  baz(c);
+   36|      1|  if (e != 0x21)
+   37|      0|    __builtin_abort();
+   38|      1|  baz(c + 1);
+   39|      1|  if (e != (char)0x87)
+   40|      0|    __builtin_abort();
+   41|      1|  return 0;
+   42|      1|}
+

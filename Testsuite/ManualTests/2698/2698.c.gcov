@@ -1,0 +1,30 @@
+        -:    0:Source:2698.c
+        -:    0:Graph:2698.gcno
+        -:    0:Data:2698.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/69891 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fno-tree-fre -mstringop-strategy=libcall -Wno-psabi" } */
+        -:    4:/* { dg-additional-options "-mno-sse" { target ia32 } } */
+        -:    5:
+        -:    6:typedef unsigned short A;
+        -:    7:typedef unsigned short B __attribute__((vector_size(32)));
+        -:    8:typedef unsigned int C;
+        -:    9:typedef unsigned int D __attribute__((vector_size(32)));
+        -:   10:typedef unsigned long long E;
+        -:   11:typedef unsigned long long F __attribute__((vector_size(32)));
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) unsigned foo(D a, B b, D c, F d) {
+        1:   14:  b /= (B){1, -c[0]} | 1;
+        1:   15:  c[0] |= 7;
+        1:   16:  a %= c | 1;
+        1:   17:  c ^= c;
+        1:   18:  return a[0] + b[15] + c[0] + d[3];
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  unsigned x = foo((D){}, (B){}, (D){}, (F){});
+        1:   23:  if (x != 0)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

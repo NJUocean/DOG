@@ -1,0 +1,17 @@
+    1|       |int foo(int, int, int);
+    2|       |int bar(int, int, int);
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  if (foo(5, 10, 21) != 12)
+    6|      0|    abort();
+    7|      1|
+    8|      1|  if (bar(9, 12, 15) != 150)
+    9|      0|    abort();
+   10|      1|
+   11|      1|  exit(0);
+   12|      1|}
+   13|       |
+   14|      2|int foo(int x, int y, int z) { return (x + y + z) / 3; }
+   15|       |
+   16|      1|int bar(int x, int y, int z) { return foo(x * x, y * y, z * z); }
+

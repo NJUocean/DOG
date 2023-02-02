@@ -1,0 +1,28 @@
+    1|       |/* Test that we don't let stmt.c think that the enumeration's values are
+    2|       |   the entire set of possibilities.  Such an assumption is false for C,
+    3|       |   but true for other languages.  */
+    4|       |
+    5|       |enum X { X1 = 1, X2, X3, X4 };
+    6|       |static volatile enum X test = 0;
+    7|       |static void y(int);
+    8|       |
+    9|      1|int main() {
+   10|      1|  switch (test) {
+   11|      0|  case X1:
+   12|      0|    y(1);
+   13|      0|    break;
+   14|      0|  case X2:
+   15|      0|    y(2);
+   16|      0|    break;
+   17|      0|  case X3:
+   18|      0|    y(3);
+   19|      0|    break;
+   20|      0|  case X4:
+   21|      0|    y(4);
+   22|      0|    break;
+   23|      1|  }
+   24|      1|  return 0;
+   25|      1|}
+   26|       |
+   27|      0|static void y(int x) { abort(); }
+

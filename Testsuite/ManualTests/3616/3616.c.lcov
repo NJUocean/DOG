@@ -1,0 +1,17 @@
+    1|       |unsigned int a[0x1000];
+    2|       |extern const unsigned long v;
+    3|       |
+    4|      1|main() {
+    5|      1|  f(v);
+    6|      1|  f(v);
+    7|      1|  exit(0);
+    8|      1|}
+    9|       |
+   10|       |f(a) unsigned long a;
+   11|      2|{
+   12|      2|  if (a != 0xdeadbeefL)
+   13|      0|    abort();
+   14|      2|}
+   15|       |
+   16|       |const unsigned long v = 0xdeadbeefL;
+

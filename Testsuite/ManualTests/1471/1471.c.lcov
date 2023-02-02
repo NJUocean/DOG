@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |int a, c;
+    4|       |
+    5|      1|int main() {
+    6|      1|  int e = -1;
+    7|      1|  short d = (c <= 0) ^ e;
+    8|      1|  if ((unsigned int)a - (a || d) <= (unsigned int)a)
+    9|      0|    __builtin_abort();
+   10|      1|  return 0;
+   11|      1|}
+

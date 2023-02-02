@@ -1,0 +1,19 @@
+        -:    0:Source:2755.c
+        -:    0:Graph:2755.gcno
+        -:    0:Data:2755.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target lp64 } } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:  long double x;
+        1:    6:  unsigned long u[2] = {0xEEEEEEEEEEEEEEEEUL, 0xEEEEEEEEEEEEEEEEUL};
+        1:    7:  __builtin_memcpy(&x, &u, sizeof x);
+        1:    8:  __builtin_memcpy(&u, &x, sizeof u);
+        1:    9:  ++*(unsigned char *)&x;
+        1:   10:  (void)-x;
+        1:   11:  __builtin_memcpy(&u, &x, sizeof u);
+        1:   12:  if (u[1] != 0xEEEEEEEEEEEEEEEEUL || u[0] != 0xEEEEEEEEEEEEEEEFUL)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

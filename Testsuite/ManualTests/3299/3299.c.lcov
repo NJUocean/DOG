@@ -1,0 +1,55 @@
+    1|       |/* PR optimization/10955 */
+    2|       |/* Originator: <heinrich.brand@fujitsu-siemens.com> */
+    3|       |
+    4|       |/* This used to fail on SPARC32 at -O3 because the loop unroller
+    5|       |   wrongly thought it could eliminate a pseudo in a loop, while
+    6|       |   the pseudo was used outside the loop.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|      7|#define COMPLEX struct CS
+   11|       |
+   12|       |COMPLEX {
+   13|       |  long x;
+   14|       |  long y;
+   15|       |};
+   16|       |
+   17|      3|static COMPLEX CCID(COMPLEX x) {
+   18|      3|  COMPLEX a;
+   19|      3|
+   20|      3|  a.x = x.x;
+   21|      3|  a.y = x.y;
+   22|      3|
+   23|      3|  return a;
+   24|      3|}
+   25|       |
+   26|      2|static COMPLEX CPOW(COMPLEX x, int y) {
+   27|      2|  COMPLEX a;
+   28|      2|  a = x;
+   29|      2|
+   30|      4|  while (--y > 0)
+   31|      2|    a = CCID(a);
+   32|      2|
+   33|      2|  return a;
+   34|      2|}
+   35|       |
+   36|      1|static int c5p(COMPLEX x) {
+   37|      1|  COMPLEX a, b;
+   38|      1|  a = CPOW(x, 2);
+   39|      1|  b = CCID(CPOW(a, 2));
+   40|      1|
+   41|      1|  return (b.x == b.y);
+   42|      1|}
+   43|       |
+   44|      1|int main(void) {
+   45|      1|  COMPLEX x;
+   46|      1|
+   47|      1|  x.x = -7;
+   48|      1|  x.y = -7;
+   49|      1|
+   50|      1|  if (!c5p(x))
+   51|      0|    abort();
+   52|      1|
+   53|      1|  return 0;
+   54|      1|}
+

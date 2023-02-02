@@ -1,0 +1,26 @@
+        -:    0:Source:3363.c
+        -:    0:Graph:3363.gcno
+        -:    0:Data:3363.gcda
+        -:    0:Runs:1
+        -:    1:extern int abs(int);
+        -:    2:extern void abort(void);
+        -:    3:
+        1:    4:void check(int *p) {
+        -:    5:  int i;
+        6:    6:  for (i = 0; i < 5; ++i)
+        5:    7:    if (p[i])
+    #####:    8:      abort();
+        6:    9:  for (; i < 10; ++i)
+        5:   10:    if (p[i] != i + 1)
+    #####:   11:      abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        -:   16:  int i;
+        -:   17:
+        6:   18:  for (i = -5; i < 0; i++)
+        5:   19:    a[abs(i - 10) - 11] = 0;
+        1:   20:  check(a);
+        1:   21:  return 0;
+        -:   22:}

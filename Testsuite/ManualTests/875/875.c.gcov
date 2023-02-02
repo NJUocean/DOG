@@ -1,0 +1,24 @@
+        -:    0:Source:875.c
+        -:    0:Graph:875.gcno
+        -:    0:Data:875.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -fno-delete-null-pointer-checks" } */
+        -:    3:extern void abort(void);
+        -:    4:int g = 0;
+        1:    5:static int __attribute__((noinline)) f(long long a, long long b) {
+        -:    6:  int cmp;
+        1:    7:  cmp = a > b;
+        -:    8:  if (&g == 0)
+        -:    9:    cmp -= 2;
+        -:   10:  else
+        1:   11:    cmp++;
+        1:   12:  return cmp;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  int ret = f(2, 1);
+        1:   17:  if (ret != 2)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,26 @@
+        -:    0:Source:3236.c
+        -:    0:Graph:3236.gcno
+        -:    0:Data:3236.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort(void);
+        -:    3:extern unsigned short f(short a) __attribute__((__noinline__));
+        -:    4:
+        1:    5:unsigned short f(short a) {
+        -:    6:  short b;
+        -:    7:
+        1:    8:  if (a > 0)
+    #####:    9:    return 0;
+        1:   10:  b = ((int)a) + -(int)32768;
+        1:   11:  return b;
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  if (sizeof(short) < 2 || sizeof(short) >= sizeof(int))
+        -:   16:    exit(0);
+        -:   17:
+        1:   18:  if (f(-32767) != 1)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  exit(0);
+        -:   22:}

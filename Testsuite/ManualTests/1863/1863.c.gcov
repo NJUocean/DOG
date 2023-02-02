@@ -1,0 +1,22 @@
+        -:    0:Source:1863.c
+        -:    0:Graph:1863.gcno
+        -:    0:Data:1863.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:struct A {
+        -:    5:  int i : 8;
+        -:    6:};
+        -:    7:
+        -:    8:signed char c1, c2;
+        -:    9:struct A a;
+        -:   10:
+        1:   11:int main() {
+        1:   12:  a.i = c1;
+        1:   13:  c2 = a.i;
+        1:   14:  return a.i;
+        -:   15:}
+        -:   16:
+        -:   17:/* We should only store to a.i, not load from it.  */
+        -:   18:/* { dg-final { scan-tree-dump-not "= a.i" "optimized" } } */

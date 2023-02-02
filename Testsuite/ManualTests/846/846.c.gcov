@@ -1,0 +1,37 @@
+        -:    0:Source:846.c
+        -:    0:Graph:846.gcno
+        -:    0:Data:846.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { { i?86-*-* x86_64-*-* } && { ia32 && { ! nonpic } } } } */
+        -:    3:/* { dg-skip-if "Not enough registers" { "pdp11-*-*" } } */
+        -:    4:/* { dg-options "-O2 -fgcse-after-reload" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:__attribute__((noinline)) __complex__ float give_neg1(void) {
+        -:    9:  __complex__ float res;
+        1:   10:  __real__ res = -1.0;
+        1:   11:  __imag__ res = 1.0;
+        1:   12:  return res;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noinline)) __complex__ float mycacoshf(__complex__ float x) {
+        -:   16:  __complex__ float res;
+        1:   17:  res = give_neg1();
+        -:   18:
+        -:   19:  /* We have to use the positive branch.  */
+        1:   20:  if (__real__ res < 0.0) {
+        -:   21:    unsigned a, b, c, d, e, f;
+        1:   22:    res = -res;
+        1:   23:    asm __volatile__("" : "=r"(a), "=r"(b), "=r"(c), "=r"(d), "=r"(e), "=r"(f));
+        -:   24:  }
+        1:   25:  return res;
+        -:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  __complex__ float res = mycacoshf(1.0);
+        1:   30:  if (__imag__ res >= 0.0)
+    #####:   31:    abort();
+        1:   32:  return 0;
+        -:   33:}

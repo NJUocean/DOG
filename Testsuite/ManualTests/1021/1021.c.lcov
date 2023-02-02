@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-shouldfail "asan" } */
+    3|       |
+    4|       |#include <assert.h>
+    5|       |
+    6|       |volatile int ten = 10;
+    7|       |
+    8|      1|__attribute__((noinline)) void foo(int index, int len) {
+    9|      1|  volatile char str[len] __attribute__((aligned(128)));
+   10|      1|  assert(!((long)str & 127L));
+   11|      1|  str[index] = '1'; // BOOM
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  foo(ten, ten);
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-output "WRITE of size 1 at 0x\[0-9a-f\]+ thread T0\[^\n\r]*(\n|\r\n|\r)"
+   20|       | * } */
+   21|       |/* { dg-output "    #0 0x\[0-9a-f\]+ +(in
+   22|       | * _*foo(\[^\n\r]*alloca_big_alignment.c:11|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\])\[^\n\r\]*(\n|\r\n|\r)"
+   23|       | * } */
+   24|       |/* { dg-output "\[^\n\r]*Address 0x\[0-9a-f\]+ is located in stack of thread
+   25|       | * T0.*(\n|\r\n|\r)" */
+   26|       |/* { dg-output "\[^\n\r]*in foo.*alloca_big_alignment.c.*(\n|\r\n|\r)" */
+

@@ -1,0 +1,21 @@
+    1|       |/* { dg-options "-mpc64"  { target { i?86-*-* x86_64-*-* } } } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|      1|void fpEq(double x, double y) {
+    7|      1|  if (x != y)
+    8|      0|    abort();
+    9|      1|}
+   10|       |
+   11|      1|void fpTest(double x, double y) {
+   12|      1|  double result1 = (35.7 * 100.0) / 45.0;
+   13|      1|  double result2 = (x * 100.0) / y;
+   14|      1|  fpEq(result1, result2);
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  fpTest(35.7, 45.0);
+   19|      1|  exit(0);
+   20|      1|}
+

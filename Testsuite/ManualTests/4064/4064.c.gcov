@@ -1,0 +1,138 @@
+        -:    0:Source:4064.c
+        -:    0:Graph:4064.gcno
+        -:    0:Data:4064.gcda
+        -:    0:Runs:1
+        -:    1:#define vector(elcount, type)                                                  \
+        -:    2:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    3:
+        -:    4:#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+        -:    5:
+        -:    6:#define operl(a, b, op) (a op b)
+        -:    7:#define operr(a, b, op) (b op a)
+        -:    8:
+        -:    9:#define check(type, count, vec0, vec1, num, op, lr)                            \
+        -:   10:  do {                                                                         \
+        -:   11:    int __i;                                                                   \
+        -:   12:    for (__i = 0; __i < count; __i++) {                                        \
+        -:   13:      if (vidx(type, vec1, __i) != oper##lr(num, vidx(type, vec0, __i), op))   \
+        -:   14:        __builtin_abort();                                                     \
+        -:   15:    }                                                                          \
+        -:   16:  } while (0)
+        -:   17:
+        -:   18:#define veccompare(type, count, v0, v1)                                        \
+        -:   19:  do {                                                                         \
+        -:   20:    int __i;                                                                   \
+        -:   21:    for (__i = 0; __i < count; __i++) {                                        \
+        -:   22:      if (vidx(type, v0, __i) != vidx(type, v1, __i))                          \
+        -:   23:        __builtin_abort();                                                     \
+        -:   24:    }                                                                          \
+        -:   25:  } while (0)
+        -:   26:
+        -:   27:volatile int one = 1;
+        -:   28:
+        1:   29:int main(int argc, char *argv[]) {
+        -:   30:#define fvec_2                                                                 \
+        -:   31:  (vector(4, float)) { 2., 2., 2., 2. }
+        -:   32:#define dvec_2 (vector(2, double)){2., 2.}
+        -:   33:
+        1:   34:  vector(8, short) v0 = {one, 1, 2, 3, 4, 5, 6, 7};
+        -:   35:  vector(8, short) v1;
+        -:   36:
+        1:   37:  vector(4, float) f0 = {1., 2., 3., 4.};
+        -:   38:  vector(4, float) f1, f2;
+        -:   39:
+        1:   40:  vector(2, double) d0 = {1., 2.};
+        -:   41:  vector(2, double) d1, d2;
+        -:   42:
+        1:   43:  v1 = 2 + v0;
+       9*:   44:  check(short, 8, v0, v1, 2, +, l);
+        1:   45:  v1 = 2 - v0;
+       9*:   46:  check(short, 8, v0, v1, 2, -, l);
+        1:   47:  v1 = 2 * v0;
+       9*:   48:  check(short, 8, v0, v1, 2, *, l);
+        1:   49:  v1 = 2 / v0;
+       9*:   50:  check(short, 8, v0, v1, 2, /, l);
+        1:   51:  v1 = 2 % v0;
+       9*:   52:  check(short, 8, v0, v1, 2, %, l);
+        1:   53:  v1 = 2 ^ v0;
+       9*:   54:  check(short, 8, v0, v1, 2, ^, l);
+        1:   55:  v1 = 2 & v0;
+       9*:   56:  check(short, 8, v0, v1, 2, &, l);
+        1:   57:  v1 = 2 | v0;
+       9*:   58:  check(short, 8, v0, v1, 2, |, l);
+        1:   59:  v1 = 2 << v0;
+       9*:   60:  check(short, 8, v0, v1, 2, <<, l);
+        1:   61:  v1 = 2 >> v0;
+       9*:   62:  check(short, 8, v0, v1, 2, >>, l);
+        -:   63:
+        1:   64:  v1 = v0 + 2;
+       9*:   65:  check(short, 8, v0, v1, 2, +, r);
+        1:   66:  v1 = v0 - 2;
+       9*:   67:  check(short, 8, v0, v1, 2, -, r);
+        1:   68:  v1 = v0 * 2;
+       9*:   69:  check(short, 8, v0, v1, 2, *, r);
+        1:   70:  v1 = v0 / 2;
+       9*:   71:  check(short, 8, v0, v1, 2, /, r);
+        1:   72:  v1 = v0 % 2;
+       9*:   73:  check(short, 8, v0, v1, 2, %, r);
+        1:   74:  v1 = v0 ^ 2;
+       9*:   75:  check(short, 8, v0, v1, 2, ^, r);
+        1:   76:  v1 = v0 & 2;
+       9*:   77:  check(short, 8, v0, v1, 2, &, r);
+        1:   78:  v1 = v0 | 2;
+       9*:   79:  check(short, 8, v0, v1, 2, |, r);
+        -:   80:
+        1:   81:  f1 = 2. + f0;
+        1:   82:  f2 = fvec_2 + f0;
+       5*:   83:  veccompare(float, 4, f1, f2);
+        1:   84:  f1 = 2. - f0;
+        1:   85:  f2 = fvec_2 - f0;
+       5*:   86:  veccompare(float, 4, f1, f2);
+        1:   87:  f1 = 2. * f0;
+        1:   88:  f2 = fvec_2 * f0;
+       5*:   89:  veccompare(float, 4, f1, f2);
+        1:   90:  f1 = 2. / f0;
+        1:   91:  f2 = fvec_2 / f0;
+       5*:   92:  veccompare(float, 4, f1, f2);
+        -:   93:
+        1:   94:  f1 = f0 + 2.;
+        1:   95:  f2 = f0 + fvec_2;
+       5*:   96:  veccompare(float, 4, f1, f2);
+        1:   97:  f1 = f0 - 2.;
+        1:   98:  f2 = f0 - fvec_2;
+       5*:   99:  veccompare(float, 4, f1, f2);
+        1:  100:  f1 = f0 * 2.;
+        1:  101:  f2 = f0 * fvec_2;
+       5*:  102:  veccompare(float, 4, f1, f2);
+        1:  103:  f1 = f0 / 2.;
+        1:  104:  f2 = f0 / fvec_2;
+       5*:  105:  veccompare(float, 4, f1, f2);
+        -:  106:
+        1:  107:  d1 = 2. + d0;
+        1:  108:  d2 = dvec_2 + d0;
+       3*:  109:  veccompare(double, 2, d1, d2);
+        1:  110:  d1 = 2. - d0;
+        1:  111:  d2 = dvec_2 - d0;
+       3*:  112:  veccompare(double, 2, d1, d2);
+        1:  113:  d1 = 2. * d0;
+        1:  114:  d2 = dvec_2 * d0;
+       3*:  115:  veccompare(double, 2, d1, d2);
+        1:  116:  d1 = 2. / d0;
+        1:  117:  d2 = dvec_2 / d0;
+       3*:  118:  veccompare(double, 2, d1, d2);
+        -:  119:
+        1:  120:  d1 = d0 + 2.;
+        1:  121:  d2 = d0 + dvec_2;
+       3*:  122:  veccompare(double, 2, d1, d2);
+        1:  123:  d1 = d0 - 2.;
+        1:  124:  d2 = d0 - dvec_2;
+       3*:  125:  veccompare(double, 2, d1, d2);
+        1:  126:  d1 = d0 * 2.;
+        1:  127:  d2 = d0 * dvec_2;
+       3*:  128:  veccompare(double, 2, d1, d2);
+        1:  129:  d1 = d0 / 2.;
+        1:  130:  d2 = d0 / dvec_2;
+       3*:  131:  veccompare(double, 2, d1, d2);
+        -:  132:
+        1:  133:  return 0;
+        -:  134:}

@@ -1,0 +1,23 @@
+        -:    0:Source:1632.c
+        -:    0:Graph:1632.gcno
+        -:    0:Data:1632.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef unsigned short u16;
+        -:    4:
+        -:    5:static u16 a;
+        -:    6:
+        1:    7:u16 __attribute__((noinline, noclone)) foo(int p1) {
+        1:    8:  a = -(p1 > 0);
+        1:    9:  a *= 0 != a;
+        1:   10:  a *= (unsigned)a;
+        1:   11:  return a;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  u16 x = foo(1);
+        1:   16:  if (x != 1)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

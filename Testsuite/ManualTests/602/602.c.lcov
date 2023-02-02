@@ -1,0 +1,23 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|      1|void stub(int num, ...) {
+    4|      1|  va_list ap;
+    5|      1|  char *end;
+    6|      1|  int i;
+    7|      1|
+    8|      3|  for (i = 0; i < 2; i++) {
+    9|      2|    va_start(ap, num);
+   10|      8|    while (1) {
+   11|      8|      end = va_arg(ap, char *);
+   12|      8|      if (!end)
+   13|      2|        break;
+   14|      8|    }
+   15|      2|    va_end(ap);
+   16|      2|  }
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  stub(1, "ab", "bc", "cx", (char *)0);
+   21|      1|  exit(0);
+   22|      1|}
+

@@ -1,0 +1,20 @@
+        -:    0:Source:375.c
+        -:    0:Graph:375.gcno
+        -:    0:Data:375.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/36790 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fopenmp" } */
+        -:    4:
+        1:    5:void foo(char b) {}
+        -:    6:
+        1:    7:void bar(char b) {
+        1:    8:  foo(b);
+        -:    9:#pragma omp task default(shared)
+        1:   10:  b = 0;
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  bar(0);
+        1:   15:  return 0;
+        -:   16:}

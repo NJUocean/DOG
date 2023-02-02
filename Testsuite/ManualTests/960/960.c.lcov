@@ -1,0 +1,48 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -ftree-tail-merge -fdump-tree-pre" } */
+    3|       |
+    4|       |struct node {
+    5|       |  struct node *next;
+    6|       |  struct node *prev;
+    7|       |};
+    8|       |
+    9|       |struct node node;
+   10|       |
+   11|       |struct head {
+   12|       |  struct node *first;
+   13|       |};
+   14|       |
+   15|       |struct head heads[5];
+   16|       |
+   17|       |int k = 2;
+   18|       |
+   19|       |struct head *head = &heads[2];
+   20|       |
+   21|      1|int main() {
+   22|      1|  struct node *p;
+   23|      1|
+   24|      1|  node.next = (void *)0;
+   25|      1|
+   26|      1|  node.prev = (void *)head;
+   27|      1|
+   28|      1|  asm("" : "=m"(node.prev));
+   29|      1|
+   30|      1|  head->first = &node;
+   31|      1|
+   32|      1|  struct node *n = head->first;
+   33|      1|
+   34|      1|  struct head *h = &heads[k];
+   35|      1|
+   36|      1|  heads[2].first = n->next;
+   37|      1|
+   38|      1|  if ((void *)n->prev == (void *)h)
+   39|      1|    p = h->first;
+   40|      0|  else
+   41|      0|    /* Dead tbaa-unsafe load from ((struct node *)&heads[2])->next.  */
+   42|      0|    p = n->prev->next;
+   43|      1|
+   44|      1|  return !(p == (void *)0);
+   45|      1|}
+   46|       |
+   47|       |/* { dg-final { scan-tree-dump-not "Removing basic block" "pre"} } */
+

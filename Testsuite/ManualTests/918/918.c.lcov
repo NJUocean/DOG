@@ -1,0 +1,38 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-Os --param large-stack-frame=30 -Wno-pointer-to-int-cast" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|void __attribute__((noinline)) bar(char *a) {}
+    7|       |
+    8|      4|void __attribute__((noinline)) foo(char *a, int b) {}
+    9|       |
+   10|       |void __attribute__((noinline))
+   11|      4|test_align(char *p, int aligned, unsigned int mask) {
+   12|      4|  int p_aligned = ((unsigned long int)p & mask) == 0;
+   13|      4|  if (aligned != p_aligned)
+   14|      0|    abort();
+   15|      4|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  const int kIterations = 4;
+   19|      1|  char results[kIterations];
+   20|      1|  int i;
+   21|      1|  unsigned int mask;
+   22|      1|
+   23|      1|  mask = 0xf;
+   24|      1|  test_align(results, ((unsigned long int)results & mask) == 0, mask);
+   25|      1|  mask = 0x7;
+   26|      1|  test_align(results, ((unsigned long int)results & mask) == 0, mask);
+   27|      1|  mask = 0x3;
+   28|      1|  test_align(results, ((unsigned long int)results & mask) == 0, mask);
+   29|      1|  mask = 0x1;
+   30|      1|  test_align(results, ((unsigned long int)results & mask) == 0, mask);
+   31|      1|
+   32|      1|  bar(results);
+   33|      5|  for (i = 0; i < kIterations; i++)
+   34|      4|    foo("%d ", results[i]);
+   35|      1|
+   36|      1|  return 0;
+   37|      1|}
+

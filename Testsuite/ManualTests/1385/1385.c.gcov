@@ -1,0 +1,14 @@
+        -:    0:Source:1385.c
+        -:    0:Graph:1385.gcno
+        -:    0:Data:1385.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fstrict-overflow" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        1:    5:int foo(int i, int j, int o, int m) { return i * o + 1 + j * m > 1; }
+        1:    6:int main() {
+        1:    7:  if (foo(-__INT_MAX__ - 1, -1, 1, 1))
+    #####:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}

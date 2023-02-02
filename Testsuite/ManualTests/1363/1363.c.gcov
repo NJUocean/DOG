@@ -1,0 +1,27 @@
+        -:    0:Source:1363.c
+        -:    0:Graph:1363.gcno
+        -:    0:Data:1363.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:
+        -:    4:#include <stdint.h>
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:uintptr_t __attribute__((pure, noinline, noclone)) foo(int *a) {
+        1:    9:  return (uintptr_t)a;
+        -:   10:}
+        -:   11:
+        1:   12:void __attribute__((noinline, noclone)) bar(uintptr_t a) {
+        1:   13:  int *p = (int *)a;
+        1:   14:  *p = 1;
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  int t = 0;
+        1:   19:  bar(foo(&t));
+        1:   20:  if (t != 1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

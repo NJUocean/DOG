@@ -1,0 +1,53 @@
+        -:    0:Source:2484.c
+        -:    0:Graph:2484.gcno
+        -:    0:Data:2484.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:/* { dg-require-effective-target arm32 } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        2:    7:int bics_si_test1(int a, int b, int c) {
+        2:    8:  int d = a & ~b;
+        -:    9:
+        -:   10:  /* { dg-final { scan-assembler-times "bics\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+" 2
+        -:   11:   * } } */
+        2:   12:  if (d == 0)
+        1:   13:    return a + c;
+        -:   14:  else
+        1:   15:    return b + d + c;
+        -:   16:}
+        -:   17:
+        2:   18:int bics_si_test2(int a, int b, int c) {
+        2:   19:  int d = a & ~(b << 3);
+        -:   20:
+        -:   21:  /* { dg-final { scan-assembler-times "bics\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+,
+        -:   22:   * .sl \#3" 1 } } */
+        2:   23:  if (d == 0)
+        1:   24:    return a + c;
+        -:   25:  else
+        1:   26:    return b + d + c;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  int x;
+        -:   31:
+        1:   32:  x = bics_si_test1(29, ~4, 5);
+        1:   33:  if (x != ((29 & 4) + ~4 + 5))
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  x = bics_si_test1(5, ~2, 20);
+        1:   37:  if (x != 25)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  x = bics_si_test2(35, ~4, 5);
+        1:   41:  if (x != ((35 & ~(~4 << 3)) + ~4 + 5))
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  x = bics_si_test2(96, ~2, 20);
+        1:   45:  if (x != 116)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  return 0;
+        -:   49:}

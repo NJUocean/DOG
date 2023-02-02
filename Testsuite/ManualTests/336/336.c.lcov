@@ -1,0 +1,15 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fno-strict-overflow" } */
+    3|       |
+    4|       |short a;
+    5|       |
+    6|      1|void foo(void) {
+    7|  32.7k|  for (a = 0; a >= 0; a++)
+    8|  32.7k|    ;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  foo();
+   13|      1|  return 0;
+   14|      1|}
+

@@ -1,0 +1,66 @@
+    1|       |/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-skip-if "PR81210 sp not aligned to 16 bytes" { *-*-darwin* } } */
+    3|       |/* { dg-options "-mgeneral-regs-only" } */
+    4|       |
+    5|       |#include <stddef.h>
+    6|       |
+    7|       |extern void exit(int);
+    8|       |
+    9|       |typedef unsigned int uword_t __attribute__((mode(__word__)));
+   10|       |typedef int aligned __attribute__((aligned(64)));
+   11|       |
+   12|      1|#define IP 0x12345671
+   13|      1|#define CS 0x12345672
+   14|      1|#define FLAGS 0x12345673
+   15|      1|#define SP 0x12345674
+   16|      1|#define SS 0x12345675
+   17|       |
+   18|       |#define STRING(x) XSTRING(x)
+   19|       |#define XSTRING(x) #x
+   20|       |#define ASMNAME(cname) ASMNAME2(__USER_LABEL_PREFIX__, cname)
+   21|       |#define ASMNAME2(prefix, cname) XSTRING(prefix) cname
+   22|       |
+   23|       |struct interrupt_frame {
+   24|       |  uword_t ip;
+   25|       |  uword_t cs;
+   26|       |  uword_t flags;
+   27|       |  uword_t sp;
+   28|       |  uword_t ss;
+   29|       |};
+   30|       |
+   31|      1|int check_int(int *i, int align) {
+   32|      1|  *i = 20;
+   33|      1|  if ((((ptrdiff_t)i) & (align - 1)) != 0)
+   34|      0|    __builtin_abort();
+   35|      1|  return *i;
+   36|      1|}
+   37|       |
+   38|      1|__attribute__((interrupt, used)) void fn(struct interrupt_frame *frame) {
+   39|      1|  aligned i;
+   40|      1|  if (check_int(&i, __alignof__(i)) != i)
+   41|      0|    __builtin_abort();
+   42|      1|
+   43|      1|  if (IP != frame->ip)
+   44|      0|    __builtin_abort();
+   45|      1|  if (CS != frame->cs)
+   46|      0|    __builtin_abort();
+   47|      1|  if (FLAGS != frame->flags)
+   48|      0|    __builtin_abort();
+   49|      1|  if (SP != frame->sp)
+   50|      0|    __builtin_abort();
+   51|      1|  if (SS != frame->ss)
+   52|      0|    __builtin_abort();
+   53|      1|
+   54|      1|  exit(0);
+   55|      1|}
+   56|       |
+   57|      1|int main() {
+   58|      1|  asm("push	$" STRING(SS) ";		\
+   59|      1|	push	$" STRING(SP) ";		\
+   60|      1|	push	$" STRING(FLAGS) ";		\
+   61|      1|	push	$" STRING(CS) ";		\
+   62|      1|	push	$" STRING(IP) ";		\
+   63|      1|	jmp	 " ASMNAME("fn"));
+   64|      1|  return 0;
+   65|      1|}
+

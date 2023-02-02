@@ -1,0 +1,59 @@
+        -:    0:Source:3292.c
+        -:    0:Graph:3292.gcno
+        -:    0:Data:3292.gcda
+        -:    0:Runs:1
+        -:    1:/* C99 6.5.8 Relational operators.
+        -:    2:   Compare decimal float constants against each other. */
+        -:    3:
+        -:    4:extern void link_error(void);
+        -:    5:
+        1:    6:int main() {
+        -:    7:  /* Compare like-typed negative constants. */
+        -:    8:  if (-2.0dl < -2.0dl)
+        -:    9:    link_error();
+        -:   10:
+        -:   11:  /* Compare like-typed constants. */
+        -:   12:  if (-2.0dl >= .01dl)
+        -:   13:    link_error();
+        -:   14:
+        -:   15:  /* Compare like-typed constants. */
+        -:   16:  if (0.2dd > 0.02e1dd)
+        -:   17:    link_error();
+        -:   18:
+        -:   19:  /* Compare decimal float constants of different types. */
+        -:   20:  if (-.000005dd >= -.0000049DL)
+        -:   21:    link_error();
+        -:   22:
+        -:   23:  /* Test use gcc builtins for comparisons. */
+        -:   24:  if (__builtin_isless(-2.0dl, -2.0dl))
+        -:   25:    link_error();
+        -:   26:
+        -:   27:  if (__builtin_isgreaterequal(-2.0dl, .01dl))
+        -:   28:    link_error();
+        -:   29:
+        -:   30:  if (!(__builtin_islessequal(-2.0dl, -2.0dd)))
+        -:   31:    link_error();
+        -:   32:
+        -:   33:  if (!(__builtin_isgreater(2.0dl, -2.0dd)))
+        -:   34:    link_error();
+        -:   35:
+        -:   36:  if (__builtin_islessequal(2.0df, __builtin_nand64("")))
+        -:   37:    link_error();
+        -:   38:
+        -:   39:  if (__builtin_islessgreater(2.0dd, __builtin_nand64("")))
+        -:   40:    link_error();
+        -:   41:
+        -:   42:  if (!__builtin_islessgreater(2.0dd, -2.0dd))
+        -:   43:    link_error();
+        -:   44:
+        -:   45:  if (!__builtin_islessgreater(-3.0dd, 2.0dd))
+        -:   46:    link_error();
+        -:   47:
+        -:   48:  if (__builtin_isunordered(1.1df, 0.003dd))
+        -:   49:    link_error();
+        -:   50:
+        -:   51:  if (!__builtin_isunordered(-3.1df, __builtin_nand32("")))
+        -:   52:    link_error();
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}

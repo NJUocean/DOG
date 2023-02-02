@@ -1,0 +1,24 @@
+    1|       |/* PR tree-optimization/66299 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fdump-tree-optimized -O" } */
+    4|       |/* { dg-require-effective-target int32plus } */
+    5|       |
+    6|      1|void test1(int x, unsigned u) {
+    7|      1|  if ((1U << x) != 64 || (2 << x) != u || (x << x) != 384 || (3 << x) == 9 ||
+    8|      1|      (x << 14) != 98304U || (1 << x) == 14 || (3 << 2) != 12)
+    9|      0|    __builtin_abort();
+   10|      1|}
+   11|       |
+   12|      1|void test2(int x) {
+   13|      1|  unsigned int t = ((unsigned int)1U << x);
+   14|      1|  if (t != 2U)
+   15|      0|    __builtin_abort();
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  test1(6, 128U);
+   20|      1|  test2(1);
+   21|      1|}
+   22|       |
+   23|       |/* { dg-final { scan-tree-dump-not "<<" "optimized" } } */
+

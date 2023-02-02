@@ -1,0 +1,33 @@
+        -:    0:Source:457.c
+        -:    0:Graph:457.gcno
+        -:    0:Data:457.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fno-tree-dominator-opts -fgraphite-identity" } */
+        -:    3:
+        -:    4:int a, b, c;
+        -:    5:int d[14];
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  short e;
+        -:    9:  char f;
+        -:   10:
+        2:   11:  for (; b >= 0; b--) {
+        1:   12:    e = 0;
+        3:   13:    for (; e < 2; e++) {
+        2:   14:      a = 0;
+       16:   15:      for (; a < 7; a++)
+       14:   16:        d[a] = 1;
+        -:   17:    }
+        1:   18:    if (c) {
+    #####:   19:      f = 0;
+    #####:   20:      for (; f >= 0; f--)
+        -:   21:        ;
+        -:   22:    }
+        -:   23:  }
+        -:   24:
+        1:   25:  if (a != 7)
+    #####:   26:    __builtin_abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

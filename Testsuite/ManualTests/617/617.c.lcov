@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3" } */
+    3|       |/* { dg-add-options bind_pic_locally } */
+    4|       |
+    5|       |struct S {
+    6|       |  int a, b, c;
+    7|       |};
+    8|       |
+    9|       |volatile int g;
+   10|       |
+   11|      1|static void __attribute__((noinline, noclone)) bar(struct S **p) { g = 5; };
+   12|       |
+   13|      1|static void __attribute__((noinline)) foo(struct S *p) {
+   14|      1|  int i = p->a;
+   15|      1|  if (i != 1)
+   16|      0|    __builtin_abort();
+   17|      1|  bar(&p);
+   18|      1|}
+   19|       |
+   20|      1|int main(int argc, char *argv[]) {
+   21|      1|  struct S s;
+   22|      1|  s.a = 1;
+   23|      1|  s.b = 64;
+   24|      1|  s.c = 32;
+   25|      1|  foo(&s);
+   26|      1|
+   27|      1|  return 0;
+   28|      1|}
+

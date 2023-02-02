@@ -1,0 +1,27 @@
+        -:    0:Source:11.c
+        -:    0:Graph:11.gcno
+        -:    0:Data:11.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int A, B;
+        -:    7:
+        1:    8:void foo() {
+        1:    9:  long x = 3;
+        -:   10:  (void)({
+        1:   11:    A = B + x + ((1) - 1);
+        1:   12:    return; /* { dg-warning "statement-expressions should end with a non-void
+        -:   13:               expression" "" { xfail *-*-* } } */
+        -:   14:  });
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  B = 5;
+        1:   19:  foo();
+        1:   20:  if (A != 8)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

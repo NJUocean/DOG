@@ -1,0 +1,15 @@
+        -:    0:Source:2090.c
+        -:    0:Graph:2090.gcno
+        -:    0:Data:2090.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -fdump-tree-optimized -fdelete-null-pointer-checks" } */
+    #####:    3:static void bad_boy() {}
+        1:    4:int main() {
+        1:    5:  void *t = (void *)bad_boy;
+        1:    6:  if (!t)
+    #####:    7:    return 1;
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:/* { dg-final { scan-tree-dump-not "bad_boy" "optimized" { target { !
+        -:   11: * keeps_null_pointer_checks } } } } */

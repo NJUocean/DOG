@@ -1,0 +1,14 @@
+    1|       |/* { dg-options "-O2 -fdump-ipa-profile" } */
+    2|       |
+    3|      1|__attribute__((noinline)) int foo() { return 0; }
+    4|       |
+    5|      0|__attribute__((noinline)) int bar() { return 1; }
+    6|       |
+    7|      1|int main() { return foo(); }
+    8|       |/* { dg-final-use-not-autofdo { scan-ipa-dump-times "Read tp_first_run: 0" 1
+    9|       | * "profile"} } */
+   10|       |/* { dg-final-use-not-autofdo { scan-ipa-dump-times "Read tp_first_run: 1" 1
+   11|       | * "profile"} } */
+   12|       |/* { dg-final-use-not-autofdo { scan-ipa-dump-times "Read tp_first_run: 2" 1
+   13|       | * "profile"} } */
+

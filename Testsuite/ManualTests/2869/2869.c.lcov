@@ -1,0 +1,21 @@
+    1|       |/* Test accuracy of long double division (glibc bug 15396).  */
+    2|       |/* { dg-do run { target powerpc*-*-linux* powerpc*-*-darwin* powerpc*-*-aix*
+    3|       | * rs6000-*-* } } */
+    4|       |/* { dg-options "-mlong-double-128" } */
+    5|       |
+    6|       |extern void exit(int);
+    7|       |extern void abort(void);
+    8|       |
+    9|       |volatile long double a = 0x1p-1024L;
+   10|       |volatile long double b = 0x3p-53L;
+   11|       |volatile long double r;
+   12|       |volatile long double expected = 0x1.55555555555555555555555555p-973L;
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  r = a / b;
+   16|      1|  /* Allow error up to 2ulp.  */
+   17|      1|  if (__builtin_fabsl(r - expected) > 0x1p-1073L)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

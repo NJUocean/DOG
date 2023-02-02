@@ -1,0 +1,24 @@
+        -:    0:Source:2872.c
+        -:    0:Graph:2872.gcno
+        -:    0:Data:2872.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-mno-speculate-indirect-jumps" } */
+        -:    3:/* { dg-warning "'-mno-speculate-indirect-jumps' is deprecated" "" { target
+        -:    4: * *-*-* } 0 } */
+        -:    5:
+        -:    6:/* Test for deliberate misprediction of indirect calls for ELFv2.  */
+        -:    7:
+        -:    8:int (*f)();
+        -:    9:
+        1:   10:int __attribute__((noinline)) bar() { return (*f)(); }
+        -:   11:
+        1:   12:int g() { return 26; }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  f = &g;
+        1:   16:  if (bar() != 26)
+    #####:   17:    __builtin_abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

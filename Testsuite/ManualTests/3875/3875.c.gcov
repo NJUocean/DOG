@@ -1,0 +1,28 @@
+        -:    0:Source:3875.c
+        -:    0:Graph:3875.gcno
+        -:    0:Data:3875.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65215 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned long long l1 : 48;
+        -:    5:};
+        -:    6:
+        2:    7:static inline unsigned int foo(unsigned int x) {
+        2:    8:  return (x >> 24) | ((x >> 8) & 0xff00) | ((x << 8) & 0xff0000) | (x << 24);
+        -:    9:}
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) unsigned int bar(struct S *x) {
+        1:   12:  return foo(x->l1);
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        -:   16:  if (__CHAR_BIT__ != 8 || sizeof(unsigned int) != 4 ||
+        -:   17:      sizeof(unsigned long long) != 8)
+        -:   18:    return 0;
+        -:   19:  struct S s;
+        1:   20:  s.l1 = foo(0xdeadbeefU) | (0xfeedULL << 32);
+        1:   21:  if (bar(&s) != 0xdeadbeefU)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

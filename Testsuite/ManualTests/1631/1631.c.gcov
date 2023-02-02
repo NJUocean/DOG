@@ -1,0 +1,30 @@
+        -:    0:Source:1631.c
+        -:    0:Graph:1631.gcno
+        -:    0:Data:1631.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/58413 */
+        -:    2:/* { dg-do run { target int32plus } } */
+        -:    3:/* { dg-options "-fsanitize=shift -w -fno-sanitize-recover=shift" } */
+        -:    4:
+        -:    5:int x = 7;
+        1:    6:int main(void) {
+        -:    7:  /* All of the following should pass.  */
+        1:    8:  int A[128 >> 5] = {};
+        1:    9:  int B[128 << 5] = {};
+        -:   10:
+        -:   11:  static int e =
+        -:   12:      ((int)(0x00000000 | ((31 & ((1 << (4)) - 1)) << (((15) + 6) + 4)) |
+        -:   13:             ((0) << ((15) + 6)) | ((0) << (15))));
+        -:   14:
+        1:   15:  if (e != 503316480)
+    #####:   16:    __builtin_abort();
+        -:   17:
+        1:   18:  switch (x) {
+    #####:   19:  case 1 >> 4:
+        -:   20:  case 1 << 4:
+        -:   21:  case 128 << (4 + 1):
+        -:   22:  case 128 >> (4 + 1):
+    #####:   23:    return 1;
+        -:   24:  }
+        1:   25:  return 0;
+        -:   26:}

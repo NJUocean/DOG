@@ -1,0 +1,27 @@
+        -:    0:Source:1480.c
+        -:    0:Graph:1480.gcno
+        -:    0:Data:1480.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:unsigned char first_ones_8bit[256];
+        -:    6:unsigned char connected_passed[256];
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i, j;
+      257:   10:  for (i = 0; i < 256; i++) {
+      256:   11:    connected_passed[i] = 0;
+      256:   12:    first_ones_8bit[i] = 0;
+     1047:   13:    for (j = 7; j > 0; j--) {
+      992:   14:      if ((i & (3 << (7 - j))) == (3 << (7 - j))) {
+      201:   15:        connected_passed[i] = j;
+      201:   16:        break;
+        -:   17:      }
+        -:   18:    }
+        -:   19:  }
+        1:   20:  if (connected_passed[3] != 7)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

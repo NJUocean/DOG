@@ -1,0 +1,17 @@
+        -:    0:Source:2596.c
+        -:    0:Graph:2596.gcno
+        -:    0:Data:2596.gcda
+        -:    0:Runs:1
+        1:    1:void fn_4parms(unsigned char a, long *b, long *c, unsigned int *d) {
+        1:    2:  if (*b != 1 || *c != 2 || *d != 3)
+    #####:    3:    abort();
+        1:    4:}
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned char a = 0;
+        1:    8:  unsigned long b = 1, c = 2;
+        1:    9:  unsigned int d = 3;
+        -:   10:
+        1:   11:  fn_4parms(a, &b, &c, &d);
+        1:   12:  return 0;
+        -:   13:}

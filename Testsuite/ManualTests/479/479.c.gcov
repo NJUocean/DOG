@@ -1,0 +1,31 @@
+        -:    0:Source:479.c
+        -:    0:Graph:479.gcno
+        -:    0:Data:479.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
+        -:    2:/* { dg-options "-g -fno-ipa-icf" } */
+        -:    3:
+        -:    4:volatile int vv;
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) long foo(long x) {
+        1:    7:  long f = __builtin_clzl(x);
+        1:    8:  long g = f;
+        1:    9:  asm volatile("" : "+r"(f));
+        1:   10:  vv++; /* { dg-final { gdb-test . "g" "f" } } */
+        1:   11:  return f;
+        -:   12:}
+        -:   13:
+        1:   14:__attribute__((noinline, noclone)) long bar(long x) {
+        1:   15:  long f = __builtin_clzl(x);
+        1:   16:  long g = f;
+        1:   17:  asm volatile("" : "+r"(f));
+        1:   18:  vv++; /* { dg-final { gdb-test . "g" "f" } } */
+        1:   19:  return f;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  long x = vv;
+        1:   24:  foo(x + 0x123456UL);
+        1:   25:  bar(x + 0x7fffffffUL);
+        1:   26:  return 0;
+        -:   27:}

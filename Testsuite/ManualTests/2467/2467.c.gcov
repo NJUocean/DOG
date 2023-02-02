@@ -1,0 +1,29 @@
+        -:    0:Source:2467.c
+        -:    0:Graph:2467.gcno
+        -:    0:Data:2467.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -ffast-math" } */
+        -:    3:
+        -:    4:#include <math.h>
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:static double x = 2.0;
+        -:    9:static float y = 2.0;
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if ((2.5 * __builtin_copysign(1.0d, x)) != 2.5)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  if ((2.5 * __builtin_copysign(1.0f, y)) != 2.5)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  if ((2.5 * __builtin_copysignf(1.0d, -x)) != -2.5)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  if ((2.5 * __builtin_copysignf(1.0f, -y)) != -2.5)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

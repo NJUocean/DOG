@@ -1,0 +1,23 @@
+        -:    0:Source:2714.c
+        -:    0:Graph:2714.gcno
+        -:    0:Data:2714.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:
+        -:    3:#include "cpuid.h"
+        -:    4:
+        1:    5:int main() {
+        1:    6:  __builtin_cpu_init();
+        -:    7:
+        1:    8:  if (__builtin_cpu_supports("avx2")) {
+        -:    9:    unsigned int eax, ebx, ecx, edx;
+        -:   10:
+        1:   11:    if (!__get_cpuid_count(7, 0, &eax, &ebx, &ecx, &edx))
+    #####:   12:      __builtin_abort();
+        -:   13:
+        1:   14:    if (!(ebx & bit_AVX2))
+    #####:   15:      __builtin_abort();
+        -:   16:  }
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

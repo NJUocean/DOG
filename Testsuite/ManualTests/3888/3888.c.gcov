@@ -1,0 +1,17 @@
+        -:    0:Source:3888.c
+        -:    0:Graph:3888.gcno
+        -:    0:Data:3888.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/66757 */
+        -:    2:/* Testcase by Zhendong Su <su@cs.ucdavis.edu> */
+        -:    3:
+        -:    4:int a, b;
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  unsigned int t = (unsigned char)(~b);
+        -:    8:
+        1:    9:  if ((t ^ 1) / 255)
+    #####:   10:    __builtin_abort();
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

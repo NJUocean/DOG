@@ -1,0 +1,46 @@
+        -:    0:Source:82.c
+        -:    0:Graph:82.gcno
+        -:    0:Data:82.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:/* This is a simplified version of what Emacs does internally,
+        -:    4:   when marking its stack.  */
+        -:    5:
+        -:    6:static unsigned long sum;
+        -:    7:static void *stack_base;
+        -:    8:
+        -:    9:/* A simple substitute for what Emacs actually does.  */
+        6:   10:static void mark_maybe_pointer(void *p) { sum ^= (unsigned long)p; }
+        -:   11:
+        -:   12:static inline void __attribute__((no_sanitize_address))
+        1:   13:mark_memory(void **start, void **end) {
+        -:   14:  void **pp;
+        -:   15:
+        1:   16:  if (end < start) {
+        1:   17:    void **tem = start;
+        1:   18:    start = end;
+        1:   19:    end = tem;
+        -:   20:  }
+        -:   21:
+        7:   22:  for (pp = start; pp < end; pp++) {
+        -:   23:    /* This is the dereference that we don't want sanitized.  */
+        6:   24:    void *p = *pp;
+        -:   25:
+        6:   26:    mark_maybe_pointer(p);
+        -:   27:  }
+        1:   28:}
+        -:   29:
+        1:   30:static void mark_stack(void) {
+        -:   31:  void *end;
+        1:   32:  mark_memory(stack_base, &end);
+        1:   33:}
+        -:   34:
+        1:   35:void garbage_collect(void) { mark_stack(); }
+        -:   36:
+        1:   37:int main(void) {
+        -:   38:  void *dummy;
+        1:   39:  stack_base = &dummy;
+        1:   40:  garbage_collect();
+        1:   41:  return 0;
+        -:   42:}

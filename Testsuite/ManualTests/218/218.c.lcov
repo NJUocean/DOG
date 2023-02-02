@@ -1,0 +1,28 @@
+    1|      1|unsigned f() {
+    2|      1|  long long l2;
+    3|      1|  unsigned short us;
+    4|      1|  unsigned long long ul;
+    5|      1|  short s2;
+    6|      1|
+    7|      1|  ul = us = l2 = s2 = -1;
+    8|      1|  return ul;
+    9|      1|}
+   10|       |
+   11|      1|unsigned long long g() {
+   12|      1|  long long l2;
+   13|      1|  unsigned short us;
+   14|      1|  unsigned long long ul;
+   15|      1|  short s2;
+   16|      1|
+   17|      1|  ul = us = l2 = s2 = -1;
+   18|      1|  return ul;
+   19|      1|}
+   20|       |
+   21|      1|main() {
+   22|      1|  if (f() != (unsigned short)-1)
+   23|      0|    abort();
+   24|      1|  if (g() != (unsigned short)-1)
+   25|      0|    abort();
+   26|      1|  exit(0);
+   27|      1|}
+

@@ -1,0 +1,12 @@
+    1|       |/* PR c/48062 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-Wshadow" } */
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int i; /* { dg-bogus "shadowed declaration" } */
+    7|      1|#pragma GCC diagnostic push
+    8|      1|#pragma GCC diagnostic ignored "-Wshadow"
+    9|      1|  { int i; }
+   10|      1|#pragma GCC diagnostic pop
+   11|      1|}
+

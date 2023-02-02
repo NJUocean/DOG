@@ -1,0 +1,39 @@
+        -:    0:Source:3574.c
+        -:    0:Graph:3574.gcno
+        -:    0:Data:3574.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:typedef struct foo_t {
+        -:    4:  unsigned int blksz;
+        -:    5:  unsigned int bf_cnt;
+        -:    6:} foo_t;
+        -:    7:
+        -:    8:#define _RNDUP(x, unit) ((((x) + (unit)-1) / (unit)) * (unit))
+        -:    9:#define _RNDDOWN(x, unit) ((x) - ((x) % (unit)))
+        -:   10:
+        1:   11:long long foo(foo_t *const pxp, long long offset, unsigned int extent) {
+        1:   12:  long long blkoffset = _RNDDOWN(offset, (long long)pxp->blksz);
+        1:   13:  unsigned int diff = (unsigned int)(offset - blkoffset);
+        1:   14:  unsigned int blkextent = _RNDUP(diff + extent, pxp->blksz);
+        -:   15:
+        1:   16:  if (pxp->blksz < blkextent)
+    #####:   17:    return -1LL;
+        -:   18:
+        1:   19:  if (pxp->bf_cnt > pxp->blksz)
+    #####:   20:    pxp->bf_cnt = pxp->blksz;
+        -:   21:
+        1:   22:  return blkoffset;
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  foo_t x;
+        -:   27:  long long xx;
+        -:   28:
+        1:   29:  x.blksz = 8192;
+        1:   30:  x.bf_cnt = 0;
+        1:   31:  xx = foo(&x, 0, 4096);
+        1:   32:  if (xx != 0LL)
+    #####:   33:    abort();
+        1:   34:  return 0;
+        -:   35:}

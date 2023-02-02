@@ -1,0 +1,34 @@
+        -:    0:Source:3762.c
+        -:    0:Graph:3762.gcno
+        -:    0:Data:3762.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/54471 */
+        -:    2:
+        -:    3:#ifdef __SIZEOF_INT128__
+        -:    4:#define T __int128
+        -:    5:#else
+        -:    6:#define T long long
+        -:    7:#endif
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        1:   11:__attribute__((noinline)) unsigned T foo(T ixi, unsigned ctr) {
+        1:   12:  unsigned T irslt = 1;
+        1:   13:  T ix = ixi;
+        -:   14:
+        5:   15:  for (; ctr; ctr--) {
+        4:   16:    irslt *= ix;
+        4:   17:    ix *= ix;
+        -:   18:  }
+        -:   19:
+        1:   20:  if (irslt != 14348907)
+    #####:   21:    abort();
+        1:   22:  return irslt;
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  unsigned T res;
+        -:   27:
+        1:   28:  res = foo(3, 4);
+        1:   29:  return 0;
+        -:   30:}

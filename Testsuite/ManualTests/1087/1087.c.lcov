@@ -1,0 +1,17 @@
+    1|       |/* PR middle-end/90095 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Os -fno-tree-bit-ccp" } */
+    4|       |
+    5|       |unsigned long long a;
+    6|       |unsigned int b;
+    7|       |
+    8|      1|int main() {
+    9|      1|  unsigned int c = 255, d = c |= b;
+   10|      1|  if (__CHAR_BIT__ != 8 || __SIZEOF_INT__ != 4 || __SIZEOF_LONG_LONG__ != 8)
+   11|      0|    return 0;
+   12|      1|  d = __builtin_mul_overflow(-(unsigned long long)d, (unsigned char)-c, &a);
+   13|      1|  if (d != 0)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

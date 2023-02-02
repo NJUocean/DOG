@@ -1,0 +1,17 @@
+        -:    0:Source:3362.c
+        -:    0:Graph:3362.gcno
+        -:    0:Data:3362.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  _Complex unsigned short x;
+        -:    3:};
+        -:    4:struct s gs = {100 + 200i};
+        1:    5:struct s __attribute__((noinline)) foo(void) {
+        1:    6:  return gs;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (foo().x != gs.x)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

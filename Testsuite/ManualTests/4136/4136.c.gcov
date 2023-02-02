@@ -1,0 +1,25 @@
+        -:    0:Source:4136.c
+        -:    0:Graph:4136.gcno
+        -:    0:Data:4136.gcda
+        -:    0:Runs:1
+        -:    1:struct g {};
+        -:    2:char y[3];
+        -:    3:char *f = &y[0];
+        -:    4:char *ff = &y[0];
+        1:    5:void h(void) {
+        -:    6:  struct g t;
+        1:    7:  *((struct g *)(f++)) = *((struct g *)(ff++));
+        1:    8:  *((struct g *)(f++)) = (struct g){};
+        1:    9:  t = *((struct g *)(ff++));
+        1:   10:}
+        -:   11:
+        -:   12:void abort(void);
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  h();
+        1:   16:  if (f != &y[2])
+    #####:   17:    abort();
+        1:   18:  if (ff != &y[2])
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

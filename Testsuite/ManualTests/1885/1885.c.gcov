@@ -1,0 +1,79 @@
+        -:    0:Source:1885.c
+        -:    0:Graph:1885.gcno
+        -:    0:Data:1885.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-switchconv" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:static int X, Y;
+        -:    7:
+        8:    8:int check(int param) {
+        8:    9:  int a = 0;
+        8:   10:  int b = 1;
+        -:   11:
+        8:   12:  switch (param) {
+        1:   13:  case -2:
+        1:   14:    a = 0;
+        1:   15:    b = -1;
+        1:   16:    break;
+        2:   17:  case 1:
+        -:   18:  case 2:
+        2:   19:    a = 8;
+        2:   20:    b = 6;
+        2:   21:    break;
+        1:   22:  case 3:
+        1:   23:    a = 9;
+        1:   24:    b = 5;
+        1:   25:    break;
+        1:   26:  case 6:
+        1:   27:    a = 10;
+        1:   28:    b = 4;
+        1:   29:    break;
+        3:   30:  default:
+        3:   31:    a = 16;
+        3:   32:    b = 1;
+        -:   33:  }
+        -:   34:
+        8:   35:  X = a;
+        8:   36:  Y = b;
+        8:   37:  return 0;
+        -:   38:}
+        -:   39:
+        8:   40:void assertions(int a, int b) {
+        8:   41:  if (X != a || Y != b)
+    #####:   42:    abort();
+        -:   43:
+        8:   44:  return;
+        -:   45:}
+        -:   46:
+        1:   47:int main() {
+        1:   48:  check(-10);
+        1:   49:  assertions(16, 1);
+        -:   50:
+        1:   51:  check(-2);
+        1:   52:  assertions(0, -1);
+        -:   53:
+        1:   54:  check(1);
+        1:   55:  assertions(8, 6);
+        -:   56:
+        1:   57:  check(2);
+        1:   58:  assertions(8, 6);
+        -:   59:
+        1:   60:  check(3);
+        1:   61:  assertions(9, 5);
+        -:   62:
+        1:   63:  check(5);
+        1:   64:  assertions(16, 1);
+        -:   65:
+        1:   66:  check(6);
+        1:   67:  assertions(10, 4);
+        -:   68:
+        1:   69:  check(12);
+        1:   70:  assertions(16, 1);
+        -:   71:
+        1:   72:  return 0;
+        -:   73:}
+        -:   74:
+        -:   75:/* { dg-final { scan-tree-dump "Switch converted" "switchconv" } } */

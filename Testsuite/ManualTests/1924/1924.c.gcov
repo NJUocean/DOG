@@ -1,0 +1,15 @@
+        -:    0:Source:1924.c
+        -:    0:Graph:1924.gcno
+        -:    0:Data:1924.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "" } */
+        -:    3:
+        -:    4:void link_error();
+        -:    5:struct a {};
+        1:    6:int main() {
+        -:    7:  struct a b[2];
+        -:    8:  if (&b[0] != &b[1])
+        -:    9:    link_error();
+        1:   10:  return 0;
+        -:   11:}

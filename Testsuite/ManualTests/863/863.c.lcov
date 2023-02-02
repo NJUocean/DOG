@@ -1,0 +1,16 @@
+    1|       |/* PR middle-end/38616 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fstack-protector" } */
+    4|       |/* { dg-require-effective-target fstack_protector } */
+    5|       |
+    6|       |#include <stdio.h>
+    7|       |
+    8|       |extern int strcmp(const char *, const char *);
+    9|       |
+   10|      2|#define BUFFER "1234567890abcdefghijklmno"
+   11|      1|int main(void) {
+   12|      1|  char buffer[1024] = "";
+   13|      1|  sprintf(buffer, "%s", BUFFER);
+   14|      1|  return strcmp(buffer, BUFFER);
+   15|      1|}
+

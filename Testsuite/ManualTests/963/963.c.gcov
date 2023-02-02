@@ -1,0 +1,19 @@
+        -:    0:Source:963.c
+        -:    0:Graph:963.gcno
+        -:    0:Data:963.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:/* { dg-options "-O -fno-tree-ccp -fno-tree-fre -fno-tree-copy-prop -fwrapv" }
+        -:    4: */
+        -:    5:
+        1:    6:static inline int test5(int x) {
+        1:    7:  int y = 0x80000000;
+        1:    8:  return x + y;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (test5(0x80000000) != 0)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

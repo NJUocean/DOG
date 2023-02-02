@@ -1,0 +1,23 @@
+    1|       |extern void exit(int);
+    2|       |extern void abort(void);
+    3|       |extern unsigned short f(short a) __attribute__((__noinline__));
+    4|       |
+    5|      1|unsigned short f(short a) {
+    6|      1|  short b;
+    7|      1|
+    8|      1|  if (a > 0)
+    9|      0|    return 0;
+   10|      1|  b = ((int)a) + -(int)32768;
+   11|      1|  return b;
+   12|      1|}
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  if (sizeof(short) < 2 || sizeof(short) >= sizeof(int))
+   16|      0|    exit(0);
+   17|      1|
+   18|      1|  if (f(-32767) != 1)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  exit(0);
+   22|      1|}
+

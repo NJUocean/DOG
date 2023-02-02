@@ -1,0 +1,23 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |
+    4|       |typedef struct {
+    5|       |  unsigned short a;
+    6|       |} A;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |extern void exit(int);
+   10|       |
+   11|      2|void foo(unsigned int x) {
+   12|      2|  if (x != 0x800 && x != 0x810)
+   13|      0|    abort();
+   14|      2|}
+   15|       |
+   16|      1|int main(int argc, char **argv) {
+   17|      1|  int i;
+   18|      3|  for (i = 0; i < 2; ++i)
+   19|      2|    foo(((A){((!(i >> 4) ? 8 : 64 + (i >> 4)) << 8) + (i << 4)}).a);
+   20|      1|  exit(0);
+   21|      1|}
+   22|       |/* { dg-final { scan-tree-dump-times "Invalid sum" 0 "optimized" } } */
+

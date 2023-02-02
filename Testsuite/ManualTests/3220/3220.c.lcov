@@ -1,0 +1,19 @@
+    1|       |/* PR c/3444
+    2|       |   This used to fail because bitwise xor was improperly computed in char type
+    3|       |   and sign extended to int type.  */
+    4|       |
+    5|       |extern void abort();
+    6|       |extern void exit(int);
+    7|       |
+    8|       |signed char c = (signed char)0xffffffff;
+    9|       |
+   10|      1|int foo(void) { return (unsigned short)c ^ (signed char)0x99999999; }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  if ((unsigned char)-1 != 0xff || sizeof(short) != 2 || sizeof(int) != 4)
+   14|      0|    exit(0);
+   15|      1|  if (foo() != (int)0xffff0066)
+   16|      0|    abort();
+   17|      1|  exit(0);
+   18|      1|}
+

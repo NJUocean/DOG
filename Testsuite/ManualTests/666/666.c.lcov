@@ -1,0 +1,14 @@
+    1|       |/* { dg-options { -fgnu89-inline } } */
+    2|       |typedef struct {
+    3|       |} mem_attrs;
+    4|      1|int main(void) { return 0; }
+    5|       |void *malloc(__SIZE_TYPE__ size);
+    6|       |void *memcpy(void *dest, const void *src, __SIZE_TYPE__ n);
+    7|      0|static mem_attrs *get_mem_attrs() {
+    8|      0|  void **slot;
+    9|      0|  *slot = malloc(3);
+   10|      0|  memcpy(*slot, 0, 3);
+   11|      0|}
+   12|      0|void set_mem_attributes() { get_mem_attrs(); }
+   13|      0|void set_mem_alias_set() { get_mem_attrs(); }
+

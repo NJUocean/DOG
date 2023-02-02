@@ -1,0 +1,57 @@
+    1|       |#define DECLARE_ARRAY(A) array##A[0x10]
+    2|       |#define DECLARE_COUNTER(A) counter##A = 0
+    3|      6|#define DECLARE_POINTER(A) *pointer##A = array##A + x
+    4|       |/* Create a loop that allows post-modification of pointerA, followed by
+    5|       |   a use of the post-modified address.  */
+    6|      6|#define BEFORE(A) counter##A += *pointer##A, pointer##A += 3
+    7|      6|#define AFTER(A) counter##A += pointer##A[x]
+    8|       |
+    9|       |/* Set up the arrays so that one iteration of the loop sets the counter
+   10|       |   to 3.0f.  */
+   11|      6|#define INIT_ARRAY(A) array##A[1] = 1.0f, array##A[5] = 2.0f
+   12|       |
+   13|       |/* Check that the loop worked correctly for all values.  */
+   14|      6|#define CHECK_ARRAY(A) exit_code |= (counter##A != 3.0f)
+   15|       |
+   16|       |/* Having 6 copies triggered the bug for ARM and Thumb.  */
+   17|      5|#define MANY(A) A(0), A(1), A(2), A(3), A(4), A(5)
+   18|       |
+   19|       |/* Each addendA should be allocated a register.  */
+   20|      5|#define INIT_VOLATILE(A) addend##A = vol
+   21|     10|#define ADD_VOLATILE(A) vol += addend##A
+   22|       |
+   23|       |/* Having 5 copies triggered the bug for ARM and Thumb.  */
+   24|     11|#define MANY2(A) A(0), A(1), A(2), A(3), A(4)
+   25|       |
+   26|       |float MANY(DECLARE_ARRAY);
+   27|       |float MANY(DECLARE_COUNTER);
+   28|       |
+   29|       |volatile int stop = 1;
+   30|       |volatile int vol;
+   31|       |
+   32|      1|void __attribute__((noinline)) foo(int x) {
+   33|      6|  float MANY(DECLARE_POINTER);
+   34|      1|  int i;
+   35|      1|
+   36|      1|  do {
+   37|      6|    MANY(BEFORE);
+   38|      6|    MANY(AFTER);
+   39|      1|    /* Create an inner loop that should ensure the code above
+   40|      1|       has registers free for reload inheritance.  */
+   41|      1|    {
+   42|      5|      int MANY2(INIT_VOLATILE);
+   43|     11|      for (i = 0; i < 10; i++)
+   44|     50|        MANY2(ADD_VOLATILE);
+   45|      1|    }
+   46|      1|  } while (!stop);
+   47|      1|}
+   48|       |
+   49|      1|int main(void) {
+   50|      1|  int exit_code = 0;
+   51|      1|
+   52|      6|  MANY(INIT_ARRAY);
+   53|      1|  foo(1);
+   54|      6|  MANY(CHECK_ARRAY);
+   55|      1|  return exit_code;
+   56|      1|}
+

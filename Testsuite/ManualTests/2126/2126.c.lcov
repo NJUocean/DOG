@@ -1,0 +1,18 @@
+    1|       |/* PR tree-optimization/81162 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined -O2" } */
+    4|       |
+    5|       |short s;
+    6|       |int i1 = 1;
+    7|       |int i2 = 1;
+    8|       |unsigned char uc = 147;
+    9|       |
+   10|      1|int main() {
+   11|      1|  s = (-uc + 2147483647) << 0;
+   12|      1|  if (9031239389974324562ULL >= (-((i1 && i2) + uc) ^ -21096)) {
+   13|      1|    return 0;
+   14|      1|  } else {
+   15|      0|    return -1;
+   16|      0|  }
+   17|      1|}
+

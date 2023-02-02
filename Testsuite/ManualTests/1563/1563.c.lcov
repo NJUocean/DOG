@@ -1,0 +1,15 @@
+    1|       |/* { dg-do run { target int128 } } */
+    2|       |
+    3|      1|static unsigned __attribute__((noinline, noclone)) foo(unsigned long long u) {
+    4|      1|  unsigned __int128 v = u | 0xffffff81U;
+    5|      1|  v >>= 64;
+    6|      1|  return v;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  unsigned x = foo(27);
+   11|      1|  if (x != 0)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

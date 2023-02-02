@@ -1,0 +1,21 @@
+        -:    0:Source:1736.c
+        -:    0:Graph:1736.gcno
+        -:    0:Data:1736.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:int __attribute__((noipa)) g(char *p) { return p[9]; }
+        1:    4:int main(int argc, char **argv) {
+        1:    5:  struct S {
+        1:    6:    char toto[argc + 16];
+        -:    7:  };
+        1:    8:  int f(struct S arg) {
+        1:    9:    __builtin_strcpy(arg.toto, "helloworld");
+        1:   10:    return g(arg.toto);
+        -:   11:  }
+        1:   12:  struct S bob;
+        1:   13:  __builtin_strcpy(bob.toto, "coucoucoucou");
+        1:   14:  if (f(bob) != 'd' || __builtin_strcmp(bob.toto, "coucoucoucou"))
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

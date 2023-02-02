@@ -1,0 +1,19 @@
+        -:    0:Source:3083.c
+        -:    0:Graph:3083.gcno
+        -:    0:Data:3083.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:#define N (1 << (sizeof(int) * __CHAR_BIT__ - 2))
+        -:    4:
+        1:    5:int f(int n) {
+        1:    6:  if (-N <= n && n <= N - 1)
+    #####:    7:    return 1;
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (f(N))
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

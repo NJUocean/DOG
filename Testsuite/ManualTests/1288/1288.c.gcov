@@ -1,0 +1,23 @@
+        -:    0:Source:1288.c
+        -:    0:Graph:1288.gcno
+        -:    0:Data:1288.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct a {
+        -:    5:  unsigned int bits : 1;
+        -:    6:  signed long val : ((sizeof(long) * 8) - 1);
+        -:    7:};
+        1:    8:int Fnegate(struct a b) {
+        1:    9:  if ((-((long)b.val)) <= ((long)((1UL << ((sizeof(long) * 8) - 2)) - 1UL)) &&
+        -:   10:      (-((long)b.val)) >=
+        -:   11:          (-(((long)((1UL << ((sizeof(long) * 8) - 2)) - 1UL))) - 1))
+        1:   12:    return 0;
+    #####:   13:  abort();
+        -:   14:}
+        1:   15:int main() {
+        1:   16:  struct a b = {1, 1};
+        1:   17:  Fnegate(b);
+        1:   18:  return 0;
+        -:   19:}

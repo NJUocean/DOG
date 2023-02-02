@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |#pragma GCC push_options
+    4|       |#pragma GCC target(                                                            \
+    5|       |    "arch=generic") /* { dg-error "'generic' CPU can be used only for          \
+    6|       |                       'target\\(\"tune=\"\\)' attribute" } */
+    7|       |
+    8|      1|__attribute__((constructor)) void foo() { asm(""); }
+    9|       |
+   10|       |#pragma GCC pop_options
+   11|       |
+   12|      1|int main() { return 0; }
+

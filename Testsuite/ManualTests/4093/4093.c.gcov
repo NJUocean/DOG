@@ -1,0 +1,40 @@
+        -:    0:Source:4093.c
+        -:    0:Graph:4093.gcno
+        -:    0:Data:4093.gcda
+        -:    0:Runs:1
+        -:    1:/* powerpc64-linux gcc miscompiled this due to rs6000.c:expand_block_move
+        -:    2:   not setting mem aliasing info correctly for the code implementing the
+        -:    3:   structure assignment.  */
+        -:    4:
+        -:    5:struct termios {
+        -:    6:  unsigned int a;
+        -:    7:  unsigned int b;
+        -:    8:  unsigned int c;
+        -:    9:  unsigned int d;
+        -:   10:  unsigned char pad[28];
+        -:   11:};
+        -:   12:
+        -:   13:struct tty_driver {
+        -:   14:  unsigned char pad1[38];
+        -:   15:  struct termios t __attribute__((aligned(8)));
+        -:   16:};
+        -:   17:
+        -:   18:static struct termios zero_t;
+        -:   19:static struct tty_driver pty;
+        -:   20:
+        1:   21:void ini(void) {
+        1:   22:  pty.t = zero_t;
+        1:   23:  pty.t.a = 1;
+        1:   24:  pty.t.b = 2;
+        1:   25:  pty.t.c = 3;
+        1:   26:  pty.t.d = 4;
+        1:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  extern void abort(void);
+        -:   31:
+        1:   32:  ini();
+        1:   33:  if (pty.t.a != 1 || pty.t.b != 2 || pty.t.c != 3 || pty.t.d != 4)
+    #####:   34:    abort();
+        1:   35:  return 0;
+        -:   36:}

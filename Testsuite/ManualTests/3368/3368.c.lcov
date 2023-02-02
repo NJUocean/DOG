@@ -1,0 +1,28 @@
+    1|       |/* PR tree-optimization/18694
+    2|       |
+    3|       |   The dominator optimization didn't take the PHI evaluation order
+    4|       |   into account when threading an edge.  */
+    5|       |
+    6|       |extern void abort(void) __attribute__((noreturn));
+    7|       |extern void exit(int) __attribute__((noreturn));
+    8|       |
+    9|      1|void __attribute__((noinline)) foo(int i) {
+   10|      1|  int next_n = 1;
+   11|      1|  int j = 0;
+   12|      1|
+   13|      3|  for (; i != 0; i--) {
+   14|      2|    int n;
+   15|      2|
+   16|      4|    for (n = next_n; j < n; j++)
+   17|      2|      next_n++;
+   18|      2|
+   19|      2|    if (j != n)
+   20|      0|      abort();
+   21|      2|  }
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  foo(2);
+   26|      1|  exit(0);
+   27|      1|}
+

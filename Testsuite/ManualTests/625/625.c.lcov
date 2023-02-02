@@ -1,0 +1,28 @@
+    1|       |/* { dg-do compile { target c99_runtime } } */
+    2|       |/* { dg-options "-O0 -fipa-icf -fdump-ipa-icf-optimized"  } */
+    3|       |
+    4|       |#include <complex.h>
+    5|       |
+    6|       |typedef _Complex float COMPLEX_FLOAT;
+    7|       |
+    8|      1|__attribute__((noinline)) static float real_part(COMPLEX_FLOAT a) {
+    9|      1|  return *(float *)(&a);
+   10|      1|}
+   11|       |
+   12|      1|__attribute__((noinline)) static float real_part_2(COMPLEX_FLOAT a) {
+   13|      1|  return ((float *)(&a))[0];
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  COMPLEX_FLOAT f = 1.0f + _Complex_I;
+   18|      1|
+   19|      1|  float r1 = real_part(f);
+   20|      1|  float r2 = real_part_2(f);
+   21|      1|
+   22|      1|  return r1 - r2;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final { scan-ipa-dump "Semantic equality
+   26|       | * hit:real_part/\[0-9+\]+->real_part_2/\[0-9+\]+" "icf"  } } */
+   27|       |/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */
+

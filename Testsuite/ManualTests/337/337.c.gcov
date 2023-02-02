@@ -1,0 +1,48 @@
+        -:    0:Source:337.c
+        -:    0:Graph:337.gcno
+        -:    0:Data:337.gcda
+        -:    0:Runs:1
+        -:    1:/* Duff's device is legal C; test to make sure the compiler
+        -:    2:   doesn't complain about it.
+        -:    3:
+        -:    4:   Jason Thorpe <thorpej@wasabisystems.com>
+        -:    5:   Derived from PR 3846.  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:/* { dg-options "-O2" } */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        -:   13:typedef __SIZE_TYPE__ size_t;
+        -:   14:extern int memcmp(const void *, const void *, size_t);
+        -:   15:
+        1:   16:void duffcpy(char *dst, const char *src, unsigned long size) {
+        1:   17:  switch (size & 3) {
+        -:   18:    for (;;) {
+       11:   19:      *dst++ = *src++;
+       11:   20:    case 3:
+       11:   21:      *dst++ = *src++;
+       12:   22:    case 2:
+       12:   23:      *dst++ = *src++;
+       12:   24:    case 1:
+       12:   25:      *dst++ = *src++;
+       12:   26:    case 0:
+       12:   27:      if (size <= 3)
+        1:   28:        break;
+       11:   29:      size -= 4;
+        -:   30:    }
+        -:   31:  }
+        1:   32:}
+        -:   33:
+        -:   34:const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+        -:   35:
+        1:   36:int main() {
+        -:   37:  char buf[64];
+        -:   38:
+        1:   39:  duffcpy(buf, testpat, sizeof(testpat));
+        1:   40:  if (memcmp(buf, testpat, sizeof(testpat)) != 0)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  exit(0);
+        -:   44:}

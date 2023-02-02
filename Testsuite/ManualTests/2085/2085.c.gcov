@@ -1,0 +1,21 @@
+        -:    0:Source:2085.c
+        -:    0:Graph:2085.gcno
+        -:    0:Data:2085.gcda
+        -:    0:Runs:1
+        -:    1:/* The return argument needs a type conversion which on some targets
+        -:    2:   (e.g. s390) needs additional code.  So it is invalid to do tail
+        -:    3:   call optimization here.  */
+        -:    4:
+        -:    5:/* { dg-do compile } */
+        -:    6:/* { dg-options "-O2" } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:long long __attribute__((noinline)) foo() { return 3; }
+        -:   11:
+        1:   12:int __attribute__((noinline)) boo() { return foo(); }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (boo() != 3)
+    #####:   16:    abort();
+        -:   17:}

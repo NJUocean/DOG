@@ -1,0 +1,22 @@
+        -:    0:Source:1078.c
+        -:    0:Graph:1078.gcno
+        -:    0:Data:1078.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/89354 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+        -:    5:
+        -:    6:static unsigned long long q = 0;
+        -:    7:
+        1:    8:__attribute__((noipa)) static void foo(void) {
+        1:    9:  q = (q & ~0x1ffffffffULL) | 0x100000000ULL;
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  __asm volatile("" : "+m"(q));
+        1:   14:  foo();
+        1:   15:  if (q != 0x100000000ULL)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

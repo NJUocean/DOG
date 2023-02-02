@@ -1,0 +1,27 @@
+        -:    0:Source:441.c
+        -:    0:Graph:441.gcno
+        -:    0:Data:441.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-inline -fno-tree-ch -ftree-loop-linear" } */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        1:    6:int test(int n, int *a) {
+        -:    7:  int i, j;
+        -:    8:
+       17:    9:  for (i = 0; i < n; i++)
+      272:   10:    for (j = 0; j < n; j++)
+      256:   11:      a[j] = i + n;
+        -:   12:
+        1:   13:  if (a[0] != 31 || i + n - 1 != 31)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        -:   20:  int a[16];
+        1:   21:  test(16, a);
+        1:   22:  return 0;
+        -:   23:}

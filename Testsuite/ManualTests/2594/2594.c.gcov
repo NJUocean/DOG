@@ -1,0 +1,36 @@
+        -:    0:Source:2594.c
+        -:    0:Graph:2594.gcno
+        -:    0:Data:2594.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-march=x86-64 -mfma4 -mno-sse3" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() {
+        -:    7:#if !defined __SSE__
+        -:    8:  abort();
+        -:    9:#endif
+        -:   10:#if !defined __SSE2__
+        -:   11:  abort();
+        -:   12:#endif
+        -:   13:#if defined __SSE3__
+        -:   14:  abort();
+        -:   15:#endif
+        -:   16:#if defined __SSSE3__
+        -:   17:  abort();
+        -:   18:#endif
+        -:   19:#if defined __SSE4_1__
+        -:   20:  abort();
+        -:   21:#endif
+        -:   22:#if defined __SSE4_2__
+        -:   23:  abort();
+        -:   24:#endif
+        -:   25:#if defined __SSE4A__
+        -:   26:  abort();
+        -:   27:#endif
+        -:   28:#if defined __FMA4__
+        -:   29:  abort();
+        -:   30:#endif
+        1:   31:  return 0;
+        -:   32:}

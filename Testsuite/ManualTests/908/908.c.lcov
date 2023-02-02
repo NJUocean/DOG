@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target fpic } */
+    3|       |/* { dg-options "-O -fprofile-arcs -fPIC -fno-dce -fno-forward-propagate" } */
+    4|       |/* { dg-require-profiling "-fprofile-generate" } */
+    5|       |
+    6|      1|int test_goto2(int f) {
+    7|      1|  int i;
+    8|     11|  for (i = 0; ({
+    9|     11|         _Bool a = i < 10;
+   10|     11|         a;
+   11|     11|       });
+   12|     10|       i++) {
+   13|     10|    if (i == f)
+   14|      0|      goto lab2;
+   15|     10|  }
+   16|      1|  return 4;
+   17|      0|lab2:
+   18|      0|  return 8;
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  test_goto2(30);
+   23|      1|  return 0;
+   24|      1|}
+   25|       |
+   26|       |/* { dg-final { cleanup-coverage-files } } */
+

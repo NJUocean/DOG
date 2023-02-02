@@ -1,0 +1,30 @@
+    1|       |/* PR rtl-optimization/28970 */
+    2|       |/* Origin: Peter Bergner <bergner@vnet.ibm.com> */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int tar(int i) {
+    8|      1|  if (i != 36863)
+    9|      0|    abort();
+   10|      1|
+   11|      1|  return -1;
+   12|      1|}
+   13|       |
+   14|      1|void bug(int q, int bcount) {
+   15|      1|  int j = 0;
+   16|      1|  int outgo = 0;
+   17|      1|
+   18|      2|  while (j != -1) {
+   19|      1|    outgo++;
+   20|      1|    if (outgo > q - 1)
+   21|      0|      outgo = q - 1;
+   22|      1|    j = tar(outgo * bcount);
+   23|      1|  }
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  bug(5, 36863);
+   28|      1|  return 0;
+   29|      1|}
+

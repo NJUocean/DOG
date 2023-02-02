@@ -1,0 +1,23 @@
+        -:    0:Source:496.c
+        -:    0:Graph:496.gcno
+        -:    0:Data:496.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/37726 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+        -:    5:
+        1:    6:int foo(int parm) {
+        1:    7:  int var = 0;
+        1:    8:  int bar(void) { return parm + var; /* BREAK */ }
+        1:    9:  parm++; /* BREAK */
+        1:   10:  var++;
+        1:   11:  return bar();
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) { return foo(4) - 6; }
+        -:   15:
+        -:   16:/* { dg-final { gdb-test 11 "parm" "5" } } */
+        -:   17:/* { dg-final { gdb-test 11 "var"  "1" } } */
+        -:   18:/* { dg-final { gdb-test 13 "parm" "4" } } */
+        -:   19:/* { dg-final { gdb-test 13 "var"  "0" } } */

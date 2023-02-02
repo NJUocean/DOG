@@ -1,0 +1,13 @@
+        -:    0:Source:3333.c
+        -:    0:Graph:3333.gcno
+        -:    0:Data:3333.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        -:    2:  long double x;
+        -:    3:
+        1:    4:  x = 0x1.0p-500L;
+        1:    5:  x *= 0x1.0p-522L;
+        1:    6:  if (x != 0x1.0p-1022L)
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

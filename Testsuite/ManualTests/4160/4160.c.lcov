@@ -1,0 +1,21 @@
+    1|       |/* PR optimization/6703
+    2|       |   Origin: Glen Nakamura <glen@imodulo.com> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|void foo(int *x, int y) { __builtin_memset(x, 0, y); }
+   10|       |
+   11|      1|int main() {
+   12|      1|  int x[2] = {-1, -1};
+   13|      1|
+   14|      1|  if (x[1] != -1)
+   15|      0|    abort();
+   16|      1|  foo(x, sizeof(int) + 1);
+   17|      1|  if (x[1] == -1)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

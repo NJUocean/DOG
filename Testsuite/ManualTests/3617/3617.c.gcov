@@ -1,0 +1,16 @@
+        -:    0:Source:3617.c
+        -:    0:Graph:3617.gcno
+        -:    0:Data:3617.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/37882 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned char b : 3;
+        -:    5:} s;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  s.b = 4;
+        1:    9:  if (s.b > 0 && s.b < 4)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

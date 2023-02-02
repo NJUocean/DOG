@@ -1,0 +1,49 @@
+    1|       |/* PR target/35907 */
+    2|       |/* { dg-do run { target { powerpc*-*-* && vmx_hw } } } */
+    3|       |/* { dg-do compile { target { powerpc*-*-* && { ! vmx_hw } } } } */
+    4|       |/* { dg-require-effective-target powerpc_altivec_ok } */
+    5|       |/* { dg-options "-O2 -maltivec" } */
+    6|       |
+    7|      1|#define vector __attribute__((vector_size(16)))
+    8|       |union {
+    9|       |  vector int k;
+   10|       |  int c[16];
+   11|       |} u, v, w;
+   12|       |vector int m;
+   13|       |
+   14|      4|void __attribute__((noinline)) bar(void *i, vector int j) {
+   15|      4|  asm volatile("" : : "r"(i), "r"(&j) : "memory");
+   16|      4|}
+   17|       |
+   18|      2|int __attribute__((noinline)) foo(int i, vector int j) {
+   19|      2|  char *p = __builtin_alloca(64 + i);
+   20|      2|  m += u.k;
+   21|      2|  v.k = m;
+   22|      2|  w.k = j;
+   23|      2|  if (__builtin_memcmp(&v.c, &w.c, 16) != 0)
+   24|      0|    __builtin_abort();
+   25|      2|  j += u.k;
+   26|      2|  bar(p, j);
+   27|      2|  j += u.k;
+   28|      2|  bar(p, j);
+   29|      2|  return 0;
+   30|      2|}
+   31|       |
+   32|      1|void test(void) {
+   33|      1|  vector int l;
+   34|      1|  int i;
+   35|      5|  for (i = 0; i < 4; i++)
+   36|      4|    u.c[i] = i;
+   37|      1|  l = u.k;
+   38|      1|  if (foo(64, l))
+   39|      0|    __builtin_abort();
+   40|      1|  l += u.k;
+   41|      1|  if (foo(64, l))
+   42|      0|    __builtin_abort();
+   43|      1|}
+   44|       |
+   45|      1|int main() {
+   46|      1|  test();
+   47|      1|  return 0;
+   48|      1|}
+

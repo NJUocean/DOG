@@ -1,0 +1,16 @@
+        -:    0:Source:1126.c
+        -:    0:Graph:1126.gcno
+        -:    0:Data:1126.gcda
+        -:    0:Runs:1
+        -:    1:int v;
+        -:    2:
+    #####:    3:char *g() { return ""; }
+        -:    4:
+       1*:    5:char *f() { return (v == 0 ? g() : "abc"); }
+        -:    6:
+        1:    7:main() {
+        1:    8:  v = 1;
+        1:    9:  if (!strcmp(f(), "abc"))
+        1:   10:    exit(0);
+    #####:   11:  abort();
+        -:   12:}

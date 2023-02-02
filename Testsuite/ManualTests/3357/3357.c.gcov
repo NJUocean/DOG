@@ -1,0 +1,27 @@
+        -:    0:Source:3357.c
+        -:    0:Graph:3357.gcno
+        -:    0:Data:3357.gcda
+        -:    0:Runs:1
+        -:    1:/* submitted by kenneth zadeck */
+        -:    2:
+        -:    3:static int test_var;
+        -:    4:
+        -:    5:/* the idea here is that not only is inlinable, inlinable but since it
+        -:    6:   is static, the cgraph node will not be marked as output.  The
+        -:    7:   current version of the code ignores these cgraph nodes.  */
+        -:    8:
+        -:    9:void not_inlinable() __attribute__((noinline));
+        -:   10:
+        1:   11:static void inlinable() { test_var = -10; }
+        -:   12:
+        1:   13:void not_inlinable() { inlinable(); }
+        -:   14:
+        1:   15:main() {
+        1:   16:  test_var = 10;
+        -:   17:  /* Variable test_var should be considered call-clobbered by the call
+        -:   18:     to not_inlinable().  */
+        1:   19:  not_inlinable();
+        1:   20:  if (test_var == 10)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

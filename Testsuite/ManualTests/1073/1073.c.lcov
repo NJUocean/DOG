@@ -1,0 +1,11 @@
+    1|       |/* { dg-do-compile } */
+    2|       |/* { dg-options "-O -Wunused-but-set-variable" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  const int i = 0;
+    6|      1|  switch (i) {
+    7|      1|  default:
+    8|      1|    break;
+    9|      1|  }
+   10|      1|}
+

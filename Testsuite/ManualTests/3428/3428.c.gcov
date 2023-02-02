@@ -1,0 +1,27 @@
+        -:    0:Source:3428.c
+        -:    0:Graph:3428.gcno
+        -:    0:Data:3428.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33136 */
+        -:    2:/* { dg-require-effective-target alloca } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct S {
+        -:    7:  struct S *a;
+        -:    8:  int b;
+        -:    9:};
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  struct S *s = (struct S *)0, **p, *n;
+       1*:   13:  for (p = &s; *p; p = &(*p)->a)
+        -:   14:    ;
+        1:   15:  n = (struct S *)__builtin_alloca(sizeof(*n));
+        1:   16:  n->a = *p;
+        1:   17:  n->b = 1;
+        1:   18:  *p = n;
+        -:   19:
+        1:   20:  if (!s)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,28 @@
+        -:    0:Source:628.c
+        -:    0:Graph:628.gcno
+        -:    0:Data:628.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O0 -fipa-icf -fdump-ipa-icf"  } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int a;
+        -:    6:};
+        -:    7:
+        1:    8:int foo3(struct S x, struct S y, struct S z) {
+        1:    9:  if (z.a != 9)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:
+        1:   14:int bar3(struct S x, struct S y, struct S z) { return foo3(y, x, z); }
+        -:   15:
+    #####:   16:int baz3(struct S x, struct S y, struct S z) { return foo3(y, z, x); }
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  struct S a = {3}, b = {6}, c = {9};
+        -:   20:
+        1:   21:  return bar3(b, a, c);
+        -:   22:}
+        -:   23:
+        -:   24:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

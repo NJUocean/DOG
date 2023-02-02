@@ -1,0 +1,41 @@
+        -:    0:Source:603.c
+        -:    0:Graph:603.gcno
+        -:    0:Data:603.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-sra -fdump-ipa-sra"  } */
+        -:    3:
+        -:    4:/* Check of a simple and transitive structure split. */
+        -:    5:
+        -:    6:struct S {
+        -:    7:  float red;
+        -:    8:  void *blue;
+        -:    9:  int green;
+        -:   10:};
+        -:   11:
+        1:   12:void __attribute__((noipa)) check(float r, int g, int g2) {
+        1:   13:  if (r < 7.39 || r > 7.41 || g != 6 || g2 != 6)
+    #####:   14:    __builtin_abort();
+        1:   15:}
+        -:   16:
+        1:   17:static void __attribute__((noinline)) foo(struct S s) {
+        1:   18:  check(s.red, s.green, s.green);
+        1:   19:}
+        -:   20:
+        1:   21:static void __attribute__((noinline)) bar(struct S s) { foo(s); }
+        -:   22:
+        1:   23:int main(int argc, char *argv[]) {
+        -:   24:  struct S s;
+        -:   25:
+        1:   26:  s.red = 7.4;
+        1:   27:  s.green = 6;
+        1:   28:  s.blue = &s;
+        -:   29:
+        1:   30:  bar(s);
+        1:   31:  return 0;
+        -:   32:}
+        -:   33:
+        -:   34:/* { dg-final { scan-ipa-dump-times "Will split parameter" 2 "sra" { xfail {
+        -:   35: * hppa*-*-hpux* && { ! lp64 } } } } } */
+        -:   36:/* { dg-final { scan-ipa-dump-times "component at byte offset" 4 "sra" { xfail {
+        -:   37: * hppa*-*-hpux* && { ! lp64 } } } } } */

@@ -1,0 +1,22 @@
+    1|       |/* PR target/39903 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Wno-psabi" } */
+    4|       |
+    5|       |struct X {
+    6|       |  float d;
+    7|       |  float b[];
+    8|       |};
+    9|       |
+   10|      1|struct X __attribute__((noinline)) foo(float d) {
+   11|      1|  struct X x;
+   12|      1|  x.d = d;
+   13|      1|  return x;
+   14|      1|}
+   15|       |extern void abort(void);
+   16|      1|int main() {
+   17|      1|  struct X x = foo(3.0);
+   18|      1|  if (x.d != 3.0)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

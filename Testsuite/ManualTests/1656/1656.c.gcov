@@ -1,0 +1,42 @@
+        -:    0:Source:1656.c
+        -:    0:Graph:1656.gcno
+        -:    0:Data:1656.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target return_address } */
+        -:    2:int check_fa_work(const char *, const char *) __attribute__((noinline));
+        -:    3:int check_fa_mid(const char *) __attribute__((noinline));
+        -:    4:int check_fa(char *) __attribute__((noinline));
+        -:    5:int how_much(void) __attribute__((noinline));
+        -:    6:
+        1:    7:int check_fa_work(const char *c, const char *f) {
+        1:    8:  const char d = 0;
+        -:    9:
+        1:   10:  if (c >= &d)
+       1*:   11:    return c >= f && f >= &d;
+        -:   12:  else
+    #####:   13:    return c <= f && f <= &d;
+        -:   14:}
+        -:   15:
+        1:   16:int check_fa_mid(const char *c) {
+        1:   17:  const char *f = __builtin_frame_address(0);
+        -:   18:
+        -:   19:  /* Prevent a tail call to check_fa_work, eliding the current stack frame.  */
+        1:   20:  return check_fa_work(c, f) != 0;
+        -:   21:}
+        -:   22:
+        1:   23:int check_fa(char *unused) {
+        1:   24:  const char c = 0;
+        -:   25:
+        -:   26:  /* Prevent a tail call to check_fa_mid, eliding the current stack frame.  */
+        1:   27:  return check_fa_mid(&c) != 0;
+        -:   28:}
+        -:   29:
+        1:   30:int how_much(void) { return 8; }
+        -:   31:
+        1:   32:int main(void) {
+        1:   33:  char *unused = __builtin_alloca(how_much());
+        -:   34:
+        1:   35:  if (!check_fa(unused))
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

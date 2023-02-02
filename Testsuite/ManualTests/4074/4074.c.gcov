@@ -1,0 +1,23 @@
+        -:    0:Source:4074.c
+        -:    0:Graph:4074.gcno
+        -:    0:Data:4074.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target stdint_types } */
+        -:    2:#include <stdint.h>
+        -:    3:typedef int32_t __attribute__((vector_size(8))) v2si;
+        -:    4:int64_t s64;
+        -:    5:
+        1:    6:static inline int64_t __ev_convert_s64(v2si a) { return (int64_t)a; }
+        -:    7:
+        1:    8:int main() {
+        -:    9:  union {
+        -:   10:    int64_t ll;
+        -:   11:    int32_t i[2];
+        -:   12:  } endianness_test;
+        1:   13:  endianness_test.ll = 1;
+        1:   14:  int32_t little_endian = endianness_test.i[0];
+        1:   15:  s64 = __ev_convert_s64((v2si){1, 0xffffffff});
+       1*:   16:  if (s64 != (little_endian ? 0xffffffff00000001LL : 0x1ffffffffLL))
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

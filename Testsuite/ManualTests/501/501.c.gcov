@@ -1,0 +1,49 @@
+        -:    0:Source:501.c
+        -:    0:Graph:501.gcno
+        -:    0:Data:501.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/43077 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g -fno-ipa-icf" } */
+        -:    4:
+        -:    5:int varb;
+        -:    6:
+        1:    7:int __attribute__((noinline)) fn1(void) {
+        1:    8:  int vara = (varb == 3);         /* { dg-final { gdb-test .+1 "vara" "0" } } */
+        1:    9:  asm volatile("" : : "g"(vara)); /* { dg-final { gdb-test . "varb" "2" } } */
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        1:   13:int __attribute__((noinline)) fn2(void) {
+        1:   14:  int vara = (varb == 3);         /* { dg-final { gdb-test .+1 "vara" "1" } } */
+        1:   15:  asm volatile("" : : "g"(vara)); /* { dg-final { gdb-test . "varb" "3" } } */
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int __attribute__((noinline)) foo(unsigned long *p, unsigned long *q) {
+        -:   20:  int ret;
+        1:   21:  asm volatile("" : "=r"(ret), "=r"(*p), "=r"(*q) : "0"(1), "1"(2), "2"(3));
+        1:   22:  return ret;
+        -:   23:}
+        -:   24:
+        1:   25:int __attribute__((noinline)) fn3(void) {
+        1:   26:  unsigned long a = 0, b = 0, c = 0;
+        1:   27:  a = foo(&b, &c);
+        -:   28:  /* { dg-final { gdb-test .+6 "a" "1" } } */
+        -:   29:  /* { dg-final { gdb-test .+5 "b" "2" } } */
+        -:   30:  /* { dg-final { gdb-test .+4 "c" "3" } } */
+        1:   31:  unsigned long vara = a; /* { dg-final { gdb-test .+3 "vara" "1" } } */
+        1:   32:  unsigned long varb = b; /* { dg-final { gdb-test .+2 "varb" "2" } } */
+        1:   33:  unsigned long varc = c; /* { dg-final { gdb-test .+1 "varc" "3" } } */
+        1:   34:  asm volatile("" : : "g"(vara), "g"(varb), "g"(varc));
+        1:   35:  return a;
+        -:   36:}
+        -:   37:
+        1:   38:int main(void) {
+        1:   39:  asm volatile("" : "=r"(varb) : "0"(2));
+        1:   40:  fn1();
+        1:   41:  asm volatile("" : "=r"(varb) : "0"(3));
+        1:   42:  fn2();
+        1:   43:  fn3();
+        1:   44:  return 0;
+        -:   45:}

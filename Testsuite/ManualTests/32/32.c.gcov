@@ -1,0 +1,52 @@
+        -:    0:Source:32.c
+        -:    0:Graph:32.gcno
+        -:    0:Data:32.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/21536 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -Wuninitialized" } */
+        -:    4:
+        -:    5:typedef __SIZE_TYPE__ size_t;
+        -:    6:extern void *malloc(size_t);
+        -:    7:extern void free(void *);
+        -:    8:
+        1:    9:void *foo(int x, int y) {
+        1:   10:  void *d = malloc(x * y * sizeof(double));
+        1:   11:  double(*e)[x][y] = d;
+        1:   12:  x += 10;
+        1:   13:  y += 10;
+        1:   14:  if (x > 18)
+        1:   15:    (*e)[x - 12][y - 12] = 0.0;
+        -:   16:  else
+    #####:   17:    (*e)[x - 11][y - 11] = 1.0;
+        1:   18:  return d;
+        -:   19:}
+        -:   20:
+        1:   21:void *bar(int x, int y) {
+        1:   22:  void *d = malloc(x * y * sizeof(double));
+        -:   23:  struct S {
+        1:   24:    double (*e)[x][y];
+        1:   25:    double (*f)[x][y];
+        -:   26:  } s;
+        1:   27:  s.e = d;
+        1:   28:  s.f = d;
+        1:   29:  x += 10;
+        1:   30:  y += 10;
+        1:   31:  if (x > 18)
+        1:   32:    (*s.e)[x - 12][y - 12] = 0.0;
+        -:   33:  else
+    #####:   34:    (*s.e)[x - 11][y - 11] = 1.0;
+        1:   35:  if (x > 16)
+        1:   36:    (*s.f)[x - 13][y - 13] = 0.0;
+        -:   37:  else
+    #####:   38:    (*s.f)[x - 14][y - 14] = 1.0;
+        1:   39:  return d;
+        -:   40:}
+        -:   41:
+        1:   42:int main() {
+        1:   43:  void *d1 = foo(10, 10);
+        1:   44:  void *d2 = bar(10, 10);
+        1:   45:  free(d1);
+        1:   46:  free(d2);
+        1:   47:  return 0;
+        -:   48:}

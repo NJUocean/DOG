@@ -1,0 +1,29 @@
+        -:    0:Source:4052.c
+        -:    0:Graph:4052.gcno
+        -:    0:Data:4052.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned __attribute__((__vector_size__(8))) V2SI_u;
+        -:    2:typedef int __attribute__((__vector_size__(8))) V2SI_d;
+        -:    3:
+        -:    4:typedef unsigned long __attribute__((__vector_size__(16))) V2DI_u;
+        -:    5:typedef long __attribute__((__vector_size__(16))) V2DI_d;
+        -:    6:
+        1:    7:void id_V2SI(V2SI_d *v) { *v = __builtin_shuffle(*v, (V2SI_d)(V2SI_u){0, 1}); }
+        -:    8:
+        1:    9:void id_V2DI(V2DI_d *v) { *v = __builtin_shuffle(*v, (V2DI_d)(V2DI_u){0, 1}); }
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  V2SI_d si = {35, 42};
+        1:   15:  id_V2SI(&si);
+        -:   16:
+        1:   17:  if (si[0] != 35 || si[1] != 42)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  V2DI_d di = {63, 38};
+        1:   21:  id_V2DI(&di);
+        -:   22:
+        1:   23:  if (di[0] != 63 || di[1] != 38)
+    #####:   24:    abort();
+        -:   25:}

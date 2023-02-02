@@ -1,0 +1,22 @@
+        -:    0:Source:2206.c
+        -:    0:Graph:2206.gcno
+        -:    0:Data:2206.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/71854 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-additional-options "-O3 -ftree-loop-if-convert" } */
+        -:    4:
+        -:    5:char a, f = 1;
+        -:    6:int b, c, e[8];
+        -:    7:short d;
+        -:    8:
+       8*:    9:short foo(short x) { return x >= 2 || x >> c ? x : x << c; }
+        -:   10:
+        1:   11:int main() {
+        2:   12:  while (f)
+        9:   13:    for (d = 0; d <= 7; d++) {
+       8*:   14:      f = 7 >> b ? a : a << b;
+        8:   15:      e[d] = foo(f);
+        -:   16:    }
+        1:   17:  return 0;
+        -:   18:}

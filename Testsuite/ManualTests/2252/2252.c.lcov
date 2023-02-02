@@ -1,0 +1,17 @@
+    1|       |static int a[199];
+    2|       |
+    3|      1|static void foo() {
+    4|      1|  int i;
+    5|    200|  for (i = 198; i >= 0; i--)
+    6|    199|    a[i] = i;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  int i;
+   11|      1|  foo();
+   12|    200|  for (i = 0; i < 199; i++)
+   13|    199|    if (a[i] != i)
+   14|      0|      abort();
+   15|      1|  return 0;
+   16|      1|}
+

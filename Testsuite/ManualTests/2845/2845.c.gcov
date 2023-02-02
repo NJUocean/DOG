@@ -1,0 +1,30 @@
+        -:    0:Source:2845.c
+        -:    0:Graph:2845.gcno
+        -:    0:Data:2845.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target powerpc*-*-darwin* } } */
+        -:    2:/* { dg-options "-O2 -mpowerpc64" } */
+        -:    3:
+        -:    4:typedef struct Nlm_rect {
+        -:    5:  short sh1;
+        -:    6:  short sh2;
+        -:    7:  short sh3;
+        -:    8:  short sh4;
+        -:    9:} S8;
+        -:   10:
+        -:   11:typedef struct udv_mouse_select {
+        -:   12:  short Action_type;
+        -:   13:  S8 rcClip;
+        -:   14:  int pgp;
+        -:   15:} UDVselect;
+        -:   16:
+        -:   17:UDVselect ms;
+        -:   18:int UDV(S8 rcClip);
+        -:   19:
+        1:   20:int main() {
+        1:   21:  ms.rcClip.sh1 = 1;
+        1:   22:  ms.rcClip.sh4 = 4;
+        1:   23:  return UDV(ms.rcClip);
+        -:   24:}
+        -:   25:
+       1*:   26:int UDV(S8 rcClip) { return !(rcClip.sh1 == 1 && rcClip.sh4 == 4); }

@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-std=c99" } */
+    3|       |
+    4|       |#include <stdint.h>
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |char *s1 = "foo";
+    9|       |char *s2 = "bar";
+   10|       |
+   11|       |char **ss1 = &s1;
+   12|       |
+   13|       |typedef union jsval_layout {
+   14|       |  uint64_t asBits;
+   15|       |  char **ptr;
+   16|       |} jsval_layout;
+   17|       |
+   18|      1|int main() {
+   19|      1|  jsval_layout l, m;
+   20|      1|  l.ptr = ss1;
+   21|      1|  m.asBits = l.asBits;
+   22|      1|  char **data = m.ptr;
+   23|      1|  *data = s2;
+   24|      1|  if (s1 != s2)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

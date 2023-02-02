@@ -1,0 +1,23 @@
+        -:    0:Source:1803.c
+        -:    0:Graph:1803.gcno
+        -:    0:Data:1803.gcda
+        -:    0:Runs:1
+        -:    1:/* PR54219 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef int v2si __attribute__((vector_size(2 * sizeof(int))));
+        -:    7:
+        1:    8:void f(v2si *x) {
+        -:    9:  /* This requires canonicalization of the mask to { 1, 0 }.  */
+        1:   10:  *x = __builtin_shuffle(*x, *x, (v2si){5, 0});
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v2si y = {1, 2};
+        1:   15:  f(&y);
+        1:   16:  if (y[0] != 2 || y[1] != 1)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

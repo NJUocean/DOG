@@ -1,0 +1,14 @@
+        -:    0:Source:1692.c
+        -:    0:Graph:1692.gcno
+        -:    0:Data:1692.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=unreachable" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    4:/* { dg-shouldfail "ubsan" } */
+        -:    5:
+        -:    6:int e;
+        -:    7:
+       1*:    8:int main(void) { return e ? 0 : (__builtin_unreachable(), 1); }
+        -:    9:
+        -:   10:/* { dg-output "execution reached an unreachable program point" } */

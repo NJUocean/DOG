@@ -1,0 +1,25 @@
+    1|       |/* PR c/19606
+    2|       |   The C front end used to shorten the type of a division to a type
+    3|       |   that does not preserve the semantics of the original computation.
+    4|       |   Make sure that won't happen.  */
+    5|       |
+    6|       |signed char a = -4;
+    7|       |
+    8|      1|int foo(void) { return ((unsigned int)(signed int)a) / 2LL; }
+    9|       |
+   10|      1|int bar(void) { return ((unsigned int)(signed int)a) % 5LL; }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  int r;
+   14|      1|
+   15|      1|  r = foo();
+   16|      1|  if (r != ((unsigned int)(signed int)(signed char)-4) / 2LL)
+   17|      0|    abort();
+   18|      1|
+   19|      1|  r = bar();
+   20|      1|  if (r != ((unsigned int)(signed int)(signed char)-4) % 5LL)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  exit(0);
+   24|      1|}
+

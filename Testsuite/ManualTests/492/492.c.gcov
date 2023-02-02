@@ -1,0 +1,14 @@
+        -:    0:Source:492.c
+        -:    0:Graph:492.gcno
+        -:    0:Data:492.gcda
+        -:    0:Runs:1
+        1:    1:int f(long long x) {
+        1:    2:  x >>= 8;
+        1:    3:  return x & 0xff;
+        -:    4:}
+        -:    5:
+        1:    6:main() {
+        1:    7:  if (f(0x0123456789ABCDEFLL) != 0xCD)
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

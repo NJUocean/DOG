@@ -1,0 +1,11 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O -fopenmp -fdump-tree-ompexp" } */
+    3|       |
+    4|      1|int main() {
+    5|      1|#pragma omp parallel
+    6|      1|  { ; }
+    7|      1|}
+    8|       |
+    9|       |/* There should not be a GOMP_parallel_start call.  */
+   10|       |/* { dg-final { scan-tree-dump-times "GOMP_parallel_start" 0 "ompexp"} } */
+

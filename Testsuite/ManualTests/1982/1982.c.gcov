@@ -1,0 +1,18 @@
+        -:    0:Source:1982.c
+        -:    0:Graph:1982.gcno
+        -:    0:Data:1982.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78910 - Wrong print-return-value for a negative number
+        -:    2:   { dg-do compile }
+        -:    3:   { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    4:
+        1:    5:int main() {
+        -:    6:  char b[128];
+        1:    7:  int l = __builtin_sprintf(b, "%.2d", -1);
+        1:    8:  __builtin_printf("b: '%s', length: %d\n", b, l);
+        1:    9:  if (l != 3)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:
+        -:   14:/* { dg-final { scan-tree-dump-not "abort" "optimized"} } */

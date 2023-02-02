@@ -1,0 +1,93 @@
+    1|       |#if __INT_MAX__ != 2147483647 ||                                               \
+    2|       |    (__LONG_LONG_MAX__ != 9223372036854775807ll &&                             \
+    3|       |     __LONG_MAX__ != 9223372036854775807ll)
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|       |#if __LONG_MAX__ != 9223372036854775807ll
+    7|       |typedef unsigned long long ull;
+    8|       |#else
+    9|       |typedef unsigned long ull;
+   10|       |#endif
+   11|       |typedef unsigned ul;
+   12|       |
+   13|       |union fl {
+   14|       |  float f;
+   15|       |  ul l;
+   16|       |} uf;
+   17|       |union dl {
+   18|       |  double d;
+   19|       |  ull ll;
+   20|       |} ud;
+   21|       |
+   22|       |int failed = 0;
+   23|       |
+   24|     21|void c(ull d, ul f) {
+   25|     21|  ud.ll = d;
+   26|     21|  uf.f = (float)ud.d;
+   27|     21|  if (uf.l != f) {
+   28|      0|    failed++;
+   29|      0|  }
+   30|     21|}
+   31|       |
+   32|      1|int main() {
+   33|      1|  if (sizeof(float) != sizeof(ul) || sizeof(double) != sizeof(ull))
+   34|      0|    exit(0);
+   35|      1|
+   36|       |#if (defined __arm__ || defined __thumb__) &&                                  \
+   37|       |    !(defined __ARMEB__ || defined __VFP_FP__)
+   38|       |  /* The ARM always stores FP numbers in big-wordian format,
+   39|       |     even when running in little-byteian mode.  */
+   40|       |  c(0x0000000036900000ULL, 0x00000000U);
+   41|       |  c(0x0000000136900000ULL, 0x00000001U);
+   42|       |  c(0xffffffff369fffffULL, 0x00000001U);
+   43|       |  c(0x0000000036A00000ULL, 0x00000001U);
+   44|       |  c(0xffffffff36A7ffffULL, 0x00000001U);
+   45|       |  c(0x0000000036A80000ULL, 0x00000002U);
+   46|       |  c(0xffffffff36AfffffULL, 0x00000002U);
+   47|       |  c(0x0000000036b00000ULL, 0x00000002U);
+   48|       |  c(0x0000000136b00000ULL, 0x00000002U);
+   49|       |
+   50|       |  c(0xdfffffff380fffffULL, 0x007fffffU);
+   51|       |  c(0xe0000000380fffffULL, 0x00800000U);
+   52|       |  c(0xe0000001380fffffULL, 0x00800000U);
+   53|       |  c(0xffffffff380fffffULL, 0x00800000U);
+   54|       |  c(0x0000000038100000ULL, 0x00800000U);
+   55|       |  c(0x0000000138100000ULL, 0x00800000U);
+   56|       |  c(0x1000000038100000ULL, 0x00800000U);
+   57|       |  c(0x1000000138100000ULL, 0x00800001U);
+   58|       |  c(0x2fffffff38100000ULL, 0x00800001U);
+   59|       |  c(0x3000000038100000ULL, 0x00800002U);
+   60|       |  c(0x5000000038100000ULL, 0x00800002U);
+   61|       |  c(0x5000000138100000ULL, 0x00800003U);
+   62|       |#else
+   63|      1|  c(0x3690000000000000ULL, 0x00000000U);
+   64|      1|  c(0x3690000000000001ULL, 0x00000001U);
+   65|      1|  c(0x369fffffffffffffULL, 0x00000001U);
+   66|      1|  c(0x36A0000000000000ULL, 0x00000001U);
+   67|      1|  c(0x36A7ffffffffffffULL, 0x00000001U);
+   68|      1|  c(0x36A8000000000000ULL, 0x00000002U);
+   69|      1|  c(0x36AfffffffffffffULL, 0x00000002U);
+   70|      1|  c(0x36b0000000000000ULL, 0x00000002U);
+   71|      1|  c(0x36b0000000000001ULL, 0x00000002U);
+   72|      1|
+   73|      1|  c(0x380fffffdfffffffULL, 0x007fffffU);
+   74|      1|  c(0x380fffffe0000000ULL, 0x00800000U);
+   75|      1|  c(0x380fffffe0000001ULL, 0x00800000U);
+   76|      1|  c(0x380fffffffffffffULL, 0x00800000U);
+   77|      1|  c(0x3810000000000000ULL, 0x00800000U);
+   78|      1|  c(0x3810000000000001ULL, 0x00800000U);
+   79|      1|  c(0x3810000010000000ULL, 0x00800000U);
+   80|      1|  c(0x3810000010000001ULL, 0x00800001U);
+   81|      1|  c(0x381000002fffffffULL, 0x00800001U);
+   82|      1|  c(0x3810000030000000ULL, 0x00800002U);
+   83|      1|  c(0x3810000050000000ULL, 0x00800002U);
+   84|      1|  c(0x3810000050000001ULL, 0x00800003U);
+   85|      1|#endif
+   86|      1|
+   87|      1|  if (failed)
+   88|      0|    abort();
+   89|      1|  else
+   90|      1|    exit(0);
+   91|      1|}
+   92|       |#endif
+

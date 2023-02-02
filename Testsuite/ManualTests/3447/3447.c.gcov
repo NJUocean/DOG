@@ -1,0 +1,13 @@
+        -:    0:Source:3447.c
+        -:    0:Graph:3447.gcno
+        -:    0:Data:3447.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        1:    2:int main() {
+        1:    3:  short ssi = 126;
+        1:    4:  unsigned short usi = 65280;
+        1:    5:  int fail = !(ssi < usi);
+        1:    6:  if (fail)
+    #####:    7:    abort();
+        1:    8:  return 0;
+        -:    9:}

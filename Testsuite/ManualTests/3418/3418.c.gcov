@@ -1,0 +1,63 @@
+        -:    0:Source:3418.c
+        -:    0:Graph:3418.gcno
+        -:    0:Data:3418.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/30262 */
+        -:    2:/* { dg-skip-if "asm statements do not work as expected" { rl78-*-* } } */
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int foo(void) {
+        1:    6:  unsigned int x = 0;
+        -:    7:
+        1:    8:  void nested(void) { x = 254; }
+        -:    9:
+        1:   10:  nested();
+        1:   11:  asm volatile("" ::"r"(x));
+        1:   12:  asm volatile("" ::"m"(x));
+        1:   13:  asm volatile("" ::"mr"(x));
+        1:   14:  asm volatile("" : "=r"(x) : "0"(x));
+        1:   15:  asm volatile("" : "=m"(x) : "m"(x));
+        1:   16:  return x;
+        -:   17:}
+        -:   18:
+        1:   19:int bar(void) {
+        1:   20:  unsigned int x = 0;
+        -:   21:
+        1:   22:  void nested(void) {
+        1:   23:    asm volatile("" ::"r"(x));
+        1:   24:    asm volatile("" ::"m"(x));
+        1:   25:    asm volatile("" ::"mr"(x));
+        1:   26:    x += 4;
+        1:   27:    asm volatile("" : "=r"(x) : "0"(x));
+        1:   28:    asm volatile("" : "=m"(x) : "m"(x));
+        1:   29:  }
+        -:   30:
+        1:   31:  nested();
+        1:   32:  return x;
+        -:   33:}
+        -:   34:
+        1:   35:int baz(void) {
+        1:   36:  unsigned int x = 0;
+        -:   37:
+        1:   38:  void nested(void) {
+        2:   39:    void nested2(void) {
+        2:   40:      asm volatile("" ::"r"(x));
+        2:   41:      asm volatile("" ::"m"(x));
+        2:   42:      asm volatile("" ::"mr"(x));
+        2:   43:      x += 4;
+        2:   44:      asm volatile("" : "=r"(x) : "0"(x));
+        2:   45:      asm volatile("" : "=m"(x) : "m"(x));
+        2:   46:    }
+        1:   47:    nested2();
+        1:   48:    nested2();
+        1:   49:  }
+        -:   50:
+        1:   51:  nested();
+        1:   52:  return x;
+        -:   53:}
+        -:   54:
+        1:   55:int main(void) {
+        1:   56:  if (foo() != 254 || bar() != 4 || baz() != 8)
+    #####:   57:    abort();
+        1:   58:  return 0;
+        -:   59:}

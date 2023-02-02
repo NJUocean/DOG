@@ -1,0 +1,18 @@
+    1|       |#include <stdio.h>
+    2|       |#include <stdlib.h>
+    3|       |#include <unistd.h>
+    4|       |#include <sys/wait.h>
+    5|       |
+    6|      2|int main(int argc, char *argv[]) {
+    7|      2|  printf("hello world (pid:%d)\n", (int) getpid());
+    8|      2|  int rc = fork();
+    9|      2|  if (rc < 0) { // fork failed; exit
+   10|      0|    fprintf(stderr, "fork failed\n");
+   11|      0|    exit(1);
+   12|      2|  } else if (rc == 0) { // child (new process)
+   13|      1|    printf("hello, I am child (pid:%d)\n", (int) getpid());
+   14|      1|  } else { // parent goes down this path (main)
+   15|      1|    printf("hello, I am parent of %d (pid:%d)\n", rc, (int) getpid());
+   16|      1|  }
+   17|      2|  return 0;
+   18|      2|}

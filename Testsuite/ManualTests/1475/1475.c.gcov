@@ -1,0 +1,24 @@
+        -:    0:Source:1475.c
+        -:    0:Graph:1475.gcno
+        -:    0:Data:1475.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/82072 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=signed-integer-overflow" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  long long l = -__LONG_LONG_MAX__ - 1;
+        1:    7:  int i = 0;
+        1:    8:  asm volatile("" : "+r"(i));
+        1:    9:  i -= l;
+        1:   10:  asm volatile("" : "+r"(i));
+        1:   11:  i = -l;
+        1:   12:  asm volatile("" : "+r"(i));
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-output "signed integer overflow: 0 - -9223372036854775808 cannot be
+        -:   17: * represented in type 'long long int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   18:/* { dg-output "\[^\n\r]*negation of -9223372036854775808 cannot be represented
+        -:   19: * in type 'long long int'\[^\n\r]*; cast to an unsigned type to negate this
+        -:   20: * value to itself" } */

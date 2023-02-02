@@ -1,0 +1,32 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |/* Ensure that BIT_FIELD_REFs gets the appropriate VUSE.
+    5|       |   Contributed by Paolo Bonzini  <bonzini@gnu.org>.
+    6|       |
+    7|       |   This testcase actually never triggered in the CVS repo, but it did
+    8|       |   in my local tree and it seems worth testing.  In this test, the if's
+    9|       |   are folded to BIT_FIELD_REFs but the VUSEs were erroneously left out.
+   10|       |   Therefore, DOM did not see that i was modified between the two ifs
+   11|       |   and optimized away the second if.  */
+   12|       |
+   13|       |extern void abort(void);
+   14|       |extern void exit(int);
+   15|       |
+   16|       |struct x {
+   17|       |  unsigned b : 1;
+   18|       |  unsigned c : 1;
+   19|       |};
+   20|       |
+   21|       |struct x i = {1, 1};
+   22|       |
+   23|      1|int main() {
+   24|      1|  i.b = 1;
+   25|      1|  if (i.b == 1 && i.c == 0)
+   26|      0|    exit(0);
+   27|      1|  i.c = 0;
+   28|      1|  if (i.b == 1 && i.c == 0)
+   29|      1|    exit(0);
+   30|      0|  abort();
+   31|      0|}
+

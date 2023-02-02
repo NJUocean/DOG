@@ -1,0 +1,36 @@
+        -:    0:Source:4028.c
+        -:    0:Graph:4028.gcno
+        -:    0:Data:4028.gcda
+        -:    0:Runs:1
+    #####:    1:void __attribute__((noipa, noinline)) my_puts(const char *str) {}
+        -:    2:
+        1:    3:void __attribute__((noipa, noinline)) my_free(void *p) {}
+        -:    4:
+        -:    5:struct Node {
+        -:    6:  struct Node *child;
+        -:    7:};
+        -:    8:
+        -:    9:struct Node space[2] = {};
+        -:   10:
+        1:   11:struct Node *__attribute__((noipa, noinline)) my_malloc(int bytes) {
+        1:   12:  return &space[0];
+        -:   13:}
+        -:   14:
+        2:   15:void walk(struct Node *module, int cleanup) {
+        2:   16:  if (module == 0) {
+        1:   17:    return;
+        -:   18:  }
+        1:   19:  if (!cleanup) {
+    #####:   20:    my_puts("No cleanup");
+        -:   21:  }
+        1:   22:  walk(module->child, cleanup);
+        1:   23:  if (cleanup) {
+        1:   24:    my_free(module);
+        -:   25:  }
+        -:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  struct Node *node = my_malloc(sizeof(struct Node));
+        1:   30:  node->child = 0;
+        1:   31:  walk(node, 1);
+        -:   32:}

@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fno-dce -fno-forward-propagate -fno-rerun-cse-after-loop
+    3|       | * -funroll-loops" } */
+    4|       |
+    5|      1|#define N 32
+    6|       |
+    7|       |short sa[N];
+    8|       |short sb[N];
+    9|       |int ia[N];
+   10|       |int ib[N];
+   11|       |
+   12|      1|int __attribute__((noinline, noclone)) main1(int n) {
+   13|      1|  int i;
+   14|     26|  for (i = 0; i < n; i++) {
+   15|     25|    sa[i + 7] = sb[i];
+   16|     25|    ia[i + 3] = ib[i + 1];
+   17|     25|  }
+   18|      1|  return 0;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) { return main1(N - 7); }
+

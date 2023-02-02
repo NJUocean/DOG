@@ -1,0 +1,19 @@
+        -:    0:Source:3521.c
+        -:    0:Graph:3521.gcno
+        -:    0:Data:3521.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/89536 */
+        -:    2:/* Testcase by Zhendong Su <su@cs.ucdavis.edu> */
+        -:    3:
+        -:    4:int a = 1;
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  a = ~(a && 1);
+        1:    8:  if (a < -1)
+        1:    9:    a = ~a;
+        -:   10:
+        1:   11:  if (!a)
+    #####:   12:    __builtin_abort();
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}

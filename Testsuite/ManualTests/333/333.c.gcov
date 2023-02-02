@@ -1,0 +1,21 @@
+        -:    0:Source:333.c
+        -:    0:Graph:333.gcno
+        -:    0:Data:333.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef unsigned long long uint64;
+        -:    7:
+        1:    8:int very_large_value(uint64 t) { return (t / 1000000000ULL) > 9223372037ULL; }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  uint64 t = 0xC000000000000000ULL;
+        -:   12:
+        1:   13:  if (!very_large_value(t))
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,14 @@
+    1|       |unsigned short code = 0x0000;
+    2|       |unsigned short low = 0x4000;
+    3|       |unsigned short high = 0xb000;
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  if ((high & 0x8000) != (low & 0x8000) && (low & 0x4000) == 0x4000 &&
+    7|      1|      (high & 0x4000) == 0) {
+    8|      1|    code ^= 0x4000;
+    9|      1|    low |= 0x4000;
+   10|      1|  }
+   11|      1|
+   12|      1|  exit(0);
+   13|      1|}
+

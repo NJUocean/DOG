@@ -1,0 +1,40 @@
+        -:    0:Source:934.c
+        -:    0:Graph:934.gcno
+        -:    0:Data:934.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -funroll-loops" } */
+        -:    3:/* { dg-add-options ieee } */
+        -:    4:
+        -:    5:extern void exit(int);
+        -:    6:extern void abort(void);
+        -:    7:
+        4:    8:void compare(double a, double b) {
+        -:    9:  do {
+        4:   10:    double s1 = __builtin_copysign((double)1.0, a);
+        4:   11:    double s2 = __builtin_copysign((double)1.0, b);
+        -:   12:
+        4:   13:    if (s1 != s2)
+    #####:   14:      abort();
+        -:   15:
+        4:   16:    if ((__builtin_isnan(a) != 0) != (__builtin_isnan(b) != 0))
+    #####:   17:      abort();
+        -:   18:
+        4:   19:    if ((a != b) != (__builtin_isnan(a) != 0))
+    #####:   20:      abort();
+        -:   21:  } while (0);
+        4:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  double a = 0.0;
+        1:   26:  double b = 0.0;
+        1:   27:  _Complex double cr = __builtin_complex(a, b);
+        -:   28:  static _Complex double cs = __builtin_complex(0.0, 0.0);
+        -:   29:
+        1:   30:  compare(__real__ cr, 0.0);
+        1:   31:  compare(__imag__ cr, 0.0);
+        1:   32:  compare(__real__ cs, 0.0);
+        1:   33:  compare(__imag__ cs, 0.0);
+        -:   34:
+        1:   35:  exit(0);
+        -:   36:}

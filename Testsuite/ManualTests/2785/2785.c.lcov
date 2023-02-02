@@ -1,0 +1,21 @@
+    1|       |/* Test that the compiler properly optimizes conditional floating point moves
+    2|       |   into the pcmov instruction on XOP systems.  */
+    3|       |
+    4|       |/* { dg-do compile { target { ! ia32 } } } */
+    5|       |/* { dg-options "-O2 -mxop" } */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|double dbl_test(double a, double b, double c, double d) {
+   10|      1|  return (a > b) ? c : d;
+   11|      1|}
+   12|       |
+   13|       |double dbl_a = 1, dbl_b = 2, dbl_c = 3, dbl_d = 4, dbl_e;
+   14|       |
+   15|      1|int main() {
+   16|      1|  dbl_e = dbl_test(dbl_a, dbl_b, dbl_c, dbl_d);
+   17|      1|  exit(0);
+   18|      1|}
+   19|       |
+   20|       |/* { dg-final { scan-assembler "vpcmov" } } */
+

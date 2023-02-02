@@ -1,0 +1,17 @@
+        -:    0:Source:3465.c
+        -:    0:Graph:3465.gcno
+        -:    0:Data:3465.gcda
+        -:    0:Runs:1
+        2:    1:int foo(int i) {
+        -:    2:  int a[32];
+        2:    3:  a[1] = 3;
+        2:    4:  a[0] = 1;
+        2:    5:  a[i] = 2;
+        2:    6:  return a[0];
+        -:    7:}
+        -:    8:extern void abort(void);
+        1:    9:int main() {
+        1:   10:  if (foo(0) != 2 || foo(1) != 1)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

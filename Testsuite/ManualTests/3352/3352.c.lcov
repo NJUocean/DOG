@@ -1,0 +1,28 @@
+    1|       |/* { dg-require-stack-size "0x12000" } */
+    2|       |
+    3|       |#if __INT_MAX__ < 32768
+    4|       |int main() { exit(0); }
+    5|       |#else
+    6|       |int a[2] = {2, 3};
+    7|       |
+    8|      2|static int __attribute__((noinline)) bar(int x, void *b) {
+    9|      2|  a[0]++;
+   10|      2|  return x;
+   11|      2|}
+   12|       |
+   13|      1|static int __attribute__((noinline)) foo(int x) {
+   14|      1|  char buf[0x10000];
+   15|      1|  int y = a[0];
+   16|      1|  a[1] = y;
+   17|      1|  x = bar(x, buf);
+   18|      1|  y = bar(y, buf);
+   19|      1|  return x + y;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  if (foo(100) != 102)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+   27|       |#endif
+

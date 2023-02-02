@@ -1,0 +1,12 @@
+    1|       |/* { dg-options "-std=c99 -Wc++-compat -Werror" { target c } } */
+    2|       |/* { dg-prune-output "treated as errors" } */
+    3|       |#include <stdio.h>
+    4|       |
+    5|      1|int main() {
+    6|      1|  for (int *p = (int[]){1, 2, 3, 0}; /* { dg-error "array" } */
+    7|      4|       *p; ++p) {
+    8|      3|    printf("%d\n", *p);
+    9|      3|  }
+   10|      1|  return 0;
+   11|      1|}
+

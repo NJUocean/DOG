@@ -1,0 +1,25 @@
+        -:    0:Source:3295.c
+        -:    0:Graph:3295.gcno
+        -:    0:Data:3295.gcda
+        -:    0:Runs:1
+        -:    1:/* This exposed a bug in tree-ssa-ccp.c.  Since 'j' and 'i' are never
+        -:    2:   defined, CCP was not traversing the edges out of the if(), which caused
+        -:    3:   the PHI node for 'k' at the top of the while to only be visited once.
+        -:    4:   This ended up causing CCP to think that 'k' was the constant '1'.  */
+        1:    5:main() {
+        -:    6:  int i, j, k;
+        -:    7:
+        1:    8:  k = 0;
+       11:    9:  while (k < 10) {
+       10:   10:    k++;
+       10:   11:    if (j > i)
+       10:   12:      j = 5;
+        -:   13:    else
+    #####:   14:      j = 3;
+        -:   15:  }
+        -:   16:
+        1:   17:  if (k != 10)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

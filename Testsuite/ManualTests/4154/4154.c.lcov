@@ -1,0 +1,40 @@
+    1|       |/* This code is from the beginning of combine_reloads in reload.c in
+    2|       |   GCC 3.1-20020117, with simplifications.  It compiled incorrectly
+    3|       |   for -O2 -fprefetch-loop-arrays for ix86 targets.  */
+    4|       |
+    5|       |/* { dg-do run } */
+    6|       |/* { dg-options "-O2 -fprefetch-loop-arrays -w" } */
+    7|       |/* { dg-options "-O2 -fprefetch-loop-arrays -mtune=pentium3 -w" { target { {
+    8|       | * i?86-*-* x86_64-*-* } && ia32 } } } */
+    9|       |
+   10|       |struct reload {
+   11|       |  int first_member;
+   12|       |  int out;
+   13|       |  int final_member;
+   14|       |};
+   15|       |
+   16|       |int n_reloads;
+   17|       |struct reload rld[10];
+   18|       |
+   19|      1|static int combine_reloads() {
+   20|      1|  int i;
+   21|      1|  int output_reload = -1;
+   22|      1|  int secondary_out = -1;
+   23|      1|
+   24|      5|  for (i = 0; i < n_reloads; i++)
+   25|      4|    if (rld[i].out != 0) {
+   26|      1|      if (output_reload >= 0)
+   27|      0|        return output_reload;
+   28|      1|      output_reload = i;
+   29|      1|    }
+   30|      1|  return output_reload;
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  n_reloads = 4;
+   35|      1|  rld[2].out = 2;
+   36|      1|  if (combine_reloads() != 2)
+   37|      0|    abort();
+   38|      1|  exit(0);
+   39|      1|}
+

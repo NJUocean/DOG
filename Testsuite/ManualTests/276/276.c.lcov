@@ -1,0 +1,8 @@
+    1|       |/* Test Darwin linker option -bundle.  */
+    2|       |/* Developed by Devang Patel <dpatel@apple.com>.  */
+    3|       |
+    4|       |/* { dg-options "-bundle" } */
+    5|       |/* { dg-do link { target *-*-darwin* } } */
+    6|       |
+    7|      1|int main() { return 0; }
+

@@ -1,0 +1,11 @@
+    1|       |/* Test dead code strip support.  */
+    2|       |/* Contributed by Devang Patel  <dpatel@apple.com>  */
+    3|       |
+    4|       |/* { dg-do compile { target { *-*-darwin* && stabs } } } */
+    5|       |/* { dg-options "-gstabs+ -fno-eliminate-unused-debug-symbols" } */
+    6|       |
+    7|      1|int main() { return 0; }
+    8|       |
+    9|       |/* { dg-final { scan-assembler ".stabd.46,0,0" } } */
+   10|       |/* { dg-final { scan-assembler ".stabd.78,0,0" } } */
+

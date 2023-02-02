@@ -1,0 +1,26 @@
+        -:    0:Source:793.c
+        -:    0:Graph:793.gcno
+        -:    0:Data:793.gcda
+        -:    0:Runs:1
+        -:    1:/* When -fzero-initialized-in-bss was in effect, we used to only allocate
+        -:    2:   storage for d1.a.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "" } */
+        -:    5:/* { dg-skip-if "packed attribute missing for d1" { "epiphany-*-*" } } */
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:struct {
+        -:   10:  int a;
+        -:   11:  int x[];
+        -:   12:} d1 = {0, 0};
+        -:   13:int d2 = 0;
+        -:   14:
+        1:   15:int main() {
+        1:   16:  d2 = 1;
+        -:   17:  if (sizeof(d1) != sizeof(int))
+        -:   18:    abort();
+        1:   19:  if (d1.x[0] != 0)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

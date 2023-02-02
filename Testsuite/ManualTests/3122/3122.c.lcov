@@ -1,0 +1,22 @@
+    1|       |/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+    2|       |/* { dg-final { scan-assembler "b\[np\] B100A\\+1,#0," } } */
+    3|       |/* { dg-final { scan-assembler "b\[np\] B100B\\+1,#0," } } */
+    4|       |
+    5|       |char acDummy[0xf0] __attribute__((__BELOW100__));
+    6|       |unsigned short B100A __attribute__((__BELOW100__)) = 0x1234;
+    7|       |unsigned short *pA = &B100A;
+    8|       |unsigned short B100B __attribute__((__BELOW100__)) = 0xedcb;
+    9|       |unsigned short *pB = &B100B;
+   10|       |
+   11|      1|char *Do(void) {
+   12|      1|  if (!(B100A & 0x0100)) {
+   13|      1|    if (!(B100B & 0x0100))
+   14|      0|      return "Fail";
+   15|      1|    else
+   16|      1|      return "Success";
+   17|      0|  } else
+   18|      0|    return "Fail";
+   19|      1|}
+   20|       |
+   21|      1|int main(void) { return Do()[0] == 'F'; }
+

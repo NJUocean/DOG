@@ -1,0 +1,40 @@
+        -:    0:Source:4109.c
+        -:    0:Graph:4109.gcno
+        -:    0:Data:4109.gcda
+        -:    0:Runs:1
+        -:    1:struct a_struct {
+        -:    2:  unsigned char a_character;
+        -:    3:};
+        -:    4:
+        -:    5:struct a_struct an_array[5];
+        -:    6:struct a_struct *a_ptr;
+        -:    7:int yabba = 1;
+        -:    8:
+        1:    9:int f(a, b) unsigned char a;
+        -:   10:unsigned long b;
+        -:   11:{
+        -:   12:  long i, j, p, q, r, s;
+        -:   13:
+        1:   14:  if (b != (unsigned long)0) {
+    #####:   15:    if (yabba)
+    #####:   16:      return -1;
+    #####:   17:    s = 4000000 / b;
+    #####:   18:    for (i = 0; i < 11; i++) {
+    #####:   19:      for (j = 0; j < 256; j++) {
+    #####:   20:        if (((p - s < 0) ? -s : 0) < ((q - s < 0) ? -s : q))
+    #####:   21:          r = i;
+        -:   22:      }
+        -:   23:    }
+        -:   24:  }
+        -:   25:
+        1:   26:  if (yabba)
+        1:   27:    return 0;
+    #####:   28:  a_ptr = &an_array[a];
+    #####:   29:  a_ptr->a_character = (unsigned char)r;
+    #####:   30:}
+        -:   31:
+        1:   32:main() {
+        1:   33:  if (f(1, 0UL) != 0)
+    #####:   34:    abort();
+        1:   35:  exit(0);
+        -:   36:}

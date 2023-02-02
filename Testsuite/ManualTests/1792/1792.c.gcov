@@ -1,0 +1,29 @@
+        -:    0:Source:1792.c
+        -:    0:Graph:1792.gcno
+        -:    0:Data:1792.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls_runtime } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:__thread int tls_gd __attribute__((tls_model("global-dynamic"))) = 0;
+        -:    8:
+        1:    9:int get_gd(void) { return tls_gd; }
+        -:   10:
+        1:   11:int *get_gdp(void) { return &tls_gd; }
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int val;
+        -:   15:
+        1:   16:  val = get_gd();
+        1:   17:  if (val != 0)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  val = *get_gdp();
+        1:   21:  if (val != 0)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,11 @@
+        -:    0:Source:2992.c
+        -:    0:Graph:2992.gcno
+        -:    0:Data:2992.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do preprocess } */
+        -:    2:/* { dg-additional-options "-fdirectives-only" } */
+        -:    3:
+        1:    4:int main() { return 0; }
+        -:    5:
+        -:    6:/* A regexp that doesn't match itself!  */
+        -:    7:/* { dg-final { scan-file-not pr93452-1.i {_[_]has_include} } } */

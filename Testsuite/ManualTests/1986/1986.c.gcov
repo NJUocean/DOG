@@ -1,0 +1,39 @@
+        -:    0:Source:1986.c
+        -:    0:Graph:1986.gcno
+        -:    0:Data:1986.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fsplit-loops -fdump-tree-lsplit-details" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:#ifdef __cplusplus
+        -:    6:extern "C" void abort(void);
+        -:    7:#else
+        -:    8:extern void abort(void);
+        -:    9:#endif
+        -:   10:
+        -:   11:typedef struct {
+        -:   12:  int n;
+        -:   13:} region_t;
+        -:   14:
+        -:   15:void set(region_t *region) __attribute__((noinline));
+        -:   16:void doit(region_t *beg, region_t *end, region_t *limit)
+        -:   17:    __attribute__((noinline));
+        -:   18:
+        -:   19:region_t regions[10];
+        -:   20:
+        2:   21:void set(region_t *region) { region->n = 1; }
+        -:   22:
+        1:   23:void doit(region_t *beg, region_t *end, region_t *limit) {
+        3:   24:  for (region_t *cur = beg; cur < end; cur++) {
+        2:   25:    if (cur < limit) {
+        2:   26:      set(cur);
+        -:   27:    }
+        -:   28:  }
+        1:   29:}
+        -:   30:
+        1:   31:int main(void) {
+        1:   32:  doit(&regions[0], &regions[2], &regions[10]);
+        1:   33:  if (regions[1].n != 1)
+    #####:   34:    abort();
+        -:   35:}

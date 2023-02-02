@@ -1,0 +1,41 @@
+    1|       |/* PR tree-optimization/93945 */
+    2|       |
+    3|       |union U {
+    4|       |  char a[8];
+    5|       |  struct S {
+    6|       |    unsigned int b : 8, c : 13, d : 11;
+    7|       |  } e;
+    8|       |} u;
+    9|       |
+   10|      1|__attribute__((noipa)) int foo(void) {
+   11|      1|  __builtin_memset(&u.a, 0xf4, sizeof(u.a));
+   12|      1|  return u.e.c;
+   13|      1|}
+   14|       |
+   15|      1|__attribute__((noipa)) int bar(void) {
+   16|      1|  asm volatile("" : : "g"(&u) : "memory");
+   17|      1|  return u.e.c;
+   18|      1|}
+   19|       |
+   20|      1|__attribute__((noipa)) int baz(void) {
+   21|      1|  __builtin_memset(&u.a, 0xf4, sizeof(u.a));
+   22|      1|  return u.e.d;
+   23|      1|}
+   24|       |
+   25|      1|__attribute__((noipa)) int qux(void) {
+   26|      1|  asm volatile("" : : "g"(&u) : "memory");
+   27|      1|  return u.e.d;
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  int a = foo();
+   32|      1|  int b = bar();
+   33|      1|  if (a != b)
+   34|      0|    __builtin_abort();
+   35|      1|  a = baz();
+   36|      1|  b = qux();
+   37|      1|  if (a != b)
+   38|      0|    __builtin_abort();
+   39|      1|  return 0;
+   40|      1|}
+

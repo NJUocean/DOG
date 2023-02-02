@@ -1,0 +1,37 @@
+        -:    0:Source:2674.c
+        -:    0:Graph:2674.gcno
+        -:    0:Data:2674.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/61423 */
+        -:    2:/* { dg-do run { target ia32 } } */
+        -:    3:/* { dg-options "-O1 -ftree-vectorize -msse2 -mfpmath=387 -mtune=core2" } */
+        -:    4:
+        -:    5:#define N 1024
+        -:    6:static unsigned int A[N];
+        -:    7:
+        1:    8:double __attribute__((noinline)) func(void) {
+        1:    9:  unsigned int sum = 0;
+        -:   10:  unsigned i;
+        -:   11:  double t;
+        -:   12:
+     1025:   13:  for (i = 0; i < N; i++)
+     1024:   14:    sum += A[i];
+        -:   15:
+        1:   16:  t = sum;
+        1:   17:  return t;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  unsigned i;
+        -:   22:  double d;
+        -:   23:
+     1025:   24:  for (i = 0; i < N; i++)
+     1024:   25:    A[i] = 1;
+        -:   26:
+        1:   27:  d = func();
+        -:   28:
+        1:   29:  if (d != 1024.0)
+    #####:   30:    __builtin_abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

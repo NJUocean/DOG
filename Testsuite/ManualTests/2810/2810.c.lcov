@@ -1,0 +1,40 @@
+    1|       |/* __mips, and related defines, guarantee that certain assembly
+    2|       |   instructions can be used.  Check a few examples.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-skip-if "" { *-*-* } { "-mflip-mips16" } { "" } } */
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|       |typedef int int32 __attribute__((mode(SI)));
+    9|       |typedef int int64 __attribute__((mode(DI)));
+   10|      1|int foo(float inf, int64 in64, int32 in32) {
+   11|      1|  int64 res64;
+   12|      1|  int32 res32;
+   13|      1|
+   14|       |#if __mips != 1 && defined(__mips_hard_float) && !defined(__mips16)
+   15|       |  __asm__("trunc.w.s %0, %1" : "=f"(res32) : "f"(inf));
+   16|       |  if (res32 != 11)
+   17|       |    abort();
+   18|       |#endif
+   19|      1|
+   20|       |#if defined(__mips64)
+   21|       |  __asm__("daddu %0, %1, %1" : "=r"(res64) : "r"(in64));
+   22|       |  if (res64 != 50)
+   23|       |    abort();
+   24|       |#endif
+   25|      1|
+   26|       |#if (__mips == 4 || ((__mips == 32 || __mips == 64) && __mips_isa_rev < 6)) && \
+   27|       |    !defined(__mips16)
+   28|       |  __asm__("move %0,%.\n\tmovn %0,%1,%2"
+   29|       |          : "=&r"(res32)
+   30|       |          : "r"(in32), "r"(in64 != 0));
+   31|       |  if (res32 != 60)
+   32|       |    abort();
+   33|       |#endif
+   34|      1|}
+   35|       |
+   36|      1|int main() {
+   37|      1|  foo(11.4f, 25, 60);
+   38|      1|  exit(0);
+   39|      1|}
+

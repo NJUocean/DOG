@@ -1,0 +1,31 @@
+        -:    0:Source:3559.c
+        -:    0:Graph:3559.gcno
+        -:    0:Data:3559.gcda
+        -:    0:Runs:1
+        -:    1:/* The bit-field below would have a problem if __INT_MAX__ is too
+        -:    2:   small.  */
+        -:    3:#if __INT_MAX__ < 2147483647
+        -:    4:int main(void) { exit(0); }
+        -:    5:#else
+        -:    6:/*
+        -:    7:CONF:m68k-sun-sunos4.1.1
+        -:    8:OPTIONS:-O
+        -:    9:*/
+        -:   10:struct T {
+        -:   11:  unsigned i : 8;
+        -:   12:  unsigned c : 24;
+        -:   13:};
+        1:   14:f(struct T t) {
+        -:   15:  struct T s[1];
+        1:   16:  s[0] = t;
+        1:   17:  return (char)s->c;
+        -:   18:}
+        1:   19:main() {
+        -:   20:  struct T t;
+        1:   21:  t.i = 0xff;
+        1:   22:  t.c = 0xffff11;
+        1:   23:  if (f(t) != 0x11)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}
+        -:   27:#endif

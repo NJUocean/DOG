@@ -1,0 +1,29 @@
+        -:    0:Source:1300.c
+        -:    0:Graph:1300.gcno
+        -:    0:Data:1300.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct T {
+        -:    4:  int a, b;
+        -:    5:} t;
+        -:    6:
+        1:    7:__attribute__((noinline)) struct T *f(struct T *p) {
+        1:    8:  struct T *q = __builtin_malloc(sizeof(struct T));
+        1:    9:  *q = *p;
+        1:   10:  return q;
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  struct T *p;
+        -:   15:
+        1:   16:  t.a = 1;
+        1:   17:  t.b = 2;
+        1:   18:  p = f(&t);
+        1:   19:  t.a = 3;
+        -:   20:
+        1:   21:  if (p->a != 1)
+    #####:   22:    __builtin_abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

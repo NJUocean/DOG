@@ -1,0 +1,24 @@
+        -:    0:Source:2339.c
+        -:    0:Graph:2339.gcno
+        -:    0:Data:2339.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    2:/* { dg-do run { target native } } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  const int t = 2; /* count(1) */
+        1:    6:  struct s1 {      /* count(1) */
+        -:    7:    int x;
+        1:    8:    int g[t];
+        -:    9:  };
+        -:   10:
+        -:   11:  struct s2 {
+        -:   12:    int x;
+        -:   13:    int g[2];
+        -:   14:  };
+        -:   15:
+        1:   16:  __builtin_printf("Sucess!\n");
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { run-gcov gcov-pr85350.c } } */

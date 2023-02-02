@@ -1,0 +1,37 @@
+        -:    0:Source:851.c
+        -:    0:Graph:851.gcno
+        -:    0:Data:851.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  int v[4];
+        -:    3:} Test1;
+        -:    4:
+        -:    5:Test1 func2();
+        -:    6:
+        1:    7:int func1() {
+        -:    8:  Test1 test;
+        1:    9:  test = func2();
+        -:   10:
+        1:   11:  if (test.v[0] != 10)
+    #####:   12:    abort();
+        1:   13:  if (test.v[1] != 20)
+    #####:   14:    abort();
+        1:   15:  if (test.v[2] != 30)
+    #####:   16:    abort();
+        1:   17:  if (test.v[3] != 40)
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        1:   21:Test1 func2() {
+        -:   22:  Test1 tmp;
+        1:   23:  tmp.v[0] = 10;
+        1:   24:  tmp.v[1] = 20;
+        1:   25:  tmp.v[2] = 30;
+        1:   26:  tmp.v[3] = 40;
+        1:   27:  return tmp;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  func1();
+        1:   32:  exit(0);
+        -:   33:}

@@ -1,0 +1,27 @@
+    1|       |/* PR 9700 */
+    2|       |/* Alpha got the base address for the va_list incorrect when there was
+    3|       |   a structure that was passed partially in registers and partially on
+    4|       |   the stack.  */
+    5|       |
+    6|       |#include <stdarg.h>
+    7|       |
+    8|       |struct two {
+    9|       |  long x, y;
+   10|       |};
+   11|       |
+   12|      1|void foo(int a, int b, int c, int d, int e, struct two f, int g, ...) {
+   13|      1|  va_list args;
+   14|      1|  int h;
+   15|      1|
+   16|      1|  va_start(args, g);
+   17|      1|  h = va_arg(args, int);
+   18|      1|  if (g != 1 || h != 2)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  struct two t = {0, 0};
+   24|      1|  foo(0, 0, 0, 0, 0, t, 1, 2);
+   25|      1|  return 0;
+   26|      1|}
+

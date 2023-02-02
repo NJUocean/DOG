@@ -1,0 +1,20 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        1:    1:int main()
+        -:    2:{
+        1:    3:  int ret = 0;
+        1:    4:  int a[2] = {1955, -1957};
+        3:    5:  for (int i = 0; i < 2; ++i)
+        -:    6:  {
+        2:    7:    if (i % 2 == 1 && a[i] != -2 * i - 1955) {
+    #####:    8:      ret = 1;
+        -:    9:    }
+       1*:   10:    else if (i % 2 == 0 && a[i] != 1955 + 2 * i) {
+        -:   11:      // ret = 2;
+        -:   12:    }
+        -:   13:  }
+        1:   14:  return ret;
+        -:   15:}

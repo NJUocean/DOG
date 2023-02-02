@@ -1,0 +1,14 @@
+    1|       |/* Copyright (C) 2000  Free Software Foundation  */
+    2|       |/* Contributed by Alexandre Oliva <aoliva@cygnus.com> */
+    3|       |
+    4|       |unsigned long l = (unsigned long)-2;
+    5|       |unsigned short s;
+    6|       |
+    7|      1|int main() {
+    8|      1|  long t = l;
+    9|      1|  s = t;
+   10|      1|  if (s != (unsigned short)-2)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

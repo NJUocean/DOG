@@ -1,0 +1,44 @@
+        -:    0:Source:3207.c
+        -:    0:Graph:3207.gcno
+        -:    0:Data:3207.gcda
+        -:    0:Runs:1
+        -:    1:/* PR preprocessor/83063 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=gnu99" { target c } } */
+        -:    4:/* { dg-options "-std=c++2a" { target c++ } } */
+        -:    5:
+        -:    6:#define f1(...) int b##__VA_OPT__(c)
+        -:    7:#define f2(...) int __VA_OPT__(c)##d
+        -:    8:#define f3(...) int e##__VA_OPT__()
+        -:    9:#define f4(...) int __VA_OPT__()##f
+        -:   10:#define f5(...) int g##__VA_OPT__(h)##i
+        -:   11:#define f6(...) int j##__VA_OPT__()##k
+        -:   12:#define f7(...) int l##__VA_OPT__()
+        -:   13:#define f8(...) int __VA_OPT__()##m
+        -:   14:#define f9(...) int n##__VA_OPT__()##o
+        -:   15:#define f10(x, ...) int x##__VA_OPT__(x)
+        -:   16:#define f11(x, ...) int __VA_OPT__(x)##x
+        -:   17:#define f12(x, ...) int x##__VA_OPT__(x)##x
+        -:   18:f1(1, 2, 3);
+        -:   19:f1();
+        -:   20:f2(1, 2);
+        -:   21:f2();
+        -:   22:f3(1);
+        -:   23:f4(2);
+        -:   24:f5(6, 7);
+        -:   25:f5();
+        -:   26:f6(8);
+        -:   27:f7();
+        -:   28:f8();
+        -:   29:f9();
+        -:   30:f10(p, 5, 6);
+        -:   31:f10(p);
+        -:   32:f11(q, 7);
+        -:   33:f11(q);
+        -:   34:f12(r, 1, 2, 3, 4, 5);
+        -:   35:f12(r);
+        -:   36:
+        1:   37:int main() {
+        1:   38:  return bc + b + cd + d + e + f + ghi + gi + jk + l + m + no + pp + p + qq +
+        1:   39:         q + rrr + rr;
+        -:   40:}

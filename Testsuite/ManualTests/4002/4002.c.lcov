@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/85529 */
+    2|       |
+    3|     63|__attribute__((noipa)) int foo(int x) {
+    4|     63|  x &= 63;
+    5|     63|  x -= 50;
+    6|     63|  x |= 1;
+    7|     63|  if (x < 0)
+    8|     50|    return 1;
+    9|     13|  int y = x >> 2;
+   10|     13|  if (x >= y)
+   11|     13|    return 1;
+   12|      0|  return 0;
+   13|      0|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  int i;
+   17|     64|  for (i = 0; i < 63; i++)
+   18|     63|    if (foo(i) != 1)
+   19|      0|      __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

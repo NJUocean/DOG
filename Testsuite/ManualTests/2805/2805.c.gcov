@@ -1,0 +1,40 @@
+        -:    0:Source:2805.c
+        -:    0:Graph:2805.gcno
+        -:    0:Data:2805.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -mcpu=5208 -w" } */
+        -:    3:
+        4:    4:void __attribute__((noinline)) oof() { asm volatile("" ::: "memory"); }
+        2:    5:int print_info(unsigned int *ip_addr) {
+        2:    6:  int invalid = 0;
+        -:    7:
+        2:    8:  if (ip_addr) {
+        2:    9:    unsigned int haddr = *ip_addr;
+        2:   10:    oof("stuff");
+        2:   11:    if (0x0 == haddr) {
+        1:   12:      invalid = 1;
+        -:   13:    }
+        2:   14:    oof("stuff2");
+        -:   15:  } else {
+    #####:   16:    invalid = 1;
+        -:   17:  }
+        -:   18:
+        2:   19:  return invalid;
+        -:   20:}
+        -:   21:
+        1:   22:int main(int argc, char *argv[]) {
+        -:   23:  unsigned int myaddr;
+        -:   24:  int ret;
+        -:   25:
+        1:   26:  myaddr = 0x0;
+        1:   27:  ret = print_info(&myaddr);
+        1:   28:  if (!ret)
+    #####:   29:    abort();
+        -:   30:
+        1:   31:  myaddr = 0x01020304;
+        1:   32:  ret = print_info(&myaddr);
+        1:   33:  if (ret)
+    #####:   34:    abort();
+        1:   35:  exit(0);
+        -:   36:}

@@ -1,0 +1,68 @@
+        -:    0:Source:123.c
+        -:    0:Graph:123.gcno
+        -:    0:Data:123.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and proper execution on 8 byte
+        -:    2:   values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target sync_long_long_runtime } */
+        -:    5:/* { dg-options "" } */
+        -:    6:/* { dg-options "-march=pentium" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    7: * } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:long long v, count;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v = 0;
+        1:   15:  count = 0;
+        -:   16:
+        1:   17:  if (__atomic_load_n(&v, __ATOMIC_RELAXED) != count++)
+    #####:   18:    abort();
+        -:   19:  else
+        1:   20:    v++;
+        -:   21:
+        1:   22:  if (__atomic_load_n(&v, __ATOMIC_ACQUIRE) != count++)
+    #####:   23:    abort();
+        -:   24:  else
+        1:   25:    v++;
+        -:   26:
+        1:   27:  if (__atomic_load_n(&v, __ATOMIC_CONSUME) != count++)
+    #####:   28:    abort();
+        -:   29:  else
+        1:   30:    v++;
+        -:   31:
+        1:   32:  if (__atomic_load_n(&v, __ATOMIC_SEQ_CST) != count++)
+    #####:   33:    abort();
+        -:   34:  else
+        1:   35:    v++;
+        -:   36:
+        -:   37:  /* Now test the generic variants.  */
+        -:   38:
+        1:   39:  __atomic_load(&v, &count, __ATOMIC_RELAXED);
+        1:   40:  if (count != v)
+    #####:   41:    abort();
+        -:   42:  else
+        1:   43:    v++;
+        -:   44:
+        1:   45:  __atomic_load(&v, &count, __ATOMIC_ACQUIRE);
+        1:   46:  if (count != v)
+    #####:   47:    abort();
+        -:   48:  else
+        1:   49:    v++;
+        -:   50:
+        1:   51:  __atomic_load(&v, &count, __ATOMIC_CONSUME);
+        1:   52:  if (count != v)
+    #####:   53:    abort();
+        -:   54:  else
+        1:   55:    v++;
+        -:   56:
+        1:   57:  __atomic_load(&v, &count, __ATOMIC_SEQ_CST);
+        1:   58:  if (count != v)
+    #####:   59:    abort();
+        -:   60:  else
+        1:   61:    v++;
+        -:   62:
+        1:   63:  return 0;
+        -:   64:}

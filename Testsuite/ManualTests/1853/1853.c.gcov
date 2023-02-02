@@ -1,0 +1,20 @@
+        -:    0:Source:1853.c
+        -:    0:Graph:1853.gcno
+        -:    0:Data:1853.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-optimized -fdump-ipa-profile-optimized" } */
+        -:    2:int a[1000];
+        -:    3:int b = 997;
+        1:    4:int main() {
+        -:    5:  int i;
+     1001:    6:  for (i = 0; i < 1000; i++)
+     1000:    7:    if (a[i] != 1)
+     1000:    8:      a[i] /= b;
+        -:    9:    else
+    #####:   10:      a[i] /= b;
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:/* autofdo does not do value profiling so far */
+        -:   14:/* { dg-final-use-not-autofdo { scan-ipa-dump "Transformation done: div.mod by
+        -:   15: * constant 997" "profile" } } */
+        -:   16:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */

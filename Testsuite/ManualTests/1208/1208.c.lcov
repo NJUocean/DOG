@@ -1,0 +1,63 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable" } */
+    3|       |
+    4|       |#define INT_MAX __INT_MAX__
+    5|      4|#define INT_MIN (-__INT_MAX__ - 1)
+    6|       |#define LONG_MAX __LONG_MAX__
+    7|      4|#define LONG_MIN (-__LONG_MAX__ - 1L)
+    8|       |#define LLONG_MAX __LONG_LONG_MAX__
+    9|       |#define LLONG_MIN (-__LONG_LONG_MAX__ - 1L)
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  volatile int j = INT_MIN;
+   13|      1|  volatile int i = 1;
+   14|      1|  volatile int k = j - i;
+   15|      1|  j--;
+   16|      1|  j = INT_MIN + 100;
+   17|      1|  j -= (1 << 10);
+   18|      1|
+   19|      1|  j = INT_MIN;
+   20|      1|  i = -1;
+   21|      1|  k = j - -i;
+   22|      1|
+   23|      1|  i = INT_MIN + 1000;
+   24|      1|  i -= (1 << 20);
+   25|      1|
+   26|      1|  volatile long int l = LONG_MIN;
+   27|      1|  volatile long int m = 1;
+   28|      1|  volatile long int n = l - m;
+   29|      1|  l--;
+   30|      1|  l = LONG_MIN + 100;
+   31|      1|  l -= (1 << 10);
+   32|      1|
+   33|      1|  l = LONG_MIN;
+   34|      1|  m = -1;
+   35|      1|  n = l - -m;
+   36|      1|
+   37|      1|  m = LONG_MIN + 1000;
+   38|      1|  m -= (1 << 20);
+   39|      1|
+   40|      1|  return 0;
+   41|      1|}
+   42|       |
+   43|       |/* { dg-output "signed integer overflow: -2147483648 - 1 cannot be represented
+   44|       | * in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   45|       |/* { dg-output "\[^\n\r]*signed integer overflow: -2147483648 - 1 cannot be
+   46|       | * represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   47|       |/* { dg-output "\[^\n\r]*signed integer overflow: -2147483548 - 1024 cannot be
+   48|       | * represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   49|       |/* { dg-output "\[^\n\r]*signed integer overflow: -2147483648 - 1 cannot be
+   50|       | * represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   51|       |/* { dg-output "\[^\n\r]*signed integer overflow: -2147482648 - 1048576 cannot
+   52|       | * be represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   53|       |/* { dg-output "\[^\n\r]*signed integer overflow: -\[^\n\r]* - 1 cannot be
+   54|       | * represented in type 'long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   55|       |/* { dg-output "\[^\n\r]*signed integer overflow: -\[^\n\r]* - 1 cannot be
+   56|       | * represented in type 'long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   57|       |/* { dg-output "\[^\n\r]*signed integer overflow: -\[^\n\r]* - 1024 cannot be
+   58|       | * represented in type 'long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   59|       |/* { dg-output "\[^\n\r]*signed integer overflow: -\[^\n\r]* - 1 cannot be
+   60|       | * represented in type 'long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   61|       |/* { dg-output "\[^\n\r]*signed integer overflow: -\[^\n\r]* - 1048576 cannot be
+   62|       | * represented in type 'long int'" } */
+

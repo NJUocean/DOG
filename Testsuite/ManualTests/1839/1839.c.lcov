@@ -1,0 +1,28 @@
+    1|       |typedef struct {
+    2|       |  char y;
+    3|       |  char x[32];
+    4|       |} X;
+    5|       |
+    6|      1|int z(void) {
+    7|      1|  X xxx;
+    8|      1|  xxx.x[0] = xxx.x[31] = '0';
+    9|      1|  xxx.y = 0xf;
+   10|      1|  return f(xxx, xxx);
+   11|      1|}
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  int val;
+   15|      1|
+   16|      1|  val = z();
+   17|      1|  if (val != 0x60)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+   21|       |
+   22|      1|int f(X x, X y) {
+   23|      1|  if (x.y != y.y)
+   24|      0|    return 'F';
+   25|      1|
+   26|      1|  return x.x[0] + y.x[0];
+   27|      1|}
+

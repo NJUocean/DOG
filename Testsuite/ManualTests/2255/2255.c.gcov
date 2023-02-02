@@ -1,0 +1,10 @@
+        -:    0:Source:2255.c
+        -:    0:Graph:2255.gcno
+        -:    0:Data:2255.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  int volatile p;
+        -:    3:  int i;
+ 10000001:    4:  for (i = 10000000; i > 0; i--)
+ 10000000:    5:    p = i >> 10;
+        -:    6:}

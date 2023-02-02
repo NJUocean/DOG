@@ -1,0 +1,13 @@
+        -:    0:Source:3596.c
+        -:    0:Graph:3596.gcno
+        -:    0:Data:3596.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:unsigned int foo(int n) { return ~((unsigned int)~n); }
+        -:    4:
+        1:    5:int main() {
+        1:    6:  if (foo(0) != 0)
+    #####:    7:    abort();
+        1:    8:  return 0;
+        -:    9:}

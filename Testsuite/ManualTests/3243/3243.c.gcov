@@ -1,0 +1,61 @@
+        -:    0:Source:3243.c
+        -:    0:Graph:3243.gcno
+        -:    0:Data:3243.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/7042.  When reorg.c changed branches into return insns, it
+        -:    2:   completely forgot about any current_function_epilogue_delay_list and
+        -:    3:   dropped those insns.  Uncovered on cris-axis-elf, where an insn in an
+        -:    4:   epilogue delay-slot set the return-value register with the testcase
+        -:    5:   below.  Derived from ghostscript-6.52 (GPL) by hp@axis.com.  */
+        -:    6:
+        -:    7:typedef struct font_hints_s {
+        -:    8:  int axes_swapped;
+        -:    9:  int x_inverted, y_inverted;
+        -:   10:} font_hints;
+        -:   11:typedef struct gs_fixed_point_s {
+        -:   12:  long x, y;
+        -:   13:} gs_fixed_point;
+        -:   14:
+        3:   15:int line_hints(const font_hints *fh, const gs_fixed_point *p0,
+        -:   16:               const gs_fixed_point *p1) {
+        3:   17:  long dx = p1->x - p0->x;
+        3:   18:  long dy = p1->y - p0->y;
+        -:   19:  long adx, ady;
+        3:   20:  int xi = fh->x_inverted, yi = fh->y_inverted;
+        -:   21:  int hints;
+        3:   22:  if (xi)
+        1:   23:    dx = -dx;
+        3:   24:  if (yi)
+        1:   25:    dy = -dy;
+        3:   26:  if (fh->axes_swapped) {
+    #####:   27:    long t = dx;
+    #####:   28:    int ti = xi;
+    #####:   29:    dx = dy, xi = yi;
+    #####:   30:    dy = t, yi = ti;
+        -:   31:  }
+        3:   32:  adx = dx < 0 ? -dx : dx;
+        3:   33:  ady = dy < 0 ? -dy : dy;
+        3:   34:  if (dy != 0 && (adx <= ady >> 4)) {
+       1*:   35:    hints = dy > 0 ? 2 : 1;
+        1:   36:    if (xi)
+        1:   37:      hints ^= 3;
+        2:   38:  } else if (dx != 0 && (ady <= adx >> 4)) {
+       2*:   39:    hints = dx < 0 ? 8 : 4;
+        2:   40:    if (yi)
+        1:   41:      hints ^= 12;
+        -:   42:  } else
+    #####:   43:    hints = 0;
+        3:   44:  return hints;
+        -:   45:}
+        1:   46:int main() {
+        -:   47:  static font_hints fh[] = {{0, 1, 0}, {0, 0, 1}, {0, 0, 0}};
+        -:   48:  static gs_fixed_point gsf[] = {{0x30000, 0x13958},
+        -:   49:                                 {0x30000, 0x18189},
+        -:   50:                                 {0x13958, 0x30000},
+        -:   51:                                 {0x18189, 0x30000}};
+        2:   52:  if (line_hints(fh, gsf, gsf + 1) != 1 ||
+        2:   53:      line_hints(fh + 1, gsf + 2, gsf + 3) != 8 ||
+        1:   54:      line_hints(fh + 2, gsf + 2, gsf + 3) != 4)
+    #####:   55:    abort();
+        1:   56:  exit(0);
+        -:   57:}

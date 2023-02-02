@@ -1,0 +1,40 @@
+        -:    0:Source:1973.c
+        -:    0:Graph:1973.gcno
+        -:    0:Data:1973.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/71408 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Os" } */
+        -:    4:
+        -:    5:#if __SIZEOF_INT__ >= 4
+        -:    6:unsigned a, b;
+        -:    7:
+        -:    8:struct S0 {
+        -:    9:  int f1 : 18;
+        -:   10:  unsigned f3 : 4;
+        -:   11:};
+        -:   12:#else
+        -:   13:__UINT32_TYPE__ a, b;
+        -:   14:
+        -:   15:struct S0 {
+        -:   16:  __INT32_TYPE__ f1 : 18;
+        -:   17:  unsigned f3 : 4;
+        -:   18:};
+        -:   19:#endif
+        -:   20:
+        1:   21:void fn1() {
+        1:   22:  struct S0 c = {7, 0};
+        1:   23:  if (c.f1)
+        1:   24:    c.f3 = 3;
+        1:   25:  a = -~c.f3;
+       1*:   26:  c.f3 = ~(c.f1 && c.f1);
+        1:   27:  c.f1 = c.f3 * (c.f1 - (c.f1 - a % c.f1)) + ~c.f3 * -a;
+        1:   28:  b = ~(c.f1 & a);
+        1:   29:  if (b >= 4294967295)
+    #####:   30:    __builtin_abort();
+        1:   31:}
+        -:   32:
+        1:   33:int main() {
+        1:   34:  fn1();
+        1:   35:  return 0;
+        -:   36:}

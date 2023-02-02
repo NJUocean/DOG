@@ -1,0 +1,30 @@
+        -:    0:Source:3361.c
+        -:    0:Graph:3361.gcno
+        -:    0:Data:3361.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that
+        -:    2:
+        -:    3:   var <= 0 || ((long unsigned) (unsigned) (var - 1) < MAX_UNSIGNED_INT)
+        -:    4:
+        -:    5:   gets folded to 1.  */
+        -:    6:
+        -:    7:#include <limits.h>
+        -:    8:
+        -:    9:void abort(void);
+        -:   10:void link_failure(void);
+        -:   11:
+        -:   12:volatile int v;
+        -:   13:
+        1:   14:void foo(int var) {
+       1*:   15:  if (!(var <= 0 || ((long unsigned)(unsigned)(var - 1) < UINT_MAX)))
+    #####:   16:    link_failure();
+        1:   17:}
+        -:   18:
+        1:   19:int main(int argc, char **argv) {
+        1:   20:  foo(v);
+        1:   21:  return 0;
+        -:   22:}
+        -:   23:
+        -:   24:#ifndef __OPTIMIZE__
+    #####:   25:void link_failure(void) { abort(); }
+        -:   26:#endif

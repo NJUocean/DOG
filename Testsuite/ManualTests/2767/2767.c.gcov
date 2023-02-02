@@ -1,0 +1,33 @@
+        -:    0:Source:2767.c
+        -:    0:Graph:2767.gcno
+        -:    0:Data:2767.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright 2001 Free Software Foundation
+        -:    2:   Contributed by Alexandre Oliva <aoliva@redhat.com> */
+        -:    3:
+        1:    4:int f(int i) {
+        1:    5:  switch (i) {
+    #####:    6:  case -2:
+    #####:    7:    return 33;
+        1:    8:  case -1:
+        1:    9:    return 0;
+    #####:   10:  case 0:
+    #####:   11:    return 7;
+    #####:   12:  case 1:
+    #####:   13:    return 4;
+    #####:   14:  case 2:
+    #####:   15:    return 3;
+    #####:   16:  case 3:
+    #####:   17:    return 15;
+    #####:   18:  case 4:
+    #####:   19:    return 9;
+    #####:   20:  default:
+    #####:   21:    abort();
+        -:   22:  }
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  if (f(-1))
+    #####:   27:    abort();
+        1:   28:  exit(0);
+        -:   29:}

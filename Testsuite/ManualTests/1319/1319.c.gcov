@@ -1,0 +1,27 @@
+        -:    0:Source:1319.c
+        -:    0:Graph:1319.gcno
+        -:    0:Data:1319.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-tree-sra" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct Foo {
+        -:    6:  int *p;
+        -:    7:} x;
+        1:    8:struct Foo __attribute__((noinline)) bar(int *p) {
+        -:    9:  struct Foo f;
+        1:   10:  f.p = p;
+        1:   11:  return f;
+        -:   12:}
+        1:   13:void __attribute__((noinline)) foo() { *x.p = 0; }
+        1:   14:int main() {
+        -:   15:  int b;
+        1:   16:  b = 1;
+        1:   17:  struct Foo g = bar(&b);
+        1:   18:  x = g;
+        1:   19:  foo();
+        1:   20:  if (b != 0)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,30 @@
+        -:    0:Source:1188.c
+        -:    0:Graph:1188.gcno
+        -:    0:Data:1188.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93982 - Assignment incorrectly omitted by
+        -:    2:   -foptimize-strlen
+        -:    3:   { dg-do run }
+        -:    4:   { dg-options "-O2 -Wall" } */
+        -:    5:
+        -:    6:struct A {
+        -:    7:  const char **a;
+        -:    8:};
+        -:    9:const char *buf[5];
+        -:   10:
+        1:   11:__attribute__((noipa)) struct A foo(char *p) {
+        1:   12:  struct A r = {(const char **)p};
+        1:   13:  r.a[0] = "12345678";
+        1:   14:  r.a[1] = "";
+        1:   15:  r.a[2] = "";
+        1:   16:  r.a[3] = "";
+        1:   17:  r.a[4] = "";
+        1:   18:  return r;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  struct A r = foo((char *)&buf[0]);
+        1:   23:  if (!r.a[1] || r.a[1][0] != '\0')
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

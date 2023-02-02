@@ -1,0 +1,26 @@
+    1|       |/* Test LOOP recognition */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O1 -mloop" } */
+    5|       |
+    6|       |/* -O1 in the options is significant.  Without it do-loop will not be
+    7|       |   run.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|unsigned int test_loop_ubyte_101(void) {
+   12|      1|  unsigned int i;
+   13|      1|  volatile unsigned int s = 0;
+   14|      1|
+   15|    102|  for (i = 0; i < 101; i++)
+   16|    101|    s++;
+   17|      1|  return s;
+   18|      1|}
+   19|       |
+   20|      1|int main(int argc, char **argv) {
+   21|      1|  if (test_loop_ubyte_101() != 101)
+   22|      0|    abort();
+   23|      1|
+   24|      1|  return 0;
+   25|      1|}
+

@@ -1,0 +1,24 @@
+    1|       |/* Origin: PR c/5420 from David Mosberger <davidm@hpl.hp.com>.
+    2|       |   This testcase was miscompiled when tail call optimizing, because a
+    3|       |   compound literal initialization was emitted only in the tail call insn
+    4|       |   chain, not in the normal call insn chain.  */
+    5|       |
+    6|       |typedef struct {
+    7|       |  unsigned short a;
+    8|       |} A;
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|      2|void foo(unsigned int x) {
+   14|      2|  if (x != 0x800 && x != 0x810)
+   15|      0|    abort();
+   16|      2|}
+   17|       |
+   18|      1|int main(int argc, char **argv) {
+   19|      1|  int i;
+   20|      3|  for (i = 0; i < 2; ++i)
+   21|      2|    foo(((A){((!(i >> 4) ? 8 : 64 + (i >> 4)) << 8) + (i << 4)}).a);
+   22|      1|  exit(0);
+   23|      1|}
+

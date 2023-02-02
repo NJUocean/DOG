@@ -1,0 +1,37 @@
+        -:    0:Source:79.c
+        -:    0:Graph:79.gcno
+        -:    0:Data:79.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:
+        -:    4:/* Verify that GCC's initialized flexible array member extension
+        -:    5:   works properly.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        -:   10:struct f {
+        -:   11:  int w;
+        -:   12:  int x[];
+        -:   13:};
+        -:   14:struct g {
+        -:   15:  int w;
+        -:   16:  int x[0];
+        -:   17:};
+        -:   18:
+        -:   19:static struct f f = {4, {0, 1, 2, 3}};
+        -:   20:static int junk1[] = {-1, -1, -1, -1};
+        -:   21:static struct g g = {
+        -:   22:    4,
+        -:   23:    {0, 1, 2,
+        -:   24:     3}}; /* { dg-warning "(excess elements)|(near initialization)" } */
+        -:   25:static int junk2[] = {-1, -1, -1, -1};
+        -:   26:
+        1:   27:int main() {
+        -:   28:  int i;
+        5:   29:  for (i = 0; i < f.w; ++i)
+        4:   30:    if (f.x[i] != i)
+    #####:   31:      abort();
+        1:   32:  exit(0);
+        -:   33:}

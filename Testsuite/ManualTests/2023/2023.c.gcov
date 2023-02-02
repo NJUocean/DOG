@@ -1,0 +1,19 @@
+        -:    0:Source:2023.c
+        -:    0:Graph:2023.gcno
+        -:    0:Data:2023.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fdump-tree-pcom-details" } */
+        -:    3:
+        -:    4:int b, f, d[5][2];
+        -:    5:unsigned int c;
+        -:    6:
+        1:    7:int main() {
+        3:    8:  for (c = 0; c < 2; c++)
+        2:    9:    if (d[b + 3][c] & d[b + 4][c])
+    #####:   10:      if (f)
+    #####:   11:        break;
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-tree-dump "Executing predictive commoning" "pcom" } } */

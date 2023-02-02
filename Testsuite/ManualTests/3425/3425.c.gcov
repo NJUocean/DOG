@@ -1,0 +1,37 @@
+        -:    0:Source:3425.c
+        -:    0:Graph:3425.gcno
+        -:    0:Data:3425.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/31691 */
+        -:    2:/* Origin: Chi-Hua Chen <stephaniechc-gccbug@yahoo.com> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:static int get_kind(int) __attribute__((noinline));
+        -:    7:
+        1:    8:static int get_kind(int v) {
+        1:    9:  volatile int k = v;
+        1:   10:  return k;
+        -:   11:}
+        -:   12:
+        -:   13:static int some_call(void) __attribute__((noinline));
+        -:   14:
+        1:   15:static int some_call(void) { return 0; }
+        -:   16:
+        1:   17:static void example(int arg) {
+        1:   18:  int tmp, kind = get_kind(arg);
+        -:   19:
+       1*:   20:  if (kind == 9 || kind == 10 || kind == 5) {
+        1:   21:    if (some_call() == 0) {
+        1:   22:      if (kind == 9 || kind == 10)
+        1:   23:        tmp = arg;
+        -:   24:      else
+    #####:   25:        abort();
+        -:   26:    }
+        -:   27:  }
+        1:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  example(10);
+        1:   32:  return 0;
+        -:   33:}

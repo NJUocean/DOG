@@ -1,0 +1,66 @@
+    1|       |/* OpenACC cache directive: invalid usage.  */
+    2|       |
+    3|      1|int main(int argc, char **argv) {
+    4|      9|#define N 2
+    5|      1|  int a[N], b[N];
+    6|      1|  int i;
+    7|      1|
+    8|      3|  for (i = 0; i < N; i++) {
+    9|      2|    a[i] = 3;
+   10|      2|    b[i] = 0;
+   11|      2|  }
+   12|      1|
+   13|      1|#pragma acc parallel copyin(a [0:N]) copyout(b [0:N])
+   14|      1|  {
+   15|      1|    int ii;
+   16|      1|
+   17|      3|    for (ii = 0; ii < N; ii++) {
+   18|      2|      const int idx = ii;
+   19|      2|      int n = 1;
+   20|      2|      const int len = n;
+   21|      2|
+   22|      2|#pragma acc cache /* { dg-error "expected '\\\(' before end of line" } */
+   23|      2|#pragma acc cache a[0 : N] /* { dg-error "expected '\\\(' before 'a'" } */
+   24|      2|      /* { dg-bogus "expected end of line before 'a'" "" { xfail c++ } .-1 } */
+   25|      2|#pragma acc cache(a) /* { dg-error "expected '\\\['" } */
+   26|      2|#pragma acc cache(/* { dg-error "expected (identifier|unqualified-id) before   \
+   27|      2|                     end of line" } */
+   28|      2|#pragma acc cache() /* { dg-error "expected (identifier|unqualified-id) before \
+   29|      2|                       '\\\)' token" } */
+   30|      2|#pragma acc cache(, ) /* { dg-error "expected (identifier|unqualified-id)      \
+   31|      2|                         before '(,|\\\))' token" } */
+   32|      2|#pragma acc cache(                                                             \
+   33|      2|    a [0:N] /* { dg-error "expected '\\\)' before end of line" } */
+   34|      2|#pragma acc cache(a                                                            \
+   35|      2|                  [0:N], ) /* { dg-error "expected (identifier|unqualified-id) \
+   36|      2|                              before '(,|\\\))' token" "" { xfail c } } */
+   37|      2|#pragma acc cache(a [0:N])                                                     \
+   38|      2|    copyin(a [0:N]) /* { dg-error "expected end of line before 'copyin'" } */
+   39|      2|#pragma acc cache() /* { dg-error "expected (identifier|unqualified-id) before \
+   40|      2|                       '\\\)' token" } */
+   41|      2|#pragma acc cache(a [0:N] b                                                    \
+   42|      2|                  [0:N]) /* { dg-error "expected '\\\)' before 'b'" } */
+   43|      2|#pragma acc cache(a [0:N] b                                                    \
+   44|      2|                  [0:N }) /* { dg-error "expected '\\\)' before 'b'" } */
+   45|      2|      /* { dg-bogus "expected end of line before '\\\}' token" "" { xfail c++ }
+   46|      2|       * .-1 } */
+   47|      2|#pragma acc cache(                                                             \
+   48|      2|    a [0:N] /* { dg-error "expected '\\\)' before end of line" } */
+   49|      2|#pragma acc cache(                                                             \
+   50|      2|    a [0:N])(/* { dg-error "expected end of line before '\\(' token" } */
+   51|      2|#pragma acc cache(a [0:N])                                                     \
+   52|      2|    ii /* { dg-error "expected end of line before 'ii'" } */
+   53|      2|#pragma acc cache(a [0:N] ii) /* { dg-error "expected '\\)' before 'ii'" } */
+   54|      2|
+   55|      2|      b[ii] = a[ii];
+   56|      2|    }
+   57|      1|  }
+   58|      1|
+   59|      3|  for (i = 0; i < N; i++) {
+   60|      2|    if (a[i] != b[i])
+   61|      0|      __builtin_abort();
+   62|      2|  }
+   63|      1|
+   64|      1|  return 0;
+   65|      1|}
+

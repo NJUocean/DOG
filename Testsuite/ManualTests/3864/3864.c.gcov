@@ -1,0 +1,18 @@
+        -:    0:Source:3864.c
+        -:    0:Graph:3864.gcno
+        -:    0:Data:3864.gcda
+        -:    0:Runs:1
+        2:    1:static int __attribute__((noinline, noclone)) swap(int x) {
+        2:    2:  return (unsigned short)((unsigned short)x << 8 | (unsigned short)x >> 8);
+        -:    3:}
+        -:    4:
+        -:    5:static int a = 0x1234;
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int b = 0x1234;
+        1:    9:  if (swap(a) != 0x3412)
+    #####:   10:    __builtin_abort();
+        1:   11:  if (swap(b) != 0x3412)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

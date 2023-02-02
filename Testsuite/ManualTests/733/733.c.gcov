@@ -1,0 +1,43 @@
+        -:    0:Source:733.c
+        -:    0:Graph:733.gcno
+        -:    0:Data:733.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/88620 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Ofast --param ipa-cp-eval-threshold=0
+        -:    4: * -fno-guess-branch-probability -fno-inline-small-functions" } */
+        -:    5:/* { dg-require-effective-target alloca } */
+        -:    6:
+        1:    7:void foo(int n) {
+        1:    8:  struct S {
+        1:    9:    int a[n];
+        -:   10:  };
+        -:   11:
+        6:   12:  struct S fn(void) {
+        6:   13:    struct S s;
+        6:   14:    s.a[0] = 42;
+        6:   15:    return s;
+        -:   16:  }
+        -:   17:
+        2:   18:  auto struct S fn2(void) { return fn(); }
+        -:   19:
+        1:   20:  struct S x;
+        1:   21:  fn();
+        1:   22:  fn2();
+        1:   23:  x = fn();
+        -:   24:
+        1:   25:  if (x.a[0] != 42)
+    #####:   26:    __builtin_abort();
+        -:   27:
+        1:   28:  if (fn().a[0] != 42)
+    #####:   29:    __builtin_abort();
+        -:   30:
+        1:   31:  __typeof__(fn()) *p = &x;
+        1:   32:  if (p->a[0] != 42)
+    #####:   33:    __builtin_abort();
+        -:   34:
+        1:   35:  if (fn2().a[0] != 42)
+    #####:   36:    __builtin_abort();
+        1:   37:}
+        -:   38:
+        1:   39:int main(void) { foo(1); }

@@ -1,0 +1,39 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |struct A {
+    4|       |  struct A *a;
+    5|       |};
+    6|       |
+    7|       |struct B {
+    8|       |  struct A *b;
+    9|       |};
+   10|       |
+   11|      3|__attribute__((noinline)) struct A *foo(struct A *x) {
+   12|      3|  asm volatile("" : : "g"(x) : "memory");
+   13|      3|  return x;
+   14|      3|}
+   15|       |
+   16|       |__attribute__((noinline)) void bar(struct B *w, struct A *x, struct A *y,
+   17|      1|                                   struct A *z) {
+   18|      1|  struct A **c;
+   19|      1|  c = &w->b;
+   20|      1|  *c = foo(x);
+   21|      2|  while (*c)
+   22|      1|    c = &(*c)->a;
+   23|      1|  *c = foo(y);
+   24|      3|  while (*c)
+   25|      2|    c = &(*c)->a;
+   26|      1|  *c = foo(z);
+   27|      1|}
+   28|       |
+   29|       |struct B d;
+   30|       |struct A e, f, g;
+   31|       |
+   32|      1|int main(void) {
+   33|      1|  f.a = &g;
+   34|      1|  bar(&d, &e, &f, 0);
+   35|      1|  if (d.b == 0 || d.b->a == 0 || d.b->a->a == 0 || d.b->a->a->a != 0)
+   36|      0|    abort();
+   37|      1|  return 0;
+   38|      1|}
+

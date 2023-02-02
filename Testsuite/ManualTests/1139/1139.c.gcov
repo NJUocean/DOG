@@ -1,0 +1,60 @@
+        -:    0:Source:1139.c
+        -:    0:Graph:1139.gcno
+        -:    0:Data:1139.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable
+        -:    3: * -fno-sanitize-recover=signed-integer-overflow" } */
+        -:    4:
+        -:    5:#define SCHAR_MAX __SCHAR_MAX__
+        -:    6:#define SHRT_MAX __SHRT_MAX__
+        -:    7:#define INT_MAX __INT_MAX__
+        -:    8:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    9:
+       10:   10:void __attribute__((noinline, noclone)) check(int i, int j) {
+       10:   11:  if (i != j)
+    #####:   12:    __builtin_abort();
+       10:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:#if __INT_MAX__ == 2147483647
+        -:   17:  /* Here, nothing should fail.  */
+        1:   18:  volatile int j = INT_MAX;
+        1:   19:  volatile int i = -1;
+        1:   20:  volatile int k = j + i;
+        1:   21:  check(k, 2147483646);
+        1:   22:  k = i + j;
+        1:   23:  check(k, 2147483646);
+        1:   24:  j--;
+        1:   25:  check(j, 2147483646);
+        -:   26:
+        1:   27:  i = 1;
+        1:   28:  j = INT_MIN;
+        1:   29:  k = i + j;
+        1:   30:  check(k, -2147483647);
+        1:   31:  k = j + i;
+        1:   32:  check(k, -2147483647);
+        1:   33:  j++;
+        1:   34:  check(j, -2147483647);
+        -:   35:#endif
+        -:   36:
+        -:   37:  /* Test integer promotion.  */
+        -:   38:#if __SCHAR_MAX__ == 127
+        1:   39:  volatile signed char a = SCHAR_MAX;
+        1:   40:  volatile signed char b = 1;
+        1:   41:  volatile signed char c = a + b;
+        1:   42:  check(c, -128);
+        1:   43:  a++;
+        1:   44:  check(a, -128);
+        -:   45:#endif
+        -:   46:
+        -:   47:#if __SHRT_MAX__ == 32767
+        1:   48:  volatile short d = SHRT_MAX;
+        1:   49:  volatile short e = 1;
+        1:   50:  volatile short f = d + e;
+        1:   51:  check(f, -32768);
+        1:   52:  d++;
+        1:   53:  check(d, -32768);
+        -:   54:#endif
+        1:   55:  return 0;
+        -:   56:}

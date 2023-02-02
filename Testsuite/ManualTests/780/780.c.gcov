@@ -1,0 +1,23 @@
+        -:    0:Source:780.c
+        -:    0:Graph:780.gcno
+        -:    0:Data:780.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        1:    6:int f(int i1243) {
+        1:    7:  int i[2], *i1 = i;
+        1:    8:  i[0] = 1;
+        1:    9:  volatile int *i2 = i1;
+        1:   10:  i2[1] = 1;
+        1:   11:  i1243 = 0;
+        1:   12:  return i2[1] + i2[0];
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  if (f(100) != 2)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

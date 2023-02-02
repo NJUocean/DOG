@@ -1,0 +1,45 @@
+        -:    0:Source:3988.c
+        -:    0:Graph:3988.gcno
+        -:    0:Data:3988.gcda
+        -:    0:Runs:1
+        -:    1:struct twelve {
+        -:    2:  int a;
+        -:    3:  int b;
+        -:    4:  int c;
+        -:    5:};
+        -:    6:
+        -:    7:struct pair {
+        -:    8:  int first;
+        -:    9:  int second;
+        -:   10:};
+        -:   11:
+    #####:   12:struct pair g() {
+        -:   13:  struct pair p;
+    #####:   14:  return p;
+        -:   15:}
+        -:   16:
+        1:   17:static void f() {
+        -:   18:  int i;
+        2:   19:  for (i = 0; i < 1; i++) {
+        -:   20:    int j;
+        2:   21:    for (j = 0; j < 1; j++) {
+        -:   22:      if (0) {
+        -:   23:        int k;
+        -:   24:        for (k = 0; k < 1; k++) {
+        -:   25:          struct pair e = g();
+        -:   26:        }
+        -:   27:      } else {
+        -:   28:        struct twelve a, b;
+        1:   29:        if ((((char *)&b - (char *)&a) < 0
+    #####:   30:                 ? (-((char *)&b - (char *)&a))
+       1*:   31:                 : ((char *)&b - (char *)&a)) < sizeof(a))
+    #####:   32:          abort();
+        -:   33:      }
+        -:   34:    }
+        -:   35:  }
+        1:   36:}
+        -:   37:
+        1:   38:main() {
+        1:   39:  f();
+        1:   40:  exit(0);
+        -:   41:}

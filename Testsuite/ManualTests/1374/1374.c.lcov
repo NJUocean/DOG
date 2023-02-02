@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-toplevel-reorder" } */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct S {
+    8|       |  signed a : 26;
+    9|       |  signed b : 16;
+   10|       |  signed c : 10;
+   11|       |  volatile signed d : 14;
+   12|       |};
+   13|       |
+   14|       |static struct S e = {0, 0, 0, 1};
+   15|       |static int f = 1;
+   16|       |
+   17|      1|void __attribute__((noinline)) foo(void) {
+   18|      1|  e.d = 0;
+   19|      1|  f = 2;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  if (e.a || e.b || e.c || e.d != 1 || f != 1)
+   24|      0|    abort();
+   25|      1|  foo();
+   26|      1|  if (e.a || e.b || e.c || e.d || f != 2)
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

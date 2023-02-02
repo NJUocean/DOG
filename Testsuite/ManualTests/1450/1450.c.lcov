@@ -1,0 +1,22 @@
+    1|       |struct complex {
+    2|       |  float r;
+    3|       |  float i;
+    4|       |};
+    5|       |
+    6|       |struct complex cmplx(float, float);
+    7|       |
+    8|      1|struct complex f(float a, float b) {
+    9|      1|  struct complex c;
+   10|      1|  c.r = a;
+   11|      1|  c.i = b;
+   12|      1|  return c;
+   13|      1|}
+   14|       |
+   15|      1|main() {
+   16|      1|  struct complex z = f(1.0, 0.0);
+   17|      1|
+   18|      1|  if (z.r != 1.0 || z.i != 0.0)
+   19|      0|    abort();
+   20|      1|  exit(0);
+   21|      1|}
+

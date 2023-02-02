@@ -1,0 +1,25 @@
+    1|       |/* PR tree-optimization/65053 */
+    2|       |
+    3|       |int i;
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) unsigned int foo(void) { return 0; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  unsigned int u = -1;
+    9|      1|  if (u == -1) {
+   10|      1|    unsigned int n = foo();
+   11|      1|    if (n > 0)
+   12|      0|      u = n - 1;
+   13|      1|  }
+   14|      1|
+   15|      1|  while (u != -1) {
+   16|      0|    asm("" : "+g"(u));
+   17|      0|    u = -1;
+   18|      0|    i = 1;
+   19|      0|  }
+   20|      1|
+   21|      1|  if (i)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

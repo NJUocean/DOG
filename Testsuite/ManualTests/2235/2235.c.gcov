@@ -1,0 +1,18 @@
+        -:    0:Source:2235.c
+        -:    0:Graph:2235.gcno
+        -:    0:Data:2235.gcda
+        -:    0:Runs:1
+        -:    1:int a;
+        -:    2:
+        1:    3:int main() {
+        1:    4:  int b = a;
+        -:    5:
+        2:    6:  for (a = 1; a > 0; a--)
+        -:    7:    ;
+        -:    8:
+        1:    9:lbl:
+       1*:   10:  if (b && a)
+    #####:   11:    goto lbl;
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

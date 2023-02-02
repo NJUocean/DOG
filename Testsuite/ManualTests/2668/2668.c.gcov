@@ -1,0 +1,20 @@
+        -:    0:Source:2668.c
+        -:    0:Graph:2668.gcno
+        -:    0:Data:2668.gcda
+        -:    0:Runs:1
+        -:    1:short x1 = 17;
+        -:    2:
+        -:    3:struct {
+        -:    4:  short i __attribute__((packed));
+        -:    5:} t;
+        -:    6:
+        1:    7:f() {
+        1:    8:  t.i = x1;
+        1:    9:  if (t.i != 17)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:main() {
+        1:   14:  f();
+        1:   15:  exit(0);
+        -:   16:}

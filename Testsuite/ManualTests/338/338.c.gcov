@@ -1,0 +1,58 @@
+        -:    0:Source:338.c
+        -:    0:Graph:338.gcno
+        -:    0:Data:338.gcda
+        -:    0:Runs:1
+        -:    1:/* Duff's device is legal C; test to make sure the compiler
+        -:    2:   doesn't complain about it.
+        -:    3:
+        -:    4:   Jason Thorpe <thorpej@wasabisystems.com>
+        -:    5:   Derived from the BSD Telnet Kerberos 4 checksum routine.
+        -:    6:   See also PR 5230.  */
+        -:    7:
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-O2" } */
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:extern void exit(int);
+        -:   13:
+        -:   14:#if __INT_MAX__ >= 2147483647
+        -:   15:/* At least 32-bit integers. */
+        -:   16:typedef int type32;
+        -:   17:#else
+        -:   18:typedef long type32;
+        -:   19:#endif
+        -:   20:
+        1:   21:type32 cksum(const unsigned char *src, unsigned long size) {
+        1:   22:  type32 ck = 0;
+        -:   23:
+        1:   24:  switch (size & 3) {
+       12:   25:    while (size > 0) {
+        -:   26:    case 0:
+       11:   27:      ck ^= (type32)*src++ << 24;
+       11:   28:      --size;
+       11:   29:    case 3:
+       11:   30:      ck ^= (type32)*src++ << 16;
+       11:   31:      --size;
+       12:   32:    case 2:
+       12:   33:      ck ^= (type32)*src++ << 8;
+       12:   34:      --size;
+       12:   35:    case 1:
+       12:   36:      ck ^= (type32)*src++;
+       12:   37:      --size;
+        -:   38:    }
+        -:   39:  }
+        -:   40:
+        1:   41:  return ck;
+        -:   42:}
+        -:   43:
+        -:   44:const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+        -:   45:
+        1:   46:int main() {
+        -:   47:  type32 ck;
+        -:   48:
+        1:   49:  ck = cksum((const unsigned char *)testpat, sizeof(testpat));
+        1:   50:  if (ck != 925902908)
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  exit(0);
+        -:   54:}

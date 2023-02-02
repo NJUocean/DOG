@@ -1,0 +1,23 @@
+        -:    0:Source:867.c
+        -:    0:Graph:867.gcno
+        -:    0:Data:867.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:/* { dg-additional-options "-msse" { target i?86-*-* x86_64-*-* } } */
+        -:    4:/* { dg-require-effective-target sse_runtime { target { i?86-*-* x86_64-*-* } }
+        -:    5: * } */
+        -:    6:
+        -:    7:typedef float v2sf __attribute__((vector_size(2 * sizeof(float))));
+        -:    8:
+        1:    9:static void test(void) {
+        1:   10:  v2sf a = {1.0, 0.0};
+        1:   11:  v2sf b = {0.0, 1.0};
+        -:   12:  v2sf d;
+        1:   13:  d = a + b;
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  test();
+        1:   18:  return 0;
+        -:   19:}

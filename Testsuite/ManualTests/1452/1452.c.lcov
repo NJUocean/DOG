@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void) __attribute__((noreturn));
+    4|       |
+    5|      1|int main() {
+    6|      1|  int sum = 0;
+    7|      1|  {
+    8|      1|    long a[20];
+    9|      1|    long *c;
+   10|      1|    c = a;
+   11|      1|    asm("" : "=r"(c) : "0"(c));
+   12|      1|    *c = 0;
+   13|      1|    asm("" : "=r"(c) : "0"(c));
+   14|      1|    sum += *c;
+   15|      1|  }
+   16|      1|  {
+   17|      1|    long long b[10];
+   18|      1|    long long *c;
+   19|      1|    c = b;
+   20|      1|    asm("" : "=r"(c) : "0"(c));
+   21|      1|    *c = 1;
+   22|      1|    asm("" : "=r"(c) : "0"(c));
+   23|      1|    sum += *c;
+   24|      1|  }
+   25|      1|
+   26|      1|  if (sum != 1)
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

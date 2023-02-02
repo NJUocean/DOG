@@ -1,0 +1,22 @@
+        -:    0:Source:3393.c
+        -:    0:Graph:3393.gcno
+        -:    0:Data:3393.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target untyped_assembly } */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct type {
+        -:    5:  int *a;
+        -:    6:
+        -:    7:  int b : 16;
+        -:    8:  unsigned int p : 9;
+        -:    9:} t;
+        -:   10:
+        1:   11:unsigned int foo() { return t.p; }
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  t.p = 8;
+        1:   15:  if (foo(t) != 8)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

@@ -1,0 +1,25 @@
+    1|       |/* { dg-do compile { target powerpc*-*-darwin* } } */
+    2|       |/* { dg-options "-O2 -mpowerpc64 -mdynamic-no-pic" } */
+    3|       |
+    4|       |long long knight_attacks[64];
+    5|       |long long InitializeAttackBoards(void);
+    6|       |
+    7|      1|int main() { return InitializeAttackBoards(); }
+    8|       |
+    9|      1|long long InitializeAttackBoards(void) {
+   10|      1|
+   11|      1|  int i, j;
+   12|      1|
+   13|     65|  for (i = 0; i < 64; i++) {
+   14|     64|  }
+   15|      1|
+   16|     65|  for (i = 0; i < 64; i++) {
+   17|     64|    knight_attacks[i] = 0;
+   18|    576|    for (j = 0; j < 8; j++) {
+   19|    512|      knight_attacks[i] = 0;
+   20|    512|    }
+   21|     64|  }
+   22|      1|
+   23|      1|  return knight_attacks[0];
+   24|      1|}
+

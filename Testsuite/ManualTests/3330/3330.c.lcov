@@ -1,0 +1,27 @@
+    1|       |/* PR optimization/10312 */
+    2|       |/* Originator: Peter van Hoof <p dot van-hoof at qub dot ac dot uk> */
+    3|       |
+    4|       |/* Verify that the strength reduction pass doesn't find
+    5|       |   illegitimate givs.  */
+    6|       |
+    7|       |struct {
+    8|       |  double a;
+    9|       |  int n[2];
+   10|       |} g = {0., {1, 2}};
+   11|       |
+   12|       |int k = 0;
+   13|       |
+   14|      1|void b(int *j) {}
+   15|       |
+   16|      1|int main() {
+   17|      1|  int j;
+   18|      1|
+   19|      3|  for (j = 0; j < 2; j++)
+   20|      2|    k = (k > g.n[j]) ? k : g.n[j];
+   21|      1|
+   22|      1|  k++;
+   23|      1|  b(&j);
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

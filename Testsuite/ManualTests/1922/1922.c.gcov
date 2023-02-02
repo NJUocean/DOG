@@ -1,0 +1,18 @@
+        -:    0:Source:1922.c
+        -:    0:Graph:1922.gcno
+        -:    0:Data:1922.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 12281  The darwin back-end was causing the function
+        -:    2:   f is not being emitted. TREE_SYMBOL_REFERENCED was being set
+        -:    3:   instead of calling mark_referenced.  */
+        -:    4:
+        -:    5:/* { dg-require-effective-target indirect_calls } */
+        -:    6:
+        -:    7:static void f(void);
+        1:    8:void g(void (*x)(void)) { x(); }
+        1:    9:static inline void f(void) {}
+        1:   10:void h() { g(f); }
+        1:   11:int main() {
+        1:   12:  h();
+        1:   13:  return 0;
+        -:   14:}

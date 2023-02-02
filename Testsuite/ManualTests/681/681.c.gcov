@@ -1,0 +1,20 @@
+        -:    0:Source:681.c
+        -:    0:Graph:681.gcno
+        -:    0:Data:681.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do run } */
+        -:    2:
+        -:    3:struct X {
+        -:    4:  int a;
+        -:    5:};
+        -:    6:
+        -:    7:typedef struct list_node *list;
+        -:    8:
+        -:    9:struct list_node {
+        -:   10:  list next;
+        -:   11:  struct X *value;
+        -:   12:};
+        -:   13:
+    #####:   14:list f(void) { return 0; }
+        -:   15:
+        1:   16:int main(void) { return 0; }

@@ -1,0 +1,12 @@
+    1|       |/* PR c++/52703 */
+    2|       |/* { dg-options -Wsign-conversion } */
+    3|       |
+    4|      1|unsigned f(unsigned x) { return x; }
+    5|       |
+    6|      1|int main() {
+    7|      1|  unsigned short a = 0;
+    8|      1|  unsigned b = a + 1;
+    9|      1|  f(a + 1);
+   10|      1|  return 0;
+   11|      1|}
+

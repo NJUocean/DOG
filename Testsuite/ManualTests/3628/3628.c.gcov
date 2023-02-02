@@ -1,0 +1,22 @@
+        -:    0:Source:3628.c
+        -:    0:Graph:3628.gcno
+        -:    0:Data:3628.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/38533 */
+        -:    2:
+        -:    3:#define A                                                                      \
+        -:    4:  asm volatile("" : "=r"(f) : "0"(0));                                         \
+        -:    5:  e |= f;
+        -:    6:#define B A A A A A A A A A A A
+        -:    7:#define C B B B B B B B B B B B
+        -:    8:
+        1:    9:int foo(void) {
+        1:   10:  int e = 0, f;
+        1:   11:  C C B B B B B A A A A A A return e;
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  if (foo())
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

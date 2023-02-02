@@ -1,0 +1,25 @@
+        -:    0:Source:1959.c
+        -:    0:Graph:1959.gcno
+        -:    0:Data:1959.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:int a, b = 1, *c = &a;
+        -:    5:
+        1:    6:int foo() {
+        1:    7:  if (b)
+        1:    8:    b |= 1;
+        -:    9:  else {
+    #####:   10:    b = 1;
+    #####:   11:    return 0;
+        -:   12:  }
+        1:   13:  return 1;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  *c = foo();
+        1:   18:  if (a != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,21 @@
+    1|       |/* PR tree-optimization/59014 */
+    2|       |
+    3|       |int a = 2, b, c, d;
+    4|       |
+    5|      1|int foo() {
+    6|      1|  for (;; c++)
+    7|      1|    if ((b > 0) | (a & 1))
+    8|      0|      ;
+    9|      1|    else {
+   10|      1|      d = a;
+   11|      1|      return 0;
+   12|      1|    }
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  foo();
+   17|      1|  if (d != 2)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

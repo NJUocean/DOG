@@ -1,0 +1,7 @@
+    1|       |foo(p) int *p;
+    2|      0|{ return (*p & 255) == 0; }
+    3|       |
+    4|      2|bar(a) { return (a & 0xfff00000) == 0; }
+    5|       |
+    6|      1|main() { printf("%d%d\n", bar(-1), bar(0)); }
+

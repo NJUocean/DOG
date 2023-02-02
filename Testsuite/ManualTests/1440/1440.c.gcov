@@ -1,0 +1,36 @@
+        -:    0:Source:1440.c
+        -:    0:Graph:1440.gcno
+        -:    0:Data:1440.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        2:    3:__attribute__((noinline, noclone)) void bar(int *b) { b[0] = b[1] = b[2] = 1; }
+        -:    4:
+        8:    5:__attribute__((noinline, noclone)) int baz(int x) {
+        8:    6:  if (x != 1)
+    #####:    7:    __builtin_abort();
+        8:    8:}
+        -:    9:
+        1:   10:void foo(int x) {
+        1:   11:  if (x == 0) {
+    #####:   12:    int *b = __builtin_malloc(3 * sizeof(int));
+    #####:   13:    while (b[0])
+        -:   14:      ;
+        1:   15:  } else if (x == 1) {
+        -:   16:    int i, j;
+        1:   17:    int *b = __builtin_malloc(3 * sizeof(int));
+        3:   18:    for (i = 0; i < 2; i++) {
+        2:   19:      bar(b);
+        8:   20:      for (j = 0; j < 3; ++j)
+        6:   21:        baz(b[j]);
+        2:   22:      baz(b[0]);
+        -:   23:    }
+        -:   24:  }
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  int x = 1;
+        1:   29:  asm volatile("" : "+r"(x));
+        1:   30:  foo(x);
+        1:   31:  return 0;
+        -:   32:}

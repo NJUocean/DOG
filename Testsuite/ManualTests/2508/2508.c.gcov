@@ -1,0 +1,45 @@
+        -:    0:Source:2508.c
+        -:    0:Graph:2508.gcno
+        -:    0:Data:2508.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target arm_neon_hw } */
+        -:    3:/* { dg-options "-fno-omit-frame-pointer -mapcs-frame -O" }
+        -:    4:/* { dg-add-options arm_neon } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:float data;
+        -:    9:
+    #####:   10:void __attribute__((noinline, noclone)) bar(float f) { data = f; }
+        -:   11:
+        1:   12:float __attribute__((noinline, noclone)) foo(float f) {
+        1:   13:  int error_reported = 0;
+        -:   14:
+        -:   15:  void __attribute__((noinline, noclone))
+        1:   16:  nested(int a, int b, int c, int d, float f0, float f1, float f2, float f3) {
+        -:   17:    float e;
+        -:   18:
+        1:   19:    if (f3 > f2)
+        1:   20:      e = f3;
+        -:   21:    else
+    #####:   22:      e = f2;
+        -:   23:
+        1:   24:    if (f0 - f1 > e) {
+    #####:   25:      error_reported = a + b + c + d;
+    #####:   26:      bar(f0);
+    #####:   27:      bar(e);
+        -:   28:    }
+        1:   29:  }
+        -:   30:
+        1:   31:  nested(1, 2, 3, 4, 1.0, 1.0, 3.5, 4.2);
+        1:   32:  return f + (float)error_reported;
+        -:   33:}
+        -:   34:
+        -:   35:#define PI 3.1415927f
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  if (foo(PI) != PI)
+    #####:   39:    abort();
+        1:   40:  return 0;
+        -:   41:}

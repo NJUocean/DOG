@@ -1,0 +1,26 @@
+        -:    0:Source:2553.c
+        -:    0:Graph:2553.gcno
+        -:    0:Data:2553.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:#ifdef __sun__
+        -:    8:#define COMMENT "/"
+        -:    9:#else
+        -:   10:#define COMMENT "#"
+        -:   11:#endif
+        -:   12:
+        1:   13:int main() {
+        -:   14:  int x;
+        -:   15:
+        1:   16:  asm("movl $26, %0 " COMMENT " 26 |-> reg \n\t"
+        -:   17:      "movl $28, %0"
+        -:   18:      : "=r"(x));
+        1:   19:  if (x != 28)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

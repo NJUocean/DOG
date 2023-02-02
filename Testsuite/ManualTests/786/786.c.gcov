@@ -1,0 +1,29 @@
+        -:    0:Source:786.c
+        -:    0:Graph:786.gcno
+        -:    0:Data:786.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:int func_pure(void) __attribute__((pure));
+        -:    5:void func_other(int);
+        -:    6:int global_int;
+        -:    7:void abort();
+       10:    8:void func_other(int a) {
+       10:    9:  if (a != global_int)
+    #####:   10:    abort();
+       10:   11:  global_int++;
+       10:   12:}
+        -:   13:
+       10:   14:int func_pure(void) { return global_int; }
+        -:   15:
+        1:   16:int func_loop(int arg) {
+        -:   17:  // global_int ++;
+       11:   18:  while (arg--)
+       10:   19:    func_other(func_pure());
+        1:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  func_loop(10);
+        1:   24:  return 0;
+        -:   25:}

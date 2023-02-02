@@ -1,0 +1,23 @@
+    1|       |/* PR target/30665: bug in cris.md peephole2 condition.
+    2|       |   Testcase for trunk.  */
+    3|       |/* { dg-do run } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|int __attribute__((__noinline__)) f(unsigned *p, int *x) {
+    9|      1|  int y = *p++ & 0xfff;
+   10|      1|  *x++ = y;
+   11|      1|  *x = *p;
+   12|      1|  return y;
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  unsigned u[2] = {0x3aad, 0x5ad1};
+   17|      1|  int x[2] = {17689, 23456};
+   18|      1|
+   19|      1|  if (f(u, x) != 0xaad || x[0] != 0xaad || x[1] != 0x5ad1)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

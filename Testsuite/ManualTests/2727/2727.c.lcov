@@ -1,0 +1,11 @@
+    1|       |/* PR target/82145 */
+    2|       |/* { dg-do compile { target { pie && lp64 } } } */
+    3|       |/* { dg-options "-O2 -fpie -mcmodel=large -march=haswell" } */
+    4|       |
+    5|       |int l;
+    6|       |
+    7|      1|int main() {
+    8|      1|  l++;
+    9|      1|  return 0;
+   10|      1|}
+

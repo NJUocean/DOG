@@ -1,0 +1,21 @@
+    1|      1|unsigned calc_mp(unsigned mod) {
+    2|      1|  unsigned a, b, c;
+    3|      1|  c = -1;
+    4|      1|  a = c / mod;
+    5|      1|  b = 0 - a * mod;
+    6|      1|  if (b > mod) {
+    7|      0|    a += 1;
+    8|      0|    b -= mod;
+    9|      0|  }
+   10|      1|  return b;
+   11|      1|}
+   12|       |
+   13|      1|int main(int argc, char *argv[]) {
+   14|      1|  unsigned x = 1234;
+   15|      1|  unsigned y = calc_mp(x);
+   16|      1|
+   17|      1|  if ((sizeof(y) == 4 && y != 680) || (sizeof(y) == 2 && y != 134))
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

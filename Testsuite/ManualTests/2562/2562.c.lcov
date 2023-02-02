@@ -1,0 +1,27 @@
+    1|       |/* Test that stack alignment is preserved with pending_stack_adjust
+    2|       |   with stdcall functions.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-effective-target ia32 } */
+    6|       |/* { dg-options -mpreferred-stack-boundary=4 } */
+    7|       |
+    8|       |void __attribute__((stdcall)) foo(int a, int b, int c);
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|      1|int main() {
+   14|      1|  foo(1, 2, 3);
+   15|      1|  foo(1, 2, 3);
+   16|      1|  exit(0);
+   17|      1|}
+   18|       |
+   19|      2|void __attribute__((stdcall)) foo(int a, int b, int c) {
+   20|      2|  static int last_align = -1;
+   21|      2|  int dummy, align = (int)&dummy & 15;
+   22|      2|  if (last_align < 0)
+   23|      1|    last_align = align;
+   24|      1|  else if (align != last_align)
+   25|      0|    abort();
+   26|      2|}
+

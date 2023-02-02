@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-div-by-zero" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  volatile const unsigned long int o = 1UL;
+    6|      1|  int zero = 0;
+    7|      1|
+    8|      1|  o / 0;
+    9|      1|  1UL / 0;
+   10|      1|  1UL / zero;
+   11|      1|  o / zero;
+   12|      1|  o / (++zero - 1);
+   13|      1|
+   14|      1|  return 0;
+   15|      1|}
+   16|       |
+   17|       |/* { dg-output "division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   18|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   19|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   20|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   21|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*" } */
+

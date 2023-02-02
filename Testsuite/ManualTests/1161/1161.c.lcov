@@ -1,0 +1,45 @@
+    1|       |/* PR tree-optimization/83843 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fdump-tree-store-merging" } */
+    4|       |/* { dg-final { scan-tree-dump-times "Merging successful" 3 "store-merging" {
+    5|       | * target { store_merge && { ! arm*-*-* } } } } } */
+    6|       |
+    7|      1|__attribute__((noipa)) void foo(unsigned char *buf, unsigned char *tab) {
+    8|      1|  unsigned v = tab[1] ^ (tab[0] << 8);
+    9|      1|  buf[0] = ~(v >> 8);
+   10|      1|  buf[1] = ~v;
+   11|      1|}
+   12|       |
+   13|      1|__attribute__((noipa)) void bar(unsigned char *buf, unsigned char *tab) {
+   14|      1|  unsigned v = tab[1] ^ (tab[0] << 8);
+   15|      1|  buf[0] = (v >> 8);
+   16|      1|  buf[1] = ~v;
+   17|      1|}
+   18|       |
+   19|      1|__attribute__((noipa)) void baz(unsigned char *buf, unsigned char *tab) {
+   20|      1|  unsigned v = tab[1] ^ (tab[0] << 8);
+   21|      1|  buf[0] = ~(v >> 8);
+   22|      1|  buf[1] = v;
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  volatile unsigned char l1 = 0;
+   27|      1|  volatile unsigned char l2 = 1;
+   28|      1|  unsigned char buf[2];
+   29|      1|  unsigned char tab[2] = {l1 + 1, l2 * 2};
+   30|      1|  foo(buf, tab);
+   31|      1|  if (buf[0] != (unsigned char)~1 || buf[1] != (unsigned char)~2)
+   32|      0|    __builtin_abort();
+   33|      1|  buf[0] = l1 + 7;
+   34|      1|  buf[1] = l2 * 8;
+   35|      1|  bar(buf, tab);
+   36|      1|  if (buf[0] != 1 || buf[1] != (unsigned char)~2)
+   37|      0|    __builtin_abort();
+   38|      1|  buf[0] = l1 + 9;
+   39|      1|  buf[1] = l2 * 10;
+   40|      1|  baz(buf, tab);
+   41|      1|  if (buf[0] != (unsigned char)~1 || buf[1] != 2)
+   42|      0|    __builtin_abort();
+   43|      1|  return 0;
+   44|      1|}
+

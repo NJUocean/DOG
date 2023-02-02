@@ -1,0 +1,18 @@
+    1|       |/* Check the _MIPSEB and _MIPSEL macros are accurate.  */
+    2|       |/* { dg-do run } */
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|       |short foo = 1;
+    7|      1|int main() {
+    8|      1|  char *p = (char *)&foo;
+    9|      1|
+   10|       |#ifdef _MIPSEB
+   11|       |  if (p[0] != 0 || p[1] != 1)
+   12|       |#else
+   13|      1|  if (p[0] != 1 || p[1] != 0)
+   14|      0|#endif
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

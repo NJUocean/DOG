@@ -1,0 +1,19 @@
+        -:    0:Source:3944.c
+        -:    0:Graph:3944.gcno
+        -:    0:Data:3944.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  int a;
+        -:    3:  int b;
+        -:    4:  struct s *dummy;
+        -:    5:};
+        -:    6:
+       1*:    7:f(struct s *sp) { return sp && sp->a == -1 && sp->b == -1; }
+        -:    8:
+        1:    9:main() {
+        -:   10:  struct s x;
+        1:   11:  x.a = x.b = -1;
+        1:   12:  if (f(&x) == 0)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

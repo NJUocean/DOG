@@ -1,0 +1,38 @@
+        -:    0:Source:3497.c
+        -:    0:Graph:3497.gcno
+        -:    0:Data:3497.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/59138 */
+        -:    2:/* Testcase by John Regehr <regehr@cs.utah.edu> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#pragma pack(1)
+        -:    7:
+        -:    8:struct S0 {
+        -:    9:  int f0;
+        -:   10:  int f1;
+        -:   11:  int f2;
+        -:   12:  short f3;
+        -:   13:};
+        -:   14:
+        -:   15:short a = 1;
+        -:   16:
+        -:   17:struct S0 b = {1}, c, d, e;
+        -:   18:
+        1:   19:struct S0 fn1() {
+        1:   20:  return c;
+        -:   21:}
+        -:   22:
+        1:   23:void fn2(void) {
+        1:   24:  b = fn1();
+        1:   25:  a = 0;
+        1:   26:  d = e;
+        1:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        1:   30:  fn2();
+        1:   31:  if (a != 0)
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

@@ -1,0 +1,37 @@
+    1|       |struct vc_data {
+    2|       |  unsigned long space;
+    3|       |  unsigned char vc_palette[16 * 3];
+    4|       |};
+    5|       |
+    6|       |struct vc {
+    7|       |  struct vc_data *d;
+    8|       |};
+    9|       |
+   10|       |struct vc_data a_con;
+   11|       |struct vc vc_cons[63] = {&a_con};
+   12|       |int default_red[16];
+   13|       |int default_grn[16];
+   14|       |int default_blu[16];
+   15|       |
+   16|       |extern void bar(int);
+   17|       |
+   18|      1|void reset_palette(int currcons) {
+   19|      1|  int j, k;
+   20|     17|  for (j = k = 0; j < 16; j++) {
+   21|     16|    (vc_cons[currcons].d->vc_palette)[k++] = default_red[j];
+   22|     16|    (vc_cons[currcons].d->vc_palette)[k++] = default_grn[j];
+   23|     16|    (vc_cons[currcons].d->vc_palette)[k++] = default_blu[j];
+   24|     16|  }
+   25|      1|  bar(k);
+   26|      1|}
+   27|       |
+   28|      1|void bar(int k) {
+   29|      1|  if (k != 16 * 3)
+   30|      0|    abort();
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  reset_palette(0);
+   35|      1|  exit(0);
+   36|      1|}
+

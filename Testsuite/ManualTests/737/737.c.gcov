@@ -1,0 +1,21 @@
+        -:    0:Source:737.c
+        -:    0:Graph:737.gcno
+        -:    0:Data:737.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target global_constructor } */
+        -:    2:/* { dg-options "-O2 -fprofile-generate -fprofile-update=single
+        -:    3: * -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:__attribute__((no_profile_instrument_function)) int foo() { return 0; }
+        -:    6:
+        -:    7:__attribute__((no_profile_instrument_function)) int bar() { return 1; }
+        -:    8:
+        1:    9:int main() { return foo(); }
+        -:   10:
+        -:   11:/* { dg-final { scan-tree-dump-times "__gcov0\\.main.* = PROF_edge_counter" 1
+        -:   12: * "optimized"} } */
+        -:   13:/* { dg-final { scan-tree-dump-times "__gcov_indirect_call_profiler_v" 1
+        -:   14: * "optimized" } } */
+        -:   15:/* { dg-final { scan-tree-dump-times "__gcov_time_profiler_counter = " 1
+        -:   16: * "optimized" } } */
+        -:   17:/* { dg-final { scan-tree-dump-times "__gcov_init" 1 "optimized" } } */

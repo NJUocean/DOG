@@ -1,0 +1,21 @@
+    1|       |/* Copyright 2006 Free Software Foundation */
+    2|       |
+    3|       |/* Make sure a and a1 alias each other.
+    4|       |   Incomplete array types used to not be unified, which broke aliasing.  */
+    5|       |
+    6|       |/* { dg-do run } */
+    7|       |
+    8|       |typedef long atype[];
+    9|       |typedef long atype1[];
+   10|      1|int NumSift(atype *a, atype1 *a1) {
+   11|      1|  (*a)[0] = 0;
+   12|      1|  (*a1)[0] = 1;
+   13|      1|  return (*a)[0];
+   14|      1|}
+   15|      1|int main(void) {
+   16|      1|  long a[2];
+   17|      1|  if (!NumSift(&a, &a))
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

@@ -1,0 +1,42 @@
+        -:    0:Source:2001.c
+        -:    0:Graph:2001.gcno
+        -:    0:Data:2001.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fdump-tree-esra-details" } */
+        -:    3:
+        -:    4:volatile short vs;
+        -:    5:volatile long vl;
+        -:    6:
+        -:    7:struct A {
+        -:    8:  short s;
+        -:    9:  long i;
+        -:   10:  long j;
+        -:   11:};
+        -:   12:struct A a, b;
+        1:   13:void foo() {
+        -:   14:  struct A c;
+        1:   15:  __builtin_memcpy(&c, &b, sizeof(struct A));
+        1:   16:  __builtin_memcpy(&a, &c, sizeof(struct A));
+        -:   17:
+        1:   18:  vs = c.s;
+        1:   19:  vl = c.i;
+        1:   20:  vl = c.j;
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  if ((sizeof(short) != 2) || (__builtin_offsetof(struct A, i) < 4))
+        -:   25:    return 0;
+        -:   26:
+        1:   27:  __builtin_memset(&b, 0, sizeof(struct A));
+        1:   28:  b.s = 1;
+        1:   29:  __builtin_memcpy((char *)&b + 2, &b, 2);
+        1:   30:  foo();
+        1:   31:  __builtin_memcpy(&a, (char *)&a + 2, 2);
+        1:   32:  if (a.s != 1)
+    #####:   33:    __builtin_abort();
+        1:   34:  return 0;
+        -:   35:}
+        -:   36:
+        -:   37:/* { dg-final { scan-tree-dump-not "Will attempt to totally scalarize" "esra" }
+        -:   38: * } */

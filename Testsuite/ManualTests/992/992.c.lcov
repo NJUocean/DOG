@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fno-dce -fno-forward-propagate" } */
+    3|       |
+    4|      1|void __attribute__((noinline, noclone)) foo(int *a, int n) {
+    5|      1|  int *lasta = a + n;
+    6|     14|  for (; a != lasta; a++) {
+    7|     13|    *a *= 2;
+    8|     13|    a[1] = a[-1] + a[-2];
+    9|     13|  }
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+   14|      1|  int r[16] = {1,   2,   6,   6,   16,   24,   44,   80,
+   15|      1|               136, 248, 432, 768, 1360, 2400, 4256, 3760};
+   16|      1|  unsigned i;
+   17|      1|  foo(&a[2], 13);
+   18|      9|  for (i = 0; i < 8; ++i)
+   19|      8|    if (a[i] != r[i])
+   20|      0|      __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+

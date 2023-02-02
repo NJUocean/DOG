@@ -1,0 +1,24 @@
+        -:    0:Source:3630.c
+        -:    0:Graph:3630.gcno
+        -:    0:Data:3630.gcda
+        -:    0:Runs:1
+        1:    1:__complex__ float __attribute__((noinline)) foo(__complex__ float x) {
+        1:    2:  return x;
+        -:    3:}
+        -:    4:
+        1:    5:__complex__ float __attribute__((noinline)) bar(__complex__ float x) {
+        1:    6:  return foo(x);
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        -:   10:  __complex__ float a, b;
+        1:   11:  __real__ a = 9;
+        1:   12:  __imag__ a = 42;
+        -:   13:
+        1:   14:  b = bar(a);
+        -:   15:
+        1:   16:  if (a != b)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

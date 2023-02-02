@@ -1,0 +1,18 @@
+    1|       |struct s {
+    2|       |  unsigned long long a : 8, b : 32;
+    3|       |};
+    4|       |
+    5|      1|struct s f(struct s x) {
+    6|      1|  x.b = 0xcdef1234;
+    7|      1|  return x;
+    8|      1|}
+    9|       |
+   10|      1|main() {
+   11|      1|  static struct s i;
+   12|      1|  i.a = 12;
+   13|      1|  i = f(i);
+   14|      1|  if (i.a != 12 || i.b != 0xcdef1234)
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

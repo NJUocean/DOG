@@ -1,0 +1,18 @@
+        -:    0:Source:1068.c
+        -:    0:Graph:1068.gcno
+        -:    0:Data:1068.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/88563 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:/* { dg-options "-O2 -fno-code-hoisting -fno-tree-ccp -fno-tree-dominator-opts
+        -:    4: * -fno-tree-forwprop -fno-tree-fre -fno-tree-pre -fno-tree-vrp" } */
+        -:    5:
+        1:    6:int main() {
+        -:    7:#if __SIZEOF_LONG_LONG__ == 8 && __SIZEOF_INT128__ == 16 && __CHAR_BIT__ == 8
+        1:    8:  unsigned __int128 a = 5;
+        1:    9:  __builtin_mul_overflow(0xffffffffffffffffULL, (unsigned long long)a, &a);
+        1:   10:  if (a != ((unsigned __int128)4 << 64 | 0xfffffffffffffffb))
+    #####:   11:    __builtin_abort();
+        -:   12:#endif
+        1:   13:  return 0;
+        -:   14:}

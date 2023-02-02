@@ -1,0 +1,14 @@
+    1|       |typedef int t;
+    2|      1|f(t y) {
+    3|      1|  switch (y) {
+    4|      1|  case 1:
+    5|      1|    return 1;
+    6|      0|  }
+    7|      0|  return 0;
+    8|      0|}
+    9|      1|main() {
+   10|      1|  if (f((t)1) != 1)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

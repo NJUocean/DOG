@@ -1,0 +1,23 @@
+        -:    0:Source:1765.c
+        -:    0:Graph:1765.gcno
+        -:    0:Data:1765.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:void __attribute__((noinline)) g(int **a, int *b) { *a = b; }
+        -:    6:
+        1:    7:int foo(int *restrict p, int *q) {
+        1:    8:  g(&q, p);
+        1:    9:  *p = 1;
+        1:   10:  *q = 2;
+        1:   11:  return *p + *q;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  int x, y;
+        1:   16:  if (foo(&x, &y) != 4)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

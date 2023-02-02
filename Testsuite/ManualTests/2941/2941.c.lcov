@@ -1,0 +1,40 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -march=z900 --save-temps -mfunction-return-reg=thunk
+    3|       | * -mindirect-branch-table" } */
+    4|       |
+    5|       |/* We have to generate different thunks for indirect branches
+    6|       |   depending on whether the code is compiled for pre z10 machines or
+    7|       |   later.  This testcase makes sure this works within the same compile
+    8|       |   unit.  */
+    9|       |
+   10|      1|int __attribute__((noinline, noclone, target("arch=z10"))) bar(int a) {
+   11|      1|  return a + 2;
+   12|      1|}
+   13|       |
+   14|      1|int __attribute__((noinline, noclone, target("arch=z9-ec"))) foo(int a) {
+   15|      1|  return a + 3;
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  if (bar(42) != 44)
+   20|      0|    __builtin_abort();
+   21|      1|
+   22|      1|  if (foo(42) != 45)
+   23|      0|    __builtin_abort();
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+   27|       |
+   28|       |/* 1 x bar, 1 x foo */
+   29|       |/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 2 } } */
+   30|       |/* 1 x foo */
+   31|       |/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump_r1use" 1 } } */
+   32|       |
+   33|       |/* { dg-final { scan-assembler-times "ex\t" 1 } } */
+   34|       |/* { dg-final { scan-assembler-times "exrl\t" 1 } } */
+   35|       |
+   36|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   37|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+   38|       |/* { dg-final { scan-assembler     "section\t.s390_return_reg" } } */
+   39|       |/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */
+

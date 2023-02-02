@@ -1,0 +1,14 @@
+        -:    0:Source:2072.c
+        -:    0:Graph:2072.gcno
+        -:    0:Data:2072.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O -fdump-tree-optimized" } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int *p = __builtin_malloc(4);
+        1:    6:  *p = 4;
+        1:    7:  return 0;
+        -:    8:}
+        -:    9:
+        -:   10:/* { dg-final { scan-tree-dump-not "malloc" "optimized" } } */

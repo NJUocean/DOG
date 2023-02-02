@@ -1,0 +1,66 @@
+        -:    0:Source:3695.c
+        -:    0:Graph:3695.gcno
+        -:    0:Data:3695.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/44942 */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        1:    5:void test1(int a, int b, int c, int d, int e, int f, int g, long double h,
+        -:    6:           ...) {
+        -:    7:  int i;
+        -:    8:  va_list ap;
+        -:    9:
+        1:   10:  va_start(ap, h);
+        1:   11:  i = va_arg(ap, int);
+        1:   12:  if (i != 1234)
+    #####:   13:    __builtin_abort();
+        1:   14:  va_end(ap);
+        1:   15:}
+        -:   16:
+        1:   17:void test2(int a, int b, int c, int d, int e, int f, int g, long double h,
+        -:   18:           int i, long double j, int k, long double l, int m, long double n,
+        -:   19:           ...) {
+        -:   20:  int o;
+        -:   21:  va_list ap;
+        -:   22:
+        1:   23:  va_start(ap, n);
+        1:   24:  o = va_arg(ap, int);
+        1:   25:  if (o != 1234)
+    #####:   26:    __builtin_abort();
+        1:   27:  va_end(ap);
+        1:   28:}
+        -:   29:
+        1:   30:void test3(double a, double b, double c, double d, double e, double f, double g,
+        -:   31:           long double h, ...) {
+        -:   32:  double i;
+        -:   33:  va_list ap;
+        -:   34:
+        1:   35:  va_start(ap, h);
+        1:   36:  i = va_arg(ap, double);
+        1:   37:  if (i != 1234.0)
+    #####:   38:    __builtin_abort();
+        1:   39:  va_end(ap);
+        1:   40:}
+        -:   41:
+        1:   42:void test4(double a, double b, double c, double d, double e, double f, double g,
+        -:   43:           long double h, double i, long double j, double k, long double l,
+        -:   44:           double m, long double n, ...) {
+        -:   45:  double o;
+        -:   46:  va_list ap;
+        -:   47:
+        1:   48:  va_start(ap, n);
+        1:   49:  o = va_arg(ap, double);
+        1:   50:  if (o != 1234.0)
+    #####:   51:    __builtin_abort();
+        1:   52:  va_end(ap);
+        1:   53:}
+        -:   54:
+        1:   55:int main() {
+        1:   56:  test1(0, 0, 0, 0, 0, 0, 0, 0.0L, 1234);
+        1:   57:  test2(0, 0, 0, 0, 0, 0, 0, 0.0L, 0, 0.0L, 0, 0.0L, 0, 0.0L, 1234);
+        1:   58:  test3(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0L, 1234.0);
+        1:   59:  test4(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0L, 0.0, 0.0L, 0.0, 0.0L, 0.0,
+        -:   60:        0.0L, 1234.0);
+        1:   61:  return 0;
+        -:   62:}

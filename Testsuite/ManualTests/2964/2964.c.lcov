@@ -1,0 +1,25 @@
+    1|       |/* Check that the __builtin_strnlen returns 0 with with
+    2|       |   non-constant 0 length.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |
+    6|       |extern int snprintf(char *, int, const char *, ...);
+    7|       |extern void abort(void);
+    8|       |
+    9|      1|int main() {
+   10|      1|  int i;
+   11|      1|  int cmp = 0;
+   12|      1|  char buffer[1024];
+   13|      1|  const char *s = "the string";
+   14|      1|
+   15|      1|  snprintf(buffer, 4, "%s", s);
+   16|      1|
+   17|      4|  for (i = 1; i < 4; i++)
+   18|      3|    cmp += __builtin_strncmp(buffer, s, i - 1);
+   19|      1|
+   20|      1|  if (cmp)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

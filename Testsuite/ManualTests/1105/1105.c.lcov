@@ -1,0 +1,26 @@
+    1|       |/* Prove that HANDLE_PRAGMA_PUSH_POP_MACRO handling works somewhat. */
+    2|       |
+    3|       |/* { dg-do link { target *-*-mingw* } } */
+    4|       |
+    5|      2|#define TEXT1 "ABC"
+    6|      3|#define TEXT2 "DEF"
+    7|       |
+    8|      1|int main() {
+    9|      1|  if (__builtin_strcmp(TEXT1 TEXT2, "ABCDEF") != 0)
+   10|      0|    link_error();
+   11|      1|
+   12|      1|#pragma push_macro("TEXT1")
+   13|      1|#undef TEXT1
+   14|      1|#define TEXT1 "XYZ"
+   15|      1|
+   16|      1|  if (__builtin_strcmp(TEXT1 TEXT2, "XYZDEF") != 0)
+   17|      0|    link_error();
+   18|      1|
+   19|      1|#pragma pop_macro("TEXT1")
+   20|      1|
+   21|      1|  if (__builtin_strcmp(TEXT1 TEXT2, "ABCDEF") != 0)
+   22|      0|    link_error();
+   23|      1|
+   24|      1|  return 0;
+   25|      1|}
+

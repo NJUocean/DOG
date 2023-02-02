@@ -1,0 +1,22 @@
+        -:    0:Source:4125.c
+        -:    0:Graph:4125.gcno
+        -:    0:Data:4125.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:int f(int a) {
+        1:    5:  if (a != 2) {
+        1:    6:    a = a > 0 ? a : -a;
+        1:    7:    if (a == 2)
+        1:    8:      return 0;
+    #####:    9:    return 1;
+        -:   10:  }
+    #####:   11:  return 1;
+        -:   12:}
+        -:   13:
+        1:   14:int main(int argc, char *argv[]) {
+        1:   15:  if (f(-2))
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

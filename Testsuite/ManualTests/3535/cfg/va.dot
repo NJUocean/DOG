@@ -1,0 +1,10 @@
+digraph "" {
+  graph [bgcolor="white", fillcolor="#FFFFCC", pack="true", packmode="clust", fontname="Arial", label="", fontsize="12", compound="true", style="rounded,filled"];
+  node [node_initialized="no", fillcolor="white", fontname="Arial", label="", color="grey", fontsize="12", fixedsize="false", compound="true", shape="rectangle", style="filled"];
+  edge [arrowtail="none", lhead="", fontcolor="black", fontname="Arial", label="", color="black", fontsize="12", arrowhead="normal", arrowsize="0.5", compound="true", ltail="", dir="forward"];
+  __N1 [fillcolor="#ffffff", label="2 - passive 35,8,2,8,10,,33 - passive 35,9,2,9,42,,44 - passive 35,10,2,10,2,,55 - passive 35,12,2,12,6,,66 - passive 35,13,2,13,6,,77 - passive 35,14,2,14,6,,88 - passive 35,15,2,15,6,,99 - passive 35,16,2,16,6,,1010 - passive 35,17,2,17,6,,1111 - passive 35,18,2,18,6,,1212 - passive 35,19,2,19,6,,1313 - passive 35,20,2,20,6,,1414 - passive 35,21,2,21,6,,1515 - passive 35,22,2,22,6,,1616 - passive 35,23,2,23,6,,1717 - passive 35,24,2,24,6,,1818 - passive 35,26,2,27,41,,1919 - passive 35,28,2,28,2,,20", color="#0000ff", shape="box", style="filled"];
+  __N2 [fillcolor="#ffffff", label="1 - passive-implicit 36,,,,,,2\n\nstart", color="#006400", shape="box", style="filled"];
+  __N3 [fillcolor="#ffffff", label="20 - passive-implicit 36,,,,,,\n\nend", color="#a52a2a", shape="box", style="filled"];
+  __N2 -> __N1 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N1 -> __N3 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+}

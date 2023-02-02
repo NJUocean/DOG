@@ -1,0 +1,24 @@
+        -:    0:Source:3862.c
+        -:    0:Graph:3862.gcno
+        -:    0:Data:3862.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/64260 */
+        -:    2:
+        -:    3:int a = 1, b;
+        -:    4:
+        1:    5:void foo(char p) {
+        1:    6:  int t = 0;
+        2:    7:  for (; b < 1; b++) {
+        1:    8:    int *s = &a;
+        1:    9:    if (--t)
+        1:   10:      *s &= p;
+        1:   11:    *s &= 1;
+        -:   12:  }
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  foo(0);
+        1:   17:  if (a != 0)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

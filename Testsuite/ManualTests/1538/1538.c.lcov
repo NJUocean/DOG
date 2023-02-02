@@ -1,0 +1,21 @@
+    1|       |/* PR sanitizer/63316 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O2" } } */
+    4|       |
+    5|       |#ifdef __cplusplus
+    6|       |extern "C" {
+    7|       |#endif
+    8|       |extern void *malloc(__SIZE_TYPE__);
+    9|       |extern void free(void *);
+   10|       |#ifdef __cplusplus
+   11|       |}
+   12|       |#endif
+   13|       |
+   14|      1|int main() {
+   15|      1|  int *p = (int *)malloc(sizeof(int));
+   16|      1|  *p = 3;
+   17|      1|  asm volatile("" : : "r"(p) : "memory");
+   18|      1|  free(p);
+   19|      1|  return 0;
+   20|      1|}
+

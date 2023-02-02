@@ -1,0 +1,111 @@
+        -:    0:Source:179.c
+        -:    0:Graph:179.gcno
+        -:    0:Data:179.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  signed f0 : 3;
+        -:   10:  volatile int16_t f1;
+        -:   11:  signed f2 : 20;
+        -:   12:};
+        -:   13:#pragma pack(pop)
+        -:   14:
+        -:   15:struct S1 {
+        -:   16:  signed f0 : 26;
+        -:   17:};
+        -:   18:
+        -:   19:static uint64_t g_5 = 18446744073709551609UL;
+        -:   20:static struct S1 g_15 = {-1406};
+        -:   21:static struct S1 *volatile g_19[5][2] = {{&g_15, &g_15}, {&g_15, &g_15}, {&g_15, &g_15}, {&g_15, &g_15}, {&g_15, &g_15}};
+        -:   22:static struct S1 *volatile *volatile g_18 = &g_19[3][1];
+        -:   23:static uint8_t g_32 = 1UL;
+        -:   24:static int16_t g_42 = (-6L);
+        -:   25:static int32_t g_49 = 0x128B293CL;
+        -:   26:static int32_t *volatile g_57 = (void *)0;
+        -:   27:static int32_t g_59 = 0x1863D476L;
+        -:   28:static int32_t *volatile g_58[2] = {&g_59, &g_59};
+        -:   29:static int32_t *volatile g_60 = &g_59;
+        -:   30:static int64_t g_65 = 0x3486B686461D90BCLL;
+        -:   31:static int32_t *volatile g_67 = &g_49;
+        -:   32:static struct S0 g_68 = {-1, 0L, 535};
+        -:   33:static volatile struct S0 g_77 = {-0, 0xBE05L, 646};
+        -:   34:
+        -:   35:static int8_t func_1(void);
+        -:   36:static uint64_t *func_7(uint8_t p_8, uint32_t p_9);
+        -:   37:
+        1:   38:static int8_t func_1(void) {
+        -:   39:  uint64_t *l_4[1];
+        1:   40:  int32_t l_6 = 0xC79E672CL;
+        1:   41:  uint64_t *l_11 = &g_5;
+        1:   42:  uint64_t **l_10 = &l_11;
+        1:   43:  int32_t l_63[5] = {1L, 1L, 1L, 1L, 1L};
+        1:   44:  int64_t *l_64 = &g_65;
+        1:   45:  uint32_t l_66 = 0UL;
+        1:   46:  int32_t *l_79 = &g_49;
+        1:   47:  int32_t **l_78[3][3][1] = {{{&l_79}, {&l_79}, {&l_79}}, {{&l_79}, {&l_79}, {&l_79}}, {{&l_79}, {&l_79}, {&l_79}}};
+        -:   48:  int i, j, k;
+        2:   49:  for (i = 0; i < 1; i++)
+        1:   50:    l_4[i] = &g_5;
+        1:   51:  (*g_67) = (safe_div_func_uint64_t_u_u((l_6 &= 9UL), (l_66 &= ((l_4[0] != ((*l_10) = func_7(g_5, ((-1L) && (&g_5 != ((*l_10) = l_4[0])))))) <= (((g_42, ((*l_64) = (l_63[3] ^ g_15.f0))) | 0x2286E0DAEE255298LL), g_65)))));
+       1*:   52:  g_67 = (g_68, (((safe_lshift_func_int64_t_s_s((((((safe_sub_func_uint8_t_u_u(l_63[3], (((void *)0 != &g_42) < 0xC0A08677L))) && (g_49 <= ((safe_mul_func_int32_t_s_s(l_63[1], g_32)) > ((safe_mod_func_int16_t_s_s(((g_77, g_49), 0xCEC9L), 65529UL)), g_68.f1)))), &g_32) != &g_32) & g_68.f0), l_6)) & 5UL), &l_63[0]));
+        1:   53:  return g_59;
+        -:   54:}
+        -:   55:
+        1:   56:static uint64_t *func_7(uint8_t p_8, uint32_t p_9) {
+        1:   57:  struct S1 *const l_12 = (void *)0;
+        1:   58:  struct S1 *l_14 = &g_15;
+        1:   59:  struct S1 **l_13 = &l_14;
+        1:   60:  int32_t l_30 = 0xC87778E1L;
+        1:   61:  uint8_t *l_31 = &g_32;
+        1:   62:  int32_t l_43 = 0xC66883CEL;
+        1:   63:  int32_t l_55 = 0xB6842A45L;
+        1:   64:  uint64_t *l_62 = &g_5;
+        1:   65:lbl_61:
+        1:   66:  (*l_13) = l_12;
+        1:   67:  if (((safe_sub_func_int8_t_s_s(8L, ((void *)0 != g_18))) != (((*l_31) = (((safe_add_func_int32_t_s_s(((safe_add_func_int8_t_s_s(g_5, g_15.f0)), (0x1348L && ((((safe_mod_func_uint8_t_u_u((safe_rshift_func_uint64_t_u_s((p_8 == g_15.f0), 7)), l_30)), 0x78B15B45L) == 0xAC3EFC16L) > 0UL))), l_30)) > l_30), 249UL)) | l_30))) {
+        1:   68:    return &g_5;
+        -:   69:  } else {
+        -:   70:    int16_t *l_41[5];
+    #####:   71:    int32_t *l_48 = &g_49;
+    #####:   72:    uint8_t *l_54 = (void *)0;
+    #####:   73:    int32_t *l_56 = &l_55;
+        -:   74:    int i;
+    #####:   75:    for (i = 0; i < 5; i++)
+    #####:   76:      l_41[i] = &g_42;
+    #####:   77:    (*g_60) &= ((*l_56) = (((g_32 < 1L) < (safe_lshift_func_uint16_t_u_u((((l_43 = (safe_mul_func_int64_t_s_s(((safe_mod_func_int16_t_s_s(((l_30 = l_30) == ((g_42 <= p_9) == (l_43 >= ((((((safe_rshift_func_uint64_t_u_u(((safe_lshift_func_int32_t_s_u((((*l_48) = g_15.f0) ^ (safe_div_func_uint64_t_u_u((safe_mod_func_uint16_t_u_u(p_9, 0xFC5CL)), 1UL))), 8)) <= 0xC7F5L), 55)) || g_32) < 0x05E2L) >= g_15.f0) ^ p_9) | g_42)))), 5UL)), 1L), l_43))), l_54) == &g_32), l_55))) > 0UL));
+    #####:   78:    if (l_55)
+    #####:   79:      goto lbl_61;
+        -:   80:  }
+    #####:   81:  return l_62;
+        -:   82:}
+        -:   83:
+        1:   84:int main(int argc, char *argv[]) {
+        -:   85:  int i, j;
+        1:   86:  int print_hash_value = 0;
+       1*:   87:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   88:    print_hash_value = 1;
+        1:   89:  platform_main_begin();
+        1:   90:  crc32_gentab();
+        1:   91:  func_1();
+        1:   92:  transparent_crc(g_5, "g_5", print_hash_value);
+        1:   93:  transparent_crc(g_15.f0, "g_15.f0", print_hash_value);
+        1:   94:  transparent_crc(g_32, "g_32", print_hash_value);
+        1:   95:  transparent_crc(g_42, "g_42", print_hash_value);
+        1:   96:  transparent_crc(g_49, "g_49", print_hash_value);
+        1:   97:  transparent_crc(g_59, "g_59", print_hash_value);
+        1:   98:  transparent_crc(g_65, "g_65", print_hash_value);
+        1:   99:  transparent_crc(g_68.f0, "g_68.f0", print_hash_value);
+        1:  100:  transparent_crc(g_68.f1, "g_68.f1", print_hash_value);
+        1:  101:  transparent_crc(g_68.f2, "g_68.f2", print_hash_value);
+        1:  102:  transparent_crc(g_77.f0, "g_77.f0", print_hash_value);
+        1:  103:  transparent_crc(g_77.f1, "g_77.f1", print_hash_value);
+        1:  104:  transparent_crc(g_77.f2, "g_77.f2", print_hash_value);
+        1:  105:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:  106:  return 0;
+        -:  107:}

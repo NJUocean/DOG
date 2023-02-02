@@ -1,0 +1,48 @@
+        -:    0:Source:177.c
+        -:    0:Graph:177.gcno
+        -:    0:Data:177.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:static int cnt = 0;
+        -:    5:
+        -:    6:#define LL_MIN ((long long)(-__LONG_LONG_MAX__ - 1))
+        -:    7:
+        -:    8:#define SC1 (LL_MIN + 5)
+        -:    9:#define UC1 ((1ULL << (__LONG_LONG_WIDTH__ - 1)) | 5ULL)
+        -:   10:#define UC2 (~UC1)
+        -:   11:
+        2:   12:long long __attribute__((noinline, noclone)) f1(long long a) {
+        -:   13:  long long x;
+        2:   14:  if (__builtin_add_overflow(a, SC1, &x))
+        1:   15:    cnt++;
+        2:   16:  return x;
+        -:   17:}
+        -:   18:
+        2:   19:unsigned long long __attribute__((noinline, noclone)) f2(unsigned long long a) {
+        -:   20:  unsigned long long x;
+        2:   21:  if (__builtin_add_overflow(a, UC1, &x))
+        1:   22:    cnt++;
+        2:   23:  return x;
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  if (f1(-5) != LL_MIN)
+    #####:   28:    __builtin_abort();
+        1:   29:  if (cnt != 0)
+    #####:   30:    __builtin_abort();
+        1:   31:  f1(-6);
+        1:   32:  if (cnt != 1)
+    #####:   33:    __builtin_abort();
+        1:   34:  cnt = 0;
+        1:   35:  if (f2(UC2) != ~0ULL)
+    #####:   36:    __builtin_abort();
+        1:   37:  if (cnt != 0)
+    #####:   38:    __builtin_abort();
+        1:   39:  if (f2(UC2 + 1) != 0)
+    #####:   40:    __builtin_abort();
+        1:   41:  if (cnt != 1)
+    #####:   42:    __builtin_abort();
+        1:   43:  return 0;
+        -:   44:}

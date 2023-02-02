@@ -1,0 +1,41 @@
+        -:    0:Source:2477.c
+        -:    0:Graph:2477.gcno
+        -:    0:Data:2477.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target arm_eabi } } */
+        -:    4:/* { dg-require-effective-target arm32 } */
+        -:    5:/* { dg-options "-O2 -fno-inline" } */
+        -:    6:
+        -:    7:/* Test AAPCS layout (alignment) for callee.  */
+        -:    8:
+        -:    9:extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+        -:   10:extern void abort(void);
+        -:   11:
+        -:   12:/* Struct will be aligned to 8.  */
+        -:   13:struct s {
+        -:   14:  int x;
+        -:   15:  /* 4 bytes padding here.  */
+        -:   16:  __attribute__((aligned(8))) int y;
+        -:   17:  /* 4 bytes padding here.  */
+        -:   18:};
+        -:   19:
+        -:   20:typedef struct s __attribute__((aligned(4))) underaligned;
+        -:   21:
+        -:   22:underaligned a = {1, 4};
+        -:   23:underaligned b = {9, 16};
+        -:   24:
+        1:   25:void f(int r0, underaligned r2, int stack8, underaligned stack16) {
+        1:   26:  if (r0 != 3 || stack8 != 6)
+    #####:   27:    abort();
+        1:   28:  if (memcmp((void *)&r2, (void *)&a, sizeof(underaligned)))
+    #####:   29:    abort();
+        1:   30:  if (memcmp((void *)&stack16, (void *)&b, sizeof(underaligned)))
+    #####:   31:    abort();
+        1:   32:}
+        -:   33:
+        1:   34:int main(int argc, char **argv) {
+        1:   35:  f(3, a, 6, b);
+        1:   36:  return 0;
+        -:   37:}

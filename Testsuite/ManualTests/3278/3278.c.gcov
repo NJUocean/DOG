@@ -1,0 +1,25 @@
+        -:    0:Source:3278.c
+        -:    0:Graph:3278.gcno
+        -:    0:Data:3278.gcda
+        -:    0:Runs:1
+        -:    1:void f(int);
+        1:    2:int do_layer3(int single) {
+        -:    3:  int stereo1;
+        -:    4:
+        1:    5:  if (single >= 0) /* stream is stereo, but force to mono */
+    #####:    6:    stereo1 = 1;
+        -:    7:  else
+        1:    8:    stereo1 = 2;
+        1:    9:  f(single);
+        -:   10:
+        1:   11:  return stereo1;
+        -:   12:}
+        -:   13:
+        -:   14:extern void abort();
+        1:   15:int main() {
+        1:   16:  if (do_layer3(-1) != 2)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        1:   21:void f(int i) {}

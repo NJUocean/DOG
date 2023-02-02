@@ -1,0 +1,17 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-alias "" } */
+    3|       |/* { dg-options "-O0 -fipa-icf -fdump-ipa-icf"  } */
+    4|       |
+    5|      2|static int do_work(void) { return 0; }
+    6|       |
+    7|       |static int foo() __attribute__((alias("do_work")));
+    8|       |static int bar() __attribute__((alias("do_work")));
+    9|       |
+   10|      1|static int a() { return foo(); }
+   11|       |
+   12|      1|static int b() { return bar(); }
+   13|       |
+   14|      1|int main() { return a() + b(); }
+   15|       |
+   16|       |/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */
+

@@ -1,0 +1,11 @@
+        -:    0:Source:204.c
+        -:    0:Graph:204.gcno
+        -:    0:Data:204.gcda
+        -:    0:Runs:1
+        -:    1:/* Test C11 _Noreturn.  Test _Noreturn on main, freestanding.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=c11 -pedantic-errors -ffreestanding" } */
+        -:    4:
+        -:    5:_Noreturn void exit(int);
+        -:    6:
+        1:    7:_Noreturn int main(void) { exit(0); }

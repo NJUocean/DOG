@@ -1,0 +1,31 @@
+        -:    0:Source:2512.c
+        -:    0:Graph:2512.gcno
+        -:    0:Data:2512.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Os -mno-unaligned-access" } */
+        -:    3:/* { dg-final { scan-assembler "ldrb" } } */
+        -:    4:/* { dg-final { scan-assembler "strb" } } */
+        -:    5:
+        -:    6:struct s {
+        -:    7:  char u;
+        -:    8:  long long v[2];
+        -:    9:} __attribute__((packed, aligned(1)));
+        -:   10:
+        3:   11:__attribute__((noinline, noclone)) long long foo(struct s *x, int y,
+        -:   12:                                                 long long z) {
+        3:   13:  long long a = x->v[y];
+        3:   14:  x->v[y] = z;
+        3:   15:  return a;
+        -:   16:}
+        -:   17:
+        -:   18:struct s a = {0, {0, 0}};
+        1:   19:int main() {
+        1:   20:  if (foo(&a, 0, 1) != 0)
+    #####:   21:    __builtin_abort();
+        1:   22:  if (foo(&a, 0, 2) != 1)
+    #####:   23:    __builtin_abort();
+        1:   24:  if (foo(&a, 1, 1) != 0)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

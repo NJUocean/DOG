@@ -1,0 +1,23 @@
+    1|       |/* Test the nvptx atomic instructions for __atomic_fetch_OP for SM_35
+    2|       |   targets.  */
+    3|       |
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-options "-O2 -misa=sm_35" } */
+    6|       |
+    7|      1|int main() {
+    8|      1|  unsigned long long a = ~0;
+    9|      1|  unsigned b = 0xa;
+   10|      1|
+   11|      1|  __atomic_fetch_add(&a, b, 0);
+   12|      1|  __atomic_fetch_and(&a, b, 0);
+   13|      1|  __atomic_fetch_or(&a, b, 0);
+   14|      1|  __atomic_fetch_xor(&a, b, 0);
+   15|      1|
+   16|      1|  return a;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-final { scan-assembler "atom.add.u64" } } */
+   20|       |/* { dg-final { scan-assembler "atom.b64.and" } } */
+   21|       |/* { dg-final { scan-assembler "atom.b64.or" } } */
+   22|       |/* { dg-final { scan-assembler "atom.b64.xor" } } */
+

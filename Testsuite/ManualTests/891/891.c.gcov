@@ -1,0 +1,37 @@
+        -:    0:Source:891.c
+        -:    0:Graph:891.gcno
+        -:    0:Data:891.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/46315 */
+        -:    2:/* Reported by Magnus Granberg <zorry@gentoo.org> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2 -fno-strict-overflow" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        4:    9:static char const *parse_ranged(char const *s, int digits) {
+        4:   10:  int n = 0;
+        4:   11:  char const *lim = s + digits;
+       12:   12:  while (s < lim) {
+        8:   13:    unsigned d = *s++ - '0';
+        8:   14:    if (9 < d)
+    #####:   15:      return 0;
+        8:   16:    n = 10 * n + d;
+        -:   17:  }
+       4*:   18:  return s && 0 <= n && n <= 59 ? s : 0;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  const char *s = "10092240";
+        -:   23:
+        1:   24:  s = parse_ranged(s, 2);
+        1:   25:  s = parse_ranged(s, 2);
+        1:   26:  s = parse_ranged(s, 2);
+        1:   27:  s = parse_ranged(s, 2);
+        -:   28:
+        1:   29:  if (!s || *s != '\0')
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

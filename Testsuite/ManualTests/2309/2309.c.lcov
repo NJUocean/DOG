@@ -1,0 +1,20 @@
+    1|       |/* { dg-options "-maltivec" } */
+    2|       |
+    3|       |extern void abort();
+    4|       |
+    5|       |typedef union {
+    6|       |  int i[4];
+    7|       |  __attribute__((altivec(vector__))) int v;
+    8|       |} vec_int4;
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  vec_int4 i1;
+   12|      1|
+   13|      1|  i1.v = (__attribute__((altivec(vector__))) int){31, 31, 31, 31};
+   14|      1|
+   15|      1|  if (i1.i[0] != 31)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+

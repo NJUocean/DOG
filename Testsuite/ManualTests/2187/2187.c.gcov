@@ -1,0 +1,19 @@
+        -:    0:Source:2187.c
+        -:    0:Graph:2187.gcno
+        -:    0:Data:2187.gcda
+        -:    0:Runs:1
+        6:    1:double u2d(unsigned int u) { return u; }
+        -:    2:
+        6:    3:double i2d(signed int i) { return i; }
+        -:    4:
+        3:    5:unsigned int d2u(double d) { return d; }
+        -:    6:
+        3:    7:signed int d2i(double d) { return d; }
+        -:    8:
+        1:    9:main() {
+        1:   10:  printf("%lf, %lf, %lf\n", u2d(~0), u2d(1 << 31), u2d(1));
+        1:   11:  printf("%lf, %lf, %lf\n", i2d(~0), i2d(1 << 31), i2d(1));
+        -:   12:
+        1:   13:  printf("%u, %u, %u\n", d2u(u2d(~0)), d2u(u2d(1 << 31)), d2u(u2d(1)));
+        1:   14:  printf("%d, %d, %d\n", d2i(i2d(~0)), d2i(i2d(1 << 31)), d2i(i2d(1)));
+        -:   15:}

@@ -1,0 +1,36 @@
+        -:    0:Source:815.c
+        -:    0:Graph:815.gcno
+        -:    0:Data:815.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:
+        -:    3:extern void link_error(void);
+        -:    4:
+    #####:    5:void test(int x, unsigned int y) {
+        -:    6:  if (x + 5 == x)
+        -:    7:    link_error();
+        -:    8:  if (x == x + 10)
+        -:    9:    link_error();
+        -:   10:  if (y + 5 == y)
+        -:   11:    link_error();
+        -:   12:  if (y == y + 10)
+        -:   13:    link_error();
+        -:   14:  if (x + 5 != x)
+        -:   15:    ;
+        -:   16:  else
+        -:   17:    link_error();
+        -:   18:  if (x != x + 10)
+        -:   19:    ;
+        -:   20:  else
+        -:   21:    link_error();
+        -:   22:  if (y + 5 != y)
+        -:   23:    ;
+        -:   24:  else
+        -:   25:    link_error();
+        -:   26:  if (y != y + 10)
+        -:   27:    ;
+        -:   28:  else
+        -:   29:    link_error();
+    #####:   30:}
+        -:   31:
+        1:   32:int main() { return 0; }

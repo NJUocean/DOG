@@ -1,0 +1,20 @@
+    1|       |
+    2|       |void exit(int);
+    3|       |void abort(void);
+    4|       |int a[1];
+    5|       |void (*terminate_me)(int);
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) t(int c) {
+    8|      1|  int i;
+    9|      3|  for (i = 0; i < c; i++) {
+   10|      2|    if (i)
+   11|      1|      terminate_me(0);
+   12|      2|    a[i] = 0;
+   13|      2|  }
+   14|      1|}
+   15|      1|main() {
+   16|      1|  terminate_me = exit;
+   17|      1|  t(100);
+   18|      1|  abort();
+   19|      1|}
+

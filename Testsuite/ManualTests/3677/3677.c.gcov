@@ -1,0 +1,26 @@
+        -:    0:Source:3677.c
+        -:    0:Graph:3677.gcno
+        -:    0:Data:3677.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/43560 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int a, b;
+        -:    5:  char c[10];
+        -:    6:};
+        -:    7:
+        1:    8:__attribute__((noinline)) void test(struct S *x) {
+       1*:    9:  while (x->b > 1 && x->c[x->b - 1] == '/') {
+    #####:   10:    x->b--;
+    #####:   11:    x->c[x->b] = '\0';
+        -:   12:  }
+        1:   13:}
+        -:   14:
+        -:   15:const struct S s = {0, 0, ""};
+        -:   16:
+        1:   17:int main() {
+        -:   18:  struct S *p;
+        1:   19:  asm("" : "=r"(p) : "0"(&s));
+        1:   20:  test(p);
+        1:   21:  return 0;
+        -:   22:}

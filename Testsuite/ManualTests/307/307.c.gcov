@@ -1,0 +1,32 @@
+        -:    0:Source:307.c
+        -:    0:Graph:307.gcno
+        -:    0:Data:307.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/29609 */
+        -:    2:/* Verify that breakpoint on the break is hit.
+        -:    3:   This version of the test just checks that it can be compiled, linked
+        -:    4:   and executed, further testing is done in corresponding gcc.dg/dwarf2/
+        -:    5:   test and hopefully in gdb testsuite.  */
+        -:    6:/* { dg-do run } */
+        -:    7:/* { dg-options "-O0 -g -dA" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        1:   11:int foo(void) {
+        -:   12:  int a, i;
+        -:   13:
+        3:   14:  for (i = 1; i <= 10; i++) {
+        3:   15:    if (i < 3)
+        2:   16:      a = 1;
+        -:   17:    else
+        1:   18:      break;
+        2:   19:    a = 5;
+        -:   20:  }
+        1:   21:  return a;
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  if (foo() != 5)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

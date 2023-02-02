@@ -1,0 +1,34 @@
+        -:    0:Source:1670.c
+        -:    0:Graph:1670.gcno
+        -:    0:Data:1670.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:short var_9 = 19581;
+        -:    5:unsigned char var_33 = 21;
+        -:    6:long long int var_55 = 286697804684061197LL;
+        -:    7:long long int var_59 = -1962393262513510540LL;
+        -:    8:long long int var_71 = 4731868609112929952LL;
+        -:    9:long long int var_773 = -4784633456247777769LL;
+        -:   10:short var_776 = 5894;
+        -:   11:long long int var_1321 = 7573221950916697355LL;
+        -:   12:unsigned char uc = 217;
+        -:   13:
+        1:   14:void foo() {
+        1:   15:  if (var_55)
+        1:   16:    var_71 = 0;
+        1:   17:  if (var_9 != ~(0 < uc))
+        1:   18:    var_773 = 0;
+        -:   19:  else
+    #####:   20:    var_776 = 1 / ~var_9 * -1;
+        1:   21:  if (var_33)
+        1:   22:    var_59 = ~var_9 & 10393;
+        1:   23:  var_1321 = ~var_9;
+        1:   24:}
+        1:   25:int main() {
+        1:   26:  foo();
+        1:   27:  if (var_59 != 8320)
+    #####:   28:    __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

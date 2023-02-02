@@ -1,0 +1,25 @@
+        -:    0:Source:2318.c
+        -:    0:Graph:2318.gcno
+        -:    0:Data:2318.gcda
+        -:    0:Runs:1
+        -:    1:/* Test gcov block mode.  */
+        -:    2:
+        -:    3:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    4:/* { dg-do run { target native } } */
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned ix, jx = 0;
+        -:    8:
+        1:    9:  ix = 10;
+        1:   10:  goto test;
+       10:   11:loop:;
+       10:   12:  if (ix & 1)
+        5:   13:    jx++;
+        5:   14:test:;
+       11:   15:  if (ix--)
+       10:   16:    goto loop; /* count(11) */
+        -:   17:
+        1:   18:  return jx != 5;
+        -:   19:}
+        -:   20:
+        -:   21:/* { dg-final { run-gcov { -a gcov-10b.c } } } */

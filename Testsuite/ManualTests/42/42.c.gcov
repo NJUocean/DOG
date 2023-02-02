@@ -1,0 +1,21 @@
+        -:    0:Source:42.c
+        -:    0:Graph:42.gcno
+        -:    0:Data:42.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target size32plus } */
+        -:    3:/* { dg-options "-fstrict-volatile-bitfields" } */
+        -:    4:
+        -:    5:struct s {
+        -:    6:  char x : 8;
+        -:    7:  unsigned int y : 31;
+        -:    8:} __attribute__((packed));
+        -:    9:
+        -:   10:volatile struct s global;
+        -:   11:
+        1:   12:int main() {
+        1:   13:  global.y = 0x7FFFFFFF;
+        1:   14:  if (global.y != 0x7FFFFFFF)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

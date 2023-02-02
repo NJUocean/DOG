@@ -1,0 +1,26 @@
+        -:    0:Source:1128.c
+        -:    0:Graph:1128.gcno
+        -:    0:Data:1128.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/18045 */
+        -:    2:/* Contributed by Eric Botcazou <ebotcazou@libertysurf.fr> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-std=c99" } */
+        -:    6:/* { dg-options "-std=c99 -mtune=i486" { target { { i?86-*-* x86_64-*-* } &&
+        -:    7: * ia32 } } } */
+        -:    8:
+        -:    9:#include <limits.h>
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        1:   13:long long smod16(long long x) { return x % 16; }
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:#if LLONG_MAX > 2147483647L
+        1:   17:  if (smod16(0xFFFFFFFF) != 0xF)
+    #####:   18:    abort();
+        -:   19:#endif
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

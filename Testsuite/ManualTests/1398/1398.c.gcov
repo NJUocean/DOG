@@ -1,0 +1,86 @@
+        -:    0:Source:1398.c
+        -:    0:Graph:1398.gcno
+        -:    0:Data:1398.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:/* { dg-options "-ftree-loop-distribution" } */
+        -:    4:
+        -:    5:#define CAST_LONG unsigned int
+        -:    6:typedef struct cast_key_st {
+        -:    7:  CAST_LONG data[32];
+        -:    8:} CAST_KEY;
+        -:    9:#define CAST_exp(l, A, a, n)                                                   \
+        -:   10:  A[n / 4] = l;                                                                \
+        -:   11:  a[n + 3] = (l)&0xff;                                                         \
+        -:   12:  a[n + 2] = (l >> 8) & 0xff;                                                  \
+        -:   13:  a[n + 1] = (l >> 16) & 0xff;                                                 \
+        -:   14:  a[n + 0] = (l >> 24) & 0xff;
+        -:   15:
+        -:   16:CAST_LONG CAST_S_table[1024];
+        -:   17:
+        -:   18:#define S4 (CAST_S_table + 000)
+        -:   19:#define S5 (CAST_S_table + 256)
+        -:   20:#define S6 (CAST_S_table + 512)
+        -:   21:#define S7 (CAST_S_table + 768)
+        -:   22:
+        1:   23:void CAST_set_key(CAST_KEY *key) {
+        -:   24:  CAST_LONG x[16];
+        -:   25:  CAST_LONG z[16];
+        -:   26:  CAST_LONG k[32];
+        1:   27:  CAST_LONG X[4] = {0, 0, 0, 0}, Z[4];
+        1:   28:  CAST_LONG l, *K = k;
+        -:   29:  int i;
+       17:   30:  for (i = 0; i < 16; i++)
+       16:   31:    x[i] = 0;
+        -:   32:  for (;;) {
+        2:   33:    l = X[0] ^ S4[x[13]] ^ S5[x[15]] ^ S6[x[12]] ^ S7[x[14]] ^ S6[x[8]];
+        2:   34:    CAST_exp(l, Z, z, 0);
+        2:   35:    CAST_exp(l, Z, z, 4);
+        2:   36:    CAST_exp(l, Z, z, 8);
+        2:   37:    CAST_exp(l, Z, z, 12);
+        2:   38:    K[0] = S4[z[8]] ^ S5[z[9]] ^ S6[z[7]] ^ S7[z[6]] ^ S4[z[2]];
+        2:   39:    K[1] = S4[z[10]] ^ S5[z[11]] ^ S6[z[5]] ^ S7[z[4]] ^ S5[z[6]];
+        2:   40:    K[2] = S4[z[12]] ^ S5[z[13]] ^ S6[z[3]] ^ S7[z[2]] ^ S6[z[9]];
+        2:   41:    K[3] = S4[z[14]] ^ S5[z[15]] ^ S6[z[1]] ^ S7[z[0]] ^ S7[z[12]];
+        2:   42:    K[4] = S4[x[3]] ^ S5[x[2]] ^ S6[x[12]] ^ S7[x[13]] ^ S4[x[8]];
+        2:   43:    K[5] = S4[x[1]] ^ S5[x[0]] ^ S6[x[14]] ^ S7[x[15]] ^ S5[x[13]];
+        2:   44:    K[6] = S4[x[7]] ^ S5[x[6]] ^ S6[x[8]] ^ S7[x[9]] ^ S6[x[3]];
+        2:   45:    K[7] = S4[x[5]] ^ S5[x[4]] ^ S6[x[10]] ^ S7[x[11]] ^ S7[x[7]];
+        2:   46:    K[8] = S4[z[3]] ^ S5[z[2]] ^ S6[z[12]] ^ S7[z[13]] ^ S4[z[9]];
+        2:   47:    K[9] = S4[z[1]] ^ S5[z[0]] ^ S6[z[14]] ^ S7[z[15]] ^ S5[z[12]];
+        2:   48:    K[10] = S4[z[7]] ^ S5[z[6]] ^ S6[z[8]] ^ S7[z[9]] ^ S6[z[2]];
+        2:   49:    K[11] = S4[z[5]] ^ S5[z[4]] ^ S6[z[10]] ^ S7[z[11]] ^ S7[z[6]];
+        2:   50:    l = Z[2] ^ S4[z[5]] ^ S5[z[7]] ^ S6[z[4]] ^ S7[z[6]] ^ S6[z[0]];
+        2:   51:    CAST_exp(l, X, x, 0);
+        2:   52:    K[12] = S4[x[8]] ^ S5[x[9]] ^ S6[x[7]] ^ S7[x[6]] ^ S4[x[3]];
+        2:   53:    K[13] = S4[x[10]] ^ S5[x[11]] ^ S6[x[5]] ^ S7[x[4]] ^ S5[x[7]];
+        2:   54:    K[14] = S4[x[12]] ^ S5[x[13]] ^ S6[x[3]] ^ S7[x[2]] ^ S6[x[8]];
+        2:   55:    K[15] = S4[x[14]] ^ S5[x[15]] ^ S6[x[1]] ^ S7[x[0]] ^ S7[x[13]];
+        2:   56:    if (K != k)
+        1:   57:      break;
+        1:   58:    K += 16;
+        -:   59:  }
+       17:   60:  for (i = 0; i < 16; i++) {
+       16:   61:    key->data[i * 2] = k[i];
+       16:   62:    key->data[i * 2 + 1] = ((k[i + 16]) + 16) & 0x1f;
+        -:   63:  }
+        1:   64:}
+        -:   65:
+        1:   66:int main() {
+        1:   67:  CAST_KEY ref = {{0x0069B3F8, 0x00000013, 0x000AEFF8, 0x00000013, 0x004AD0E0,
+        -:   68:                   0x0000001B, 0x00818F18, 0x00000018, 0x008FF000, 0x0000001B,
+        -:   69:                   0x002D1C00, 0x0000001B, 0x00EA2800, 0x00000010, 0x00C73400,
+        -:   70:                   0x00000010, 0x004BF8E0, 0x0000001B, 0x00B3D718, 0x00000018,
+        -:   71:                   0x00B0EBF8, 0x00000013, 0x003247F8, 0x00000013, 0x00C5BA20,
+        -:   72:                   0x00000010, 0x002D1C00, 0x00000010, 0x0060822B, 0x00000008,
+        -:   73:                   0x0096236B, 0x0000001B}};
+        -:   74:  CAST_KEY key;
+        -:   75:  unsigned i;
+     1024:   76:  for (i = 1; i < 1024; i++)
+     1023:   77:    CAST_S_table[i] = (CAST_S_table[i - 1] * 7 + 3) & 0xFFFFFF;
+        1:   78:  CAST_set_key(&key);
+        1:   79:  if (__builtin_memcmp(&ref, &key, sizeof(ref)))
+    #####:   80:    __builtin_abort();
+        1:   81:  return 0;
+        -:   82:}

@@ -1,0 +1,12 @@
+        -:    0:Source:2391.c
+        -:    0:Graph:2391.gcno
+        -:    0:Data:2391.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-march=armv8.2-a+fp16fml" } */
+        -:    3:
+        1:    4:int main() { return 0; }
+        -:    5:
+        -:    6:/* { dg-final { scan-assembler {\.arch armv8\.2-a\+crc\+fp16fml} } } */
+        -:    7:
+        -:    8:/* fmp16fml is smallest option to emit.  */

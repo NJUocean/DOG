@@ -1,0 +1,21 @@
+        -:    0:Source:1714.c
+        -:    0:Graph:1714.gcno
+        -:    0:Data:1714.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fipa-pta" } */
+        -:    3:
+        -:    4:static int *p;
+        2:    5:void bar(int cnt) {
+        2:    6:  if (cnt == 0) {
+        1:    7:    p = &cnt;
+        1:    8:    bar(1);
+        1:    9:    if (cnt != 1)
+    #####:   10:      __builtin_abort();
+        1:   11:  } else if (cnt == 1)
+        1:   12:    *p = 1;
+        2:   13:}
+        1:   14:int main() {
+        1:   15:  bar(0);
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,28 @@
+    1|       |/* PR rtl-optimization/54921 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Os -fno-omit-frame-pointer -fsched2-use-superblocks
+    4|       | * -ftree-slp-vectorize" } */
+    5|       |/* { dg-additional-options "-fstack-protector" { target fstack_protector } } */
+    6|       |
+    7|       |struct A {
+    8|       |  int a;
+    9|       |  char b[32];
+   10|       |} a, b;
+   11|       |
+   12|      2|__attribute__((noinline, noclone)) struct A bar(int x) {
+   13|      2|  struct A r;
+   14|      2|  static int n;
+   15|      2|  r.a = ++n;
+   16|      2|  __builtin_memset(r.b, 0, sizeof(r.b));
+   17|      2|  r.b[0] = x;
+   18|      2|  return r;
+   19|      2|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  a = bar(3);
+   23|      1|  b = bar(4);
+   24|      1|  if (a.a != 1 || a.b[0] != 3 || b.a != 2 || b.b[0] != 4)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

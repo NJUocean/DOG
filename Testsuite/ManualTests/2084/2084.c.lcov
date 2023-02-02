@@ -1,0 +1,35 @@
+    1|       |/* PR tree-optimization/83075 - Invalid strncpy optimization */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -Wstringop-overflow" } */
+    4|       |
+    5|       |typedef __SIZE_TYPE__ size_t;
+    6|       |
+    7|      1|__attribute__((noipa)) size_t foo(char *p, char *q, size_t *r) {
+    8|      1|  size_t n0 = __builtin_strlen(p);
+    9|      1|  __builtin_strncpy(
+   10|      1|      q, p, n0); /* { dg-warning "specified bound depends on the length" } */
+   11|      1|  size_t n1 = __builtin_strlen(p);
+   12|      1|  *r = n0;
+   13|      1|  return n1;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  char a[8] = "";
+   18|      1|  __builtin_strcpy(a, "123");
+   19|      1|  size_t n0 = __builtin_strlen(a);
+   20|      1|  __builtin_strncpy(
+   21|      1|      a + 3, a,
+   22|      1|      n0); /* { dg-warning "specified bound depends on the length" } */
+   23|      1|  size_t n1 = __builtin_strlen(a);
+   24|      1|  if (n1 == n0)
+   25|      0|    __builtin_abort();
+   26|      1|  a[6] = '7';
+   27|      1|  __builtin_strcpy(a, "456");
+   28|      1|  size_t n2;
+   29|      1|  if (foo(a, a + 3, &n2) != 7 || n2 != 3)
+   30|      0|    __builtin_abort();
+   31|      1|  if (__builtin_memcmp(a, "4564567", sizeof "4564567"))
+   32|      0|    __builtin_abort();
+   33|      1|  return 0;
+   34|      1|}
+

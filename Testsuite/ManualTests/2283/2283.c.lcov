@@ -1,0 +1,14 @@
+    1|      1|int main() {
+    2|      1|  long winds = 0;
+    3|      1|
+    4|      1|  while (winds != 0) {
+    5|      0|    if (*(char *)winds)
+    6|      0|      break;
+    7|      0|  }
+    8|      1|
+    9|      1|  if (winds == 0 || winds != 0 || *(char *)winds)
+   10|      1|    exit(0);
+   11|      0|
+   12|      0|  abort();
+   13|      0|}
+

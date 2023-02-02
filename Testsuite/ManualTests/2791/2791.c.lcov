@@ -1,0 +1,32 @@
+    1|       |/* Test that the compiler properly optimizes vector shift instructions into
+    2|       |   psha/pshl on XOP systems.  */
+    3|       |
+    4|       |/* { dg-do compile { target { ! ia32 } } } */
+    5|       |/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize" } */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |
+    9|       |typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+   10|       |
+   11|  10.2k|#define SIZE 10240
+   12|       |
+   13|       |union {
+   14|       |  __m128i i_align;
+   15|       |  int i32[SIZE];
+   16|       |  unsigned u32[SIZE];
+   17|       |} a, b, c;
+   18|       |
+   19|      1|void right_sign_shift32(void) {
+   20|      1|  int i;
+   21|      1|
+   22|  10.2k|  for (i = 0; i < SIZE; i++)
+   23|  10.2k|    a.i32[i] = b.i32[i] >> c.i32[i];
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  right_sign_shift32();
+   28|      1|  exit(0);
+   29|      1|}
+   30|       |
+   31|       |/* { dg-final { scan-assembler "vpshad" } } */
+

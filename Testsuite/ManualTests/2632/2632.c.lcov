@@ -1,0 +1,21 @@
+    1|       |/* PR target/39496 */
+    2|       |/* { dg-do compile { target { { *-*-linux* *-*-gnu* } && ia32 } } } */
+    3|       |/* { dg-options "-O0 -fverbose-asm -fno-omit-frame-pointer -mtune=i686 -msse2
+    4|       | * -mfpmath=sse" } */
+    5|       |/* Verify that {foo,bar}{,2}param are all passed on the stack, using
+    6|       |   normal calling conventions, when not optimizing.  */
+    7|       |/* { dg-final { scan-assembler "\[^0-9-\]8\\(%ebp\\),\[^\n\]*fooparam," } } */
+    8|       |/* { dg-final { scan-assembler "\[^0-9-\]8\\(%ebp\\),\[^\n\]*barparam," } } */
+    9|       |/* { dg-final { scan-assembler "\[^0-9-\]8\\(%ebp\\),\[^\n\]*foo2param," } } */
+   10|       |/* { dg-final { scan-assembler "\[^0-9-\]8\\(%ebp\\),\[^\n\]*bar2param," } } */
+   11|       |
+   12|      1|static inline int foo(int fooparam) { return fooparam; }
+   13|       |
+   14|      1|static int bar(int barparam) { return foo(barparam); }
+   15|       |
+   16|      1|static inline double foo2(double foo2param) { return foo2param; }
+   17|       |
+   18|      1|static double bar2(double bar2param) { return foo2(bar2param); }
+   19|       |
+   20|      1|int main() { return bar(0) + bar2(0.0); }
+

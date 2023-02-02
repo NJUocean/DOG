@@ -1,0 +1,27 @@
+    1|       |/* Origin: PR c/128 from Martin Sebor <sebor@roguewave.com>, adapted
+    2|       |   as a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+    3|       |*/
+    4|       |/* Character arrays initialized by a string literal must have
+    5|       |   uninitialized elements zeroed.  This isn't clear in the 1990
+    6|       |   standard, but was fixed in TC2 and C99; see DRs #060, #092.
+    7|       |*/
+    8|       |extern void abort(void);
+    9|       |
+   10|      1|int foo(void) {
+   11|      1|  char s[2] = "";
+   12|      1|  return 0 == s[1];
+   13|      1|}
+   14|       |
+   15|       |char *t;
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  {
+   19|      1|    char s[] = "x";
+   20|      1|    t = s;
+   21|      1|  }
+   22|      1|  if (foo())
+   23|      1|    exit(0);
+   24|      0|  else
+   25|      0|    abort();
+   26|      1|}
+

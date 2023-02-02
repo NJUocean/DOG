@@ -1,0 +1,15 @@
+        -:    0:Source:4038.c
+        -:    0:Graph:4038.gcno
+        -:    0:Data:4038.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/93494 */
+        -:    2:
+        -:    3:unsigned short a;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  register unsigned long long y = 0;
+        1:    7:  int x = __builtin_add_overflow(y, 0ULL, &a);
+        1:    8:  if (x || a)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

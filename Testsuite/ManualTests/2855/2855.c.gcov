@@ -1,0 +1,37 @@
+        -:    0:Source:2855.c
+        -:    0:Graph:2855.gcno
+        -:    0:Data:2855.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:struct tiny {
+        -:    4:  short c;
+        -:    5:};
+        -:    6:
+        1:    7:f(int n, ...) {
+        -:    8:  struct tiny x;
+        -:    9:  int i;
+        -:   10:
+        -:   11:  va_list ap;
+        1:   12:  va_start(ap, n);
+        4:   13:  for (i = 0; i < n; i++) {
+        3:   14:    x = va_arg(ap, struct tiny);
+        3:   15:    if (x.c != i + 10)
+    #####:   16:      abort();
+        -:   17:  }
+        -:   18:  {
+        1:   19:    long x = va_arg(ap, long);
+        1:   20:    if (x != 123)
+    #####:   21:      abort();
+        -:   22:  }
+        1:   23:  va_end(ap);
+        1:   24:}
+        -:   25:
+        1:   26:main() {
+        -:   27:  struct tiny x[3];
+        1:   28:  x[0].c = 10;
+        1:   29:  x[1].c = 11;
+        1:   30:  x[2].c = 12;
+        1:   31:  f(3, x[0], x[1], x[2], (long)123);
+        1:   32:  exit(0);
+        -:   33:}

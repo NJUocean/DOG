@@ -1,0 +1,12 @@
+        -:    0:Source:2171.c
+        -:    0:Graph:2171.gcno
+        -:    0:Data:2171.gcda
+        -:    0:Runs:1
+        1:    1:foo(double d) {
+        1:    2:  d = -d;
+        1:    3:  if (d < 0.0)
+    #####:    4:    return 1;
+        1:    5:  return 2;
+        -:    6:}
+        -:    7:
+        1:    8:main() { foo(0.0); }

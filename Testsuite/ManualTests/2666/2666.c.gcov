@@ -1,0 +1,27 @@
+        -:    0:Source:2666.c
+        -:    0:Graph:2666.gcno
+        -:    0:Data:2666.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/59363 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -mtune=amdfam10" } */
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  int ctxlen;
+        -:    7:  long interhunkctxlen;
+        -:    8:  int flags;
+        -:    9:  long find_func;
+        -:   10:  void *find_func_priv;
+        -:   11:  int hunk_func;
+        -:   12:} xdemitconf_t;
+        -:   13:
+        1:   14:__attribute__((noinline)) int xdi_diff(xdemitconf_t *xecfg) {
+        1:   15:  if (xecfg->hunk_func == 0)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}
+        1:   19:int main() {
+        1:   20:  xdemitconf_t xecfg = {0};
+        1:   21:  xecfg.hunk_func = 1;
+        1:   22:  return xdi_diff(&xecfg);
+        -:   23:}

@@ -1,0 +1,13 @@
+        -:    0:Source:2812.c
+        -:    0:Graph:2812.gcno
+        -:    0:Data:2812.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that __do_global_ctors_aux can be reached from .init section that
+        -:    2:   is in a different (256MB) region. */
+        -:    3:/* { dg-do run { target { "mips*-*-linux*" } } } */
+        -:    4:/* { dg-skip-if "" { "mips*-sde-elf mips*-mti-elf mips*-img-elf" } } */
+        -:    5:/* { dg-options "-Wl,--section-start=.init=0x0FFF0000" } */
+        -:    6:/* { dg-options "-Wl,--section-start=.text=0x10000000" } */
+        -:    7:/* { dg-options "-mips32r2" } */
+        -:    8:
+        1:    9:int main(void) { return 0; }

@@ -1,0 +1,30 @@
+    1|       |/* PR debug/43150 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|      1|void __attribute__((noinline)) bar(short *p) {
+    6|      1|  __builtin_memset(p, '\0', 17 * sizeof(*p));
+    7|      1|  asm volatile("" : : "r"(p) : "memory");
+    8|      1|}
+    9|       |
+   10|      1|int __attribute__((noinline)) f1(int i) {
+   11|      1|  char a[i + 1];
+   12|      1|  a[0] = 5;    /* { dg-final { gdb-test .+1 "i" "5" } } */
+   13|      1|  return a[0]; /* { dg-final { gdb-test . "sizeof (a)" "6" } } */
+   14|      1|}
+   15|       |
+   16|      1|int __attribute__((noinline)) f2(int i) {
+   17|      1|  short a[i * 2 + 7]; /* { dg-final { gdb-test .+1 "i" "5" } } */
+   18|      1|  bar(a); /* { dg-final { gdb-test . "sizeof (a)" "17 * sizeof (short)" } } */
+   19|      1|  return a[i + 4];
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  volatile int j;
+   24|      1|  int i = 5;
+   25|      1|  asm volatile("" : "=r"(i) : "0"(i));
+   26|      1|  j = f1(i);
+   27|      1|  f2(i);
+   28|      1|  return 0;
+   29|      1|}
+

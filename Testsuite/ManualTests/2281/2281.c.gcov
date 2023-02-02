@@ -1,0 +1,18 @@
+        -:    0:Source:2281.c
+        -:    0:Graph:2281.gcno
+        -:    0:Data:2281.gcda
+        -:    0:Runs:1
+        -:    1:static const unsigned char f[] = "\0\377";
+        -:    2:static const unsigned char g[] = "\0ÿ";
+        -:    3:
+        1:    4:int main(void) {
+        -:    5:  if (sizeof f != 3 || sizeof g != 3)
+        -:    6:    abort();
+        1:    7:  if (f[0] != g[0])
+    #####:    8:    abort();
+        1:    9:  if (f[1] != g[1])
+    #####:   10:    abort();
+        1:   11:  if (f[2] != g[2])
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

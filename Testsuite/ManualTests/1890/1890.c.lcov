@@ -1,0 +1,24 @@
+    1|       |typedef union {
+    2|       |  unsigned char member3;
+    3|       |  signed short member4;
+    4|       |  unsigned int member5;
+    5|       |} UNI02;
+    6|       |
+    7|       |struct srt_dat_t {
+    8|       |  UNI02 un2;
+    9|       |  unsigned long member1;
+   10|       |  signed short member2;
+   11|       |};
+   12|       |
+   13|       |struct srt_dat_t exsrt1;
+   14|      1|void extern_test(struct srt_dat_t arg1) {
+   15|      1|  arg1.un2.member3++;
+   16|      1|  arg1.member1++;
+   17|      1|  arg1.member2++;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  extern_test(exsrt1);
+   22|      1|  return (0);
+   23|      1|}
+

@@ -1,0 +1,17 @@
+        -:    0:Source:2386.c
+        -:    0:Graph:2386.gcno
+        -:    0:Data:2386.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2000  Free Software Foundation  */
+        -:    2:/* Contributed by Alexandre Oliva <aoliva@cygnus.com> */
+        -:    3:
+        -:    4:unsigned long l = (unsigned long)-2;
+        -:    5:unsigned short s;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  long t = l;
+        1:    9:  s = t;
+        1:   10:  if (s != (unsigned short)-2)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

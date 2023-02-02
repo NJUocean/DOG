@@ -1,0 +1,26 @@
+        -:    0:Source:291.c
+        -:    0:Graph:291.gcno
+        -:    0:Data:291.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that only one DW_AT_const_value is emitted for baz,
+        -:    2:   not for baz abstract DIE and again inside of
+        -:    3:   DW_TAG_inlined_subroutine.  */
+        -:    4:/* { dg-options "-O2 -gdwarf -dA -fmerge-all-constants" } */
+        -:    5:/* { dg-do compile } */
+        -:    6:/* { dg-final { scan-assembler-times " DW_AT_const_value" 1 } } */
+        -:    7:
+        -:    8:struct A {
+        -:    9:  const long i;
+        -:   10:  const long j;
+        -:   11:};
+        -:   12:
+        1:   13:static inline long foo(void) {
+        1:   14:  const struct A baz = {.i = 2, .j = 21};
+        -:   15:  /* We must make sure that baz isn't optimized away before inlining,
+        -:   16:     otherwise its initializer is also lost.  */
+        1:   17:  const struct A *p = &baz;
+        1:   18:  asm volatile("" : : : "memory");
+        1:   19:  return baz.i * baz.j;
+        -:   20:}
+        -:   21:
+        1:   22:int main() { return foo() - 42; }

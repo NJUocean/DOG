@@ -1,0 +1,57 @@
+        -:    0:Source:2485.c
+        -:    0:Graph:2485.gcno
+        -:    0:Data:2485.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:/* { dg-require-effective-target arm32 } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        2:    7:int bics_si_test1(int a, int b, int c) {
+        2:    8:  int d = a & ~b;
+        -:    9:
+        -:   10:  /* { dg-final { scan-assembler-not "bics\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+" } }
+        -:   11:   */
+        -:   12:  /* { dg-final { scan-assembler-times "bic\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+" 2
+        -:   13:   * } } */
+        2:   14:  if (d <= 0)
+        1:   15:    return a + c;
+        -:   16:  else
+        1:   17:    return b + d + c;
+        -:   18:}
+        -:   19:
+        2:   20:int bics_si_test2(int a, int b, int c) {
+        2:   21:  int d = a & ~(b << 3);
+        -:   22:
+        -:   23:  /* { dg-final { scan-assembler-not "bics\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+, .sl
+        -:   24:   * \#3" } } */
+        -:   25:  /* { dg-final { scan-assembler "bic\tr\[0-9\]+, r\[0-9\]+, r\[0-9\]+, .sl \#3"
+        -:   26:   * } } */
+        2:   27:  if (d <= 0)
+        1:   28:    return a + c;
+        -:   29:  else
+        1:   30:    return b + d + c;
+        -:   31:}
+        -:   32:
+        1:   33:int main() {
+        -:   34:  int x;
+        -:   35:
+        1:   36:  x = bics_si_test1(29, ~4, 5);
+        1:   37:  if (x != ((29 & 4) + ~4 + 5))
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  x = bics_si_test1(5, ~2, 20);
+        1:   41:  if (x != 25)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  x = bics_si_test2(35, ~4, 5);
+        1:   45:  if (x != ((35 & ~(~4 << 3)) + ~4 + 5))
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  x = bics_si_test2(96, ~2, 20);
+        1:   49:  if (x != 116)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  return 0;
+        -:   53:}

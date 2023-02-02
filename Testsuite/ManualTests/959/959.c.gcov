@@ -1,0 +1,47 @@
+        -:    0:Source:959.c
+        -:    0:Graph:959.gcno
+        -:    0:Data:959.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ftree-tail-merge" } */
+        -:    3:
+        -:    4:struct node {
+        -:    5:  struct node *next;
+        -:    6:  struct node *prev;
+        -:    7:};
+        -:    8:
+        -:    9:struct node node;
+        -:   10:
+        -:   11:struct head {
+        -:   12:  struct node *first;
+        -:   13:};
+        -:   14:
+        -:   15:struct head heads[5];
+        -:   16:
+        -:   17:int k = 2;
+        -:   18:
+        -:   19:struct head *head = &heads[2];
+        -:   20:
+        1:   21:int main() {
+        -:   22:  struct node *p;
+        -:   23:
+        1:   24:  node.next = (void *)0;
+        -:   25:
+        1:   26:  node.prev = (void *)head;
+        -:   27:
+        1:   28:  head->first = &node;
+        -:   29:
+        1:   30:  struct node *n = head->first;
+        -:   31:
+        1:   32:  struct head *h = &heads[k];
+        -:   33:
+        1:   34:  heads[2].first = n->next;
+        -:   35:
+        1:   36:  if ((void *)n->prev == (void *)h)
+        1:   37:    p = h->first;
+        -:   38:  else
+        -:   39:    /* Dead tbaa-unsafe load from ((struct node *)&heads[2])->next.  */
+    #####:   40:    p = n->prev->next;
+        -:   41:
+        1:   42:  return !(p == (void *)0);
+        -:   43:}

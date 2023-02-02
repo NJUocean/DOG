@@ -1,0 +1,10 @@
+        -:    0:Source:3180.c
+        -:    0:Graph:3180.gcno
+        -:    0:Data:3180.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { xfail *-empty-* } } */
+        -:    2:/* { dg-xfail-run-if "" { empty-*-* } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() { return 0; /* Neither xfail list matched, so pass.  */ }

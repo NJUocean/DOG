@@ -1,0 +1,18 @@
+        -:    0:Source:3723.c
+        -:    0:Graph:3723.gcno
+        -:    0:Data:3723.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/48973 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct S {
+        -:    5:  int f : 1;
+        -:    6:} s;
+        -:    7:int v = -1;
+        -:    8:
+        1:    9:int main() {
+        1:   10:  s.f = v < 0;
+        1:   11:  if ((unsigned int)s.f != -1U)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

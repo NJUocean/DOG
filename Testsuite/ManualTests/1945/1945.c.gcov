@@ -1,0 +1,30 @@
+        -:    0:Source:1945.c
+        -:    0:Graph:1945.gcno
+        -:    0:Data:1945.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -Wno-attributes" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:static void __attribute__((always_inline)) reverse(int *first, int *last) {
+        1:    7:  if (first == last--)
+    #####:    8:    return;
+        4:    9:  while (first != last) {
+        4:   10:    int t = *first;
+        4:   11:    *first = *last;
+        4:   12:    *last = t;
+        4:   13:    if (++first == last--)
+        1:   14:      break;
+        -:   15:  }
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  int seq[] = {1, 2, 3, 4, 5, 6, 7, 8};
+        -:   20:
+        1:   21:  reverse(seq, seq + 8);
+        1:   22:  if (seq[3] != 5 || seq[4] != 4)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

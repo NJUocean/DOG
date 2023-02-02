@@ -1,0 +1,76 @@
+        -:    0:Source:4143.c
+        -:    0:Graph:4143.gcno
+        -:    0:Data:4143.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:/* Testcase distilled from glibc's nss_parse_service_list in nss/nsswitch.c
+        -:    4:   It can't be distilled further.  Fails with `-O2' for i[3456]86.  */
+        -:    5:
+        -:    6:/* this simulates a bounded-pointer type.  */
+        -:    7:struct ucharp {
+        -:    8:  unsigned char *v, *l, *h;
+        -:    9:};
+        -:   10:
+        -:   11:/* this simulates bounded-pointer check prior to pointer dereference.  */
+        -:   12:#define AREF(var, idx)                                                         \
+        -:   13:  ((((((((var).v + (idx)) < (var).l) || (((var).v + (idx) + 1) > (var).h))) && \
+        -:   14:     (__builtin_trap(), 0)),                                                   \
+        -:   15:    (var).v)[(idx)])
+        -:   16:
+        -:   17:struct list {
+        -:   18:  struct list *next;
+        -:   19:};
+        -:   20:
+        2:   21:struct list *alloc_list(void) {
+        -:   22:  static struct list l;
+        2:   23:  return &l;
+        -:   24:}
+        -:   25:
+        -:   26:int one = 1;
+        -:   27:
+        2:   28:void foo(struct ucharp cp, struct ucharp lp, struct list **nextp) {
+        1:   29:  while (1) {
+        -:   30:    struct list *list;
+       2*:   31:    while (AREF(lp, 0) && AREF(cp, AREF(lp, 0)))
+    #####:   32:      ++lp.v;
+        2:   33:    list = alloc_list();
+       2*:   34:    while (AREF(cp, AREF(lp, 0)))
+    #####:   35:      ++lp.v;
+       2*:   36:    if (AREF(lp, 0) == one)
+        -:   37:      do
+        2:   38:        ++lp.v;
+       2*:   39:      while (AREF(lp, 0) && AREF(cp, AREF(lp, 0)));
+        -:   40:    /* The above AREF (cp, ...) fails because the pseudo created to
+        -:   41:       hold cp.v holds garbage, having never been set.
+        -:   42:       The easiest way to see the problem is to compile wiht `-O2 -da'
+        -:   43:       then look at *.09.loop.  Search for something like this:
+        -:   44:
+        -:   45:       Hoisted regno 183 r/o from (mem/s:SI (reg:SI 16 argp) 10)
+        -:   46:         Replaced reg 91, deleting init_insn (213).
+        -:   47:
+        -:   48:       Now, look for the use of reg 91, which has no set.  */
+        -:   49:
+        2:   50:    *nextp = list;
+        2:   51:    nextp = &list->next;
+        2:   52:    if (!*lp.v)
+        1:   53:      break;
+        -:   54:  }
+        1:   55:}
+        -:   56:
+        -:   57:extern void exit(int);
+        -:   58:
+        1:   59:int main(void) {
+        -:   60:  static unsigned char cp0[] = "\0\0\0\0";
+        1:   61:  struct ucharp cp = {cp0, cp0, cp0 + sizeof(cp0)};
+        -:   62:
+        -:   63:  static unsigned char lp0[] = "\1\1\0\0";
+        1:   64:  struct ucharp lp = {lp0, lp0, lp0 + sizeof(lp0)};
+        -:   65:
+        -:   66:  struct list list;
+        1:   67:  struct list *nextp = &list;
+        -:   68:
+        1:   69:  foo(cp, lp, &nextp);
+        -:   70:
+        1:   71:  exit(0);
+        -:   72:}

@@ -1,0 +1,20 @@
+    1|      1|int g(unsigned long long int *v, int n, unsigned int a[], int b) {
+    2|      1|  int cnt;
+    3|      1|  *v = 0;
+    4|      6|  for (cnt = 0; cnt < n; ++cnt)
+    5|      5|    *v = *v * b + a[cnt];
+    6|      1|  return n;
+    7|      1|}
+    8|       |
+    9|      1|main() {
+   10|      1|  int res;
+   11|      1|  unsigned int ar[] = {10, 11, 12, 13, 14};
+   12|      1|  unsigned long long int v;
+   13|      1|
+   14|      1|  res = g(&v, sizeof(ar) / sizeof(ar[0]), ar, 16);
+   15|      1|  if (v != 0xabcdeUL)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+

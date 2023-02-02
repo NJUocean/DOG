@@ -1,0 +1,18 @@
+        -:    0:Source:2502.c
+        -:    0:Graph:2502.gcno
+        -:    0:Data:2502.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fipa-ra" } */
+        -:    3:/* Testing -fipa-ra optimization option.  */
+        -:    4:
+        1:    5:static int __attribute__((noinline)) bar(int x) { return x + 3; }
+        -:    6:
+        1:    7:int __attribute__((noinline)) foo(int y) { return y + bar(y); }
+        -:    8:
+        1:    9:int main(void) { return !(foo(5) == 13); }
+        -:   10:
+        -:   11:/* For thumb1, r3 is considered likely spilled, and treated differently in
+        -:   12:   ira_build_conflicts, which inhibits the fipa-ra optimization.  */
+        -:   13:/* { dg-final { scan-assembler-times "mov\tr\[123\], r0" 1 { target { !
+        -:   14: * arm_thumb1 } } } } */

@@ -1,0 +1,41 @@
+        -:    0:Source:1743.c
+        -:    0:Graph:1743.gcno
+        -:    0:Data:1743.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:union U {
+        -:    4:  long long i;
+        -:    5:  long f;
+        -:    6:};
+        -:    7:struct a {
+        -:    8:  union U u;
+        -:    9:};
+        -:   10:struct aa {
+        -:   11:  struct a a;
+        -:   12:};
+        -:   13:struct b {
+        -:   14:  union U u;
+        -:   15:};
+        -:   16:struct bb {
+        -:   17:  struct b b;
+        -:   18:};
+        -:   19:
+        1:   20:long __attribute__((noipa)) foo(struct bb *bv, void *ptr) {
+        1:   21:  struct aa *a = ptr;
+        1:   22:  struct bb *b = ptr;
+        1:   23:  bv->b.u.f = 1;
+        1:   24:  a->a.u.i = 0;
+        1:   25:  b->b.u.f = 0;
+        1:   26:  return bv->b.u.f;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  union C {
+        -:   31:    struct aa aa;
+        -:   32:    struct bb bb;
+        -:   33:  } v;
+        1:   34:  if (foo(&v.bb, &v) != 0)
+    #####:   35:    __builtin_abort();
+        1:   36:  return 0;
+        -:   37:}

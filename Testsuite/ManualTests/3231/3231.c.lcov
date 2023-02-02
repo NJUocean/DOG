@@ -1,0 +1,77 @@
+    1|       |/* extracted from gdb sources */
+    2|       |
+    3|       |typedef unsigned long long CORE_ADDR;
+    4|       |
+    5|       |struct blockvector;
+    6|       |
+    7|       |struct symtab {
+    8|       |  struct blockvector *blockvector;
+    9|       |};
+   10|       |
+   11|       |struct sec {
+   12|       |  void *unused;
+   13|       |};
+   14|       |
+   15|       |struct symbol {
+   16|       |  int len;
+   17|       |  char *name;
+   18|       |};
+   19|       |
+   20|       |struct block {
+   21|       |  CORE_ADDR startaddr, endaddr;
+   22|       |  struct symbol *function;
+   23|       |  struct block *superblock;
+   24|       |  unsigned char gcc_compile_flag;
+   25|       |  int nsyms;
+   26|       |  struct symbol syms[1];
+   27|       |};
+   28|       |
+   29|       |struct blockvector {
+   30|       |  int nblocks;
+   31|       |  struct block *block[2];
+   32|       |};
+   33|       |
+   34|       |struct blockvector *blockvector_for_pc_sect(register CORE_ADDR pc,
+   35|      1|                                            struct symtab *symtab) {
+   36|      1|  register struct block *b;
+   37|      1|  register int bot, top, half;
+   38|      1|  struct blockvector *bl;
+   39|      1|
+   40|      1|  bl = symtab->blockvector;
+   41|      1|  b = bl->block[0];
+   42|      1|
+   43|      1|  bot = 0;
+   44|      1|  top = bl->nblocks;
+   45|      1|
+   46|      2|  while (top - bot > 1) {
+   47|      1|    half = (top - bot + 1) >> 1;
+   48|      1|    b = bl->block[bot + half];
+   49|      1|    if (b->startaddr <= pc)
+   50|      0|      bot += half;
+   51|      1|    else
+   52|      1|      top = bot + half;
+   53|      1|  }
+   54|      1|
+   55|      1|  while (bot >= 0) {
+   56|      1|    b = bl->block[bot];
+   57|      1|    if (b->endaddr > pc) {
+   58|      1|      return bl;
+   59|      1|    }
+   60|      0|    bot--;
+   61|      0|  }
+   62|      1|  return 0;
+   63|      1|}
+   64|       |
+   65|      1|int main(void) {
+   66|      1|  struct block a = {0, 0x10000, 0, 0, 1, 20};
+   67|      1|  struct block b = {0x10000, 0x20000, 0, 0, 1, 20};
+   68|      1|  struct blockvector bv = {2, {&a, &b}};
+   69|      1|  struct symtab s = {&bv};
+   70|      1|
+   71|      1|  struct blockvector *ret;
+   72|      1|
+   73|      1|  ret = blockvector_for_pc_sect(0x500, &s);
+   74|      1|
+   75|      1|  return 0;
+   76|      1|}
+

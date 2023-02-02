@@ -1,0 +1,85 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |typedef struct PgHdr PgHdr;
+    4|       |typedef unsigned char u8;
+    5|       |struct PgHdr {
+    6|       |  unsigned int pgno;
+    7|       |  PgHdr *pNextHash, *pPrevHash;
+    8|       |  PgHdr *pNextFree, *pPrevFree;
+    9|       |  PgHdr *pNextAll;
+   10|       |  u8 inJournal;
+   11|       |  short int nRef;
+   12|       |  PgHdr *pDirty, *pPrevDirty;
+   13|       |  unsigned int notUsed;
+   14|       |};
+   15|       |
+   16|     27|static inline PgHdr *merge_pagelist(PgHdr *pA, PgHdr *pB) {
+   17|     27|  PgHdr result;
+   18|     27|  PgHdr *pTail;
+   19|     27|  pTail = &result;
+   20|     31|  while (pA && pB) {
+   21|      4|    if (pA->pgno < pB->pgno) {
+   22|      1|      pTail->pDirty = pA;
+   23|      1|      pTail = pA;
+   24|      1|      pA = pA->pDirty;
+   25|      3|    } else {
+   26|      3|      pTail->pDirty = pB;
+   27|      3|      pTail = pB;
+   28|      3|      pB = pB->pDirty;
+   29|      3|    }
+   30|      4|  }
+   31|     27|  if (pA) {
+   32|     24|    pTail->pDirty = pA;
+   33|     24|  } else if (pB) {
+   34|      2|    pTail->pDirty = pB;
+   35|      2|  } else {
+   36|      1|    pTail->pDirty = 0;
+   37|      1|  }
+   38|     27|  return result.pDirty;
+   39|     27|}
+   40|       |
+   41|      1|PgHdr *__attribute__((noinline)) sort_pagelist(PgHdr *pIn) {
+   42|      1|  PgHdr *a[25], *p;
+   43|      1|  int i;
+   44|      1|  __builtin_memset(a, 0, sizeof(a));
+   45|      5|  while (pIn) {
+   46|      4|    p = pIn;
+   47|      4|    pIn = p->pDirty;
+   48|      4|    p->pDirty = 0;
+   49|      7|    for (i = 0; i < 25 - 1; i++) {
+   50|      7|      if (a[i] == 0) {
+   51|      4|        a[i] = p;
+   52|      4|        break;
+   53|      4|      } else {
+   54|      3|        p = merge_pagelist(a[i], p);
+   55|      3|        a[i] = 0;
+   56|      3|      }
+   57|      7|    }
+   58|      4|    if (i == 25 - 1) {
+   59|      0|      a[i] = merge_pagelist(a[i], p);
+   60|      0|    }
+   61|      4|  }
+   62|      1|  p = a[0];
+   63|     25|  for (i = 1; i < 25; i++) {
+   64|     24|    p = merge_pagelist(p, a[i]);
+   65|     24|  }
+   66|      1|  return p;
+   67|      1|}
+   68|       |
+   69|      1|int main() {
+   70|      1|  PgHdr a[5];
+   71|      1|  PgHdr *p;
+   72|      1|  a[0].pgno = 5;
+   73|      1|  a[0].pDirty = &a[1];
+   74|      1|  a[1].pgno = 4;
+   75|      1|  a[1].pDirty = &a[2];
+   76|      1|  a[2].pgno = 1;
+   77|      1|  a[2].pDirty = &a[3];
+   78|      1|  a[3].pgno = 3;
+   79|      1|  a[3].pDirty = 0;
+   80|      1|  p = sort_pagelist(&a[0]);
+   81|      1|  if (p->pDirty == p)
+   82|      0|    abort();
+   83|      1|  return 0;
+   84|      1|}
+

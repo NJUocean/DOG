@@ -1,0 +1,54 @@
+    1|       |/* PR24716, scalar evolution returning the wrong result
+    2|       |   for pdest.  */
+    3|       |
+    4|       |int Link[] = {-1};
+    5|       |int W[] = {2};
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|      1|int f(int k, int p) {
+   10|      1|  int pdest, j, D1361;
+   11|      1|  j = 0;
+   12|      1|  pdest = 0;
+   13|      2|  for (;;) {
+   14|      2|    if (pdest > 2)
+   15|      0|      do
+   16|      0|        j--, pdest++;
+   17|      0|      while (j > 2);
+   18|      2|
+   19|      2|    if (j == 1)
+   20|      1|      break;
+   21|      1|
+   22|      1|    while (pdest > p)
+   23|      0|      if (j == p)
+   24|      0|        pdest++;
+   25|      1|
+   26|      1|    do {
+   27|      1|      D1361 = W[k];
+   28|      1|      do
+   29|      1|        if (D1361 != 0)
+   30|      1|          pdest = 1, W[k] = D1361 = 0;
+   31|      1|      while (p < 1);
+   32|      1|    } while (k > 0);
+   33|      1|
+   34|      1|    do {
+   35|      1|      p = 0;
+   36|      1|      k = Link[k];
+   37|      1|      while (p < j)
+   38|      0|        if (k != -1)
+   39|      0|          pdest++, p++;
+   40|      1|    } while (k != -1);
+   41|      1|    j = 1;
+   42|      1|  }
+   43|      1|
+   44|      1|  /* The correct return value should be pdest (1 in the call from main).
+   45|      1|     DOM3 is mistaken and propagates a 0 here.  */
+   46|      1|  return pdest;
+   47|      1|}
+   48|       |
+   49|      1|int main() {
+   50|      1|  if (!f(0, 2))
+   51|      0|    abort();
+   52|      1|  return 0;
+   53|      1|}
+

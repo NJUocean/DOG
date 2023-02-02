@@ -1,0 +1,8 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O3 -fwhole-program" } */
+    3|       |/* { dg-final { scan-assembler "mystr" } } */
+    4|       |
+    5|       |extern const char *mystr; /* normally in a header */
+    6|       |const char *mystr __attribute__((externally_visible));
+    7|      1|int main() {}
+

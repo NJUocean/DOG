@@ -1,0 +1,31 @@
+    1|       |/* Copyright (C) 2003 Free Software Foundation.
+    2|       |
+    3|       |   Check that constant folding (c1 - x) op c2 into x swap(op) c1-c2
+    4|       |   doesn't break anything.
+    5|       |
+    6|       |   Written by Roger Sayle, 27th March 2003.  */
+    7|       |
+    8|       |/* { dg-do run } */
+    9|       |/* { dg-options "-O2 -ffast-math" } */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|      2|int foo(double x) { return (10.0 - x) > 3.0; }
+   14|       |
+   15|      2|int bar(double x) { return (10.0 - x) == 5.0; }
+   16|       |
+   17|      1|int main() {
+   18|      1|  if (foo(8.0))
+   19|      0|    abort();
+   20|      1|
+   21|      1|  if (!foo(6.0))
+   22|      0|    abort();
+   23|      1|
+   24|      1|  if (bar(1.0))
+   25|      0|    abort();
+   26|      1|
+   27|      1|  if (!bar(5.0))
+   28|      0|    abort();
+   29|      1|  return 0;
+   30|      1|}
+

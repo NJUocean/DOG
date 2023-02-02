@@ -1,0 +1,21 @@
+        -:    0:Source:3016.c
+        -:    0:Graph:3016.gcno
+        -:    0:Data:3016.gcda
+        -:    0:Runs:1
+        1:    1:void bar(int N) {
+        2:    2:  int foo(char a[2][++N]) {
+        2:    3:    N += 4;
+        2:    4:    return sizeof(a[0]);
+        -:    5:  }
+        1:    6:  if (foo(0) != 2)
+    #####:    7:    abort();
+        1:    8:  if (foo(0) != 7)
+    #####:    9:    abort();
+        1:   10:  if (N != 11)
+    #####:   11:    abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  bar(1);
+        1:   16:  exit(0);
+        -:   17:}

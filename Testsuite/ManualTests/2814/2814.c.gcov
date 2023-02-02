@@ -1,0 +1,58 @@
+        -:    0:Source:2814.c
+        -:    0:Graph:2814.gcno
+        -:    0:Data:2814.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "(HAS_LXC1) -mhard-float -mlxc1-sxc1" } */
+        -:    2:/* { dg-skip-if "code quality test" { *-*-* } { "-O0" } { "" } } */
+        -:    3:/* { dg-final { scan-assembler "\tldxc1\t" } } */
+        -:    4:
+        -:    5:#ifdef __mips_no_lxc1_sxc1
+        -:    6:#error unexpected definition of __mips_no_lxc1_sxc1
+        -:    7:#endif
+        -:    8:
+        -:    9:double ldexp(double x, int exp);
+        -:   10:
+        -:   11:typedef struct {
+        -:   12:  double **rows;
+        -:   13:} d_mat_struct;
+        -:   14:
+        -:   15:typedef d_mat_struct d_mat_t[1];
+        -:   16:
+        -:   17:#define d_mat_entry(mat, i, j) (*((mat)->rows[i] + (j)))
+        -:   18:
+        -:   19:double __attribute__((noinline))
+        1:   20:ldxc1_test(int kappa, int zeros, double ctt, int *expo, d_mat_t r, double *s) {
+        1:   21:  int kappa2 = kappa;
+        1:   22:  double tmp = 0.0;
+        -:   23:
+        -:   24:  do {
+       17:   25:    kappa--;
+       17:   26:    if (kappa > zeros + 1) {
+       16:   27:      tmp = d_mat_entry(r, kappa - 1, kappa - 1) * ctt;
+       16:   28:      tmp = ldexp(tmp, (expo[kappa - 1] - expo[kappa2]));
+        -:   29:    }
+       17:   30:  } while ((kappa >= zeros + 2) && (s[kappa - 1] <= tmp));
+        -:   31:
+        1:   32:  return tmp;
+        -:   33:}
+        -:   34:
+        -:   35:#define SIZE 20
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  int kappa = SIZE - 1;
+        1:   39:  int zeros = 1;
+        1:   40:  double ctt = 2;
+        -:   41:
+        1:   42:  int expo[SIZE] = {0};
+        1:   43:  double s[SIZE] = {0};
+        1:   44:  double rows_data[SIZE][SIZE] = {0};
+        -:   45:  double *rows[SIZE];
+        -:   46:
+       21:   47:  for (int i = 0; i < SIZE; i++)
+       20:   48:    rows[i] = rows_data[i];
+        -:   49:
+        1:   50:  d_mat_t r = {rows};
+        -:   51:
+        1:   52:  ldxc1_test(kappa, zeros, ctt, expo, r, s);
+        1:   53:  return 0;
+        -:   54:}

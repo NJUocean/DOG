@@ -1,0 +1,31 @@
+        -:    0:Source:809.c
+        -:    0:Graph:809.gcno
+        -:    0:Data:809.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/28726 */
+        -:    2:/* Origin: Sigurd Schneider <sg313d@gmail.com> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2 -fsched2-use-superblocks" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:static double my_loop(void) __attribute__((noinline));
+        -:   10:
+        1:   11:static double my_loop(void) {
+        1:   12:  double retval = 0.0;
+        1:   13:  const unsigned char *start = "\005\b\000";
+        1:   14:  const unsigned char *const end = start + 2;
+        -:   15:
+        3:   16:  while (start < end)
+        2:   17:    retval += *start++;
+        -:   18:
+        1:   19:  return retval;
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  if (my_loop() != 13.0)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

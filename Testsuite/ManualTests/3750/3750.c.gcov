@@ -1,0 +1,36 @@
+        -:    0:Source:3750.c
+        -:    0:Graph:3750.gcno
+        -:    0:Data:3750.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/52129 */
+        -:    2:/* { dg-xfail-if "ptxas crashes" { nvptx-*-* } { "-O1" } { "" } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct S {
+        -:    6:  void *p;
+        -:    7:  unsigned int q;
+        -:    8:};
+        -:    9:struct T {
+        -:   10:  char a[64];
+        -:   11:  char b[64];
+        -:   12:} t;
+        -:   13:
+        1:   14:__attribute__((noinline, noclone)) int foo(void *x, struct S s, void *y,
+        -:   15:                                           void *z) {
+        1:   16:  if (x != &t.a[2] || s.p != &t.b[5] || s.q != 27 || y != &t.a[17] ||
+        -:   17:      z != &t.b[17])
+    #####:   18:    abort();
+        1:   19:  return 29;
+        -:   20:}
+        -:   21:
+        1:   22:__attribute__((noinline, noclone)) int bar(void *x, void *y, void *z,
+        -:   23:                                           struct S s, int t, struct T *u) {
+        1:   24:  return foo(x, s, &u->a[t], &u->b[t]);
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  struct S s = {&t.b[5], 27};
+        1:   29:  if (bar(&t.a[2], (void *)0, (void *)0, s, 17, &t) != 29)
+    #####:   30:    abort();
+        1:   31:  return 0;
+        -:   32:}

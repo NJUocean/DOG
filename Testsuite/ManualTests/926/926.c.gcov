@@ -1,0 +1,22 @@
+        -:    0:Source:926.c
+        -:    0:Graph:926.gcno
+        -:    0:Data:926.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/52769 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  int should_be_zero;
+        -:    7:  char s[6];
+        -:    8:  int x;
+        -:    9:} foo_t;
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  volatile foo_t foo = {.s = "123456", .x = 2};
+        -:   13:
+        1:   14:  if (foo.should_be_zero != 0)
+    #####:   15:    __builtin_abort();
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

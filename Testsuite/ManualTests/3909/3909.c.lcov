@@ -1,0 +1,14 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|      1|int __attribute__((noinline)) foo(void) { return 123; }
+    3|       |
+    4|      1|int __attribute__((noinline)) bar(void) {
+    5|      1|  int c = 1;
+    6|      1|  c |= 4294967295 ^ (foo() | 4073709551608);
+    7|      1|  return c;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  if (bar() != 0x83fd4005)
+   12|      0|    __builtin_abort();
+   13|      1|}
+

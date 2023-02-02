@@ -1,0 +1,19 @@
+        -:    0:Source:3446.c
+        -:    0:Graph:3446.gcno
+        -:    0:Data:3446.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct container {
+        -:    4:  unsigned char data[1];
+        -:    5:};
+        -:    6:
+        -:    7:unsigned char space[6] = {1, 2, 3, 4, 5, 6};
+        -:    8:
+        1:    9:int foo(struct container *p) { return p->data[4]; }
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (foo((struct container *)space) != 5)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

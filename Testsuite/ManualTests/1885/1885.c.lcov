@@ -1,0 +1,76 @@
+    1|       |/* { dg-options "-O2 -fdump-tree-switchconv" } */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |static int X, Y;
+    7|       |
+    8|      8|int check(int param) {
+    9|      8|  int a = 0;
+   10|      8|  int b = 1;
+   11|      8|
+   12|      8|  switch (param) {
+   13|      1|  case -2:
+   14|      1|    a = 0;
+   15|      1|    b = -1;
+   16|      1|    break;
+   17|      2|  case 1:
+   18|      2|  case 2:
+   19|      2|    a = 8;
+   20|      2|    b = 6;
+   21|      2|    break;
+   22|      2|  case 3:
+   23|      1|    a = 9;
+   24|      1|    b = 5;
+   25|      1|    break;
+   26|      2|  case 6:
+   27|      1|    a = 10;
+   28|      1|    b = 4;
+   29|      1|    break;
+   30|      3|  default:
+   31|      3|    a = 16;
+   32|      3|    b = 1;
+   33|      8|  }
+   34|      8|
+   35|      8|  X = a;
+   36|      8|  Y = b;
+   37|      8|  return 0;
+   38|      8|}
+   39|       |
+   40|      8|void assertions(int a, int b) {
+   41|      8|  if (X != a || Y != b)
+   42|      0|    abort();
+   43|      8|
+   44|      8|  return;
+   45|      8|}
+   46|       |
+   47|      1|int main() {
+   48|      1|  check(-10);
+   49|      1|  assertions(16, 1);
+   50|      1|
+   51|      1|  check(-2);
+   52|      1|  assertions(0, -1);
+   53|      1|
+   54|      1|  check(1);
+   55|      1|  assertions(8, 6);
+   56|      1|
+   57|      1|  check(2);
+   58|      1|  assertions(8, 6);
+   59|      1|
+   60|      1|  check(3);
+   61|      1|  assertions(9, 5);
+   62|      1|
+   63|      1|  check(5);
+   64|      1|  assertions(16, 1);
+   65|      1|
+   66|      1|  check(6);
+   67|      1|  assertions(10, 4);
+   68|      1|
+   69|      1|  check(12);
+   70|      1|  assertions(16, 1);
+   71|      1|
+   72|      1|  return 0;
+   73|      1|}
+   74|       |
+   75|       |/* { dg-final { scan-tree-dump "Switch converted" "switchconv" } } */
+

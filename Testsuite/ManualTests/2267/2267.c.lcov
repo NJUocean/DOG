@@ -1,0 +1,8 @@
+    1|      1|main() { printf("%x, %x\n", (unsigned char)main, main); }
+    2|       |
+    3|       |foo(p) char *p;
+    4|      0|{
+    5|      0|  p[0] = (char)foo;
+    6|      0|  p[1] = (char)foo;
+    7|      0|}
+

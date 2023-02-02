@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O" } */
+    3|       |
+    4|       |struct A {
+    5|       |  int b;
+    6|       |  int c : 2;
+    7|       |};
+    8|       |
+    9|       |struct B {
+   10|       |  int e;
+   11|       |  struct A f;
+   12|       |} g = {0, {0, 1}}, j;
+   13|       |
+   14|       |struct A *h = &g.f;
+   15|       |
+   16|      1|int main() {
+   17|      1|  struct A k;
+   18|      1|  struct B l = j, i = l;
+   19|      1|  if (!i.f.b)
+   20|      1|    k = i.f;
+   21|      1|  *h = k;
+   22|      1|  if (g.f.c != 0)
+   23|      0|    __builtin_abort();
+   24|      1|  return 0;
+   25|      1|}
+

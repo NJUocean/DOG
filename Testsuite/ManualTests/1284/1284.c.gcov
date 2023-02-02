@@ -1,0 +1,17 @@
+        -:    0:Source:1284.c
+        -:    0:Graph:1284.gcno
+        -:    0:Data:1284.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void link_error(void);
+        -:    4:
+        1:    5:void test0(int a, int b) {
+        -:    6:  if ((a < b) != (b > a))
+        -:    7:    link_error();
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  test0(1, 2);
+        1:   12:  return 0;
+        -:   13:}

@@ -1,0 +1,20 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-effective-target vect_shift } */
+    3|       |/* { dg-require-effective-target vect_int } */
+    4|       |
+    5|      1|#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+    6|       |#define vector(elcount, type)                                                  \
+    7|      3|  __attribute__((vector_size((elcount) * sizeof(type)))) type
+    8|       |
+    9|      1|int main(int argc, char *argv[]) {
+   10|      1|  vector(8, short) v0 = {argc, 1, 2, 3, 4, 5, 6, 7};
+   11|      1|  vector(8, short) v1 = {2, 2, 2, 2, 2, 2, 2, 2};
+   12|      1|  vector(8, short) r1;
+   13|      1|
+   14|      1|  r1 = v0 >> v1;
+   15|      1|
+   16|      1|  return vidx(short, r1, 0);
+   17|      1|}
+   18|       |
+   19|       |/* { dg-final { scan-tree-dump-times ">> 2" 1 "veclower21" } } */
+

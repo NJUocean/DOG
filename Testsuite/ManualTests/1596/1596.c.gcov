@@ -1,0 +1,31 @@
+        -:    0:Source:1596.c
+        -:    0:Graph:1596.gcno
+        -:    0:Data:1596.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-Wno-stringop-overflow" } */
+        -:    3:/* The loop below writes past the end of the global object a.
+        -:    4:   When the loop is transformed into a call to memcpy the buffer
+        -:    5:   overflow is detected and diagnosed by the -Wstringop-overflow
+        -:    6:   option enabled by default.  */
+        -:    7:
+        -:    8:typedef unsigned size_t;
+        -:    9:struct {
+        -:   10:  unsigned char buf[sizeof(long)];
+        -:   11:} a;
+        -:   12:size_t b;
+        1:   13:int main() {
+        -:   14:  size_t c, i;
+        -:   15:  unsigned char *d;
+        1:   16:  for (; c < sizeof(long);) {
+    #####:   17:    d = a.buf;
+    #####:   18:    b = 0;
+    #####:   19:    for (; b < i; b++)
+    #####:   20:      *d++ = '\0';
+    #####:   21:    for (; c < b; c++)
+    #####:   22:      *d++ = 'a';
+    #####:   23:    c = 0;
+    #####:   24:    for (; i < sizeof(long); i++)
+        -:   25:      ;
+        -:   26:  }
+        -:   27:}

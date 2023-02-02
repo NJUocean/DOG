@@ -1,0 +1,13 @@
+    1|       |/* PR rtl-opt/15289 */
+    2|       |
+    3|       |typedef struct {
+    4|       |  _Complex char a;
+    5|       |  _Complex char b;
+    6|       |} Scc2;
+    7|       |
+    8|       |Scc2 s = {1 + 2i, 3 + 4i};
+    9|       |
+   10|      1|int checkScc2(Scc2 s) { return s.a != 1 + 2i || s.b != 3 + 4i; }
+   11|       |
+   12|      1|int main(void) { return checkScc2(s); }
+

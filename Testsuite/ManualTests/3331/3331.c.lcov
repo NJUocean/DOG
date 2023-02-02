@@ -1,0 +1,37 @@
+    1|       |/* PR middle-end/13400 */
+    2|       |/* The following test used to fail at run-time with a write to read-only
+    3|       |   memory, caused by if-conversion converting a conditional write into an
+    4|       |   unconditional write.  */
+    5|       |
+    6|       |typedef struct {
+    7|       |  int c, l;
+    8|       |  char ch[3];
+    9|       |} pstr;
+   10|       |const pstr ao = {2, 2, "OK"};
+   11|       |const pstr *const a = &ao;
+   12|       |
+   13|      1|void test1(void) {
+   14|      1|  if (a->ch[a->l]) {
+   15|      0|    ((char *)a->ch)[a->l] = 0;
+   16|      0|  }
+   17|      1|}
+   18|       |
+   19|      1|void test2(void) {
+   20|      1|  if (a->ch[a->l]) {
+   21|      0|    ((char *)a->ch)[a->l] = -1;
+   22|      0|  }
+   23|      1|}
+   24|       |
+   25|      1|void test3(void) {
+   26|      1|  if (a->ch[a->l]) {
+   27|      0|    ((char *)a->ch)[a->l] = 1;
+   28|      0|  }
+   29|      1|}
+   30|       |
+   31|      1|int main(void) {
+   32|      1|  test1();
+   33|      1|  test2();
+   34|      1|  test3();
+   35|      1|  return 0;
+   36|      1|}
+

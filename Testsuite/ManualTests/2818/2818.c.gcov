@@ -1,0 +1,52 @@
+        -:    0:Source:2818.c
+        -:    0:Graph:2818.gcno
+        -:    0:Data:2818.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-mips16 -mcode-readable=yes" } */
+        -:    3:
+        -:    4:/* PR tree-optimization/51513 verification variant for MIPS16, #2.  */
+        -:    5:
+        5:    6:int __attribute__((weak)) frob(int i) {
+        5:    7:  switch (i) {
+        1:    8:  case -5:
+        1:    9:    return -2;
+        1:   10:  case -3:
+        1:   11:    return -1;
+        1:   12:  case 0:
+        1:   13:    return 0;
+        1:   14:  case 3:
+        1:   15:    return 1;
+        1:   16:  case 5:
+        1:   17:    break;
+    #####:   18:  default:
+    #####:   19:    __builtin_unreachable();
+        -:   20:  }
+        1:   21:  return i;
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  return !(frob(-5) == -2 & frob(-3) == -1 & frob(0) == 0 & frob(3) == 1 &
+        1:   26:           frob(5) == 5);
+        -:   27:}
+        -:   28:
+        -:   29:/* Without the fix for PR tree-optimization/51513 truncated code
+        -:   30:   would be emitted for `frob', like:
+        -:   31:
+        -:   32:        .text
+        -:   33:        .align	2
+        -:   34:        .weak	frob
+        -:   35:        .set	mips16
+        -:   36:        .set	nomicromips
+        -:   37:        .ent	frob
+        -:   38:        .type	frob, @function
+        -:   39:frob:
+        -:   40:        .frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
+        -:   41:        .mask	0x00000000,0
+        -:   42:        .fmask	0x00000000,0
+        -:   43:        addiu	$2,$4,5
+        -:   44:        .end	frob
+        -:   45:        .size	frob, .-frob
+        -:   46:
+        -:   47:  meaning `frob' will have no chance to return, let alone produce
+        -:   48:  the result expected.  */

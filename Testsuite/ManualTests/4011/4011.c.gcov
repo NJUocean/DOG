@@ -1,0 +1,41 @@
+        -:    0:Source:4011.c
+        -:    0:Graph:4011.gcno
+        -:    0:Data:4011.gcda
+        -:    0:Runs:1
+        -:    1:#define ENDIANBIG __attribute((scalar_storage_order("big-endian")))
+        -:    2:
+        -:    3:typedef struct ENDIANBIG {
+        -:    4:  unsigned long long field0 : 29;
+        -:    5:  unsigned long long field1 : 4;
+        -:    6:  unsigned long long field2 : 31;
+        -:    7:} struct1;
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int value1 = 0;
+        1:   11:  int value2 = 0;
+        1:   12:  int value3 = 0;
+        -:   13:  unsigned int flag;
+        -:   14:  struct1 var1;
+        1:   15:  var1.field0 = 23;
+        -:   16:
+        1:   17:  flag = var1.field0;
+       1*:   18:  value1 = ((var1.field0) ? 10 : 20);
+        1:   19:  if (var1.field0) {
+        1:   20:    value2 = 10;
+        -:   21:  } else {
+    #####:   22:    value2 = 20;
+        -:   23:  }
+        -:   24:
+       1*:   25:  value3 = ((flag) ? 10 : 20);
+        -:   26:
+        1:   27:  if (value1 != 10)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  if (value2 != 10)
+    #####:   31:    __builtin_abort();
+        -:   32:
+        1:   33:  if (value3 != 10)
+    #####:   34:    __builtin_abort();
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

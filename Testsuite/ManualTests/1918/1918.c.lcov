@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fdump-tree-sccp-details" } */
+    3|       |
+    4|       |typedef unsigned char u8;
+    5|       |typedef __UINT32_TYPE__ u32;
+    6|       |
+    7|      1|static u32 b(u8 d, u32 e, u32 g) {
+    8|     53|  do {
+    9|     53|    e += g + 1;
+   10|     53|    d--;
+   11|     53|  } while (d >= (u8)e);
+   12|      1|
+   13|      1|  return e;
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  u32 x = b(1, -0x378704, ~0xba64fc);
+   18|      1|  if (x != 0xd93190d0)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+   22|       |
+   23|       |/* Niter analyzer should be able to compute niters for the loop even though
+   24|       |   IV:d wraps.  */
+   25|       |/* { dg-final { scan-tree-dump "Replacing uses of: .* with: 3643904208" "sccp" {
+   26|       | * xfail *-*-* } } } */
+

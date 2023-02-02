@@ -1,0 +1,32 @@
+        -:    0:Source:456.c
+        -:    0:Graph:456.gcno
+        -:    0:Data:456.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -floop-nest-optimize" } */
+        -:    3:
+        -:    4:int xc, n1 = 0;
+        -:    5:int bx[2];
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int aj = 1;
+        -:    9:  int cs;
+        -:   10:
+        3:   11:  for (cs = aj; cs >= 0; --cs) {
+        -:   12:    int sq;
+        -:   13:
+        6:   14:    for (sq = 0; sq < 2; ++sq) {
+        4:   15:      if (aj != 0)
+        2:   16:        --n1;
+        -:   17:
+       12:   18:      for (xc = 0; xc < 2; ++xc)
+        8:   19:        bx[xc] = 0;
+        -:   20:    }
+        -:   21:
+        2:   22:    --aj;
+        -:   23:  }
+        -:   24:
+        1:   25:  if (n1 != -2)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

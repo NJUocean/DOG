@@ -1,0 +1,20 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-ipa-cp"  } */
+    3|       |/* { dg-skip-if "No alignment restrictions" { { ! natural_alignment_32 } && { !
+    4|       | * natural_alignment_64 } } } */
+    5|       |
+    6|       |int n;
+    7|       |
+    8|      2|static void __attribute__((noinline)) test(void *a) {
+    9|      2|  __builtin_memset(a, 0, n);
+   10|      2|}
+   11|       |
+   12|       |static __attribute__((aligned(16))) int aa[10];
+   13|       |
+   14|      1|int main() {
+   15|      1|  test(&aa[1]);
+   16|      1|  test(&aa[3]);
+   17|      1|  return 0;
+   18|      1|}
+   19|       |/* { dg-final { scan-ipa-dump "align: 8, misalign: 4"  "cp"  } } */
+

@@ -1,0 +1,11 @@
+        -:    0:Source:2267.c
+        -:    0:Graph:2267.gcno
+        -:    0:Data:2267.gcda
+        -:    0:Runs:1
+        1:    1:main() { printf("%x, %x\n", (unsigned char)main, main); }
+        -:    2:
+    #####:    3:foo(p) char *p;
+        -:    4:{
+    #####:    5:  p[0] = (char)foo;
+    #####:    6:  p[1] = (char)foo;
+    #####:    7:}

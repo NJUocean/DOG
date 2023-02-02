@@ -1,0 +1,77 @@
+        -:    0:Source:543.c
+        -:    0:Graph:543.gcno
+        -:    0:Data:543.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target sync_int_long } */
+        -:    3:/* { dg-options } */
+        -:    4:/* { dg-options "-march=i486" { target { { i?86-*-* x86_64-*-* } && ia32 } } }
+        -:    5: */
+        -:    6:/* { dg-options "-mcpu=v9" { target sparc*-*-* } } */
+        -:    7:
+        -:    8:/* { dg-message "note: '__sync_fetch_and_nand' changed semantics in GCC 4.4" ""
+        -:    9: * { target *-*-* } 0 } */
+        -:   10:
+        -:   11:/* Test basic functionality of the intrinsics.  The operations should
+        -:   12:   not be optimized away if no one checks the return values.  */
+        -:   13:
+        -:   14:__extension__ typedef __SIZE_TYPE__ size_t;
+        -:   15:
+        -:   16:extern void abort(void);
+        -:   17:extern void *memcpy(void *, const void *, size_t);
+        -:   18:extern int memcmp(const void *, const void *, size_t);
+        -:   19:
+        -:   20:static int AI[12];
+        -:   21:static int init_noret_si[12] = {0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, -1};
+        -:   22:static int test_noret_si[12] = {1, 1, 1, 0, 1, 4, 22, -12, 7, 8, 9, ~7};
+        -:   23:
+        1:   24:static void do_noret_si(void) {
+        1:   25:  __sync_val_compare_and_swap(AI + 0, 0, 1);
+        1:   26:  __sync_bool_compare_and_swap(AI + 1, 0, 1);
+        1:   27:  __sync_lock_test_and_set(AI + 2, 1);
+        1:   28:  __sync_lock_release(AI + 3);
+        -:   29:
+        1:   30:  __sync_fetch_and_add(AI + 4, 1);
+        1:   31:  __sync_fetch_and_add(AI + 5, 4);
+        1:   32:  __sync_fetch_and_add(AI + 6, 22);
+        1:   33:  __sync_fetch_and_sub(AI + 7, 12);
+        1:   34:  __sync_fetch_and_and(AI + 8, 7);
+        1:   35:  __sync_fetch_and_or(AI + 9, 8);
+        1:   36:  __sync_fetch_and_xor(AI + 10, 9);
+        1:   37:  __sync_fetch_and_nand(AI + 11, 7);
+        1:   38:}
+        -:   39:
+        -:   40:static long AL[12];
+        -:   41:static long init_noret_di[12] = {0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, -1};
+        -:   42:static long test_noret_di[12] = {1, 1, 1, 0, 1, 4, 22, -12, 7, 8, 9, ~7};
+        -:   43:
+        1:   44:static void do_noret_di(void) {
+        1:   45:  __sync_val_compare_and_swap(AL + 0, 0, 1);
+        1:   46:  __sync_bool_compare_and_swap(AL + 1, 0, 1);
+        1:   47:  __sync_lock_test_and_set(AL + 2, 1);
+        1:   48:  __sync_lock_release(AL + 3);
+        -:   49:
+        1:   50:  __sync_fetch_and_add(AL + 4, 1);
+        1:   51:  __sync_fetch_and_add(AL + 5, 4);
+        1:   52:  __sync_fetch_and_add(AL + 6, 22);
+        1:   53:  __sync_fetch_and_sub(AL + 7, 12);
+        1:   54:  __sync_fetch_and_and(AL + 8, 7);
+        1:   55:  __sync_fetch_and_or(AL + 9, 8);
+        1:   56:  __sync_fetch_and_xor(AL + 10, 9);
+        1:   57:  __sync_fetch_and_nand(AL + 11, 7);
+        1:   58:}
+        -:   59:
+        1:   60:int main() {
+        1:   61:  memcpy(AI, init_noret_si, sizeof(init_noret_si));
+        1:   62:  memcpy(AL, init_noret_di, sizeof(init_noret_di));
+        -:   63:
+        1:   64:  do_noret_si();
+        1:   65:  do_noret_di();
+        -:   66:
+        1:   67:  if (memcmp(AI, test_noret_si, sizeof(test_noret_si)))
+    #####:   68:    abort();
+        1:   69:  if (memcmp(AL, test_noret_di, sizeof(test_noret_di)))
+    #####:   70:    abort();
+        -:   71:
+        1:   72:  return 0;
+        -:   73:}

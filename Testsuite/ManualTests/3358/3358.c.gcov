@@ -1,0 +1,51 @@
+        -:    0:Source:3358.c
+        -:    0:Graph:3358.gcno
+        -:    0:Data:3358.gcda
+        -:    0:Runs:1
+        1:    1:test_store_ccp(int i) {
+        -:    2:  int *p, a, b, c;
+        -:    3:
+        1:    4:  if (i < 5)
+    #####:    5:    p = &a;
+        1:    6:  else if (i > 8)
+        1:    7:    p = &b;
+        -:    8:  else
+    #####:    9:    p = &c;
+        -:   10:
+        1:   11:  *p = 10;
+        1:   12:  b = 3;
+        -:   13:
+        -:   14:  /* STORE-CCP was wrongfully propagating 10 into *p.  */
+        1:   15:  return *p + 2;
+        -:   16:}
+        -:   17:
+        1:   18:test_store_copy_prop(int i) {
+        -:   19:  int *p, a, b, c;
+        -:   20:
+        1:   21:  if (i < 5)
+    #####:   22:    p = &a;
+        1:   23:  else if (i > 8)
+        1:   24:    p = &b;
+        -:   25:  else
+    #####:   26:    p = &c;
+        -:   27:
+        1:   28:  *p = i;
+        1:   29:  b = i + 1;
+        -:   30:
+        -:   31:  /* STORE-COPY-PROP was wrongfully propagating i into *p.  */
+        1:   32:  return *p;
+        -:   33:}
+        -:   34:
+        1:   35:main() {
+        -:   36:  int x;
+        -:   37:
+        1:   38:  x = test_store_ccp(10);
+        1:   39:  if (x == 12)
+    #####:   40:    abort();
+        -:   41:
+        1:   42:  x = test_store_copy_prop(9);
+        1:   43:  if (x == 9)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}

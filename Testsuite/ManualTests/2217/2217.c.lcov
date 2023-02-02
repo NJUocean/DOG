@@ -1,0 +1,20 @@
+    1|       |/* { dg-options "-fno-inline" } */
+    2|       |struct foo {
+    3|       |  int a, b, c;
+    4|       |};
+    5|       |void abort(void);
+    6|       |void exit(int);
+    7|       |
+    8|      1|void brother(int a, int b, int c) {
+    9|      1|  if (a)
+   10|      0|    abort();
+   11|      1|}
+   12|       |
+   13|      1|void sister(struct foo f, int b, int c) { brother((f.b == b), b, c); }
+   14|       |
+   15|      1|int main() {
+   16|      1|  struct foo f = {7, 8, 9};
+   17|      1|  sister(f, 1, 2);
+   18|      1|  exit(0);
+   19|      1|}
+

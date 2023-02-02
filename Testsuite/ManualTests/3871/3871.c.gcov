@@ -1,0 +1,27 @@
+        -:    0:Source:3871.c
+        -:    0:Graph:3871.gcno
+        -:    0:Data:3871.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65170 */
+        -:    2:
+        -:    3:#ifdef __SIZEOF_INT128__
+        -:    4:typedef unsigned __int128 V;
+        -:    5:typedef unsigned long long int H;
+        -:    6:#else
+        -:    7:typedef unsigned long long int V;
+        -:    8:typedef unsigned int H;
+        -:    9:#endif
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void foo(V b, V c) {
+        -:   12:  V a;
+        1:   13:  b &= (H)-1;
+        1:   14:  c &= (H)-1;
+        1:   15:  a = b * c;
+        1:   16:  if (a != 1)
+    #####:   17:    __builtin_abort();
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  foo(1, 1);
+        1:   22:  return 0;
+        -:   23:}

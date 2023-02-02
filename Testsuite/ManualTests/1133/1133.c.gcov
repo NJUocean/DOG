@@ -1,0 +1,40 @@
+        -:    0:Source:1133.c
+        -:    0:Graph:1133.gcno
+        -:    0:Data:1133.gcda
+        -:    0:Runs:1
+        -:    1:/* Inspired from bitmap_or_and function in sbitmap.c.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves
+        -:    4: * -fdump-rtl-sms" } */
+        -:    5:/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves -fdump-rtl-sms
+        -:    6: * --param sms-min-sc=1" { target powerpc*-*-* } } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:int a[5] = {0, 1, 0, 0, 0};
+        -:   11:int b[5] = {0, 1, 0, 1, 0};
+        -:   12:int c[5] = {0, 0, 1, 1, 0};
+        -:   13:int dst[5] = {0, 0, 0, 0, 0};
+        -:   14:
+        1:   15:__attribute__((noinline)) void foo(int size, int *ap, int *bp, int *cp,
+        -:   16:                                   int *dstp) {
+        1:   17:  unsigned int i, n = size;
+        1:   18:  int changed = 0;
+        -:   19:
+        6:   20:  for (i = 0; i < n; i++) {
+        5:   21:    const int tmp = *ap++ | (*bp++ & *cp++);
+        5:   22:    changed |= *dstp ^ tmp;
+        5:   23:    *dstp++ = tmp;
+        -:   24:  }
+        -:   25:
+        1:   26:  if (changed == 0)
+    #####:   27:    abort();
+        1:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  foo(5, a, b, c, dst);
+        1:   32:  return 0;
+        -:   33:}
+        -:   34:
+        -:   35:/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms" { target
+        -:   36: * powerpc*-*-* } } } */

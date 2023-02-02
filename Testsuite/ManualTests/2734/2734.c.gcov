@@ -1,0 +1,10 @@
+        -:    0:Source:2734.c
+        -:    0:Graph:2734.gcno
+        -:    0:Data:2734.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O0" } */
+        1:    3:int main() {
+        -:    4:  int a;
+        1:    5:  asm("" : "=d"(a) : "0"(a), "0ae"(&a));
+        -:    6:}

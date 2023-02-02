@@ -1,0 +1,14 @@
+        -:    0:Source:1156.c
+        -:    0:Graph:1156.gcno
+        -:    0:Data:1156.gcda
+        -:    0:Runs:1
+        -:    1:typedef int new_int __attribute__((aligned(16)));
+        -:    2:struct S {
+        -:    3:  int x;
+        -:    4:};
+        -:    5:
+        1:    6:int main() {
+        -:    7:  if (sizeof(struct S) != sizeof(int))
+        -:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}

@@ -1,0 +1,43 @@
+        -:    0:Source:2617.c
+        -:    0:Graph:2617.gcno
+        -:    0:Data:2617.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O2 -mpreferred-stack-boundary=2 -march=i686
+        -:    4: * -frename-registers" } */
+        -:    5:
+        -:    6:extern void abort(void) __attribute__((noreturn));
+        -:    7:
+        -:    8:struct wrapper {
+        -:    9:  union setconflict {
+        -:   10:    short a[20];
+        -:   11:    int b[10];
+        -:   12:  } a;
+        -:   13:};
+        -:   14:
+        1:   15:int main() {
+        1:   16:  int sum = 0;
+        -:   17:  {
+        -:   18:    struct wrapper a;
+        -:   19:    short *c;
+        1:   20:    c = a.a.a;
+        1:   21:    asm("" : "=r"(c) : "0"(c));
+        1:   22:    *c = 0;
+        1:   23:    asm("" : "=r"(c) : "0"(c));
+        1:   24:    sum += *c;
+        -:   25:  }
+        -:   26:  {
+        -:   27:    struct wrapper a;
+        -:   28:    int *c;
+        1:   29:    c = a.a.b;
+        1:   30:    asm("" : "=r"(c) : "0"(c));
+        1:   31:    *c = 1;
+        1:   32:    asm("" : "=r"(c) : "0"(c));
+        1:   33:    sum += *c;
+        -:   34:  }
+        -:   35:
+        1:   36:  if (sum != 1)
+    #####:   37:    abort();
+        1:   38:  return 0;
+        -:   39:}

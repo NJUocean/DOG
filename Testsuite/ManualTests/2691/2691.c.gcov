@@ -1,0 +1,47 @@
+        -:    0:Source:2691.c
+        -:    0:Graph:2691.gcno
+        -:    0:Data:2691.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target ia32 } } */
+        -:    2:/* { dg-options "-O3 -march=x86-64" } */
+        -:    3:/* { dg-final { scan-assembler-not "cmpl\[ \t]+(\[%a-z]+), \\1" } } */
+        -:    4:
+        -:    5:short a;
+        -:    6:int b = 1, f;
+        -:    7:char c, e = 1;
+        -:    8:long long d;
+        -:    9:
+        1:   10:static short foo() {
+        1:   11:  unsigned g, h = 0;
+        1:   12:  int i = 0 || d * (b | e);
+        1:   13:  char j = a << i, l = a;
+        -:   14:  short k;
+        1:   15:  int m = -b;
+        1:   16:  if (m < b) {
+        1:   17:    k = m = b;
+       1*:   18:    g = (k || l) / (b / e);
+        1:   19:    if (b)
+        1:   20:      __builtin_printf("foo=%lld\n", (long long)a);
+        -:   21:  }
+        1:   22:  a = b = m;
+        1:   23:  if (j || e) {
+        1:   24:    h = g;
+        1:   25:    i = m;
+        1:   26:    g = j * k / (i - d);
+        1:   27:    if (m)
+       1*:   28:      b = j && b;
+       1*:   29:    e = b * (h & d) || g;
+        -:   30:  }
+        1:   31:  b = i;
+       1*:   32:  char n = e || h | d;
+        1:   33:  e = i < d & k / n;
+        1:   34:  return f;
+        -:   35:}
+        -:   36:
+        1:   37:int main() {
+        1:   38:  if (foo())
+    #####:   39:    if (c)
+    #####:   40:    lab:
+    #####:   41:      goto lab;
+        1:   42:  return 0;
+        -:   43:}

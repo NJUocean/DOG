@@ -1,0 +1,29 @@
+        -:    0:Source:1923.c
+        -:    0:Graph:1923.gcno
+        -:    0:Data:1923.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:
+        -:    3:void link_error();
+        -:    4:
+        1:    5:int main() {
+        -:    6:  struct {
+        -:    7:    int b[2];
+        -:    8:  } x;
+        -:    9:  int b[2];
+        -:   10:  if (&b[1] != &b[1])
+        -:   11:    link_error();
+        -:   12:  if (&b[0] != b)
+        -:   13:    link_error();
+        -:   14:  if (b == &b[2])
+        -:   15:    link_error();
+        -:   16:  if (b != b)
+        -:   17:    link_error();
+        -:   18:  if (&x.b[1] == &x.b[0])
+        -:   19:    link_error();
+        -:   20:  if (x.b != &x.b[0])
+        -:   21:    link_error();
+        -:   22:  if (&x.b[1] == x.b)
+        -:   23:    link_error();
+        1:   24:  return 0;
+        -:   25:}

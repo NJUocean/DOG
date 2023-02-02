@@ -1,0 +1,33 @@
+        -:    0:Source:1225.c
+        -:    0:Graph:1225.gcno
+        -:    0:Data:1225.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/20532 */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "" } */
+        -:    5:/* { dg-options "-march=i386" { target { { i?86-*-* x86_64-*-* } && ia32 } } }
+        -:    6: */
+        -:    7:
+        -:    8:/* We used to optimize the DImode shift-by-32 to zero because in combine
+        -:    9:   we turned:
+        -:   10:
+        -:   11:     (v << 31) + (v << 31)
+        -:   12:
+        -:   13:   into:
+        -:   14:
+        -:   15:     (v * (((HOST_WIDE_INT)1 << 31) + ((HOST_WIDE_INT)1 << 31)))
+        -:   16:
+        -:   17:   With a 32-bit HOST_WIDE_INT, the coefficient overflowed to zero.  */
+        -:   18:
+        1:   19:unsigned long long int badshift(unsigned long long int v) {
+        1:   20:  return v << 31 << 1;
+        -:   21:}
+        -:   22:
+        -:   23:extern void abort();
+        -:   24:
+        1:   25:int main() {
+        1:   26:  if (badshift(1) == 0)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

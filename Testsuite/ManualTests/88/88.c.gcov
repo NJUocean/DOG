@@ -1,0 +1,18 @@
+        -:    0:Source:88.c
+        -:    0:Graph:88.gcno
+        -:    0:Data:88.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  int a;
+        -:    3:  int b;
+        -:    4:  short c;
+        -:    5:  int d[3];
+        -:    6:};
+        -:    7:
+        -:    8:struct s s = {.b = 3, .d = {2, 0, 0}};
+        -:    9:
+        1:   10:main() {
+        1:   11:  if (s.b != 3)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

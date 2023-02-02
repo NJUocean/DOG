@@ -1,0 +1,41 @@
+    1|       |/* PR target/29198 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fpic" } */
+    4|       |/* { dg-require-effective-target tls_runtime } */
+    5|       |/* { dg-add-options tls } */
+    6|       |/* { dg-require-effective-target fpic } */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |int f2(int, int, int, int);
+   11|       |struct s {
+   12|       |  char b[4];
+   13|       |};
+   14|       |__thread struct s thra[2];
+   15|       |
+   16|      2|void __attribute__((noinline)) f1(int a1, int a2) {
+   17|      2|  int i, j;
+   18|     10|  for (i = 0; i < 4; i++) {
+   19|      8|    int tot = 0;
+   20|     40|    for (j = 0; j < 4; j++)
+   21|     32|      tot += f2(a1, a2, i, j);
+   22|      8|    *(&thra[0].b[0] + i) = tot;
+   23|      8|  }
+   24|      2|}
+   25|       |
+   26|     32|int __attribute__((noinline)) f2(int a, int b, int c, int d) {
+   27|     32|  return a + b + c + d;
+   28|     32|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  f1(0, 0);
+   32|      1|  if (thra[0].b[0] != 6 || thra[0].b[1] != 10 || thra[0].b[2] != 14 ||
+   33|      1|      thra[0].b[3] != 18)
+   34|      0|    abort();
+   35|      1|  f1(2, 3);
+   36|      1|  if (thra[0].b[0] != 26 || thra[0].b[1] != 30 || thra[0].b[2] != 34 ||
+   37|      1|      thra[0].b[3] != 38)
+   38|      0|    abort();
+   39|      1|  return 0;
+   40|      1|}
+

@@ -1,0 +1,15 @@
+    1|       |/* PR debug/41893 */
+    2|       |/* { dg-do link } */
+    3|       |/* { dg-require-effective-target lto } */
+    4|       |/* { dg-options "-flto -fwhole-program -O" } */
+    5|       |/* { dg-additional-sources "pr41893-2.c" } */
+    6|       |
+    7|       |struct S {
+    8|       |  int v;
+    9|       |};
+   10|       |struct S s;
+   11|       |
+   12|      0|void __attribute__((externally_visible)) func1(void) { struct S *p = &s; }
+   13|       |
+   14|      1|int main() { return 0; }
+

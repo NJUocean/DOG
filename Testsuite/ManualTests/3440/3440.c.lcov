@@ -1,0 +1,30 @@
+    1|       |/* PR rtl-optimization/34490 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |static int x;
+    6|       |
+    7|      3|int __attribute__((noinline)) bar(void) { return x; }
+    8|       |
+    9|      3|int foo(void) {
+   10|      3|  long int b = bar();
+   11|      3|  if ((unsigned long)b < -4095L)
+   12|      1|    return b;
+   13|      2|  if (-b != 38)
+   14|      1|    b = -2;
+   15|      2|  return b + 1;
+   16|      2|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  x = 26;
+   20|      1|  if (foo() != 26)
+   21|      0|    abort();
+   22|      1|  x = -39;
+   23|      1|  if (foo() != -1)
+   24|      0|    abort();
+   25|      1|  x = -38;
+   26|      1|  if (foo() != -37)
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

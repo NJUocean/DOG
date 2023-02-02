@@ -1,0 +1,19 @@
+        -:    0:Source:627.c
+        -:    0:Graph:627.gcno
+        -:    0:Data:627.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-details"  } */
+        -:    3:
+        -:    4:static short a = 0;
+        -:    5:short b = -1;
+        -:    6:static unsigned short c = 0;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  if (a <= b)
+    #####:   10:    return 1;
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

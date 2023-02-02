@@ -1,0 +1,28 @@
+        -:    0:Source:2765.c
+        -:    0:Graph:2765.gcno
+        -:    0:Data:2765.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/13685 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-Os -msse" } */
+        -:    4:
+        -:    5:typedef float __m128 __attribute__((vector_size(16)));
+        -:    6:typedef int __m64 __attribute__((vector_size(8)));
+        -:    7:
+        -:    8:int puts(const char *s);
+        -:    9:void foo(__m128 *, __m64 *, int);
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  foo(0, 0, 0);
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        1:   16:void foo(__m128 *dst, __m64 *src, int n) {
+        1:   17:  __m128 xmm0 = {0};
+        1:   18:  while (n > 64) {
+    #####:   19:    puts("");
+    #####:   20:    xmm0 = __builtin_ia32_cvtpi2ps(xmm0, *src);
+    #####:   21:    *dst = xmm0;
+    #####:   22:    n--;
+        -:   23:  }
+        1:   24:}

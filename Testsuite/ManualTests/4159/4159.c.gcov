@@ -1,0 +1,31 @@
+        -:    0:Source:4159.c
+        -:    0:Graph:4159.gcno
+        -:    0:Data:4159.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase caused ICE in do_SUBST on IA-32, because 0xf6 constant
+        -:    2:   was not sign-extended for QImode.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:/* { dg-options "-O2 -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    6: * } */
+        -:    7:
+        -:    8:#include <limits.h>
+        -:    9:
+        -:   10:void abort(void);
+        -:   11:void exit(int);
+        -:   12:
+        1:   13:void foo(void) {
+        -:   14:  int i;
+        -:   15:  char *p;
+        -:   16:
+        1:   17:  p = (char *)&i;
+        1:   18:  *p = -10;
+        1:   19:  if (*(unsigned char *)p != 0x100 - 10)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        -:   24:  if (UCHAR_MAX == 255)
+        1:   25:    foo();
+        1:   26:  exit(0);
+        -:   27:}

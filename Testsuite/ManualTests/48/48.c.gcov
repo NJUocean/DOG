@@ -1,0 +1,25 @@
+        -:    0:Source:48.c
+        -:    0:Graph:48.gcno
+        -:    0:Data:48.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -Wall" } */
+        -:    3:/* based on PR 37861 */
+        -:    4:
+        -:    5:extern int printf(__const char *__restrict __format, ...);
+        -:    6:
+        1:    7:static int f2(char formatstr[10][100]) {
+        -:    8:  int anz;
+       11:    9:  for (anz = 0; anz < 10; ++anz) {
+       10:   10:    printf("%d %s\n", anz, formatstr[anz]);
+        -:   11:  }
+        1:   12:  return anz;
+        -:   13:}
+        -:   14:
+        -:   15:static char formatstr[10][100];
+        1:   16:int main(void) {
+        -:   17:  int anz;
+        1:   18:  anz = f2(formatstr);
+        1:   19:  printf("   %d\n", anz);
+        1:   20:  return 0;
+        -:   21:}

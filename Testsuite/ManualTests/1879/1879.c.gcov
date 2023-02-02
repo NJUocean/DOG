@@ -1,0 +1,22 @@
+        -:    0:Source:1879.c
+        -:    0:Graph:1879.gcno
+        -:    0:Data:1879.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fdump-tree-fre1-details" } */
+        -:    3:
+        -:    4:int j;
+        1:    5:int main() {
+        1:    6:  int i = 1;
+        -:    7:  int **p;
+        1:    8:  j = 0;
+        1:    9:  p = __builtin_malloc(sizeof(int *));
+        1:   10:  *p = &i;
+        1:   11:  p = __builtin_realloc(p, 2 * sizeof(int *));
+        1:   12:  **p = 0;
+        1:   13:  if (i != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return j;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-tree-dump "Replaced j with 0" "fre1" } } */

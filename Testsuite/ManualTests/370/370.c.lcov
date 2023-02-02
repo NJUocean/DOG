@@ -1,0 +1,15 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-fopenmp-simd -fdump-tree-original" } */
+    3|       |
+    4|       |/* PR c/65586 */
+    5|       |
+    6|      5|void foo() {}
+    7|       |
+    8|      1|int main() {
+    9|      1|#pragma omp for collapse(1)
+   10|      6|  for (int i = 1; i <= 151; i += 31)
+   11|      5|    foo();
+   12|      1|}
+   13|       |
+   14|       |/* { dg-final { scan-tree-dump-not "omp" "original" } } */
+

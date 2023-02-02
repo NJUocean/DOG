@@ -1,0 +1,21 @@
+        -:    0:Source:1505.c
+        -:    0:Graph:1505.gcno
+        -:    0:Data:1505.gcda
+        -:    0:Runs:1
+        2:    1:static inline long g1(double x) { return (double)(long)x; }
+        -:    2:
+        5:    3:long g2(double f) { return f; }
+        -:    4:
+        2:    5:double f(long i) {
+        2:    6:  if (g1(i) != g2(i))
+    #####:    7:    abort();
+        2:    8:  return g2(i);
+        -:    9:}
+        -:   10:
+        1:   11:main() {
+        1:   12:  if (f(123456789L) != 123456789L)
+    #####:   13:    abort();
+        1:   14:  if (f(123456789L) != g2(123456789L))
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

@@ -1,0 +1,20 @@
+        -:    0:Source:2133.c
+        -:    0:Graph:2133.gcno
+        -:    0:Data:2133.gcda
+        -:    0:Runs:1
+    #####:    1:barfoo(a) { return (a << 16) & ~0xffff; }
+        -:    2:
+    #####:    3:foobar(a) { return ((unsigned short)a) << 15; }
+        -:    4:
+       32:    5:foo(a) { return (a & 0x121) << 31; }
+        -:    6:
+    #####:    7:bar(a) { return (a & ~0xffff) << 16; }
+        -:    8:
+        1:    9:main() {
+        -:   10:  int a;
+        -:   11:
+       33:   12:  for (a = 1; a; a += a) {
+       32:   13:    printf("%d", (foo(a)));
+        -:   14:  }
+        1:   15:  puts("");
+        -:   16:}

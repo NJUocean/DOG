@@ -1,0 +1,17 @@
+    1|       |/* PR middle-end/53580 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-fopenmp" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  int x, y, v = 0;
+    7|      1|
+    8|      1|#pragma omp parallel
+    9|      1|#pragma omp for
+   10|     11|  for (x = 0; x < 10; x++) {
+   11|     10|#pragma omp for reduction(+: v)	/* { dg-error "work-sharing region may not be closely nested inside of work-sharing" } */
+   12|    110|    for (y = 0; y < 10; y++)
+   13|    100|      v++;
+   14|     10|  }
+   15|      1|  return v - 100;
+   16|      1|}
+

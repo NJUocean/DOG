@@ -1,0 +1,32 @@
+    1|       |#if (__SIZEOF_INT__ == 2)
+    2|       |#define TESTVALUE 0x1234
+    3|       |#else
+    4|      2|#define TESTVALUE 0x12345678
+    5|       |#endif
+    6|      1|static void foo(unsigned int x, void *p) { __builtin_memcpy(p, &x, sizeof x); }
+    7|       |
+    8|      1|void bar(int type, void *number) {
+    9|      1|  switch (type) {
+   10|      1|  case 1:
+   11|      1|    foo(TESTVALUE, number);
+   12|      1|    break;
+   13|      0|  case 7:
+   14|      0|    foo(0, number);
+   15|      0|    break;
+   16|      0|  case 8:
+   17|      0|    foo(0, number);
+   18|      0|    break;
+   19|      0|  case 9:
+   20|      0|    foo(0, number);
+   21|      0|    break;
+   22|      1|  }
+   23|      1|}
+   24|       |
+   25|      1|int main(void) {
+   26|      1|  unsigned int x;
+   27|      1|  bar(1, &x);
+   28|      1|  if (x != TESTVALUE)
+   29|      1|    __builtin_abort();
+   30|      1|  return 0;
+   31|      1|}
+

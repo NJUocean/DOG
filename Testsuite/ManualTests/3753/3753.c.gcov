@@ -1,0 +1,15 @@
+        -:    0:Source:3753.c
+        -:    0:Graph:3753.gcno
+        -:    0:Data:3753.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:float global;
+        1:    4:int main() {
+        1:    5:  unsigned long z = 1;
+        1:    6:  float x = -z;
+        1:    7:  global = x;
+        1:    8:  if (global < 0)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

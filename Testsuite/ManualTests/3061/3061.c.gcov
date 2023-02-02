@@ -1,0 +1,37 @@
+        -:    0:Source:3061.c
+        -:    0:Graph:3061.gcno
+        -:    0:Data:3061.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "clr1 B100,#0" } } */
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:  unsigned short b0 : 1;
+        -:    6:  unsigned short b1 : 1;
+        -:    7:  unsigned short b2 : 1;
+        -:    8:  unsigned short b3 : 1;
+        -:    9:  unsigned short b4 : 1;
+        -:   10:  unsigned short b5 : 1;
+        -:   11:  unsigned short b6 : 1;
+        -:   12:  unsigned short b7 : 1;
+        -:   13:  unsigned short b8 : 1;
+        -:   14:  unsigned short b9 : 1;
+        -:   15:  unsigned short b10 : 1;
+        -:   16:  unsigned short b11 : 1;
+        -:   17:  unsigned short b12 : 1;
+        -:   18:  unsigned short b13 : 1;
+        -:   19:  unsigned short b14 : 1;
+        -:   20:  unsigned short b15 : 1;
+        -:   21:} BitField;
+        -:   22:
+        -:   23:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:   24:BitField B100 __attribute__((__BELOW100__));
+        -:   25:unsigned short *p = (unsigned short *)&B100;
+        -:   26:
+        1:   27:void Do(void) { B100.b0 = 0; }
+        -:   28:
+        1:   29:int main(void) {
+        1:   30:  *p = 0xedcb;
+        1:   31:  Do();
+        1:   32:  return (*p == 0xedca) ? 0 : 1;
+        -:   33:}

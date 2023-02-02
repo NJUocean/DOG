@@ -1,0 +1,41 @@
+    1|       |/* Test atomic_store routines for existence and proper execution on
+    2|       |   4-byte values with each valid memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=c11 -pedantic-errors" } */
+    5|       |
+    6|       |#include <stdatomic.h>
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |_Atomic int v;
+   11|       |int count;
+   12|       |
+   13|      1|int main() {
+   14|      1|  v = 0;
+   15|      1|  count = 0;
+   16|      1|
+   17|      1|  atomic_init(&v, count + 1);
+   18|      1|  if (v != ++count)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  atomic_store_explicit(&v, count + 1, memory_order_relaxed);
+   22|      1|  if (v != ++count)
+   23|      0|    abort();
+   24|      1|
+   25|      1|  atomic_store_explicit(&v, count + 1, memory_order_release);
+   26|      1|  if (v != ++count)
+   27|      0|    abort();
+   28|      1|
+   29|      1|  atomic_store_explicit(&v, count + 1, memory_order_seq_cst);
+   30|      1|  if (v != ++count)
+   31|      0|    abort();
+   32|      1|
+   33|      1|  count++;
+   34|      1|
+   35|      1|  atomic_store(&v, count);
+   36|      1|  if (v != count)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  return 0;
+   40|      1|}
+

@@ -1,0 +1,22 @@
+        -:    0:Source:706.c
+        -:    0:Graph:706.gcno
+        -:    0:Data:706.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-lto-do run }
+        -:    2:// { dg-lto-options { { -O2 -flto -fipa-pta } } }
+        -:    3:
+        1:    4:int __attribute__((__noinline__)) f(unsigned *p, int *x) {
+        1:    5:  int y = *p++ & 0xfff;
+        1:    6:  *x++ = y;
+        1:    7:  *x = *p;
+        1:    8:  return y;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  unsigned u[2] = {0x3aad, 0x5ad1};
+        1:   13:  int x[2] = {17689, 23456};
+        -:   14:
+        1:   15:  if (f(u, x) != 0xaad || x[0] != 0xaad || x[1] != 0x5ad1)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

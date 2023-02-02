@@ -1,0 +1,24 @@
+        -:    0:Source:2060.c
+        -:    0:Graph:2060.gcno
+        -:    0:Data:2060.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:  int i;
+        1:    6:  signed char result = 0;
+     8001:    7:  for (i = 0; i != 8000; ++i) {
+     8000:    8:    int tem = result;
+     8000:    9:    tem = tem + 2;
+     8000:   10:    result = tem;
+        -:   11:  }
+        1:   12:  if (__builtin_abs((int)(signed char)((unsigned char)result + 128)) != 0)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* SCEV constant propagation should be able to compute the overall effect
+        -:   18:   of the loop.  */
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump-not "abort" "optimized" } } */

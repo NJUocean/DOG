@@ -1,0 +1,33 @@
+        -:    0:Source:3416.c
+        -:    0:Graph:3416.gcno
+        -:    0:Data:3416.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/28970 */
+        -:    2:/* Origin: Peter Bergner <bergner@vnet.ibm.com> */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int tar(int i) {
+        1:    8:  if (i != 36863)
+    #####:    9:    abort();
+        -:   10:
+        1:   11:  return -1;
+        -:   12:}
+        -:   13:
+        1:   14:void bug(int q, int bcount) {
+        1:   15:  int j = 0;
+        1:   16:  int outgo = 0;
+        -:   17:
+        2:   18:  while (j != -1) {
+        1:   19:    outgo++;
+        1:   20:    if (outgo > q - 1)
+    #####:   21:      outgo = q - 1;
+        1:   22:    j = tar(outgo * bcount);
+        -:   23:  }
+        1:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  bug(5, 36863);
+        1:   28:  return 0;
+        -:   29:}

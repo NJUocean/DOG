@@ -1,0 +1,14 @@
+        -:    0:Source:3306.c
+        -:    0:Graph:3306.gcno
+        -:    0:Data:3306.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/10320
+        -:    2:   The function temp was not being emitted in a prerelease of 3.4 20030406.
+        -:    3:   Contributed by pinskia@physics.uc.edu */
+        -:    4:
+        -:    5:static inline void temp();
+        1:    6:int main() {
+        1:    7:  temp();
+        1:    8:  return 0;
+        -:    9:}
+        1:   10:static void temp() {}

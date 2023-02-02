@@ -1,0 +1,33 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |struct S4 {
+    5|       |  unsigned f0 : 24;
+    6|       |} __attribute__((__packed__));
+    7|       |
+    8|       |struct S4 g_10 = {6210831};
+    9|       |
+   10|       |struct S5 {
+   11|       |  int i;
+   12|       |  struct S4 l_8[2];
+   13|       |} __attribute__((__packed__));
+   14|       |
+   15|       |int a, b;
+   16|       |
+   17|      1|struct S4 func_2(int x) {
+   18|      1|  struct S5 l = {0, {{0}, {0}}};
+   19|      1|  l.i = a;
+   20|      1|  g_10 = l.l_8[1];
+   21|      3|  for (; x < 2; x++) {
+   22|      2|    struct S4 tmp = {11936567};
+   23|      2|    l.l_8[x] = tmp;
+   24|      2|  }
+   25|      1|  b = l.i;
+   26|      1|  return g_10;
+   27|      1|}
+   28|       |
+   29|      1|int main(void) {
+   30|      1|  func_2(0);
+   31|      1|  return 0;
+   32|      1|}
+

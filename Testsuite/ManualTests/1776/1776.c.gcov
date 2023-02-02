@@ -1,0 +1,40 @@
+        -:    0:Source:1776.c
+        -:    0:Graph:1776.gcno
+        -:    0:Data:1776.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/11151 */
+        -:    2:/* Originator: Andrew Church <gcczilla@achurch.org> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target untyped_assembly } */
+        -:    5:
+        -:    6:/* This used to fail on SPARC because the (undefined) return
+        -:    7:   value of 'bar' was overwriting that of 'foo'.  */
+        -:    8:
+        -:    9:#ifdef __MMIX__
+        -:   10:/* No parameters on stack for bar.  */
+        -:   11:#define STACK_ARGUMENTS_SIZE 0
+        -:   12:#else
+        -:   13:#define STACK_ARGUMENTS_SIZE 64
+        -:   14:#endif
+        -:   15:
+        -:   16:extern void abort(void);
+        -:   17:
+        1:   18:int foo(int n) { return n + 1; }
+        -:   19:
+        1:   20:int bar(int n) {
+        1:   21:  __builtin_return(__builtin_apply((void (*)(void))foo, __builtin_apply_args(),
+        -:   22:                                   STACK_ARGUMENTS_SIZE));
+        -:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        -:   26:  /* Allocate 64 bytes on the stack to make sure that __builtin_apply
+        -:   27:     can read at least 64 bytes above the return address.  */
+        -:   28:  char dummy[64];
+        -:   29:
+        1:   30:  __asm__("" : : ""(dummy));
+        -:   31:
+        1:   32:  if (bar(1) != 2)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

@@ -1,0 +1,35 @@
+        -:    0:Source:3423.c
+        -:    0:Graph:3423.gcno
+        -:    0:Data:3423.gcda
+        -:    0:Runs:1
+        -:    1:struct foo {
+        -:    2:  int i;
+        -:    3:  int j;
+        -:    4:};
+        -:    5:
+        1:    6:int bar(struct foo *k, int k2, int f, int f2) {
+        -:    7:  int *p, *q;
+        -:    8:  int res;
+        1:    9:  if (f)
+        1:   10:    p = &k->i;
+        -:   11:  else
+    #####:   12:    p = &k->j;
+        1:   13:  res = *p;
+        1:   14:  k->i = 1;
+        1:   15:  if (f2)
+        1:   16:    q = p;
+        -:   17:  else
+    #####:   18:    q = &k2;
+        1:   19:  return res + *q;
+        -:   20:}
+        -:   21:
+        -:   22:extern void abort(void);
+        -:   23:
+        1:   24:int main() {
+        -:   25:  struct foo k;
+        1:   26:  k.i = 0;
+        1:   27:  k.j = 1;
+        1:   28:  if (bar(&k, 1, 1, 1) != 1)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

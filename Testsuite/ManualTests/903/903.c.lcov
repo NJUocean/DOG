@@ -1,0 +1,16 @@
+    1|       |/* PR tree-optimization/47391 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    4|       |
+    5|       |const volatile int v = 1;
+    6|       |int i = 0;
+    7|       |
+    8|      1|void foo(void) { i = v; }
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  foo();
+   12|      1|  return 0;
+   13|      1|}
+   14|       |
+   15|       |/* { dg-final { scan-tree-dump-not "i = 1;" "optimized" } } */
+

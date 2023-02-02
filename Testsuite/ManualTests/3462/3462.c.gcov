@@ -1,0 +1,31 @@
+        -:    0:Source:3462.c
+        -:    0:Graph:3462.gcno
+        -:    0:Data:3462.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/30185 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef struct S {
+        -:    6:  char a;
+        -:    7:  long long b;
+        -:    8:} S;
+        -:    9:
+        2:   10:S foo(S x, S y) {
+        -:   11:  S z;
+        2:   12:  z.b = x.b / y.b;
+        2:   13:  return z;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        -:   17:  S a, b;
+        1:   18:  a.b = 32LL;
+        1:   19:  b.b = 4LL;
+        1:   20:  if (foo(a, b).b != 8LL)
+    #####:   21:    abort();
+        1:   22:  a.b = -8LL;
+        1:   23:  b.b = -2LL;
+        1:   24:  if (foo(a, b).b != 4LL)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

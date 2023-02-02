@@ -1,0 +1,22 @@
+        -:    0:Source:298.c
+        -:    0:Graph:298.gcno
+        -:    0:Data:298.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/36690 */
+        -:    2:/* Verify that break func is hit.  */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O0 -gdwarf -dA" } */
+        -:    5:
+        -:    6:int i;
+        -:    7:
+        1:    8:void func(void) {
+        1:    9:  while (i == 1)
+    #####:   10:    i = 0;
+        1:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  func();
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-assembler "pr36690-1.c:11" } } */

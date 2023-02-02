@@ -1,0 +1,28 @@
+        -:    0:Source:3958.c
+        -:    0:Graph:3958.gcno
+        -:    0:Data:3958.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/79327 */
+        -:    2:/* { dg-require-effective-target c99_runtime } */
+        -:    3:
+        -:    4:volatile int a;
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  int i;
+        -:    8:  char buf[64];
+        1:    9:  if (__builtin_sprintf(buf, "%#hho", a) != 1)
+    #####:   10:    __builtin_abort();
+        1:   11:  if (__builtin_sprintf(buf, "%#hhx", a) != 1)
+    #####:   12:    __builtin_abort();
+        1:   13:  a = 1;
+        1:   14:  if (__builtin_sprintf(buf, "%#hho", a) != 2)
+    #####:   15:    __builtin_abort();
+        1:   16:  if (__builtin_sprintf(buf, "%#hhx", a) != 3)
+    #####:   17:    __builtin_abort();
+        1:   18:  a = 127;
+        1:   19:  if (__builtin_sprintf(buf, "%#hho", a) != 4)
+    #####:   20:    __builtin_abort();
+        1:   21:  if (__builtin_sprintf(buf, "%#hhx", a) != 4)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

@@ -1,0 +1,14 @@
+        -:    0:Source:2297.c
+        -:    0:Graph:2297.gcno
+        -:    0:Data:2297.gcda
+        -:    0:Runs:1
+        1:    1:int main(void) {
+        -:    2:  struct {
+        -:    3:    int node;
+        -:    4:    int type;
+        1:    5:  } lastglob[1] = {{0, 1}};
+        -:    6:
+        1:    7:  if (lastglob[0].node != 0 || lastglob[0].type != 1)
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

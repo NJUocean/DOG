@@ -1,0 +1,32 @@
+        -:    0:Source:3788.c
+        -:    0:Graph:3788.gcno
+        -:    0:Data:3788.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/57344 */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:struct __attribute__((packed)) S {
+        -:    5:  int a : 27;
+        -:    6:#if __SIZEOF_INT__ * __CHAR_BIT__ >= 32
+        -:    7:  int b : 22;
+        -:    8:#else
+        -:    9:  int b : 13;
+        -:   10:#endif
+        -:   11:  char c;
+        -:   12:  int : 0;
+        -:   13:} s[2];
+        -:   14:int i;
+        -:   15:
+        1:   16:__attribute__((noinline, noclone)) void foo(int x) {
+        1:   17:  if (x != -3161)
+    #####:   18:    __builtin_abort();
+        1:   19:  asm volatile("" : : : "memory");
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  struct S t = {0, -3161L};
+        1:   24:  s[1] = t;
+        2:   25:  for (; i < 1; i++)
+        1:   26:    foo(s[1].b);
+        1:   27:  return 0;
+        -:   28:}

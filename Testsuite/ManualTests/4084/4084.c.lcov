@@ -1,0 +1,26 @@
+    1|       |typedef struct {
+    2|       |  short i __attribute__((aligned(2), packed));
+    3|       |  int f[2] __attribute__((aligned(2), packed));
+    4|       |} A;
+    5|       |
+    6|       |f(ap) A *ap;
+    7|      1|{
+    8|      1|  short i, j = 1;
+    9|      1|
+   10|      1|  i = ap->f[1];
+   11|      1|  i += ap->f[j];
+   12|      3|  for (j = 0; j < 2; j++)
+   13|      2|    i += ap->f[j];
+   14|      1|
+   15|      1|  return i;
+   16|      1|}
+   17|       |
+   18|      1|main() {
+   19|      1|  A a;
+   20|      1|  a.f[0] = 100;
+   21|      1|  a.f[1] = 13;
+   22|      1|  if (f(&a) != 139)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

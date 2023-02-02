@@ -1,0 +1,49 @@
+        -:    0:Source:2194.c
+        -:    0:Graph:2194.gcno
+        -:    0:Data:2194.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target fopenmp } */
+        -:    3:/* { dg-require-effective-target vect_int } */
+        -:    4:/* { dg-additional-options "-fopenmp -fipa-pta" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:#define nEvents 1000
+        -:    9:
+        -:   10:static void __attribute__((noinline, noclone, optimize("-fno-tree-vectorize")))
+        1:   11:init(unsigned *results, unsigned *pData) {
+        -:   12:  unsigned int i;
+     1001:   13:  for (i = 0; i < nEvents; ++i)
+     1000:   14:    pData[i] = i % 3;
+        1:   15:}
+        -:   16:
+        -:   17:static void __attribute__((noinline, noclone, optimize("-fno-tree-vectorize")))
+        1:   18:check(unsigned *results) {
+        1:   19:  unsigned sum = 0;
+     1001:   20:  for (int idx = 0; idx < (int)nEvents; idx++)
+     1000:   21:    sum += results[idx];
+        -:   22:
+        1:   23:  if (sum != 1998)
+    #####:   24:    abort();
+        1:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        -:   28:  unsigned results[nEvents];
+        -:   29:  unsigned pData[nEvents];
+        1:   30:  unsigned coeff = 2;
+        -:   31:
+        1:   32:  init(&results[0], &pData[0]);
+        -:   33:
+        -:   34:#pragma omp parallel for
+     1001:   35:  for (int idx = 0; idx < (int)nEvents; idx++)
+     1000:   36:    results[idx] = coeff * pData[idx];
+        -:   37:
+        1:   38:  check(&results[0]);
+        -:   39:
+        1:   40:  return 0;
+        -:   41:}
+        -:   42:
+        -:   43:/* { dg-final { scan-tree-dump-times "vectorized 1 loop" 1 "vect" { xfail {
+        -:   44: * vect_no_align && { ! vect_hw_misalign } } } } } */
+        -:   45:/* { dg-final { scan-tree-dump-not "versioning for alias required" "vect" } } */

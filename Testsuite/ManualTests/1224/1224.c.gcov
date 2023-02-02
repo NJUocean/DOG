@@ -1,0 +1,19 @@
+        -:    0:Source:1224.c
+        -:    0:Graph:1224.gcno
+        -:    0:Data:1224.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:/* We do not want to treat int[3] as an object that cannot overlap
+        -:    4:   itself but treat it as arbitrary sub-array of a larger array object.  */
+        1:    5:int ar1(int (*p)[3], int (*q)[3]) {
+        1:    6:  (*p)[0] = 1;
+        1:    7:  (*q)[1] = 2;
+        1:    8:  return (*p)[0];
+        -:    9:}
+        1:   10:int main() {
+        -:   11:  int a[4];
+        1:   12:  if (ar1((int(*)[3]) & a[1], (int(*)[3]) & a[0]) != 2)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,37 @@
+        -:    0:Source:1137.c
+        -:    0:Graph:1137.gcno
+        -:    0:Data:1137.gcda
+        -:    0:Runs:1
+        -:    1:/*  This test is a reduced test case for a bug that caused
+        -:    2:    bootstrapping with -fmodulo-sched.  Related to a broken anti-dep
+        -:    3:    that was not fixed by reg-moves.  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves -fdump-rtl-sms
+        -:    7: * --param sms-min-sc=1" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        1:   11:__attribute__((noinline)) unsigned long long foo(long long ixi, unsigned ctr) {
+        1:   12:  unsigned long long irslt = 1;
+        1:   13:  long long ix = ixi;
+        -:   14:
+        5:   15:  for (; ctr; ctr--) {
+        4:   16:    irslt *= ix;
+        4:   17:    ix *= ix;
+        -:   18:  }
+        -:   19:
+        1:   20:  if (irslt != 14348907)
+    #####:   21:    abort();
+        1:   22:  return irslt;
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  unsigned long long res;
+        -:   27:
+        1:   28:  res = foo(3, 4);
+        1:   29:  return 0;
+        -:   30:}
+        -:   31:
+        -:   32:/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms" { target
+        -:   33: * powerpc*-*-* } } } */

@@ -1,0 +1,13 @@
+        -:    0:Source:122.c
+        -:    0:Graph:122.gcno
+        -:    0:Data:122.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __builtin_FILE(). */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-ffile-prefix-map==FILE-PREFIX" } */
+        -:    4:
+        -:    5:#include <stdio.h>
+        -:    6:
+        1:    7:int main() { printf("__builtin_FILE starts with %s\n", __builtin_FILE()); }
+        -:    8:
+        -:    9:/* { dg-output "__builtin_FILE starts with FILE-PREFIX" } */

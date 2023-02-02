@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-weak "" } */
+    3|       |/* { dg-skip-if "No undefined" { *-*-mingw* } } */
+    4|       |/* { dg-skip-if "No undefined weak" { *-*-aix* } } */
+    5|       |/* { dg-skip-if "No undefined weak" { hppa*-*-hpux* && { ! lp64 } } } */
+    6|       |/* { dg-skip-if "No undefined weak" { nvptx-*-* } } */
+    7|       |/* { dg-options "-Wl,-undefined,dynamic_lookup" { target *-*-darwin* } } */
+    8|       |/* { dg-additional-options "-Wl,-flat_namespace" { target *-*-darwin[89]* } } */
+    9|       |
+   10|      0|int x(int a) { return a; }
+   11|       |int y(int a) __attribute__((weak));
+   12|       |int g = 0;
+   13|      1|int main() {
+   14|      1|  int (*scan_func)(int);
+   15|      1|  if (g)
+   16|      0|    scan_func = x;
+   17|      1|  else
+   18|      1|    scan_func = y;
+   19|      1|
+   20|      1|  if (scan_func)
+   21|      0|    g = scan_func(10);
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

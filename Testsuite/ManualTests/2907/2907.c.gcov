@@ -1,0 +1,23 @@
+        -:    0:Source:2907.c
+        -:    0:Graph:2907.gcno
+        -:    0:Data:2907.gcda
+        -:    0:Runs:1
+        -:    1:/* We do not have a direct conversion instruction from 128 bit DFP to
+        -:    2:   32 bit DFP so this needs to be done in two steps.  The first needs
+        -:    3:   to be done with the "prepare for shorter precision rounding mode"
+        -:    4:   in order to produce a correct result.  Otherwise the 8th digit of
+        -:    5:   the number will change from 4 to 5 in the first rounding step which
+        -:    6:   then will turn the last digit of the 32 bit DFP number (the 3) into
+        -:    7:   a 4.  Although with direct rounding it would stay a 3.  */
+        -:    8:
+        -:    9:/* { dg-do run } */
+        -:   10:/* { dg-options "-O3 -march=z10 -mzarch" } */
+        -:   11:
+        1:   12:_Decimal32 __attribute__((noinline)) foo(_Decimal128 a) {
+        1:   13:  return (_Decimal32)a;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  if (foo(1.23456349999999999DL) != 1.234563DF)
+    #####:   18:    __builtin_abort();
+        -:   19:}

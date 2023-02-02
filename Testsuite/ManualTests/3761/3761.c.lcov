@@ -1,0 +1,30 @@
+    1|       |char headline[256];
+    2|       |struct hdr {
+    3|       |  char part1[9];
+    4|       |  char part2[8];
+    5|       |} p;
+    6|       |
+    7|      1|void __attribute__((noinline, noclone)) init() {
+    8|      1|  __builtin_memcpy(p.part1, "FOOBARFOO", sizeof(p.part1));
+    9|      1|  __builtin_memcpy(p.part2, "SPEC CPU", sizeof(p.part2));
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  char *x;
+   14|      1|  int c;
+   15|      1|  init();
+   16|      1|  __builtin_memcpy(&headline[0], p.part1, 9);
+   17|      1|  c = 9;
+   18|      1|  x = &headline[0];
+   19|      1|  x = x + c;
+   20|      1|  __builtin_memset(x, ' ', 245);
+   21|      1|  __builtin_memcpy(&headline[10], p.part2, 8);
+   22|      1|  c = 18;
+   23|      1|  x = &headline[0];
+   24|      1|  x = x + c;
+   25|      1|  __builtin_memset(x, ' ', 238);
+   26|      1|  if (headline[10] != 'S')
+   27|      0|    __builtin_abort();
+   28|      1|  return 0;
+   29|      1|}
+

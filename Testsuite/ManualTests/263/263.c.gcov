@@ -1,0 +1,48 @@
+        -:    0:Source:263.c
+        -:    0:Graph:263.gcno
+        -:    0:Data:263.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:#if defined(__x86_64__)
+        -:    5:#define CHAIN "%r10"
+        -:    6:#elif defined(__i386__)
+        -:    7:#define CHAIN "%ecx"
+        -:    8:#elif defined(__aarch64__)
+        -:    9:#define CHAIN "x18"
+        -:   10:#elif defined(__alpha__)
+        -:   11:#define CHAIN "$1"
+        -:   12:#elif defined(__arm__)
+        -:   13:#define CHAIN "ip"
+        -:   14:#elif defined(__powerpc__)
+        -:   15:#define CHAIN "11"
+        -:   16:#elif defined(__s390__)
+        -:   17:#define CHAIN "%r0"
+        -:   18:#elif defined(__sparc__)
+        -:   19:#ifdef __arch64__
+        -:   20:#define CHAIN "%g5"
+        -:   21:#else
+        -:   22:#define CHAIN "%g2"
+        -:   23:#endif
+        -:   24:#endif
+        -:   25:
+        -:   26:#ifdef CHAIN
+        1:   27:void *__attribute__((noinline, noclone)) foo(void) {
+        -:   28:  register void *chain __asm__(CHAIN);
+        1:   29:  return chain;
+        -:   30:}
+        -:   31:
+        -:   32:void *(*ptr)(void) = foo;
+        -:   33:extern void abort(void);
+        -:   34:
+        1:   35:int main() {
+        -:   36:  char c;
+        1:   37:  void *x = __builtin_call_with_static_chain(ptr(), &c);
+        1:   38:  if (x != &c)
+    #####:   39:    abort();
+        1:   40:  return 0;
+        -:   41:}
+        -:   42:#else
+        -:   43:int main() { return 0; }
+        -:   44:#endif

@@ -1,0 +1,11 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |int a = -1;
+    4|       |
+    5|      1|int main() {
+    6|      1|  int b = a == 0 ? 0 : -a;
+    7|      1|  if (b < 1)
+    8|      0|    abort();
+    9|      1|  return 0;
+   10|      1|}
+

@@ -1,0 +1,38 @@
+        -:    0:Source:339.c
+        -:    0:Graph:339.gcno
+        -:    0:Data:339.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3[4] = {0x4E1A3622L, 0x4E1A3622L, 0x4E1A3622L, 0x4E1A3622L};
+        -:    7:
+        -:    8:static uint8_t func_1(void);
+        -:    9:
+        1:   10:static uint8_t func_1(void) {
+        1:   11:  int32_t *l_2[3][3][4] = {{{&g_3[0], &g_3[0], &g_3[0], (void *)0}, {&g_3[0], &g_3[0], &g_3[0], &g_3[3]}, {&g_3[0], (void *)0, &g_3[3], &g_3[3]}}, {{&g_3[0], &g_3[0], (void *)0, (void *)0}, {(void *)0, &g_3[0], (void *)0, &g_3[0]}, {&g_3[0], &g_3[0], &g_3[3], (void *)0}}, {{&g_3[0], &g_3[0], &g_3[0], &g_3[0]}, {&g_3[0], &g_3[0], &g_3[0], (void *)0}, {&g_3[0], &g_3[0], &g_3[0], &g_3[3]}}};
+        1:   12:  uint8_t l_4 = 0UL;
+        -:   13:  int i, j, k;
+        1:   14:  l_4--;
+        1:   15:  g_3[0] = g_3[0];
+        1:   16:  return g_3[0];
+        -:   17:}
+        -:   18:
+        1:   19:int main(int argc, char *argv[]) {
+        -:   20:  int i;
+        1:   21:  int print_hash_value = 0;
+       1*:   22:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   23:    print_hash_value = 1;
+        1:   24:  platform_main_begin();
+        1:   25:  crc32_gentab();
+        1:   26:  func_1();
+        5:   27:  for (i = 0; i < 4; i++) {
+        4:   28:    transparent_crc(g_3[i], "g_3[i]", print_hash_value);
+        4:   29:    if (print_hash_value)
+    #####:   30:      printf("index = [%d]\n", i);
+        -:   31:  }
+        1:   32:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   33:  return 0;
+        -:   34:}

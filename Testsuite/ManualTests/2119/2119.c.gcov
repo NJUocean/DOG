@@ -1,0 +1,11 @@
+        -:    0:Source:2119.c
+        -:    0:Graph:2119.gcno
+        -:    0:Data:2119.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift -fwrapv -w -std=c99" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  int a = 1;
+        1:    6:  a <<= 31;
+        -:    7:}

@@ -1,0 +1,27 @@
+    1|       |/* { dg-options "-O2 --save-temps" } */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|int test_si(int a) {
+    7|      1|  /* { dg-final { scan-assembler "ror\tw\[0-9\]+, w\[0-9\]+, 27\n" } } */
+    8|      1|  return (a << 5) | ((unsigned int)a >> 27);
+    9|      1|}
+   10|       |
+   11|      1|long long test_di(long long a) {
+   12|      1|  /* { dg-final { scan-assembler "ror\tx\[0-9\]+, x\[0-9\]+, 45\n" } } */
+   13|      1|  return (a << 19) | ((unsigned long long)a >> 45);
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  int v;
+   18|      1|  long long w;
+   19|      1|  v = test_si(0x0203050);
+   20|      1|  if (v != 0x4060a00)
+   21|      0|    abort();
+   22|      1|  w = test_di(0x0000020506010304ll);
+   23|      1|  if (w != 0x1028300818200000ll)
+   24|      0|    abort();
+   25|      1|  return 0;
+   26|      1|}
+

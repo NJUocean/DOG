@@ -1,0 +1,31 @@
+    1|       |/* { dg-options "-O2 -fdump-ipa-icf" } */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|      1|static int __attribute__((noinline)) foo(int i) {
+    5|      1|  switch (i) {
+    6|      1|  case 0:
+    7|      1|  case 1:
+    8|      1|  case 2:
+    9|      1|  case 3:
+   10|      1|    return 0;
+   11|      1|  default:
+   12|      0|    return 1;
+   13|      1|  }
+   14|      1|}
+   15|       |
+   16|      1|static int __attribute__((noinline)) bar(int i) {
+   17|      1|  switch (i) {
+   18|      1|  case 4:
+   19|      1|  case 5:
+   20|      1|  case 6:
+   21|      1|  case 7:
+   22|      1|    return 0;
+   23|      1|  default:
+   24|      0|    return 1;
+   25|      1|  }
+   26|      1|}
+   27|       |
+   28|      1|int main() { return foo(0) + bar(4); }
+   29|       |
+   30|       |/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */
+

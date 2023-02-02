@@ -1,0 +1,23 @@
+        -:    0:Source:1424.c
+        -:    0:Graph:1424.gcno
+        -:    0:Data:1424.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/54877 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-ffast-math" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int foo(void) {
+        -:    8:  double d;
+        -:    9:  int i;
+       65:   10:  for (i = 0, d = 0; i < 64; i++)
+       64:   11:    d--;
+        1:   12:  return (int)d;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (foo() != -64)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

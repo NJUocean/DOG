@@ -1,0 +1,15 @@
+        -:    0:Source:808.c
+        -:    0:Graph:808.gcno
+        -:    0:Data:808.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/65280 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=bounds" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int *t = (int *)__builtin_malloc(sizeof(int) * 10);
+        1:    7:  int(*a)[1] = (int(*)[1])t;
+        1:    8:  (*a)[2] = 1;
+        -:    9:}
+        -:   10:
+        -:   11:/* { dg-output "index 2 out of bounds for type 'int \\\[1\\\]'" } */

@@ -1,0 +1,31 @@
+    1|       |/* Test for _Bool bit-fields.  They have the semantics of _Bool, at
+    2|       |   least for now (DR#335 Spring 2007 discussion).  */
+    3|       |/* Origin: Joseph Myers <joseph@codesourcery.com> */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    6|       |struct foo {
+    7|       |  _Bool a : 1;
+    8|       |} sf;
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  int i;
+   15|      2|  for (i = 0; i < sizeof(struct foo); i++)
+   16|      1|    *((unsigned char *)&sf + i) = (unsigned char)-1;
+   17|      1|  sf.a = 2;
+   18|      1|  if (sf.a != 1)
+   19|      0|    abort();
+   20|      1|  sf.a = 0;
+   21|      1|  if (sf.a != 0)
+   22|      0|    abort();
+   23|      1|  sf.a = 0.2;
+   24|      1|  if (sf.a != 1)
+   25|      0|    abort();
+   26|      1|  sf.a = &sf;
+   27|      1|  if (sf.a != 1)
+   28|      0|    abort();
+   29|      1|  exit(0);
+   30|      1|}
+

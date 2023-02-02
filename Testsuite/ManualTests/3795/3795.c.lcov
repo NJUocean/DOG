@@ -1,0 +1,28 @@
+    1|       |/* PR rtl-optimization/57861 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |short a = 1, f;
+    5|       |int b, c, d, *g = &b, h, i, j;
+    6|       |unsigned int e;
+    7|       |
+    8|      1|static int foo(char p) {
+    9|      1|  int k;
+   10|      3|  for (c = 0; c < 2; c++) {
+   11|      2|    i = (j = 0) || p;
+   12|      2|    k = i * p;
+   13|      2|    if (e < k) {
+   14|      2|      short *l = &f;
+   15|      2|      a = d && h;
+   16|      2|      *l = 0;
+   17|      2|    }
+   18|      2|  }
+   19|      1|  return 0;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  *g = foo(a);
+   24|      1|  if (a != 0)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

@@ -1,0 +1,31 @@
+        -:    0:Source:1356.c
+        -:    0:Graph:1356.gcno
+        -:    0:Data:1356.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "Too much RAM needed" { "avr-*-*" } } */
+        -:    3:
+        -:    4:int result[64][16];
+        -:    5:
+        1:    6:int main() {
+        1:    7:  double dbuf[1000] = {0.0};
+        -:    8:  int ibuf[900];
+        -:    9:  int i, j;
+        -:   10:
+        1:   11:  double d1 = 0.0;
+        1:   12:  double d2 = 0.0;
+      901:   13:  for (i = 0; i < 900; ++i) {
+      900:   14:    ibuf[i] = (int)(d2 - d1);
+      900:   15:    d1 += dbuf[i];
+      900:   16:    d2 += dbuf[i + 64];
+        -:   17:  }
+        -:   18:
+       65:   19:  for (i = 0; i < 64; ++i) {
+      576:   20:    for (j = 0; j < 8; ++j) {
+      512:   21:      result[i][j] = ibuf[64 - i + 64 * j];
+      512:   22:      result[i][15 - j] = ibuf[i + 64 * j];
+        -:   23:    }
+        -:   24:  }
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

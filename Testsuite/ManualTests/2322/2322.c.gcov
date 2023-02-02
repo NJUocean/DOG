@@ -1,0 +1,22 @@
+        -:    0:Source:2322.c
+        -:    0:Graph:2322.gcno
+        -:    0:Data:2322.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    2:/* { dg-do run { target native } } */
+        -:    3:
+        1:    4:void bar(void) {}
+        -:    5:
+        1:    6:void foo(int i) {
+        1:    7:  if (i > 1) /* count(1) */
+    #####:    8:    return;  /* count(#####) */
+        -:    9:
+        1:   10:  bar(); /* count(1) */
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  foo(0);
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { run-gcov gcov-16.c } } */

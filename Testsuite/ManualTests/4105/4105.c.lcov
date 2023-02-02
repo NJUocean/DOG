@@ -1,0 +1,24 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|       |/*typedef unsigned long L;*/
+    4|       |typedef double L;
+    5|      1|void f(L p0, L p1, L p2, L p3, L p4, L p5, L p6, L p7, L p8, ...) {
+    6|      1|  va_list select;
+    7|      1|
+    8|      1|  va_start(select, p8);
+    9|      1|
+   10|      1|  if (va_arg(select, L) != 10.)
+   11|      0|    abort();
+   12|      1|  if (va_arg(select, L) != 11.)
+   13|      0|    abort();
+   14|      1|  if (va_arg(select, L) != 0.)
+   15|      0|    abort();
+   16|      1|
+   17|      1|  va_end(select);
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  f(1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 0.);
+   22|      1|  exit(0);
+   23|      1|}
+

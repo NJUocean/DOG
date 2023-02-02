@@ -1,0 +1,44 @@
+        -:    0:Source:4045.c
+        -:    0:Graph:4045.gcno
+        -:    0:Data:4045.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93945 */
+        -:    2:
+        -:    3:union U {
+        -:    4:  char a[8];
+        -:    5:  struct S {
+        -:    6:    unsigned int b : 8, c : 13, d : 11;
+        -:    7:  } e;
+        -:    8:} u;
+        -:    9:
+        1:   10:__attribute__((noipa)) int foo(void) {
+        1:   11:  __builtin_memset(&u.a, 0xf4, sizeof(u.a));
+        1:   12:  return u.e.c;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noipa)) int bar(void) {
+        1:   16:  asm volatile("" : : "g"(&u) : "memory");
+        1:   17:  return u.e.c;
+        -:   18:}
+        -:   19:
+        1:   20:__attribute__((noipa)) int baz(void) {
+        1:   21:  __builtin_memset(&u.a, 0xf4, sizeof(u.a));
+        1:   22:  return u.e.d;
+        -:   23:}
+        -:   24:
+        1:   25:__attribute__((noipa)) int qux(void) {
+        1:   26:  asm volatile("" : : "g"(&u) : "memory");
+        1:   27:  return u.e.d;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  int a = foo();
+        1:   32:  int b = bar();
+        1:   33:  if (a != b)
+    #####:   34:    __builtin_abort();
+        1:   35:  a = baz();
+        1:   36:  b = qux();
+        1:   37:  if (a != b)
+    #####:   38:    __builtin_abort();
+        1:   39:  return 0;
+        -:   40:}

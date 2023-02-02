@@ -1,0 +1,41 @@
+        -:    0:Source:4148.c
+        -:    0:Graph:4148.gcno
+        -:    0:Data:4148.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -finstrument-functions" } */
+        -:    3:/* { dg-require-effective-target return_address } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:double foo(double a, double b) {
+        -:    9:  double c;
+        1:   10:  if (0.0 < a)
+        1:   11:    c = a;
+    #####:   12:  else if (b > 0.0)
+    #####:   13:    c = 0.0;
+        -:   14:  else
+    #####:   15:    return 0;
+        1:   16:  return 2.0 * (b - c);
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  if (foo(1.0, 4.0) != 6.0)
+    #####:   21:    abort();
+        1:   22:  exit(0);
+        -:   23:}
+        -:   24:
+        -:   25:/* Abort on non-NULL CALL_SITE to ensure that __builtin_return_address
+        -:   26:   was expanded properly.  */
+        -:   27:void __attribute__((no_instrument_function))
+    #####:   28:__cyg_profile_func_enter(void *this_fn, void *call_site) {
+    #####:   29:  if (call_site == (void *)0)
+    #####:   30:    abort();
+    #####:   31:}
+        -:   32:
+        -:   33:void __attribute__((no_instrument_function))
+    #####:   34:__cyg_profile_func_exit(void *this_fn, void *call_site) {
+    #####:   35:  if (call_site == (void *)0)
+    #####:   36:    abort();
+    #####:   37:}

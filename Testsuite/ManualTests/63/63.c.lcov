@@ -1,0 +1,16 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -Wall" } */
+    3|       |
+    4|       |struct a {
+    5|       |  int i;
+    6|       |  char c;
+    7|       |};
+    8|       |struct b {
+    9|       |  float f;
+   10|       |  float g;
+   11|       |};
+   12|      1|int main(void) {
+   13|      1|  static struct b b;
+   14|      1|  return ((struct a *)&b)->i; /* { dg-warning "will break strict-aliasing" } */
+   15|      1|}
+

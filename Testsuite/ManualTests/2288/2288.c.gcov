@@ -1,0 +1,28 @@
+        -:    0:Source:2288.c
+        -:    0:Graph:2288.gcno
+        -:    0:Data:2288.gcda
+        -:    0:Runs:1
+        -:    1:extern unsigned long aa[], bb[];
+        -:    2:
+        -:    3:int seqgt(unsigned long a, unsigned short win, unsigned long b);
+        -:    4:
+        -:    5:int seqgt2(unsigned long a, unsigned short win, unsigned long b);
+        -:    6:
+        1:    7:main() {
+        1:    8:  if (!seqgt(*aa, 0x1000, *bb) || !seqgt2(*aa, 0x1000, *bb))
+    #####:    9:    abort();
+        -:   10:
+        1:   11:  exit(0);
+        -:   12:}
+        -:   13:
+        1:   14:int seqgt(unsigned long a, unsigned short win, unsigned long b) {
+        1:   15:  return (long)((a + win) - b) > 0;
+        -:   16:}
+        -:   17:
+        1:   18:int seqgt2(unsigned long a, unsigned short win, unsigned long b) {
+        1:   19:  long l = ((a + win) - b);
+        1:   20:  return l > 0;
+        -:   21:}
+        -:   22:
+        -:   23:unsigned long aa[] = {(1UL << (sizeof(long) * 8 - 1)) - 0xfff};
+        -:   24:unsigned long bb[] = {(1UL << (sizeof(long) * 8 - 1)) - 0xfff};

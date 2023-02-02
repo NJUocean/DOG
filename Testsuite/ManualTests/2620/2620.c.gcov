@@ -1,0 +1,21 @@
+        -:    0:Source:2620.c
+        -:    0:Graph:2620.gcno
+        -:    0:Data:2620.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int test() {
+        1:    7:  char a, b = -1;
+        1:    8:  asm volatile("mov%z0 %1, %0" : "=q"(a) : "m"(b));
+        1:    9:  return a;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (test() != -1)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

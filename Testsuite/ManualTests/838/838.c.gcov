@@ -1,0 +1,18 @@
+        -:    0:Source:838.c
+        -:    0:Graph:838.gcno
+        -:    0:Data:838.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33645 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -funit-at-a-time" } */
+        -:    4:
+        1:    5:__attribute__((noinline)) int bar(int *x) { return *x++; }
+        -:    6:
+        1:    7:int main() {
+        -:    8:  static int var1_s;
+        -:    9:  static int *var1_t = &var1_s;
+        -:   10:
+        1:   11:  return bar(var1_t) != 0;
+        -:   12:}
+        -:   13:
+        -:   14:/* { dg-final { scan-assembler-not "var1_t" } } */

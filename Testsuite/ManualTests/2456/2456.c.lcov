@@ -1,0 +1,32 @@
+    1|       |/* { dg-additional-options "-fno-early-inlining -fno-ipa-cp" }  */
+    2|       |struct a {
+    3|       |  float *b;
+    4|       |} * a;
+    5|       |struct b {
+    6|       |  int *b;
+    7|       |} b;
+    8|       |struct c {
+    9|       |  float *b;
+   10|       |} * c;
+   11|       |int d;
+   12|      0|use_a(struct a *a) {}
+   13|      1|set_b(int **a) { *a = &d; }
+   14|      0|use_c(struct c *a) {}
+   15|      1|__attribute__((noinline)) int **retme(int **val) { return val; }
+   16|       |int e;
+   17|       |struct b b = {&e};
+   18|       |struct b b2;
+   19|       |struct b b3;
+   20|       |int **ptr = &b2.b;
+   21|      1|main() {
+   22|      1|  a = (void *)0;
+   23|      1|  b.b = &e;
+   24|      1|  ptr = retme(&b.b);
+   25|      1|  set_b(ptr);
+   26|      1|  b3 = b;
+   27|      1|  if (b3.b != &d)
+   28|      0|    __builtin_abort();
+   29|      1|  c = (void *)0;
+   30|      1|  return 0;
+   31|      1|}
+

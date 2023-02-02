@@ -1,0 +1,16 @@
+        -:    0:Source:3173.c
+        -:    0:Graph:3173.gcno
+        -:    0:Data:3173.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously gcc.misc-tests/dg-11.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-do run { target *-*-* } } */
+        -:    4:/* The \n is left out of the pattern because tcl's exec will remove it.  */
+        -:    5:/* { dg-output {Hello world[.]} } */
+        -:    6:
+        -:    7:#include <stdio.h>
+        -:    8:
+        1:    9:main() {
+        1:   10:  printf("Hello world.\n");
+        1:   11:  return 0;
+        -:   12:}

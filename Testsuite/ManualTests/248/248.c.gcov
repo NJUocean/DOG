@@ -1,0 +1,21 @@
+        -:    0:Source:248.c
+        -:    0:Graph:248.gcno
+        -:    0:Data:248.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/61854 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=gnu89" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int i = 0
+        -:    7:#if 0
+        -:    8:// /*
+        -:    9:#else
+        -:   10:          // */
+        -:   11:          + 1
+        -:   12:#endif
+        -:   13:      ;
+        1:   14:  if (i != 1)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

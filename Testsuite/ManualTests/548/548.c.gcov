@@ -1,0 +1,23 @@
+        -:    0:Source:548.c
+        -:    0:Graph:548.gcno
+        -:    0:Data:548.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:
+        1:    4:static inline __SIZE_TYPE__ func1(const volatile void *base,
+        -:    5:                                  __SIZE_TYPE__ byteOffset) {
+        1:    6:  volatile __SIZE_TYPE__ *addr =
+        1:    7:      (volatile __SIZE_TYPE__ *)((__SIZE_TYPE__)base + byteOffset);
+        1:    8:  return *addr;
+        -:    9:}
+        -:   10:
+        1:   11:static inline __SIZE_TYPE__ func2(__SIZE_TYPE__ data) {
+        1:   12:  return func1(&data, 0);
+        -:   13:}
+        -:   14:
+        1:   15:int main(int argc, char *argv[]) {
+        1:   16:  __SIZE_TYPE__ b = func2(argc);
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

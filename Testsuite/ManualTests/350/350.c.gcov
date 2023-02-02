@@ -1,0 +1,20 @@
+        -:    0:Source:350.c
+        -:    0:Graph:350.gcno
+        -:    0:Data:350.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-fre1" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int a;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  if (a * 1000 < 0)
+    #####:   10:    abort();
+        1:   11:  if (a * -43 > 0)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-final { scan-tree-dump-times "Removing basic block" 2 "fre1" } } */

@@ -1,0 +1,10 @@
+        -:    0:Source:745.c
+        -:    0:Graph:745.gcno
+        -:    0:Data:745.gcda
+        -:    0:Runs:1
+        -:    1:/* Check for no "noreturn" warning in main. */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -Wmissing-noreturn -fhosted" } */
+        -:    4:extern void exit(int) __attribute__((__noreturn__));
+        -:    5:
+        1:    6:int main(void) { exit(0); }

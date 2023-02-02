@@ -1,0 +1,20 @@
+    1|       |#if defined(_LP64)
+    2|       |typedef unsigned long int uintptr_t;
+    3|       |#elif defined(_WIN64)
+    4|       |typedef unsigned long long int uintptr_t;
+    5|       |#else
+    6|       |typedef unsigned int uintptr_t;
+    7|       |#endif
+    8|       |
+    9|       |extern void srand(uintptr_t);
+   10|       |
+   11|      1|inline void __attribute__((gnu_inline)) foo(uintptr_t seed) {
+   12|      1|  srand(seed * seed);
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  foo(0);
+   17|      1|  srand((uintptr_t)(&foo));
+   18|      1|  return 0;
+   19|      1|}
+

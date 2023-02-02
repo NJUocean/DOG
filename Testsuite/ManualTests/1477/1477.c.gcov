@@ -1,0 +1,22 @@
+        -:    0:Source:1477.c
+        -:    0:Graph:1477.gcno
+        -:    0:Data:1477.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int a, b, c, d[4] = {0, 0, 0, 1};
+        -:    6:
+        1:    7:int main() {
+        5:    8:  for (; a < 4; a++) {
+        4:    9:    int e = d[a];
+       4*:   10:    for (c = 1; c < 1; c++)
+        -:   11:      ;
+        4:   12:    b = e;
+        4:   13:    d[a] = 0;
+        -:   14:  }
+        1:   15:  if (b != 1)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

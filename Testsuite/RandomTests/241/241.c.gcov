@@ -1,0 +1,27 @@
+        -:    0:Source:241.c
+        -:    0:Graph:241.gcno
+        -:    0:Data:241.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int8_t func_1(void);
+        -:    7:
+        1:    8:static int8_t func_1(void) {
+        1:    9:  int8_t l_2[5][5] = {{0xBCL, 6L, 0xBCL, 0xBCL, 6L}, {0xF8L, 0L, 0x3FL, 2L, 0x3FL}, {6L, 6L, 0xE1L, 6L, 6L}, {0x3FL, 2L, 0x3FL, 0L, 0xF8L}, {6L, 0xBCL, 0xBCL, 6L, 0xBCL}};
+        -:   10:  int i, j;
+        1:   11:  return l_2[0][1];
+        -:   12:}
+        -:   13:
+        1:   14:int main(int argc, char *argv[]) {
+        1:   15:  int print_hash_value = 0;
+       1*:   16:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   17:    print_hash_value = 1;
+        1:   18:  platform_main_begin();
+        1:   19:  crc32_gentab();
+        1:   20:  func_1();
+        1:   21:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   22:  return 0;
+        -:   23:}

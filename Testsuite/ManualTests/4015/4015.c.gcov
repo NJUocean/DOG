@@ -1,0 +1,20 @@
+        -:    0:Source:4015.c
+        -:    0:Graph:4015.gcno
+        -:    0:Data:4015.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/87053 */
+        -:    2:
+        -:    3:const union {
+        -:    4:  struct {
+        -:    5:    char x[4];
+        -:    6:    char y[4];
+        -:    7:  };
+        -:    8:  struct {
+        -:    9:    char z[8];
+        -:   10:  };
+        -:   11:} u = {{"1234", "567"}};
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (__builtin_strlen(u.z) != 7)
+    #####:   15:    __builtin_abort();
+        -:   16:}

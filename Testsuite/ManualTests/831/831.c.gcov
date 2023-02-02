@@ -1,0 +1,47 @@
+        -:    0:Source:831.c
+        -:    0:Graph:831.gcno
+        -:    0:Data:831.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33136 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct S {
+        -:    8:  void *a;
+        -:    9:  int b[3];
+        -:   10:  double *c;
+        -:   11:};
+        -:   12:static double d, e;
+        -:   13:
+        -:   14:static struct S s;
+        -:   15:
+        1:   16:static int *__attribute__((noinline, const)) foo(void) { return (int *)&s.b; }
+        -:   17:
+        1:   18:double *__attribute__((noinline)) bar(double **f) {
+        1:   19:  s.c = &d;
+        1:   20:  *f = &e;
+        -:   21:  /* As nothing ever takes the address of any double * field in struct S,
+        -:   22:     the write to *f can't alias with the s.c field.  */
+        1:   23:  return s.c;
+        -:   24:}
+        -:   25:
+        1:   26:int __attribute__((noinline)) baz(int *x) {
+        1:   27:  s.b[0] = 1;
+        1:   28:  *x = 4;
+        -:   29:  /* Function foo takes address of an int array field in struct S,
+        -:   30:     so *x can alias with the s.b field (and it does in this testcase).  */
+        1:   31:  return s.b[0];
+        -:   32:}
+        -:   33:
+        1:   34:int __attribute__((noinline)) t(void) {
+        1:   35:  double *f = (double *)0;
+       1*:   36:  return 10 * (bar(&f) != &d) + baz(foo());
+        -:   37:}
+        -:   38:
+        1:   39:int main(void) {
+        1:   40:  if (t() != 4)
+    #####:   41:    abort();
+        1:   42:  return 0;
+        -:   43:}

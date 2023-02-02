@@ -1,0 +1,16 @@
+        -:    0:Source:3541.c
+        -:    0:Graph:3541.gcno
+        -:    0:Data:3541.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fwrapv" } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        1:    6:int f(j) int j;
+        1:    7:{ return ++j > 0; }
+        1:    8:int main() {
+        1:    9:  if (f((~0U) >> 1))
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

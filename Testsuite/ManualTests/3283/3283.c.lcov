@@ -1,0 +1,17 @@
+    1|       |/* PR optimization/8613 */
+    2|       |/* Contributed by Glen Nakamura */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  char buf[16] = "1234567890";
+    8|      1|  char *p = buf;
+    9|      1|
+   10|      1|  *p++ = (char)__builtin_strlen(buf);
+   11|      1|
+   12|      1|  if ((buf[0] != 10) || (p - buf != 1))
+   13|      0|    abort();
+   14|      1|
+   15|      1|  return 0;
+   16|      1|}
+

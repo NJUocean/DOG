@@ -1,0 +1,35 @@
+        -:    0:Source:3489.c
+        -:    0:Graph:3489.gcno
+        -:    0:Data:3489.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct sreal {
+        -:    2:  unsigned sig; /* Significant.  */
+        -:    3:  int exp;      /* Exponent.  */
+        -:    4:} sreal;
+        -:    5:
+       12:    6:sreal_compare(sreal *a, sreal *b) {
+       12:    7:  if (a->exp > b->exp)
+        4:    8:    return 1;
+        8:    9:  if (a->exp < b->exp)
+        2:   10:    return -1;
+        6:   11:  if (a->sig > b->sig)
+        2:   12:    return 1;
+        4:   13:  return -(a->sig < b->sig);
+        -:   14:}
+        -:   15:
+        -:   16:sreal a[] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
+        -:   17:
+        1:   18:int main() {
+        -:   19:  int i, j;
+        5:   20:  for (i = 0; i <= 3; i++) {
+       16:   21:    for (j = 0; j < 3; j++) {
+       12:   22:      if (i < j && sreal_compare(&a[i], &a[j]) != -1)
+    #####:   23:        abort();
+       12:   24:      if (i == j && sreal_compare(&a[i], &a[j]) != 0)
+    #####:   25:        abort();
+       12:   26:      if (i > j && sreal_compare(&a[i], &a[j]) != 1)
+    #####:   27:        abort();
+        -:   28:    }
+        -:   29:  }
+        1:   30:  return 0;
+        -:   31:}

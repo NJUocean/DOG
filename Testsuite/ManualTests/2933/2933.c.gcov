@@ -1,0 +1,14 @@
+        -:    0:Source:2933.c
+        -:    0:Graph:2933.gcno
+        -:    0:Data:2933.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-size "0x10000" } */
+        -:    2:
+        -:    3:/* When generating o32 MIPS PIC, main's $gp save slot was out of range
+        -:    4:   of a single load instruction.  */
+        -:    5:struct big {
+        -:    6:  int i[sizeof(int) >= 4 && sizeof(void *) >= 4 ? 0x4000 : 4];
+        -:    7:};
+        -:    8:struct big gb;
+        2:    9:int foo(struct big b, int x) { return b.i[x]; }
+        1:   10:int main(void) { return foo(gb, 0) + foo(gb, 1); }

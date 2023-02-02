@@ -1,0 +1,25 @@
+        -:    0:Source:3314.c
+        -:    0:Graph:3314.gcno
+        -:    0:Data:3314.gcda
+        -:    0:Runs:1
+        -:    1:/* Assignments via pointers pointing to global variables were being killed
+        -:    2:   by SSA-DCE.  Test contributed by Paul Brook <paul@nowt.org>  */
+        -:    3:
+        -:    4:int g;
+        -:    5:
+        1:    6:void fn2(int **q) { *q = &g; }
+        -:    7:
+        1:    8:void test() {
+        -:    9:  int *p;
+        -:   10:
+        1:   11:  fn2(&p);
+        -:   12:
+        1:   13:  *p = 42;
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  test();
+        1:   18:  if (g != 42)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

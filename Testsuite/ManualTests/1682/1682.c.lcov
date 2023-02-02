@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fno-omit-frame-pointer -w" } */
+    3|       |
+    4|      8|#define SIZE 8
+    5|       |
+    6|      1|main() {
+    7|      1|  int a[SIZE] = {1};
+    8|      1|  int i;
+    9|      1|
+   10|      8|  for (i = 1; i < SIZE; i++)
+   11|      7|    if (a[i] != 0)
+   12|      0|      abort();
+   13|      1|
+   14|      1|  exit(0);
+   15|      1|}
+

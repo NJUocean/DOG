@@ -1,0 +1,36 @@
+    1|       |/* { dg-xfail-if "ABI specifies bitfields cannot exceed 32 bits" { mcore-*-* } }
+    2|       | */
+    3|       |struct tmp {
+    4|       |  long long int pad : 12;
+    5|       |  long long int field : 52;
+    6|       |};
+    7|       |
+    8|       |struct tmp2 {
+    9|       |  long long int field : 52;
+   10|       |  long long int pad : 12;
+   11|       |};
+   12|       |
+   13|      1|struct tmp sub(struct tmp tmp) {
+   14|      1|  tmp.field |= 0x0008765412345678LL;
+   15|      1|  return tmp;
+   16|      1|}
+   17|       |
+   18|      1|struct tmp2 sub2(struct tmp2 tmp2) {
+   19|      1|  tmp2.field |= 0x0008765412345678LL;
+   20|      1|  return tmp2;
+   21|      1|}
+   22|       |
+   23|      1|main() {
+   24|      1|  struct tmp tmp = {0x123, 0xFFF000FFF000FLL};
+   25|      1|  struct tmp2 tmp2 = {0xFFF000FFF000FLL, 0x123};
+   26|      1|
+   27|      1|  tmp = sub(tmp);
+   28|      1|  tmp2 = sub2(tmp2);
+   29|      1|
+   30|      1|  if (tmp.pad != 0x123 || tmp.field != 0xFFFFFF541FFF567FLL)
+   31|      0|    abort();
+   32|      1|  if (tmp2.pad != 0x123 || tmp2.field != 0xFFFFFF541FFF567FLL)
+   33|      0|    abort();
+   34|      1|  exit(0);
+   35|      1|}
+

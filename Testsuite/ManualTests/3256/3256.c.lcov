@@ -1,0 +1,22 @@
+    1|       |/* PR opt/8165.  */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |char buf[64];
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int i;
+    9|      1|
+   10|      1|  __builtin_strcpy(buf, "mystring");
+   11|      1|  if (__builtin_strcmp(buf, "mystring") != 0)
+   12|      0|    abort();
+   13|      1|
+   14|     17|  for (i = 0; i < 16; ++i) {
+   15|     16|    __builtin_strcpy(buf + i, "mystring");
+   16|     16|    if (__builtin_strcmp(buf + i, "mystring") != 0)
+   17|      0|      abort();
+   18|     16|  }
+   19|      1|
+   20|      1|  return 0;
+   21|      1|}
+

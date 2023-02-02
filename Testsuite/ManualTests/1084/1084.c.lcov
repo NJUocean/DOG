@@ -1,0 +1,13 @@
+    1|      1|int main(void) {
+    2|      1|  unsigned long totalsize = 80;
+    3|      1|  unsigned long msize = 64;
+    4|      1|
+    5|      1|  if (sizeof(long) != 4)
+    6|      1|    exit(0);
+    7|      0|
+    8|      0|  if (totalsize > (2147483647L * 2UL + 1) ||
+    9|      0|      (msize != 0 && ((msize - 1) > (2147483647L * 2UL + 1))))
+   10|      0|    abort();
+   11|      0|  exit(0);
+   12|      0|}
+

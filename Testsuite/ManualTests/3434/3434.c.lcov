@@ -1,0 +1,73 @@
+    1|       |/* PR target/11044 */
+    2|       |/* Originator: Tim McGrath <misty-@charter.net> */
+    3|       |/* Testcase contributed by Eric Botcazou <ebotcazou@libertysurf.fr> */
+    4|       |
+    5|       |/* Testcase copied from gcc.target/i386/loop-3.c */
+    6|       |
+    7|       |extern void *memset(void *, int, __SIZE_TYPE__);
+    8|       |extern void abort(void);
+    9|       |
+   10|       |typedef struct {
+   11|       |  unsigned char colormod;
+   12|       |} entity_state_t;
+   13|       |
+   14|       |typedef struct {
+   15|       |  int num_entities;
+   16|       |  entity_state_t *entities;
+   17|       |} packet_entities_t;
+   18|       |
+   19|       |typedef struct {
+   20|       |  double senttime;
+   21|       |  float ping_time;
+   22|       |  packet_entities_t entities;
+   23|       |} client_frame_t;
+   24|       |
+   25|       |typedef enum {
+   26|       |  cs_free,
+   27|       |  cs_server,
+   28|       |  cs_zombie,
+   29|       |  cs_connected,
+   30|       |  cs_spawned
+   31|       |} sv_client_state_t;
+   32|       |
+   33|       |typedef struct client_s {
+   34|       |  sv_client_state_t state;
+   35|       |  int ping;
+   36|       |  client_frame_t frames[64];
+   37|       |} client_t;
+   38|       |
+   39|      1|int CalcPing(client_t *cl) {
+   40|      1|  float ping;
+   41|      1|  int count, i;
+   42|      1|  register client_frame_t *frame;
+   43|      1|
+   44|      1|  if (cl->state == cs_server)
+   45|      0|    return cl->ping;
+   46|      1|  ping = 0;
+   47|      1|  count = 0;
+   48|     65|  for (frame = cl->frames, i = 0; i < 64; i++, frame++) {
+   49|     64|    if (frame->ping_time > 0) {
+   50|      1|      ping += frame->ping_time;
+   51|      1|      count++;
+   52|      1|    }
+   53|     64|  }
+   54|      1|  if (!count)
+   55|      0|    return 9999;
+   56|      1|  ping /= count;
+   57|      1|
+   58|      1|  return ping * 1000;
+   59|      1|}
+   60|       |
+   61|      1|int main(void) {
+   62|      1|  client_t cl;
+   63|      1|
+   64|      1|  memset(&cl, 0, sizeof(cl));
+   65|      1|
+   66|      1|  cl.frames[0].ping_time = 1.0f;
+   67|      1|
+   68|      1|  if (CalcPing(&cl) != 1000)
+   69|      0|    abort();
+   70|      1|
+   71|      1|  return 0;
+   72|      1|}
+

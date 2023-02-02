@@ -1,0 +1,19 @@
+        -:    0:Source:3818.c
+        -:    0:Graph:3818.gcno
+        -:    0:Data:3818.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/58943 */
+        -:    2:
+        -:    3:unsigned int x[1] = {2};
+        -:    4:
+        1:    5:unsigned int foo(void) {
+        1:    6:  x[0] |= 128;
+        1:    7:  return 1;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  x[0] |= foo();
+        1:   12:  if (x[0] != 131)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

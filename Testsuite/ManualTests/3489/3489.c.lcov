@@ -1,0 +1,32 @@
+    1|       |typedef struct sreal {
+    2|       |  unsigned sig; /* Significant.  */
+    3|       |  int exp;      /* Exponent.  */
+    4|       |} sreal;
+    5|       |
+    6|     12|sreal_compare(sreal *a, sreal *b) {
+    7|     12|  if (a->exp > b->exp)
+    8|      4|    return 1;
+    9|      8|  if (a->exp < b->exp)
+   10|      2|    return -1;
+   11|      6|  if (a->sig > b->sig)
+   12|      2|    return 1;
+   13|      4|  return -(a->sig < b->sig);
+   14|      4|}
+   15|       |
+   16|       |sreal a[] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
+   17|       |
+   18|      1|int main() {
+   19|      1|  int i, j;
+   20|      5|  for (i = 0; i <= 3; i++) {
+   21|     16|    for (j = 0; j < 3; j++) {
+   22|     12|      if (i < j && sreal_compare(&a[i], &a[j]) != -1)
+   23|      0|        abort();
+   24|     12|      if (i == j && sreal_compare(&a[i], &a[j]) != 0)
+   25|      0|        abort();
+   26|     12|      if (i > j && sreal_compare(&a[i], &a[j]) != 1)
+   27|      0|        abort();
+   28|     12|    }
+   29|      4|  }
+   30|      1|  return 0;
+   31|      1|}
+

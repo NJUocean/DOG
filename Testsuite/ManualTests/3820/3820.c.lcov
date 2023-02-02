@@ -1,0 +1,21 @@
+    1|       |/* PR tree-optimization/59014 */
+    2|       |
+    3|       |__attribute__((noinline, noclone)) long long int foo(long long int x,
+    4|      1|                                                     long long int y) {
+    5|      1|  if (((int)x | (int)y) != 0)
+    6|      0|    return 6;
+    7|      1|  return x + y;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  if (sizeof(long long) == sizeof(int))
+   12|      0|    return 0;
+   13|      1|  int shift_half = sizeof(int) * __CHAR_BIT__ / 2;
+   14|      1|  long long int x = (3LL << shift_half) << shift_half;
+   15|      1|  long long int y = (5LL << shift_half) << shift_half;
+   16|      1|  long long int z = foo(x, y);
+   17|      1|  if (z != ((8LL << shift_half) << shift_half))
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

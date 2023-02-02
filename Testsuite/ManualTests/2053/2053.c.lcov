@@ -1,0 +1,18 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized -ffast-math" } */
+    3|       |float a, b, c, d;
+    4|       |extern int printf(const char *, ...);
+    5|      1|int main(void) {
+    6|      1|  float e;
+    7|      1|  float f;
+    8|      1|  /* We should not be able to transform these into the same expression, and only
+    9|      1|   * have two additions.  */
+   10|      1|  e = a + b;
+   11|      1|  e = e + c;
+   12|      1|  f = c + a;
+   13|      1|  f = f + b;
+   14|      1|  printf("%f %f\n", e, f);
+   15|      1|}
+   16|       |
+   17|       |/* { dg-final { scan-tree-dump-times "\\\+" 2 "optimized"} } */
+

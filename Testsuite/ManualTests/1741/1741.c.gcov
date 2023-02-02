@@ -1,0 +1,30 @@
+        -:    0:Source:1741.c
+        -:    0:Graph:1741.gcno
+        -:    0:Data:1741.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static struct S {
+        -:    4:  int *p1;
+        -:    5:  int *p2;
+        -:    6:} s;
+        -:    7:typedef __UINTPTR_TYPE__ uintptr_t;
+        1:    8:int foo() {
+        1:    9:  int i = 1, j = 2;
+        -:   10:  struct S s;
+        -:   11:  int **p;
+        1:   12:  s.p1 = &i;
+        1:   13:  s.p2 = &j;
+        1:   14:  p = &s.p1;
+        1:   15:  uintptr_t pi = (uintptr_t)p;
+        1:   16:  pi = pi + sizeof(int *);
+        1:   17:  p = (int **)pi;
+        1:   18:  **p = 3;
+        1:   19:  return j;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  if (foo() != 3)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

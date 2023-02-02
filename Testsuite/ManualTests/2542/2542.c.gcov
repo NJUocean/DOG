@@ -1,0 +1,25 @@
+        -:    0:Source:2542.c
+        -:    0:Graph:2542.gcno
+        -:    0:Data:2542.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Wl,--defsym,test1=0" } */
+        -:    3:
+        -:    4:extern void test1(void) __attribute__((weak));
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) static void va_pseudo(int flag, ...) {
+        1:    7:  __asm("nop" :);
+        1:    8:}
+        -:    9:
+        1:   10:__attribute__((noinline, noclone)) static void func(void) {
+        1:   11:  va_pseudo(0, 0, 0, 0);
+        -:   12:
+        1:   13:  if (test1)
+    #####:   14:    __builtin_abort();
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  func();
+        1:   19:  __builtin_exit(0);
+        -:   20:  return 0;
+        -:   21:}

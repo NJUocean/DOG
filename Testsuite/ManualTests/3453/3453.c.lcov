@@ -1,0 +1,52 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |typedef unsigned long HARD_REG_SET[2];
+    4|       |HARD_REG_SET reg_class_contents[2];
+    5|       |
+    6|       |struct du_chain {
+    7|       |  struct du_chain *next_use;
+    8|       |  int cl;
+    9|       |};
+   10|       |
+   11|      1|void __attribute__((noinline)) merge_overlapping_regs(HARD_REG_SET *p) {
+   12|      1|  if ((*p)[0] != -1 || (*p)[1] != -1)
+   13|      0|    abort();
+   14|      1|}
+   15|       |
+   16|      1|void __attribute__((noinline)) regrename_optimize(struct du_chain *this) {
+   17|      1|  HARD_REG_SET this_unavailable;
+   18|      1|  unsigned long *scan_fp_;
+   19|      1|  int n_uses;
+   20|      1|  struct du_chain *last;
+   21|      1|
+   22|      1|  this_unavailable[0] = 0;
+   23|      1|  this_unavailable[1] = 0;
+   24|      1|
+   25|      1|  n_uses = 0;
+   26|      2|  for (last = this; last->next_use; last = last->next_use) {
+   27|      1|    scan_fp_ = reg_class_contents[last->cl];
+   28|      1|    n_uses++;
+   29|      1|    this_unavailable[0] |= ~scan_fp_[0];
+   30|      1|    this_unavailable[1] |= ~scan_fp_[1];
+   31|      1|  }
+   32|      1|  if (n_uses < 1)
+   33|      0|    return;
+   34|      1|
+   35|      1|  scan_fp_ = reg_class_contents[last->cl];
+   36|      1|  this_unavailable[0] |= ~scan_fp_[0];
+   37|      1|  this_unavailable[1] |= ~scan_fp_[1];
+   38|      1|
+   39|      1|  merge_overlapping_regs(&this_unavailable);
+   40|      1|}
+   41|       |
+   42|      1|int main() {
+   43|      1|  struct du_chain du1 = {0, 0};
+   44|      1|  struct du_chain du0 = {&du1, 1};
+   45|      1|  reg_class_contents[0][0] = -1;
+   46|      1|  reg_class_contents[0][1] = -1;
+   47|      1|  reg_class_contents[1][0] = 0;
+   48|      1|  reg_class_contents[1][1] = 0;
+   49|      1|  regrename_optimize(&du0);
+   50|      1|  return 0;
+   51|      1|}
+

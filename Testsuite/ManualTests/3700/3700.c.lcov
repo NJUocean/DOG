@@ -1,0 +1,13 @@
+    1|       |/* PR middle-end/46019 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  unsigned long long l = 0x40000000000ULL;
+    7|      1|  int n;
+    8|      9|  for (n = 0; n < 8; n++)
+    9|      8|    if (l / (0x200000000ULL << n) != (0x200 >> n))
+   10|      0|      abort();
+   11|      1|  return 0;
+   12|      1|}
+

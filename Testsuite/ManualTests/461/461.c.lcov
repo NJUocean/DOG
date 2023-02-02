@@ -1,0 +1,13 @@
+    1|       |static int f(int) __attribute__((const));
+    2|      1|int main() {
+    3|      1|  int f1, f2, x;
+    4|      1|  x = 1;
+    5|      1|  f1 = f(x);
+    6|      1|  x = 2;
+    7|      1|  f2 = f(x);
+    8|      1|  if (f1 != 1 || f2 != 2)
+    9|      0|    abort();
+   10|      1|  exit(0);
+   11|      1|}
+   12|      2|static int f(int x) { return x; }
+

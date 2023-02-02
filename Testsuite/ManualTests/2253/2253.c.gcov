@@ -1,0 +1,21 @@
+        -:    0:Source:2253.c
+        -:    0:Graph:2253.gcno
+        -:    0:Data:2253.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target untyped_assembly } */
+        -:    2:int g1, g2;
+        -:    3:
+        1:    4:void write_at(addr, off, val) int *addr;
+        -:    5:int off;
+        -:    6:int val;
+        -:    7:{
+        1:    8:  g2 = 1;
+        1:    9:  addr[off] = val;
+        1:   10:  g2++;
+        1:   11:}
+        -:   12:
+        1:   13:main() {
+        1:   14:  g2 = 12;
+        1:   15:  write_at(&g1, &g2 - &g1, 12345);
+        1:   16:  printf("%d\n", g2);
+        -:   17:}

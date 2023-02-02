@@ -1,0 +1,40 @@
+        -:    0:Source:899.c
+        -:    0:Graph:899.gcno
+        -:    0:Data:899.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/46921  lost side effect when struct initializer expr uses comma
+        -:    2:      operator  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "" } */
+        -:    6:
+        -:    7:extern int printf(const char *, ...);
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:typedef struct __uws_0 {
+        -:   11:} uw_unit;
+        -:   12:uw_unit uw_unit_v = {};
+        -:   13:
+        -:   14:struct __uws_1 {
+        -:   15:  struct __uws_0 __uwf_1;
+        -:   16:  struct __uws_1 *__uwf_2;
+        -:   17:};
+        -:   18:
+        -:   19:static int left_hand_eval = 0;
+        -:   20:
+        1:   21:static void foo(const char *s) {
+        1:   22:  ++left_hand_eval;
+        1:   23:  printf("%s", s);
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  struct __uws_1 tmp = {(foo("Inner\n"), uw_unit_v)};
+        -:   28:
+        1:   29:  printf("Outer\n");
+        -:   30:  /* left hand expression in comma operator initializer must always be
+        -:   31:     evaluated if there are side effects.  */
+        1:   32:  if (!left_hand_eval)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

@@ -1,0 +1,14 @@
+        -:    0:Source:3868.c
+        -:    0:Graph:3868.gcno
+        -:    0:Data:3868.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  unsigned long long xx;
+        1:    3:  unsigned long long *x = (unsigned long long *)&xx;
+        -:    4:
+        1:    5:  *x = -3;
+        1:    6:  *x = *x * *x;
+        1:    7:  if (*x != 9)
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

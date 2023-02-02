@@ -1,0 +1,22 @@
+        -:    0:Source:1887.c
+        -:    0:Graph:1887.gcno
+        -:    0:Data:1887.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-fnsplit" } */
+        -:    3:#include <stdio.h>
+        -:    4:int a[1000];
+        -:    5:
+     1000:    6:void t(int a) {
+     1000:    7:  if (a)
+    #####:    8:    printf("I Am Completely Operational,"),
+    #####:    9:        printf("And All My Circuits Are Functioning Perfectly\n");
+     1000:   10:}
+        1:   11:int main(void) {
+        -:   12:  int i;
+     1001:   13:  for (i = 0; i < 1000; i++)
+     1000:   14:    t(a[i]);
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:/* { dg-final { scan-tree-dump-times "Splitting function at:" 1 "fnsplit"} } */
+        -:   18:/* { dg-final { scan-tree-dump-times "Invalid sum" 0 "fnsplit"} } */

@@ -1,0 +1,18 @@
+        -:    0:Source:2435.c
+        -:    0:Graph:2435.gcno
+        -:    0:Data:2435.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  char c;
+        -:    3:  char d;
+        -:    4:  int nbits;
+        1:    5:  c = -1;
+        8:    6:  for (nbits = 1; nbits < 100; nbits++) {
+        8:    7:    d = (1 << nbits) - 1;
+        8:    8:    if (d == c)
+        1:    9:      break;
+        -:   10:  }
+        1:   11:  if (nbits == 100)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

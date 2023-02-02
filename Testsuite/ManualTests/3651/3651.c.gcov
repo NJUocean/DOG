@@ -1,0 +1,61 @@
+        -:    0:Source:3651.c
+        -:    0:Graph:3651.gcno
+        -:    0:Data:3651.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 41750 - IPA-SRA used to pass hash->sgot by value rather than by
+        -:    2:   reference.  */
+        -:    3:
+        -:    4:struct bfd_link_hash_table {
+        -:    5:  int hash;
+        -:    6:};
+        -:    7:
+        -:    8:struct foo_link_hash_table {
+        -:    9:  struct bfd_link_hash_table root;
+        -:   10:  int *dynobj;
+        -:   11:  int *sgot;
+        -:   12:};
+        -:   13:
+        -:   14:struct foo_link_info {
+        -:   15:  struct foo_link_hash_table *hash;
+        -:   16:};
+        -:   17:
+        -:   18:extern void abort(void);
+        -:   19:
+        -:   20:int __attribute__((noinline))
+        1:   21:foo_create_got_section(int *abfd, struct foo_link_info *info) {
+        1:   22:  info->hash->sgot = abfd;
+        1:   23:  return 1;
+        -:   24:}
+        -:   25:
+        1:   26:static int *get_got(int *abfd, struct foo_link_info *info,
+        -:   27:                    struct foo_link_hash_table *hash) {
+        -:   28:  int *got;
+        -:   29:  int *dynobj;
+        -:   30:
+        1:   31:  got = hash->sgot;
+        1:   32:  if (!got) {
+        1:   33:    dynobj = hash->dynobj;
+        1:   34:    if (!dynobj)
+        1:   35:      hash->dynobj = dynobj = abfd;
+        1:   36:    if (!foo_create_got_section(dynobj, info))
+    #####:   37:      return 0;
+        1:   38:    got = hash->sgot;
+        -:   39:  }
+        1:   40:  return got;
+        -:   41:}
+        -:   42:
+        -:   43:int *__attribute__((noinline, noclone))
+        1:   44:elf64_ia64_check_relocs(int *abfd, struct foo_link_info *info) {
+        1:   45:  return get_got(abfd, info, info->hash);
+        -:   46:}
+        -:   47:
+        -:   48:struct foo_link_info link_info;
+        -:   49:struct foo_link_hash_table hash;
+        -:   50:int abfd;
+        -:   51:
+        1:   52:int main() {
+        1:   53:  link_info.hash = &hash;
+        1:   54:  if (elf64_ia64_check_relocs(&abfd, &link_info) != &abfd)
+    #####:   55:    abort();
+        1:   56:  return 0;
+        -:   57:}

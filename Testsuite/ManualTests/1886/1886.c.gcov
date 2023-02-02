@@ -1,0 +1,18 @@
+        -:    0:Source:1886.c
+        -:    0:Graph:1886.gcno
+        -:    0:Data:1886.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: Kaveh R. Ghazi <ghazi@caip.rutgers.edu>
+        -:    2:
+        -:    3:   Boolean types were not accepted as array sizes nor as switch
+        -:    4:   quantities.  */
+        -:    5:
+        -:    6:#include <stdbool.h>
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  bool arr[(bool)1];
+        -:   10:
+        1:   11:  switch (arr[0]) { default:; }
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

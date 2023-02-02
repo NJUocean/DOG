@@ -1,0 +1,26 @@
+    1|       |/* PR rtl-optimization/51667 */
+    2|       |/* Testcase by Uros Bizjak <ubizjak@gmail.com> */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|void __attribute__((noinline, noclone)) bar(int a) {
+    7|      1|  if (a != -1)
+    8|      0|    abort();
+    9|      1|}
+   10|       |
+   11|      1|void __attribute__((noinline, noclone)) foo(short *a, int t) {
+   12|      1|  short r = *a;
+   13|      1|
+   14|      1|  if (t)
+   15|      0|    bar((unsigned short)r);
+   16|      1|  else
+   17|      1|    bar((signed short)r);
+   18|      1|}
+   19|       |
+   20|       |short v = -1;
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  foo(&v, 0);
+   24|      1|  return 0;
+   25|      1|}
+

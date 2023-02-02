@@ -1,0 +1,54 @@
+    1|       |/* Test C11 _Generic.  Valid uses.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-std=c11 -pedantic-errors" } */
+    4|       |
+    5|       |_Noreturn extern void exit(int);
+    6|       |_Noreturn extern void abort(void);
+    7|       |
+    8|     18|void check(int n) {
+    9|     18|  if (n)
+   10|      0|    abort();
+   11|     18|}
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  int n = 0;
+   15|      1|
+   16|      1|  check(_Generic(n++, int : 0));
+   17|      1|  /* _Generic should not evaluate its argument.  */
+   18|      1|  check(n);
+   19|      1|
+   20|      1|  check(_Generic(n, double : n++, default : 0));
+   21|      1|  check(n);
+   22|      1|
+   23|      1|  /* Qualifiers are removed for the purpose of type matching.  */
+   24|      1|  const int cn = 0;
+   25|      1|  check(_Generic(cn, int : 0, default : n++));
+   26|      1|  check(n);
+   27|      1|  check(_Generic((const int)n, int : 0, default : n++));
+   28|      1|  check(n);
+   29|      1|
+   30|      1|  /* Arrays decay to pointers.  */
+   31|      1|  int a[1];
+   32|      1|  const int ca[1];
+   33|      1|  check(_Generic(a, int * : 0, const int * : n++));
+   34|      1|  check(n);
+   35|      1|  check(_Generic(ca, const int * : 0, int * : n++));
+   36|      1|  check(n);
+   37|      1|
+   38|      1|  /* Functions decay to pointers.  */
+   39|      1|  extern void f(void);
+   40|      1|  check(_Generic(f, void (*)(void) : 0, default : n++));
+   41|      1|  check(n);
+   42|      1|
+   43|      1|  /* _Noreturn is not part of the function type.  */
+   44|      1|  check(_Generic(&abort, void (*)(void) : 0, default : n++));
+   45|      1|  check(n);
+   46|      1|
+   47|      1|  /* Integer promotions do not occur.  */
+   48|      1|  short s;
+   49|      1|  check(_Generic(s, short : 0, int : n++));
+   50|      1|  check(n);
+   51|      1|
+   52|      1|  exit(0);
+   53|      1|}
+

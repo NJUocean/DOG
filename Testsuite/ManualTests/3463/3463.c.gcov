@@ -1,0 +1,40 @@
+        -:    0:Source:3463.c
+        -:    0:Graph:3463.gcno
+        -:    0:Data:3463.gcda
+        -:    0:Runs:1
+        -:    1:struct A {
+        -:    2:  int i, j;
+        -:    3:  char pad[512];
+        -:    4:} a;
+        -:    5:
+        1:    6:int __attribute__((noinline)) foo(void) {
+        1:    7:  __builtin_memset(&a, 0x26, sizeof a);
+        1:    8:  return a.i;
+        -:    9:}
+        -:   10:
+        1:   11:void __attribute__((noinline)) bar(void) {
+        1:   12:  __builtin_memset(&a, 0x36, sizeof a);
+        1:   13:  a.i = 0x36363636;
+        1:   14:  a.j = 0x36373636;
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  int i;
+        -:   19:  if (sizeof(int) != 4 || __CHAR_BIT__ != 8)
+        -:   20:    return 0;
+        -:   21:
+        1:   22:  if (foo() != 0x26262626)
+    #####:   23:    __builtin_abort();
+      521:   24:  for (i = 0; i < sizeof a; i++)
+      520:   25:    if (((char *)&a)[i] != 0x26)
+    #####:   26:      __builtin_abort();
+        -:   27:
+        1:   28:  bar();
+        1:   29:  if (a.j != 0x36373636)
+    #####:   30:    __builtin_abort();
+        1:   31:  a.j = 0x36363636;
+      521:   32:  for (i = 0; i < sizeof a; i++)
+      520:   33:    if (((char *)&a)[i] != 0x36)
+    #####:   34:      __builtin_abort();
+        1:   35:  return 0;
+        -:   36:}

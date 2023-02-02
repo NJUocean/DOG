@@ -1,0 +1,51 @@
+    1|       |typedef __SIZE_TYPE__ size_t;
+    2|       |extern void *memcpy(void *__restrict, const void *__restrict, size_t);
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|       |typedef struct t {
+    7|       |  unsigned a : 16;
+    8|       |  unsigned b : 8;
+    9|       |  unsigned c : 8;
+   10|       |  long d[4];
+   11|       |} * T;
+   12|       |
+   13|       |typedef struct {
+   14|       |  long r[3];
+   15|       |} U;
+   16|       |
+   17|       |T bar(U, unsigned int);
+   18|       |
+   19|      1|T foo(T x) {
+   20|      1|  U d, u;
+   21|      1|
+   22|      1|  memcpy(&u, &x->d[1], sizeof u);
+   23|      1|  d = u;
+   24|      1|  return bar(d, x->b);
+   25|      1|}
+   26|       |
+   27|      1|T baz(T x) {
+   28|      1|  U d, u;
+   29|      1|
+   30|      1|  d.r[0] = 0x123456789;
+   31|      1|  d.r[1] = 0xfedcba987;
+   32|      1|  d.r[2] = 0xabcdef123;
+   33|      1|  memcpy(&u, &x->d[1], sizeof u);
+   34|      1|  d = u;
+   35|      1|  return bar(d, x->b);
+   36|      1|}
+   37|       |
+   38|      2|T bar(U d, unsigned int m) {
+   39|      2|  if (d.r[0] != 21 || d.r[1] != 22 || d.r[2] != 23)
+   40|      0|    abort();
+   41|      2|  return 0;
+   42|      2|}
+   43|       |
+   44|       |struct t t = {26, 0, 0, {0, 21, 22, 23}};
+   45|       |
+   46|      1|int main(void) {
+   47|      1|  baz(&t);
+   48|      1|  foo(&t);
+   49|      1|  exit(0);
+   50|      1|}
+

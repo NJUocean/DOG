@@ -1,0 +1,10 @@
+    1|      1|main() {
+    2|      1|  int j = 1081;
+    3|      1|  struct {
+    4|      1|    signed int m : 11;
+    5|      1|  } l;
+    6|      1|  if ((l.m = j) == j)
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

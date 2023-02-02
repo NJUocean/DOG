@@ -1,0 +1,47 @@
+        -:    0:Source:1227.c
+        -:    0:Graph:1227.gcno
+        -:    0:Data:1227.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2010  Free Software Foundation.
+        -:    2:
+        -:    3:   Verify that folding of built-in cproj is correctly performed by the
+        -:    4:   compiler.  With -ffinite-math-only all cproj calls should be
+        -:    5:   eliminated regardless of what the argument is, or what is known
+        -:    6:   about it.
+        -:    7:
+        -:    8:   Origin: Kaveh R. Ghazi,  April 9, 2010.  */
+        -:    9:
+        -:   10:/* { dg-do link } */
+        -:   11:/* { dg-options "-ffinite-math-only" } */
+        -:   12:
+        -:   13:/* All references to link_error should go away at compile-time.  The
+        -:   14:   argument is the __LINE__ number.  It appears in the tree dump file
+        -:   15:   and aids in debugging should any of the tests fail.  */
+        -:   16:extern void link_error(int);
+        -:   17:
+        -:   18:#define CPROJ(X) __builtin_cproj(X)
+        -:   19:#define CPROJF(X) __builtin_cprojf(X)
+        -:   20:#define CPROJL(X) __builtin_cprojl(X)
+        -:   21:
+        -:   22:/* Test that the supplied expressions eliminte the cproj call.  */
+        -:   23:#define TEST_EXPRS(LD_EXPR, D_EXPR, F_EXPR)                                    \
+        -:   24:  do {                                                                         \
+        -:   25:    if (CPROJF(F_EXPR) != (F_EXPR))                                            \
+        -:   26:      link_error(__LINE__);                                                    \
+        -:   27:    if (CPROJ(D_EXPR) != (D_EXPR))                                             \
+        -:   28:      link_error(__LINE__);                                                    \
+        -:   29:    if (CPROJL(LD_EXPR) != (LD_EXPR))                                          \
+        -:   30:      link_error(__LINE__);                                                    \
+        -:   31:  } while (0)
+        -:   32:
+    #####:   33:void foo(_Complex long double cld, _Complex double cd, _Complex float cf) {
+        -:   34:#ifdef __OPTIMIZE__
+        -:   35:  TEST_EXPRS(cld, cd, cf);
+        -:   36:  TEST_EXPRS(cld * 2, cd * 2, cf * 2);
+        -:   37:  TEST_EXPRS(cld * cld, cd * cd, cf * cf);
+        -:   38:#endif
+        -:   39:
+    #####:   40:  return;
+        -:   41:}
+        -:   42:
+        1:   43:int main(void) { return 0; }

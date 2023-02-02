@@ -1,0 +1,28 @@
+        -:    0:Source:979.c
+        -:    0:Graph:979.gcno
+        -:    0:Data:979.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=float-divide-by-zero" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  volatile float a = 1.3f;
+        1:    6:  volatile double b = 0.0;
+        1:    7:  volatile int c = 4;
+        -:    8:  volatile float res;
+        -:    9:
+        1:   10:  res = a / b;
+        1:   11:  res = a / 0.0;
+        1:   12:  res = 2.7f / b;
+        1:   13:  res = 3.6 / (b = 0.0, b);
+        1:   14:  res = c / b;
+        1:   15:  res = b / c;
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-output "division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   21:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   22:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   23:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   24:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*" } */

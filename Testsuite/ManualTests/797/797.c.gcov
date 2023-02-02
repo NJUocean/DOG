@@ -1,0 +1,24 @@
+        -:    0:Source:797.c
+        -:    0:Graph:797.gcno
+        -:    0:Data:797.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:int table[32][256];
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  int i, j;
+        -:   11:
+       33:   12:  for (i = 0; i < 32; i++)
+     8224:   13:    for (j = 0; j < 256; j++)
+     8192:   14:      table[i][j] = ((signed char)j) * i;
+        -:   15:
+        1:   16:  if (table[9][132] != -1116)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

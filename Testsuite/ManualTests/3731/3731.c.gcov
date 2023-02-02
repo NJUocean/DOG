@@ -1,0 +1,17 @@
+        -:    0:Source:3731.c
+        -:    0:Graph:3731.gcno
+        -:    0:Data:3731.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/49186 */
+        -:    2:extern void abort(void);
+        -:    3:
+        1:    4:int main() {
+        -:    5:  int x;
+        1:    6:  unsigned long long uv = 0x1000000001ULL;
+        -:    7:
+       1*:    8:  x = (uv < 0x80) ? 1 : ((uv < 0x800) ? 2 : 3);
+        1:    9:  if (x != 3)
+    #####:   10:    abort();
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

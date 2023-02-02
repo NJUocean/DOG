@@ -1,0 +1,28 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-Os -mno-unaligned-access" } */
+    3|       |/* { dg-final { scan-assembler "ldrb" } } */
+    4|       |/* { dg-final { scan-assembler "strb" } } */
+    5|       |
+    6|       |struct s {
+    7|       |  char u;
+    8|       |  long long v[2];
+    9|       |} __attribute__((packed, aligned(1)));
+   10|       |
+   11|       |__attribute__((noinline, noclone)) long long foo(struct s *x, int y,
+   12|      3|                                                 long long z) {
+   13|      3|  long long a = x->v[y];
+   14|      3|  x->v[y] = z;
+   15|      3|  return a;
+   16|      3|}
+   17|       |
+   18|       |struct s a = {0, {0, 0}};
+   19|      1|int main() {
+   20|      1|  if (foo(&a, 0, 1) != 0)
+   21|      0|    __builtin_abort();
+   22|      1|  if (foo(&a, 0, 2) != 1)
+   23|      0|    __builtin_abort();
+   24|      1|  if (foo(&a, 1, 1) != 0)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

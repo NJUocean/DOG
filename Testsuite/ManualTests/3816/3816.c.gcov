@@ -1,0 +1,26 @@
+        -:    0:Source:3816.c
+        -:    0:Graph:3816.gcno
+        -:    0:Data:3816.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/58726 */
+        -:    2:
+        -:    3:int a, c;
+        -:    4:union {
+        -:    5:  int f1;
+        -:    6:  int f2 : 1;
+        -:    7:} b;
+        -:    8:
+       1*:    9:short foo(short p) { return p < 0 ? p : a; }
+        -:   10:
+        1:   11:int main() {
+        -:   12:  if (sizeof(short) * __CHAR_BIT__ != 16 || sizeof(int) * __CHAR_BIT__ != 32)
+        -:   13:    return 0;
+        1:   14:  b.f1 = 56374;
+        -:   15:  unsigned short d;
+        1:   16:  int e = b.f2;
+       1*:   17:  d = e == 0 ? b.f1 : 0;
+        1:   18:  c = foo(d);
+        1:   19:  if (c != (short)56374)
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,24 @@
+        -:    0:Source:3246.c
+        -:    0:Graph:3246.gcno
+        -:    0:Data:3246.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct delay_block {
+        -:    4:  struct delay_block *succ;
+        -:    5:};
+        -:    6:
+        -:    7:static struct delay_block Timer_Queue;
+        -:    8:
+        1:    9:struct delay_block *time_enqueue(struct delay_block *d) {
+        1:   10:  struct delay_block *q = Timer_Queue.succ;
+        1:   11:  d->succ = (void *)0;
+        1:   12:  return Timer_Queue.succ;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  Timer_Queue.succ = &Timer_Queue;
+        1:   17:  if (time_enqueue(&Timer_Queue) != (void *)0)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,44 @@
+        -:    0:Source:2888.c
+        -:    0:Graph:2888.gcno
+        -:    0:Data:2888.gcda
+        -:    0:Runs:1
+        -:    1:/* Test LOOP generation for do while.
+        -:    2:   Ensure the post-condition "do while" is correctly translated
+        -:    3:   to a pre-condition PRU LOOP instruction.  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:/* { dg-options "-O1 -mloop" } */
+        -:    7:
+        -:    8:/* -O1 in the options is significant.  Without it do-loop will not be
+        -:    9:   run.  */
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        -:   13:volatile unsigned int int_12345 = 12345;
+        -:   14:volatile unsigned int int_0 = 0;
+        -:   15:volatile unsigned int int_1 = 1;
+        -:   16:
+        3:   17:unsigned int test_loop(unsigned int n) {
+        3:   18:  unsigned int i = 0;
+        3:   19:  volatile unsigned int s = 0;
+        -:   20:
+        3:   21:  if (n >= 0x7fff)
+    #####:   22:    return 0;
+        -:   23:
+        -:   24:  do {
+    12347:   25:    s++;
+    12347:   26:    i++;
+    12347:   27:  } while (i < n);
+        3:   28:  return s;
+        -:   29:}
+        -:   30:
+        1:   31:int main(int argc, char **argv) {
+        1:   32:  if (test_loop(int_0) != 1)
+    #####:   33:    abort();
+        1:   34:  if (test_loop(int_1) != 1)
+    #####:   35:    abort();
+        1:   36:  if (test_loop(int_12345) != 12345)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}

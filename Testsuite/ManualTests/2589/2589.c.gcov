@@ -1,0 +1,9 @@
+        -:    0:Source:2589.c
+        -:    0:Graph:2589.gcno
+        -:    0:Data:2589.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -msse2 -march=k8" } */
+        -:    3:/* { dg-final { scan-assembler-not "cvtss2sd" } } */
+        -:    4:float a, b;
+        1:    5:int main() { return a < 0.0; }

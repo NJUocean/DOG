@@ -1,0 +1,19 @@
+    1|      1|unsigned int buggy(unsigned int *param) {
+    2|      1|  unsigned int accu, zero = 0, borrow;
+    3|      1|  accu = -*param;
+    4|      1|  borrow = -(accu > zero);
+    5|      1|  *param += accu;
+    6|      1|  return borrow;
+    7|      1|}
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  unsigned int param = 1;
+   11|      1|  unsigned int borrow = buggy(&param);
+   12|      1|
+   13|      1|  if (param != 0)
+   14|      0|    abort();
+   15|      1|  if (borrow + 1 != 0)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

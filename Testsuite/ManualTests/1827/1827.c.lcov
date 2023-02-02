@@ -1,0 +1,26 @@
+    1|       |/* PR target/59003 */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-options "-O2 -mtune=amdfam10" { target i?86-*-* x86_64-*-* } } */
+    4|       |/* { dg-options "-O2 -fno-common" { target hppa*-*-hpux* } } */
+    5|       |
+    6|   100k|__attribute__((noinline, noclone)) void *foo(void *p, unsigned int q) {
+    7|   100k|  return __builtin_memset(p, 0, q * 4UL);
+    8|   100k|}
+    9|       |
+   10|       |char buf[128] __attribute__((aligned(32)));
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|   100k|  for (i = 0; i < 100000; i++)
+   15|   100k|    foo(buf + 4, 1 + (i & 1));
+   16|    129|  for (i = 0; i < 128; i++) {
+   17|    128|    buf[i] = 'X';
+   18|    128|    asm volatile("" : : : "memory");
+   19|    128|  }
+   20|      1|  foo(buf + 32, 7);
+   21|    129|  for (i = 0; i < 128; i++)
+   22|    128|    if (buf[i] != ((i < 32 || i >= 32 + 28) ? 'X' : 0))
+   23|      0|      __builtin_abort();
+   24|      1|  return 0;
+   25|      1|}
+

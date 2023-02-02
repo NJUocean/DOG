@@ -1,0 +1,21 @@
+        -:    0:Source:4135.c
+        -:    0:Graph:4135.gcno
+        -:    0:Data:4135.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:static int f(char *x) { return __builtin_strlen(x); }
+        -:    5:
+        1:    6:int foo() { return f((char *)&L"abcdef"[0]); }
+        -:    7:
+        1:    8:int main() {
+        -:    9:#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   10:  if (foo() != 0)
+        -:   11:    abort();
+        -:   12:#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   13:  if (foo() != 1)
+    #####:   14:    abort();
+        -:   15:#endif
+        1:   16:  exit(0);
+        -:   17:}

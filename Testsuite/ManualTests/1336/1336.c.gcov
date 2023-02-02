@@ -1,0 +1,27 @@
+        -:    0:Source:1336.c
+        -:    0:Graph:1336.gcno
+        -:    0:Data:1336.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fsanitize=unreachable" } */
+        -:    3:
+        -:    4:int a, b, c, d;
+        -:    5:
+        1:    6:void fn1() {
+        3:    7:  for (c = 0; c < 2; c++) {
+        2:    8:    int e, f = 1;
+        6:    9:    for (e = 0; e < 2; e++) {
+        4:   10:      if (!f)
+    #####:   11:        return;
+       4*:   12:      for (d = 0; d; d++)
+    #####:   13:        f = b;
+        -:   14:    }
+        -:   15:  }
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        2:   19:  for (; a < 1; a++) {
+        1:   20:    fn1();
+        -:   21:  }
+        1:   22:  __builtin_exit(0);
+        -:   23:}

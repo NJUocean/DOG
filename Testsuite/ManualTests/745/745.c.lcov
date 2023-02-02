@@ -1,0 +1,7 @@
+    1|       |/* Check for no "noreturn" warning in main. */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O2 -Wmissing-noreturn -fhosted" } */
+    4|       |extern void exit(int) __attribute__((__noreturn__));
+    5|       |
+    6|      1|int main(void) { exit(0); }
+

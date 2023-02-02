@@ -1,0 +1,23 @@
+        -:    0:Source:2181.c
+        -:    0:Graph:2181.gcno
+        -:    0:Data:2181.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        -:    5:unsigned short in[40 + 128];
+        1:    6:int main(void) {
+        1:    7:  int i = 0, j = 0;
+        -:    8:  unsigned int diff;
+        1:    9:  unsigned int s = 0, sum = 0;
+       41:   10:  for (i = 0; i < 40; i++) {
+       40:   11:    diff = 0;
+      680:   12:    for (j = 0; j < 128; j += 8)
+      640:   13:      diff += in[j + i];
+       40:   14:    s += ((unsigned short)diff >> 3);
+        -:   15:  }
+        1:   16:  if (s != sum)
+    #####:   17:    return -1;
+        1:   18:  return 0;
+        -:   19:}

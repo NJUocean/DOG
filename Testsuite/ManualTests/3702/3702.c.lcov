@@ -1,0 +1,10 @@
+    1|       |f(cp, end) char *cp;
+    2|       |char *end;
+    3|      1|{ return (cp < end); }
+    4|       |
+    5|      1|main() {
+    6|      1|  if (!f((char *)0, (char *)1))
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

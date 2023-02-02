@@ -1,0 +1,22 @@
+        -:    0:Source:1077.c
+        -:    0:Graph:1077.gcno
+        -:    0:Data:1077.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/89350 - Wrong -Wstringop-overflow warning
+        -:    2:   on a variable offset from the end of an array
+        -:    3:   { dg-do compile }
+        -:    4:   { dg-options "-O2 -Wall" } */
+        -:    5:
+        -:    6:char buf[128];
+        -:    7:char *src = "HCSparta";
+        -:    8:
+        1:    9:int main(int argc, char **argv) {
+        1:   10:  char *dst = buf + sizeof(buf);
+        -:   11:
+        1:   12:  if (argc) {
+        1:   13:    dst -= argc;
+        1:   14:    __builtin_memcpy(
+        -:   15:        dst, src,
+        -:   16:        argc + 0); /* { dg-bogus "\\\[-Warray-bounds|-Wstringop-overflow" } */
+        -:   17:  }
+        -:   18:}

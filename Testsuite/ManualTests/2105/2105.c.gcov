@@ -1,0 +1,19 @@
+        -:    0:Source:2105.c
+        -:    0:Graph:2105.gcno
+        -:    0:Data:2105.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-optimized -fwhole-program" } */
+        -:    2:int b[100];
+        -:    3:void abort(void);
+        -:    4:
+        1:    5:void large_function() {
+        -:    6:  int i;
+      100:    7:  for (i = 0; i < 99; i++)
+       99:    8:    if (b[i] / (b[i + 1] + 1))
+    #####:    9:      abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main() { large_function(); }
+        -:   13:
+        -:   14:/* Function should be inlined as called once.  */
+        -:   15:/* { dg-final { scan-tree-dump-not "large_function" "optimized"} } */

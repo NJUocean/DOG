@@ -1,0 +1,16 @@
+    1|      2|static int f(int a) {
+    2|      2|  if (a == 0)
+    3|      1|    return 0;
+    4|      1|  do
+    5|      1|    if (a & 128)
+    6|      0|      return 1;
+    7|      1|  while (f(0));
+    8|      1|  return 0;
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  if (f(~128))
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

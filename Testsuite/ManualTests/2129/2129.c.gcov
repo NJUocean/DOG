@@ -1,0 +1,28 @@
+        -:    0:Source:2129.c
+        -:    0:Graph:2129.gcno
+        -:    0:Data:2129.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99 -g" } */
+        -:    3:void abort(void);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int À = 1;
+        1:    7:  int Á = 2;
+        1:    8:  int Â = 3;
+        1:    9:  int whÿ = 4;
+        1:   10:  int aÄbсδe = 5;
+        -:   11:
+        1:   12:  if (À != 1)
+    #####:   13:    abort();
+        1:   14:  if (Á != 2)
+    #####:   15:    abort();
+        1:   16:  if (Â != 3)
+    #####:   17:    abort();
+        1:   18:  if (whÿ != 4)
+    #####:   19:    abort();
+        1:   20:  if (aÄbсδe != 5)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

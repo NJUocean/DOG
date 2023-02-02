@@ -1,0 +1,9 @@
+        -:    0:Source:687.c
+        -:    0:Graph:687.gcno
+        -:    0:Data:687.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:
+    #####:    3:void baz(void) { __builtin_abort(); }
+    #####:    4:void foo(void) { baz(); }
+        1:    5:int main() { return 0; }

@@ -1,0 +1,17 @@
+        -:    0:Source:2107.c
+        -:    0:Graph:2107.gcno
+        -:    0:Data:2107.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/21536 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -Wuninitialized" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  int a = 1;
+        1:   10:  if (sizeof(*(++a, (char(*)[a])0)) != 2)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

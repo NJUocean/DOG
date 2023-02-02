@@ -1,0 +1,38 @@
+        -:    0:Source:1673.c
+        -:    0:Graph:1673.gcno
+        -:    0:Data:1673.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/81814 */
+        -:    2:/* { dg-do run { target int32plus } } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int i = 0x01000000;
+        -:    6:  int a;
+        -:    7:
+       1*:    8:  a = ((signed char)i) != 0 ? 0 : (unsigned long long int)i;
+        1:    9:  if (a != 0x01000000)
+    #####:   10:    __builtin_abort();
+       1*:   11:  a = ((signed short int)i) != 0 ? 0 : (unsigned long long int)i;
+        1:   12:  if (a != 0x01000000)
+    #####:   13:    __builtin_abort();
+       1*:   14:  a = ((unsigned short int)i) != 0 ? 0 : (unsigned long long int)i;
+        1:   15:  if (a != 0x01000000)
+    #####:   16:    __builtin_abort();
+       1*:   17:  a = ((unsigned char)i) != 0 ? 0 : (unsigned long long int)i;
+        1:   18:  if (a != 0x01000000)
+    #####:   19:    __builtin_abort();
+       1*:   20:  a = ((signed char)i) == 0 ? (unsigned long long int)i : 0;
+        1:   21:  if (a != 0x01000000)
+    #####:   22:    __builtin_abort();
+       1*:   23:  a = ((signed short int)i) == 0 ? (unsigned long long int)i : 0;
+        1:   24:  if (a != 0x01000000)
+    #####:   25:    __builtin_abort();
+       1*:   26:  a = ((unsigned short int)i) == 0 ? (unsigned long long int)i : 0;
+        1:   27:  if (a != 0x01000000)
+    #####:   28:    __builtin_abort();
+       1*:   29:  a = ((unsigned char)i) == 0 ? (unsigned long long int)i : 0;
+        1:   30:  if (a != 0x01000000)
+    #####:   31:    __builtin_abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

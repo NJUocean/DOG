@@ -1,0 +1,45 @@
+        -:    0:Source:2355.c
+        -:    0:Graph:2355.gcno
+        -:    0:Data:2355.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:struct s {
+        -:    9:  long x;
+        -:   10:  long y;
+        -:   11:};
+        -:   12:
+        -:   13:/* This still has size 16, so is still passed by value.  */
+        -:   14:typedef __attribute__((__aligned__(32))) struct s overaligned;
+        -:   15:
+        -:   16:/* A few structs, at 32-byte-aligned memory locations.  */
+        -:   17:overaligned a = {2, 3};
+        -:   18:overaligned b = {5, 8};
+        -:   19:overaligned c = {13, 21};
+        -:   20:
+        1:   21:void test_pass_by_value(int x0, overaligned x1, int x3, int x4, overaligned x5,
+        -:   22:                        int x7, int stack, overaligned stack8) {
+        1:   23:  if (x0 != 7 || x3 != 9 || x4 != 11 || x7 != 15 || stack != 10)
+    #####:   24:    abort();
+        1:   25:  if (memcmp((void *)&x1, (void *)&a, sizeof(overaligned)))
+    #####:   26:    abort();
+        1:   27:  if (memcmp((void *)&x5, (void *)&b, sizeof(overaligned)))
+    #####:   28:    abort();
+        1:   29:  if (memcmp((void *)&stack8, (void *)&c, sizeof(overaligned)))
+    #####:   30:    abort();
+        1:   31:  long addr = ((long)&stack8) & 15;
+        1:   32:  if (addr != 0) {
+    #####:   33:    __builtin_printf("Alignment was %d\n", addr);
+    #####:   34:    abort();
+        -:   35:  }
+        1:   36:}
+        -:   37:
+        1:   38:int main(int argc, char **argv) {
+        1:   39:  test_pass_by_value(7, a, 9, 11, b, 15, 10, c);
+        1:   40:  return 0;
+        -:   41:}

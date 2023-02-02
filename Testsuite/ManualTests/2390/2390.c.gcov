@@ -1,0 +1,12 @@
+        -:    0:Source:2390.c
+        -:    0:Graph:2390.gcno
+        -:    0:Data:2390.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-march=armv8.2-a+fp16+fp" } */
+        -:    3:
+        1:    4:int main() { return 0; }
+        -:    5:
+        -:    6:/* { dg-final { scan-assembler {\.arch armv8\.2-a\+crc\+fp16} } } */
+        -:    7:
+        -:    8:/* FP is part of FP16, don't emit it.  */

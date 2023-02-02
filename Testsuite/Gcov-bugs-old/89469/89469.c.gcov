@@ -1,0 +1,24 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        1:    1:int main()
+        -:    2:{
+        1:    3:  int start = 0, mid = 3, limit = 3, lastMid = 6, r = 0;
+        -:    4:  for (;;) {
+        1:    5:      mid = (start + limit) / 2;
+        2:    6:      if (lastMid == mid) {
+    #####:    7:        break;
+        -:    8:      }
+        -:    9:
+        2:   10:      r = mid == 1 ? 1 : 0;
+        -:   11:
+        2:   12:      if (r > 0) {
+        1:   13:        start = mid;
+        -:   14:      } else {
+        1:   15:        return 1;
+        -:   16:      }
+        -:   17:  }
+    #####:   18:  return 0;
+        -:   19:}

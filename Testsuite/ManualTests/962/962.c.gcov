@@ -1,0 +1,28 @@
+        -:    0:Source:962.c
+        -:    0:Graph:962.gcno
+        -:    0:Data:962.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-require-effective-target label_values } */
+        -:    4:
+        -:    5:void *a;
+        -:    6:int b, c, d;
+        -:    7:
+    #####:    8:void bar() {
+    #####:    9:  switch (c) {
+    #####:   10:  case 0:
+    #####:   11:  lab:
+    #####:   12:    __asm__("");
+    #####:   13:    return;
+    #####:   14:  default:
+    #####:   15:    break;
+        -:   16:  }
+    #####:   17:  b = 0;
+    #####:   18:  d = 0;
+    #####:   19:  a = &&lab;
+        -:   20:}
+        -:   21:
+    #####:   22:void foo() { bar(); }
+        -:   23:
+        1:   24:int main() {}

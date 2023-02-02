@@ -1,0 +1,80 @@
+        -:    0:Source:4115.c
+        -:    0:Graph:4115.gcno
+        -:    0:Data:4115.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+      306:    6:void bar(int n, int c) {
+        -:    7:  static int lastn = -1, lastc = -1;
+        -:    8:
+      306:    9:  if (lastn != n) {
+       20:   10:    if (lastc != lastn)
+    #####:   11:      abort();
+       20:   12:    lastc = 0;
+       20:   13:    lastn = n;
+        -:   14:  }
+        -:   15:
+      306:   16:  if (c != (char)(lastc ^ (n << 3)))
+    #####:   17:    abort();
+      306:   18:  lastc++;
+      306:   19:}
+        -:   20:
+        -:   21:#define D(N)                                                                   \
+        -:   22:  typedef struct {                                                             \
+        -:   23:    char x[N];                                                                 \
+        -:   24:  } A##N;
+        -:   25:D(0)
+        -:   26:D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11) D(12) D(13) D(14) D(15)
+        -:   27:    D(16) D(31) D(32) D(35) D(72)
+        -:   28:#undef D
+        -:   29:
+        1:   30:        void foo(int size, ...) {
+        -:   31:#define D(N) A##N a##N;
+        -:   32:  D(0)
+        -:   33:  D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11) D(12) D(13) D(14)
+        -:   34:      D(15) D(16) D(31) D(32) D(35) D(72)
+        -:   35:#undef D
+        -:   36:          va_list ap;
+        -:   37:  int i;
+        -:   38:
+        1:   39:  if (size != 21)
+    #####:   40:    abort();
+        1:   41:  va_start(ap, size);
+        -:   42:#define D(N)                                                                   \
+        -:   43:  a##N = va_arg(ap, typeof(a##N));                                             \
+        -:   44:  for (i = 0; i < N; i++)                                                      \
+        -:   45:    bar(N, a##N.x[i]);
+       1*:   46:  D(0)
+      106:   47:  D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11) D(12) D(13) D(14)
+      202:   48:      D(15) D(16) D(31) D(32) D(35) D(72)
+        -:   49:#undef D
+        1:   50:          va_end(ap);
+        1:   51:}
+        -:   52:
+        1:   53:int main(void) {
+        -:   54:#define D(N) A##N a##N;
+        -:   55:  D(0)
+        -:   56:  D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11) D(12) D(13) D(14)
+        -:   57:      D(15) D(16) D(31) D(32) D(35) D(72)
+        -:   58:#undef D
+        -:   59:          int i;
+        -:   60:
+        -:   61:#define D(N)                                                                   \
+        -:   62:  for (i = 0; i < N; i++)                                                      \
+        -:   63:    a##N.x[i] = i ^ (N << 3);
+       1*:   64:  D(0)
+      106:   65:  D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11) D(12) D(13) D(14)
+      202:   66:      D(15) D(16) D(31) D(32) D(35) D(72)
+        -:   67:#undef D
+        -:   68:
+        1:   69:          foo(21
+        -:   70:#define D(N) , a##N
+        -:   71:              D(0) D(1) D(2) D(3) D(4) D(5) D(6) D(7) D(8) D(9) D(10) D(11)
+        -:   72:                  D(12) D(13) D(14) D(15) D(16) D(31) D(32) D(35) D(72)
+        -:   73:#undef D
+        -:   74:          );
+        1:   75:  exit(0);
+        -:   76:}

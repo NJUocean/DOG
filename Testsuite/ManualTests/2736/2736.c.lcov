@@ -1,0 +1,27 @@
+    1|       |/* PR target/85593 */
+    2|       |/* { dg-do run { target { { i?86-*-linux* x86_64-*-linux* } && lp64 } } } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|      1|__attribute__((naked)) void bar(void) {
+    6|      1|  asm("xorl %eax, %eax\n\t"
+    7|      1|      "xorl %edx, %edx\n\t"
+    8|      1|      "xorl %ecx, %ecx\n\t"
+    9|      1|      "xorl %esi, %esi\n\t"
+   10|      1|      "xorl %edi, %edi\n\t"
+   11|      1|      "xorl %r8d, %r8d\n\t"
+   12|      1|      "xorl %r9d, %r9d\n\t"
+   13|      1|      "xorl %r10d, %r10d\n\t"
+   14|      1|      "xorl %r11d, %r11d\n\t"
+   15|      1|      "ret");
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  int a = 42;
+   20|      1|  asm("" : "+r"(a));
+   21|      1|  bar();
+   22|      1|  asm("" : "+r"(a));
+   23|      1|  if (a != 42)
+   24|      0|    __builtin_abort();
+   25|      1|  return 0;
+   26|      1|}
+

@@ -1,0 +1,27 @@
+        -:    0:Source:1262.c
+        -:    0:Graph:1262.gcno
+        -:    0:Data:1262.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-pcc-struct-return" { target i?86-*-* x86_64-*-* } } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  int i;
+        -:    8:} A;
+        -:    9:
+        1:   10:A __attribute__((noinline)) foo(void) {
+        1:   11:  A a = {-1};
+        1:   12:  return a;
+        -:   13:}
+        -:   14:
+        1:   15:void __attribute__((noinline)) bar(A *p) { *p = foo(); }
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  A a;
+        1:   19:  bar(&a);
+        1:   20:  if (a.i != -1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

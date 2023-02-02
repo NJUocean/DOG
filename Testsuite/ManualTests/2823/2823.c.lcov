@@ -1,0 +1,13 @@
+    1|       |/* { dg-do link } */
+    2|       |/* { dg-options "-mhwmult=f5series" } */
+    3|       |
+    4|       |/* This program used to result in a multiple definition error:
+    5|       |
+    6|       |libmul_f5.a(lib2hw_mul_f5.o): In function `__mulhi2_f5':
+    7|       |(.text.__mulhi2_f5+0x0): multiple definition of `__mspabi_mpyi'
+    8|       |libgcc.a(mpy.o):mpy.c:(.text.__mulhi3+0x0): first defined here */
+    9|       |
+   10|       |#include <stdio.h>
+   11|       |
+   12|      1|int main(void) { printf("%d", 430); }
+

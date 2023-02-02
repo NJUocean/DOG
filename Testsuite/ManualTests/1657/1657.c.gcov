@@ -1,0 +1,25 @@
+        -:    0:Source:1657.c
+        -:    0:Graph:1657.gcno
+        -:    0:Data:1657.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        4:    3:int __attribute__((pure, noinline, noclone)) foo(int *p) { return *p * 2; }
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int k = 0;
+        -:    7:  int i;
+        -:    8:#pragma GCC ivdep
+        2:    9:  for (k = 0; k < 9;) {
+        1:   10:    i = 0;
+        -:   11:    while (1) {
+        4:   12:      k += foo(&i);
+        4:   13:      if (k > 7)
+        1:   14:        break;
+        3:   15:      i++;
+        -:   16:    }
+        -:   17:  }
+        1:   18:  if (k != 12)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

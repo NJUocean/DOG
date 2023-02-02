@@ -1,0 +1,32 @@
+        -:    0:Source:617.c
+        -:    0:Graph:617.gcno
+        -:    0:Data:617.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:/* { dg-add-options bind_pic_locally } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int a, b, c;
+        -:    7:};
+        -:    8:
+        -:    9:volatile int g;
+        -:   10:
+        1:   11:static void __attribute__((noinline, noclone)) bar(struct S **p) { g = 5; };
+        -:   12:
+        1:   13:static void __attribute__((noinline)) foo(struct S *p) {
+        1:   14:  int i = p->a;
+        1:   15:  if (i != 1)
+    #####:   16:    __builtin_abort();
+        1:   17:  bar(&p);
+        1:   18:}
+        -:   19:
+        1:   20:int main(int argc, char *argv[]) {
+        -:   21:  struct S s;
+        1:   22:  s.a = 1;
+        1:   23:  s.b = 64;
+        1:   24:  s.c = 32;
+        1:   25:  foo(&s);
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}

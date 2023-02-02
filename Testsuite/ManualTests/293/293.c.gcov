@@ -1,0 +1,38 @@
+        -:    0:Source:293.c
+        -:    0:Graph:293.gcno
+        -:    0:Data:293.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that the concrete instance DW_TAG_lexical_block has an abstract
+        -:    2:   origin.  Verify that the inline instance has the abstract instance as
+        -:    3:   abstract origin rather than the concrete one.  */
+        -:    4:/* { dg-options "-O -gdwarf -dA" } */
+        -:    5:/* { dg-do compile } */
+        -:    6:/* { dg-final { scan-assembler-times "DW_TAG_inlined_subroutine" 2 } } */
+        -:    7:/* { dg-final { scan-assembler-times
+        -:    8: * "DW_TAG_lexical_block\\)\[^#/!@;\\|\]*\[#/!@;\\|\]+ +DW_AT_abstract_origin" 2
+        -:    9: * } } */
+        -:   10:/* { dg-final { scan-assembler-times
+        -:   11: * "DW_TAG_lexical_block\\)\[^#/!@;\\|\]*\[#/!@;\\|\]+ +\[^#/!@\\|\]*\\(DIE
+        -:   12: * \\(0x\[0-9a-f\]*\\) DW_TAG_variable" 1 { xfail hppa*-*-* } } } */
+        -:   13:/* We do not know which is output first so look for both invalid abstract
+        -:   14:   origins on the lexical blocks (knowing that the abstract instance has
+        -:   15:   no attribute following the DW_TAG_lexical_block.  */
+        -:   16:/* { dg-final { scan-assembler-not "\\(DIE \\(0x(\[0-9a-f\]*)\\)
+        -:   17: * DW_TAG_lexical_block\\)\[^#/!@;\\|\]*\[#/!@;\\|\]+
+        -:   18: * +\[^(\].*DW_TAG_lexical_block\\)\[^#/!@;\\|x\]*x\\1\[^#/!@;\\|\]*\[#/!@;\\|\]
+        -:   19: * +DW_AT_abstract_origin" { xfail { *-*-solaris2.* && { ! gas } } } } } */
+        -:   20:/* { dg-final { scan-assembler-not
+        -:   21: * "DW_TAG_lexical_block\\)\[^#/!@;\\|x\]*x(\[0-9a-f\]*)\[^#/!@;\\|\]*\[#/!@;\\|\]+
+        -:   22: * +DW_AT_abstract_origin.*\\(DIE \\(0x\\1\\)
+        -:   23: * DW_TAG_lexical_block\\)\[^#/!@;\\|\]*\[#/!@;\\|\]+ +DW_AT" } } */
+        -:   24:
+        1:   25:int foo(int i) {
+        -:   26:  {
+        1:   27:    volatile int j = i + 3;
+        1:   28:    return j - 2;
+        -:   29:  }
+        -:   30:}
+        1:   31:int main() {
+        1:   32:  volatile int z = foo(-1);
+        1:   33:  return z;
+        -:   34:}

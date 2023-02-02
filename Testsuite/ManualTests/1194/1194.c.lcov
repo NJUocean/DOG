@@ -1,0 +1,24 @@
+    1|       |/* { dg-do link } */
+    2|       |/* { dg-require-alias "" } */
+    3|       |/* { dg-require-visibility "" } */
+    4|       |/* { dg-require-effective-target tls_runtime } */
+    5|       |/* { dg-add-options tls } */
+    6|       |/* Test that encode_section_info handles the change from externally
+    7|       |   defined to locally defined (via hidden).   Extracted from glibc.  */
+    8|       |
+    9|       |struct __res_state {
+   10|       |  char x[123];
+   11|       |};
+   12|       |
+   13|       |extern __thread struct __res_state bar
+   14|       |    __attribute__((tls_model("initial-exec")));
+   15|       |
+   16|      1|int main() {
+   17|      1|  bar.x[0] = 0;
+   18|      1|  return 0;
+   19|      1|}
+   20|       |
+   21|       |__thread struct __res_state foo;
+   22|       |extern __thread struct __res_state bar __attribute__((alias("foo")))
+   23|       |__attribute__((visibility("hidden")));
+

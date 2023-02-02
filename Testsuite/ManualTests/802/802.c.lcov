@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -std=c99" } */
+    3|       |#if (__SIZEOF_INT__ >= 4)
+    4|       |char heap[50000];
+    5|       |#else
+    6|       |char heap[32000];
+    7|       |#endif
+    8|      1|int main() {
+    9|  50.0k|  for (unsigned ix = sizeof(heap); ix--;)
+   10|  50.0k|    heap[ix] = ix;
+   11|      1|  return 0;
+   12|      1|}
+

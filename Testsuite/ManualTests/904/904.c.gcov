@@ -1,0 +1,34 @@
+        -:    0:Source:904.c
+        -:    0:Graph:904.gcno
+        -:    0:Data:904.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/47917 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:extern int snprintf(char *, __SIZE_TYPE__, const char *, ...);
+        -:    6:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:char buf1[6], buf2[6], buf3[4], buf4[4];
+        -:   10:int i;
+        -:   11:
+        1:   12:int foo(void) {
+        1:   13:  int ret = snprintf(buf1, sizeof buf1, "abcde");
+        1:   14:  ret += snprintf(buf2, sizeof buf2, "abcdef") * 16;
+       1*:   15:  ret += snprintf(buf3, sizeof buf3, "%s", i++ < 6 ? "abc" : "def") * 256;
+       1*:   16:  ret += snprintf(buf4, sizeof buf4, "%s", i++ > 10 ? "abcde" : "defgh") * 4096;
+        1:   17:  return ret;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  if (foo() != 5 + 6 * 16 + 3 * 256 + 5 * 4096)
+    #####:   22:    abort();
+        1:   23:  if (memcmp(buf1, "abcde", 6) != 0 || memcmp(buf2, "abcde", 6) != 0 ||
+        1:   24:      memcmp(buf3, "abc", 4) != 0 || memcmp(buf4, "def", 4) != 0 || i != 2)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-tree-dump-times "snprintf" 2 "optimized" } } */
+        -:   30:/* { dg-final { scan-tree-dump-times "sprintf" 0 "optimized" } } */

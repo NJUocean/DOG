@@ -1,0 +1,21 @@
+        -:    0:Source:265.c
+        -:    0:Graph:265.gcno
+        -:    0:Data:265.gcda
+        -:    0:Runs:1
+        -:    1:/* Test dead code strip support.  */
+        -:    2:/* Contributed by Devang Patel  <dpatel@apple.com>  */
+        -:    3:
+        -:    4:/* { dg-do compile { target *-*-darwin* } } */
+        -:    5:
+        -:    6:const char my_version_string[] __attribute__((__used__)) =
+        -:    7:    "Do not remove this string\n";
+        -:    8:
+    #####:    9:static int __attribute__((__used__)) static_debug_routine() {
+        -:   10:  int i;
+    #####:   11:  i = 42;
+    #####:   12:}
+        -:   13:
+        1:   14:int main() { return 0; }
+        -:   15:
+        -:   16:/* { dg-final { scan-assembler ".no_dead_strip _my_version_string" } } */
+        -:   17:/* { dg-final { scan-assembler ".no_dead_strip _static_debug_routine" } } */

@@ -1,0 +1,55 @@
+        -:    0:Source:386.c
+        -:    0:Graph:386.gcno
+        -:    0:Data:386.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define N 200
+        -:    9:
+        -:   10:int a[N][N];
+        -:   11:int b[N][N];
+        -:   12:
+        1:   13:static int __attribute__((noinline)) foo(void) {
+        -:   14:  int i, j;
+        1:   15:  int res = 0;
+        -:   16:
+        -:   17:  /* This loop nest should be blocked.  */
+      200:   18:  for (j = 1; j < N; j++)
+    39999:   19:    for (i = 0; i < N; i++)
+    39800:   20:      a[i][j] = a[i][j - 1] + b[i][j];
+        -:   21:
+      201:   22:  for (i = 0; i < N; i++)
+      200:   23:    res += a[i][i];
+        -:   24:
+        1:   25:  return res;
+        -:   26:}
+        -:   27:
+        -:   28:extern void abort();
+        -:   29:
+        1:   30:int main(void) {
+        -:   31:  int i, j, res;
+        -:   32:
+      201:   33:  for (i = 0; i < N; i++)
+    40200:   34:    for (j = 0; j < N; j++) {
+    40000:   35:      a[i][j] = i + j;
+    40000:   36:      b[i][j] = i - j;
+        -:   37:    }
+        -:   38:
+        1:   39:  res = foo();
+        -:   40:
+        -:   41:#if DEBUG
+        -:   42:  fprintf(stderr, "res = %d \n", res);
+        -:   43:#endif
+        -:   44:
+        1:   45:  if (res != 1333300)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  return 0;
+        -:   49:}
+        -:   50:
+        -:   51:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

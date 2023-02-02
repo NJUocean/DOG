@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-options "-O2 -msse2 -mtune=core2 -mfpmath=387" { target { i?86-*-*
+    4|       | * x86_64-*-* } } } */
+    5|       |/* { dg-require-effective-target sse2_runtime { target { i?86-*-* x86_64-*-* } }
+    6|       | * } */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  double arr[1000];
+   12|      1|  double a, b;
+   13|      1|
+   14|      1|  int i;
+   15|      1|
+   16|  1.00k|  for (i = 0; i < 1000; i++)
+   17|  1.00k|    arr[i] = 4294967296.0 + (double)i;
+   18|      1|
+   19|      1|  a = arr[0];
+   20|      1|  b = (unsigned int)((unsigned long long int)a % 4294967296ULL);
+   21|      1|
+   22|      1|  if (b >= 4294967296.0)
+   23|      0|    abort();
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

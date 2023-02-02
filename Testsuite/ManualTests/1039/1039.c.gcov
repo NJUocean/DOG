@@ -1,0 +1,25 @@
+        -:    0:Source:1039.c
+        -:    0:Graph:1039.gcno
+        -:    0:Data:1039.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -floop-unroll-and-jam --param unroll-jam-min-percent=0" }
+        -:    3: */
+        -:    4:int x[1024], y[1024];
+        -:    5:
+        1:    6:void __attribute__((noipa)) foo() {
+     1025:    7:  for (int i = 0; i < 1024; ++i) {
+     1024:    8:    x[i] = 0;
+  1049600:    9:    for (int j = 0; j < 1024; ++j)
+  1048576:   10:      if (!y[j])
+  1047552:   11:        x[i] = 1;
+        -:   12:  }
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  y[1023] = 1;
+        1:   17:  foo();
+        1:   18:  if (x[1] != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

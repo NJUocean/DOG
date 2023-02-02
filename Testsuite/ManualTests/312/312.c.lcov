@@ -1,0 +1,16 @@
+    1|      1|long double ll_to_ld(long long n) { return n; }
+    2|       |
+    3|      1|long long ld_to_ll(long double n) { return n; }
+    4|       |
+    5|      1|main() {
+    6|      1|  long long n;
+    7|      1|
+    8|      1|  if (ll_to_ld(10LL) != 10.0)
+    9|      0|    abort();
+   10|      1|
+   11|      1|  if (ld_to_ll(10.0) != 10)
+   12|      0|    abort();
+   13|      1|
+   14|      1|  exit(0);
+   15|      1|}
+

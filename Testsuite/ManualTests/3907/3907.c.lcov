@@ -1,0 +1,21 @@
+    1|       |/* { dg-options "-O2 -ftree-vectorize -fno-vect-cost-model" } */
+    2|       |/* { dg-additional-options "-fno-common" { target hppa*-*-hpux* } } */
+    3|       |
+    4|    146|#define SIZE 128
+    5|       |unsigned short _Alignas(16) in[SIZE];
+    6|       |
+    7|       |__attribute__((noinline)) int test(unsigned short sum, unsigned short *in,
+    8|      1|                                   int x) {
+    9|     17|  for (int j = 0; j < SIZE; j += 8)
+   10|     16|    sum += in[j] * x;
+   11|      1|  return sum;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|    129|  for (int i = 0; i < SIZE; i++)
+   16|    128|    in[i] = i;
+   17|      1|  if (test(0, in, 1) != 960)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

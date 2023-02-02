@@ -1,0 +1,24 @@
+        -:    0:Source:2245.c
+        -:    0:Graph:2245.gcno
+        -:    0:Data:2245.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:int a, c, f;
+        -:    3:short b, d, e;
+        -:    4:
+       1*:    5:int fn1(int h) { return a > 2 || h > a ? h : h << a; }
+        -:    6:
+        1:    7:void fn2() {
+        -:    8:  int j, k;
+        -:    9:  while (1) {
+       1*:   10:    k = c && b;
+       1*:   11:    f &= e > (fn1(k) && j);
+        1:   12:    if (!d)
+        1:   13:      break;
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  fn2();
+        1:   19:  return 0;
+        -:   20:}

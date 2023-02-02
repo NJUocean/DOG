@@ -1,0 +1,24 @@
+        -:    0:Source:3669.c
+        -:    0:Graph:3669.gcno
+        -:    0:Data:3669.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        -:    4:volatile int amount = 10;
+        -:    5:
+       10:    6:void __attribute__((noipa)) do_something(int *ptr) { *ptr += 10; }
+        -:    7:
+        1:    8:int __attribute__((noipa)) foo(int count) {
+        1:    9:  int x = 1;
+       11:   10:  for (int i = 0; i < count; ++i)
+       10:   11:    do_something(&x); /* { dg-final { gdb-test . "x" "1" } } */
+        1:   12:  int res = x;        /* { dg-final { gdb-test . "x" "101" } } */
+        1:   13:  x = res + 1;
+        1:   14:  return res; /* { dg-final { gdb-test . "x" "102" } } */
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  foo(10);
+        1:   19:  return 0;
+        -:   20:}

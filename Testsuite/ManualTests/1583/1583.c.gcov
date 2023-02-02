@@ -1,0 +1,41 @@
+        -:    0:Source:1583.c
+        -:    0:Graph:1583.gcno
+        -:    0:Data:1583.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift -w" } */
+        -:    3:
+        -:    4:typedef const unsigned long long int CULLI;
+        -:    5:typedef volatile int VI;
+        -:    6:struct s {
+        -:    7:  signed long int a;
+        -:    8:};
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  int a = 1;
+        1:   12:  struct s s = {.a = 400};
+        1:   13:  CULLI culli = 42;
+        1:   14:  VI vi = 370;
+        1:   15:  volatile int shiftcount = 153;
+        -:   16:
+        1:   17:  a <<= 152;
+        1:   18:  1 << shiftcount;
+        -:   19:  1 << 154;
+        -:   20:  culli << 524;
+        1:   21:  1 << vi++;
+        1:   22:  (long)1 << (s.a + 2);
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:/* { dg-output "shift exponent 152 is too large for \[^\n\r]*-bit type
+        -:   27: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   28:/* { dg-output "\[^\n\r]*shift exponent 153 is too large for \[^\n\r]*-bit type
+        -:   29: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   30:/* { dg-output "\[^\n\r]*shift exponent 154 is too large for \[^\n\r]*-bit type
+        -:   31: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   32:/* { dg-output "\[^\n\r]*shift exponent 524 is too large for \[^\n\r]*-bit type
+        -:   33: * 'long long unsigned int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   34:/* { dg-output "\[^\n\r]*shift exponent 370 is too large for \[^\n\r]*-bit type
+        -:   35: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   36:/* { dg-output "\[^\n\r]*shift exponent 402 is too large for \[^\n\r]*-bit type
+        -:   37: * 'long int'" } */

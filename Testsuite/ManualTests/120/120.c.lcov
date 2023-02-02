@@ -1,0 +1,64 @@
+    1|       |/* Test __atomic routines for existence and proper execution on 2 byte
+    2|       |   values with each valid memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target sync_char_short } */
+    5|       |
+    6|       |/* Test the execution of the __atomic_load_n builtin for a short.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |short v, count;
+   11|       |
+   12|      1|int main() {
+   13|      1|  v = 0;
+   14|      1|  count = 0;
+   15|      1|
+   16|      1|  if (__atomic_load_n(&v, __ATOMIC_RELAXED) != count++)
+   17|      0|    abort();
+   18|      1|  else
+   19|      1|    v++;
+   20|      1|
+   21|      1|  if (__atomic_load_n(&v, __ATOMIC_ACQUIRE) != count++)
+   22|      0|    abort();
+   23|      1|  else
+   24|      1|    v++;
+   25|      1|
+   26|      1|  if (__atomic_load_n(&v, __ATOMIC_CONSUME) != count++)
+   27|      0|    abort();
+   28|      1|  else
+   29|      1|    v++;
+   30|      1|
+   31|      1|  if (__atomic_load_n(&v, __ATOMIC_SEQ_CST) != count++)
+   32|      0|    abort();
+   33|      1|  else
+   34|      1|    v++;
+   35|      1|
+   36|      1|  /* Now test the generic variants.  */
+   37|      1|
+   38|      1|  __atomic_load(&v, &count, __ATOMIC_RELAXED);
+   39|      1|  if (count != v)
+   40|      0|    abort();
+   41|      1|  else
+   42|      1|    v++;
+   43|      1|
+   44|      1|  __atomic_load(&v, &count, __ATOMIC_ACQUIRE);
+   45|      1|  if (count != v)
+   46|      0|    abort();
+   47|      1|  else
+   48|      1|    v++;
+   49|      1|
+   50|      1|  __atomic_load(&v, &count, __ATOMIC_CONSUME);
+   51|      1|  if (count != v)
+   52|      0|    abort();
+   53|      1|  else
+   54|      1|    v++;
+   55|      1|
+   56|      1|  __atomic_load(&v, &count, __ATOMIC_SEQ_CST);
+   57|      1|  if (count != v)
+   58|      0|    abort();
+   59|      1|  else
+   60|      1|    v++;
+   61|      1|
+   62|      1|  return 0;
+   63|      1|}
+

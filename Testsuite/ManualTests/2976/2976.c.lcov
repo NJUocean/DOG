@@ -1,0 +1,49 @@
+    1|       |/* Testcase to check generation of a SH2A specific instruction
+    2|       |   "BSET #imm3,@(disp12,Rn)".  */
+    3|       |/* { dg-do compile { target { sh2a } } }  */
+    4|       |/* { dg-options "-O2 -mbitops" }  */
+    5|       |/* { dg-final { scan-assembler "bset"} }  */
+    6|       |/* { dg-final { scan-assembler "bset.b"} }  */
+    7|       |
+    8|       |volatile union un_paddr {
+    9|       |  unsigned char BYTE;
+   10|       |  struct {
+   11|       |    unsigned char B15 : 1;
+   12|       |    unsigned char B14 : 1;
+   13|       |    unsigned char B13 : 1;
+   14|       |    unsigned char B12 : 1;
+   15|       |    unsigned char B11 : 1;
+   16|       |    unsigned char B10 : 1;
+   17|       |    unsigned char B9 : 1;
+   18|       |    unsigned char B8 : 1;
+   19|       |    unsigned char B7 : 1;
+   20|       |    unsigned char B6 : 1;
+   21|       |    unsigned char B5 : 1;
+   22|       |    unsigned char B4 : 1;
+   23|       |    unsigned char B3 : 1;
+   24|       |    unsigned char B2 : 1;
+   25|       |    unsigned char B1 : 1;
+   26|       |    unsigned char B0 : 1;
+   27|       |  } BIT;
+   28|       |} PADDR;
+   29|       |
+   30|      1|int main() {
+   31|      1|  PADDR.BIT.B0 = 1;
+   32|      1|  PADDR.BIT.B3 = 1;
+   33|      1|  PADDR.BIT.B6 = 1;
+   34|      1|
+   35|      1|  PADDR.BIT.B1 |= 1;
+   36|      1|  PADDR.BIT.B4 |= 1;
+   37|      1|  PADDR.BIT.B7 |= 1;
+   38|      1|
+   39|      1|  PADDR.BIT.B10 = 1;
+   40|      1|  PADDR.BIT.B13 = 1;
+   41|      1|  PADDR.BIT.B15 = 1;
+   42|      1|
+   43|      1|  PADDR.BIT.B9 |= 1;
+   44|      1|  PADDR.BIT.B12 |= 1;
+   45|      1|  PADDR.BIT.B14 |= 1;
+   46|      1|
+   47|      1|  return 0;
+   48|      1|}
+

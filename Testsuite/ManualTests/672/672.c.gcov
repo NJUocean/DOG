@@ -1,0 +1,11 @@
+        -:    0:Source:672.c
+        -:    0:Graph:672.gcno
+        -:    0:Data:672.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options {{-flto -g -fvar-tracking-assignments}} } */
+        -:    3:/* { dg-suppress-ld-options "-g -fvar-tracking-assignments" } */
+        -:    4:
+    #####:    5:void foo() { int hex = 0x4; }
+        -:    6:
+        1:    7:int main() { return 0; }

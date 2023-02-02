@@ -1,0 +1,31 @@
+        -:    0:Source:1328.c
+        -:    0:Graph:1328.gcno
+        -:    0:Data:1328.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:extern int printf(char *__format, ...);
+        -:    5:
+        -:    6:struct vpiBinaryConst {
+        -:    7:  int signed_flag : 1;
+        -:    8:  int sized_flag : 1;
+        -:    9:};
+        -:   10:
+        1:   11:int binary_get(int code, struct vpiBinaryConst *rfp) {
+        1:   12:  switch (code) {
+        1:   13:  case 1:
+        1:   14:    return rfp->signed_flag ? 1 : 0;
+    #####:   15:  default:
+    #####:   16:    printf("error: %d not supported\n", code);
+    #####:   17:    return code;
+        -:   18:  }
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  struct vpiBinaryConst x = {1, 0};
+        1:   23:  int y = binary_get(1, &x);
+        1:   24:  if (y != 1)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

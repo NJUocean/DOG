@@ -1,0 +1,35 @@
+        -:    0:Source:1367.c
+        -:    0:Graph:1367.gcno
+        -:    0:Data:1367.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct A {
+        -:    4:  int i;
+        -:    5:};
+        -:    6:
+        -:    7:struct B {
+        -:    8:  struct A a[2];
+        -:    9:};
+        -:   10:
+        -:   11:int i = 1;
+        -:   12:struct B b = {0, 3};
+        -:   13:
+        1:   14:static void test() {
+        1:   15:  if (b.a[0].i != i) {
+        1:   16:    int t = b.a[0].i;
+        1:   17:    b.a[0] = b.a[1];
+        1:   18:    b.a[1].i = t;
+        -:   19:  }
+        -:   20:
+        1:   21:  if (b.a[1].i == i)
+    #####:   22:    __builtin_abort();
+        -:   23:
+        1:   24:  if (b.a[0].i == 0)
+    #####:   25:    __builtin_abort();
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  test();
+        1:   30:  return 0;
+        -:   31:}

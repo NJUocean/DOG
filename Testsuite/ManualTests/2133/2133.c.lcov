@@ -1,0 +1,17 @@
+    1|      0|barfoo(a) { return (a << 16) & ~0xffff; }
+    2|       |
+    3|      0|foobar(a) { return ((unsigned short)a) << 15; }
+    4|       |
+    5|     32|foo(a) { return (a & 0x121) << 31; }
+    6|       |
+    7|      0|bar(a) { return (a & ~0xffff) << 16; }
+    8|       |
+    9|      1|main() {
+   10|      1|  int a;
+   11|      1|
+   12|     33|  for (a = 1; a; a += a) {
+   13|     32|    printf("%d", (foo(a)));
+   14|     32|  }
+   15|      1|  puts("");
+   16|      1|}
+

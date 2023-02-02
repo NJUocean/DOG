@@ -1,0 +1,24 @@
+    1|       |unsigned p;
+    2|       |
+    3|      6|long __attribute__((noinline, noclone)) test(unsigned a) {
+    4|      6|  return (long)(p + a) - (long)p;
+    5|      6|}
+    6|       |
+    7|      1|int main() {
+    8|      1|  p = (unsigned)-2;
+    9|      1|  if (test(0) != 0)
+   10|      0|    __builtin_abort();
+   11|      1|  if (test(1) != 1)
+   12|      0|    __builtin_abort();
+   13|      1|  if (test(2) != -(long)(unsigned)-2)
+   14|      0|    __builtin_abort();
+   15|      1|  p = (unsigned)-1;
+   16|      1|  if (test(0) != 0)
+   17|      0|    __builtin_abort();
+   18|      1|  if (test(1) != -(long)(unsigned)-1)
+   19|      0|    __builtin_abort();
+   20|      1|  if (test(2) != -(long)(unsigned)-2)
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+

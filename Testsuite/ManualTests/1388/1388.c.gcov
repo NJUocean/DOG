@@ -1,0 +1,21 @@
+        -:    0:Source:1388.c
+        -:    0:Graph:1388.gcno
+        -:    0:Data:1388.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fpredictive-commoning" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:int a[6] = {0, 0, 0, 0, 7, 0};
+        -:    6:static int *p = &a[4];
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i;
+        5:   10:  for (i = 0; i < 4; ++i) {
+        4:   11:    a[i + 1] = a[i + 2] > i;
+        4:   12:    *p &= ~1;
+        -:   13:  }
+        1:   14:  if (a[4] != 0)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

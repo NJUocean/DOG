@@ -1,0 +1,23 @@
+        -:    0:Source:1587.c
+        -:    0:Graph:1587.gcno
+        -:    0:Data:1587.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int __attribute__((noinline, noclone)) f(int *pi, long *pl) {
+        1:    6:  *pi = 1;
+        1:    7:  *pl = 0;
+        1:    8:  return *(char *)pi;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  union {
+        -:   13:    long l;
+        -:   14:    int i;
+        -:   15:  } a;
+        1:   16:  if (f(&a.i, &a.l) != 0)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

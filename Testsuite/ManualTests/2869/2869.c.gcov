@@ -1,0 +1,24 @@
+        -:    0:Source:2869.c
+        -:    0:Graph:2869.gcno
+        -:    0:Data:2869.gcda
+        -:    0:Runs:1
+        -:    1:/* Test accuracy of long double division (glibc bug 15396).  */
+        -:    2:/* { dg-do run { target powerpc*-*-linux* powerpc*-*-darwin* powerpc*-*-aix*
+        -:    3: * rs6000-*-* } } */
+        -:    4:/* { dg-options "-mlong-double-128" } */
+        -:    5:
+        -:    6:extern void exit(int);
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:volatile long double a = 0x1p-1024L;
+        -:   10:volatile long double b = 0x3p-53L;
+        -:   11:volatile long double r;
+        -:   12:volatile long double expected = 0x1.55555555555555555555555555p-973L;
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  r = a / b;
+        -:   16:  /* Allow error up to 2ulp.  */
+        1:   17:  if (__builtin_fabsl(r - expected) > 0x1p-1073L)
+    #####:   18:    abort();
+        1:   19:  exit(0);
+        -:   20:}

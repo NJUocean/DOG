@@ -1,0 +1,14 @@
+        -:    0:Source:680.c
+        -:    0:Graph:680.gcno
+        -:    0:Data:680.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options {{-O -flto -funsigned-char} {-O -flto -fsigned-char}} } */
+        -:    3:
+        -:    4:char p[32] = "";
+        1:    5:int main() {
+        1:    6:  if (__builtin___strcpy_chk(p + 1, "vwxyz", __builtin_object_size(p + 1, 0)) !=
+        1:    7:      p + 1)
+    #####:    8:    __builtin_abort();
+        1:    9:  return 0;
+        -:   10:}

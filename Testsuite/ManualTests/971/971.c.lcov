@@ -1,0 +1,26 @@
+    1|       |typedef struct {
+    2|       |  double epsilon;
+    3|       |} material_type;
+    4|       |
+    5|     10|material_type foo(double x) {
+    6|     10|  material_type m;
+    7|     10|
+    8|     10|  m.epsilon = 1.0 + x;
+    9|     10|  return m;
+   10|     10|}
+   11|       |
+   12|      1|main() {
+   13|      1|  int i;
+   14|      1|  material_type x;
+   15|      1|
+   16|      1|  /* We must iterate enough times to overflow the FP stack on the
+   17|      1|     x86.  */
+   18|     11|  for (i = 0; i < 10; i++) {
+   19|     10|    x = foo(1.0);
+   20|     10|    if (x.epsilon != 1.0 + 1.0)
+   21|      0|      abort();
+   22|     10|  }
+   23|      1|
+   24|      1|  exit(0);
+   25|      1|}
+

@@ -1,0 +1,39 @@
+        -:    0:Source:116.c
+        -:    0:Graph:116.gcno
+        -:    0:Data:116.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:struct S1 {
+        -:    7:  const volatile unsigned f0 : 3;
+        -:    8:  volatile unsigned f1 : 3;
+        -:    9:  signed f2 : 6;
+        -:   10:};
+        -:   11:
+        -:   12:static struct S1 g_3 = {0, 0, 4};
+        -:   13:
+        -:   14:static const int32_t func_1(void);
+        -:   15:
+        1:   16:static const int32_t func_1(void) {
+        1:   17:  struct S1 *l_2[4] = {&g_3, &g_3, &g_3, &g_3};
+        -:   18:  int i;
+        1:   19:  l_2[0] = (void *)0;
+        1:   20:  return g_3.f0;
+        -:   21:}
+        -:   22:
+        1:   23:int main(int argc, char *argv[]) {
+        1:   24:  int print_hash_value = 0;
+       1*:   25:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   26:    print_hash_value = 1;
+        1:   27:  platform_main_begin();
+        1:   28:  crc32_gentab();
+        1:   29:  func_1();
+        1:   30:  transparent_crc(g_3.f0, "g_3.f0", print_hash_value);
+        1:   31:  transparent_crc(g_3.f1, "g_3.f1", print_hash_value);
+        1:   32:  transparent_crc(g_3.f2, "g_3.f2", print_hash_value);
+        1:   33:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   34:  return 0;
+        -:   35:}

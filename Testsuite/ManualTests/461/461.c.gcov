@@ -1,0 +1,16 @@
+        -:    0:Source:461.c
+        -:    0:Graph:461.gcno
+        -:    0:Data:461.gcda
+        -:    0:Runs:1
+        -:    1:static int f(int) __attribute__((const));
+        1:    2:int main() {
+        -:    3:  int f1, f2, x;
+        1:    4:  x = 1;
+        1:    5:  f1 = f(x);
+        1:    6:  x = 2;
+        1:    7:  f2 = f(x);
+        1:    8:  if (f1 != 1 || f2 != 2)
+    #####:    9:    abort();
+        1:   10:  exit(0);
+        -:   11:}
+        2:   12:static int f(int x) { return x; }

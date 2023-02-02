@@ -1,0 +1,59 @@
+        -:    0:Source:4090.c
+        -:    0:Graph:4090.gcno
+        -:    0:Data:4090.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Test strlen with various combinations of pointer alignments and lengths to
+        -:    4:   make sure any optimizations in the library are correct.
+        -:    5:
+        -:    6:   Written by Michael Meissner, March 9, 2002.  */
+        -:    7:
+        -:    8:#include <stddef.h>
+        -:    9:#include <string.h>
+        -:   10:
+        -:   11:#ifndef MAX_OFFSET
+        -:   12:#define MAX_OFFSET (sizeof(long long))
+        -:   13:#endif
+        -:   14:
+        -:   15:#ifndef MAX_TEST
+        -:   16:#define MAX_TEST (8 * sizeof(long long))
+        -:   17:#endif
+        -:   18:
+        -:   19:#ifndef MAX_EXTRA
+        -:   20:#define MAX_EXTRA (sizeof(long long))
+        -:   21:#endif
+        -:   22:
+        -:   23:#define MAX_LENGTH (MAX_OFFSET + MAX_TEST + MAX_EXTRA + 1)
+        -:   24:
+        -:   25:static union {
+        -:   26:  char buf[MAX_LENGTH];
+        -:   27:  long long align_int;
+        -:   28:  long double align_fp;
+        -:   29:} u;
+        -:   30:
+        1:   31:main() {
+        -:   32:  size_t off, len, len2, i;
+        -:   33:  char *p;
+        -:   34:
+        9:   35:  for (off = 0; off < MAX_OFFSET; off++)
+      520:   36:    for (len = 0; len < MAX_TEST; len++) {
+      512:   37:      p = u.buf;
+     2304:   38:      for (i = 0; i < off; i++)
+     1792:   39:        *p++ = '\0';
+        -:   40:
+    16640:   41:      for (i = 0; i < len; i++)
+    16128:   42:        *p++ = 'a';
+        -:   43:
+      512:   44:      *p++ = '\0';
+     4608:   45:      for (i = 0; i < MAX_EXTRA; i++)
+     4096:   46:        *p++ = 'b';
+        -:   47:
+      512:   48:      p = u.buf + off;
+      512:   49:      len2 = strlen(p);
+      512:   50:      if (len != len2)
+    #####:   51:        abort();
+        -:   52:    }
+        -:   53:
+        1:   54:  exit(0);
+        -:   55:}

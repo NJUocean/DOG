@@ -1,0 +1,21 @@
+    1|       |
+    2|       |
+    3|       |int blah;
+    4|      1|foo() {
+    5|      1|  int i;
+    6|      1|
+    7|      8|  for (i = 0; i < 7; i++) {
+    8|      7|    if (i == 7 - 1)
+    9|      1|      blah = 0xfcc;
+   10|      6|    else
+   11|      6|      blah = 0xfee;
+   12|      7|  }
+   13|      1|  return blah;
+   14|      1|}
+   15|       |
+   16|      1|main() {
+   17|      1|  if (foo() != 0xfcc)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

@@ -1,0 +1,30 @@
+        -:    0:Source:4116.c
+        -:    0:Graph:4116.gcno
+        -:    0:Data:4116.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 9700 */
+        -:    2:/* Alpha got the base address for the va_list incorrect when there was
+        -:    3:   a structure that was passed partially in registers and partially on
+        -:    4:   the stack.  */
+        -:    5:
+        -:    6:#include <stdarg.h>
+        -:    7:
+        -:    8:struct two {
+        -:    9:  long x, y;
+        -:   10:};
+        -:   11:
+        1:   12:void foo(int a, int b, int c, int d, int e, struct two f, int g, ...) {
+        -:   13:  va_list args;
+        -:   14:  int h;
+        -:   15:
+        1:   16:  va_start(args, g);
+        1:   17:  h = va_arg(args, int);
+        1:   18:  if (g != 1 || h != 2)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  struct two t = {0, 0};
+        1:   24:  foo(0, 0, 0, 0, 0, t, 1, 2);
+        1:   25:  return 0;
+        -:   26:}

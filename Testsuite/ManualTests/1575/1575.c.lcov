@@ -1,0 +1,25 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |int a;
+    4|       |char b;
+    5|      0|void fn1(int p1) {}
+    6|       |
+    7|      0|int fn2() { return 5; }
+    8|       |
+    9|      0|void fn3() {
+   10|      0|  if (fn2())
+   11|      0|    ;
+   12|      0|  else {
+   13|      0|    char c[5];
+   14|      0|    c[0] = 5;
+   15|      0|  lbl_608:
+   16|      0|    fn1(c[9]);
+   17|      0|    int d = c[9];
+   18|      0|    c[2] | a;
+   19|      0|    d = c[b];
+   20|      0|  }
+   21|      0|  goto lbl_608;
+   22|      0|}
+   23|       |
+   24|      1|int main() { return 0; }
+

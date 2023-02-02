@@ -1,0 +1,19 @@
+        -:    0:Source:717.c
+        -:    0:Graph:717.gcno
+        -:    0:Data:717.gcda
+        -:    0:Runs:1
+        -:    1:int aa;
+        -:    2:
+        -:    3:static inline int __attribute__((target_clones("default", "avx512f")))
+    #####:    4:fast_clamp() {}
+------------------
+fast_clamp.avx512f.0:
+    #####:    4:fast_clamp() {}
+------------------
+fast_clamp.default.1:
+    #####:    4:fast_clamp() {}
+------------------
+        -:    5:
+    #####:    6:void b() { aa = fast_clamp(); }
+        -:    7:
+        1:    8:int main() { return 0; }

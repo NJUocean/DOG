@@ -1,0 +1,65 @@
+        -:    0:Source:121.c
+        -:    0:Graph:121.gcno
+        -:    0:Data:121.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and proper execution on 4 byte
+        -:    2:   values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target sync_int_long } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:int v, count;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  v = 0;
+        1:   12:  count = 0;
+        -:   13:
+        1:   14:  if (__atomic_load_n(&v, __ATOMIC_RELAXED) != count++)
+    #####:   15:    abort();
+        -:   16:  else
+        1:   17:    v++;
+        -:   18:
+        1:   19:  if (__atomic_load_n(&v, __ATOMIC_ACQUIRE) != count++)
+    #####:   20:    abort();
+        -:   21:  else
+        1:   22:    v++;
+        -:   23:
+        1:   24:  if (__atomic_load_n(&v, __ATOMIC_CONSUME) != count++)
+    #####:   25:    abort();
+        -:   26:  else
+        1:   27:    v++;
+        -:   28:
+        1:   29:  if (__atomic_load_n(&v, __ATOMIC_SEQ_CST) != count++)
+    #####:   30:    abort();
+        -:   31:  else
+        1:   32:    v++;
+        -:   33:
+        -:   34:  /* Now test the generic variants.  */
+        -:   35:
+        1:   36:  __atomic_load(&v, &count, __ATOMIC_RELAXED);
+        1:   37:  if (count != v)
+    #####:   38:    abort();
+        -:   39:  else
+        1:   40:    v++;
+        -:   41:
+        1:   42:  __atomic_load(&v, &count, __ATOMIC_ACQUIRE);
+        1:   43:  if (count != v)
+    #####:   44:    abort();
+        -:   45:  else
+        1:   46:    v++;
+        -:   47:
+        1:   48:  __atomic_load(&v, &count, __ATOMIC_CONSUME);
+        1:   49:  if (count != v)
+    #####:   50:    abort();
+        -:   51:  else
+        1:   52:    v++;
+        -:   53:
+        1:   54:  __atomic_load(&v, &count, __ATOMIC_SEQ_CST);
+        1:   55:  if (count != v)
+    #####:   56:    abort();
+        -:   57:  else
+        1:   58:    v++;
+        -:   59:
+        1:   60:  return 0;
+        -:   61:}

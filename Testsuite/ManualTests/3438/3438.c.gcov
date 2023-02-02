@@ -1,0 +1,25 @@
+        -:    0:Source:3438.c
+        -:    0:Graph:3438.gcno
+        -:    0:Data:3438.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort() __attribute__((noreturn));
+        -:    2:
+        -:    3:struct s {
+        -:    4:  unsigned long long f1 : 40;
+        -:    5:#if (__SIZEOF_INT__ >= 4)
+        -:    6:  unsigned int f2 : 24;
+        -:    7:#else
+        -:    8:  unsigned long int f2 : 24;
+        -:    9:#endif
+        -:   10:} sv;
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int f2;
+        1:   14:  sv.f2 = (1 << 24) - 1;
+        1:   15:  __asm__ volatile("" : : : "memory");
+        1:   16:  ++sv.f2;
+        1:   17:  f2 = sv.f2;
+        1:   18:  if (f2 != 0)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

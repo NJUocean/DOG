@@ -1,0 +1,26 @@
+        -:    0:Source:2577.c
+        -:    0:Graph:2577.gcno
+        -:    0:Data:2577.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -march=k8" } */
+        -:    3:/* { dg-final { scan-assembler "sbb" } } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:/* Conditional increment is best done using sbb $-1, val.  */
+        -:    8:int t[] = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1};
+ 10000000:    9:void q() {
+ 10000000:   10:  int sum = 0;
+        -:   11:  int i;
+110000000:   12:  for (i = 0; i < 10; i++)
+100000000:   13:    if (t[i])
+ 60000000:   14:      sum++;
+ 10000000:   15:  if (sum != 6)
+    #####:   16:    abort();
+ 10000000:   17:}
+        1:   18:int main() {
+        -:   19:  int i;
+ 10000001:   20:  for (i = 0; i < 10000000; i++)
+ 10000000:   21:    q();
+        -:   22:}

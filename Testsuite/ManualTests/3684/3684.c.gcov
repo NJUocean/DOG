@@ -1,0 +1,20 @@
+        -:    0:Source:3684.c
+        -:    0:Graph:3684.gcno
+        -:    0:Data:3684.gcda
+        -:    0:Runs:1
+        -:    1:char B[256 * sizeof(void *)];
+        -:    2:typedef void *FILE;
+        -:    3:typedef struct globals {
+        -:    4:  int c;
+        -:    5:  FILE *l;
+        -:    6:} __attribute__((may_alias)) T;
+        1:    7:void add_input_file(FILE *file) { (*(T *)&B).l[0] = file; }
+        -:    8:extern void abort(void);
+        1:    9:int main() {
+        -:   10:  FILE x;
+        1:   11:  (*(T *)&B).l = &x;
+        1:   12:  add_input_file((void *)-1);
+        1:   13:  if ((*(T *)&B).l[0] != (void *)-1)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

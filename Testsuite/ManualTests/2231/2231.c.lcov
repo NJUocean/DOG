@@ -1,0 +1,18 @@
+    1|       |#if ULONG_MAX != 4294967295u && ULONG_MAX != 18446744073709551615ull
+    2|      1|int main(void) { exit(0); }
+    3|       |#else
+    4|       |#if ULONG_MAX != 18446744073709551615ull
+    5|       |#define NUM 0xf0000000
+    6|       |#else
+    7|       |#define NUM 0xf000000000000000
+    8|       |#endif
+    9|       |
+   10|       |int func1(void *rw) { return (rw && (((unsigned long)rw) >= NUM)); }
+   11|       |
+   12|       |void func2(void *rw) {
+   13|       |  while (rw && (((unsigned long)rw) >= NUM)) {
+   14|       |  }
+   15|       |}
+   16|       |
+   17|       |#endif
+

@@ -1,0 +1,17 @@
+        -:    0:Source:2641.c
+        -:    0:Graph:2641.gcno
+        -:    0:Data:2641.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target lp64 } } */
+        -:    2:
+        -:    3:int __attribute__((__noinline__))
+        1:    4:bugged(float f1, float f2, float f3, float f4, float f5, float f6, float f7,
+        -:    5:       float f8) {
+       1*:    6:  return f1 || f2 || f3 || f4 || f5 != 1. || f6 != 1. || f7 != 1. || f8 != 1.;
+        -:    7:}
+        -:    8:
+        1:    9:int __attribute__((__noinline__, __ms_abi__)) isbugged(void) {
+        1:   10:  return bugged(0, 0, 0, 0, 1., 1., 1., 1.);
+        -:   11:}
+        -:   12:
+        1:   13:int main() { return isbugged(); }

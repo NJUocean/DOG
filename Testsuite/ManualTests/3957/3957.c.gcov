@@ -1,0 +1,17 @@
+        -:    0:Source:3957.c
+        -:    0:Graph:3957.gcno
+        -:    0:Data:3957.gcda
+        -:    0:Runs:1
+        -:    1:int a = 0, c = 0;
+        -:    2:static int d[][8] = {};
+        -:    3:
+        1:    4:int main() {
+        -:    5:  int e;
+        5:    6:  for (int b = 0; b < 4; b++) {
+        4:    7:    __builtin_printf("%d\n", b, e);
+       4*:    8:    while (a && c++)
+    #####:    9:      e = d[300000000000000000][0];
+        -:   10:  }
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

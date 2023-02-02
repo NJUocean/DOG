@@ -1,0 +1,26 @@
+        -:    0:Source:2700.c
+        -:    0:Graph:2700.gcno
+        -:    0:Data:2700.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O1" } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int f;
+        -:    7:};
+        -:    8:
+        -:    9:double a;
+        -:   10:int c;
+        -:   11:
+        1:   12:static void fn1(struct S *p1) {
+        1:   13:  for (; c;)
+    #####:   14:    if (p1->f++)
+    #####:   15:      a = (int)p1;
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  struct S b = {0};
+        1:   20:  fn1(&b);
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,32 @@
+        -:    0:Source:553.c
+        -:    0:Graph:553.gcno
+        -:    0:Data:553.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Os"  } */
+        -:    3:
+        -:    4:int a, b, c, d;
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int f0;
+        -:    8:};
+        -:    9:
+       1*:   10:static int fn1(int p) { return p == 0 || a; }
+        -:   11:
+    #####:   12:static int fn2() {
+    #####:   13:  d = fn1(c);
+    #####:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:static int fn3(struct S p) {
+       1*:   18:  p.f0 || fn2();
+        1:   19:  if (fn1(1))
+    #####:   20:    b = 0;
+        1:   21:  return 0;
+        -:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  struct S e = {1};
+        1:   26:  fn3(e);
+        1:   27:  return 0;
+        -:   28:}

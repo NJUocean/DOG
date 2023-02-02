@@ -1,0 +1,27 @@
+        -:    0:Source:522.c
+        -:    0:Graph:522.gcno
+        -:    0:Data:522.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/54693 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+       10:    5:__attribute__((noinline, noclone)) void foo(char *str, char c) {
+       10:    6:  asm volatile("" : : "r"(str), "r"(c) : "memory");
+       10:    7:  *str = c;
+       10:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i;
+        -:   12:  char c;
+        -:   13:  char arr[11];
+        -:   14:
+       11:   15:  for (i = 0; i < 10; i++) {
+       10:   16:    c = 0x30 + i;
+       10:   17:    foo(&arr[i], c); /* { dg-final { gdb-test . "i" "c - 48" } } */
+        -:   18:  }
+        1:   19:  arr[10] = 0;
+        -:   20:
+        1:   21:  __builtin_printf("arr = %s\n", arr);
+        1:   22:  return 0;
+        -:   23:}

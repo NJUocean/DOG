@@ -1,0 +1,21 @@
+    1|       |/* { dg-require-effective-target size20plus } */
+    2|       |/* { dg-require-stack-size "32753*2" } */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |
+    6|       |int strcmp(const char *, const char *);
+    7|       |void *memchr(const void *, int, size_t);
+    8|       |char *strncpy(char *, const char *, size_t);
+    9|       |
+   10|      1|int main(int argc, char **argv) {
+   11|      1|  char target[32753] = "A";
+   12|      1|  char buffer[32753];
+   13|      1|  char *x;
+   14|      1|  x = buffer;
+   15|      1|
+   16|      1|  if (strcmp(target, "A") || memchr(target, 'A', 0) != ((void *)0))
+   17|      0|    if (strncpy(x, "", 4) != x)
+   18|      0|      ;
+   19|      1|  return 0;
+   20|      1|}
+

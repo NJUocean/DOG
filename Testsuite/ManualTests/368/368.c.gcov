@@ -1,0 +1,22 @@
+        -:    0:Source:368.c
+        -:    0:Graph:368.gcno
+        -:    0:Data:368.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-do compile }
+        -:    2:
+        -:    3:extern int printf(const char *, ...);
+        -:    4:extern void foo(int *);
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  double d = 6;
+        1:    8:  int i = 1, j = 6, k = 8;
+        -:    9:#pragma omp parallel shared(d) private(i) num_threads(4)
+        -:   10:  {
+        1:   11:    i = 4;
+        -:   12:#pragma omp for lastprivate(j)
+        9:   13:    for (j = 1; j <= k; j++)
+        8:   14:      printf("%s %d %d %d %p %g\n", "Hello, World!", i, j, k, &j, d);
+        1:   15:    printf("%s %d %g\n", "Hello, World!", i, d);
+        -:   16:  }
+        1:   17:  return 0;
+        -:   18:}

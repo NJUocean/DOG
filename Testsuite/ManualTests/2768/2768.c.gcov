@@ -1,0 +1,19 @@
+        -:    0:Source:2768.c
+        -:    0:Graph:2768.gcno
+        -:    0:Data:2768.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-mstackrealign -O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:__attribute__((noinline)) static void foo(int i1, int i2, int i3) {
+        1:    8:  if (i3 != 3)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main(int argc, char **argv) {
+        1:   13:  foo(1, 2, 3);
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,31 @@
+        -:    0:Source:3807.c
+        -:    0:Graph:3807.gcno
+        -:    0:Data:3807.gcda
+        -:    0:Runs:1
+        1:    1:__attribute__((__noinline__)) void dummy() { asm volatile(""); }
+        -:    2:
+        -:    3:int a, g, i, k, *p;
+        -:    4:signed char b;
+        -:    5:char e;
+        -:    6:short c, h;
+        -:    7:static short *d = &c;
+        -:    8:
+        8:    9:char foo(int p1, int p2) { return p1 - p2; }
+        -:   10:
+    #####:   11:int bar() {
+    #####:   12:  short *q = &c;
+    #####:   13:  *q = 1;
+    #####:   14:  *p = 0;
+    #####:   15:  return 0;
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        9:   19:  for (b = -22; b >= -29; b--) {
+        8:   20:    short *l = &h;
+        8:   21:    char *m = &e;
+        8:   22:    *l = a;
+       8*:   23:    g = foo(*m = k && *d, 1 > i) || bar();
+        -:   24:  }
+        1:   25:  dummy();
+        1:   26:  return 0;
+        -:   27:}

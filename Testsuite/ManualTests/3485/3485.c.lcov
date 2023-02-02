@@ -1,0 +1,33 @@
+    1|       |/* PR tree-optimization/50569 */
+    2|       |/* Reported by Paul Koning <pkoning@gcc.gnu.org> */
+    3|       |/* Reduced testcase by Mikael Pettersson <mikpe@it.uu.se> */
+    4|       |
+    5|       |struct event {
+    6|       |  struct {
+    7|       |    unsigned int sec;
+    8|       |  } sent __attribute__((packed));
+    9|       |};
+   10|       |
+   11|      1|void __attribute__((noinline, noclone)) frob_entry(char *buf) {
+   12|      1|  struct event event;
+   13|      1|
+   14|      1|  __builtin_memcpy(&event, buf, sizeof(event));
+   15|      1|  if (event.sent.sec < 64) {
+   16|      1|    event.sent.sec = -1U;
+   17|      1|    __builtin_memcpy(buf, &event, sizeof(event));
+   18|      1|  }
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  union {
+   23|      1|    char buf[1 + sizeof(struct event)];
+   24|      1|    int align;
+   25|      1|  } u;
+   26|      1|
+   27|      1|  __builtin_memset(&u, 0, sizeof u);
+   28|      1|
+   29|      1|  frob_entry(&u.buf[1]);
+   30|      1|
+   31|      1|  return 0;
+   32|      1|}
+

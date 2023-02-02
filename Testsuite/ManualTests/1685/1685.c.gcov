@@ -1,0 +1,30 @@
+        -:    0:Source:1685.c
+        -:    0:Graph:1685.gcno
+        -:    0:Data:1685.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define N 9
+        -:    4:
+        1:    5:void __attribute__((noipa)) f(double x, double y, double *res) {
+        1:    6:  y = -y;
+       10:    7:  for (int i = 0; i < N; ++i) {
+        9:    8:    double tmp = y;
+        9:    9:    y = x;
+        9:   10:    x = tmp;
+        9:   11:    res[i] = i;
+        -:   12:  }
+        1:   13:  res[N] = y * y;
+        1:   14:  res[N + 1] = x;
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  double res[N + 2];
+        1:   19:  f(10, 20, res);
+       10:   20:  for (int i = 0; i < N; ++i)
+        9:   21:    if (res[i] != i)
+    #####:   22:      __builtin_abort();
+        1:   23:  if (res[N] != 100 || res[N + 1] != -20)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

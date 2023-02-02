@@ -1,0 +1,19 @@
+        -:    0:Source:3542.c
+        -:    0:Graph:3542.gcno
+        -:    0:Data:3542.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target trampolines } */
+        -:    2:
+        1:    3:main() {
+        1:    4:  int i = 0;
+        1:    5:  int a(int x) {
+        3:    6:    while (x)
+        2:    7:      i++, x--;
+        1:    8:    return x;
+        -:    9:  }
+        -:   10:
+        1:   11:  if (a(2) != 0)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  exit(0);
+        -:   15:}

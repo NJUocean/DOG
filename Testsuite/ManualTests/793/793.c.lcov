@@ -1,0 +1,23 @@
+    1|       |/* When -fzero-initialized-in-bss was in effect, we used to only allocate
+    2|       |   storage for d1.a.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "" } */
+    5|       |/* { dg-skip-if "packed attribute missing for d1" { "epiphany-*-*" } } */
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|       |struct {
+   10|       |  int a;
+   11|       |  int x[];
+   12|       |} d1 = {0, 0};
+   13|       |int d2 = 0;
+   14|       |
+   15|      1|int main() {
+   16|      1|  d2 = 1;
+   17|      1|  if (sizeof(d1) != sizeof(int))
+   18|      0|    abort();
+   19|      1|  if (d1.x[0] != 0)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

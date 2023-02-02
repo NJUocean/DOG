@@ -1,0 +1,36 @@
+        -:    0:Source:517.c
+        -:    0:Graph:517.gcno
+        -:    0:Data:517.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/54519 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+       10:    5:__attribute__((noinline, noclone)) void fn1(int x) {
+       10:    6:  __asm volatile("" : "+r"(x) : : "memory");
+       10:    7:}
+        -:    8:
+        3:    9:static int fn2(int x, int y) {
+        3:   10:  if (y) {
+        2:   11:    fn1(x); /* { dg-final { gdb-test .+1 "x" "6" } } */
+        2:   12:    fn1(x); /* { dg-final { gdb-test . "y" "25" } } */
+        2:   13:    fn1(x);
+        2:   14:    fn1(x);
+        2:   15:    y = -2 + x;
+        2:   16:    y = y * y * y + y;
+        2:   17:    fn1(x + y); /* { dg-final { gdb-test . "y" "68" } } */
+        -:   18:  }
+        3:   19:  return x;
+        -:   20:}
+        -:   21:
+        -:   22:int (*p)(int, int) = fn2;
+        -:   23:
+        1:   24:int main() {
+        1:   25:  __asm volatile("" : : : "memory");
+        1:   26:  int (*q)(int, int) = p;
+        1:   27:  __asm volatile("" : : : "memory");
+        1:   28:  q(6, 25);
+        1:   29:  q(4, 117);
+        1:   30:  q(0, 0);
+        1:   31:  return 0;
+        -:   32:}

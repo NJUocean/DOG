@@ -1,0 +1,17 @@
+        -:    0:Source:3478.c
+        -:    0:Graph:3478.gcno
+        -:    0:Data:3478.gcda
+        -:    0:Runs:1
+        1:    1:unsigned int foo(unsigned int a, unsigned int b) {
+        -:    2:  unsigned i;
+        1:    3:  a = a & 1;
+       34:    4:  for (i = 0; i < b; ++i)
+       33:    5:    a = a << 1 | a >> (sizeof(unsigned int) * 8 - 1);
+        1:    6:  return a;
+        -:    7:}
+        -:    8:extern void abort(void);
+        1:    9:int main() {
+        1:   10:  if (foo(1, sizeof(unsigned int) * 8 + 1) != 2)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

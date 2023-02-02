@@ -1,0 +1,38 @@
+        -:    0:Source:1953.c
+        -:    0:Graph:1953.gcno
+        -:    0:Data:1953.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-code-hoisting -fdump-tree-pre-stats" } */
+        -:    3:
+        -:    4:struct A {
+        -:    5:  int i;
+        -:    6:};
+        -:    7:
+        -:    8:struct B {
+        -:    9:  struct A a[2];
+        -:   10:};
+        -:   11:
+        -:   12:int i = 1;
+        -:   13:struct B b = {0, 3};
+        -:   14:
+        1:   15:void test() {
+        1:   16:  if (b.a[0].i != i) {
+        1:   17:    int t = b.a[0].i;
+        1:   18:    b.a[0] = b.a[1];
+        1:   19:    b.a[1].i = t;
+        -:   20:  }
+        -:   21:
+        1:   22:  if (b.a[1].i == i)
+    #####:   23:    __builtin_abort();
+        -:   24:
+        1:   25:  if (b.a[0].i == 0)
+    #####:   26:    __builtin_abort();
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  test();
+        1:   31:  return 0;
+        -:   32:}
+        -:   33:
+        -:   34:/* { dg-final { scan-tree-dump "Eliminated: 1" "pre" } } */

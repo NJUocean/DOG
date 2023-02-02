@@ -1,0 +1,45 @@
+        -:    0:Source:951.c
+        -:    0:Graph:951.gcno
+        -:    0:Data:951.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  int32_t f0;
+        -:   10:  signed f1 : 8;
+        -:   11:  const uint64_t f2;
+        -:   12:  uint32_t f3;
+        -:   13:};
+        -:   14:#pragma pack(pop)
+        -:   15:
+        -:   16:static uint32_t g_2 = 9UL;
+        -:   17:
+        -:   18:static const struct S0 func_1(void);
+        -:   19:
+        1:   20:static const struct S0 func_1(void) {
+        1:   21:  if (g_2) {
+        -:   22:    const struct S0 l_3 = {1L, 8, 0x44AD374006310FECLL, 0xFE8B0D19L};
+        1:   23:    return l_3;
+        -:   24:  } else {
+        -:   25:    const struct S0 l_4[1][1] = {{{1L, 9, 18446744073709551615UL, 0x4DC41FD9L}}};
+        -:   26:    int i, j;
+    #####:   27:    return l_4[0][0];
+        -:   28:  }
+        -:   29:}
+        -:   30:
+        1:   31:int main(int argc, char *argv[]) {
+        1:   32:  int print_hash_value = 0;
+       1*:   33:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   34:    print_hash_value = 1;
+        1:   35:  platform_main_begin();
+        1:   36:  crc32_gentab();
+        1:   37:  func_1();
+        1:   38:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   39:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   40:  return 0;
+        -:   41:}

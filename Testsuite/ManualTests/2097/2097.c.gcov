@@ -1,0 +1,47 @@
+        -:    0:Source:2097.c
+        -:    0:Graph:2097.gcno
+        -:    0:Data:2097.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:struct tree_decl {
+        -:    6:  union tree_decl_u1 {
+        -:    7:    int f;
+        -:    8:    long i;
+        -:    9:    struct tree_decl_u1_a {
+        -:   10:      unsigned int align : 24;
+        -:   11:      unsigned int off_align : 8;
+        -:   12:    } a;
+        -:   13:  } u1;
+        -:   14:};
+        -:   15:
+        -:   16:extern void abort(void);
+        -:   17:
+        1:   18:unsigned int assemble_variable(struct tree_decl decl) {
+        -:   19:  unsigned int align;
+        -:   20:
+        1:   21:  align = decl.u1.a.align;
+        -:   22:
+        1:   23:  if (align > (1 << ((8 * 4) < 64 ? (8 * 4) - 2 : 62)))
+    #####:   24:    align = (1 << ((8 * 4) < 64 ? (8 * 4) - 2 : 62));
+        -:   25:
+        -:   26:  /* VRP should not be propagating 0 to the RHS of this assignment.
+        -:   27:     But it was erroneously applying a cast operation between types of
+        -:   28:     different precision.  align is an unsigned int with range [0,
+        -:   29:     0x4000000] but the .align field holds only 24 bits.  So the cast
+        -:   30:     was returning a [0, 0] range.  */
+        1:   31:  decl.u1.a.align = align;
+        -:   32:
+        1:   33:  return decl.u1.a.align;
+        -:   34:}
+        -:   35:
+        1:   36:int main() {
+        -:   37:  struct tree_decl decl;
+        1:   38:  decl.u1.a.align = 13;
+        1:   39:  unsigned int x = assemble_variable(decl);
+        1:   40:  if (x == 0)
+    #####:   41:    abort();
+        1:   42:  return 0;
+        -:   43:}

@@ -1,0 +1,20 @@
+        -:    0:Source:1779.c
+        -:    0:Graph:1779.gcno
+        -:    0:Data:1779.gcda
+        -:    0:Runs:1
+        -:    1:/* Tail call optimizations would reverse the order of additions in func().  */
+        -:    2:
+        4:    3:double func(const double *array) {
+        4:    4:  double d = *array;
+        4:    5:  if (d == 0.0)
+        1:    6:    return d;
+        -:    7:  else
+        3:    8:    return d + func(array + 1);
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  double values[] = {0.1e-100, 1.0, -1.0, 0.0};
+        1:   13:  if (func(values) != 0.1e-100)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

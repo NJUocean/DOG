@@ -1,0 +1,38 @@
+        -:    0:Source:2428.c
+        -:    0:Graph:2428.gcno
+        -:    0:Data:2428.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-O3 --save-temps" } */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        -:    6:#define N 8
+        -:    7:float in[N] = {1.0, -1.0, -2.0, 3.0, -5.0, -8.0, 13.0, 21.0};
+        -:    8:int out[N];
+        -:    9:
+        4:   10:void foo(int *i, float *f) {
+        4:   11:  i[0] = __builtin_signbit(f[0]);
+        4:   12:  i[1] = __builtin_signbit(f[1]);
+        4:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-assembler-not {-2147483648} } } */
+        -:   16:/* { dg-final { scan-assembler {\tushr\tv[0-9]+.2s, v[0-9]+.2s, 31} } } */
+        -:   17:
+        1:   18:int main() {
+        -:   19:  int i;
+        -:   20:
+        1:   21:  foo(out, in);
+        1:   22:  foo(out + 2, in + 2);
+        1:   23:  foo(out + 4, in + 4);
+        1:   24:  foo(out + 6, in + 6);
+        -:   25:
+        9:   26:  for (i = 0; i < N; i++) {
+        8:   27:    if (in[i] >= 0.0 && out[i])
+    #####:   28:      abort();
+        8:   29:    if (in[i] < 0.0 && !out[i])
+    #####:   30:      abort();
+        -:   31:  }
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

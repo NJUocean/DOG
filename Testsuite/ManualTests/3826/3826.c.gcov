@@ -1,0 +1,27 @@
+        -:    0:Source:3826.c
+        -:    0:Graph:3826.gcno
+        -:    0:Data:3826.gcda
+        -:    0:Runs:1
+        -:    1:int i;
+        -:    2:
+        6:    3:__attribute__((noinline, noclone)) void bar(char *p) {
+        6:    4:  if (i < 1 || i > 6)
+    #####:    5:    __builtin_abort();
+        6:    6:  if (__builtin_memcmp(p, "abcdefg", i + 1) != 0)
+    #####:    7:    __builtin_abort();
+        6:    8:  __builtin_memset(p, ' ', 7);
+        6:    9:}
+        -:   10:
+       16:   11:__attribute__((noinline, noclone)) void foo(char *p, unsigned long l) {
+       16:   12:  if (l < 1 || l > 6)
+       10:   13:    return;
+        -:   14:  char buf[7];
+        6:   15:  __builtin_memcpy(buf, p, l + 1);
+        6:   16:  bar(buf);
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+       17:   20:  for (i = 0; i < 16; i++)
+       16:   21:    foo("abcdefghijklmnop", i);
+        1:   22:  return 0;
+        -:   23:}

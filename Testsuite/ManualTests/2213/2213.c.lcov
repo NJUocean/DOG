@@ -1,0 +1,20 @@
+    1|       |#include <string.h>
+    2|       |
+    3|    400|#define SIZE 400
+    4|       |
+    5|       |int foo[SIZE];
+    6|       |char bar[SIZE];
+    7|       |
+    8|      1|void __attribute__((noinline)) foo_func(void) {
+    9|      1|  int i;
+   10|    400|  for (i = 1; i < SIZE; i++)
+   11|    399|    if (bar[i])
+   12|    399|      foo[i] = 1;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  memset(bar, 1, sizeof(bar));
+   17|      1|  foo_func();
+   18|      1|  return 0;
+   19|      1|}
+

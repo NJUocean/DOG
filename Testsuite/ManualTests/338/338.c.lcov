@@ -1,0 +1,55 @@
+    1|       |/* Duff's device is legal C; test to make sure the compiler
+    2|       |   doesn't complain about it.
+    3|       |
+    4|       |   Jason Thorpe <thorpej@wasabisystems.com>
+    5|       |   Derived from the BSD Telnet Kerberos 4 checksum routine.
+    6|       |   See also PR 5230.  */
+    7|       |
+    8|       |/* { dg-do run } */
+    9|       |/* { dg-options "-O2" } */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |extern void exit(int);
+   13|       |
+   14|       |#if __INT_MAX__ >= 2147483647
+   15|       |/* At least 32-bit integers. */
+   16|       |typedef int type32;
+   17|       |#else
+   18|       |typedef long type32;
+   19|       |#endif
+   20|       |
+   21|      1|type32 cksum(const unsigned char *src, unsigned long size) {
+   22|      1|  type32 ck = 0;
+   23|      1|
+   24|      1|  switch (size & 3) {
+   25|     12|    while (size > 0) {
+   26|     11|    case 0:
+   27|     11|      ck ^= (type32)*src++ << 24;
+   28|     11|      --size;
+   29|     11|    case 3:
+   30|     11|      ck ^= (type32)*src++ << 16;
+   31|     11|      --size;
+   32|     12|    case 2:
+   33|     12|      ck ^= (type32)*src++ << 8;
+   34|     12|      --size;
+   35|     12|    case 1:
+   36|     12|      ck ^= (type32)*src++;
+   37|     12|      --size;
+   38|     12|    }
+   39|      1|  }
+   40|      1|
+   41|      1|  return ck;
+   42|      1|}
+   43|       |
+   44|       |const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+   45|       |
+   46|      1|int main() {
+   47|      1|  type32 ck;
+   48|      1|
+   49|      1|  ck = cksum((const unsigned char *)testpat, sizeof(testpat));
+   50|      1|  if (ck != 925902908)
+   51|      0|    abort();
+   52|      1|
+   53|      1|  exit(0);
+   54|      1|}
+

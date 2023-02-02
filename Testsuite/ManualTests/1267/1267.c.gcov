@@ -1,0 +1,26 @@
+        -:    0:Source:1267.c
+        -:    0:Graph:1267.gcno
+        -:    0:Data:1267.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* PR 25718: invalid constant operand to the "bound" insn; error at
+        -:    3:   assembly time.  We'll make sure the code is correct to: run a few
+        -:    4:   example values.  */
+        -:    5:
+        -:    6:extern void exit(int);
+        -:    7:extern void abort(void);
+        6:    8:unsigned __attribute__((__noinline__)) foo(unsigned a) {
+        -:    9:  unsigned l;
+        6:   10:  l = (a >= (~0u - 512) ? (~0u - 512) : a);
+        6:   11:  return l;
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        2:   15:  if (foo((unsigned)-512) != (unsigned)-513 ||
+        2:   16:      foo((unsigned)-514) != (unsigned)-514 ||
+        2:   17:      foo((unsigned)-513) != (unsigned)-513 ||
+        2:   18:      foo((unsigned)-1) != (unsigned)-513 || foo(513) != 513 || foo(0) != 0)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  exit(0);
+        -:   22:}

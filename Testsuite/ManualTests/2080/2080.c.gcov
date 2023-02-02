@@ -1,0 +1,37 @@
+        -:    0:Source:2080.c
+        -:    0:Graph:2080.gcno
+        -:    0:Data:2080.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-fre1" } */
+        -:    4:
+        -:    5:long long int a = -465274079317386463LL;
+        -:    6:int b = 856872806;
+        -:    7:int c = -1940894202;
+        -:    8:int d = 1718449211;
+        -:    9:int e = -392681565;
+        -:   10:unsigned long long int f = 13521452247506316486ULL;
+        -:   11:int g = -13194608;
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) void foo() {
+        1:   14:  if (!a - a)
+        1:   15:    c = b = 0;
+        -:   16:  else
+    #####:   17:    d = 3UL * a == 0;
+        1:   18:  if (g / a)
+    #####:   19:    e = 0 < -a + 500849970701012771LL + (unsigned long)-a;
+        -:   20:  else
+        1:   21:    f = 4081116982543369LL & a;
+        1:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  asm volatile("" : : : "memory");
+        1:   26:  foo();
+        1:   27:  if (f != 2818598057803777LL)
+    #####:   28:    __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}
+        -:   31:
+        -:   32:/* Should CSE all loads of a.  */
+        -:   33:/* { dg-final { scan-tree-dump-times " = a;" 1 "fre1" } } */

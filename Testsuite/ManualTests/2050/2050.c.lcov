@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run { target { ! "m68k*-*-* mmix*-*-* bfin*-*-* v850*-*-* moxie*-*-*
+    2|       | * cris*-*-* m32c*-*-* fr30*-*-* mcore*-*-* powerpc*-*-* xtensa*-*-* hppa*-*-*
+    3|       | * nios2*-*-* or1k*-*-* pru*-*-*"} } } */
+    4|       |
+    5|       |/* { dg-options "-O2 -fno-inline -fdump-tree-reassoc1-details --param
+    6|       | * logical-op-non-short-circuit=1" } */
+    7|       |/* { dg-additional-options "-mbranch-cost=2" { target branch_cost } } */
+    8|       |
+    9|      3|int test(int a, int b, int c) {
+   10|      3|  if (a == 10 || a == 12)
+   11|      2|    return b;
+   12|      1|  else
+   13|      1|    return c;
+   14|      3|}
+   15|      1|int main() {
+   16|      1|  if (test(10, 20, 30) != 20)
+   17|      0|    __builtin_abort();
+   18|      1|  if (test(12, 20, 30) != 20)
+   19|      0|    __builtin_abort();
+   20|      1|  if (test(26, 20, 30) != 30)
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+   24|       |/* { dg-final { scan-tree-dump-times "Optimizing range tests" 1 "reassoc1"} }*/
+

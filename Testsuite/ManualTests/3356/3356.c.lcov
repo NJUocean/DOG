@@ -1,0 +1,13 @@
+    1|       |/* This testcase was being miscompiled, because operand_equal_p
+    2|       |   returned that (unsigned long) d and (long) d are equal.  */
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  double d = -12.0;
+    8|      1|  long l = (d > 10000) ? (unsigned long)d : (long)d;
+    9|      1|  if (l != -12)
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

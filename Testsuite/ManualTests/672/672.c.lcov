@@ -1,0 +1,8 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options {{-flto -g -fvar-tracking-assignments}} } */
+    3|       |/* { dg-suppress-ld-options "-g -fvar-tracking-assignments" } */
+    4|       |
+    5|      0|void foo() { int hex = 0x4; }
+    6|       |
+    7|      1|int main() { return 0; }
+

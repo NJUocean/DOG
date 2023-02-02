@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |int e[100], n, here;
+    6|       |
+    7|      1|void __attribute__((noinline)) foo(void) {
+    8|      1|  int i, k = 0;
+    9|     11|  for (i = 0; i < n; ++i) {
+   10|     10|    e[k] = 10;
+   11|     10|    ++k;
+   12|     10|    e[k] = 10;
+   13|     10|    ++k;
+   14|     10|  }
+   15|     21|  for (i = 0; i < k; ++i)
+   16|     20|    here = 1;
+   17|      1|  if (here != 1)
+   18|      0|    abort();
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  n = 10;
+   23|      1|  foo();
+   24|      1|  return 0;
+   25|      1|}
+

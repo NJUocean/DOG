@@ -1,0 +1,28 @@
+        -:    0:Source:2209.c
+        -:    0:Graph:2209.gcno
+        -:    0:Data:2209.gcda
+        -:    0:Runs:1
+        -:    1:static double identity[4][4] = {
+        -:    2:    {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+        -:    3:static double expected[4][4] = {
+        -:    4:    {1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+        -:    5:
+        1:    6:static void __attribute__((noinline, noclone)) kernel(double A[4][4]) {
+        -:    7:  double tmp[4][4];
+        5:    8:  for (int j = 0; j < 4; j++)
+       20:    9:    for (int k = 0; k < 4; k++)
+       16:   10:      tmp[j][k] = identity[j][0] * identity[j][k];
+        5:   11:  for (int j = 0; j < 4; j++)
+       20:   12:    for (int k = 0; k < 4; k++)
+       16:   13:      A[j][k] = tmp[j][k];
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  double A[4][4] = {{0.0}};
+        1:   18:  kernel(A);
+        5:   19:  for (int i = 0; i < 4; i++)
+       20:   20:    for (int j = 0; j < 4; j++)
+       16:   21:      if (A[i][j] != expected[i][j])
+    #####:   22:        __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

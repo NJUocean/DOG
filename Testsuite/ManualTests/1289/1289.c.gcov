@@ -1,0 +1,22 @@
+        -:    0:Source:1289.c
+        -:    0:Graph:1289.gcno
+        -:    0:Data:1289.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fwrapv" } */
+        -:    3:
+        -:    4:void foo(unsigned long long bb, unsigned short tn, unsigned e, unsigned *w);
+        1:    5:void foo(unsigned long long bb, unsigned short tn, unsigned e, unsigned *w) {
+        1:    6:  unsigned n = tn + bb;
+        -:    7:  do {
+       1*:    8:    e = (e > n) ? e : *w;
+        1:    9:    n -= (e > n) ? n : e;
+        1:   10:    if (*w)
+    #####:   11:      *w = 0;
+        1:   12:  } while (n);
+        1:   13:}
+        1:   14:int main() {
+        1:   15:  unsigned w = 0;
+        1:   16:  foo(0, 0, 0, &w);
+        1:   17:  return 0;
+        -:   18:}

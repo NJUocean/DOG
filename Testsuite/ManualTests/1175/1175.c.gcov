@@ -1,0 +1,38 @@
+        -:    0:Source:1175.c
+        -:    0:Graph:1175.gcno
+        -:    0:Data:1175.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-set-target-env-var ASAN_OPTIONS "detect_invalid_pointer_pairs=2
+        -:    3: * halt_on_error=1" } */
+        -:    4:/* { dg-options "-fsanitize=address,pointer-subtract" } */
+        -:    5:
+        -:    6:volatile __PTRDIFF_TYPE__ v;
+        -:    7:
+        8:    8:void bar(char *p, char *q) {
+        8:    9:  v = q - p;
+        8:   10:  v = p - q;
+        8:   11:}
+        -:   12:
+        -:   13:char global[10000] = {};
+        -:   14:
+        1:   15:int main() {
+        -:   16:  /* Heap allocated memory.  */
+        1:   17:  char *p = (char *)__builtin_malloc(42);
+        1:   18:  bar(p, p + 20);
+        1:   19:  __builtin_free(p);
+        -:   20:
+        -:   21:  /* Global variable.  */
+        1:   22:  bar(&global[0], &global[100]);
+        1:   23:  bar(&global[1000], &global[9000]);
+        1:   24:  bar(&global[500], &global[10]);
+        1:   25:  bar(&global[0], &global[10000]);
+        -:   26:
+        -:   27:  /* Stack variable.  */
+        -:   28:  char stack[10000];
+        1:   29:  bar(&stack[0], &stack[100]);
+        1:   30:  bar(&stack[1000], &stack[9000]);
+        1:   31:  bar(&stack[500], &stack[10]);
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

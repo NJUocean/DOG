@@ -1,0 +1,67 @@
+        -:    0:Source:4018.c
+        -:    0:Graph:4018.gcno
+        -:    0:Data:4018.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/88739 */
+        -:    2:#if __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+        -:    3:struct A {
+        -:    4:  unsigned int a, b, c;
+        -:    5:  unsigned int d : 30;
+        -:    6:  unsigned int e : 2;
+        -:    7:};
+        -:    8:
+        -:    9:union U {
+        -:   10:  struct A f;
+        -:   11:  unsigned int g[4];
+        -:   12:  unsigned short h[8];
+        -:   13:  unsigned char i[16];
+        -:   14:};
+        -:   15:volatile union U v = {.f.d = 0x4089};
+        -:   16:
+        5:   17:__attribute__((noipa)) void bar(int x) {
+        -:   18:  static int i;
+        5:   19:  switch (i++) {
+        1:   20:  case 0:
+        1:   21:    if (x != v.f.d)
+    #####:   22:      __builtin_abort();
+        1:   23:    break;
+        1:   24:  case 1:
+        1:   25:    if (x != v.f.e)
+    #####:   26:      __builtin_abort();
+        1:   27:    break;
+        1:   28:  case 2:
+        1:   29:    if (x != v.g[3])
+    #####:   30:      __builtin_abort();
+        1:   31:    break;
+        1:   32:  case 3:
+        1:   33:    if (x != v.h[6])
+    #####:   34:      __builtin_abort();
+        1:   35:    break;
+        1:   36:  case 4:
+        1:   37:    if (x != v.h[7])
+    #####:   38:      __builtin_abort();
+        1:   39:    break;
+    #####:   40:  default:
+    #####:   41:    __builtin_abort();
+        -:   42:    break;
+        -:   43:  }
+        5:   44:}
+        -:   45:
+        1:   46:void foo(unsigned int x) {
+        -:   47:  union U u;
+        1:   48:  u.f.d = x >> 2;
+        1:   49:  u.f.e = 0;
+        1:   50:  bar(u.f.d);
+        1:   51:  bar(u.f.e);
+        1:   52:  bar(u.g[3]);
+        1:   53:  bar(u.h[6]);
+        1:   54:  bar(u.h[7]);
+        1:   55:}
+        -:   56:
+        1:   57:int main() {
+        1:   58:  foo(0x10224);
+        1:   59:  return 0;
+        -:   60:}
+        -:   61:#else
+        -:   62:int main() { return 0; }
+        -:   63:#endif

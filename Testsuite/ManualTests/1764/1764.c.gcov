@@ -1,0 +1,22 @@
+        -:    0:Source:1764.c
+        -:    0:Graph:1764.gcno
+        -:    0:Data:1764.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that changes to a variable are reflected in a VLA later in the
+        -:    2:   expression.  */
+        -:    3:/* { dg-options "" } */
+        -:    4:
+        -:    5:#ifdef __cplusplus
+        -:    6:extern "C"
+        -:    7:#endif
+        -:    8:    void
+        -:    9:    abort();
+        -:   10:
+        -:   11:int i = 4;
+        1:   12:int f() { return i; }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (i += 2, sizeof(*(int(*)[f()])0) != 6 * sizeof(int))
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

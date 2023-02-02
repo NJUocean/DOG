@@ -1,0 +1,67 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O" } */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |typedef unsigned int u_int32;
+    7|       |
+    8|       |typedef struct {
+    9|       |  union {
+   10|       |    u_int32 Xl_ui;
+   11|       |  } Ul_i;
+   12|       |  union {
+   13|       |    u_int32 Xl_uf;
+   14|       |  } Ul_f;
+   15|       |} l_fp;
+   16|       |
+   17|      1|void dolfptoa(short ndec) {
+   18|      1|  l_fp work, ftmp;
+   19|      1|
+   20|      1|  work.Ul_i.Xl_ui = 0;
+   21|      1|  work.Ul_f.Xl_uf = 0x535f3d8;
+   22|      1|
+   23|      7|  while (ndec > 0) {
+   24|      6|    u_int32 lo_tmp;
+   25|      6|    u_int32 hi_tmp;
+   26|      6|
+   27|      6|    ndec--;
+   28|      6|    work.Ul_i.Xl_ui = 0;
+   29|      6|    work.Ul_i.Xl_ui <<= 1;
+   30|      6|    if ((work.Ul_f.Xl_uf) & 0x80000000)
+   31|      1|      (work.Ul_i.Xl_ui) |= 0x1;
+   32|      6|    (work.Ul_f.Xl_uf) <<= 1;
+   33|      6|
+   34|      6|    ftmp = work;
+   35|      6|    (work.Ul_i.Xl_ui) <<= 1;
+   36|      6|    if ((work.Ul_f.Xl_uf) & 0x80000000)
+   37|      2|      (work.Ul_i.Xl_ui) |= 0x1;
+   38|      6|    (work.Ul_f.Xl_uf) <<= 1;
+   39|      6|
+   40|      6|    (work.Ul_i.Xl_ui) <<= 1;
+   41|      6|    if ((work.Ul_f.Xl_uf) & 0x80000000)
+   42|      2|      (work.Ul_i.Xl_ui) |= 0x1;
+   43|      6|    (work.Ul_f.Xl_uf) <<= 1;
+   44|      6|
+   45|      6|    lo_tmp = ((work.Ul_f.Xl_uf) & 0xffff) + ((ftmp.Ul_f.Xl_uf) & 0xffff);
+   46|      6|    hi_tmp = (((work.Ul_f.Xl_uf) >> 16) & 0xffff) +
+   47|      6|             (((ftmp.Ul_f.Xl_uf) >> 16) & 0xffff);
+   48|      6|
+   49|      6|    if (lo_tmp & 0x10000)
+   50|      2|      hi_tmp++;
+   51|      6|
+   52|      6|    (work.Ul_f.Xl_uf) = ((hi_tmp & 0xffff) << 16) | (lo_tmp & 0xffff);
+   53|      6|    (work.Ul_i.Xl_ui) += (ftmp.Ul_i.Xl_ui);
+   54|      6|
+   55|      6|    if (hi_tmp & 0x10000)
+   56|      3|      (work.Ul_i.Xl_ui)++;
+   57|      6|
+   58|      6|    if (!(work.Ul_i.Xl_ui < 10))
+   59|      0|      abort();
+   60|      6|  }
+   61|      1|}
+   62|       |
+   63|      1|int main() {
+   64|      1|  dolfptoa(6);
+   65|      1|  return 0;
+   66|      1|}
+

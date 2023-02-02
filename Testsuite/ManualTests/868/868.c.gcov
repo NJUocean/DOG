@@ -1,0 +1,25 @@
+        -:    0:Source:868.c
+        -:    0:Graph:868.gcno
+        -:    0:Data:868.gcda
+        -:    0:Runs:1
+    #####:    1:unsigned long bad(int reg, unsigned long inWord) {
+        -:    2:  union {
+        -:    3:    unsigned long word;
+        -:    4:    unsigned char byte[4];
+        -:    5:  } data;
+        -:    6:
+    #####:    7:  data.word = inWord;
+    #####:    8:  data.byte[reg] = 0;
+        -:    9:
+    #####:   10:  return data.word;
+        -:   11:}
+        -:   12:
+        1:   13:main() {
+        -:   14:  /* XXX This test could be generalized.  */
+        -:   15:  if (sizeof(long) != 4)
+        1:   16:    exit(0);
+        -:   17:
+        -:   18:  if (bad(0, 0xdeadbeef) == 0xdeadbeef)
+        -:   19:    abort();
+        -:   20:  exit(0);
+        -:   21:}

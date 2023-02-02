@@ -1,0 +1,9 @@
+    1|       |/* { dg-lto-options "-mcpu=v9" { target sparc*-*-* } } */
+    2|       |/* { dg-require-effective-target sync_char_short } */
+    3|      0|void _cairo_clip_path_reference() {
+    4|      0|  int a;
+    5|      0|  __sync_fetch_and_add(&a, 1);
+    6|      0|}
+    7|       |
+    8|      1|int main(void) { return 0; }
+

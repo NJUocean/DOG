@@ -1,0 +1,27 @@
+        -:    0:Source:3645.c
+        -:    0:Graph:3645.gcno
+        -:    0:Data:3645.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/40747 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        7:    5:int foo(int i) { return (i < 4 && i >= 0) ? i : 4; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  if (foo(-1) != 4)
+    #####:    9:    abort();
+        1:   10:  if (foo(0) != 0)
+    #####:   11:    abort();
+        1:   12:  if (foo(1) != 1)
+    #####:   13:    abort();
+        1:   14:  if (foo(2) != 2)
+    #####:   15:    abort();
+        1:   16:  if (foo(3) != 3)
+    #####:   17:    abort();
+        1:   18:  if (foo(4) != 4)
+    #####:   19:    abort();
+        1:   20:  if (foo(5) != 4)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,23 @@
+        -:    0:Source:636.c
+        -:    0:Graph:636.gcno
+        -:    0:Data:636.gcda
+        -:    0:Runs:1
+        -:    1:/* PR ipa/92529 */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized"  } */
+        -:    3:
+    #####:    4:int foo(volatile int a) { return (char)a; }
+        -:    5:
+        1:    6:int bar(volatile int a) { return (short)a; }
+        -:    7:
+        -:    8:#pragma GCC optimize("-O0")
+        -:    9:
+        1:   10:int main(int argc, char **argv) {
+        1:   11:  int r = bar(1000);
+        1:   12:  __builtin_printf("global: %d\n", r);
+        1:   13:  if (r != 1000)
+    #####:   14:    __builtin_abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        -:   19:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

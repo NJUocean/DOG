@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fdump-tree-alias" } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+    4|       |
+    5|       |int *p;
+    6|      1|void __attribute__((noinline, noclone)) bar(void) { *p = 1; }
+    7|      1|int __attribute__((noinline, noclone)) foo(__INTPTR_TYPE__ addr) {
+    8|      1|  int i;
+    9|      1|  /* q points to ANYTHING */
+   10|      1|  int **q = (int **)addr;
+   11|      1|  /* this store needs to cause i to escape */
+   12|      1|  *q = &i;
+   13|      1|  i = 0;
+   14|      1|  /* and thus be clobbered by this function call */
+   15|      1|  bar();
+   16|      1|  return i;
+   17|      1|}
+   18|       |extern void abort(void);
+   19|      1|int main() {
+   20|      1|  if (foo((__INTPTR_TYPE__)&p) != 1)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final { scan-tree-dump "ESCAPED = {\[^\n\}\]* i \[^\n\}\]*}" "alias" } }
+   26|       | */
+

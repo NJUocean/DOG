@@ -1,0 +1,24 @@
+        -:    0:Source:1226.c
+        -:    0:Graph:1226.gcno
+        -:    0:Data:1226.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow" } */
+        -:    3:
+        -:    4:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int x = INT_MIN;
+        1:    8:  int y = 0;
+        -:    9:  int z;
+        1:   10:  asm("" : "+g"(y));
+        1:   11:  asm("" : "+g"(x));
+        1:   12:  z = y - (-x);
+        1:   13:  asm("" : "+g"(z));
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-output "negation of -2147483648 cannot be represented in type
+        -:   17: * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   18: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   19:/* { dg-output "\[^\n\r]*signed integer overflow: 0 - -2147483648 cannot be
+        -:   20: * represented in type 'int'" } */

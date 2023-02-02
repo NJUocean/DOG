@@ -1,0 +1,57 @@
+        -:    0:Source:202.c
+        -:    0:Graph:202.gcno
+        -:    0:Data:202.gcda
+        -:    0:Runs:1
+        -:    1:/* Test C11 _Generic.  Valid uses.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    4:
+        -:    5:_Noreturn extern void exit(int);
+        -:    6:_Noreturn extern void abort(void);
+        -:    7:
+       18:    8:void check(int n) {
+       18:    9:  if (n)
+    #####:   10:    abort();
+       18:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  int n = 0;
+        -:   15:
+        1:   16:  check(_Generic(n++, int : 0));
+        -:   17:  /* _Generic should not evaluate its argument.  */
+        1:   18:  check(n);
+        -:   19:
+        1:   20:  check(_Generic(n, double : n++, default : 0));
+        1:   21:  check(n);
+        -:   22:
+        -:   23:  /* Qualifiers are removed for the purpose of type matching.  */
+        1:   24:  const int cn = 0;
+        1:   25:  check(_Generic(cn, int : 0, default : n++));
+        1:   26:  check(n);
+        1:   27:  check(_Generic((const int)n, int : 0, default : n++));
+        1:   28:  check(n);
+        -:   29:
+        -:   30:  /* Arrays decay to pointers.  */
+        -:   31:  int a[1];
+        -:   32:  const int ca[1];
+        1:   33:  check(_Generic(a, int * : 0, const int * : n++));
+        1:   34:  check(n);
+        1:   35:  check(_Generic(ca, const int * : 0, int * : n++));
+        1:   36:  check(n);
+        -:   37:
+        -:   38:  /* Functions decay to pointers.  */
+        -:   39:  extern void f(void);
+        1:   40:  check(_Generic(f, void (*)(void) : 0, default : n++));
+        1:   41:  check(n);
+        -:   42:
+        -:   43:  /* _Noreturn is not part of the function type.  */
+        1:   44:  check(_Generic(&abort, void (*)(void) : 0, default : n++));
+        1:   45:  check(n);
+        -:   46:
+        -:   47:  /* Integer promotions do not occur.  */
+        -:   48:  short s;
+        1:   49:  check(_Generic(s, short : 0, int : n++));
+        1:   50:  check(n);
+        -:   51:
+        1:   52:  exit(0);
+        -:   53:}

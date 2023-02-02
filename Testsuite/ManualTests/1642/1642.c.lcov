@@ -1,0 +1,26 @@
+    1|       |/* PR c/63862 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined" } */
+    4|       |
+    5|       |unsigned long long int __attribute__((noinline, noclone))
+    6|      1|foo(unsigned long long int i, unsigned long long int j) {
+    7|      1|  asm("");
+    8|      1|  return i >> j;
+    9|      1|}
+   10|       |
+   11|       |unsigned long long int __attribute__((noinline, noclone))
+   12|      1|bar(unsigned long long int i, unsigned long long int j) {
+   13|      1|  asm("");
+   14|      1|  return i << j;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  foo(1ULL, 0x100000000ULL);
+   19|      1|  bar(1ULL, 0x100000000ULL);
+   20|      1|}
+   21|       |
+   22|       |/* { dg-output "shift exponent 4294967296 is too large for \[^\n\r]*-bit type
+   23|       | * 'long long unsigned int'\[^\n\r]*(\n|\r\n|\r)" } */
+   24|       |/* { dg-output "\[^\n\r]*shift exponent 4294967296 is too large for
+   25|       | * \[^\n\r]*-bit type 'long long unsigned int'" } */
+

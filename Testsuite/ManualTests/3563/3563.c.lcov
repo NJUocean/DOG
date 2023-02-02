@@ -1,0 +1,7 @@
+    1|       |/* REPRODUCED:RUN:SIGNAL MACHINE:i386 OPTIONS:-O */
+    2|      1|main() {
+    3|      1|  if (strcmp("X", "") < 0)
+    4|      0|    abort();
+    5|      1|  exit(0);
+    6|      1|}
+

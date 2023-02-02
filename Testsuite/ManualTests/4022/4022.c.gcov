@@ -1,0 +1,68 @@
+        -:    0:Source:4022.c
+        -:    0:Graph:4022.gcno
+        -:    0:Data:4022.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/89369 */
+        -:    2:
+        -:    3:#if __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8 && __CHAR_BIT__ == 8
+        -:    4:struct S {
+        -:    5:  unsigned int u[4];
+        -:    6:};
+        -:    7:
+        1:    8:static void foo(struct S *out, struct S const *in, int shift) {
+        -:    9:  unsigned long long th, tl, oh, ol;
+        1:   10:  th = ((unsigned long long)in->u[3] << 32) | in->u[2];
+        1:   11:  tl = ((unsigned long long)in->u[1] << 32) | in->u[0];
+        1:   12:  oh = th >> (shift * 8);
+        1:   13:  ol = tl >> (shift * 8);
+        1:   14:  ol |= th << (64 - shift * 8);
+        1:   15:  out->u[1] = ol >> 32;
+        1:   16:  out->u[0] = ol;
+        1:   17:  out->u[3] = oh >> 32;
+        1:   18:  out->u[2] = oh;
+        1:   19:}
+        -:   20:
+        1:   21:static void bar(struct S *out, struct S const *in, int shift) {
+        -:   22:  unsigned long long th, tl, oh, ol;
+        1:   23:  th = ((unsigned long long)in->u[3] << 32) | in->u[2];
+        1:   24:  tl = ((unsigned long long)in->u[1] << 32) | in->u[0];
+        1:   25:  oh = th << (shift * 8);
+        1:   26:  ol = tl << (shift * 8);
+        1:   27:  oh |= tl >> (64 - shift * 8);
+        1:   28:  out->u[1] = ol >> 32;
+        1:   29:  out->u[0] = ol;
+        1:   30:  out->u[3] = oh >> 32;
+        1:   31:  out->u[2] = oh;
+        1:   32:}
+        -:   33:
+        1:   34:__attribute__((noipa)) static void baz(struct S *r, struct S *a, struct S *b,
+        -:   35:                                       struct S *c, struct S *d) {
+        -:   36:  struct S x, y;
+        1:   37:  bar(&x, a, 1);
+        1:   38:  foo(&y, c, 1);
+        1:   39:  r->u[0] = a->u[0] ^ x.u[0] ^ ((b->u[0] >> 11) & 0xdfffffefU) ^ y.u[0] ^
+        1:   40:            (d->u[0] << 18);
+        1:   41:  r->u[1] = a->u[1] ^ x.u[1] ^ ((b->u[1] >> 11) & 0xddfecb7fU) ^ y.u[1] ^
+        1:   42:            (d->u[1] << 18);
+        1:   43:  r->u[2] = a->u[2] ^ x.u[2] ^ ((b->u[2] >> 11) & 0xbffaffffU) ^ y.u[2] ^
+        1:   44:            (d->u[2] << 18);
+        1:   45:  r->u[3] = a->u[3] ^ x.u[3] ^ ((b->u[3] >> 11) & 0xbffffff6U) ^ y.u[3] ^
+        1:   46:            (d->u[3] << 18);
+        1:   47:}
+        -:   48:
+        1:   49:int main() {
+        1:   50:  struct S a[] = {{0x000004d3, 0xbc5448db, 0xf22bde9f, 0xebb44f8f},
+        -:   51:                  {0x03a32799, 0x60be8246, 0xa2d266ed, 0x7aa18536},
+        -:   52:                  {0x15a38518, 0xcf655ce1, 0xf3e09994, 0x50ef69fe},
+        -:   53:                  {0x88274b07, 0xe7c94866, 0xc0ea9f47, 0xb6a83c43},
+        -:   54:                  {0xcd0d0032, 0x5d47f5d7, 0x5a0afbf6, 0xaea87b24},
+        -:   55:                  {0, 0, 0, 0}};
+        1:   56:  baz(&a[5], &a[0], &a[1], &a[2], &a[3]);
+        1:   57:  if (a[4].u[0] != a[5].u[0] || a[4].u[1] != a[5].u[1] ||
+        1:   58:      a[4].u[2] != a[5].u[2] || a[4].u[3] != a[5].u[3])
+    #####:   59:    __builtin_abort();
+        1:   60:  return 0;
+        -:   61:}
+        -:   62:#else
+        -:   63:int main() { return 0; }
+        -:   64:#endif

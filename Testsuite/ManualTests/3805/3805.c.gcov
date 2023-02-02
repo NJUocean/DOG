@@ -1,0 +1,21 @@
+        -:    0:Source:3805.c
+        -:    0:Graph:3805.gcno
+        -:    0:Data:3805.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/58385 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int a, b = 1;
+        -:    6:
+        1:    7:int foo() {
+        1:    8:  b = 0;
+        1:    9:  return 0;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  ((0 || a) & foo() >= 0) <= 1 && 1;
+        1:   14:  if (b)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

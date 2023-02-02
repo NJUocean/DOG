@@ -1,0 +1,24 @@
+        -:    0:Source:2071.c
+        -:    0:Graph:2071.gcno
+        -:    0:Data:2071.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fdump-tree-ccp1" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  volatile int x1 = 1;
+        1:    6:  volatile int x2 = 1;
+        1:    7:  int x3 = 2;
+        1:    8:  int t = 1;
+        -:    9:
+        1:   10:  t = 3 <= (x2 | 1 | x3 | x1 - 1U);
+        -:   11:
+        1:   12:  if (t == 1) {
+        -:   13:  } else {
+    #####:   14:    __builtin_abort();
+        -:   15:  }
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump-not "abort" "ccp1" } } */

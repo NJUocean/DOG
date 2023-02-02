@@ -1,0 +1,12 @@
+    1|       |/* PR c/61854 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-std=gnu89 -pedantic -w" } */
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  // Comment.
+    7|      1|  /* { dg-bogus "C\\+\\+ style comments are not allowed in ISO C90" "comments"
+    8|      1|   * { target *-*-*} .-1 } */
+    9|      1|  /* { dg-bogus "note: \[^\n\r]*reported only once" ""  { target *-*-*} .-2 } */
+   10|      1|  return 0;
+   11|      1|}
+

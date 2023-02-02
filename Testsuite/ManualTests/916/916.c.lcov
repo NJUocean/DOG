@@ -1,0 +1,17 @@
+    1|       |/* PR target/50310 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O3" } */
+    4|       |/* { dg-options "-O3 -mavx -mno-avx2" { target avx_runtime } } */
+    5|       |
+    6|       |double s1[4], s2[4];
+    7|       |long long e[4];
+    8|       |
+    9|      1|int main() {
+   10|      1|  int i;
+   11|      1|  asm volatile("" : : : "memory");
+   12|      5|  for (i = 0; i < 4; i++)
+   13|      4|    e[i] = __builtin_isunordered(s1[i], s2[i]) && s1[i] != s2[i] ? -1 : 0;
+   14|      1|  asm volatile("" : : : "memory");
+   15|      1|  return 0;
+   16|      1|}
+

@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |#ifdef __sun__
+    8|       |#define COMMENT "/"
+    9|       |#else
+   10|       |#define COMMENT "#"
+   11|       |#endif
+   12|       |
+   13|      1|int main() {
+   14|      1|  int x;
+   15|      1|
+   16|      1|  asm("movl $26, %0 " COMMENT " 26 |-> reg \n\t"
+   17|      1|      "movl $28, %0"
+   18|      1|      : "=r"(x));
+   19|      1|  if (x != 28)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

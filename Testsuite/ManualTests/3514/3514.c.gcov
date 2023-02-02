@@ -1,0 +1,26 @@
+        -:    0:Source:3514.c
+        -:    0:Graph:3514.gcno
+        -:    0:Data:3514.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/80426 */
+        -:    2:/* Testcase by <ishiura-compiler@ml.kwansei.ac.jp> */
+        -:    3:
+        -:    4:#define INT_MAX 0x7fffffff
+        -:    5:#define INT_MIN (-INT_MAX - 1)
+        -:    6:
+        -:    7:int x;
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  volatile int a = 0;
+        1:   11:  volatile int b = -INT_MAX;
+        -:   12:  int j;
+        -:   13:
+       19:   14:  for (j = 0; j < 18; j += 1) {
+       18:   15:    x = ((a == 0) != (b - (int)(INT_MIN)));
+        -:   16:  }
+        -:   17:
+        1:   18:  if (x != 0)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

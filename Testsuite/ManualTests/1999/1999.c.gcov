@@ -1,0 +1,22 @@
+        -:    0:Source:1999.c
+        -:    0:Graph:1999.gcno
+        -:    0:Data:1999.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target size32plus } } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:unsigned char a, b, c, d[200][200];
+        -:    5:
+        -:    6:void abort(void);
+        -:    7:
+        1:    8:int main() {
+      201:    9:  for (; a < 200; a++)
+    40200:   10:    for (b = 0; b < 200; b++)
+    40000:   11:      if (c)
+    #####:   12:        d[a][b] = 1;
+        -:   13:
+       1*:   14:  if ((c && d[0][0] != 1) || (!c && d[0][0] != 0))
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

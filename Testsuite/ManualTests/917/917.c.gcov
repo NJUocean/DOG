@@ -1,0 +1,49 @@
+        -:    0:Source:917.c
+        -:    0:Graph:917.gcno
+        -:    0:Data:917.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/50310 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:/* { dg-options "-O3 -mavx" { target avx_runtime } } */
+        -:    5:
+        -:    6:double s1[4], s2[4], s3[64];
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  int i;
+        1:   10:  asm volatile("" : : : "memory");
+        5:   11:  for (i = 0; i < 4; i++)
+       4*:   12:    s3[0 * 4 + i] = __builtin_isgreater(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   13:  for (i = 0; i < 4; i++)
+       4*:   14:    s3[1 * 4 + i] = (!__builtin_isgreater(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   15:  for (i = 0; i < 4; i++)
+       4*:   16:    s3[2 * 4 + i] = __builtin_isgreaterequal(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   17:  for (i = 0; i < 4; i++)
+       4*:   18:    s3[3 * 4 + i] = (!__builtin_isgreaterequal(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   19:  for (i = 0; i < 4; i++)
+       4*:   20:    s3[4 * 4 + i] = __builtin_isless(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   21:  for (i = 0; i < 4; i++)
+       4*:   22:    s3[5 * 4 + i] = (!__builtin_isless(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   23:  for (i = 0; i < 4; i++)
+       4*:   24:    s3[6 * 4 + i] = __builtin_islessequal(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   25:  for (i = 0; i < 4; i++)
+       4*:   26:    s3[7 * 4 + i] = (!__builtin_islessequal(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   27:  for (i = 0; i < 4; i++)
+       4*:   28:    s3[8 * 4 + i] = __builtin_islessgreater(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   29:  for (i = 0; i < 4; i++)
+       4*:   30:    s3[9 * 4 + i] = (!__builtin_islessgreater(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   31:  for (i = 0; i < 4; i++)
+       4*:   32:    s3[10 * 4 + i] = __builtin_isunordered(s1[i], s2[i]) ? -1.0 : 0.0;
+        5:   33:  for (i = 0; i < 4; i++)
+       4*:   34:    s3[11 * 4 + i] = (!__builtin_isunordered(s1[i], s2[i])) ? -1.0 : 0.0;
+        5:   35:  for (i = 0; i < 4; i++)
+       4*:   36:    s3[12 * 4 + i] = s1[i] > s2[i] ? -1.0 : 0.0;
+        5:   37:  for (i = 0; i < 4; i++)
+       4*:   38:    s3[13 * 4 + i] = s1[i] >= s2[i] ? -1.0 : 0.0;
+        5:   39:  for (i = 0; i < 4; i++)
+       4*:   40:    s3[14 * 4 + i] = s1[i] < s2[i] ? -1.0 : 0.0;
+        5:   41:  for (i = 0; i < 4; i++)
+       4*:   42:    s3[15 * 4 + i] = s1[i] <= s2[i] ? -1.0 : 0.0;
+        1:   43:  asm volatile("" : : : "memory");
+        1:   44:  return 0;
+        -:   45:}

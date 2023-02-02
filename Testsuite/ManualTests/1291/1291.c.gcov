@@ -1,0 +1,25 @@
+        -:    0:Source:1291.c
+        -:    0:Graph:1291.gcno
+        -:    0:Data:1291.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:static inline void bar() {}
+        -:    4:
+        -:    5:struct S {
+        -:    6:#if __INT_MAX__ == 32767
+        -:    7:  signed int i : 16;
+        -:    8:#elif __INT_MAX__ == 2147483647
+        -:    9:  signed int i : 32;
+        -:   10:#elif __INT_MAX__ == 9223372036854775807
+        -:   11:  signed int i : 64;
+        -:   12:#else
+        -:   13:#error Please add support for your target here
+        -:   14:#endif
+        -:   15:};
+        -:   16:
+        1:   17:int main() {
+        1:   18:  struct S x = {32};
+        -:   19:  sizeof(x.i + 0);
+        1:   20:  return 0;
+        -:   21:}

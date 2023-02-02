@@ -1,0 +1,52 @@
+    1|       |/* Duff's device is legal C; test to make sure the compiler
+    2|       |   doesn't complain about it.
+    3|       |
+    4|       |   Jason Thorpe <thorpej@wasabisystems.com>
+    5|       |   Derived from Tom Duff's original usenet message about the device.  */
+    6|       |
+    7|       |/* { dg-do run } */
+    8|       |/* { dg-options "-O2" } */
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|       |typedef __SIZE_TYPE__ size_t;
+   14|       |extern int memcmp(const void *, const void *, size_t);
+   15|       |
+   16|      1|void duffcpy(char *dst, const char *src, unsigned long size) {
+   17|      1|  unsigned long n = (size + 7) / 8;
+   18|      1|
+   19|      1|  switch (size % 8) {
+   20|      0|  case 0:
+   21|      5|    do {
+   22|      5|      *dst++ = *src++;
+   23|      5|    case 7:
+   24|      5|      *dst++ = *src++;
+   25|      6|    case 6:
+   26|      6|      *dst++ = *src++;
+   27|      6|    case 5:
+   28|      6|      *dst++ = *src++;
+   29|      6|    case 4:
+   30|      6|      *dst++ = *src++;
+   31|      6|    case 3:
+   32|      6|      *dst++ = *src++;
+   33|      6|    case 2:
+   34|      6|      *dst++ = *src++;
+   35|      6|    case 1:
+   36|      6|      *dst++ = *src++;
+   37|      6|    } while (--n > 0);
+   38|      1|  }
+   39|      1|}
+   40|       |
+   41|       |const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+   42|       |
+   43|      1|int main() {
+   44|      1|  char buf[64];
+   45|      1|
+   46|      1|  duffcpy(buf, testpat, sizeof(testpat));
+   47|      1|  if (memcmp(buf, testpat, sizeof(testpat)) != 0)
+   48|      0|    abort();
+   49|      1|
+   50|      1|  exit(0);
+   51|      1|}
+

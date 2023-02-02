@@ -1,0 +1,16 @@
+        -:    0:Source:1457.c
+        -:    0:Graph:1457.gcno
+        -:    0:Data:1457.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fstrict-overflow" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  int a = -1;
+        1:    6:  int b = __INT_MAX__;
+        1:    7:  int c = 2;
+        1:    8:  int t = 1 - ((a - b) / c); // t = 1 - ( __INT_MIN__ / 2 )
+        1:    9:  if (t != (1 - (-1 - __INT_MAX__) / 2))
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

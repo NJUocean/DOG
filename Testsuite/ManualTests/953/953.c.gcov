@@ -1,0 +1,15 @@
+        -:    0:Source:953.c
+        -:    0:Graph:953.gcno
+        -:    0:Data:953.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fstrict-overflow" } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int a = 0;
+        1:    6:  int b = __INT_MAX__;
+        1:    7:  int t = (a - 2) > (b - 1);
+        1:    8:  if (t != 0)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

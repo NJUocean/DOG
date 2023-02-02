@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=undefined
+    3|       | * -fno-sanitize-recover=signed-integer-overflow" } */
+    4|       |/* { dg-additional-options "-std=gnu11" { target c } } */
+    5|       |/* { dg-additional-options "-std=c++11" { target c++ } } */
+    6|       |
+    7|       |volatile int w, z;
+    8|       |
+    9|      1|__attribute__((noinline, noclone)) int foo(int x, int y) {
+   10|      1|  z++;
+   11|      1|  return x << y;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  w = foo(0, -__INT_MAX__);
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-output "shift exponent -\[^\n\r]* is negative" } */
+

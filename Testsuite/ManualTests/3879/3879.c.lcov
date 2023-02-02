@@ -1,0 +1,16 @@
+    1|      2|unsigned f1(x) { return ((unsigned)(x != 0) - 3) / 2; }
+    2|       |
+    3|      2|unsigned long long f2(x) { return ((unsigned long long)(x != 0) - 3) / 2; }
+    4|       |
+    5|      1|main() {
+    6|      1|  if (f1(1) != (~(unsigned)0) >> 1)
+    7|      0|    abort();
+    8|      1|  if (f1(0) != ((~(unsigned)0) >> 1) - 1)
+    9|      0|    abort();
+   10|      1|  if (f2(1) != (~(unsigned long long)0) >> 1)
+   11|      0|    abort();
+   12|      1|  if (f2(0) != ((~(unsigned long long)0) >> 1) - 1)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

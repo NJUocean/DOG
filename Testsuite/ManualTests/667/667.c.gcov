@@ -1,0 +1,19 @@
+        -:    0:Source:667.c
+        -:    0:Graph:667.gcno
+        -:    0:Data:667.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify unaligned address aliasing on Alpha EV[45].  */
+        -:    2:
+        -:    3:static unsigned short x, y;
+        -:    4:
+        1:    5:void foo() {
+        1:    6:  x = 0x345;
+        1:    7:  y = 0x567;
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo();
+        1:   12:  if (x != 0x345 || y != 0x567)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

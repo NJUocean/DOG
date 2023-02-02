@@ -1,0 +1,40 @@
+        -:    0:Source:343.c
+        -:    0:Graph:343.gcno
+        -:    0:Data:343.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/51924 */
+        -:    2:/* Testcase by Zdenek Sojka <zsojka@seznam.cz> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O -free -fno-rename-registers -ftree-vectorize -funroll-loops"
+        -:    6: * } */
+        -:    7:
+        -:    8:typedef __UINT64_TYPE__ uint64_t;
+        -:    9:
+        -:   10:uint64_t __attribute__((noinline, noclone))
+        1:   11:bn_sub_words(uint64_t *r, const uint64_t *a, const uint64_t *b, int n) {
+        -:   12:  uint64_t t1, t2;
+        1:   13:  unsigned c = 0;
+        -:   14:
+        3:   15:  while (n) {
+        2:   16:    t1 = a[0];
+        2:   17:    t2 = b[0];
+        2:   18:    r[0] = (t1 - t2 - c);
+        2:   19:    if (t1 != t2)
+        2:   20:      c = (t1 < t2);
+        2:   21:    a++;
+        2:   22:    b++;
+        2:   23:    r++;
+        2:   24:    n--;
+        -:   25:  }
+        1:   26:  return (c);
+        -:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  uint64_t r[2];
+        1:   31:  uint64_t a[2] = {-1, -1};
+        1:   32:  uint64_t b[2] = {0, 0};
+        1:   33:  if (bn_sub_words(r, a, b, 2) != 0)
+    #####:   34:    __builtin_abort();
+        1:   35:  return 0;
+        -:   36:}

@@ -1,0 +1,15 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |/* { dg-options "-O3 -fno-inline" } */
+    4|       |/* { dg-final { scan-assembler-not "constprop" } } */
+    5|       |__attribute__((target_clones("arch=core-avx2", "arch=slm", "default"))) void
+    6|  1.02k|foo(float *a, int b) {
+    7|  1.02k|  *a = (float)b;
+    8|  1.02k|}
+    9|       |float a;
+   10|      1|int main() {
+   11|      1|  int i;
+   12|  1.02k|  for (i = 0; i < 1024; i++)
+   13|  1.02k|    foo(&a, 5);
+   14|      1|}
+

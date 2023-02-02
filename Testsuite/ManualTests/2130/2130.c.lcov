@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-std=c99 -g" } */
+    3|       |void abort(void);
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int \u00C0 = 1;
+    7|      1|  int \u00C1 = 2;
+    8|      1|  int \U000000C2 = 3;
+    9|      1|  int wh\u00ff = 4;
+   10|      1|  int a\u00c4b\u0441\U000003b4e = 5;
+   11|      1|
+   12|      1|  if (\u00C0 != 1)
+   13|      0|    abort();
+   14|      1|  if (\u00c1 != 2)
+   15|      0|    abort();
+   16|      1|  if (\u00C2 != 3)
+   17|      0|    abort();
+   18|      1|  if (wh\u00ff != 4)
+   19|      0|    abort();
+   20|      1|  if (a\u00c4b\u0441\U000003b4e != 5)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

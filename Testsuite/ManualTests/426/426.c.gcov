@@ -1,0 +1,31 @@
+        -:    0:Source:426.c
+        -:    0:Graph:426.gcno
+        -:    0:Data:426.gcda
+        -:    0:Runs:1
+        -:    1:int st = 1;
+        1:    2:static void __attribute__((noinline)) foo(int a[], int n) {
+        -:    3:  int i;
+       51:    4:  for (i = 0; i < n; i++) {
+       50:    5:    if (i < 25)
+       25:    6:      a[i] = i;
+       50:    7:    a[n - i] = 1;
+        -:    8:  }
+        1:    9:}
+        -:   10:
+        1:   11:static int __attribute__((noinline)) array_sum(int a[]) {
+        1:   12:  int i, res = 0;
+       51:   13:  for (i = 0; i < 50; i += st)
+       50:   14:    res += a[i];
+        1:   15:  return res;
+        -:   16:}
+        -:   17:
+        -:   18:extern void abort();
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  int a[51]; /* NB This size allows foo's first iteration to write to a[50].  */
+        1:   22:  foo(a, 50);
+        1:   23:  int res = array_sum(a);
+        1:   24:  if (res != 49)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

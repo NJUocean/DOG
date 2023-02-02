@@ -1,0 +1,13 @@
+    1|       |/* PR c/42544 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int main() {
+    6|      1|  signed short s = -1;
+    7|      1|  if (sizeof(long long) == sizeof(unsigned int))
+    8|      0|    return 0;
+    9|      1|  if ((unsigned int)s >= 0x100000000ULL)
+   10|      0|    abort();
+   11|      1|  return 0;
+   12|      1|}
+

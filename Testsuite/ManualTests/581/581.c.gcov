@@ -1,0 +1,41 @@
+        -:    0:Source:581.c
+        -:    0:Graph:581.gcno
+        -:    0:Data:581.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized"  } */
+        -:    3:
+        -:    4:#include <stdio.h>
+        -:    5:
+        1:    6:__attribute__((noinline)) int fce1(int a, int b) {
+        -:    7:  int swap;
+        -:    8:
+        1:    9:  if (a < b) {
+        1:   10:    swap = a;
+        1:   11:    a = b;
+        1:   12:    b = swap;
+        -:   13:  }
+        -:   14:
+        1:   15:  return a / b;
+        -:   16:}
+        -:   17:
+        1:   18:__attribute__((noinline)) int fce2(int x, int y) {
+        -:   19:  int tmp;
+        -:   20:
+        1:   21:  if (x < y) {
+        1:   22:    tmp = x;
+        1:   23:    x = y;
+        1:   24:    y = tmp;
+        -:   25:  }
+        -:   26:
+        1:   27:  return x / y;
+        -:   28:}
+        -:   29:
+        1:   30:int main(int argc, char **argv) {
+        1:   31:  printf("fce1: %d\n", fce1(argc, argc + 2));
+        1:   32:  printf("fce2: %d\n", fce2(argc, 2 * argc));
+        -:   33:}
+        -:   34:
+        -:   35:/* { dg-final { scan-ipa-dump "Semantic equality
+        -:   36: * hit:fce1/\[0-9+\]+->fce2/\[0-9+\]+" "icf"  } } */
+        -:   37:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

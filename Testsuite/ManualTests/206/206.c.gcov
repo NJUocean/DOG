@@ -1,0 +1,34 @@
+        -:    0:Source:206.c
+        -:    0:Graph:206.gcno
+        -:    0:Data:206.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for _Bool bit-fields.  They have the semantics of _Bool, at
+        -:    2:   least for now (DR#335 Spring 2007 discussion).  */
+        -:    3:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    6:struct foo {
+        -:    7:  _Bool a : 1;
+        -:    8:} sf;
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int i;
+        2:   15:  for (i = 0; i < sizeof(struct foo); i++)
+        1:   16:    *((unsigned char *)&sf + i) = (unsigned char)-1;
+        1:   17:  sf.a = 2;
+        1:   18:  if (sf.a != 1)
+    #####:   19:    abort();
+        1:   20:  sf.a = 0;
+        1:   21:  if (sf.a != 0)
+    #####:   22:    abort();
+        1:   23:  sf.a = 0.2;
+        1:   24:  if (sf.a != 1)
+    #####:   25:    abort();
+        1:   26:  sf.a = &sf;
+        1:   27:  if (sf.a != 1)
+    #####:   28:    abort();
+        1:   29:  exit(0);
+        -:   30:}

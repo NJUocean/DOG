@@ -1,0 +1,21 @@
+        -:    0:Source:1217.c
+        -:    0:Graph:1217.gcno
+        -:    0:Data:1217.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  struct {
+        -:    3:    signed int s : 3;
+        -:    4:    unsigned int u : 3;
+        -:    5:    int i : 3;
+        1:    6:  } x = {-1, -1, -1};
+        -:    7:
+        1:    8:  if (x.u != 7)
+    #####:    9:    abort();
+        1:   10:  if (x.s != -1)
+    #####:   11:    abort();
+        -:   12:
+        1:   13:  if (x.i != -1 && x.i != 7)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  exit(0);
+        -:   17:}

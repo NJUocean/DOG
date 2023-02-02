@@ -1,0 +1,21 @@
+        -:    0:Source:3682.c
+        -:    0:Graph:3682.gcno
+        -:    0:Data:3682.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        -:    4:struct s {
+        -:    5:  int i, j;
+        -:    6:};
+        -:    7:struct s gs1, gs2 = {3, 4};
+        -:    8:
+        1:    9:void __attribute__((noipa)) consume(void){};
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  gs1.i = 1;
+        1:   13:  gs1.j = 2; /* { dg-final { gdb-test . "gs1.i" "1" } } */
+        1:   14:  gs1 = gs2; /* { dg-final { gdb-test . "gs1.j" "2" } } */
+        1:   15:  consume(); /* { dg-final { gdb-test . "gs1.i" "3" } } */
+        1:   16:  return 0;  /* { dg-final { gdb-test . "gs1.j" "4" } } */
+        -:   17:}

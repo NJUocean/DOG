@@ -1,0 +1,18 @@
+        -:    0:Source:552.c
+        -:    0:Graph:552.gcno
+        -:    0:Data:552.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/36507 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O0 -std=gnu99 -fgnu89-inline" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int i = 2;
+        1:    7:  auto inline int f1(void) { return i; }
+        1:    8:  inline int f2(void) { return i; }
+        -:    9:  auto inline int f3(void);
+        1:   10:  auto inline int f3(void) { return i; }
+        -:   11:  auto inline int f4(void);
+        1:   12:  inline int f4(void) { return i; }
+        1:   13:  return f1() + f2() + f3() + f4() - 8;
+        -:   14:}

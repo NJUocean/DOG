@@ -1,0 +1,18 @@
+        -:    0:Source:1150.c
+        -:    0:Graph:1150.gcno
+        -:    0:Data:1150.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable
+        -:    3: * -fsanitize-undefined-trap-on-error" } */
+        -:    4:/* { dg-shouldfail "ubsan" } */
+        -:    5:
+        -:    6:#define INT_MAX __INT_MAX__
+        -:    7:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  volatile int j = INT_MAX;
+        1:   11:  volatile int i = 1;
+        1:   12:  volatile int k = j + i;
+        1:   13:  return 0;
+        -:   14:}

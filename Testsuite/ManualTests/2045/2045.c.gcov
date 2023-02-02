@@ -1,0 +1,24 @@
+        -:    0:Source:2045.c
+        -:    0:Graph:2045.gcno
+        -:    0:Data:2045.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:unsigned int a, b, c, d;
+        -:    5:extern int printf(const char *, ...);
+        1:    6:int main(void) {
+        -:    7:  unsigned int e;
+        -:    8:  unsigned int f;
+        -:    9:  /* We should be able to transform these into the same expression, and only
+        -:   10:   * have two additions.  */
+        1:   11:  e = a + b;
+        1:   12:  e = e + c;
+        1:   13:  f = c + a;
+        1:   14:  f = f + b;
+        1:   15:  printf("%d %d\n", e, f);
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-tree-dump-times "\[ab\].._. \\\+ \[ab\].._." 1 "optimized"
+        -:   19: * } } */
+        -:   20:/* { dg-final { scan-tree-dump-times " \\\+ " 2 "optimized" } } */

@@ -1,0 +1,22 @@
+        -:    0:Source:1213.c
+        -:    0:Graph:1213.gcno
+        -:    0:Data:1213.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct X {
+        -:    5:#if (__SIZEOF_LONG__ != __SIZEOF_INT__) && (__SIZEOF_LONG__ == 8)
+        -:    6:  unsigned long i : 33;
+        -:    7:#else
+        -:    8:  unsigned long i;
+        -:    9:#endif
+        -:   10:};
+        1:   11:unsigned long __attribute__((noinline)) foo(struct X *p) { return ~p->i; }
+        1:   12:int main() {
+        -:   13:  struct X x;
+        1:   14:  x.i = -1;
+        1:   15:  if (foo(&x) != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

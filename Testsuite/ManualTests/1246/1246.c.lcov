@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=undefined" } */
+    3|       |
+    4|       |long long int __attribute__((noinline, noclone))
+    5|      1|foo(long long int i, long long int j) {
+    6|      1|  asm("");
+    7|      1|  return i + j;
+    8|      1|}
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  foo(2LL, __LONG_LONG_MAX__);
+   12|      1|  return 0;
+   13|      1|}
+   14|       |
+   15|       |/* { dg-output "signed integer overflow: 2 \\+ 9223372036854775807 cannot be
+   16|       | * represented in type 'long long int'" } */
+

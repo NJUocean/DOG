@@ -1,0 +1,14 @@
+    1|      1|double test(const double le, const double ri) {
+    2|      1|  double val = (ri - le) / (ri * (le + 1.0));
+    3|      1|  return val;
+    4|      1|}
+    5|       |
+    6|      1|int main() {
+    7|      1|  double retval;
+    8|      1|
+    9|      1|  retval = test(1.0, 2.0);
+   10|      1|  if (retval < 0.24 || retval > 0.26)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

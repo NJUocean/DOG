@@ -1,0 +1,55 @@
+        -:    0:Source:379.c
+        -:    0:Graph:379.gcno
+        -:    0:Data:379.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static volatile int32_t g_6[5] = {0x9DD952EAL, 0x9DD952EAL, 0x9DD952EAL, 0x9DD952EAL, 0x9DD952EAL};
+        -:    7:static volatile int32_t *g_11 = &g_6[2];
+        -:    8:static volatile int32_t **volatile g_10[2] = {&g_11, &g_11};
+        -:    9:static volatile int32_t **volatile g_12[2] = {&g_11, &g_11};
+        -:   10:static int32_t g_17 = 0xD46758E3L;
+        -:   11:static uint64_t g_19 = 0UL;
+        -:   12:
+        -:   13:static uint32_t func_1(void);
+        -:   14:static int64_t func_2(int32_t p_3, int32_t p_4);
+        -:   15:
+        1:   16:static uint32_t func_1(void) {
+        1:   17:  const uint16_t l_5 = 0x4304L;
+        1:   18:  uint32_t l_9 = 0x79253A34L;
+        1:   19:  int32_t *l_18[2][5] = {{&g_17, &g_17, &g_17, &g_17, &g_17}, {(void *)0, (void *)0, (void *)0, (void *)0, (void *)0}};
+        1:   20:  uint8_t l_20 = 0x23L;
+        -:   21:  int i, j;
+       1*:   22:  g_19 |= (((func_2((((l_5, g_6[2]) > (safe_mul_func_int32_t_s_s(2L, l_5))) || g_6[3]), l_9) < (l_5 >= ((safe_rshift_func_uint16_t_u_s(l_5, l_5)) || g_17))) == (-1L)) || g_6[2]);
+        1:   23:  ++l_20;
+        1:   24:  return g_19;
+        -:   25:}
+        -:   26:
+        1:   27:static int64_t func_2(int32_t p_3, int32_t p_4) {
+        1:   28:  volatile int32_t **l_13 = (void *)0;
+        1:   29:  volatile int32_t *l_14 = &g_6[2];
+        1:   30:  l_14 = &g_6[3];
+        1:   31:  return g_6[4];
+        -:   32:}
+        -:   33:
+        1:   34:int main(int argc, char *argv[]) {
+        -:   35:  int i;
+        1:   36:  int print_hash_value = 0;
+       1*:   37:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   38:    print_hash_value = 1;
+        1:   39:  platform_main_begin();
+        1:   40:  crc32_gentab();
+        1:   41:  func_1();
+        6:   42:  for (i = 0; i < 5; i++) {
+        5:   43:    transparent_crc(g_6[i], "g_6[i]", print_hash_value);
+        5:   44:    if (print_hash_value)
+    #####:   45:      printf("index = [%d]\n", i);
+        -:   46:  }
+        1:   47:  transparent_crc(g_17, "g_17", print_hash_value);
+        1:   48:  transparent_crc(g_19, "g_19", print_hash_value);
+        1:   49:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   50:  return 0;
+        -:   51:}

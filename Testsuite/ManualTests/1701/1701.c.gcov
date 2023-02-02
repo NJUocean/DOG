@@ -1,0 +1,42 @@
+        -:    0:Source:1701.c
+        -:    0:Graph:1701.gcno
+        -:    0:Data:1701.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "--param rpo-vn-max-loop-depth=7" } */
+        -:    3:
+        -:    4:int a, b, c;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int d;
+        1:    8:  b = 1;
+        1:    9:L1:
+        1:   10:  for (; b > 1;)
+    #####:   11:    goto L2;
+        -:   12:  {
+        -:   13:    int e[1];
+        1:   14:  L3:;
+        -:   15:  }
+        1:   16:L2:
+        1:   17:  while (a) {
+    #####:   18:    d--;
+    #####:   19:    goto L1;
+        -:   20:  }
+        1:   21:  while (c) {
+    #####:   22:    if (a)
+    #####:   23:      goto L3;
+    #####:   24:    if (a)
+    #####:   25:      break;
+    #####:   26:    if (a)
+    #####:   27:      goto L2;
+    #####:   28:    while (c)
+    #####:   29:      while (c)
+    #####:   30:        while (c)
+    #####:   31:          while (c)
+    #####:   32:            while (c)
+    #####:   33:              while (c)
+    #####:   34:                while (c)
+        -:   35:                  ;
+        -:   36:  }
+        1:   37:  return 0;
+        -:   38:}

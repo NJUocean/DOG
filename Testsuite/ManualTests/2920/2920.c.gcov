@@ -1,0 +1,69 @@
+        -:    0:Source:2920.c
+        -:    0:Graph:2920.gcno
+        -:    0:Data:2920.gcda
+        -:    0:Runs:1
+        -:    1:/* Machine description pattern tests.  */
+        -:    2:
+        -:    3:/* { dg-do compile } */
+        -:    4:/* Starting with arch13 the and with complement instruction is
+        -:    5:   available and the splitter is disabled.  */
+        -:    6:/* { dg-options "-march=z14 -save-temps -dP" } */
+        -:    7:/* { dg-do run { target { s390_useable_hw } } } */
+        -:    8:/* Skip test if -O0 is present on the command line:
+        -:    9:
+        -:   10:    { dg-skip-if "" { *-*-* } { "-O0" } { "" } }
+        -:   11:
+        -:   12:   Skip test if the -O option is missing from the command line
+        -:   13:    { dg-skip-if "" { *-*-* } { "*" } { "-O*" } }
+        -:   14:*/
+        -:   15:
+        1:   16:__attribute__((noinline)) unsigned int andc_vv(unsigned int a, unsigned int b) {
+        1:   17:  return ~b & a;
+        -:   18:}
+        -:   19:/* { dg-final { scan-assembler ":18:.\* \{\\*andsi3_\(esa\|zarch\)\}" } } */
+        -:   20:/* { dg-final { scan-assembler ":18:.\* \{\\*xorsi3\}" } } */
+        -:   21:
+        1:   22:__attribute__((noinline)) unsigned int andc_pv(unsigned int *a,
+        -:   23:                                               unsigned int b) {
+        1:   24:  return ~b & *a;
+        -:   25:}
+        -:   26:/* { dg-final { scan-assembler ":24:.\* \{\\*andsi3_\(esa\|zarch\)\}" } } */
+        -:   27:/* { dg-final { scan-assembler ":24:.\* \{\\*xorsi3\}" } } */
+        -:   28:
+        1:   29:__attribute__((noinline)) unsigned int andc_vp(unsigned int a,
+        -:   30:                                               unsigned int *b) {
+        1:   31:  return ~*b & a;
+        -:   32:}
+        -:   33:/* { dg-final { scan-assembler ":30:.\* \{\\*andsi3_\(esa\|zarch\)\}" } } */
+        -:   34:/* { dg-final { scan-assembler ":30:.\* \{\\*xorsi3\}" } } */
+        -:   35:
+        1:   36:__attribute__((noinline)) unsigned int andc_pp(unsigned int *a,
+        -:   37:                                               unsigned int *b) {
+        1:   38:  return ~*b & *a;
+        -:   39:}
+        -:   40:/* { dg-final { scan-assembler ":36:.\* \{\\*andsi3_\(esa\|zarch\)\}" } } */
+        -:   41:/* { dg-final { scan-assembler ":36:.\* \{\\*xorsi3\}" } } */
+        -:   42:
+        -:   43:/* { dg-final { scan-assembler-times "\tnr\?k\?\t" 4 } } */
+        -:   44:/* { dg-final { scan-assembler-times "\txr\?k\?\t" 4 } } */
+        -:   45:
+        1:   46:int main(void) {
+        1:   47:  unsigned int a = 0xc000000cu;
+        1:   48:  unsigned int b = 0x5000000au;
+        1:   49:  unsigned int e = 0x80000004u;
+        -:   50:  unsigned int c;
+        -:   51:
+        1:   52:  c = andc_vv(a, b);
+        1:   53:  if (c != e)
+    #####:   54:    __builtin_abort();
+        1:   55:  c = andc_pv(&a, b);
+        1:   56:  if (c != e)
+    #####:   57:    __builtin_abort();
+        1:   58:  c = andc_vp(a, &b);
+        1:   59:  if (c != e)
+    #####:   60:    __builtin_abort();
+        1:   61:  c = andc_pp(&a, &b);
+        1:   62:  if (c != e)
+    #####:   63:    __builtin_abort();
+        1:   64:  return 0;
+        -:   65:}

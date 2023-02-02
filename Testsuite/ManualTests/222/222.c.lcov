@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "" } */
+    3|       |/* Verify that cleanup works in the most basic of ways.  */
+    4|       |
+    5|       |extern void exit(int);
+    6|       |extern void abort(void);
+    7|       |
+    8|      1|static void handler(void *p __attribute__((unused))) { exit(0); }
+    9|       |
+   10|      1|static void doit(void) { int x __attribute__((cleanup(handler))); }
+   11|       |
+   12|      1|int main() {
+   13|      1|  doit();
+   14|      1|  abort();
+   15|      1|}
+

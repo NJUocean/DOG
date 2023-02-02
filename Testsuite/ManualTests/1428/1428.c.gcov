@@ -1,0 +1,32 @@
+        -:    0:Source:1428.c
+        -:    0:Graph:1428.gcno
+        -:    0:Data:1428.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:double s[4] = {1.0, 2.0, 3.0, 4.0}, pol_x[2] = {5.0, 6.0};
+        -:    4:
+        1:    5:__attribute__((noinline)) int foo(void) {
+        1:    6:  double coef_x[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+        1:    7:  int lxp = 0;
+        1:    8:  if (lxp <= 1)
+        -:    9:    do {
+        2:   10:      double t = pol_x[lxp];
+        -:   11:      long S;
+        2:   12:      long l = lxp * 4L - 1;
+       10:   13:      for (S = 1; S <= 4; S++)
+        8:   14:        coef_x[S + l] = coef_x[S + l] + s[S - 1] * t;
+        2:   15:    } while (lxp++ != 1);
+        1:   16:  asm volatile("" : : "r"(coef_x) : "memory");
+        9:   17:  for (lxp = 0; lxp < 8; lxp++)
+        8:   18:    if (coef_x[lxp] != ((lxp & 3) + 1) * (5.0 + (lxp >= 4)))
+    #####:   19:      __builtin_abort();
+        1:   20:  return 1;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  asm volatile("" : : : "memory");
+        1:   25:  if (!foo())
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

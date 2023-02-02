@@ -1,0 +1,29 @@
+        -:    0:Source:2382.c
+        -:    0:Graph:2382.gcno
+        -:    0:Data:2382.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:long long int dummy_number_generator() {
+        -:    7:  /* { dg-final { scan-assembler "movk\tx\[0-9\]+, 0xefff, lsl 16" } } */
+        -:    8:  /* { dg-final { scan-assembler "movk\tx\[0-9\]+, 0xc4cc, lsl 32" } } */
+        -:    9:  /* { dg-final { scan-assembler "movk\tx\[0-9\]+, 0xfffe, lsl 48" } } */
+        1:   10:  return -346565474575675;
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:
+        1:   15:  long long int num = dummy_number_generator();
+        1:   16:  if (num > 0)
+    #####:   17:    abort();
+        -:   18:
+        -:   19:  /* { dg-final { scan-assembler "movk\tx\[0-9\]+, 0x4667, lsl 16" } } */
+        -:   20:  /* { dg-final { scan-assembler "movk\tx\[0-9\]+, 0x7a3d, lsl 32" } } */
+        1:   21:  if (num / 69313094915135 != -5)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

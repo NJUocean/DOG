@@ -1,0 +1,27 @@
+        -:    0:Source:2116.c
+        -:    0:Graph:2116.gcno
+        -:    0:Data:2116.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-shouldfail "ubsan" } */
+        -:    3:/* { dg-options "-fsanitize=shift -fsanitize-recover=shift-base
+        -:    4: * -fno-sanitize-recover=shift-exponent -w -std=c99" } */
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  int a = -42;
+        1:    8:  int b = -43;
+        1:    9:  volatile int c = 129;
+        1:   10:  int d = 1;
+        -:   11:  a << 1;
+        -:   12:  a << 1;
+        1:   13:  d <<= 31;
+        1:   14:  b << c;
+        -:   15:  a << 1;
+        -:   16:}
+        -:   17:/* { dg-output "left shift of negative value -42\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   18:/* { dg-output "\[^\n\r]*left shift of negative value -42\[^\n\r]*(\n|\r\n|\r)"
+        -:   19: * } */
+        -:   20:/* { dg-output "\[^\n\r]*left shift of 1 by 31 places cannot be represented in
+        -:   21: * type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   22:/* { dg-output "\[^\n\r]*shift exponent 129 is too large for \[^\n\r]*-bit type
+        -:   23: * 'int'" } */

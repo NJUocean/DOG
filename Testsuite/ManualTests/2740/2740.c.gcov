@@ -1,0 +1,33 @@
+        -:    0:Source:2740.c
+        -:    0:Graph:2740.gcno
+        -:    0:Data:2740.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target ia32 } } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  float x;
+        -:    8:} Float;
+        -:    9:
+        1:   10:Float __attribute__((ms_abi)) fn1() {
+        -:   11:  Float v;
+        1:   12:  v.x = 3.145;
+        1:   13:  return v;
+        -:   14:}
+        -:   15:
+        1:   16:Float fn2() {
+        -:   17:  Float v;
+        1:   18:  v.x = 3.145;
+        1:   19:  return v;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        -:   23:  Float a, b;
+        1:   24:  a = fn1();
+        1:   25:  b = fn2();
+        1:   26:  if (a.x == 3.145f && b.x == 3.145f)
+        1:   27:    return 0;
+    #####:   28:  abort();
+        -:   29:}

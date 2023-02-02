@@ -1,0 +1,31 @@
+        -:    0:Source:3654.c
+        -:    0:Graph:3654.gcno
+        -:    0:Data:3654.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/41935 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:long int foo(int n, int i, int j) {
+        2:    6:  typedef int T[n];
+        2:    7:  struct S {
+        -:    8:    int a;
+        2:    9:    T b[n];
+        -:   10:  };
+        2:   11:  return __builtin_offsetof(struct S, b[i][j]);
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  typedef int T[5];
+        -:   16:  struct S {
+        -:   17:    int a;
+        -:   18:    T b[5];
+        -:   19:  };
+        1:   20:  if (foo(5, 2, 3) !=
+        -:   21:      __builtin_offsetof(struct S, b) + (5 * 2 + 3) * sizeof(int))
+    #####:   22:    abort();
+        1:   23:  if (foo(5, 5, 5) !=
+        -:   24:      __builtin_offsetof(struct S, b) + (5 * 5 + 5) * sizeof(int))
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

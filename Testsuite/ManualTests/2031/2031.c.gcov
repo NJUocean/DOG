@@ -1,0 +1,68 @@
+        -:    0:Source:2031.c
+        -:    0:Graph:2031.gcno
+        -:    0:Data:2031.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that tablejump insns are correctly handled.  If the compiler
+        -:    2:   loses track of the jump targets, it will report that x and y can be
+        -:    3:   used uninitialized.
+        -:    4:
+        -:    5:   This is broken in egcs 1998/10/06 for mips in pic mode.  */
+        -:    6:/* { dg-do assemble } */
+        -:    7:/* For MIPS at least, pic is needed to trigger the problem. */
+        -:    8:/* { dg-options "-w -Wuninitialized -Werror -fpic" } */
+        -:    9:/* { dg-options "-w -Wuninitialized -Werror" { target { { rs6000-*-aix*
+        -:   10: * powerpc*-*-aix* arm*-*-* fr30-*-* sh-*-hms h8300*-*-* cris-*-elf* mmix-*-* }
+        -:   11: * || { ! fpic } } } } */
+        -:   12:/* { dg-require-effective-target label_values } */
+        -:   13:
+        1:   14:int foo(int a, int b) {
+        -:   15:  __label__ z;
+        -:   16:  int x; /* { dg-bogus "warning: `.' might be used uninitialized in this
+        -:   17:            function" } */
+        -:   18:  int y; /* { dg-bogus "warning: `.' might be used uninitialized in this
+        -:   19:            function" } */
+        -:   20:  static void *p;
+        -:   21:
+        1:   22:  switch (a) {
+    #####:   23:  case 2:
+    #####:   24:    x = 4;
+    #####:   25:    break;
+    #####:   26:  case 4:
+    #####:   27:    x = 6;
+    #####:   28:    break;
+    #####:   29:  case 8:
+        -:   30:  case 10:
+        -:   31:  case 13:
+        -:   32:  case 11:
+        -:   33:  case 17:
+        -:   34:  case 19:
+    #####:   35:    x = 7;
+    #####:   36:    break;
+        1:   37:  default:
+        1:   38:    x = -1;
+        1:   39:    break;
+        -:   40:  }
+        1:   41:  switch (b) {
+        1:   42:  case 2:
+        1:   43:    y = 4;
+        1:   44:    break;
+    #####:   45:  case 4:
+    #####:   46:    y = 6;
+    #####:   47:    break;
+    #####:   48:  case 8:
+        -:   49:  case 10:
+        -:   50:  case 13:
+        -:   51:  case 11:
+        -:   52:  case 17:
+        -:   53:  case 19:
+    #####:   54:    y = 7;
+    #####:   55:    break;
+    #####:   56:  default:
+    #####:   57:    y = -1;
+    #####:   58:    break;
+        -:   59:  }
+        1:   60:z:
+        1:   61:  p = &&z;
+        1:   62:  return x * y;
+        -:   63:}
+        1:   64:int main(int argc, char *argv[]) { return 1 == foo(argc, argc + 1); }

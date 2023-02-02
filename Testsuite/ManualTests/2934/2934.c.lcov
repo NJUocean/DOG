@@ -1,0 +1,34 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -march=z10 -mzarch --save-temps -mfunction-return-mem=thunk
+    3|       | * -mindirect-branch-table" } */
+    4|       |
+    5|       |int gl = 0;
+    6|       |
+    7|      3|int __attribute__((noinline, noclone)) bar(int a) { return a + 2; }
+    8|       |
+    9|      1|void __attribute__((function_return("keep"), noinline, noclone)) foo(int a) {
+   10|      1|  int i;
+   11|      1|
+   12|      1|  if (a == 42)
+   13|      0|    return;
+   14|      1|
+   15|      4|  for (i = 0; i < a; i++)
+   16|      3|    gl += bar(i);
+   17|      1|}
+   18|       |
+   19|      1|int __attribute__((function_return("keep"))) main() {
+   20|      1|  foo(3);
+   21|      1|  if (gl != 9)
+   22|      0|    __builtin_abort();
+   23|      1|
+   24|      1|  return 0;
+   25|      1|}
+   26|       |
+   27|       |/* { dg-final { scan-assembler-not "jg\t__s390_indirect_jump" } } */
+   28|       |/* { dg-final { scan-assembler-not "exrl" } } */
+   29|       |
+   30|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   31|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+   32|       |/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+   33|       |/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */
+

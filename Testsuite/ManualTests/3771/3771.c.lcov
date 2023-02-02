@@ -1,0 +1,51 @@
+    1|       |/* PR tree-optimization/56205 */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |
+    5|       |int a, b;
+    6|       |char c[128];
+    7|       |
+    8|      1|__attribute__((noinline, noclone)) static void f1(const char *fmt, ...) {
+    9|      1|  va_list ap;
+   10|      1|  asm volatile("" : : : "memory");
+   11|      1|  if (__builtin_strcmp(fmt, "%s %d %s") != 0)
+   12|      0|    __builtin_abort();
+   13|      1|  va_start(ap, fmt);
+   14|      1|  if (__builtin_strcmp(va_arg(ap, const char *), "foo") != 0 ||
+   15|      1|      va_arg(ap, int) != 1 ||
+   16|      1|      __builtin_strcmp(va_arg(ap, const char *), "bar") != 0)
+   17|      0|    __builtin_abort();
+   18|      1|  va_end(ap);
+   19|      1|}
+   20|       |
+   21|      1|__attribute__((noinline, noclone)) static void f2(const char *fmt, va_list ap) {
+   22|      1|  asm volatile("" : : : "memory");
+   23|      1|  if (__builtin_strcmp(fmt, "baz") != 0 ||
+   24|      1|      __builtin_strcmp(va_arg(ap, const char *), "foo") != 0 ||
+   25|      1|      va_arg(ap, double) != 12.0 || va_arg(ap, int) != 26)
+   26|      0|    __builtin_abort();
+   27|      1|}
+   28|       |
+   29|      1|static void f3(int x, char const *y, va_list z) {
+   30|      1|  f1("%s %d %s", x ? "" : "foo", ++a, (y && *y) ? "bar" : "");
+   31|      1|  if (y && *y)
+   32|      1|    f2(y, z);
+   33|      1|}
+   34|       |
+   35|      1|__attribute__((noinline, noclone)) void f4(int x, char const *y, ...) {
+   36|      1|  va_list z;
+   37|      1|  va_start(z, y);
+   38|      1|  if (!x && *c == '\0')
+   39|      1|    ++b;
+   40|      1|  f3(x, y, z);
+   41|      1|  va_end(z);
+   42|      1|}
+   43|       |
+   44|      1|int main() {
+   45|      1|  asm volatile("" : : : "memory");
+   46|      1|  f4(0, "baz", "foo", 12.0, 26);
+   47|      1|  if (a != 1 || b != 1)
+   48|      0|    __builtin_abort();
+   49|      1|  return 0;
+   50|      1|}
+

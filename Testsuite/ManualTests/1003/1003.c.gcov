@@ -1,0 +1,24 @@
+        -:    0:Source:1003.c
+        -:    0:Graph:1003.gcno
+        -:    0:Data:1003.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/71518 */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:int a, *b[9], c, d, e;
+        -:    5:
+        1:    6:static int fn1() {
+        8:    7:  for (c = 6; c >= 0; c--)
+       21:    8:    for (d = 0; d < 2; d++) {
+       14:    9:      b[d * 2 + c] = 0;
+       14:   10:      e = a > 1 ?: 0;
+       14:   11:      if (e == 2)
+    #####:   12:        return 0;
+        -:   13:    }
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  fn1();
+        1:   19:  return 0;
+        -:   20:}

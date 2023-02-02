@@ -1,0 +1,41 @@
+        -:    0:Source:3964.c
+        -:    0:Graph:3964.gcno
+        -:    0:Data:3964.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/79737 */
+        -:    2:
+        -:    3:#if __SIZEOF_INT__ < 4
+        -:    4:__extension__ typedef __INT32_TYPE__ int32_t;
+        -:    5:#else
+        -:    6:typedef int int32_t;
+        -:    7:#endif
+        -:    8:
+        -:    9:#pragma pack(1)
+        -:   10:struct S {
+        -:   11:  int32_t b : 18;
+        -:   12:  int32_t c : 1;
+        -:   13:  int32_t d : 24;
+        -:   14:  int32_t e : 15;
+        -:   15:  int32_t f : 14;
+        -:   16:} i;
+        -:   17:int g, j, k;
+        -:   18:static struct S h;
+        -:   19:
+        1:   20:void foo() {
+        7:   21:  for (j = 0; j < 6; j++)
+        6:   22:    k = 0;
+        4:   23:  for (; k < 3; k++) {
+        3:   24:    struct S m = {5, 0, -5, 9, 5};
+        3:   25:    h = m;
+        3:   26:    if (g)
+    #####:   27:      i = m;
+        3:   28:    h.e = 0;
+        -:   29:  }
+        1:   30:}
+        -:   31:
+        1:   32:int main() {
+        1:   33:  foo();
+        1:   34:  if (h.e != 0)
+    #####:   35:    __builtin_abort();
+        1:   36:  return 0;
+        -:   37:}

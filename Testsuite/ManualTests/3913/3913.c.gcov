@@ -1,0 +1,16 @@
+        -:    0:Source:3913.c
+        -:    0:Graph:3913.gcno
+        -:    0:Data:3913.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/69097 */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:unsigned int c;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int d = b;
+        1:    8:  b = ~(~a + (~d | b));
+        1:    9:  a = ~(~c >> b);
+        1:   10:  c = a % b;
+        1:   11:  return 0;
+        -:   12:}

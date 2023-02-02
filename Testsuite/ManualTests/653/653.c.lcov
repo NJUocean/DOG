@@ -1,0 +1,18 @@
+    1|       |/* PR middle-end/27724 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "" } */
+    4|       |
+    5|       |extern void abort();
+    6|       |
+    7|       |struct st {
+    8|       |  int _mark;
+    9|       |};
+   10|       |unsigned long long t =
+   11|       |    ((int)(__UINTPTR_TYPE__) & (((struct st *)16)->_mark) - 32);
+   12|       |
+   13|      1|int main() {
+   14|      1|  if (t != (unsigned long long)(int)-16)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

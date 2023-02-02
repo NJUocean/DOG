@@ -1,0 +1,36 @@
+    1|       |/* PR target/r84530 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Os -mfunction-return=thunk -fcf-protection=none" } */
+    4|       |
+    5|       |struct S {
+    6|       |  int i;
+    7|       |};
+    8|  1.02k|__attribute__((const, noinline, noclone)) struct S foo(int x) {
+    9|  1.02k|  struct S s;
+   10|  1.02k|  s.i = x;
+   11|  1.02k|  return s;
+   12|  1.02k|}
+   13|       |
+   14|       |int a[2048], b[2048], c[2048], d[2048];
+   15|       |struct S e[2048];
+   16|       |
+   17|      1|__attribute__((noinline, noclone)) void bar(void) {
+   18|      1|  int i;
+   19|  1.02k|  for (i = 0; i < 1024; i++) {
+   20|  1.02k|    e[i] = foo(i);
+   21|  1.02k|    a[i + 2] = a[i] + a[i + 1];
+   22|  1.02k|    b[10] = b[10] + i;
+   23|  1.02k|    c[i] = c[2047 - i];
+   24|  1.02k|    d[i] = d[i + 1];
+   25|  1.02k|  }
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  int i;
+   30|      1|  bar();
+   31|  1.02k|  for (i = 0; i < 1024; i++)
+   32|  1.02k|    if (e[i].i != i)
+   33|      0|      __builtin_abort();
+   34|      1|  return 0;
+   35|      1|}
+

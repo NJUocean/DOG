@@ -1,0 +1,16 @@
+        -:    0:Source:4040.c
+        -:    0:Graph:4040.gcno
+        -:    0:Data:4040.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93744 */
+        -:    2:
+        -:    3:typedef int I;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int a = 0;
+        1:    7:  I b = 0;
+        1:    8:  (a > 0) * (b |= 2);
+        1:    9:  if (b != 2)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

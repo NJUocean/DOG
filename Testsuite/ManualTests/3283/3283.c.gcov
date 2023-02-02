@@ -1,0 +1,20 @@
+        -:    0:Source:3283.c
+        -:    0:Graph:3283.gcno
+        -:    0:Data:3283.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/8613 */
+        -:    2:/* Contributed by Glen Nakamura */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  char buf[16] = "1234567890";
+        1:    8:  char *p = buf;
+        -:    9:
+        1:   10:  *p++ = (char)__builtin_strlen(buf);
+        -:   11:
+        1:   12:  if ((buf[0] != 10) || (p - buf != 1))
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

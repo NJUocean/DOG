@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|void __attribute__((noinline)) f(long *s, long *t, int len1, int len2) {
+    7|      1|  int i, j;
+    8|      1|
+    9|      1|  j = 2;
+   10|      3|  for (i = len1 - 1; i >= 0; i--) {
+   11|      3|    s[j--] = (i < len2 ? t[i] : t[len2 - 1] < 0 ? -1 : 0);
+   12|      3|    if (j < 0)
+   13|      1|      break;
+   14|      3|  }
+   15|      1|}
+   16|       |
+   17|       |long s[3];
+   18|       |long t[3];
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  t[0] = 1;
+   22|      1|  t[1] = 2;
+   23|      1|  t[2] = 3;
+   24|      1|  f(s, t, 3, 3);
+   25|      1|  if (memcmp(s, t, sizeof(s)) != 0)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+

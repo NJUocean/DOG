@@ -1,0 +1,58 @@
+        -:    0:Source:3299.c
+        -:    0:Graph:3299.gcno
+        -:    0:Data:3299.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/10955 */
+        -:    2:/* Originator: <heinrich.brand@fujitsu-siemens.com> */
+        -:    3:
+        -:    4:/* This used to fail on SPARC32 at -O3 because the loop unroller
+        -:    5:   wrongly thought it could eliminate a pseudo in a loop, while
+        -:    6:   the pseudo was used outside the loop.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:#define COMPLEX struct CS
+        -:   11:
+        -:   12:COMPLEX {
+        -:   13:  long x;
+        -:   14:  long y;
+        -:   15:};
+        -:   16:
+        3:   17:static COMPLEX CCID(COMPLEX x) {
+        -:   18:  COMPLEX a;
+        -:   19:
+        3:   20:  a.x = x.x;
+        3:   21:  a.y = x.y;
+        -:   22:
+        3:   23:  return a;
+        -:   24:}
+        -:   25:
+        2:   26:static COMPLEX CPOW(COMPLEX x, int y) {
+        -:   27:  COMPLEX a;
+        2:   28:  a = x;
+        -:   29:
+        4:   30:  while (--y > 0)
+        2:   31:    a = CCID(a);
+        -:   32:
+        2:   33:  return a;
+        -:   34:}
+        -:   35:
+        1:   36:static int c5p(COMPLEX x) {
+        -:   37:  COMPLEX a, b;
+        1:   38:  a = CPOW(x, 2);
+        1:   39:  b = CCID(CPOW(a, 2));
+        -:   40:
+        1:   41:  return (b.x == b.y);
+        -:   42:}
+        -:   43:
+        1:   44:int main(void) {
+        -:   45:  COMPLEX x;
+        -:   46:
+        1:   47:  x.x = -7;
+        1:   48:  x.y = -7;
+        -:   49:
+        1:   50:  if (!c5p(x))
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  return 0;
+        -:   54:}

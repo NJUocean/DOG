@@ -1,0 +1,38 @@
+        -:    0:Source:3994.c
+        -:    0:Graph:3994.gcno
+        -:    0:Data:3994.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/84524 */
+        -:    2:
+        1:    3:__attribute__((noipa)) void foo(unsigned short *x) {
+        -:    4:  unsigned short i, v;
+        -:    5:  unsigned char j;
+      257:    6:  for (i = 0; i < 256; i++) {
+      256:    7:    v = i << 8;
+     2304:    8:    for (j = 0; j < 8; j++)
+     2048:    9:      if (v & 0x8000)
+     1024:   10:        v = (v << 1) ^ 0x1021;
+        -:   11:      else
+     1024:   12:        v = v << 1;
+      256:   13:    x[i] = v;
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  unsigned short a[256];
+        -:   19:
+        1:   20:  foo(a);
+      257:   21:  for (int i = 0; i < 256; i++) {
+      256:   22:    unsigned short v = i << 8;
+     2304:   23:    for (int j = 0; j < 8; j++) {
+     2048:   24:      asm volatile("" : "+r"(v));
+     2048:   25:      if (v & 0x8000)
+     1024:   26:        v = (v << 1) ^ 0x1021;
+        -:   27:      else
+     1024:   28:        v = v << 1;
+        -:   29:    }
+      256:   30:    if (a[i] != v)
+    #####:   31:      __builtin_abort();
+        -:   32:  }
+        1:   33:  return 0;
+        -:   34:}

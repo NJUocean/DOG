@@ -1,0 +1,21 @@
+        -:    0:Source:3774.c
+        -:    0:Graph:3774.gcno
+        -:    0:Data:3774.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:_Complex int a[1024];
+        -:    3:
+        1:    4:__attribute__((noinline, noclone)) void foo(void) {
+        -:    5:  int i;
+     1025:    6:  for (i = 0; i < 1024; i++)
+     1024:    7:    a[i] = -1;
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i;
+        1:   12:  foo();
+     1025:   13:  for (i = 0; i < 1024; i++)
+     1024:   14:    if (a[i] != -1)
+    #####:   15:      abort();
+        1:   16:  return 0;
+        -:   17:}

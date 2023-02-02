@@ -1,0 +1,38 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |#define assert(x)                                                              \
+    5|      2|  if (!(x))                                                                    \
+    6|      2|  __builtin_abort()
+    7|       |
+    8|       |int a, b, c, d, e, f, g;
+    9|       |
+   10|      1|int fn1() {
+   11|      1|  int *h = &c;
+   12|      2|  for (; c < 1; c++) {
+   13|      1|    int *i = &a, *k = &a;
+   14|      1|    f = 0;
+   15|      1|    if (b)
+   16|      0|      return 0;
+   17|      1|    if (*h) {
+   18|      0|      int **j = &i;
+   19|      0|      *j = 0;
+   20|      0|      d = 0;
+   21|      0|    } else
+   22|      1|      g = e = 0;
+   23|      1|    if (*h) {
+   24|      0|      int **l = &k;
+   25|      0|      *l = &g;
+   26|      0|    }
+   27|      1|    d &= *h;
+   28|      1|    assert(k == &a || k);
+   29|      1|    assert(i);
+   30|      1|  }
+   31|      1|  return 0;
+   32|      1|}
+   33|       |
+   34|      1|int main() {
+   35|      1|  fn1();
+   36|      1|  return 0;
+   37|      1|}
+

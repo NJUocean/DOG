@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run { target ia32 } } */
+    2|       |/* { dg-options "-Os" } */
+    3|       |
+    4|      0|void __attribute__((noipa)) foo(const char *x) {
+    5|      0|  asm volatile("" : "+g"(x) : : "memory");
+    6|      0|  if (x)
+    7|      0|    __builtin_abort();
+    8|      0|}
+    9|       |
+   10|       |int a, b = 1;
+   11|       |
+   12|      1|int main() {
+   13|      1|  while (1) {
+   14|      1|    unsigned long long d = 18446744073709551615UL;
+   15|      1|    while (1) {
+   16|      1|      int e = b;
+   17|      1|      while (d < 2)
+   18|      0|        foo("0");
+   19|      1|      if (a)
+   20|      0|        d++;
+   21|      1|      if (b)
+   22|      1|        break;
+   23|      1|    }
+   24|      1|    break;
+   25|      1|  }
+   26|      1|  return 0;
+   27|      1|}
+

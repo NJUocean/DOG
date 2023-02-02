@@ -1,0 +1,123 @@
+        -:    0:Source:1167.c
+        -:    0:Graph:1167.gcno
+        -:    0:Data:1167.gcda
+        -:    0:Runs:1
+        -:    1:/* Simple alignment checks;
+        -:    2:   looking for compiler/assembler alignment disagreements,
+        -:    3:   agreement between struct initialization and access.  */
+        -:    4:struct a_short {
+        -:    5:  char c;
+        -:    6:  short s;
+        -:    7:} s_c_s = {'a', 13};
+        -:    8:struct a_int {
+        -:    9:  char c;
+        -:   10:  int i;
+        -:   11:} s_c_i = {'b', 14};
+        -:   12:struct b_int {
+        -:   13:  short s;
+        -:   14:  int i;
+        -:   15:} s_s_i = {15, 16};
+        -:   16:struct a_float {
+        -:   17:  char c;
+        -:   18:  float f;
+        -:   19:} s_c_f = {'c', 17.0};
+        -:   20:struct b_float {
+        -:   21:  short s;
+        -:   22:  float f;
+        -:   23:} s_s_f = {18, 19.0};
+        -:   24:struct a_double {
+        -:   25:  char c;
+        -:   26:  double d;
+        -:   27:} s_c_d = {'d', 20.0};
+        -:   28:struct b_double {
+        -:   29:  short s;
+        -:   30:  double d;
+        -:   31:} s_s_d = {21, 22.0};
+        -:   32:struct c_double {
+        -:   33:  int i;
+        -:   34:  double d;
+        -:   35:} s_i_d = {23, 24.0};
+        -:   36:struct d_double {
+        -:   37:  float f;
+        -:   38:  double d;
+        -:   39:} s_f_d = {25.0, 26.0};
+        -:   40:struct a_ldouble {
+        -:   41:  char c;
+        -:   42:  long double ld;
+        -:   43:} s_c_ld = {'e', 27.0};
+        -:   44:struct b_ldouble {
+        -:   45:  short s;
+        -:   46:  long double ld;
+        -:   47:} s_s_ld = {28, 29.0};
+        -:   48:struct c_ldouble {
+        -:   49:  int i;
+        -:   50:  long double ld;
+        -:   51:} s_i_ld = {30, 31.0};
+        -:   52:struct d_ldouble {
+        -:   53:  float f;
+        -:   54:  long double ld;
+        -:   55:} s_f_ld = {32.0, 33.0};
+        -:   56:struct e_ldouble {
+        -:   57:  double d;
+        -:   58:  long double ld;
+        -:   59:} s_d_ld = {34.0, 35.0};
+        -:   60:
+        1:   61:int main() {
+        1:   62:  if (s_c_s.c != 'a')
+    #####:   63:    abort();
+        1:   64:  if (s_c_s.s != 13)
+    #####:   65:    abort();
+        1:   66:  if (s_c_i.c != 'b')
+    #####:   67:    abort();
+        1:   68:  if (s_c_i.i != 14)
+    #####:   69:    abort();
+        1:   70:  if (s_s_i.s != 15)
+    #####:   71:    abort();
+        1:   72:  if (s_s_i.i != 16)
+    #####:   73:    abort();
+        1:   74:  if (s_c_f.c != 'c')
+    #####:   75:    abort();
+        1:   76:  if (s_c_f.f != 17.0)
+    #####:   77:    abort();
+        1:   78:  if (s_s_f.s != 18)
+    #####:   79:    abort();
+        1:   80:  if (s_s_f.f != 19.0)
+    #####:   81:    abort();
+        1:   82:  if (s_c_d.c != 'd')
+    #####:   83:    abort();
+        1:   84:  if (s_c_d.d != 20.0)
+    #####:   85:    abort();
+        1:   86:  if (s_s_d.s != 21)
+    #####:   87:    abort();
+        1:   88:  if (s_s_d.d != 22.0)
+    #####:   89:    abort();
+        1:   90:  if (s_i_d.i != 23)
+    #####:   91:    abort();
+        1:   92:  if (s_i_d.d != 24.0)
+    #####:   93:    abort();
+        1:   94:  if (s_f_d.f != 25.0)
+    #####:   95:    abort();
+        1:   96:  if (s_f_d.d != 26.0)
+    #####:   97:    abort();
+        1:   98:  if (s_c_ld.c != 'e')
+    #####:   99:    abort();
+        1:  100:  if (s_c_ld.ld != 27.0)
+    #####:  101:    abort();
+        1:  102:  if (s_s_ld.s != 28)
+    #####:  103:    abort();
+        1:  104:  if (s_s_ld.ld != 29.0)
+    #####:  105:    abort();
+        1:  106:  if (s_i_ld.i != 30)
+    #####:  107:    abort();
+        1:  108:  if (s_i_ld.ld != 31.0)
+    #####:  109:    abort();
+        1:  110:  if (s_f_ld.f != 32.0)
+    #####:  111:    abort();
+        1:  112:  if (s_f_ld.ld != 33.0)
+    #####:  113:    abort();
+        1:  114:  if (s_d_ld.d != 34.0)
+    #####:  115:    abort();
+        1:  116:  if (s_d_ld.ld != 35.0)
+    #####:  117:    abort();
+        1:  118:  return 0;
+        -:  119:}

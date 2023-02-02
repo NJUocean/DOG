@@ -1,0 +1,36 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |#define assert(x)                                                              \
+    4|      7|  if (!(x))                                                                    \
+    5|      7|  abort()
+    6|       |
+    7|       |struct S1 {
+    8|       |  signed char f0;
+    9|       |};
+   10|       |
+   11|       |int g_23 = 0;
+   12|       |
+   13|      1|static struct S1 foo(void) {
+   14|      1|  int *l_100 = &g_23;
+   15|      1|  int **l_110 = &l_100;
+   16|      1|  struct S1 l_128 = {1};
+   17|      1|  assert(l_100 == &g_23);
+   18|      1|  assert(l_100 == &g_23);
+   19|      1|  assert(l_100 == &g_23);
+   20|      1|  assert(l_100 == &g_23);
+   21|      1|  assert(l_100 == &g_23);
+   22|      1|  assert(l_100 == &g_23);
+   23|      1|  assert(l_100 == &g_23);
+   24|      1|  return l_128;
+   25|      1|}
+   26|       |
+   27|      1|static signed char bar(signed char si1, signed char si2) {
+   28|      1|  return (si1 <= 0) ? si1 : (si2 * 2);
+   29|      1|}
+   30|      1|int main(void) {
+   31|      1|  struct S1 s = foo();
+   32|      1|  if (bar(0x99 ^ (s.f0 && 1), 1) != -104)
+   33|      0|    abort();
+   34|      1|  return 0;
+   35|      1|}
+

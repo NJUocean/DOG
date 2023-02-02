@@ -1,0 +1,28 @@
+        -:    0:Source:2360.c
+        -:    0:Graph:2360.gcno
+        -:    0:Data:2360.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment of varargs) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:#include <stdarg.h>
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:typedef __attribute__((__aligned__(16))) int alignedint;
+        -:   10:
+        1:   11:void test_pass_overaligned_int_vaargs(int i, ...) {
+        -:   12:  va_list va;
+        1:   13:  va_start(va, i);
+        -:   14:  /* alignedint should be pulled out of regs/stack just like an int.  */
+       10:   15:  while (i-- > 0)
+        9:   16:    if (va_arg(va, alignedint) != i)
+    #####:   17:      abort();
+        1:   18:  va_end(va);
+        1:   19:}
+        -:   20:
+        1:   21:int main(int argc, char **argv) {
+        1:   22:  test_pass_overaligned_int_vaargs(9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        1:   23:  return 0;
+        -:   24:}

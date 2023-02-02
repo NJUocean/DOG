@@ -1,0 +1,15 @@
+        -:    0:Source:3437.c
+        -:    0:Graph:3437.gcno
+        -:    0:Data:3437.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/34337 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:int foo(int x) { return ((x << 8) & 65535) | 255; }
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  if (foo(0x32) != 0x32ff || foo(0x174) != 0x74ff)
+    #####:    9:    abort();
+        1:   10:  return 0;
+        -:   11:}

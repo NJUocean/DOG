@@ -1,0 +1,57 @@
+        -:    0:Source:2927.c
+        -:    0:Graph:2927.gcno
+        -:    0:Data:2927.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3  -march=z10 --save-temps
+        -:    3: * -mindirect-branch-call=thunk-extern -mindirect-branch-table" } */
+        -:    4:
+        -:    5:int gl;
+        -:    6:
+        1:    7:void __attribute__((noinline, noclone)) foo(int a) { gl = a + 40; }
+        -:    8:
+        1:    9:int __attribute__((noinline, noclone)) foo_value(int a) { return a + 40; }
+        -:   10:
+        2:   11:void *__attribute__((noinline, noclone)) get_fptr(int a) {
+        2:   12:  switch (a) {
+        1:   13:  case 0:
+        1:   14:    return &foo;
+        -:   15:    break;
+        1:   16:  case 1:
+        1:   17:    return &foo_value;
+        -:   18:    break;
+    #####:   19:  default:
+    #####:   20:    __builtin_abort();
+        -:   21:  }
+        -:   22:}
+        -:   23:
+        -:   24:void (*f)(int);
+        -:   25:int (*g)(int);
+        -:   26:
+        1:   27:int main() {
+        -:   28:  int res;
+        -:   29:
+        1:   30:  f = get_fptr(0);
+        1:   31:  f(2);
+        1:   32:  if (gl != 42)
+    #####:   33:    __builtin_abort();
+        -:   34:
+        1:   35:  g = get_fptr(1);
+        1:   36:  if (g(2) != 42)
+    #####:   37:    __builtin_abort();
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}
+        -:   41:
+        -:   42:/* 2 x main
+        -:   43:/* { dg-final { scan-assembler-times "brasl\t%r\[0-9\]*,__s390_indirect_jump" 2
+        -:   44:} } */
+        -:   45:
+        -:   46:/* No thunks due to thunk-extern.  */
+        -:   47:/* { dg-final { scan-assembler-not "exrl" } } */
+        -:   48:/* { dg-final { scan-assembler-not ".globl __s390_indirect_jump" } } */
+        -:   49:
+        -:   50:/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+        -:   51:/* { dg-final { scan-assembler     "section\t.s390_indirect_call" } } */
+        -:   52:/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+        -:   53:/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */

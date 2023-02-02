@@ -1,0 +1,41 @@
+    1|       |/* &&foo should be hoisted, but on most targets, excess register pressure
+    2|       |   forces it to be rematerialized before "data != &&foo".  On targets that
+    3|       |   have a "branch if registers are equal" instruction, this leads to the
+    4|       |   branch having two LABEL_REFs: one for the branch target and one for
+    5|       |   &&foo.  When reloading &&foo into a register, reload would wrongly
+    6|       |   say that &&foo was the target of the branch, and the real target would
+    7|       |   then be removed as dead.  */
+    8|       |/* { dg-do link } */
+    9|       |/* { dg-require-effective-target label_values } */
+   10|       |#define NVARS 30
+   11|       |#define MULTI(X)                                                               \
+   12|      4|  X(0), X(1), X(2), X(3), X(4), X(5), X(6), X(7), X(8), X(9), X(10), X(11),    \
+   13|      4|      X(12), X(13), X(14), X(15), X(16), X(17), X(18), X(19), X(20), X(21),    \
+   14|      4|      X(22), X(23), X(24), X(25), X(26), X(27), X(28), X(29)
+   15|       |
+   16|     30|#define DECLARE(INDEX) i##INDEX = gv[INDEX]
+   17|     90|#define COPY(INDEX) gv[INDEX] = i##INDEX
+   18|       |
+   19|       |volatile int gv[NVARS];
+   20|       |void *volatile data;
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  __label__ foo;
+   24|      1|
+   25|      1|  if (gv[0] == 1)
+   26|      0|    goto foo;
+   27|      1|  data = &&foo;
+   28|      1|  do {
+   29|     30|    int MULTI(DECLARE);
+   30|     30|    MULTI(COPY);
+   31|     30|    MULTI(COPY);
+   32|     30|    MULTI(COPY);
+   33|      1|    if (data != &&foo)
+   34|      0|      gv[0] = 1;
+   35|      1|    else
+   36|      1|      gv[1] = 2;
+   37|      1|  } while (gv[0] > 0);
+   38|      1|foo:
+   39|      1|  return 0;
+   40|      1|}
+

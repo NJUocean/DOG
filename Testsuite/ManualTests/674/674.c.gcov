@@ -1,0 +1,18 @@
+        -:    0:Source:674.c
+        -:    0:Graph:674.gcno
+        -:    0:Data:674.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do run } */
+        -:    2:/* { dg-skip-if "x86 only" { ! { x86_64-*-* i?86-*-* } } } */
+        -:    3:/* { dg-skip-if "no .type" { *-*-darwin* } } */
+        -:    4:/* { dg-skip-if "no @function" { *-*-mingw* *-*-cygwin* } } */
+        -:    5:
+        -:    6:/* Doesn't work without this dummy function with -fwhopr.  */
+    #####:    7:int foo(void) {}
+        -:    8:
+        -:    9:asm(".text\n"
+        -:   10:    ".globl main\n"
+        -:   11:    "\t.type main,@function\n"
+        -:   12:    "main:\n"
+        -:   13:    "\txorl %eax, %eax\n"
+        -:   14:    "\tret\n");

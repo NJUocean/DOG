@@ -1,0 +1,31 @@
+        -:    0:Source:1859.c
+        -:    0:Graph:1859.gcno
+        -:    0:Data:1859.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/12198
+        -:    2:
+        -:    3:   This was a miscompilation of a switch expressions because
+        -:    4:   the "Case Ranges" extension wasn't handled in tree-cfg.c.  */
+        -:    5:
+        -:    6:/* { dg-do compile } */
+        -:    7:/* { dg-options "-O -fdump-tree-optimized" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int i;
+        1:   14:  i = 2;
+        1:   15:  switch (i) {
+        1:   16:  case 1 ... 5:
+        1:   17:    goto L1;
+    #####:   18:  default:
+    #####:   19:    abort();
+        -:   20:    goto L1;
+        -:   21:  }
+        1:   22:L1:
+        1:   23:  exit(0);
+        -:   24:}
+        -:   25:
+        -:   26:/* The abort() call clearly is unreachable.  */
+        -:   27:/* { dg-final { scan-tree-dump-times "abort" 0 "optimized"} } */

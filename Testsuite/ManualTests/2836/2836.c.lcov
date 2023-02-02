@@ -1,0 +1,17 @@
+    1|       |/* PR c/19449 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |int y;
+    6|       |int z = __builtin_choose_expr(!__builtin_constant_p(y), 3, 4);
+    7|       |
+    8|      1|int foo(int x) {
+    9|      1|  return __builtin_choose_expr(!__builtin_constant_p(x), 3, y++);
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (y || z != 3 || foo(4) != 3)
+   14|      0|    abort();
+   15|      1|  return 0;
+   16|      1|}
+

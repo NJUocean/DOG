@@ -1,0 +1,34 @@
+    1|       |__extension__ typedef __PTRDIFF_TYPE__ ptr_t;
+    2|       |ptr_t *wm_TR;
+    3|       |ptr_t *wm_HB;
+    4|       |ptr_t *wm_SPB;
+    5|       |
+    6|       |ptr_t mem[100];
+    7|       |
+    8|       |f(mr_TR, mr_SPB, mr_HB, reg1, reg2) ptr_t *mr_TR;
+    9|       |ptr_t *mr_SPB;
+   10|       |ptr_t *mr_HB;
+   11|       |ptr_t *reg1;
+   12|       |ptr_t *reg2;
+   13|      1|{
+   14|      1|  ptr_t *x = mr_TR;
+   15|      1|
+   16|      2|  for (;;) {
+   17|      2|    if (reg1 < reg2)
+   18|      1|      goto out;
+   19|      1|    if ((ptr_t *)*reg1 < mr_HB && (ptr_t *)*reg1 >= mr_SPB)
+   20|      0|      *--mr_TR = *reg1;
+   21|      1|    reg1--;
+   22|      1|  }
+   23|      1|out:
+   24|      1|
+   25|      1|  if (x != mr_TR)
+   26|      0|    abort();
+   27|      1|}
+   28|       |
+   29|      1|main() {
+   30|      1|  mem[99] = (ptr_t)mem;
+   31|      1|  f(mem + 100, mem + 6, mem + 8, mem + 99, mem + 99);
+   32|      1|  exit(0);
+   33|      1|}
+

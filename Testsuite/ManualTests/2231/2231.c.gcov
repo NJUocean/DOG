@@ -1,0 +1,21 @@
+        -:    0:Source:2231.c
+        -:    0:Graph:2231.gcno
+        -:    0:Data:2231.gcda
+        -:    0:Runs:1
+        -:    1:#if ULONG_MAX != 4294967295u && ULONG_MAX != 18446744073709551615ull
+        1:    2:int main(void) { exit(0); }
+        -:    3:#else
+        -:    4:#if ULONG_MAX != 18446744073709551615ull
+        -:    5:#define NUM 0xf0000000
+        -:    6:#else
+        -:    7:#define NUM 0xf000000000000000
+        -:    8:#endif
+        -:    9:
+        -:   10:int func1(void *rw) { return (rw && (((unsigned long)rw) >= NUM)); }
+        -:   11:
+        -:   12:void func2(void *rw) {
+        -:   13:  while (rw && (((unsigned long)rw) >= NUM)) {
+        -:   14:  }
+        -:   15:}
+        -:   16:
+        -:   17:#endif

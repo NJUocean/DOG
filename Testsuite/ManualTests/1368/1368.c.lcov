@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |static int heap[2 * (256 + 1 + 29) + 1];
+    4|       |static int heap_len;
+    5|       |static int heap_max;
+    6|      1|void __attribute__((noinline)) foo(int elems) {
+    7|      1|  int n, m;
+    8|      1|  int max_code = -1;
+    9|      1|  int node = elems;
+   10|      1|  heap_len = 0, heap_max = (2 * (256 + 1 + 29) + 1);
+   11|    287|  for (n = 0; n < elems; n++)
+   12|    286|    heap[++heap_len] = max_code = n;
+   13|    285|  do {
+   14|    285|    n = heap[1];
+   15|    285|    heap[1] = heap[heap_len--];
+   16|    285|    m = heap[1];
+   17|    285|    heap[--heap_max] = n;
+   18|    285|    heap[--heap_max] = m;
+   19|    285|  } while (heap_len >= 2);
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  foo(286);
+   24|      1|  return 0;
+   25|      1|}
+

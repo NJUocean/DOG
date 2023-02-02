@@ -1,0 +1,24 @@
+        -:    0:Source:2306.c
+        -:    0:Graph:2306.gcno
+        -:    0:Data:2306.gcda
+        -:    0:Runs:1
+        -:    1:unsigned bug(unsigned short value, unsigned short *buffer,
+        -:    2:             unsigned short *bufend);
+        -:    3:
+        -:    4:unsigned short buf[] = {1, 4, 16, 64, 256};
+        1:    5:int main() {
+        1:    6:  if (bug(512, buf, buf + 3) != 491)
+    #####:    7:    abort();
+        -:    8:
+        1:    9:  exit(0);
+        -:   10:}
+        -:   11:
+        1:   12:unsigned bug(unsigned short value, unsigned short *buffer,
+        -:   13:             unsigned short *bufend) {
+        -:   14:  unsigned short *tmp;
+        -:   15:
+        4:   16:  for (tmp = buffer; tmp < bufend; tmp++)
+        3:   17:    value -= *tmp;
+        -:   18:
+        1:   19:  return value;
+        -:   20:}

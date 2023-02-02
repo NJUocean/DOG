@@ -1,0 +1,13 @@
+    1|       |/* PR tree-optimization/47155 */
+    2|       |
+    3|       |unsigned int a;
+    4|       |static signed char b = -127;
+    5|       |int c = 1;
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  a = b <= (unsigned char)(-6 * c);
+    9|      1|  if (!a)
+   10|      0|    __builtin_abort();
+   11|      1|  return 0;
+   12|      1|}
+

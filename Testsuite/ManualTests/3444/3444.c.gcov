@@ -1,0 +1,23 @@
+        -:    0:Source:3444.c
+        -:    0:Graph:3444.gcno
+        -:    0:Data:3444.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct gs_imager_state_s {
+        -:    2:  struct {
+        -:    3:    int half_width;
+        -:    4:    int cap;
+        -:    5:    float miter_limit;
+        -:    6:  } line_params;
+        -:    7:} gs_imager_state;
+        -:    8:static const gs_imager_state gstate_initial = {{1}};
+    #####:    9:void gstate_path_memory(gs_imager_state *pgs) { *pgs = gstate_initial; }
+        1:   10:int gs_state_update_overprint(void) {
+        1:   11:  return gstate_initial.line_params.half_width;
+        -:   12:}
+        -:   13:
+        -:   14:extern void abort(void);
+        1:   15:int main() {
+        1:   16:  if (gs_state_update_overprint() != 1)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

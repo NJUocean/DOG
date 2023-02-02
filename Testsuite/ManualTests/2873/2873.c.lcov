@@ -1,0 +1,78 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-mno-speculate-indirect-jumps" } */
+    3|       |/* { dg-warning "'-mno-speculate-indirect-jumps' is deprecated" "" { target
+    4|       | * *-*-* } 0 } */
+    5|       |
+    6|       |/* Test for deliberate misprediction of jump tables.  */
+    7|       |
+    8|      9|void __attribute__((noinline)) bar() {}
+    9|       |
+   10|      9|int foo(int x) {
+   11|      9|  int a;
+   12|      9|
+   13|      9|  switch (x) {
+   14|      1|  default:
+   15|      1|    a = -1;
+   16|      1|    break;
+   17|      1|  case 0:
+   18|      1|    a = x * x + 3;
+   19|      1|    break;
+   20|      1|  case 1:
+   21|      1|    a = x + 1;
+   22|      1|    break;
+   23|      1|  case 2:
+   24|      1|    a = x + x;
+   25|      1|    break;
+   26|      1|  case 3:
+   27|      1|    a = x << 3;
+   28|      1|    break;
+   29|      1|  case 4:
+   30|      1|    a = x >> 1;
+   31|      1|    break;
+   32|      1|  case 5:
+   33|      1|    a = x;
+   34|      1|    break;
+   35|      1|  case 6:
+   36|      1|    a = 0;
+   37|      1|    break;
+   38|      1|  case 7:
+   39|      1|    a = x * x + x;
+   40|      1|    break;
+   41|      9|  }
+   42|      9|
+   43|      9|  bar();
+   44|      9|
+   45|      9|  return a;
+   46|      9|}
+   47|       |
+   48|      1|int main() {
+   49|      1|  if (foo(0) != 3)
+   50|      0|    __builtin_abort();
+   51|      1|
+   52|      1|  if (foo(1) != 2)
+   53|      0|    __builtin_abort();
+   54|      1|
+   55|      1|  if (foo(2) != 4)
+   56|      0|    __builtin_abort();
+   57|      1|
+   58|      1|  if (foo(3) != 24)
+   59|      0|    __builtin_abort();
+   60|      1|
+   61|      1|  if (foo(4) != 2)
+   62|      0|    __builtin_abort();
+   63|      1|
+   64|      1|  if (foo(5) != 5)
+   65|      0|    __builtin_abort();
+   66|      1|
+   67|      1|  if (foo(6) != 0)
+   68|      0|    __builtin_abort();
+   69|      1|
+   70|      1|  if (foo(7) != 56)
+   71|      0|    __builtin_abort();
+   72|      1|
+   73|      1|  if (foo(8) != -1)
+   74|      0|    __builtin_abort();
+   75|      1|
+   76|      1|  return 0;
+   77|      1|}
+

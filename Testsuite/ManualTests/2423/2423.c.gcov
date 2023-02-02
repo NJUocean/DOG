@@ -1,0 +1,22 @@
+        -:    0:Source:2423.c
+        -:    0:Graph:2423.gcno
+        -:    0:Data:2423.gcda
+        -:    0:Runs:1
+        -:    1:struct F {
+        -:    2:  int i;
+        -:    3:};
+        -:    4:
+        1:    5:void f1(struct F *x, struct F *y) {
+        1:    6:  int timeout = 0;
+        2:    7:  for (; ((const struct F *)x)->i < y->i; x->i++)
+        1:    8:    if (++timeout > 5)
+    #####:    9:      abort();
+        1:   10:}
+        -:   11:
+        1:   12:main() {
+        -:   13:  struct F x, y;
+        1:   14:  x.i = 0;
+        1:   15:  y.i = 1;
+        1:   16:  f1(&x, &y);
+        1:   17:  exit(0);
+        -:   18:}

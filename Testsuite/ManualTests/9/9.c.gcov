@@ -1,0 +1,42 @@
+        -:    0:Source:9.c
+        -:    0:Graph:9.gcno
+        -:    0:Data:9.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fstrict-aliasing -fgcse" } */
+        -:    3:
+        -:    4:/* PR optimization/10087 */
+        -:    5:/* Contributed by Peter van Hoof <p.van-hoof@qub.ac.uk> */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:void b(int *, int *);
+        -:   10:
+        -:   11:typedef struct {
+        -:   12:  double T1;
+        -:   13:  char c;
+        -:   14:} S;
+        -:   15:
+        1:   16:int main(void) {
+        -:   17:  int i, j;
+        -:   18:  double s;
+        -:   19:
+        -:   20:  S x1[2][2];
+        1:   21:  S *x[2] = {x1[0], x1[1]};
+        1:   22:  S **E = x;
+        -:   23:
+        3:   24:  for (i = 0; i < 2; i++)
+        6:   25:    for (j = 0; j < 2; j++)
+        4:   26:      E[j][i].T1 = 1;
+        -:   27:
+        3:   28:  for (i = 0; i < 2; i++)
+        6:   29:    for (j = 0; j < 2; j++)
+        4:   30:      s = E[j][i].T1;
+        -:   31:
+        1:   32:  b(&j, &i);
+        1:   33:  if (s != 1)
+    #####:   34:    abort();
+        1:   35:  return 0;
+        -:   36:}
+        -:   37:
+        1:   38:void b(int *i, int *j) {}

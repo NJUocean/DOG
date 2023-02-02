@@ -1,0 +1,17 @@
+        -:    0:Source:2766.c
+        -:    0:Graph:2766.gcno
+        -:    0:Data:2766.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/14343 */
+        -:    2:/* Origin: <Pawe Sikora <pluto@ds14.agh.edu.pl> */
+        -:    3:
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-require-effective-target ia32 } */
+        -:    6:/* { dg-options "-march=pentium3" } */
+        -:    7:
+        1:    8:int main() {
+        -:    9:  typedef long long int v __attribute__((vector_size(16)));
+        -:   10:  v a, b;
+        1:   11:  a = b;
+        1:   12:  return 0;
+        -:   13:}

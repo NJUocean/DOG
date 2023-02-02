@@ -1,0 +1,20 @@
+        -:    0:Source:1010.c
+        -:    0:Graph:1010.gcno
+        -:    0:Data:1010.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Og -funroll-loops" } */
+        -:    3:
+        1:    4:static __attribute__((noinline, noclone)) unsigned foo(unsigned x) {
+        -:    5:  do
+        1:    6:    x++;
+        1:    7:  while (x <= 15);
+        1:    8:  return x;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  unsigned x = foo(-2);
+        1:   13:  if (x != (unsigned)-1)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

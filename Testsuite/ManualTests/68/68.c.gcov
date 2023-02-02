@@ -1,0 +1,55 @@
+        -:    0:Source:68.c
+        -:    0:Graph:68.gcno
+        -:    0:Data:68.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: trampoline-1.c Waldek Hebisch <hebisch@math.uni.wroc.pl> */
+        -:    2:/* Ported to test -Wtrampolines Magnus Granberg <zorry@gentoo.org> */
+        -:    3:
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-require-effective-target trampolines } */
+        -:    6:/* { dg-options "-O2 -Wtrampolines" } */
+        -:    7:
+        -:    8:/* This used to fail on various versions of Solaris 2 because the
+        -:    9:   trampoline couldn't be made executable.  */
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:extern double fabs(double);
+        -:   13:
+        1:   14:void foo(void) {
+        1:   15:  const int correct[1100] = {1, 0, -2, 0, 1, 0, 1, -1, -10, -30, -67};
+        -:   16:  int i;
+        -:   17:
+      128:   18:  double x1(void) { return 1; }
+      151:   19:  double x2(void) { return -1; }
+      187:   20:  double x3(void) { return -1; }
+      103:   21:  double x4(void) { return 1; }
+        1:   22:  double x5(void) { return 0; }
+        -:   23:
+        -:   24:  typedef double pfun(void);
+        -:   25:
+     1390:   26:  double a(int k, pfun x1, pfun x2, pfun x3, pfun x4, pfun x5) {
+     1379:   27:    double b(void) /* { dg-warning "trampoline generated for nested function
+        -:   28:                      'b'" "standard descriptors" { xfail { { ia64-*-* *-*-aix*
+        -:   29:                      } || { powerpc*-*-* && lp64 } } } } */
+        -:   30:    {
+     1379:   31:      k = k - 1;
+     1379:   32:      return a(k, b, x1, x2, x3, x4);
+        -:   33:    }
+        -:   34:
+     1390:   35:    if (k <= 0)
+      559:   36:      return x4() + x5();
+        -:   37:    else
+      831:   38:      return b();
+        -:   39:  }
+        -:   40:
+       12:   41:  for (i = 0; i <= 10; i++) {
+       11:   42:    if (fabs(a(i, x1, x2, x3, x4, x5) - correct[i]) > 0.1)
+    #####:   43:      abort();
+        -:   44:  }
+        1:   45:}
+        -:   46:
+        1:   47:int main(void) {
+        1:   48:  foo();
+        -:   49:
+        1:   50:  return 0;
+        -:   51:}

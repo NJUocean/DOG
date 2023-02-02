@@ -1,0 +1,22 @@
+    1|       |/* PR sanitizer/65280 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=bounds" } */
+    4|       |/* Origin: Martin Uecker <uecker@eecs.berkeley.edu> */
+    5|       |
+    6|      1|void foo(volatile int (*a)[3]) {
+    7|      1|  (*a)[3] = 1; // error
+    8|      1|  a[0][0] = 1; // ok
+    9|      1|  a[1][0] = 1; // ok
+   10|      1|  a[1][4] = 1; // error
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  volatile int a[20];
+   15|      1|  foo((int(*)[3]) & a);
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-output "index 3 out of bounds for type 'int
+   20|       | * \\\[3\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+   21|       |/* { dg-output "\[^\n\r]*index 4 out of bounds for type 'int \\\[3\\\]'" } */
+

@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -floop-nest-optimize" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int yu[4][1] = {{1}, {2}, {3}, {4}};
+    7|       |
+    8|      1|static void __attribute__((noinline, noclone)) foo(void) {
+    9|      1|  int zh, ro;
+   10|      1|
+   11|      3|  for (zh = 0; zh < 2; ++zh)
+   12|      8|    for (ro = 0; ro < 3; ++ro)
+   13|      6|      yu[ro][0] = yu[zh + 1][0];
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  foo();
+   18|      1|
+   19|      1|  if (yu[0][0] != 2 || yu[1][0] != 2 || yu[2][0] != 2 || yu[3][0] != 4)
+   20|      0|    abort();
+   21|      1|
+   22|      1|  return 0;
+   23|      1|}
+

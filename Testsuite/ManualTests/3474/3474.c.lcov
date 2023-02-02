@@ -1,0 +1,22 @@
+    1|       |struct Foo {
+    2|       |  int i;
+    3|       |  unsigned precision : 10;
+    4|       |  unsigned blah : 3;
+    5|       |} f;
+    6|       |
+    7|      1|int __attribute__((noinline, noclone)) foo(struct Foo *p) {
+    8|      1|  struct Foo *q = p;
+    9|      1|  return (*q).precision;
+   10|      1|}
+   11|       |
+   12|       |extern void abort(void);
+   13|       |
+   14|      1|int main() {
+   15|      1|  f.i = -1;
+   16|      1|  f.precision = 0;
+   17|      1|  f.blah = -1;
+   18|      1|  if (foo(&f) != 0)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

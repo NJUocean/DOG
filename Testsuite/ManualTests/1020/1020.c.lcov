@@ -1,0 +1,25 @@
+    1|       |/* PR rtl-optimization/81019 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O -fno-tree-ccp" } */
+    4|       |
+    5|       |unsigned long long __attribute__((noinline, noclone))
+    6|       |foo(unsigned char a, unsigned short b, unsigned c, unsigned long long d,
+    7|      1|    unsigned char e, unsigned short f, unsigned g, unsigned long long h) {
+    8|      1|  g = e;
+    9|      1|  c &= 0 < d;
+   10|      1|  b *= d;
+   11|      1|  g ^= -1;
+   12|      1|  g &= 1;
+   13|      1|  c |= 1;
+   14|      1|  a -= 0 < g;
+   15|      1|  g >>= 1;
+   16|      1|  f = b | (f >> b);
+   17|      1|  return a + c + d + f + g + h;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  if (foo(0, 0, 0, 0, 0, 0, 0, 0) != 0x100)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

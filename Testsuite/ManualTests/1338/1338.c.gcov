@@ -1,0 +1,15 @@
+        -:    0:Source:1338.c
+        -:    0:Graph:1338.gcno
+        -:    0:Data:1338.gcda
+        -:    0:Runs:1
+    10000:    1:f(x) unsigned x;
+    10000:    2:{ return (unsigned)(((unsigned long long)x * 0xAAAAAAAB) >> 32) >> 1; }
+        -:    3:
+        1:    4:main() {
+        -:    5:  unsigned i;
+        -:    6:
+    10001:    7:  for (i = 0; i < 10000; i++)
+    10000:    8:    if (f(i) != i / 3)
+    #####:    9:      abort();
+        1:   10:  exit(0);
+        -:   11:}

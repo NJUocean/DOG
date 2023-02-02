@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -march=z10 -mzarch --save-temps -mindirect-branch-table" }
+    3|       | */
+    4|       |
+    5|       |int gl = 0;
+    6|       |
+    7|      3|int __attribute__((noinline, noclone)) bar(int a) { return a + 2; }
+    8|       |
+    9|       |void __attribute__((function_return_mem("thunk"), noinline, noclone))
+   10|      1|foo(int a) {
+   11|      1|  int i;
+   12|      1|
+   13|      1|  if (a == 42)
+   14|      0|    return;
+   15|      1|
+   16|      4|  for (i = 0; i < a; i++)
+   17|      3|    gl += bar(i);
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  foo(3);
+   22|      1|  if (gl != 9)
+   23|      0|    __builtin_abort();
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+   27|       |
+   28|       |/* With -march=z10 -mzarch the shrink wrapped returns use compare and
+   29|       |   swap relative to jump to the exit block instead of making use of
+   30|       |   the conditional return pattern.
+   31|       |   FIXME: Use compare and branch register for that!!!! */
+   32|       |
+   33|       |/* 2 x foo
+   34|       |/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 2 } } */
+   35|       |/* { dg-final { scan-assembler "exrl" } } */
+   36|       |
+   37|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   38|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+   39|       |/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+   40|       |/* { dg-final { scan-assembler     "section\t.s390_return_mem" } } */
+

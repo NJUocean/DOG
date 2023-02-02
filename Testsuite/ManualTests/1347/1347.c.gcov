@@ -1,0 +1,78 @@
+        -:    0:Source:1347.c
+        -:    0:Graph:1347.gcno
+        -:    0:Data:1347.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:
+        -:    4:#include <stdint.h>
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:#define N_DEV_BITS_4 5
+        -:    9:#define N_INO_BITS_4 (32 - N_DEV_BITS_4 - 2 - 1)
+        -:   10:
+        -:   11:#define N_DEV_BITS_8 8
+        -:   12:#define N_INO_BITS_8 (64 - N_DEV_BITS_8 - 2 - 1)
+        -:   13:
+        -:   14:struct dev_ino_4 {
+        -:   15:  uint32_t mode : 2;
+        -:   16:  uint32_t short_ino : N_INO_BITS_4;
+        -:   17:  uint32_t mapped_dev : N_DEV_BITS_4;
+        -:   18:  uint32_t always_set : 1;
+        -:   19:};
+        -:   20:
+        -:   21:struct dev_ino_8 {
+        -:   22:  uint32_t mode : 2;
+        -:   23:  uint64_t short_ino : N_INO_BITS_8;
+        -:   24:  uint32_t mapped_dev : N_DEV_BITS_8;
+        -:   25:  uint32_t always_set : 1;
+        -:   26:};
+        -:   27:
+        -:   28:struct dev_ino_full {
+        -:   29:  uint32_t mode : 2;
+        -:   30:  uint32_t dev;
+        -:   31:  uint32_t ino;
+        -:   32:};
+        -:   33:
+        -:   34:enum di_mode { DI_MODE_4 = 1, DI_MODE_8 = 2, DI_MODE_FULL = 3 };
+        -:   35:
+        -:   36:struct di_ent {
+        -:   37:  union {
+        -:   38:    struct dev_ino_4 di4;
+        -:   39:    struct dev_ino_8 di8;
+        -:   40:    struct dev_ino_full full;
+        -:   41:    uint32_t u32;
+        -:   42:    uint64_t u64;
+        -:   43:    void *ptr;
+        -:   44:  } u;
+        -:   45:};
+        -:   46:
+        2:   47:static struct di_ent decode_ptr(struct di_ent const *v) {
+        -:   48:  struct di_ent di;
+        2:   49:  di.u.ptr = (void *)v;
+        2:   50:  return di;
+        -:   51:}
+        -:   52:
+        1:   53:static int di_ent_equal(void const *x, void const *y) {
+        1:   54:  struct di_ent a = decode_ptr(x);
+        1:   55:  struct di_ent b = decode_ptr(y);
+        1:   56:  if (a.u.di4.mode != b.u.di4.mode)
+    #####:   57:    return 0;
+        -:   58:
+        1:   59:  if (a.u.di4.mode == DI_MODE_4)
+       1*:   60:    return (a.u.di4.short_ino == b.u.di4.short_ino &&
+    #####:   61:            a.u.di4.mapped_dev == b.u.di4.mapped_dev);
+        -:   62:
+    #####:   63:  if (a.u.di8.mode == DI_MODE_8)
+    #####:   64:    return (a.u.di8.short_ino == b.u.di8.short_ino &&
+    #####:   65:            a.u.di8.mapped_dev == b.u.di8.mapped_dev);
+        -:   66:
+    #####:   67:  return (a.u.full.ino == b.u.full.ino && a.u.full.dev == b.u.full.dev);
+        -:   68:}
+        -:   69:
+        1:   70:int main() {
+        1:   71:  if (di_ent_equal((void *)0x80143c4d, (void *)0x80173851) != 0)
+    #####:   72:    abort();
+        1:   73:  return 0;
+        -:   74:}

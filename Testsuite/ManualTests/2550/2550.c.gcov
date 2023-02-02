@@ -1,0 +1,25 @@
+        -:    0:Source:2550.c
+        -:    0:Graph:2550.gcno
+        -:    0:Data:2550.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target trampolines } */
+        -:    2:
+        1:    3:int f0(int (*fn)(int *), int *p) { return (*fn)(p); }
+        -:    4:
+        1:    5:int f1(void) {
+        1:    6:  int i = 0;
+        -:    7:
+        1:    8:  int f2(int *p) {
+        1:    9:    i = 1;
+        1:   10:    return *p + 1;
+        -:   11:  }
+        -:   12:
+        1:   13:  return f0(f2, &i);
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  if (f1() != 2)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

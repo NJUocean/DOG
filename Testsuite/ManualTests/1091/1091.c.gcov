@@ -1,0 +1,35 @@
+        -:    0:Source:1091.c
+        -:    0:Graph:1091.gcno
+        -:    0:Data:1091.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:unsigned int m;
+        -:    5:
+        -:    6:#define N 128
+        -:    7:unsigned int a[N];
+        -:    8:
+        1:    9:unsigned int __attribute__((noipa)) df_count_refs(_Bool include_defs) {
+        1:   10:  int size = 0;
+        -:   11:
+       18:   12:  for (unsigned int regno = 0; regno < m; regno++)
+       17:   13:    if (include_defs)
+       17:   14:      size += a[regno];
+        1:   15:  return size;
+        -:   16:}
+        -:   17:
+        1:   18:int main(int argc, char **argv) {
+      129:   19:  for (unsigned i = 0; i < N; i++)
+      128:   20:    a[i] = i;
+        -:   21:
+        1:   22:  if (argc < 2)
+        1:   23:    m = 17;
+        -:   24:
+        1:   25:  unsigned int r = df_count_refs(1);
+        1:   26:  __builtin_printf("r: %d\n", r);
+        1:   27:  if (r != 136)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

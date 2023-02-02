@@ -1,0 +1,20 @@
+        -:    0:Source:3354.c
+        -:    0:Graph:3354.gcno
+        -:    0:Data:3354.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/17099 */
+        -:    2:
+        -:    3:extern void exit(int);
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:void check(int a) {
+        1:    7:  if (a != 1)
+    #####:    8:    abort();
+        1:    9:}
+        -:   10:
+       1*:   11:void test(int a, int b) { check((a ? 1 : 0) | (b ? 2 : 0)); }
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  test(1, 0);
+        1:   15:  exit(0);
+        -:   16:}

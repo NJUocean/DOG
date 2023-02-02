@@ -1,0 +1,32 @@
+        -:    0:Source:1408.c
+        -:    0:Graph:1408.gcno
+        -:    0:Data:1408.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct pair {
+        -:    4:  int x;
+        -:    5:  int y;
+        -:    6:};
+        -:    7:
+        -:    8:struct array {
+        -:    9:  struct pair elems[2];
+        -:   10:  unsigned index;
+        -:   11:};
+        -:   12:
+        -:   13:extern void abort();
+        -:   14:
+        -:   15:void __attribute__((noinline, noclone))
+        1:   16:test_results(int x1, int y1, int x2, int y2) {
+        1:   17:  if (x1 != x2 || y1 != y2)
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  struct array arr = {{{1, 2}, {3, 4}}, 1};
+        1:   23:  struct pair last = arr.elems[arr.index];
+        -:   24:
+        1:   25:  test_results(last.x, last.y, arr.elems[1].x, arr.elems[1].y);
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}

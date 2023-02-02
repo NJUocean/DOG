@@ -1,0 +1,46 @@
+        -:    0:Source:2274.c
+        -:    0:Graph:2274.gcno
+        -:    0:Data:2274.gcda
+        -:    0:Runs:1
+        -:    1:const int n = 100;
+        -:    2:
+    #####:    3:int private_reduction() {
+        -:    4:  int i, r;
+        -:    5:
+        -:    6:#pragma acc parallel
+        -:    7:#pragma acc loop private(r) reduction(+ : r)
+    #####:    8:  for (i = 0; i < 100; i++)
+    #####:    9:    r += 10;
+        -:   10:
+    #####:   11:  return r;
+        -:   12:}
+        -:   13:
+    #####:   14:int parallel_reduction() {
+    #####:   15:  int sum = 0;
+    #####:   16:  int dummy = 0;
+        -:   17:
+        -:   18:#pragma acc data copy(dummy)
+        -:   19:  {
+        -:   20:#pragma acc parallel num_gangs(10) copy(sum) reduction(+ : sum)
+        -:   21:    {
+    #####:   22:      int v = 5;
+    #####:   23:      sum += 10 + v;
+        -:   24:    }
+        -:   25:  }
+        -:   26:
+    #####:   27:  return sum;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  int i, s = 0;
+        -:   32:
+        -:   33:#pragma acc parallel num_gangs(10) copy(s) reduction(+ : s)
+      101:   34:  for (i = 0; i < n; i++)
+      100:   35:    s += i + 1;
+        -:   36:
+        -:   37:#pragma acc parallel num_gangs(10) reduction(+ : s) copy(s)
+      101:   38:  for (i = 0; i < n; i++)
+      100:   39:    s += i + 1;
+        -:   40:
+        1:   41:  return 0;
+        -:   42:}

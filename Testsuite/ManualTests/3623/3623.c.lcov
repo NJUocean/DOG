@@ -1,0 +1,19 @@
+    1|      1|int __attribute__((noinline)) foo(int *__restrict p, int i) {
+    2|      1|  int *__restrict q;
+    3|      1|  int *__restrict r;
+    4|      1|  int v, w;
+    5|      1|  q = p + 1;
+    6|      1|  r = q - i;
+    7|      1|  v = *r;
+    8|      1|  *p = 1;
+    9|      1|  w = *r;
+   10|      1|  return v + w;
+   11|      1|}
+   12|       |extern void abort(void);
+   13|      1|int main() {
+   14|      1|  int i = 0;
+   15|      1|  if (foo(&i, 1) != 1)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

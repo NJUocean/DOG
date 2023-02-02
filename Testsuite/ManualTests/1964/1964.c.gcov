@@ -1,0 +1,30 @@
+        -:    0:Source:1964.c
+        -:    0:Graph:1964.gcno
+        -:    0:Data:1964.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/61839.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-vrp1 -fdisable-tree-evrp -fdump-tree-optimized"
+        -:    4: * } */
+        -:    5:/* { dg-require-effective-target int32plus } */
+        -:    6:
+        1:    7:__attribute__((noinline)) int foo(int a, unsigned b) {
+        1:    8:  unsigned c = 1;
+        1:    9:  if (b >= 1 && b <= ((unsigned)(-1) - 1))
+    #####:   10:    return 0;
+        1:   11:  c = b >> 4;
+        1:   12:  if (c == 268435455)
+        -:   13:    ;
+        -:   14:  else
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  volatile unsigned b = (unsigned)(-1);
+        1:   21:  foo(-1, b);
+        -:   22:}
+        -:   23:
+        -:   24:/* Scan for ~[1, 4294967294] >> 4 in function foo.  */
+        -:   25:/* { dg-final { scan-tree-dump-times "0 : 268435455" 1  "vrp1" } } */
+        -:   26:/* { dg-final { scan-tree-dump-times "268435455" 0  "optimized" } } */

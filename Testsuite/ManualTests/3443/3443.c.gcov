@@ -1,0 +1,30 @@
+        -:    0:Source:3443.c
+        -:    0:Graph:3443.gcno
+        -:    0:Data:3443.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/29484 */
+        -:    2:/* { dg-require-effective-target label_values } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        4:    6:void *__attribute__((noinline)) baz(void **lab) {
+        4:    7:  asm volatile("" : "+r"(lab));
+        4:    8:  return *lab;
+        -:    9:}
+        -:   10:
+        4:   11:static inline int bar(void) {
+        -:   12:  static void *b[] = {&&addr};
+        4:   13:  baz(b);
+        4:   14:addr:
+        4:   15:  return 17;
+        -:   16:}
+        -:   17:
+        2:   18:int __attribute__((noinline)) f1(void) { return bar(); }
+        -:   19:
+        2:   20:int __attribute__((noinline)) f2(void) { return bar(); }
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  if (f1() != 17 || f1() != 17 || f2() != 17 || f2() != 17)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

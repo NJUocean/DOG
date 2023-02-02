@@ -1,0 +1,76 @@
+        -:    0:Source:3635.c
+        -:    0:Graph:3635.gcno
+        -:    0:Data:3635.gcda
+        -:    0:Runs:1
+        -:    1:struct C {
+        -:    2:  unsigned int c;
+        -:    3:  struct D {
+        -:    4:    unsigned int columns : 4;
+        -:    5:    unsigned int fore : 12;
+        -:    6:    unsigned int back : 6;
+        -:    7:    unsigned int fragment : 1;
+        -:    8:    unsigned int standout : 1;
+        -:    9:    unsigned int underline : 1;
+        -:   10:    unsigned int strikethrough : 1;
+        -:   11:    unsigned int reverse : 1;
+        -:   12:    unsigned int blink : 1;
+        -:   13:    unsigned int half : 1;
+        -:   14:    unsigned int bold : 1;
+        -:   15:    unsigned int invisible : 1;
+        -:   16:    unsigned int pad : 1;
+        -:   17:  } attr;
+        -:   18:};
+        -:   19:
+        -:   20:struct A {
+        -:   21:  struct C *data;
+        -:   22:  unsigned int len;
+        -:   23:};
+        -:   24:
+        -:   25:struct B {
+        -:   26:  struct A *cells;
+        -:   27:  unsigned char soft_wrapped : 1;
+        -:   28:};
+        -:   29:
+        -:   30:struct E {
+        -:   31:  long row, col;
+        -:   32:  struct C defaults;
+        -:   33:};
+        -:   34:
+        1:   35:__attribute__((noinline)) void foo(struct E *screen, unsigned int c,
+        -:   36:                                   int columns, struct B *row) {
+        -:   37:  struct D attr;
+        -:   38:  long col;
+        -:   39:  int i;
+        1:   40:  col = screen->col;
+        1:   41:  attr = screen->defaults.attr;
+        1:   42:  attr.columns = columns;
+        1:   43:  row->cells->data[col].c = c;
+        1:   44:  row->cells->data[col].attr = attr;
+        1:   45:  col++;
+        1:   46:  attr.fragment = 1;
+        2:   47:  for (i = 1; i < columns; i++) {
+        1:   48:    row->cells->data[col].c = c;
+        1:   49:    row->cells->data[col].attr = attr;
+        1:   50:    col++;
+        -:   51:  }
+        1:   52:}
+        -:   53:
+        1:   54:int main(void) {
+        1:   55:  struct E e = {.row = 5,
+        -:   56:                .col = 0,
+        -:   57:                .defaults = {6, {-1, -1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}}};
+        -:   58:  struct C c[4];
+        1:   59:  struct A a = {c, 4};
+        1:   60:  struct B b = {&a, 1};
+        -:   61:  struct D d;
+        1:   62:  __builtin_memset(&c, 0, sizeof c);
+        1:   63:  foo(&e, 65, 2, &b);
+        1:   64:  d = e.defaults.attr;
+        1:   65:  d.columns = 2;
+        1:   66:  if (__builtin_memcmp(&d, &c[0].attr, sizeof d))
+    #####:   67:    __builtin_abort();
+        1:   68:  d.fragment = 1;
+        1:   69:  if (__builtin_memcmp(&d, &c[1].attr, sizeof d))
+    #####:   70:    __builtin_abort();
+        1:   71:  return 0;
+        -:   72:}

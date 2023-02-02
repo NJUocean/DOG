@@ -1,0 +1,24 @@
+        -:    0:Source:2537.c
+        -:    0:Graph:2537.gcno
+        -:    0:Data:2537.gcda
+        -:    0:Runs:1
+        -:    1:/* Test to make sure memset of small old size works
+        -:    2:   correctly. */
+        -:    3:#define SIZE 15
+        -:    4:
+        -:    5:void f(char *a) __attribute__((noinline));
+        1:    6:void f(char *a) { __builtin_memset(a, 0, SIZE); }
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  int i;
+        -:   10:  char b[SIZE];
+       16:   11:  for (i = 0; i < sizeof(b); i++) {
+       15:   12:    b[i] = i;
+        -:   13:  }
+        1:   14:  f(b);
+       16:   15:  for (i = 0; i < sizeof(b); i++) {
+       15:   16:    if (0 != b[i])
+    #####:   17:      __builtin_abort();
+        -:   18:  }
+        1:   19:  return 0;
+        -:   20:}

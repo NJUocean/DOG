@@ -1,0 +1,31 @@
+    1|       |/* Undefined behavior from a call to va_arg with a type other than
+    2|       |   that of the argument passed (in particular, with a type such as
+    3|       |   "float" that can never be the type of an argument passed through
+    4|       |   "...") does not appear until after the va_list expression is
+    5|       |   evaluated.  PR 38483.  */
+    6|       |/* Origin: Joseph Myers <joseph@codesourcery.com> */
+    7|       |
+    8|       |#include <stdarg.h>
+    9|       |
+   10|       |extern void exit(int);
+   11|       |extern void abort(void);
+   12|       |
+   13|       |va_list ap;
+   14|       |float f;
+   15|       |
+   16|      1|va_list *foo(void) {
+   17|      1|  exit(0);
+   18|      1|  return &ap;
+   19|      1|}
+   20|       |
+   21|      1|void bar(int i, ...) {
+   22|      1|  va_start(ap, i);
+   23|      1|  f = va_arg(*foo(), float);
+   24|      1|  va_end(ap);
+   25|      1|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  bar(1, 0);
+   29|      1|  abort();
+   30|      1|}
+

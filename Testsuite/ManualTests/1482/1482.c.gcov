@@ -1,0 +1,21 @@
+        -:    0:Source:1482.c
+        -:    0:Graph:1482.gcno
+        -:    0:Data:1482.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:short b = 0;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  int c = 0;
+    65536:    9:l1:
+    65536:   10:  b++;
+    65536:   11:  c |= b;
+    65536:   12:  if (b)
+    65535:   13:    goto l1;
+        1:   14:  if (c != -1)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,39 @@
+    1|       |/* PR tree-optimization/33136 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct S {
+    8|       |  struct S *a;
+    9|       |  int b;
+   10|       |  float f;
+   11|       |};
+   12|       |
+   13|       |static struct S s;
+   14|       |
+   15|      1|static int *__attribute__((noinline, const)) foo(void) { return &s.b; }
+   16|       |
+   17|      1|float __attribute__((noinline)) bar(float *f) {
+   18|      1|  s.f = 1.0;
+   19|      1|  *f = 4.0;
+   20|      1|  return s.f;
+   21|      1|}
+   22|       |
+   23|      1|int __attribute__((noinline)) baz(int *x) {
+   24|      1|  s.b = 1;
+   25|      1|  *x = 4;
+   26|      1|  return s.b;
+   27|      1|}
+   28|       |
+   29|      1|int t(void) {
+   30|      1|  float f = 8.0;
+   31|      1|  return bar(&f) + baz(foo());
+   32|      1|}
+   33|       |
+   34|      1|int main(void) {
+   35|      1|  if (t() != 5)
+   36|      0|    abort();
+   37|      1|  return 0;
+   38|      1|}
+

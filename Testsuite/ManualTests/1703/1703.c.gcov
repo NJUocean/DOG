@@ -1,0 +1,57 @@
+        -:    0:Source:1703.c
+        -:    0:Graph:1703.gcno
+        -:    0:Data:1703.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+    #####:    3:int __attribute__((noinline)) my_printf(const char *p, ...) {
+        -:    4:  static volatile int x;
+    #####:    5:  ++x;
+    #####:    6:}
+        -:    7:
+        -:    8:int a, b, c, e, f, g, h, i, j, k, l;
+        -:    9:unsigned d;
+        -:   10:
+        2:   11:static void p() {
+        -:   12:  while (1) {
+        2:   13:    int n = h;
+        2:   14:    h = 8;
+        2:   15:    if (!e)
+        2:   16:      break;
+    #####:   17:    h = n;
+    #####:   18:    while (1)
+        -:   19:      ;
+        -:   20:  }
+        6:   21:  for (; c != 4; c++) {
+        4:   22:    int o = g = 1;
+        8:   23:    for (; g; g--) {
+        4:   24:      while (d < b)
+    #####:   25:        e--;
+        4:   26:      a = g;
+        4:   27:      int q = o;
+        4:   28:      if (q)
+        4:   29:      L1:
+        4:   30:        j = f;
+        4:   31:      if (l) {
+    #####:   32:        my_printf("%d", g);
+    #####:   33:        goto L1;
+        -:   34:      }
+        4:   35:      o = l;
+        4:   36:      k = q;
+        -:   37:    }
+        -:   38:  }
+        2:   39:}
+        -:   40:
+        1:   41:void s() {
+        1:   42:  int m = 0;
+        1:   43:L2:
+       1*:   44:  if (i && g)
+    #####:   45:    goto L2;
+        3:   46:  for (; m < 2; m++)
+        2:   47:    p();
+        1:   48:}
+        -:   49:
+        1:   50:int main() {
+        1:   51:  s();
+        1:   52:  return 0;
+        -:   53:}

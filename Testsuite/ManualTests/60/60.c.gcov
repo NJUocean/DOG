@@ -1,0 +1,13 @@
+        -:    0:Source:60.c
+        -:    0:Graph:60.gcno
+        -:    0:Data:60.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for cases that should not get the unconditional warning about
+        -:    2:   missing return.  */
+        -:    3:/* { dg-do compile } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+    #####:    7:f() {}               /* { dg-bogus "" "no return warning" } */
+    #####:    8:int g() { abort(); } /* { dg-bogus "" "no return warning" } */
+        1:    9:int main() {}        /* { dg-bogus "" "no return warning" } */

@@ -1,0 +1,54 @@
+    1|       |/* { dg-options "-O2 -fno-inline-functions" } */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |/* Gimplification problem exposed by zsh.  All the side-effects in
+    5|       |   function arguments and in the called expression should happen
+    6|       |   before the actual function call.  */
+    7|       |extern void abort(void);
+    8|       |int A;
+    9|       |
+   10|       |typedef void (*fnptr)(void);
+   11|       |fnptr *F;
+   12|       |
+   13|      1|void foo(int x) {
+   14|      1|  if (A == x)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|void bar(int x, int y) {
+   19|      1|  if (x == 5 || y != 3)
+   20|      0|    abort();
+   21|      1|}
+   22|       |
+   23|      0|void boz(void) { abort(); }
+   24|       |
+   25|      1|void baz(void) {
+   26|      1|  if (*F != boz)
+   27|      0|    abort();
+   28|      1|}
+   29|       |
+   30|       |fnptr B[2] = {baz, boz};
+   31|       |
+   32|      1|int main() {
+   33|      1|  int b, c;
+   34|      1|
+   35|      1|  /* The gimplifier was emitting A++ after the call to foo.  */
+   36|      1|  A = 5;
+   37|      1|  foo(A++);
+   38|      1|
+   39|      1|  /* The increment to 'b' and 'c' must happen before the call.  However,
+   40|      1|     the first argument to bar() must be the original value of 'b', while
+   41|      1|     the second argument must be the new value of 'c'.  */
+   42|      1|  b = 4;
+   43|      1|  c = 2;
+   44|      1|  bar(b++, ++c);
+   45|      1|
+   46|      1|  /* This call via function pointer *F should go to baz, but F should
+   47|      1|     be incremented before the actual call (i.e., right before the
+   48|      1|     call F should be pointing to boz).  */
+   49|      1|  F = &B[0];
+   50|      1|  (*F++)();
+   51|      1|
+   52|      1|  return 0;
+   53|      1|}
+

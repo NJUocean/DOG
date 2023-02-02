@@ -1,0 +1,35 @@
+        -:    0:Source:458.c
+        -:    0:Graph:458.gcno
+        -:    0:Data:458.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fgraphite-identity -fstack-reuse=none -fwrapv -fno-tree-ch
+        -:    3: * -fno-tree-dce -fno-tree-dominator-opts -fno-tree-loop-ivcanon" } */
+        -:    4:
+        -:    5:int xy, tb;
+        -:    6:
+        1:    7:void bt(void) {
+        2:    8:  for (xy = 0; xy >= 0; --xy) {
+        1:    9:    int yt[8] = {0};
+        1:   10:    int pz[2] = {0};
+        1:   11:    int sa[32] = {0};
+        -:   12:    int us;
+        -:   13:
+        9:   14:    for (us = 0; us < 8; ++us)
+        8:   15:      yt[us] = 0;
+        -:   16:
+        -:   17:    (void)yt;
+        -:   18:    (void)pz;
+        -:   19:    (void)sa;
+        -:   20:  }
+        -:   21:
+        1:   22:  tb = 1;
+        1:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        1:   26:  bt();
+        1:   27:  if (xy != -1)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

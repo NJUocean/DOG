@@ -1,0 +1,19 @@
+        -:    0:Source:3572.c
+        -:    0:Graph:3572.gcno
+        -:    0:Data:3572.gcda
+        -:    0:Runs:1
+        -:    1:typedef union {
+        -:    2:  int __lock;
+        -:    3:} pthread_mutex_t;
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int main() {
+        -:    8:  struct {
+        -:    9:    int c;
+        -:   10:    pthread_mutex_t m;
+        1:   11:  } r = {.m = 0};
+        1:   12:  if (r.c != 0)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

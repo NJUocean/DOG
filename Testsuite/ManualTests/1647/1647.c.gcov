@@ -1,0 +1,22 @@
+        -:    0:Source:1647.c
+        -:    0:Graph:1647.gcno
+        -:    0:Data:1647.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:/* We use -ftrapv so that when SCEV final value replacement introduces
+        -:    4:   undefined overflow we trap.  UBSAN inhibits final value replacement.  */
+        -:    5:/* { dg-additional-options "-ftrapv" } */
+        -:    6:
+        1:    7:int __attribute__((noclone, noinline)) foo(int a, int b) {
+        1:    8:  int sum = 0;
+    60001:    9:  for (int i = 0; i < 60000; i++)
+    60000:   10:    sum += a + i * b;
+        1:   11:  return sum;
+        -:   12:}
+        -:   13:
+        1:   14:int main(int argc, char **argv) {
+        1:   15:  if (foo(-30000, 2) != 1799940000)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

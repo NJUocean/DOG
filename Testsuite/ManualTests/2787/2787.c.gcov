@@ -1,0 +1,31 @@
+        -:    0:Source:2787.c
+        -:    0:Graph:2787.gcno
+        -:    0:Data:2787.gcda
+        -:    0:Runs:1
+        -:    1:/* Distilled from optimization/863.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:extern void ok(int);
+        -:    6:
+        -:    7:typedef struct {
+        -:    8:  int x, y, z;
+        -:    9:} Data;
+        -:   10:
+        1:   11:void find(Data *first, Data *last) {
+        -:   12:  int i;
+       1*:   13:  for (i = (last - first) >> 2; i > 0; --i)
+        1:   14:    ok(i);
+    #####:   15:  abort();
+        -:   16:}
+        -:   17:
+        1:   18:void ok(int i) {
+        1:   19:  if (i != 1)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}
+        -:   23:
+        1:   24:int main() {
+        -:   25:  Data DataList[4];
+        1:   26:  find(DataList + 0, DataList + 4);
+        -:   27:}

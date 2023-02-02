@@ -1,0 +1,29 @@
+        -:    0:Source:3486.c
+        -:    0:Graph:3486.gcno
+        -:    0:Data:3486.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/51667 */
+        -:    2:/* Testcase by Uros Bizjak <ubizjak@gmail.com> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:void __attribute__((noinline, noclone)) bar(int a) {
+        1:    7:  if (a != -1)
+    #####:    8:    abort();
+        1:    9:}
+        -:   10:
+        1:   11:void __attribute__((noinline, noclone)) foo(short *a, int t) {
+        1:   12:  short r = *a;
+        -:   13:
+        1:   14:  if (t)
+    #####:   15:    bar((unsigned short)r);
+        -:   16:  else
+        1:   17:    bar((signed short)r);
+        1:   18:}
+        -:   19:
+        -:   20:short v = -1;
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  foo(&v, 0);
+        1:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-g -fno-var-tracking-assignments" } */
+    3|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" "-O1" } } */
+    4|       |
+    5|       |typedef __UINTPTR_TYPE__ uintptr_t;
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) int sub(int a, int b) { return a - b; }
+    8|       |
+    9|       |typedef struct {
+   10|       |  uintptr_t pa;
+   11|       |  uintptr_t pb;
+   12|       |} fatp_t __attribute__((aligned(2 * __alignof__(uintptr_t))));
+   13|       |
+   14|      1|__attribute__((noinline, noclone)) void foo(fatp_t str, int a, int b) {
+   15|      1|  int i = sub(a, b);
+   16|      1|  if (i == 0) /* BREAK */
+   17|      0|    foo(str, a - 1, b);
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  fatp_t ptr = {31415927, 27182818};
+   22|      1|  foo(ptr, 1, 2);
+   23|      1|  return 0;
+   24|      1|}
+   25|       |
+   26|       |/* { dg-final { gdb-test 20 "str.pa" "31415927" } } */
+   27|       |/* { dg-final { gdb-test 20 "str.pb" "27182818" } } */
+

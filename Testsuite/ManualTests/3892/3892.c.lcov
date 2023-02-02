@@ -1,0 +1,38 @@
+    1|       |struct assembly_operand {
+    2|       |  int type, value, symtype, symflags, marker;
+    3|       |};
+    4|       |
+    5|       |struct assembly_operand to_input, from_input;
+    6|       |
+    7|       |void __attribute__((__noinline__, __noclone__))
+    8|      1|assemblez_1(int internal_number, struct assembly_operand o1) {
+    9|      1|  if (o1.type != from_input.type)
+   10|      0|    __builtin_abort();
+   11|      1|}
+   12|       |
+   13|       |void __attribute__((__noinline__, __noclone__))
+   14|      1|t0(struct assembly_operand to, struct assembly_operand from) {
+   15|      1|  if (to.value == 0)
+   16|      1|    assemblez_1(32, from);
+   17|      0|  else
+   18|      0|    __builtin_abort();
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  to_input.value = 0;
+   23|      1|  to_input.type = 1;
+   24|      1|  to_input.symtype = 2;
+   25|      1|  to_input.symflags = 3;
+   26|      1|  to_input.marker = 4;
+   27|      1|
+   28|      1|  from_input.value = 5;
+   29|      1|  from_input.type = 6;
+   30|      1|  from_input.symtype = 7;
+   31|      1|  from_input.symflags = 8;
+   32|      1|  from_input.marker = 9;
+   33|      1|
+   34|      1|  t0(to_input, from_input);
+   35|      1|
+   36|      1|  return 0;
+   37|      1|}
+

@@ -1,0 +1,6 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -msse2 -march=k8" } */
+    3|       |/* { dg-final { scan-assembler-not "cvtss2sd" } } */
+    4|       |float a, b;
+    5|      1|int main() { a = b * 3.0; }
+

@@ -1,0 +1,21 @@
+    1|       |/* Test floating-point contraction occurs only within source language
+    2|       |   expressions.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=c99 -pedantic-errors" } */
+    5|       |/* { dg-skip-if "ptx only loosely follows IEEE" { "nvptx-*-*" } } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|       |volatile float a = 1 + 0x1p-23f, b = 1 - 0x1p-23f, c = -1;
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  float av = a, bv = b, cv = c;
+   14|      1|  float p = av * bv;
+   15|      1|  float r = p + cv;
+   16|      1|  if (r == 0)
+   17|      1|    exit(0);
+   18|      0|  else
+   19|      0|    abort();
+   20|      1|}
+

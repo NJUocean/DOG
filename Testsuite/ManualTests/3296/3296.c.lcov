@@ -1,0 +1,64 @@
+    1|       |/* PR optimization/8634 */
+    2|       |/* Contributed by Glen Nakamura <glen at imodulo dot com> */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |struct foo {
+    7|       |  char a, b, c, d, e, f, g, h, i, j;
+    8|       |};
+    9|       |
+   10|      1|int test1() {
+   11|      1|  const char X[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+   12|      1|  char buffer[8];
+   13|      1|  __builtin_memcpy(buffer, X, 8);
+   14|      1|  if (buffer[0] != 'A' || buffer[1] != 'B' || buffer[2] != 'C' ||
+   15|      1|      buffer[3] != 'D' || buffer[4] != 'E' || buffer[5] != 'F' ||
+   16|      1|      buffer[6] != 'G' || buffer[7] != 'H')
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+   20|       |
+   21|      1|int test2() {
+   22|      1|  const char X[10] = {'A', 'B', 'C', 'D', 'E'};
+   23|      1|  char buffer[10];
+   24|      1|  __builtin_memcpy(buffer, X, 10);
+   25|      1|  if (buffer[0] != 'A' || buffer[1] != 'B' || buffer[2] != 'C' ||
+   26|      1|      buffer[3] != 'D' || buffer[4] != 'E' || buffer[5] != '\0' ||
+   27|      1|      buffer[6] != '\0' || buffer[7] != '\0' || buffer[8] != '\0' ||
+   28|      1|      buffer[9] != '\0')
+   29|      0|    abort();
+   30|      1|  return 0;
+   31|      1|}
+   32|       |
+   33|      1|int test3() {
+   34|      1|  const struct foo X = {a : 'A', c : 'C', e : 'E', g : 'G', i : 'I'};
+   35|      1|  char buffer[10];
+   36|      1|  __builtin_memcpy(buffer, &X, 10);
+   37|      1|  if (buffer[0] != 'A' || buffer[1] != '\0' || buffer[2] != 'C' ||
+   38|      1|      buffer[3] != '\0' || buffer[4] != 'E' || buffer[5] != '\0' ||
+   39|      1|      buffer[6] != 'G' || buffer[7] != '\0' || buffer[8] != 'I' ||
+   40|      1|      buffer[9] != '\0')
+   41|      0|    abort();
+   42|      1|  return 0;
+   43|      1|}
+   44|       |
+   45|      1|int test4() {
+   46|      1|  const struct foo X = {.b = 'B', .d = 'D', .f = 'F', .h = 'H', .j = 'J'};
+   47|      1|  char buffer[10];
+   48|      1|  __builtin_memcpy(buffer, &X, 10);
+   49|      1|  if (buffer[0] != '\0' || buffer[1] != 'B' || buffer[2] != '\0' ||
+   50|      1|      buffer[3] != 'D' || buffer[4] != '\0' || buffer[5] != 'F' ||
+   51|      1|      buffer[6] != '\0' || buffer[7] != 'H' || buffer[8] != '\0' ||
+   52|      1|      buffer[9] != 'J')
+   53|      0|    abort();
+   54|      1|  return 0;
+   55|      1|}
+   56|       |
+   57|      1|int main() {
+   58|      1|  test1();
+   59|      1|  test2();
+   60|      1|  test3();
+   61|      1|  test4();
+   62|      1|  return 0;
+   63|      1|}
+

@@ -1,0 +1,25 @@
+    1|       |/* Trivially making sure IPA-SRA does not introduce segfaults where they should
+    2|       |   not be.  */
+    3|       |
+    4|       |struct bovid {
+    5|       |  float red;
+    6|       |  int green;
+    7|       |  void *blue;
+    8|       |};
+    9|       |
+   10|      1|static int __attribute__((noinline)) ox(int fail, struct bovid *cow) {
+   11|      1|  int r;
+   12|      1|  if (fail)
+   13|      0|    r = cow->red;
+   14|      1|  else
+   15|      1|    r = 0;
+   16|      1|  return r;
+   17|      1|}
+   18|       |
+   19|      1|int main(int argc, char *argv[]) {
+   20|      1|  int r;
+   21|      1|
+   22|      1|  r = ox((argc > 2000), (void *)0);
+   23|      1|  return r;
+   24|      1|}
+

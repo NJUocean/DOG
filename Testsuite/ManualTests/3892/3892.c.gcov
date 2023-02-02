@@ -1,0 +1,41 @@
+        -:    0:Source:3892.c
+        -:    0:Graph:3892.gcno
+        -:    0:Data:3892.gcda
+        -:    0:Runs:1
+        -:    1:struct assembly_operand {
+        -:    2:  int type, value, symtype, symflags, marker;
+        -:    3:};
+        -:    4:
+        -:    5:struct assembly_operand to_input, from_input;
+        -:    6:
+        -:    7:void __attribute__((__noinline__, __noclone__))
+        1:    8:assemblez_1(int internal_number, struct assembly_operand o1) {
+        1:    9:  if (o1.type != from_input.type)
+    #####:   10:    __builtin_abort();
+        1:   11:}
+        -:   12:
+        -:   13:void __attribute__((__noinline__, __noclone__))
+        1:   14:t0(struct assembly_operand to, struct assembly_operand from) {
+        1:   15:  if (to.value == 0)
+        1:   16:    assemblez_1(32, from);
+        -:   17:  else
+    #####:   18:    __builtin_abort();
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  to_input.value = 0;
+        1:   23:  to_input.type = 1;
+        1:   24:  to_input.symtype = 2;
+        1:   25:  to_input.symflags = 3;
+        1:   26:  to_input.marker = 4;
+        -:   27:
+        1:   28:  from_input.value = 5;
+        1:   29:  from_input.type = 6;
+        1:   30:  from_input.symtype = 7;
+        1:   31:  from_input.symflags = 8;
+        1:   32:  from_input.marker = 9;
+        -:   33:
+        1:   34:  t0(to_input, from_input);
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

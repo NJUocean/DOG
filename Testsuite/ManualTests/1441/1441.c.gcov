@@ -1,0 +1,33 @@
+        -:    0:Source:1441.c
+        -:    0:Graph:1441.gcno
+        -:    0:Data:1441.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fschedule-insns" { target scheduling } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int i;
+        -:    8:  int j;
+        -:    9:};
+        -:   10:
+        -:   11:struct U {
+        -:   12:  struct S s;
+        -:   13:} __attribute__((may_alias));
+        -:   14:
+        1:   15:int __attribute__((noinline, noclone)) foo(struct U *p, struct U *q) {
+        -:   16:  int i;
+        1:   17:  q->s.j = 1;
+        1:   18:  i = p->s.i;
+        1:   19:  return i;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        -:   23:  int a[3];
+        1:   24:  int *p = a;
+        1:   25:  p[1] = 0;
+        1:   26:  if (foo((struct U *)(p + 1), (struct U *)p) != 1)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

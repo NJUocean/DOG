@@ -1,0 +1,12 @@
+        -:    0:Source:2396.c
+        -:    0:Graph:2396.gcno
+        -:    0:Data:2396.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-march=armv8.4-a+dotprod" } */
+        -:    3:
+        1:    4:int main() { return 0; }
+        -:    5:
+        -:    6:/* { dg-final { scan-assembler {\.arch armv8\.4-a\+crc} } } */
+        -:    7:
+        -:    8:/* dotprod is default in armv8.4-a, don't emit.  */

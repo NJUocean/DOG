@@ -1,0 +1,57 @@
+        -:    0:Source:880.c
+        -:    0:Graph:880.gcno
+        -:    0:Data:880.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -fno-inline" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:static int something;
+        -:    8:
+        -:    9:static int *converterData[2] = {
+        -:   10:    &something,
+        -:   11:    &something,
+        -:   12:};
+        -:   13:
+        -:   14:static struct {
+        -:   15:  const char *name;
+        -:   16:  int type;
+        -:   17:} const cnvNameType[] = {{"bocu1", 1}, {"utf7", 1}, {"utf8", 1}};
+        -:   18:
+        -:   19:const int *getAlgorithmicTypeFromName(const char *realName);
+        1:   20:const int *getAlgorithmicTypeFromName(const char *realName) {
+        -:   21:  unsigned mid, start, limit;
+        -:   22:  unsigned lastMid;
+        -:   23:  int result;
+        1:   24:  start = 0;
+        1:   25:  limit = sizeof(cnvNameType) / sizeof(cnvNameType[0]);
+        1:   26:  mid = limit;
+        1:   27:  lastMid = 0xffffffff;
+        -:   28:
+        -:   29:  for (;;) {
+        2:   30:    mid = (start + limit) / 2;
+        2:   31:    if (lastMid == mid) { /* Have we moved? */
+    #####:   32:      break;              /* We haven't moved, and it wasn't found. */
+        -:   33:    }
+        2:   34:    lastMid = mid;
+        2:   35:    result = __builtin_strcmp(realName, cnvNameType[mid].name);
+        -:   36:
+        2:   37:    if (result < 0) {
+    #####:   38:      limit = mid;
+        2:   39:    } else if (result > 0) {
+        1:   40:      start = mid;
+        -:   41:    } else {
+        1:   42:      return converterData[cnvNameType[mid].type];
+        -:   43:    }
+        -:   44:  }
+        -:   45:
+    #####:   46:  return 0;
+        -:   47:}
+        -:   48:
+        1:   49:int main(void) {
+        1:   50:  if (!getAlgorithmicTypeFromName("utf8"))
+    #####:   51:    abort();
+        1:   52:  return 0;
+        -:   53:}

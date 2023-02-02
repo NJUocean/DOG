@@ -1,0 +1,18 @@
+        -:    0:Source:397.c
+        -:    0:Graph:397.gcno
+        -:    0:Data:397.gcda
+        -:    0:Runs:1
+        1:    1:void foo(int *BM_tab) {
+        -:    2:  int *BM_tab_base;
+        -:    3:
+        1:    4:  BM_tab_base = BM_tab;
+        1:    5:  BM_tab += 0400;
+      257:    6:  while (BM_tab_base != BM_tab)
+      256:    7:    *--BM_tab = 6;
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int BM_tab[0400];
+        1:   12:  foo(BM_tab);
+        1:   13:  return 0;
+        -:   14:}

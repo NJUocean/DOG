@@ -1,0 +1,17 @@
+        -:    0:Source:3228.c
+        -:    0:Graph:3228.gcno
+        -:    0:Data:3228.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 3177 */
+        -:    2:/* Produced a SIGILL on ia64 with sibcall from F to G.  We hadn't
+        -:    3:   widened the register window to allow for the fourth outgoing
+        -:    4:   argument as an "in" register.  */
+        -:    5:
+        1:    6:float g(void *a, void *b, int e, int c, float d) { return d; }
+        -:    7:
+        1:    8:float f(void *a, void *b, int c, float d) { return g(a, b, 0, c, d); }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  f(0, 0, 1, 1);
+        1:   12:  return 0;
+        -:   13:}

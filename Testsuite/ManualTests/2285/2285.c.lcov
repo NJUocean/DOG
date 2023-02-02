@@ -1,0 +1,32 @@
+    1|       |/* PR opt/7130 */
+    2|      7|#define TYPE long
+    3|       |
+    4|      1|void scale(TYPE *alpha, TYPE *x, int n) {
+    5|      1|  int i, ix;
+    6|      1|
+    7|      1|  if (*alpha != 1)
+    8|      6|    for (i = 0, ix = 0; i < n; i++, ix += 2) {
+    9|      5|      TYPE tmpr, tmpi;
+   10|      5|      tmpr = *alpha * x[ix];
+   11|      5|      tmpi = *alpha * x[ix + 1];
+   12|      5|      x[ix] = tmpr;
+   13|      5|      x[ix + 1] = tmpi;
+   14|      5|    }
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  int i;
+   19|      1|  TYPE x[10];
+   20|      1|  TYPE alpha = 2;
+   21|      1|
+   22|     11|  for (i = 0; i < 10; i++)
+   23|     10|    x[i] = i;
+   24|      1|
+   25|      1|  scale(&alpha, x, 5);
+   26|      1|
+   27|      1|  if (x[9] != 18)
+   28|      0|    abort();
+   29|      1|
+   30|      1|  return 0;
+   31|      1|}
+

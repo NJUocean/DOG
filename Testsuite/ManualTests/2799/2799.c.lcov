@@ -1,0 +1,33 @@
+    1|       |typedef struct {
+    2|       |  int a, b, c, d, e, f;
+    3|       |} A;
+    4|       |
+    5|      1|void foo(A *v, int w, int x, int *y, int *z) {}
+    6|       |
+    7|      1|void bar(A *v, int x, int y, int w, int h) {
+    8|      1|  if (v->a != x || v->b != y) {
+    9|      1|    int oldw = w;
+   10|      1|    int oldh = h;
+   11|      1|    int e = v->e;
+   12|      1|    int f = v->f;
+   13|      1|    int dx, dy;
+   14|      1|    foo(v, 0, 0, &w, &h);
+   15|      1|    dx = (oldw - w) * (double)e / 2.0;
+   16|      1|    dy = (oldh - h) * (double)f / 2.0;
+   17|      1|    x += dx;
+   18|      1|    y += dy;
+   19|      1|    v->a = x;
+   20|      1|    v->b = y;
+   21|      1|    v->c = w;
+   22|      1|    v->d = h;
+   23|      1|  }
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  A w = {100, 110, 20, 30, -1, -1};
+   28|      1|  bar(&w, 400, 420, 50, 70);
+   29|      1|  if (w.d != 70)
+   30|      0|    abort();
+   31|      1|  exit(0);
+   32|      1|}
+

@@ -1,0 +1,27 @@
+    1|       |/* PR tree-optimization/58209 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |typedef __INTPTR_TYPE__ T;
+    5|       |T buf[1024];
+    6|       |
+    7|    729|T *foo(T n) {
+    8|    729|  if (n == 0)
+    9|     53|    return (T *)buf;
+   10|    676|  T s = (T)foo(n - 1);
+   11|    676|  return (T *)(s + sizeof(T));
+   12|    676|}
+   13|       |
+   14|     27|T *bar(T n) {
+   15|     27|  if (n == 0)
+   16|      1|    return buf;
+   17|     26|  return foo(n - 1) + 1;
+   18|     26|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  int i;
+   22|     28|  for (i = 0; i < 27; i++)
+   23|     27|    if (foo(i) != buf + i || bar(i) != buf + i)
+   24|      0|      abort();
+   25|      1|  return 0;
+   26|      1|}
+

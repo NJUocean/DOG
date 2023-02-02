@@ -1,0 +1,18 @@
+    1|       |/* Test integer mod on ia64.  There was a bug in the inline integer
+    2|       |   division code. */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-minline-int-divide-max-throughput" { target ia64-*-* } } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |volatile int i = 10;
+   10|       |volatile int j = 10;
+   11|       |
+   12|      1|int main() {
+   13|      1|  int k = i % j;
+   14|      1|  if (k != 0)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

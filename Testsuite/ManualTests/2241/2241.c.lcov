@@ -1,0 +1,24 @@
+    1|       |/* Reduced from PR optimization/5076, PR optimization/2847 */
+    2|       |
+    3|       |static int count = 0;
+    4|       |
+    5|      2|static void inc(void) { count++; }
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int iNbr = 1;
+    9|      1|  int test = 0;
+   10|      2|  while (test == 0) {
+   11|      1|    inc();
+   12|      1|    if (iNbr == 0)
+   13|      0|      break;
+   14|      1|    else {
+   15|      1|      inc();
+   16|      1|      iNbr--;
+   17|      1|    }
+   18|      1|    test = 1;
+   19|      1|  }
+   20|      1|  if (count != 2)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

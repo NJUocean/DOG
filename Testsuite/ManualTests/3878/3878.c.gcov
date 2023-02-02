@@ -1,0 +1,43 @@
+        -:    0:Source:3878.c
+        -:    0:Graph:3878.gcno
+        -:    0:Data:3878.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65369 */
+        -:    2:#include <stdint.h>
+        -:    3:
+        -:    4:static const char data[] = "12345678901234567890123456789012345678901234567890"
+        -:    5:                           "123456789012345678901234567890";
+        -:    6:
+        1:    7:__attribute__((noinline)) static void foo(const unsigned int *buf) {
+        1:    8:  if (__builtin_memcmp(buf, data, 64))
+    #####:    9:    __builtin_abort();
+        1:   10:}
+        -:   11:
+        1:   12:__attribute__((noinline)) static void bar(const unsigned char *block) {
+        -:   13:  uint32_t buf[16];
+        1:   14:  __builtin_memcpy(buf + 0, block + 0, 4);
+        1:   15:  __builtin_memcpy(buf + 1, block + 4, 4);
+        1:   16:  __builtin_memcpy(buf + 2, block + 8, 4);
+        1:   17:  __builtin_memcpy(buf + 3, block + 12, 4);
+        1:   18:  __builtin_memcpy(buf + 4, block + 16, 4);
+        1:   19:  __builtin_memcpy(buf + 5, block + 20, 4);
+        1:   20:  __builtin_memcpy(buf + 6, block + 24, 4);
+        1:   21:  __builtin_memcpy(buf + 7, block + 28, 4);
+        1:   22:  __builtin_memcpy(buf + 8, block + 32, 4);
+        1:   23:  __builtin_memcpy(buf + 9, block + 36, 4);
+        1:   24:  __builtin_memcpy(buf + 10, block + 40, 4);
+        1:   25:  __builtin_memcpy(buf + 11, block + 44, 4);
+        1:   26:  __builtin_memcpy(buf + 12, block + 48, 4);
+        1:   27:  __builtin_memcpy(buf + 13, block + 52, 4);
+        1:   28:  __builtin_memcpy(buf + 14, block + 56, 4);
+        1:   29:  __builtin_memcpy(buf + 15, block + 60, 4);
+        1:   30:  foo(buf);
+        1:   31:}
+        -:   32:
+        1:   33:int main() {
+        -:   34:  unsigned char input[sizeof data + 16] __attribute__((aligned(16)));
+        1:   35:  __builtin_memset(input, 0, sizeof input);
+        1:   36:  __builtin_memcpy(input + 1, data, sizeof data);
+        1:   37:  bar(input + 1);
+        1:   38:  return 0;
+        -:   39:}

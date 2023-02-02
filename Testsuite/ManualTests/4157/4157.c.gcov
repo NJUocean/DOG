@@ -1,0 +1,22 @@
+        -:    0:Source:4157.c
+        -:    0:Graph:4157.gcno
+        -:    0:Data:4157.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c++/4574
+        -:    2:   This testcase ICEd because expand_and did not handle VOIDmode
+        -:    3:   CONST_DOUBLE arguments.  */
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-options "-w" } */
+        -:    6:
+        -:    7:struct A {
+        -:    8:  unsigned long long b : 8;
+        -:    9:  unsigned long long c : 18;
+        -:   10:};
+        -:   11:
+        1:   12:int main() {
+        -:   13:  struct A a;
+        -:   14:  long long l;
+        -:   15:
+        1:   16:  l = a.c = 0x123456789aULL;
+        1:   17:  return 0;
+        -:   18:}

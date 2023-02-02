@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|int __attribute__((noipa, noinline)) foo(int i) {
+    4|      1|  int a[2];
+    5|      1|  a[1] = 1;
+    6|      1|  int j = a[1];
+    7|      1|  int *p = &a[0];
+    8|      1|  p[i] = 0;
+    9|      1|  return a[j];
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (foo(1) != 0)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

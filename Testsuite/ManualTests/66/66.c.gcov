@@ -1,0 +1,22 @@
+        -:    0:Source:66.c
+        -:    0:Graph:66.gcno
+        -:    0:Data:66.gcda
+        -:    0:Runs:1
+        -:    1:/* Source: PR 137.
+        -:    2:
+        -:    3:   We would not warn about passing an enum, but would warn about
+        -:    4:   passing a enum that was part of an array.  TYPE_MAIN_VARIANT was
+        -:    5:   not used in the appropriate place in the warning code.  */
+        -:    6:
+        -:    7:/* { dg-do compile } */
+        -:    8:/* { dg-options -Wtraditional-conversion } */
+        -:    9:
+        -:   10:typedef enum { a } __attribute__((packed)) t;
+        2:   11:void f(t x) {}
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  t x[2], y;
+        1:   15:  f(x[0]); /* { dg-bogus "different width" } */
+        1:   16:  f(y);    /* { dg-bogus "different width" } */
+        1:   17:  return 0;
+        -:   18:}

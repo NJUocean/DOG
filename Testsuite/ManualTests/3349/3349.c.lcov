@@ -1,0 +1,13 @@
+    1|       |/* PR 16348: Make sure that condition-first false loops DTRT.  */
+    2|       |
+    3|       |extern void abort();
+    4|       |
+    5|      1|int main() {
+    6|      1|  for (; 0;) {
+    7|      0|    abort();
+    8|      1|  label:
+    9|      1|    return 0;
+   10|      0|  }
+   11|      1|  goto label;
+   12|      1|}
+

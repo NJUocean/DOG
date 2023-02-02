@@ -1,0 +1,22 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|      0|static inline void bar() {}
+    4|       |
+    5|       |struct S {
+    6|       |#if __INT_MAX__ == 32767
+    7|       |  signed int i : 16;
+    8|       |#elif __INT_MAX__ == 2147483647
+    9|       |  signed int i : 32;
+   10|       |#elif __INT_MAX__ == 9223372036854775807
+   11|       |  signed int i : 64;
+   12|       |#else
+   13|       |#error Please add support for your target here
+   14|       |#endif
+   15|       |};
+   16|       |
+   17|      1|int main() {
+   18|      1|  struct S x = {32};
+   19|      1|  sizeof(x.i + 0);
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,32 @@
+        -:    0:Source:503.c
+        -:    0:Graph:503.gcno
+        -:    0:Data:503.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        4:    4:void __attribute__((noinline)) bar(long x) {
+        4:    5:  asm volatile("" : : "r"(x) : "memory");
+        4:    6:}
+        -:    7:
+        1:    8:long __attribute__((noinline)) foo(long x) {
+        1:    9:  long l = x + 3;
+        1:   10:  bar(l); /* { dg-final { gdb-test .+1 "l" "10" } } */
+        1:   11:  bar(l); /* { dg-final { gdb-test . "x" "7" } } */
+        1:   12:  return l;
+        -:   13:}
+        -:   14:
+        1:   15:long __attribute__((noinline)) baz(int x) {
+        1:   16:  long l = x + 3;
+        1:   17:  bar(l); /* { dg-final { gdb-test .+1 "l" "10" } } */
+        1:   18:  bar(l); /* { dg-final { gdb-test . "x" "7" } } */
+        1:   19:  return l;
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        -:   23:  int i;
+        1:   24:  asm volatile("" : "=r"(i) : "0"(7));
+        1:   25:  foo(i);
+        1:   26:  baz(i);
+        1:   27:  return 0;
+        -:   28:}

@@ -1,0 +1,13 @@
+    1|      2|foo(a) { return (a & (1 << 31)) != 0; }
+    2|       |
+    3|      1|main() {
+    4|      1|  if (foo(0))
+    5|      0|    puts("foo");
+    6|      1|  else
+    7|      1|    puts("bar");
+    8|      1|  if (foo(~0))
+    9|      1|    puts("foo");
+   10|      0|  else
+   11|      0|    puts("bar");
+   12|      1|}
+

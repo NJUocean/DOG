@@ -1,0 +1,36 @@
+        -:    0:Source:1484.c
+        -:    0:Graph:1484.gcno
+        -:    0:Data:1484.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/59166 */
+        -:    2:/* { dg-additional-options "-fcompare-debug" } */
+        -:    3:/* { dg-xfail-if "AIX compare debug" { powerpc-ibm-aix* } } */
+        -:    4:
+        -:    5:int a, b, c, f, g;
+        -:    6:
+    #####:    7:void foo() {
+    #####:    8:  for (; b; b++)
+    #####:    9:    for (; f; f = g)
+    #####:   10:      for (; a;)
+        -:   11:        ;
+    #####:   12:}
+        -:   13:
+        2:   14:static int bar(int p) {
+        -:   15:  short d;
+        2:   16:  if (c) {
+    #####:   17:    for (; f; f = g)
+        -:   18:      ;
+    #####:   19:    foo();
+    #####:   20:    d = p;
+    #####:   21:    char e = d;
+    #####:   22:    if (p)
+    #####:   23:      return 1;
+        -:   24:  }
+        2:   25:  return p;
+        -:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  bar(0);
+        1:   30:  bar(g);
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,38 @@
+    1|       |/* PR tree-optimization/60823 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-effective-target vect_simd_clones } */
+    4|       |/* { dg-options "-O2 -fopenmp-simd" } */
+    5|       |
+    6|       |#pragma omp declare simd simdlen(4) notinbranch
+    7|      4|__attribute__((noinline)) int foo(double c1, double c2) {
+    8|      4|  double z1 = c1, z2 = c2;
+    9|      4|  int res = 100, i;
+   10|      4|
+   11|     24|  for (i = 0; i < 5; i++) {
+   12|     20|    res = (z1 * z1 + z2 * z2 > 4.0) ? (i < res ? i : res) : res;
+   13|     20|    z1 = c1 + z1 * z1 - z2 * z2;
+   14|     20|    z2 = c2 + 2.0 * z1 * z2;
+   15|     20|    c1 += 0.5;
+   16|     20|    c2 += 0.5;
+   17|     20|  }
+   18|      4|  return res;
+   19|      4|}
+   20|       |
+   21|      1|__attribute__((noinline, noclone)) void bar(double *x, double *y) {
+   22|      1|  asm volatile("" : : "rm"(x), "rm"(y) : "memory");
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  int i;
+   27|      1|  double c[4] = {0.0, 1.0, 0.0, 1.0};
+   28|      1|  double d[4] = {0.0, 1.0, 2.0, 0.0};
+   29|      1|  int e[4];
+   30|      1|  bar(c, d);
+   31|      1|#pragma omp simd safelen(4)
+   32|      5|  for (i = 0; i < 4; i++)
+   33|      4|    e[i] = foo(c[i], d[i]);
+   34|      1|  if (e[0] != 3 || e[1] != 1 || e[2] != 1 || e[3] != 2)
+   35|      0|    __builtin_abort();
+   36|      1|  return 0;
+   37|      1|}
+

@@ -1,0 +1,50 @@
+        -:    0:Source:3887.c
+        -:    0:Graph:3887.gcno
+        -:    0:Data:3887.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct {
+        -:    7:  unsigned f2;
+        -:    8:  unsigned f3 : 15;
+        -:    9:  unsigned f5 : 3;
+        -:   10:  short f6;
+        -:   11:} b = {0x7f8000, 6, 5, 0}, g = {8, 0, 5, 0};
+        -:   12:
+        -:   13:short d, l;
+        -:   14:int a, c, h = 8;
+        -:   15:volatile char e[237] = {4};
+        -:   16:short *f = &d;
+        -:   17:short i[5] = {3};
+        -:   18:char j;
+        -:   19:int *k = &c;
+        -:   20:
+        1:   21:int fn1(unsigned p1) { return -p1; }
+        -:   22:
+        1:   23:void fn2(char p1) {
+        1:   24:  a = p1;
+        1:   25:  e[0];
+        1:   26:}
+        -:   27:
+    #####:   28:short fn3() {
+    #####:   29:  *k = 4;
+    #####:   30:  return *f;
+        -:   31:}
+        -:   32:
+        1:   33:int main() {
+        -:   34:
+        -:   35:  unsigned m;
+        1:   36:  short *n = &i[4];
+        -:   37:
+       1*:   38:  m = fn1((h && j) <= b.f5);
+        1:   39:  l = m > g.f3;
+        1:   40:  *n = 3;
+        1:   41:  fn2(b.f2 >> 15);
+        1:   42:  if ((a & 0xff) != 0xff)
+    #####:   43:    abort();
+        -:   44:
+        1:   45:  return 0;
+        -:   46:}

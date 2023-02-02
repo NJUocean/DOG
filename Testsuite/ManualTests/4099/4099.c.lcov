@@ -1,0 +1,19 @@
+    1|       |typedef struct {
+    2|       |  unsigned char a __attribute__((packed));
+    3|       |  unsigned short b __attribute__((packed));
+    4|       |} three_byte_t;
+    5|       |
+    6|      1|unsigned char f(void) { return 0xab; }
+    7|       |
+    8|      1|unsigned short g(void) { return 0x1234; }
+    9|       |
+   10|      1|main() {
+   11|      1|  three_byte_t three_byte;
+   12|      1|
+   13|      1|  three_byte.a = f();
+   14|      1|  three_byte.b = g();
+   15|      1|  if (three_byte.a != 0xab || three_byte.b != 0x1234)
+   16|      0|    abort();
+   17|      1|  exit(0);
+   18|      1|}
+

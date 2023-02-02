@@ -1,0 +1,18 @@
+        -:    0:Source:804.c
+        -:    0:Graph:804.gcno
+        -:    0:Data:804.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/27758 */
+        -:    2:/* { dg-do run { target fpic } } */
+        -:    3:/* { dg-options "-O0 -fpic" } */
+        -:    4:
+        -:    5:typedef int (*fn)(void);
+        -:    6:
+        1:    7:static inline int foo(void) { return 1; }
+        -:    8:
+        1:    9:fn test(void) { return foo; }
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  fn f = test();
+        1:   13:  return f() != 1;
+        -:   14:}

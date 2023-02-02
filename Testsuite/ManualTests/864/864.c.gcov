@@ -1,0 +1,51 @@
+        -:    0:Source:864.c
+        -:    0:Graph:864.gcno
+        -:    0:Data:864.gcda
+        -:    0:Runs:1
+        -:    1:/* PR39565: Static variable leaves undefined symbol in object file.
+        -:    2:   Variables codestrs_4 and codestrs_8 should not be undefined,
+        -:    3:   when this program is compiled at -O2. As a basic sanity test,
+        -:    4:   verify that this program compiles into an executable and runs. */
+        -:    5:
+        -:    6:/* { dg-do run } */
+        -:    7:/* { dg-options "-O2" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:extern int strcmp(const char *, const char *);
+        -:   12:
+        -:   13:static const union codestrs_t_4 {
+        -:   14:  struct {
+        -:   15:    char str_2[sizeof("Illegal opcode")];
+        -:   16:  };
+        -:   17:  char str[0];
+        -:   18:} codestrs_4 = {{"Illegal opcode"}};
+        -:   19:
+        -:   20:static const union codestrs_t_8 {
+        -:   21:  struct {
+        -:   22:    char str_12[sizeof("Integer divide by zero")];
+        -:   23:  };
+        -:   24:  char str[0];
+        -:   25:} codestrs_8 = {{"Integer divide by zero"}};
+        -:   26:
+        2:   27:const char *psiginfo(int pinfo) {
+        2:   28:  const char *base = ((void *)0);
+        -:   29:
+        2:   30:  switch (pinfo) {
+        1:   31:  case 4:
+        1:   32:    base = codestrs_4.str;
+        1:   33:    break;
+        1:   34:  case 8:
+        1:   35:    base = codestrs_8.str;
+        1:   36:    break;
+        -:   37:  }
+        2:   38:  return base;
+        -:   39:}
+        -:   40:
+        1:   41:int main(void) {
+        1:   42:  if (strcmp(psiginfo(4), codestrs_4.str))
+    #####:   43:    abort();
+        1:   44:  if (strcmp(psiginfo(8), codestrs_8.str))
+    #####:   45:    abort();
+        1:   46:  exit(0);
+        -:   47:}

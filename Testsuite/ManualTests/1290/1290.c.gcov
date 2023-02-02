@@ -1,0 +1,23 @@
+        -:    0:Source:1290.c
+        -:    0:Graph:1290.gcno
+        -:    0:Data:1290.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    3:
+        2:    4:int __attribute__((noinline, noclone)) f(int a, int b, int c) {
+        2:    5:  return a * b + a * c;
+        -:    6:}
+        1:    7:int __attribute__((noinline, noclone)) g(int a) {
+        1:    8:  return a * (__INT_MAX__ / 2) + a * (__INT_MAX__ / 2 + 2);
+        -:    9:}
+        1:   10:int __attribute__((noinline, noclone)) h(int a, int b) {
+        1:   11:  return a * (__INT_MAX__ / 2 + 1) + b * (__INT_MAX__ / 2 + 1);
+        -:   12:}
+        1:   13:int main() {
+        1:   14:  volatile int tem = f(0, __INT_MAX__, __INT_MAX__);
+        1:   15:  tem = f(-1, __INT_MAX__ / 2 + 1, __INT_MAX__ / 2 + 1);
+        1:   16:  tem = g(-1);
+        1:   17:  tem = h(-1, -1);
+        1:   18:  return 0;
+        -:   19:}

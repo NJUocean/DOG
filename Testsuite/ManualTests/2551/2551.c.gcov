@@ -1,0 +1,33 @@
+        -:    0:Source:2551.c
+        -:    0:Graph:2551.gcno
+        -:    0:Data:2551.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:char buf[8];
+        -:    8:
+        1:    9:void bar(char *p) {}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  union {
+        -:   13:    unsigned int val;
+        -:   14:    unsigned char p[4];
+        -:   15:  } serial;
+        -:   16:
+        -:   17:  int i;
+        1:   18:  serial.val = 0;
+        1:   19:  bar(buf);
+        3:   20:  for (i = 0; i < 8; i += 4) {
+        2:   21:    serial.p[0] += buf[i + 0];
+        2:   22:    serial.p[1] += buf[i + 1];
+        2:   23:    serial.p[2] += buf[i + 2];
+        2:   24:    serial.p[3] += buf[i + 3];
+        -:   25:  }
+        1:   26:  if (serial.val)
+    #####:   27:    abort();
+        1:   28:  exit(0);
+        -:   29:}

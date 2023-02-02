@@ -1,0 +1,21 @@
+        -:    0:Source:3194.c
+        -:    0:Graph:3194.gcno
+        -:    0:Data:3194.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:
+        1:    3:int f(int a, int b) {
+        1:    4:  if (a == 1)
+        1:    5:    a = 0;
+        1:    6:  if (b == 0)
+    #####:    7:    a = 1;
+        1:    8:  if (a != 0)
+    #####:    9:    return 0;
+        1:   10:  return 1;
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  if (f(1, 1) != 1)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,37 @@
+        -:    0:Source:466.c
+        -:    0:Graph:466.gcno
+        -:    0:Data:466.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase extracted from test 183.equake in SPEC CPU2000.  */
+        -:    2:double Ke[2], ds[2];
+        -:    3:
+        1:    4:void foo(double Ke[2], int i, double ds[], int column) {
+        -:    5:  double tt, ts;
+        -:    6:  int j;
+        -:    7:
+        3:    8:  for (j = 0; j < 2; j++) {
+        2:    9:    ++column;
+        2:   10:    ts = ds[i];
+        2:   11:    if (i == j)
+        1:   12:      tt = 123;
+        -:   13:    else
+        1:   14:      tt = 0;
+        2:   15:    Ke[column] = Ke[column] + ts + tt;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        -:   19:extern void abort();
+        -:   20:
+        1:   21:int main() {
+        -:   22:  int i, j;
+        -:   23:
+        1:   24:  ds[0] = 1.0;
+        1:   25:  ds[1] = 1.0;
+        -:   26:
+        1:   27:  foo(Ke, 0, ds, -1);
+        -:   28:
+        1:   29:  if ((int)Ke[0] != 124)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

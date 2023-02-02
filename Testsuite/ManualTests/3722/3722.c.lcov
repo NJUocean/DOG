@@ -1,0 +1,19 @@
+    1|       |/* PR middle-end/48973 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |struct S {
+    5|       |  int f : 1;
+    6|       |} s;
+    7|       |int v = -1;
+    8|       |
+    9|      1|void foo(unsigned int x) {
+   10|      1|  if (x != -1U)
+   11|      0|    abort();
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  s.f = (v & 1) > 0;
+   16|      1|  foo(s.f);
+   17|      1|  return 0;
+   18|      1|}
+

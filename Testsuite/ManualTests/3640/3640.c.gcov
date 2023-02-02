@@ -1,0 +1,21 @@
+        -:    0:Source:3640.c
+        -:    0:Graph:3640.gcno
+        -:    0:Data:3640.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:#if (__SIZEOF_INT__ <= 2)
+        -:    4:struct S {
+        -:    5:  unsigned long ui17 : 17;
+        -:    6:} s;
+        -:    7:#else
+        -:    8:struct S {
+        -:    9:  unsigned int ui17 : 17;
+        -:   10:} s;
+        -:   11:#endif
+        1:   12:int main() {
+        1:   13:  s.ui17 = 0x1ffff;
+        -:   14:  if (s.ui17 >= 0xfffffffeu)
+        -:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

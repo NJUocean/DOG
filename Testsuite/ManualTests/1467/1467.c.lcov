@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |long long arr[6] = {0, 1, 2, 3, 4, 5};
+    4|       |extern void abort(void);
+    5|      5|void __attribute__((noinline, noclone)) foo(long long sum) { asm(""); }
+    6|      1|int main() {
+    7|      1|  int i, n = 5;
+    8|      1|  long long sum = 0, prevsum = 0;
+    9|      1|
+   10|      6|  for (i = 1; i <= n; i++) {
+   11|      5|    foo(sum);
+   12|      5|    sum = (i - 1) * arr[i] - prevsum;
+   13|      5|    prevsum += arr[i];
+   14|      5|  }
+   15|      1|
+   16|      1|  if (sum != 10)
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

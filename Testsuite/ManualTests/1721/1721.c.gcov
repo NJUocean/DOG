@@ -1,0 +1,23 @@
+        -:    0:Source:1721.c
+        -:    0:Graph:1721.gcno
+        -:    0:Data:1721.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+     1024:    3:void g(int *__restrict x, int *y) { *x = *y; }
+        -:    4:
+        1:    5:void __attribute__((noipa)) f(int *a, int *b) {
+     1025:    6:  for (int i = 0; i < 1024; ++i)
+     1024:    7:    g(a + i, b + i);
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int x[1025];
+     1026:   12:  for (int i = 0; i < 1025; ++i)
+     1025:   13:    x[i] = i + 1;
+        1:   14:  f(x + 1, x);
+     1026:   15:  for (int i = 0; i < 1025; ++i)
+     1025:   16:    if (x[i] != 1)
+    #####:   17:      __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,24 @@
+        -:    0:Source:165.c
+        -:    0:Graph:165.gcno
+        -:    0:Data:165.gcda
+        -:    0:Runs:1
+        -:    1:/* pr39500: autopar fails to parallel */
+        -:    2:/* origin: nemokingdom@gmail.com(LiFeng) */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O2 -ftree-parallelize-loops=4 -fdump-tree-parloops2-details" }
+        -:    5: */
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  int i;
+        -:    9:  int x[1000];
+        -:   10:
+      102:   11:  for (i = 0; i < 101; i++)
+      101:   12:    x[i] = x[i + 100];
+        -:   13:
+        1:   14:  return x[12];
+        -:   15:}
+        -:   16:
+        -:   17:/* This loop cannot be parallelized due to a dependence.  */
+        -:   18:
+        -:   19:/* { dg-final { scan-tree-dump-times "SUCCESS: may be parallelized" 0
+        -:   20: * "parloops2" } } */

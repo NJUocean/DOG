@@ -1,0 +1,49 @@
+        -:    0:Source:23.c
+        -:    0:Graph:23.gcno
+        -:    0:Data:23.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/14262 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef char ACS;
+        -:    7:typedef char LSM;
+        -:    8:typedef char PANEL;
+        -:    9:typedef char DRIVE;
+        -:   10:typedef struct {
+        -:   11:  ACS acs;
+        -:   12:  LSM lsm;
+        -:   13:} LSMID;
+        -:   14:typedef struct {
+        -:   15:  LSMID lsm_id;
+        -:   16:  PANEL panel;
+        -:   17:} PANELID;
+        -:   18:typedef struct {
+        -:   19:  PANELID panel_id;
+        -:   20:  DRIVE drive;
+        -:   21:} DRIVEID;
+        -:   22:
+        1:   23:void sub(DRIVEID driveid) {
+        1:   24:  if (driveid.drive != 1)
+    #####:   25:    abort();
+        1:   26:  if (driveid.panel_id.panel != 2)
+    #####:   27:    abort();
+        1:   28:  if (driveid.panel_id.lsm_id.lsm != 3)
+    #####:   29:    abort();
+        1:   30:  if (driveid.panel_id.lsm_id.acs != 4)
+    #####:   31:    abort();
+        1:   32:}
+        -:   33:
+        1:   34:int main(void) {
+        -:   35:  DRIVEID driveid;
+        -:   36:
+        1:   37:  driveid.drive = 1;
+        1:   38:  driveid.panel_id.panel = 2;
+        1:   39:  driveid.panel_id.lsm_id.lsm = 3;
+        1:   40:  driveid.panel_id.lsm_id.acs = 4;
+        -:   41:
+        1:   42:  sub(driveid);
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

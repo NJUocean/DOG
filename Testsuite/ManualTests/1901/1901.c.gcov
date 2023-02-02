@@ -1,0 +1,43 @@
+        -:    0:Source:1901.c
+        -:    0:Graph:1901.gcno
+        -:    0:Data:1901.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-effective-target size20plus } */
+        -:    4:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    5:
+        -:    6:#define M 256
+        -:    7:int a[M][M], b[M][M];
+        1:    8:int __attribute__((noinline)) double_reduc(int n) {
+        1:    9:  int sum = 0;
+      257:   10:  for (int j = 0; j < n; j++) {
+    65792:   11:    for (int i = 0; i < n; i++)
+    65536:   12:      sum = sum + a[i][j] * b[i][j];
+        -:   13:  }
+        1:   14:  return sum;
+        -:   15:}
+        -:   16:
+        -:   17:extern void abort();
+        -:   18:
+      256:   19:static void __attribute__((noinline)) init(int i) {
+    65792:   20:  for (int j = 0; j < M; j++) {
+    65536:   21:    a[i][j] = i;
+    65536:   22:    b[i][j] = j;
+        -:   23:  }
+      256:   24:}
+        -:   25:
+        1:   26:int main(void) {
+      257:   27:  for (int i = 0; i < M; ++i)
+      256:   28:    init(i);
+        -:   29:
+        1:   30:  int sum = double_reduc(M);
+        -:   31:
+        1:   32:  if (sum != 1065369600)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}
+        -:   37:
+        -:   38:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   39: * interchanged" 1 "linterchange" } } */

@@ -1,0 +1,21 @@
+    1|       |/* PR tree-optimization/81555 */
+    2|       |
+    3|       |unsigned int a = 1, d = 0xfaeU, e = 0xe376U;
+    4|       |_Bool b = 0, f = 1;
+    5|       |unsigned char g = 1;
+    6|       |
+    7|      1|void foo(void) {
+    8|      1|  _Bool c = a != b;
+    9|      1|  if (c)
+   10|      1|    f = 0;
+   11|      1|  if (e & c & (unsigned char)d & c)
+   12|      0|    g = 0;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  foo();
+   17|      1|  if (f || g != 1)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

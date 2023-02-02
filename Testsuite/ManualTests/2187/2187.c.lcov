@@ -1,0 +1,16 @@
+    1|      6|double u2d(unsigned int u) { return u; }
+    2|       |
+    3|      6|double i2d(signed int i) { return i; }
+    4|       |
+    5|      3|unsigned int d2u(double d) { return d; }
+    6|       |
+    7|      3|signed int d2i(double d) { return d; }
+    8|       |
+    9|      1|main() {
+   10|      1|  printf("%lf, %lf, %lf\n", u2d(~0), u2d(1 << 31), u2d(1));
+   11|      1|  printf("%lf, %lf, %lf\n", i2d(~0), i2d(1 << 31), i2d(1));
+   12|      1|
+   13|      1|  printf("%u, %u, %u\n", d2u(u2d(~0)), d2u(u2d(1 << 31)), d2u(u2d(1)));
+   14|      1|  printf("%d, %d, %d\n", d2i(i2d(~0)), d2i(i2d(1 << 31)), d2i(i2d(1)));
+   15|      1|}
+

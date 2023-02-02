@@ -1,0 +1,39 @@
+    1|       |/* { dg-do-compile } */
+    2|       |/* { dg-options "-O2 -Warray-bounds" } */
+    3|       |
+    4|       |#include <assert.h>
+    5|       |#include <stdio.h>
+    6|       |#include <string.h>
+    7|       |
+    8|       |static inline __attribute__((__artificial__)) void *a(char *c, const char *d,
+    9|      1|                                                      long n) {
+   10|      1|  return __builtin___memcpy_chk(c, d, n, __builtin_object_size(c, 0));
+   11|      1|}
+   12|       |typedef struct {
+   13|       |  char *data;
+   14|       |  int len;
+   15|       |} sb_t;
+   16|       |const char __sb_slop[1];
+   17|      2|static void inline set0(sb_t *c) {
+   18|      2|  if (c->data != __sb_slop)
+   19|      2|    c->data[0] = 0;
+   20|      2|  else
+   21|      2|    assert(c->data[0] == 0);
+   22|      2|}
+   23|       |char buf[5];
+   24|       |sb_t l = {.data = buf, .len = 0};
+   25|      1|void o() {
+   26|      1|  char *data = "abcd";
+   27|      1|  sb_t h = l;
+   28|      1|  set0(&h);
+   29|      1|  a(h.data, data, strlen(data));
+   30|      1|  printf("%s\n", h.data);
+   31|      1|  printf("%d\n", h.data == __sb_slop);
+   32|      1|  printf("%d\n", h.data == buf);
+   33|      1|  set0(&h);
+   34|      1|}
+   35|      1|int main(void) {
+   36|      1|  o();
+   37|      1|  return 0;
+   38|      1|}
+

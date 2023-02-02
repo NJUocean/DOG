@@ -1,0 +1,29 @@
+        -:    0:Source:747.c
+        -:    0:Graph:747.gcno
+        -:    0:Data:747.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that the NRV optimization doesn't cause a1 to change too soon.  This
+        -:    2:   is equivalent to c++/19317.  */
+        -:    3:/* { dg-do run } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:struct A {
+        -:    8:  int i[100];
+        -:    9:};
+        -:   10:
+        -:   11:struct A a1;
+        -:   12:
+        1:   13:struct A f() {
+        -:   14:  struct A a2;
+        1:   15:  a2.i[0] = 42;
+        -:   16:  /* a1.i[0] should still be 0 until we return. */
+        1:   17:  if (a1.i[0] != 0)
+    #####:   18:    abort();
+        1:   19:  return a2;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  a1 = f();
+        1:   24:  return 0;
+        -:   25:}

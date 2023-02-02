@@ -1,0 +1,24 @@
+        -:    0:Source:870.c
+        -:    0:Graph:870.gcno
+        -:    0:Data:870.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-tree-vrp" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int BM_tab2[0400];
+        1:    8:  int *BM_tab = BM_tab2;
+        -:    9:  int *BM_tab_base;
+        -:   10:
+        1:   11:  BM_tab_base = BM_tab;
+        1:   12:  BM_tab += 0400;
+      129:   13:  while (BM_tab_base != BM_tab) {
+      128:   14:    *--BM_tab = 6;
+      128:   15:    *--BM_tab = 6;
+        -:   16:  }
+        1:   17:  if (BM_tab2[0] != 6)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

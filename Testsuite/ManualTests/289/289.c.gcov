@@ -1,0 +1,14 @@
+        -:    0:Source:289.c
+        -:    0:Graph:289.gcno
+        -:    0:Data:289.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -gdwarf -dA" } */
+        -:    3:/* { dg-final { scan-assembler "DW_TAG_variable" } } */
+        -:    4:/* PR debug/21828 */
+        -:    5:
+        -:    6:static int i;
+        1:    7:int main() {
+        1:    8:  i += 3;
+        1:    9:  return 0;
+        -:   10:}

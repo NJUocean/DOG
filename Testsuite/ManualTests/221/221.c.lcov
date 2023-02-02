@@ -1,0 +1,25 @@
+    1|       |/* isdigit(c) can be optimized to ((unsigned)c) - '0' <= 9, but only if
+    2|       |   we know the correct value of '0'.  PR 18785.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-iconv "IBM1047" } */
+    6|       |/* { dg-options "-O2 -fno-inline -fexec-charset=IBM1047" } */
+    7|       |
+    8|       |extern int isdigit(int);
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|static int str1(void) { return '1'; }
+   12|      1|static int strA(void) { return 'A'; }
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  if (!isdigit('1'))
+   16|      0|    abort();
+   17|      1|  if (isdigit('A'))
+   18|      0|    abort();
+   19|      1|  if (!isdigit(str1()))
+   20|      0|    abort();
+   21|      1|  if (isdigit(strA()))
+   22|      0|    abort();
+   23|      1|  return 0;
+   24|      1|}
+

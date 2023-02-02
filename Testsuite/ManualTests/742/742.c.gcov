@@ -1,0 +1,20 @@
+        -:    0:Source:742.c
+        -:    0:Graph:742.gcno
+        -:    0:Data:742.gcda
+        -:    0:Runs:1
+        -:    1:int count = 0;
+        -:    2:int dummy;
+        -:    3:
+        1:    4:static int *bar(void) {
+        1:    5:  ++count;
+        1:    6:  return &dummy;
+        -:    7:}
+        -:    8:
+        1:    9:static void foo(void) { asm("" : "+r"(*bar())); }
+        -:   10:
+        1:   11:main() {
+        1:   12:  foo();
+        1:   13:  if (count != 1)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

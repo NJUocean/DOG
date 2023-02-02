@@ -1,0 +1,50 @@
+        -:    0:Source:2894.c
+        -:    0:Graph:2894.gcno
+        -:    0:Data:2894.gcda
+        -:    0:Runs:1
+        -:    1:/* Test LOOP generation for very short loops. */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O1 -mloop" } */
+        -:    5:
+        -:    6:/* -O1 in the options is significant.  Without it do-loop will not be
+        -:    7:   run.  */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:volatile unsigned int int_12345 = 12345;
+        -:   12:volatile unsigned int int_0 = 0;
+        -:   13:volatile unsigned int int_1 = 1;
+        -:   14:
+        3:   15:unsigned int test_loop_sum(unsigned int n) {
+        -:   16:  unsigned i;
+        3:   17:  volatile unsigned int s = 0;
+    12349:   18:  for (i = 0; i < n; i++) {
+    12346:   19:    s++;
+        -:   20:  }
+        3:   21:  return s;
+        -:   22:}
+        -:   23:
+        2:   24:unsigned int test_loop_shift20(unsigned int n) {
+        -:   25:  unsigned i;
+       22:   26:  for (i = 0; i < 10; i++) {
+       20:   27:    n <<= 2;
+        -:   28:  }
+        2:   29:  return n;
+        -:   30:}
+        -:   31:
+        1:   32:int main(int argc, char **argv) {
+        1:   33:  if (test_loop_sum(int_0) != 0)
+    #####:   34:    abort();
+        1:   35:  if (test_loop_sum(int_1) != 1)
+    #####:   36:    abort();
+        1:   37:  if (test_loop_sum(int_12345) != 12345)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  if (test_loop_shift20(int_0) != 0)
+    #####:   41:    abort();
+        1:   42:  if (test_loop_shift20(int_1) != (1u << 20))
+    #####:   43:    abort();
+        -:   44:
+        1:   45:  return 0;
+        -:   46:}

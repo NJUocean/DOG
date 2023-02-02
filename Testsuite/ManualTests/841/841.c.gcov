@@ -1,0 +1,26 @@
+        -:    0:Source:841.c
+        -:    0:Graph:841.gcno
+        -:    0:Data:841.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33961 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -ftree-cselim" } */
+        -:    4:
+        -:    5:void decode(char *d, int len);
+        -:    6:
+        1:    7:void decode(char *d, int len) {
+        1:    8:  int i = len - 1;
+       25:    9:  while (i >= 0) {
+       24:   10:    d[i];
+       24:   11:    if (d[i] == 0)
+    #####:   12:      d[i] = ' ';
+       24:   13:    if (d[i] == 1)
+    #####:   14:      d[i] = 'x';
+       24:   15:    i--;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:int main(int argc, char **argv) {
+        1:   20:  decode("this bug is really weird", 24);
+        1:   21:  return 0;
+        -:   22:}

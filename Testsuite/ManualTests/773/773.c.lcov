@@ -1,0 +1,17 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-fsanitize=bounds -Wall -Wextra -Wno-array-bounds -Wno-unused"
+    3|       | * } */
+    4|       |
+    5|       |/* Initializers of TREE_STATICs aren't instrumented.
+    6|       |   But don't ICE on 'em.  */
+    7|       |
+    8|       |int A[2];
+    9|       |int *gp = &A[4];
+   10|       |int *gpi;
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  gpi = &A[4]; /* This will warn with -Warray-bounds, but only if VRP runs.  */
+   14|      1|  static int *pi = &A[4];
+   15|      1|  return 0;
+   16|      1|}
+

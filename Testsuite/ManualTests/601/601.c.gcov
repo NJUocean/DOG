@@ -1,0 +1,26 @@
+        -:    0:Source:601.c
+        -:    0:Graph:601.gcno
+        -:    0:Data:601.gcda
+        -:    0:Runs:1
+        -:    1:/* The bit-field below would have a problem if __INT_MAX__ is too
+        -:    2:   small.  */
+        -:    3:#if __INT_MAX__ < 2147483647
+        -:    4:int main(void) { exit(0); }
+        -:    5:#else
+        1:    6:main() {
+        -:    7:  struct {
+        -:    8:    signed int bf0 : 17;
+        -:    9:    signed int bf1 : 7;
+        -:   10:  } bf;
+        -:   11:
+        1:   12:  bf.bf1 = 7;
+        1:   13:  f(bf.bf1);
+        1:   14:  exit(0);
+        -:   15:}
+        -:   16:
+        1:   17:f(x) int x;
+        -:   18:{
+        1:   19:  if (x != 7)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:#endif

@@ -1,0 +1,25 @@
+        -:    0:Source:4082.c
+        -:    0:Graph:4082.gcno
+        -:    0:Data:4082.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  short s __attribute__((aligned(2), packed));
+        -:    3:  double d __attribute__((aligned(2), packed));
+        -:    4:} TRIAL;
+        -:    5:
+        1:    6:int check(TRIAL *t) {
+        1:    7:  if (t->s != 1 || t->d != 16.0)
+    #####:    8:    return 1;
+        1:    9:  return 0;
+        -:   10:}
+        -:   11:
+        1:   12:main() {
+        -:   13:  TRIAL trial;
+        -:   14:
+        1:   15:  trial.s = 1;
+        1:   16:  trial.d = 16.0;
+        -:   17:
+        1:   18:  if (check(&trial) != 0)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

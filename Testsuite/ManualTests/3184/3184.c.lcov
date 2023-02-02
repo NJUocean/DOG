@@ -1,0 +1,5 @@
+    1|       |/* { dg-do run { xfail *-*-* } } */
+    2|       |/* { dg-shouldfail "required comment" } */
+    3|       |
+    4|      1|int main() { return 0; /* We want nonzero but expect to fail; XFAIL.  */ }
+

@@ -1,0 +1,58 @@
+        -:    0:Source:3043.c
+        -:    0:Graph:3043.gcno
+        -:    0:Data:3043.gcda
+        -:    0:Runs:1
+        -:    1:/* Test case contributed by Ingo Rohloff <rohloff@in.tum.de>.
+        -:    2:   Code distilled from Linux kernel.  */
+        -:    3:
+        -:    4:/* Compile this program with a gcc-2.95.2 using
+        -:    5:   "gcc -O2" and run it. The result will be that
+        -:    6:   rx_ring[1].next == 0   (it should be == 14)
+        -:    7:   and
+        -:    8:   ep.skbuff[4] == 5      (it should be 0)
+        -:    9:*/
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        -:   13:struct epic_rx_desc {
+        -:   14:  unsigned int next;
+        -:   15:};
+        -:   16:
+        -:   17:struct epic_private {
+        -:   18:  struct epic_rx_desc *rx_ring;
+        -:   19:  unsigned int rx_skbuff[5];
+        -:   20:};
+        -:   21:
+        1:   22:static void epic_init_ring(struct epic_private *ep) {
+        -:   23:  int i;
+        -:   24:
+        6:   25:  for (i = 0; i < 5; i++) {
+        5:   26:    ep->rx_ring[i].next = 10 + (i + 1) * 2;
+        5:   27:    ep->rx_skbuff[i] = 0;
+        -:   28:  }
+        1:   29:  ep->rx_ring[i - 1].next = 10;
+        1:   30:}
+        -:   31:
+        -:   32:static int check_rx_ring[5] = {12, 14, 16, 18, 10};
+        -:   33:
+        1:   34:int main(void) {
+        -:   35:  struct epic_private ep;
+        -:   36:  struct epic_rx_desc rx_ring[5];
+        -:   37:  int i;
+        -:   38:
+        6:   39:  for (i = 0; i < 5; i++) {
+        5:   40:    rx_ring[i].next = 0;
+        5:   41:    ep.rx_skbuff[i] = 5;
+        -:   42:  }
+        -:   43:
+        1:   44:  ep.rx_ring = rx_ring;
+        1:   45:  epic_init_ring(&ep);
+        -:   46:
+        6:   47:  for (i = 0; i < 5; i++) {
+        5:   48:    if (rx_ring[i].next != check_rx_ring[i])
+    #####:   49:      abort();
+        5:   50:    if (ep.rx_skbuff[i] != 0)
+    #####:   51:      abort();
+        -:   52:  }
+        1:   53:  return 0;
+        -:   54:}

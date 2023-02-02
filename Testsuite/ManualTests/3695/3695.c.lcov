@@ -1,0 +1,63 @@
+    1|       |/* PR target/44942 */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |
+    5|       |void test1(int a, int b, int c, int d, int e, int f, int g, long double h,
+    6|      1|           ...) {
+    7|      1|  int i;
+    8|      1|  va_list ap;
+    9|      1|
+   10|      1|  va_start(ap, h);
+   11|      1|  i = va_arg(ap, int);
+   12|      1|  if (i != 1234)
+   13|      0|    __builtin_abort();
+   14|      1|  va_end(ap);
+   15|      1|}
+   16|       |
+   17|       |void test2(int a, int b, int c, int d, int e, int f, int g, long double h,
+   18|       |           int i, long double j, int k, long double l, int m, long double n,
+   19|      1|           ...) {
+   20|      1|  int o;
+   21|      1|  va_list ap;
+   22|      1|
+   23|      1|  va_start(ap, n);
+   24|      1|  o = va_arg(ap, int);
+   25|      1|  if (o != 1234)
+   26|      0|    __builtin_abort();
+   27|      1|  va_end(ap);
+   28|      1|}
+   29|       |
+   30|       |void test3(double a, double b, double c, double d, double e, double f, double g,
+   31|      1|           long double h, ...) {
+   32|      1|  double i;
+   33|      1|  va_list ap;
+   34|      1|
+   35|      1|  va_start(ap, h);
+   36|      1|  i = va_arg(ap, double);
+   37|      1|  if (i != 1234.0)
+   38|      0|    __builtin_abort();
+   39|      1|  va_end(ap);
+   40|      1|}
+   41|       |
+   42|       |void test4(double a, double b, double c, double d, double e, double f, double g,
+   43|       |           long double h, double i, long double j, double k, long double l,
+   44|      1|           double m, long double n, ...) {
+   45|      1|  double o;
+   46|      1|  va_list ap;
+   47|      1|
+   48|      1|  va_start(ap, n);
+   49|      1|  o = va_arg(ap, double);
+   50|      1|  if (o != 1234.0)
+   51|      0|    __builtin_abort();
+   52|      1|  va_end(ap);
+   53|      1|}
+   54|       |
+   55|      1|int main() {
+   56|      1|  test1(0, 0, 0, 0, 0, 0, 0, 0.0L, 1234);
+   57|      1|  test2(0, 0, 0, 0, 0, 0, 0, 0.0L, 0, 0.0L, 0, 0.0L, 0, 0.0L, 1234);
+   58|      1|  test3(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0L, 1234.0);
+   59|      1|  test4(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0L, 0.0, 0.0L, 0.0, 0.0L, 0.0,
+   60|      1|        0.0L, 1234.0);
+   61|      1|  return 0;
+   62|      1|}
+

@@ -1,0 +1,25 @@
+        -:    0:Source:2675.c
+        -:    0:Graph:2675.gcno
+        -:    0:Data:2675.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -fwhole-program -march=x86-64" } */
+        -:    3:
+        -:    4:int *a;
+        -:    5:unsigned int b;
+        -:    6:
+        1:    7:void fn2() {
+        -:    8:  int t[9];
+       1*:    9:  for (; b; b++)
+    #####:   10:    *a ^= (~t[b] != t[b]);
+        1:   11:}
+        -:   12:
+        1:   13:int fn1() {
+        1:   14:  fn2();
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  fn1();
+        1:   20:  return 0;
+        -:   21:}

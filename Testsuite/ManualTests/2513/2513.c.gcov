@@ -1,0 +1,23 @@
+        -:    0:Source:2513.c
+        -:    0:Graph:2513.gcno
+        -:    0:Data:2513.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:void abort(void) __attribute__((noreturn));
+        3:    4:float __attribute__((noinline)) f(float a, int b) {
+        3:    5:  return a - (((float)b / 0x7fffffff) * 100);
+        -:    6:}
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  float a[] = {100.0, 0.0, 0.0};
+        1:   10:  int b[] = {0x7fffffff, 0x7fffffff / 100.0f, -0x7fffffff / 100.0f};
+        1:   11:  float c[] = {0.0, -1.0, 1.0};
+        -:   12:  int i;
+        -:   13:
+        4:   14:  for (i = 0; i < (sizeof(a) / sizeof(float)); i++)
+        3:   15:    if (f(a[i], b[i]) != c[i])
+    #####:   16:      abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

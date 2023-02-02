@@ -1,0 +1,23 @@
+        -:    0:Source:2314.c
+        -:    0:Graph:2314.gcno
+        -:    0:Data:2314.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        -:    2:
+        -:    3:int acker(int, int);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int n = acker(3, 6);
+        1:    7:  if (n != 509)
+    #####:    8:    printf("acker(3,6) = %d != 509\n", n);
+        1:    9:  return (0);
+        -:   10:}
+        -:   11:
+   172233:   12:int acker(int x, int y) {
+   172233:   13:  if (x == 0)
+    85866:   14:    return (y + 1);
+    86367:   15:  else if (y == 0)
+      502:   16:    return (acker(x - 1, 1));
+        -:   17:  else
+    85865:   18:    return (acker(x - 1, acker(x, y - 1)));
+        -:   19:}

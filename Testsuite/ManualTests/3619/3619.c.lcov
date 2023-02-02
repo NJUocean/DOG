@@ -1,0 +1,18 @@
+    1|       |/* PR middle-end/37931 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      4|int foo(int a, unsigned int b) { return (a | 1) & (b | 1); }
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  if (foo(6, 0xc6) != 7)
+    9|      0|    abort();
+   10|      1|  if (foo(0x80, 0xc1) != 0x81)
+   11|      0|    abort();
+   12|      1|  if (foo(4, 4) != 5)
+   13|      0|    abort();
+   14|      1|  if (foo(5, 4) != 5)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

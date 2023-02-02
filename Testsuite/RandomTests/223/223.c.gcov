@@ -1,0 +1,35 @@
+        -:    0:Source:223.c
+        -:    0:Graph:223.gcno
+        -:    0:Data:223.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3[1] = {0x16580849L};
+        -:    7:
+        -:    8:static const uint64_t func_1(void);
+        -:    9:
+        1:   10:static const uint64_t func_1(void) {
+        1:   11:  int32_t *l_2 = &g_3[0];
+        1:   12:  (*l_2) ^= 0L;
+        1:   13:  return g_3[0];
+        -:   14:}
+        -:   15:
+        1:   16:int main(int argc, char *argv[]) {
+        -:   17:  int i;
+        1:   18:  int print_hash_value = 0;
+       1*:   19:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   20:    print_hash_value = 1;
+        1:   21:  platform_main_begin();
+        1:   22:  crc32_gentab();
+        1:   23:  func_1();
+        2:   24:  for (i = 0; i < 1; i++) {
+        1:   25:    transparent_crc(g_3[i], "g_3[i]", print_hash_value);
+        1:   26:    if (print_hash_value)
+    #####:   27:      printf("index = [%d]\n", i);
+        -:   28:  }
+        1:   29:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   30:  return 0;
+        -:   31:}

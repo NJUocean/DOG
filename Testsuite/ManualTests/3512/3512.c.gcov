@@ -1,0 +1,53 @@
+        -:    0:Source:3512.c
+        -:    0:Graph:3512.gcno
+        -:    0:Data:3512.gcda
+        -:    0:Runs:1
+        -:    1:/* PR45070 */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct packed_ushort {
+        -:    5:  unsigned short ucs;
+        -:    6:} __attribute__((packed));
+        -:    7:
+        -:    8:struct source {
+        -:    9:  int pos, length;
+        -:   10:};
+        -:   11:
+        -:   12:static int flag;
+        -:   13:
+        1:   14:static void __attribute__((noinline)) fetch(struct source *p) {
+        1:   15:  p->length = 128;
+        1:   16:}
+        -:   17:
+       17:   18:static struct packed_ushort __attribute__((noinline)) next(struct source *p) {
+        -:   19:  struct packed_ushort rv;
+        -:   20:
+       17:   21:  if (p->pos >= p->length) {
+        2:   22:    if (flag) {
+        1:   23:      flag = 0;
+        1:   24:      fetch(p);
+        1:   25:      return next(p);
+        -:   26:    }
+        1:   27:    flag = 1;
+        1:   28:    rv.ucs = 0xffff;
+        1:   29:    return rv;
+        -:   30:  }
+       15:   31:  rv.ucs = 0;
+       15:   32:  return rv;
+        -:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        -:   36:  struct source s;
+        -:   37:  int i;
+        -:   38:
+        1:   39:  s.pos = 0;
+        1:   40:  s.length = 0;
+        1:   41:  flag = 0;
+        -:   42:
+       17:   43:  for (i = 0; i < 16; i++) {
+       16:   44:    struct packed_ushort rv = next(&s);
+       16:   45:    if ((i == 0 && rv.ucs != 0xffff) || (i > 0 && rv.ucs != 0))
+    #####:   46:      abort();
+        -:   47:  }
+        1:   48:  return 0;
+        -:   49:}

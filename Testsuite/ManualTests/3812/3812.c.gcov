@@ -1,0 +1,51 @@
+        -:    0:Source:3812.c
+        -:    0:Graph:3812.gcno
+        -:    0:Data:3812.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:struct parsefile {
+        -:    4:  long fd;
+        -:    5:  char *buf;
+        -:    6:};
+        -:    7:struct parsefile basepf;
+        -:    8:struct parsefile *parsefile = &basepf;
+        -:    9:#ifdef STACK_SIZE
+        -:   10:int filler[STACK_SIZE / (2 * sizeof(int))];
+        -:   11:#else
+        -:   12:int filler[0x3000];
+        -:   13:#endif
+        -:   14:int el;
+        -:   15:
+    #####:   16:char *g1(a, b) int a;
+        -:   17:int *b;
+    #####:   18:{}
+        -:   19:
+        1:   20:g2(a) long a;
+        -:   21:{
+        1:   22:  if (a != 0xdeadbeefL)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}
+        -:   26:
+        1:   27:f() {
+        -:   28:  register char *p, *q;
+        -:   29:  register int i;
+        -:   30:  register int something;
+        -:   31:
+       1*:   32:  if (parsefile->fd == 0L && el) {
+        -:   33:    const char *rl_cp;
+        -:   34:    int len;
+    #####:   35:    rl_cp = g1(el, &len);
+    #####:   36:    strcpy(p, rl_cp);
+        -:   37:  } else {
+       1*:   38:  alabel:
+        1:   39:    i = g2(parsefile->fd);
+        -:   40:  }
+    #####:   41:}
+        -:   42:
+        1:   43:main() {
+        1:   44:  el = 0;
+        1:   45:  parsefile->fd = 0xdeadbeefL;
+        1:   46:  f();
+        -:   47:}

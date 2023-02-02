@@ -1,0 +1,34 @@
+    1|       |/* PR 24255 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |union wait {
+    8|       |  int w_status;
+    9|       |};
+   10|       |
+   11|       |typedef union {
+   12|       |  union wait *uptr;
+   13|       |  int *iptr;
+   14|       |} WAIT_STATUS __attribute__((__transparent_union__));
+   15|       |
+   16|       |int status;
+   17|       |union wait wstatus;
+   18|       |
+   19|      1|void __attribute__((noinline)) test1(WAIT_STATUS s) {
+   20|      1|  if (s.iptr != &status)
+   21|      0|    abort();
+   22|      1|}
+   23|       |
+   24|      1|void __attribute__((noinline)) test2(WAIT_STATUS s) {
+   25|      1|  if (s.uptr != &wstatus)
+   26|      0|    abort();
+   27|      1|}
+   28|       |
+   29|      1|int main() {
+   30|      1|  test1(&status);
+   31|      1|  test2(&wstatus);
+   32|      1|  return 0;
+   33|      1|}
+

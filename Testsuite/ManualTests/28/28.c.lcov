@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-options "-mminimal-toc" { target { { powerpc*-*-* && lp64 } || {
+    4|       | * powerpc-ibm-aix* } } } } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|double __attribute__((noinline)) foo(void) { return 16441577472.0; }
+   10|       |
+   11|      1|double __attribute__((noinline)) bar(double x) { return x; }
+   12|       |
+   13|      1|int __attribute__((noinline)) test(void) {
+   14|      1|  double x = foo();
+   15|      1|  x = bar(x);
+   16|      1|  x /= 1024L * 1024L * 1024L;
+   17|      1|  x *= 70;
+   18|      1|  x = x < 70 ? x : 70;
+   19|      1|  x += 30;
+   20|      1|  return x;
+   21|      1|}
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  if (test() != 100)
+   25|      0|    abort();
+   26|      1|  exit(0);
+   27|      1|}
+

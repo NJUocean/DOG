@@ -1,0 +1,41 @@
+        -:    0:Source:1967.c
+        -:    0:Graph:1967.gcno
+        -:    0:Data:1967.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fno-strict-aliasing" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  void *a;
+        -:    6:  long double b;
+        -:    7:};
+        -:    8:
+        -:    9:struct Z {
+        -:   10:  long long l;
+        -:   11:  short s;
+        -:   12:} __attribute__((packed));
+        -:   13:
+        1:   14:struct S __attribute__((noclone, noinline)) foo(void *v, struct Z *z) {
+        -:   15:  struct S t;
+        1:   16:  t.a = v;
+        1:   17:  *(struct Z *)&t.b = *z;
+        1:   18:  return t;
+        -:   19:}
+        -:   20:
+        -:   21:struct Z gz;
+        -:   22:
+        1:   23:int main(int argc, char **argv) {
+        -:   24:  struct S s;
+        -:   25:
+        -:   26:  if (sizeof(long double) < sizeof(struct Z))
+        -:   27:    return 0;
+        -:   28:
+        1:   29:  gz.l = 0xbeef;
+        1:   30:  gz.s = 0xab;
+        -:   31:
+        1:   32:  s = foo((void *)0, &gz);
+        -:   33:
+        1:   34:  if ((((struct Z *)&s.b)->l != gz.l) || (((struct Z *)&s.b)->s != gz.s))
+    #####:   35:    __builtin_abort();
+        1:   36:  return 0;
+        -:   37:}

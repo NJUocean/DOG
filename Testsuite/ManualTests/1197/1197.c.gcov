@@ -1,0 +1,28 @@
+        -:    0:Source:1197.c
+        -:    0:Graph:1197.gcno
+        -:    0:Data:1197.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls } */
+        -:    3:/* { dg-require-effective-target global_constructor } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:/* { dg-require-effective-target tls_runtime } */
+        -:    6:/* { dg-add-options tls } */
+        -:    7:
+        -:    8:__thread int i __attribute__((common));
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:
+        2:   12:int test_code(int b) {
+        2:   13:  i += b;
+        2:   14:  return i;
+        -:   15:}
+        -:   16:
+        1:   17:int main(int ac, char *av[]) {
+        1:   18:  int a = test_code(test_code(1));
+        -:   19:
+        1:   20:  if ((a != 2) || (i != 2))
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

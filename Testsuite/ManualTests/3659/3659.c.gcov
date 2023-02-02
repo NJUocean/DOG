@@ -1,0 +1,19 @@
+        -:    0:Source:3659.c
+        -:    0:Graph:3659.gcno
+        -:    0:Data:3659.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  short f : 3, g : 3, h : 10;
+        -:    3:} small;
+        -:    4:
+        -:    5:struct {
+        -:    6:  int i;
+        -:    7:  small s[10];
+        -:    8:} x;
+        -:    9:
+        1:   10:main() {
+        -:   11:  int i;
+       11:   12:  for (i = 0; i < 10; i++)
+       10:   13:    x.s[i].f = 0;
+        1:   14:  exit(0);
+        -:   15:}

@@ -1,0 +1,25 @@
+    1|       |/* PR target/69252 - [4.9/5/6 Regression] gcc.dg/vect/vect-iv-9.c FAILs
+    2|       |   with -Os -fmodulo-sched -fmodulo-sched-allow-regmoves -fsched-pressure  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-Os -fmodulo-sched -fmodulo-sched-allow-regmoves
+    5|       | * -fsched-pressure " } */
+    6|     54|#define N 26
+    7|       |int a[N];
+    8|      1|__attribute__((noinline, noclone)) int main1(int X) {
+    9|      1|  int s = X;
+   10|      1|  int i;
+   11|     27|  for (i = 0; i < N; i++)
+   12|     26|    s += (i + a[i]);
+   13|      1|  return s;
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  int s, i;
+   18|     27|  for (i = 0; i < N; i++)
+   19|     26|    a[i] = 2 * i;
+   20|      1|  s = main1(3);
+   21|      1|  if (s != 978)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

@@ -1,0 +1,14 @@
+        -:    0:Source:62.c
+        -:    0:Graph:62.gcno
+        -:    0:Data:62.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 41673: bogus -Wstrict-aliasing warning from VLA dereference.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=gnu99 -O2 -Wall" } */
+        -:    4:/* { dg-require-effective-target alloca } */
+        -:    5:
+        1:    6:int main(int argc, char *argv[]) {
+        1:    7:  float x[argc];
+        1:    8:  float y[argc];
+        1:    9:  return 0 == __builtin_memcpy(y, x, argc * sizeof(*x));
+        -:   10:}

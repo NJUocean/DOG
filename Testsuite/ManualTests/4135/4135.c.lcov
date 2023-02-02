@@ -1,0 +1,18 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|      1|static int f(char *x) { return __builtin_strlen(x); }
+    5|       |
+    6|      1|int foo() { return f((char *)&L"abcdef"[0]); }
+    7|       |
+    8|      1|int main() {
+    9|       |#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+   10|       |  if (foo() != 0)
+   11|       |    abort();
+   12|       |#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   13|      1|  if (foo() != 1)
+   14|      0|    abort();
+   15|      1|#endif
+   16|      1|  exit(0);
+   17|      1|}
+

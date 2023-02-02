@@ -1,0 +1,34 @@
+        -:    0:Source:1652.c
+        -:    0:Graph:1652.gcno
+        -:    0:Data:1652.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/80163 */
+        -:    2:/* { dg-do compile { target int128 } } */
+        -:    3:/* { dg-require-effective-target label_values } */
+        -:    4:
+        -:    5:volatile int v;
+        -:    6:
+        2:    7:__attribute__((noinline, noclone)) void bar(void) {
+        2:    8:  v++;
+        2:    9:  asm volatile("" : : : "memory");
+        2:   10:}
+        -:   11:
+        1:   12:__attribute__((noinline, noclone)) __int128_t *foo(unsigned long **p) {
+        1:   13:a:
+        1:   14:  bar();
+        1:   15:b:
+        1:   16:  bar();
+        -:   17:  static __int128_t d = (unsigned long)&&a - (unsigned long)&&b;
+        -:   18:  static unsigned long e = (unsigned long)&&a - (unsigned long)&&b;
+        1:   19:  *p = &e;
+        1:   20:  return &d;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  __int128_t *p;
+        -:   25:  unsigned long *q;
+        1:   26:  p = foo(&q);
+        1:   27:  if (*p != *q)
+    #####:   28:    __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

@@ -1,0 +1,20 @@
+    1|       |/* { dg-require-stack-check "generic" } */
+    2|       |/* { dg-options "-O -fstack-check=generic -ftree-pre -fgraphite-identity" } */
+    3|       |/* nvptx doesn't expose a stack.  */
+    4|       |/* { dg-skip-if "" { nvptx-*-* } } */
+    5|       |
+    6|      1|int main() {
+    7|      1|  int i, j;
+    8|      1|  int x[8][8];
+    9|      9|  for (i = 0; i < 8; i++)
+   10|     44|    for (j = i; j < 8; j++)
+   11|     36|      x[i][j] = 4;
+   12|      1|
+   13|      9|  for (i = 0; i < 8; i++)
+   14|     44|    for (j = i; j < 8; j++)
+   15|     36|      if (x[i][j] != 4)
+   16|      0|        __builtin_abort();
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+

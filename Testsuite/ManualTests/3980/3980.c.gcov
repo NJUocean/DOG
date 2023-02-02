@@ -1,0 +1,27 @@
+        -:    0:Source:3980.c
+        -:    0:Graph:3980.gcno
+        -:    0:Data:3980.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/82210 */
+        -:    2:/* { dg-require-effective-target alloca } */
+        -:    3:
+        1:    4:void foo(int size) {
+        -:    5:  int i;
+        1:    6:  struct S {
+        1:    7:    __attribute__((aligned(16))) struct T { short c; } a[size];
+        1:    8:    int b[size];
+        1:    9:  } s;
+        -:   10:
+       16:   11:  for (i = 0; i < size; i++)
+       15:   12:    s.a[i].c = 0x1234;
+       16:   13:  for (i = 0; i < size; i++)
+       15:   14:    s.b[i] = 0;
+       16:   15:  for (i = 0; i < size; i++)
+       15:   16:    if (s.a[i].c != 0x1234 || s.b[i] != 0)
+    #####:   17:      __builtin_abort();
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  foo(15);
+        1:   22:  return 0;
+        -:   23:}

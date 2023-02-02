@@ -1,0 +1,18 @@
+        -:    0:Source:1640.c
+        -:    0:Graph:1640.gcno
+        -:    0:Data:1640.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:unsigned char c, d, e;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  if (b || !a) {
+        1:    8:    c = a;
+        1:    9:    if (!c && !a)
+        1:   10:      d = 0;
+        1:   11:    e = -a;
+        -:   12:  }
+        1:   13:  return 0;
+        -:   14:}

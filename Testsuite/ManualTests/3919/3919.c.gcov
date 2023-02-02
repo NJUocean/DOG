@@ -1,0 +1,28 @@
+        -:    0:Source:3919.c
+        -:    0:Graph:3919.gcno
+        -:    0:Data:3919.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/70222 */
+        -:    2:
+        -:    3:int a = 1;
+        -:    4:unsigned int b = 2;
+        -:    5:int c = 0;
+        -:    6:int d = 0;
+        -:    7:
+        1:    8:void foo() {
+        1:    9:  int e = ((-(c >= c)) < b) > ((int)(-1ULL >> ((a / a) * 15)));
+        1:   10:  d = -e;
+        1:   11:}
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) void bar(int x) {
+        1:   14:  if (x != -1)
+    #####:   15:    __builtin_abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:#if __CHAR_BIT__ == 8 && __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8
+        1:   20:  foo();
+        1:   21:  bar(d);
+        -:   22:#endif
+        1:   23:  return 0;
+        -:   24:}

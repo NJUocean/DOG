@@ -1,0 +1,26 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O3 -fdump-tree-local-pure-const1 -fdump-tree-optimized" } */
+    3|      2|static __attribute__((noinline, noclone)) int i_am_pure(char *c, int n) {
+    4|      2|  char *d = __builtin_alloca(n);
+    5|      2|  int i;
+    6|      2|  int sum = 0;
+    7|     18|  for (i = 0; i < n; i++)
+    8|     16|    d[i] = c[i];
+    9|     18|  for (i = 0; i < n; i++)
+   10|     16|    d[i] *= c[n - i];
+   11|     18|  for (i = 0; i < n; i++)
+   12|     16|    sum += d[i];
+   13|      2|  if (sum)
+   14|      0|    __builtin_unreachable();
+   15|      2|  return sum;
+   16|      2|}
+   17|       |char array[11];
+   18|      1|int main(void) {
+   19|      1|  i_am_pure(array, 5);
+   20|      1|  i_am_pure(array, 11);
+   21|      1|  return 0;
+   22|      1|}
+   23|       |/* { dg-final { scan-tree-dump "found to be pure: i_am_pure"
+   24|       | * "local-pure-const1"} } */
+   25|       |/* { dg-final { scan-tree-dump-not "i_am_pure" "optimized"} } */
+

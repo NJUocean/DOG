@@ -1,0 +1,21 @@
+        -:    0:Source:152.c
+        -:    0:Graph:152.gcno
+        -:    0:Data:152.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 19031 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-require-alias "" } */
+        -:    4:/* { dg-options "-funit-at-a-time" } */
+        -:    5:
+        1:    6:static int f1(void) { return 0; }
+        -:    7:extern int g1(void) __attribute__((__alias__("f1")));
+        -:    8:
+        -:    9:#define STR(x) STR1(__USER_LABEL_PREFIX__, x)
+        -:   10:#define STR1(x, y) STR2(x, y)
+        -:   11:#define STR2(x, y) #x #y
+        -:   12:
+        -:   13:static int f2(void) __asm__(STR(a2));
+        1:   14:static int f2(void) { return 0; }
+        -:   15:extern int g2(void) __attribute__((__alias__("a2")));
+        -:   16:
+        1:   17:int main() { return g1() + g2(); }

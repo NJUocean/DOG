@@ -1,0 +1,33 @@
+    1|       |/* PR rtl-optimization/83496 */
+    2|       |/* Reported by Hauke Mehrtens <gcc@hauke-m.de> */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |typedef unsigned long mp_digit;
+    7|       |
+    8|       |typedef struct {
+    9|       |  int used, alloc, sign;
+   10|       |  mp_digit *dp;
+   11|       |} mp_int;
+   12|       |
+   13|       |int mytest(mp_int *a, mp_digit b) __attribute__((noclone, noinline));
+   14|       |
+   15|      1|int mytest(mp_int *a, mp_digit b) {
+   16|      1|  if (a->sign == 1)
+   17|      0|    return -1;
+   18|      1|  if (a->used > 1)
+   19|      1|    return 1;
+   20|      0|  if (a->dp[0] > b)
+   21|      0|    return 1;
+   22|      0|  if (a->dp[0] < b)
+   23|      0|    return -1;
+   24|      0|  return 0;
+   25|      0|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  mp_int i = {2, 0, -1};
+   29|      1|  if (mytest(&i, 0) != 1)
+   30|      0|    abort();
+   31|      1|  return 0;
+   32|      1|}
+

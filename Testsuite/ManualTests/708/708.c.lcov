@@ -1,0 +1,44 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options { { -flto -O2 -Werror } } } */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |typedef struct _IO_FILE FILE;
+    6|       |
+    7|       |#define STRING1(a) #a
+    8|       |#define STRING2(a) STRING1(a)
+    9|       |
+   10|       |extern size_t
+   11|       |fread(void *__restrict __ptr, size_t __ptrlen, size_t __size, size_t __n,
+   12|       |      FILE *__restrict __stream) __asm__(STRING2(__USER_LABEL_PREFIX__) "fread")
+   13|       |    __attribute__((__warn_unused_result__));
+   14|       |extern size_t fread_warn(
+   15|       |    void *__restrict __ptr, size_t __ptrlen, size_t __size, size_t __n,
+   16|       |    FILE *__restrict __stream) __asm__(STRING2(__USER_LABEL_PREFIX__) "fread")
+   17|       |    __attribute__((__warn_unused_result__)) __attribute__((
+   18|       |        __warning__("fread called with bigger size * nmemb than length "
+   19|       |                    "of destination buffer")));
+   20|       |
+   21|       |extern __inline __attribute__((__always_inline__))
+   22|       |__attribute__((__gnu_inline__)) __attribute__((__artificial__))
+   23|       |__attribute__((__warn_unused_result__)) size_t
+   24|       |local_fread(void *__restrict __ptr, size_t __size, size_t __n,
+   25|      1|            FILE *__restrict __stream) {
+   26|      1|  if (__builtin_object_size(__ptr, 0) != (size_t)-1) {
+   27|      0|    if (!__builtin_constant_p(__size) || !__builtin_constant_p(__n) ||
+   28|      0|        (__size | __n) >= (((size_t)1) << (8 * sizeof(size_t) / 2)))
+   29|      0|      return fread(__ptr, __builtin_object_size(__ptr, 0), __size, __n,
+   30|      0|                   __stream);
+   31|      0|    if (__size * __n > __builtin_object_size(__ptr, 0))
+   32|      0|      return fread_warn(__ptr, __builtin_object_size(__ptr, 0), __size, __n,
+   33|      0|                        __stream);
+   34|      0|  }
+   35|      1|}
+   36|       |
+   37|       |volatile size_t nmemb;
+   38|       |FILE *fp;
+   39|      1|int main() {
+   40|      1|  char file_contents[4096];
+   41|      1|  /* We shouldn't get this resolved to a call to fread_warn.  */
+   42|      1|  return local_fread(file_contents, 1, nmemb, fp);
+   43|      1|}
+

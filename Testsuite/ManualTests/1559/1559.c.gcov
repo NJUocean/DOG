@@ -1,0 +1,37 @@
+        -:    0:Source:1559.c
+        -:    0:Graph:1559.gcno
+        -:    0:Data:1559.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static const float a[3] = {1, 2, 3};
+        -:    4:int b = 3;
+        -:    5:
+        3:    6:__attribute__((noinline, noclone)) void bar(int x) {
+        3:    7:  if (x != b++)
+    #####:    8:    __builtin_abort();
+        3:    9:}
+        -:   10:
+        1:   11:void foo(float *x, int y) {
+        -:   12:  int i;
+        7:   13:  for (i = 0; i < 2 * y; ++i) {
+        6:   14:    if (i < y)
+        3:   15:      x[i] = a[i];
+        -:   16:    else {
+        3:   17:      bar(i);
+        3:   18:      x[i] = a[i - y];
+        -:   19:    }
+        -:   20:  }
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  float x[10];
+        -:   25:  unsigned int i;
+       11:   26:  for (i = 0; i < 10; ++i)
+       10:   27:    x[i] = 1337;
+        1:   28:  foo(x, 3);
+       11:   29:  for (i = 0; i < 10; ++i)
+       10:   30:    if (x[i] != (i < 6 ? (i % 3) + 1 : 1337))
+    #####:   31:      __builtin_abort();
+        1:   32:  return 0;
+        -:   33:}

@@ -1,0 +1,26 @@
+        -:    0:Source:2000.c
+        -:    0:Graph:2000.gcno
+        -:    0:Data:2000.gcda
+        -:    0:Runs:1
+        -:    1:/* Tail call optimizations would convert func() into the moral equivalent of:
+        -:    2:
+        -:    3:       double acc = 0.0;
+        -:    4:       for (int i = 0; i <= n; i++)
+        -:    5:         acc += d;
+        -:    6:       return acc;
+        -:    7:
+        -:    8:   which mishandles the case where 'd' is -0.  They also initialised 'acc'
+        -:    9:   to a zero int rather than a zero double.  */
+        -:   10:
+       11:   11:double func(double d, int n) {
+       11:   12:  if (n == 0)
+        1:   13:    return d;
+        -:   14:  else
+       10:   15:    return d + func(d, n - 1);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  if (__builtin_copysign(1.0, func(0.0 / -5.0, 10)) != -1.0)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

@@ -1,0 +1,28 @@
+        -:    0:Source:253.c
+        -:    0:Graph:253.gcno
+        -:    0:Data:253.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that undefined names evaluate to zero, that macros after a
+        -:    2:   funlike macro are expanded, and that if it is a '(' the funlike
+        -:    3:   macro is not treated as such.  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:#define f(x) x
+        -:   10:
+        1:   11:int main() {
+        -:   12:#if f(1) == f /**/ (/**/ 1 /**/)
+        -:   13:  int x;
+        -:   14:#endif
+        -:   15:
+        1:   16:  x = 0;
+        -:   17:  if (f
+        -:   18:      /**/ (
+        -:   19:          /**/ 0 /**/
+        -:   20:          /**/))
+        -:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

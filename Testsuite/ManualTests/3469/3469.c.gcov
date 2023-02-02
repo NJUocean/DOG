@@ -1,0 +1,19 @@
+        -:    0:Source:3469.c
+        -:    0:Graph:3469.gcno
+        -:    0:Data:3469.gcda
+        -:    0:Runs:1
+        -:    1:/* Used to be miscompiled at -O0 due to incorrect choice of sign extension
+        -:    2:   vs. zero extension.  __attribute__ ((noinline)) added to try to make it
+        -:    3:   fail at higher optimization levels too.  */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:long long __attribute__((noinline)) div(long long val) { return val / 32768; }
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  long long d1 = -990000000;
+        1:   11:  long long d2 = div(d1);
+        1:   12:  if (d2 != -30212)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,21 @@
+        -:    0:Source:2457.c
+        -:    0:Graph:2457.gcno
+        -:    0:Data:2457.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct trio {
+        -:    2:  int a, b, c;
+        -:    3:} trio;
+        -:    4:
+        1:    5:int bar(int i, int j, int k, trio t) {
+        1:    6:  if (t.a != 1 || t.b != 2 || t.c != 3 || i != 4 || j != 5 || k != 6)
+    #####:    7:    abort();
+        1:    8:}
+        -:    9:
+        1:   10:int foo(trio t, int i, int j, int k) { return bar(i, j, k, t); }
+        -:   11:
+        1:   12:main() {
+        1:   13:  trio t = {1, 2, 3};
+        -:   14:
+        1:   15:  foo(t, 4, 5, 6);
+        1:   16:  exit(0);
+        -:   17:}

@@ -1,0 +1,21 @@
+    1|      1|int main(void) {
+    2|      1|  float reale = 1.0f;
+    3|      1|  float oneplus;
+    4|      1|  int i;
+    5|      1|
+    6|      1|  if (sizeof(float) != 4)
+    7|      0|    exit(0);
+    8|      1|
+    9|     25|  for (i = 0;; i++) {
+   10|     25|    oneplus = 1.0f + reale;
+   11|     25|    if (oneplus == 1.0f)
+   12|      1|      break;
+   13|     24|    reale = reale / 2.0f;
+   14|     24|  }
+   15|      1|  /* Assumes ieee754 accurate arithmetic above.  */
+   16|      1|  if (i != 24)
+   17|      0|    abort();
+   18|      1|  else
+   19|      1|    exit(0);
+   20|      1|}
+

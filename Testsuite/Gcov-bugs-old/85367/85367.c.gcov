@@ -1,0 +1,21 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <x86intrin.h>
+        -:    2:
+        1:    3:int main ()
+        -:    4:{
+        -:    5:  unsigned char c;
+        -:    6:  unsigned long long x, y;
+        -:    7:
+        1:    8:  c = 0;
+        1:    9:  x = 1LL;
+        1:   10:  y = 0LL;
+        -:   11:
+        -:   12:  /* X = 0x0000000000000001, Y = 0x0000000000000000, C = 0.  */
+        2:   13:  c = _subborrow_u64 (c, y, x, &x);
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

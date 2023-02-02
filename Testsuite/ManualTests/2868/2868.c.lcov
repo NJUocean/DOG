@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run { target { { powerpc*-*-darwin* powerpc*-*-aix* rs6000-*-* } || {
+    2|       | * powerpc*-*-linux* && lp64 } } } } */
+    3|       |/* { dg-options "-mlong-double-128" } */
+    4|       |
+    5|       |/* Check that LDBL_EPSILON is right for 'long double'.  */
+    6|       |
+    7|       |#include <float.h>
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  volatile long double ee = 1.0;
+   13|      1|  long double eps = ee;
+   14|     65|  while (ee + 1.0 != 1.0) {
+   15|     64|    eps = ee;
+   16|     64|    ee = eps / 2;
+   17|     64|  }
+   18|      1|  if (eps != LDBL_EPSILON)
+   19|      1|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

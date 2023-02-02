@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run { target c++11 } }  */
+    2|       |/* { dg-options "-pedantic-errors" }  */
+    3|       |
+    4|       |#define f (
+    5|       |#define l )
+    6|       |#define str(x) #x
+    7|       |#define xstr(x) str(x)
+    8|       |
+    9|       |/* C90 and C++98: "0x1p+( 0x1p+)"  */
+   10|       |/* C99 and C++11: "0x1p+f 0x1p+l"  */
+   11|       |const char *s = xstr(0x1p+f 0x1p+l);
+   12|       |
+   13|       |void abort(void);
+   14|       |int strcmp(const char *, const char *);
+   15|       |
+   16|      1|int main() {
+   17|      1|  if (strcmp(s, "0x1p+( 0x1p+)"))
+   18|      1|    return 0; /* Correct C99 and C++11 behavior.  */
+   19|      0|  else
+   20|      0|    abort(); /* Correct C90 and C++ behavior.  */
+   21|      1|}
+

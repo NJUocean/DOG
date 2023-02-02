@@ -1,0 +1,31 @@
+        -:    0:Source:416.c
+        -:    0:Graph:416.gcno
+        -:    0:Data:416.gcda
+        -:    0:Runs:1
+       32:    1:f(double x[2], double y[2]) {
+       32:    2:  if (x == y)
+    #####:    3:    abort();
+       32:    4:}
+        -:    5:
+        1:    6:main() {
+        -:    7:  struct {
+        -:    8:    int f[3];
+        -:    9:    double x[1][2];
+        -:   10:  } tp[4][2];
+        -:   11:  int i, j, ki, kj, mi, mj;
+        -:   12:  float bdm[4][2][4][2];
+        -:   13:
+        5:   14:  for (i = 0; i < 4; i++)
+       14:   15:    for (j = i; j < 4; j++)
+       30:   16:      for (ki = 0; ki < 2; ki++)
+       60:   17:        for (kj = 0; kj < 2; kj++)
+       40:   18:          if ((j == i) && (ki == kj))
+        8:   19:            bdm[i][ki][j][kj] = 1000.0;
+        -:   20:          else {
+       64:   21:            for (mi = 0; mi < 1; mi++)
+       64:   22:              for (mj = 0; mj < 1; mj++)
+       32:   23:                f(tp[i][ki].x[mi], tp[j][kj].x[mj]);
+       32:   24:            bdm[i][ki][j][kj] = 1000.0;
+        -:   25:          }
+        1:   26:  exit(0);
+        -:   27:}

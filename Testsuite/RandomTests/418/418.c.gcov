@@ -1,0 +1,50 @@
+        -:    0:Source:418.c
+        -:    0:Graph:418.gcno
+        -:    0:Data:418.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_2 = 5L;
+        -:    7:static volatile int32_t g_5 = (-1L);
+        -:    8:static int32_t g_6 = 0x7DC4B4E1L;
+        -:    9:static int32_t g_10 = 0L;
+        -:   10:
+        -:   11:static const int64_t func_1(void);
+        -:   12:
+        1:   13:static const int64_t func_1(void) {
+        1:   14:  const int8_t l_17[4] = {(-10L), (-10L), (-10L), (-10L)};
+        -:   15:  int i;
+        1:   16:  for (g_2 = 0; (g_2 == 8); ++g_2) {
+    #####:   17:    uint64_t l_14 = 0x2F80C3414B58E17CLL;
+    #####:   18:    for (g_6 = 8; (g_6 < 11); g_6 = safe_add_func_int8_t_s_s(g_6, 1)) {
+    #####:   19:      int32_t *l_9 = &g_10;
+    #####:   20:      int32_t *l_11 = (void *)0;
+    #####:   21:      int32_t *l_12 = &g_10;
+        -:   22:      int32_t *l_13[1];
+        -:   23:      int i;
+    #####:   24:      for (i = 0; i < 1; i++)
+    #####:   25:        l_13[i] = (void *)0;
+    #####:   26:      l_14--;
+        -:   27:    }
+    #####:   28:    return l_17[0];
+        -:   29:  }
+        1:   30:  return l_17[0];
+        -:   31:}
+        -:   32:
+        1:   33:int main(int argc, char *argv[]) {
+        1:   34:  int print_hash_value = 0;
+       1*:   35:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   36:    print_hash_value = 1;
+        1:   37:  platform_main_begin();
+        1:   38:  crc32_gentab();
+        1:   39:  func_1();
+        1:   40:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   41:  transparent_crc(g_5, "g_5", print_hash_value);
+        1:   42:  transparent_crc(g_6, "g_6", print_hash_value);
+        1:   43:  transparent_crc(g_10, "g_10", print_hash_value);
+        1:   44:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   45:  return 0;
+        -:   46:}

@@ -1,0 +1,21 @@
+        -:    0:Source:3431.c
+        -:    0:Graph:3431.gcno
+        -:    0:Data:3431.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        1:    2:void foo(int *p) {
+        -:    3:  int x;
+        -:    4:  int y;
+        1:    5:  x = *p;
+        1:    6:  *p = 0;
+        1:    7:  y = *p;
+        1:    8:  if (x != y)
+        1:    9:    return;
+    #####:   10:  abort();
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  int a = 1;
+        1:   15:  foo(&a);
+        1:   16:  return 0;
+        -:   17:}

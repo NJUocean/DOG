@@ -1,0 +1,20 @@
+    1|       |/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+    2|       |/* { dg-do run { target native } } */
+    3|       |
+    4|      1|void Test(long long Val, int Amt) {
+    5|      1|  __builtin_printf("  lshr: 0x%llx \t\t shl: 0x%llx\n", Val >> Amt,
+    6|      1|                   Val << Amt);                       /* count(1) */
+    7|      1|  __builtin_printf("  lshr: 0x%llx\t\tshl: 0x%llx\n", /* count(1) */
+    8|      1|                   Val >> Amt, Val << Amt);
+    9|      1|  __builtin_printf("  lshr: 0x%llx \t\t shl: 0x%llx\n", /* count(1) */
+   10|      1|                   (unsigned long long)Val >> Amt, Val << Amt);
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  Test(10, 4);
+   15|      1|
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-final { run-gcov gcov-pr85338.c } } */
+

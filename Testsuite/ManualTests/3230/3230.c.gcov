@@ -1,0 +1,43 @@
+        -:    0:Source:3230.c
+        -:    0:Graph:3230.gcno
+        -:    0:Data:3230.gcda
+        -:    0:Runs:1
+        -:    1:/* derived from PR c/2100 */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:extern void exit(int);
+        -:    5:
+        -:    6:#define SMALL_N 2
+        -:    7:#define NUM_ELEM 4
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int listElem[NUM_ELEM] = {30, 2, 10, 5};
+        -:   11:  int listSmall[SMALL_N];
+        -:   12:  int i, j;
+        1:   13:  int posGreatest = -1, greatest = -1;
+        -:   14:
+        3:   15:  for (i = 0; i < SMALL_N; i++) {
+        2:   16:    listSmall[i] = listElem[i];
+        2:   17:    if (listElem[i] > greatest) {
+        1:   18:      posGreatest = i;
+        1:   19:      greatest = listElem[i];
+        -:   20:    }
+        -:   21:  }
+        -:   22:
+        3:   23:  for (i = SMALL_N; i < NUM_ELEM; i++) {
+        2:   24:    if (listElem[i] < greatest) {
+        2:   25:      listSmall[posGreatest] = listElem[i];
+        2:   26:      posGreatest = 0;
+        2:   27:      greatest = listSmall[0];
+        4:   28:      for (j = 1; j < SMALL_N; j++)
+        2:   29:        if (listSmall[j] > greatest) {
+    #####:   30:          posGreatest = j;
+    #####:   31:          greatest = listSmall[j];
+        -:   32:        }
+        -:   33:    }
+        -:   34:  }
+        -:   35:
+        1:   36:  if (listSmall[0] != 5 || listSmall[1] != 2)
+    #####:   37:    abort();
+        1:   38:  exit(0);
+        -:   39:}

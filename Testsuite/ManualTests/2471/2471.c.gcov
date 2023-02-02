@@ -1,0 +1,50 @@
+        -:    0:Source:2471.c
+        -:    0:Graph:2471.gcno
+        -:    0:Data:2471.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:#include <float.h>
+        -:    5:#include <stdio.h>
+        -:    6:
+        -:    7:#define TEST_EQ(TYPE, X, Y, RES)                                               \
+        -:    8:  do {                                                                         \
+        -:    9:    volatile TYPE a, b;                                                        \
+        -:   10:    a = (TYPE)X;                                                               \
+        -:   11:    b = (TYPE)Y;                                                               \
+        -:   12:    if ((a == b) != RES) {                                                     \
+        -:   13:      printf("Runtime computation error @%d. %g "                              \
+        -:   14:             "!= %g\n",                                                        \
+        -:   15:             __LINE__, a, b);                                                  \
+        -:   16:      error = 1;                                                               \
+        -:   17:    }                                                                          \
+        -:   18:  } while (0)
+        -:   19:
+        -:   20:#ifndef __HS__
+        -:   21:/* Special type of NaN found when using double FPX instructions.  */
+        -:   22:static const unsigned long long __nan = 0x7FF0000080000000ULL;
+        -:   23:#define W (*(double *)&__nan)
+        -:   24:#else
+        -:   25:#define W __builtin_nan("")
+        -:   26:#endif
+        -:   27:
+        -:   28:#define Q __builtin_nan("")
+        -:   29:#define H __builtin_inf()
+        -:   30:
+        1:   31:int main(void) {
+        1:   32:  int error = 0;
+        -:   33:
+       1*:   34:  TEST_EQ(double, 1, 1, 1);
+       1*:   35:  TEST_EQ(double, 1, 2, 0);
+       1*:   36:  TEST_EQ(double, W, W, 0);
+       1*:   37:  TEST_EQ(double, Q, Q, 0);
+       1*:   38:  TEST_EQ(double, __DBL_MAX__, __DBL_MAX__, 1);
+       1*:   39:  TEST_EQ(double, __DBL_MIN__, __DBL_MIN__, 1);
+       1*:   40:  TEST_EQ(double, H, H, 1);
+        -:   41:
+        1:   42:  if (error)
+    #####:   43:    __builtin_abort();
+        -:   44:
+        1:   45:  return 0;
+        -:   46:}

@@ -1,0 +1,20 @@
+        -:    0:Source:14.c
+        -:    0:Graph:14.gcno
+        -:    0:Data:14.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+    #####:    6:int zero(void) { return 0; }
+        -:    7:
+        1:    8:int one(void) { return 1; }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  int i = 1;
+       1*:   12:  int r = (i ? one : zero)();
+        1:   13:  if (r != 1)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

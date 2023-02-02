@@ -1,0 +1,23 @@
+    1|       |/* The bit-field below would have a problem if __INT_MAX__ is too
+    2|       |   small.  */
+    3|       |#if __INT_MAX__ < 2147483647
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|      1|main() {
+    7|      1|  struct {
+    8|      1|    signed int bf0 : 17;
+    9|      1|    signed int bf1 : 7;
+   10|      1|  } bf;
+   11|      1|
+   12|      1|  bf.bf1 = 7;
+   13|      1|  f(bf.bf1);
+   14|      1|  exit(0);
+   15|      1|}
+   16|       |
+   17|       |f(x) int x;
+   18|      1|{
+   19|      1|  if (x != 7)
+   20|      0|    abort();
+   21|      1|}
+   22|       |#endif
+

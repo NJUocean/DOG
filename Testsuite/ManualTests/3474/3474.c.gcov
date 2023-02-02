@@ -1,0 +1,25 @@
+        -:    0:Source:3474.c
+        -:    0:Graph:3474.gcno
+        -:    0:Data:3474.gcda
+        -:    0:Runs:1
+        -:    1:struct Foo {
+        -:    2:  int i;
+        -:    3:  unsigned precision : 10;
+        -:    4:  unsigned blah : 3;
+        -:    5:} f;
+        -:    6:
+        1:    7:int __attribute__((noinline, noclone)) foo(struct Foo *p) {
+        1:    8:  struct Foo *q = p;
+        1:    9:  return (*q).precision;
+        -:   10:}
+        -:   11:
+        -:   12:extern void abort(void);
+        -:   13:
+        1:   14:int main() {
+        1:   15:  f.i = -1;
+        1:   16:  f.precision = 0;
+        1:   17:  f.blah = -1;
+        1:   18:  if (foo(&f) != 0)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

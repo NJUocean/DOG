@@ -1,0 +1,51 @@
+        -:    0:Source:1783.c
+        -:    0:Graph:1783.gcno
+        -:    0:Data:1783.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target nonlocal_goto } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int global;
+        -:    7:
+        -:    8:static void foo(void) __attribute__((noinline));
+        -:    9:
+        1:   10:static void foo(void) { global = 1; }
+        -:   11:
+        1:   12:static void bar(void) {
+        1:   13:  foo();
+        1:   14:  global = 0;
+        1:   15:}
+        -:   16:
+        1:   17:int execute(int cmd) {
+        -:   18:  __label__ start;
+        -:   19:
+        1:   20:  void raise(void) { goto start; }
+        -:   21:
+        1:   22:  int last = -1;
+        -:   23:
+        1:   24:  bar();
+        -:   25:
+        1:   26:  last = 0;
+        -:   27:
+        2:   28:start:
+        -:   29:
+        2:   30:  if (last == 0)
+        -:   31:    while (1) {
+        1:   32:      last = 1;
+        1:   33:      raise();
+        -:   34:    }
+        -:   35:
+        1:   36:  if (last == 0)
+    #####:   37:    return 0;
+        -:   38:  else
+        1:   39:    return cmd;
+        -:   40:}
+        -:   41:
+        1:   42:int main(void) {
+        1:   43:  if (execute(1) == 0)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}

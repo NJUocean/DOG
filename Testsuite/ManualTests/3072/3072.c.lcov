@@ -1,0 +1,14 @@
+    1|       |void abort(void);
+    2|     16|void f(int i) {
+    3|     16|  if (i > 4 + 3 * 16)
+    4|      0|    abort();
+    5|     16|}
+    6|       |
+    7|      1|int main() {
+    8|      1|  unsigned int buflen, i;
+    9|      1|  buflen = 4 + 3 * 16;
+   10|     17|  for (i = 4; i < buflen; i += 3)
+   11|     16|    f(i);
+   12|      1|  return 0;
+   13|      1|}
+

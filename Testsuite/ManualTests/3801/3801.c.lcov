@@ -1,0 +1,19 @@
+    1|       |/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+    2|      1|g(x, y) {
+    3|      1|  if (x != 3)
+    4|      0|    abort();
+    5|      1|}
+    6|       |
+    7|      1|static inline f(int i) {
+    8|      1|  int *tmp;
+    9|      1|
+   10|      1|  tmp = (int *)alloca(sizeof(i));
+   11|      1|  *tmp = i;
+   12|      1|  g(*tmp, 0);
+   13|      1|}
+   14|       |
+   15|      1|main() {
+   16|      1|  f(3);
+   17|      1|  exit(0);
+   18|      1|};
+

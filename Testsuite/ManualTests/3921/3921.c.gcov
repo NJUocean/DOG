@@ -1,0 +1,17 @@
+        -:    0:Source:3921.c
+        -:    0:Graph:3921.gcno
+        -:    0:Data:3921.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/70429 */
+        -:    2:
+        2:    3:__attribute__((noinline, noclone)) int foo(int a) {
+        2:    4:  return (int)(0x14ff6e2207db5d1fLL >> a) >> 4;
+        -:    5:}
+        -:    6:
+        1:    7:int main() {
+        -:    8:  if (sizeof(int) != 4 || sizeof(long long) != 8 || __CHAR_BIT__ != 8)
+        -:    9:    return 0;
+        1:   10:  if (foo(1) != 0x3edae8 || foo(2) != -132158092)
+    #####:   11:    __builtin_abort();
+        1:   12:  return 0;
+        -:   13:}

@@ -1,0 +1,52 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |/* { dg-require-effective-target run_expensive_tests }  PR testsuite/48283 */
+    3|       |
+    4|       |#define DEBUG 0
+    5|       |#if DEBUG
+    6|       |#include <stdio.h>
+    7|       |#endif
+    8|       |
+    9|  8.12M|#define N 200
+   10|       |
+   11|       |int A[N][N], B[N][N], C[N][N];
+   12|       |
+   13|      1|static void __attribute__((noinline)) matmult(void) {
+   14|      1|  int i, j, k;
+   15|      1|
+   16|      1|  /* This should be blocked.  */
+   17|    201|  for (i = 0; i < N; i++)
+   18|  40.2k|    for (j = 0; j < N; j++) {
+   19|  40.0k|      A[i][j] = 0;
+   20|  8.04M|      for (k = 0; k < N; k++)
+   21|  8.00M|        A[i][j] += B[i][k] * C[k][j];
+   22|  40.0k|    }
+   23|      1|}
+   24|       |
+   25|       |extern void abort();
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  int i, j, res = 0;
+   29|      1|
+   30|    201|  for (i = 0; i < N; i++)
+   31|  40.2k|    for (j = 0; j < N; j++) {
+   32|  40.0k|      B[i][j] = j;
+   33|  40.0k|      C[i][j] = i;
+   34|  40.0k|    }
+   35|      1|
+   36|      1|  matmult();
+   37|      1|
+   38|    201|  for (i = 0; i < N; i++)
+   39|    200|    res += A[i][i];
+   40|      1|
+   41|       |#if DEBUG
+   42|       |  fprintf(stderr, "res = %d \n", res);
+   43|       |#endif
+   44|      1|
+   45|      1|  if (res != 529340000)
+   46|      0|    abort();
+   47|      1|
+   48|      1|  return 0;
+   49|      1|}
+   50|       |
+   51|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

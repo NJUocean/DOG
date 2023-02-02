@@ -1,0 +1,42 @@
+        -:    0:Source:4150.c
+        -:    0:Graph:4150.gcno
+        -:    0:Data:4150.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Os" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:void foo(unsigned long x) {}
+        -:    7:
+        -:    8:typedef struct a {
+        -:    9:  volatile unsigned int a1, a2, a3, a4, a5;
+        -:   10:} * A;
+        -:   11:typedef struct {
+        -:   12:  volatile unsigned int b1, b2, b3, b4, b5;
+        -:   13:} * B;
+        -:   14:struct C {
+        -:   15:  void *c1, *c2;
+        -:   16:  A c3;
+        -:   17:  unsigned char c4;
+        -:   18:};
+        -:   19:
+        1:   20:void bar(struct C *c, unsigned int *d) {
+        1:   21:  *d = *d | 1;
+       1*:   22:  ((c->c4 >= 2) ? (*(volatile unsigned int *)((void *)(&((A)c->c3)->a5)) = *d)
+       1*:   23:                : (*(volatile unsigned int *)((void *)(&((B)c->c3)->b5)) = *d));
+        -:   24:
+        1:   25:  foo(50);
+        1:   26:}
+        -:   27:
+        1:   28:int main(void) {
+        -:   29:  struct a a;
+        -:   30:  struct C c;
+        1:   31:  unsigned int d = 8;
+        1:   32:  c.c3 = &a;
+        1:   33:  c.c4 = 0;
+        1:   34:  bar(&c, &d);
+        1:   35:  if (a.a5 != 9)
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

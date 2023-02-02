@@ -1,0 +1,23 @@
+        -:    0:Source:4144.c
+        -:    0:Graph:4144.gcno
+        -:    0:Data:4144.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target fpic } } */
+        -:    2:/* { dg-options "-O2 -fpic" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:double foo(void) {
+        -:    8:  return (__extension__((union {
+        -:    9:            unsigned __l __attribute__((__mode__(__SI__)));
+        -:   10:            float __d;
+        1:   11:          }){__l : 0x3f800000UL})
+        1:   12:              .__d);
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (foo() != 1.0)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

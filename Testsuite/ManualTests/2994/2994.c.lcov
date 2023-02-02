@@ -1,0 +1,25 @@
+    1|       |/* PR target/11965 */
+    2|       |/* Originator: <jk@tools.de> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-effective-target ultrasparc_hw } */
+    6|       |/* { dg-options "-O -mcpu=ultrasparc" } */
+    7|       |
+    8|       |/* This used to fail on 32-bit Ultrasparc because GCC emitted
+    9|       |   an invalid shift instruction.  */
+   10|       |
+   11|      4|static inline unsigned int shift(int n, unsigned int value) {
+   12|      4|  return value << n;
+   13|      4|}
+   14|       |
+   15|       |unsigned int val = 1;
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  int i;
+   19|      1|
+   20|      5|  for (i = 0; i < 4; i++)
+   21|      4|    val = shift(32, val);
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

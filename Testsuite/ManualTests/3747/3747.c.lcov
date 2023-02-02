@@ -1,0 +1,36 @@
+    1|       |/* PR tree-optimization/51466 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) int foo(int i) {
+    6|      1|  volatile int v[4];
+    7|      1|  int *p;
+    8|      1|  v[i] = 6;
+    9|      1|  p = (int *)&v[i];
+   10|      1|  return *p;
+   11|      1|}
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) int bar(int i) {
+   14|      1|  volatile int v[4];
+   15|      1|  int *p;
+   16|      1|  v[i] = 6;
+   17|      1|  p = (int *)&v[i];
+   18|      1|  *p = 8;
+   19|      1|  return v[i];
+   20|      1|}
+   21|       |
+   22|      2|__attribute__((noinline, noclone)) int baz(int i) {
+   23|      2|  volatile int v[4];
+   24|      2|  int *p;
+   25|      2|  v[i] = 6;
+   26|      2|  p = (int *)&v[0];
+   27|      2|  *p = 8;
+   28|      2|  return v[i];
+   29|      2|}
+   30|       |
+   31|      1|int main() {
+   32|      1|  if (foo(3) != 6 || bar(2) != 8 || baz(0) != 8 || baz(1) != 6)
+   33|      0|    abort();
+   34|      1|  return 0;
+   35|      1|}
+

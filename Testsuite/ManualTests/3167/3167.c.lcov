@@ -1,0 +1,18 @@
+    1|       |/* Test the tester; previously gcc.misc-tests/dg-3.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-do link } */
+    4|       |
+    5|      1|main() { return 0; }
+    6|       |
+    7|       |/* { dg-final { if [file exists dg-do-link-exp-P.exe] \{			}
+    8|       | * }
+    9|       | */
+   10|       |/* { dg-final {     pass "dg-do-link-exp-P.c (link: produce a.out test)"
+   11|       | * }
+   12|       | * } */
+   13|       |/* { dg-final { \} else \{					} } */
+   14|       |/* { dg-final {     fail "dg-do-link-exp-P.c (link: produce a.out test)"
+   15|       | * }
+   16|       | * } */
+   17|       |/* { dg-final { \}						} } */
+

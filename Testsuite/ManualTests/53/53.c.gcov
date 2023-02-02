@@ -1,0 +1,13 @@
+        -:    0:Source:53.c
+        -:    0:Graph:53.gcno
+        -:    0:Data:53.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/21759  */
+        -:    2:/* { dg-options "-Wc++-compat" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  void *p = 0;
+        1:    6:  int *q = p; /* { dg-warning "not permitted" } */
+        1:    7:  double *t = (void *)0;
+        1:    8:  return p != q;
+        -:    9:}

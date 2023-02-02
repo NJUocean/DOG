@@ -1,0 +1,34 @@
+        -:    0:Source:118.c
+        -:    0:Graph:118.gcno
+        -:    0:Data:118.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and execution.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target sync_char_short } */
+        -:    4:
+        -:    5:/* Test that __atomic_test_and_set and __atomic_clear builtins execute.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:unsigned char a;
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int b;
+        -:   12:
+        1:   13:  __atomic_clear(&a, __ATOMIC_RELAXED);
+        1:   14:  if (a != 0)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  b = __atomic_test_and_set(&a, __ATOMIC_SEQ_CST);
+        1:   18:  if (a != __GCC_ATOMIC_TEST_AND_SET_TRUEVAL || b != 0)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  b = __atomic_test_and_set(&a, __ATOMIC_ACQ_REL);
+        1:   22:  if (a != __GCC_ATOMIC_TEST_AND_SET_TRUEVAL || b != 1)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  __atomic_clear(&a, __ATOMIC_SEQ_CST);
+        1:   26:  if (a != 0)
+    #####:   27:    abort();
+        -:   28:
+        1:   29:  return 0;
+        -:   30:}

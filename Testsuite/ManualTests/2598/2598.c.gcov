@@ -1,0 +1,13 @@
+        -:    0:Source:2598.c
+        -:    0:Graph:2598.gcno
+        -:    0:Data:2598.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O0 -mlong-double-64 -mfpmath=387" } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  __float80 a = -0.23456789;
+        1:    6:  if ((double)a >= 0)
+    #####:    7:    __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}

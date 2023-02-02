@@ -1,0 +1,22 @@
+        -:    0:Source:2579.c
+        -:    0:Graph:2579.gcno
+        -:    0:Data:2579.gcda
+        -:    0:Runs:1
+        -:    1:int b = 1;
+        1:    2:int foo() {
+        -:    3:  int a;
+        -:    4:  int c;
+        1:    5:  a = 0xff;
+        2:    6:  for (; b; b--) {
+        1:    7:    c = 1;
+        1:    8:    asm("" ::"r"(c));
+        1:    9:    c = (signed char)a;
+        -:   10:  }
+        1:   11:  if (c != -1)
+    #####:   12:    abort();
+        1:   13:  return c;
+        -:   14:}
+        1:   15:int main() {
+        1:   16:  foo();
+        1:   17:  return 0;
+        -:   18:}

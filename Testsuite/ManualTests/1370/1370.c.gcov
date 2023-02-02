@@ -1,0 +1,18 @@
+        -:    0:Source:1370.c
+        -:    0:Graph:1370.gcno
+        -:    0:Data:1370.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int data = 1;
+        -:    7:  struct ptr {
+        -:    8:    int val;
+        1:    9:  } *ptr = (struct ptr *)&data;
+        1:   10:  ptr->val = 0;
+        1:   11:  if (data != 0)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

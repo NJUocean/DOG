@@ -1,0 +1,32 @@
+        -:    0:Source:3883.c
+        -:    0:Graph:3883.gcno
+        -:    0:Data:3883.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65427 */
+        -:    2:
+        -:    3:typedef int V __attribute__((vector_size(8 * sizeof(int))));
+        -:    4:V a, b, c, d, e, f;
+        -:    5:
+        2:    6:__attribute__((noinline, noclone)) void foo(int x, int y) {
+        -:    7:  do {
+        2:    8:    if (x)
+        1:    9:      d = a ^ c;
+        -:   10:    else
+        1:   11:      d = a ^ b;
+        2:   12:  } while (y);
+        2:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  a = (V){1, 2, 3, 4, 5, 6, 7, 8};
+        1:   17:  b = (V){0x40, 0x80, 0x40, 0x80, 0x40, 0x80, 0x40, 0x80};
+        1:   18:  e = (V){0x41, 0x82, 0x43, 0x84, 0x45, 0x86, 0x47, 0x88};
+        1:   19:  foo(0, 0);
+        1:   20:  if (__builtin_memcmp(&d, &e, sizeof(V)) != 0)
+    #####:   21:    __builtin_abort();
+        1:   22:  c = (V){0x80, 0x40, 0x80, 0x40, 0x80, 0x40, 0x80, 0x40};
+        1:   23:  f = (V){0x81, 0x42, 0x83, 0x44, 0x85, 0x46, 0x87, 0x48};
+        1:   24:  foo(1, 0);
+        1:   25:  if (__builtin_memcmp(&d, &f, sizeof(V)) != 0)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

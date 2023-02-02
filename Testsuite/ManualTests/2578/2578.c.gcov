@@ -1,0 +1,36 @@
+        -:    0:Source:2578.c
+        -:    0:Graph:2578.gcno
+        -:    0:Data:2578.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/11304 */
+        -:    2:/* Originator: <manuel.serrano@sophia.inria.fr> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O -fomit-frame-pointer" } */
+        -:    5:
+        -:    6:/* Verify that %eax is always restored after a call.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:volatile int r;
+        -:   11:
+        1:   12:void set_eax(int val) {
+        1:   13:  __asm__ __volatile__("mov %0, %%eax" : : "m"(val) : "eax");
+        1:   14:}
+        -:   15:
+    #####:   16:void foo(int val) { r = val; }
+        -:   17:
+        1:   18:int bar(int x) {
+        1:   19:  if (x) {
+        1:   20:    set_eax(0);
+        1:   21:    return x;
+        -:   22:  }
+        -:   23:
+    #####:   24:  foo(x);
+    #####:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  if (bar(1) != 1)
+    #####:   29:    abort();
+        -:   30:
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,22 @@
+    1|       |/* { dg-add-options stack_size } */
+    2|       |
+    3|      1|f() {
+    4|      1|  int x = 1;
+    5|       |#if defined(STACK_SIZE)
+    6|       |  char big[STACK_SIZE / 2];
+    7|       |#else
+    8|      1|  char big[0x1000];
+    9|      1|#endif
+   10|      1|
+   11|      1|  ({
+   12|      1|    __label__ mylabel;
+   13|      2|  mylabel:
+   14|      2|    x++;
+   15|      2|    if (x != 3)
+   16|      1|      goto mylabel;
+   17|      1|  });
+   18|      1|  exit(0);
+   19|      1|}
+   20|       |
+   21|      1|main() { f(); }
+

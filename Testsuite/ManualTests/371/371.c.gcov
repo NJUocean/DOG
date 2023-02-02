@@ -1,0 +1,18 @@
+        -:    0:Source:371.c
+        -:    0:Graph:371.gcno
+        -:    0:Data:371.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-do compile }
+        -:    2:
+        -:    3:extern int printf(const char *, ...);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  double d = 6;
+        1:    7:  int i = 1;
+        -:    8:#pragma omp parallel shared(d) private(i) num_threads(4 + i)
+        -:    9:  {
+        1:   10:    i = 4;
+        1:   11:    printf("%s %d %g\n", "Hello, World!", i, d);
+        -:   12:  }
+        1:   13:  return 0;
+        -:   14:}

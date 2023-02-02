@@ -1,0 +1,13 @@
+        -:    0:Source:4134.c
+        -:    0:Graph:4134.gcno
+        -:    0:Data:4134.gcda
+        -:    0:Runs:1
+        -:    1:#include <stddef.h>
+        -:    2:
+        -:    3:const wchar_t ws[] = L"foo";
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  if (ws[0] != L'f' || ws[1] != L'o' || ws[2] != L'o' || ws[3] != L'\0')
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

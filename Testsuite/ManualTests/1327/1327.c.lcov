@@ -1,0 +1,20 @@
+    1|       |/* PR optimization/8423.  */
+    2|       |
+    3|      2|#define btest(x) __builtin_constant_p(x) ? "1" : "0"
+    4|       |
+    5|       |#ifdef __OPTIMIZE__
+    6|       |void foo(char *i) {
+    7|       |  if (*i == '0')
+    8|       |    abort();
+    9|       |}
+   10|       |#else
+   11|      2|void foo(char *i) {}
+   12|       |#endif
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  int size = sizeof(int);
+   16|      1|  foo(btest(size));
+   17|      1|  foo(btest(size));
+   18|      1|  exit(0);
+   19|      1|}
+

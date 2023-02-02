@@ -1,0 +1,98 @@
+    1|       |/* Test __atomic routines for existence and proper execution on 8 byte
+    2|       |   values with each valid memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target sync_long_long_runtime } */
+    5|       |/* { dg-options "" } */
+    6|       |/* { dg-options "-march=pentium" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+    7|       | * } */
+    8|       |
+    9|       |/* Test the execution of __atomic_compare_exchange_n builtin for a long_long. */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|       |long long v = 0;
+   14|       |long long expected = 0;
+   15|       |long long max = ~0;
+   16|       |long long desired = ~0;
+   17|       |long long zero = 0;
+   18|       |
+   19|      8|#define STRONG 0
+   20|      2|#define WEAK 1
+   21|       |
+   22|      1|int main() {
+   23|      1|
+   24|      1|  if (!__atomic_compare_exchange_n(&v, &expected, max, STRONG, __ATOMIC_RELAXED,
+   25|      1|                                   __ATOMIC_RELAXED))
+   26|      0|    abort();
+   27|      1|  if (expected != 0)
+   28|      0|    abort();
+   29|      1|
+   30|      1|  if (__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_ACQUIRE,
+   31|      1|                                  __ATOMIC_RELAXED))
+   32|      0|    abort();
+   33|      1|  if (expected != max)
+   34|      0|    abort();
+   35|      1|
+   36|      1|  if (!__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_RELEASE,
+   37|      1|                                   __ATOMIC_ACQUIRE))
+   38|      0|    abort();
+   39|      1|  if (expected != max)
+   40|      0|    abort();
+   41|      1|  if (v != 0)
+   42|      0|    abort();
+   43|      1|
+   44|      1|  if (__atomic_compare_exchange_n(&v, &expected, desired, WEAK,
+   45|      1|                                  __ATOMIC_ACQ_REL, __ATOMIC_ACQUIRE))
+   46|      0|    abort();
+   47|      1|  if (expected != 0)
+   48|      0|    abort();
+   49|      1|
+   50|      1|  if (!__atomic_compare_exchange_n(&v, &expected, desired, STRONG,
+   51|      1|                                   __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+   52|      0|    abort();
+   53|      1|  if (expected != 0)
+   54|      0|    abort();
+   55|      1|  if (v != max)
+   56|      0|    abort();
+   57|      1|
+   58|      1|  /* Now test the generic version.  */
+   59|      1|
+   60|      1|  v = 0;
+   61|      1|
+   62|      1|  if (!__atomic_compare_exchange(&v, &expected, &max, STRONG, __ATOMIC_RELAXED,
+   63|      1|                                 __ATOMIC_RELAXED))
+   64|      0|    abort();
+   65|      1|  if (expected != 0)
+   66|      0|    abort();
+   67|      1|
+   68|      1|  if (__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_ACQUIRE,
+   69|      1|                                __ATOMIC_RELAXED))
+   70|      0|    abort();
+   71|      1|  if (expected != max)
+   72|      0|    abort();
+   73|      1|
+   74|      1|  if (!__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_RELEASE,
+   75|      1|                                 __ATOMIC_ACQUIRE))
+   76|      0|    abort();
+   77|      1|  if (expected != max)
+   78|      0|    abort();
+   79|      1|  if (v != 0)
+   80|      0|    abort();
+   81|      1|
+   82|      1|  if (__atomic_compare_exchange(&v, &expected, &desired, WEAK, __ATOMIC_ACQ_REL,
+   83|      1|                                __ATOMIC_ACQUIRE))
+   84|      0|    abort();
+   85|      1|  if (expected != 0)
+   86|      0|    abort();
+   87|      1|
+   88|      1|  if (!__atomic_compare_exchange(&v, &expected, &desired, STRONG,
+   89|      1|                                 __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+   90|      0|    abort();
+   91|      1|  if (expected != 0)
+   92|      0|    abort();
+   93|      1|  if (v != max)
+   94|      0|    abort();
+   95|      1|
+   96|      1|  return 0;
+   97|      1|}
+

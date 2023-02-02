@@ -1,0 +1,23 @@
+        -:    0:Source:1233.c
+        -:    0:Graph:1233.gcno
+        -:    0:Data:1233.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-add-options float128 } */
+        -:    3:/* { dg-require-effective-target float128 } */
+        -:    4:
+        -:    5:extern int link_error(int);
+        -:    6:
+        -:    7:#define TEST(FN, VALUE, RESULT)                                                \
+        -:    8:  if (__builtin_##FN##f128(VALUE) != RESULT)                                   \
+        -:    9:    link_error(__LINE__);
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  TEST(roundeven, (0x1p64 + 0.5f128), (0x1p64f128));
+        -:   13:  TEST(roundeven, (0x1p63 + 0.5f128), (0x1p63f128));
+        -:   14:  TEST(roundeven, (0x1p63 - 0.5f128), (0x1p63f128));
+        -:   15:  TEST(roundeven, (0x1p64 - 0.5f128), (0x1p64f128));
+        -:   16:  TEST(roundeven, (0x1p64 + 0.501f128), (0x1p64 + 1.0f128));
+        -:   17:  TEST(roundeven, (0x1.C00000000000039A5653p1f128), (0x1p2f128))
+        1:   18:  return 0;
+        -:   19:}

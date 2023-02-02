@@ -1,0 +1,32 @@
+        -:    0:Source:2772.c
+        -:    0:Graph:2772.gcno
+        -:    0:Data:2772.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -m8bit-idiv" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:void __attribute__((noinline))
+       13:    7:test(unsigned long long x, unsigned long long y, unsigned long long q,
+        -:    8:     unsigned long long r) {
+       13:    9:  if ((x / y) != q || (x % y) != r)
+    #####:   10:    abort();
+       13:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  test(7, 6, 1, 1);
+        1:   15:  test(255, 254, 1, 1);
+        1:   16:  test(256, 254, 1, 2);
+        1:   17:  test(256, 256, 1, 0);
+        1:   18:  test(254, 256, 0, 254);
+        1:   19:  test(254, 255, 0, 254);
+        1:   20:  test(254, 1, 254, 0);
+        1:   21:  test(255, 2, 127, 1);
+        1:   22:  test(1, 256, 0, 1);
+        1:   23:  test(0x80000000, 0x7fffffff, 1, 1);
+        1:   24:  test(0x7fffffff, 0x80000000, 0, 0x7fffffff);
+        1:   25:  test(0x80000000, 0x80000003, 0, 0x80000000);
+        1:   26:  test(0xfffffffd, 0xfffffffe, 0, 0xfffffffd);
+        1:   27:  return 0;
+        -:   28:}

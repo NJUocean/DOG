@@ -1,0 +1,27 @@
+        -:    0:Source:1439.c
+        -:    0:Graph:1439.gcno
+        -:    0:Data:1439.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-w" } */
+        -:    3:
+        -:    4:int a;
+        -:    5:void try_help() __attribute__((__noreturn__));
+        1:    6:void try_help() {}
+        -:    7:
+        1:    8:int main() {
+        1:    9:  switch (a) {
+    #####:   10:  case '1':
+        -:   11:  case '2':
+        -:   12:  case '3':
+        -:   13:  case '4':
+        -:   14:  case '5':
+        -:   15:  case '6':
+        -:   16:  case '7':
+        -:   17:  case '8':
+        -:   18:  case '9':
+    #####:   19:    break;
+        1:   20:  default:
+        1:   21:    try_help();
+        -:   22:  }
+        -:   23:}

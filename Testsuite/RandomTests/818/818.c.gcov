@@ -1,0 +1,101 @@
+        -:    0:Source:818.c
+        -:    0:Graph:818.gcno
+        -:    0:Data:818.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  int32_t f0;
+        -:   10:  signed f1 : 28;
+        -:   11:};
+        -:   12:#pragma pack(pop)
+        -:   13:
+        -:   14:#pragma pack(push)
+        -:   15:#pragma pack(1)
+        -:   16:struct S1 {
+        -:   17:  volatile unsigned f0 : 31;
+        -:   18:};
+        -:   19:#pragma pack(pop)
+        -:   20:
+        -:   21:struct S2 {
+        -:   22:  const uint32_t f0;
+        -:   23:  uint8_t f1;
+        -:   24:  int64_t f2;
+        -:   25:  uint64_t f3;
+        -:   26:};
+        -:   27:
+        -:   28:static int32_t g_3 = 8L;
+        -:   29:static int8_t g_9[2][2] = {{7L, 7L}, {7L, 7L}};
+        -:   30:static volatile int32_t g_10 = 0x4B7C7008L;
+        -:   31:static int16_t g_11 = (-4L);
+        -:   32:static volatile int8_t g_12 = 0L;
+        -:   33:static volatile uint32_t g_13 = 0x64EA33A4L;
+        -:   34:static struct S1 g_32 = {41679};
+        -:   35:
+        -:   36:static const struct S2 func_1(void);
+        -:   37:static struct S1 func_16(uint64_t p_17);
+        -:   38:
+        1:   39:static const struct S2 func_1(void) {
+        1:   40:  int32_t *l_2 = &g_3;
+        1:   41:  int32_t *l_4 = &g_3;
+        1:   42:  int32_t *l_5 = (void *)0;
+        1:   43:  int32_t *l_6 = &g_3;
+        1:   44:  int32_t *l_7 = &g_3;
+        -:   45:  int32_t *l_8[2];
+        1:   46:  struct S0 l_20 = {-1L, 9083};
+        1:   47:  int32_t **l_21 = &l_2;
+        1:   48:  int32_t **l_22 = &l_8[0];
+        1:   49:  struct S1 *l_33 = &g_32;
+        -:   50:  const struct S2 l_34 = {0x67DF2DDFL, 5UL, -5L, 0xFE18BD2E84CBF776LL};
+        -:   51:  int i;
+        3:   52:  for (i = 0; i < 2; i++)
+        2:   53:    l_8[i] = (void *)0;
+        1:   54:  --g_13;
+        1:   55:  (*l_33) = func_16((safe_mul_func_int32_t_s_s((l_20, ((*l_7) = 2L)), (&g_10 != ((*l_22) = ((*l_21) = l_8[1]))))));
+        1:   56:  return l_34;
+        -:   57:}
+        -:   58:
+        1:   59:static struct S1 func_16(uint64_t p_17) {
+        1:   60:  int32_t *l_23 = &g_3;
+        1:   61:  int32_t *l_24 = &g_3;
+        1:   62:  int32_t l_25 = 0x7D17017AL;
+        1:   63:  int32_t *l_26 = &l_25;
+        1:   64:  int32_t *l_27 = &g_3;
+        -:   65:  int32_t *l_28[3];
+        1:   66:  uint16_t l_29 = 0x6C0FL;
+        -:   67:  int i;
+        4:   68:  for (i = 0; i < 3; i++)
+        3:   69:    l_28[i] = &l_25;
+        1:   70:  l_29++;
+        1:   71:  return g_32;
+        -:   72:}
+        -:   73:
+        1:   74:int main(int argc, char *argv[]) {
+        -:   75:  int i, j;
+        1:   76:  int print_hash_value = 0;
+       1*:   77:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   78:    print_hash_value = 1;
+        1:   79:  platform_main_begin();
+        1:   80:  crc32_gentab();
+        1:   81:  func_1();
+        1:   82:  transparent_crc(g_3, "g_3", print_hash_value);
+        3:   83:  for (i = 0; i < 2; i++) {
+        6:   84:    for (j = 0; j < 2; j++) {
+        4:   85:      transparent_crc(g_9[i][j], "g_9[i][j]", print_hash_value);
+        4:   86:      if (print_hash_value)
+    #####:   87:        printf("index = [%d][%d]\n", i, j);
+        -:   88:    }
+        -:   89:  }
+        1:   90:  transparent_crc(g_10, "g_10", print_hash_value);
+        1:   91:  transparent_crc(g_11, "g_11", print_hash_value);
+        1:   92:  transparent_crc(g_12, "g_12", print_hash_value);
+        1:   93:  transparent_crc(g_13, "g_13", print_hash_value);
+        1:   94:  transparent_crc(g_32.f0, "g_32.f0", print_hash_value);
+        1:   95:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   96:  return 0;
+        -:   97:}

@@ -1,0 +1,38 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fno-early-inlining"  } */
+    3|       |
+    4|       |int array[128];
+    5|       |
+    6|       |volatile int v = 0;
+    7|       |volatile int blah = 0;
+    8|       |volatile int counter = 0;
+    9|       |
+   10|      1|int __attribute__((noipa)) obscured_one() { return 1; }
+   11|       |
+   12|      6|static void f(int c, int l) {
+   13|      6|  int i;
+   14|      6|  for (i = 0; i < c; i++)
+   15|      0|    array[i] = 455;
+   16|      6|
+   17|      6|  counter++;
+   18|      6|  if (counter > 6)
+   19|      0|    __builtin_abort();
+   20|      6|
+   21|      6|  v = l;
+   22|      6|  if (l > 0)
+   23|      5|    f(c, l - 1);
+   24|      6|  blah = l;
+   25|      6|}
+   26|       |
+   27|      1|int main(int argc, char *argv[]) {
+   28|      1|  int i;
+   29|      1|  for (i = 0; i < 100; i++) {
+   30|      1|    counter = 0;
+   31|      1|    f(0, 5);
+   32|      1|    if (obscured_one())
+   33|      1|      break;
+   34|      1|  }
+   35|      1|
+   36|      1|  return 0;
+   37|      1|}
+

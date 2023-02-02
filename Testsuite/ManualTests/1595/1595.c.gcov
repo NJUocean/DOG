@@ -1,0 +1,28 @@
+        -:    0:Source:1595.c
+        -:    0:Graph:1595.gcno
+        -:    0:Data:1595.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift -w" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  int a = 1;
+        1:    6:  volatile int b = -5;
+        1:    7:  long long int c = -6;
+        -:    8:
+        -:    9:  a << -3;
+        -:   10:  1 << -4;
+        1:   11:  1 << b;
+        1:   12:  a << c;
+        1:   13:  a << (b + c);
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:/* { dg-output "shift exponent -3 is negative\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   18:/* { dg-output "\[^\n\r]*shift exponent -4 is negative\[^\n\r]*(\n|\r\n|\r)" }
+        -:   19: */
+        -:   20:/* { dg-output "\[^\n\r]*shift exponent -5 is negative\[^\n\r]*(\n|\r\n|\r)" }
+        -:   21: */
+        -:   22:/* { dg-output "\[^\n\r]*shift exponent -6 is negative\[^\n\r]*(\n|\r\n|\r)" }
+        -:   23: */
+        -:   24:/* { dg-output "\[^\n\r]*shift exponent -11 is negative" } */

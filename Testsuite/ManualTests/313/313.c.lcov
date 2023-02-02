@@ -1,0 +1,17 @@
+    1|       |long long acc;
+    2|       |
+    3|      1|addhi(short a) { acc += (long long)a << 32; }
+    4|       |
+    5|      1|subhi(short a) { acc -= (long long)a << 32; }
+    6|       |
+    7|      1|main() {
+    8|      1|  acc = 0xffff00000000ll;
+    9|      1|  addhi(1);
+   10|      1|  if (acc != 0x1000000000000ll)
+   11|      0|    abort();
+   12|      1|  subhi(1);
+   13|      1|  if (acc != 0xffff00000000ll)
+   14|      0|    abort();
+   15|      1|  exit(0);
+   16|      1|}
+

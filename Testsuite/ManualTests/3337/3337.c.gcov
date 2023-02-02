@@ -1,0 +1,28 @@
+        -:    0:Source:3337.c
+        -:    0:Graph:3337.gcno
+        -:    0:Data:3337.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        1:    2:  int b = 0;
+        -:    3:
+        -:    4:  struct {
+        -:    5:    unsigned int bit0 : 1;
+        -:    6:    unsigned int bit1 : 1;
+        -:    7:    unsigned int bit2 : 1;
+        -:    8:    unsigned int bit3 : 1;
+        -:    9:    unsigned int bit4 : 1;
+        -:   10:    unsigned int bit5 : 1;
+        -:   11:    unsigned int bit6 : 1;
+        -:   12:    unsigned int bit7 : 1;
+        1:   13:  } sdata = {0x01};
+        -:   14:
+        2:   15:  while (sdata.bit0-- > 0) {
+        1:   16:    b++;
+        1:   17:    if (b > 100)
+    #####:   18:      break;
+        -:   19:  }
+        -:   20:
+        1:   21:  if (b != 1)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

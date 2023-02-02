@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "" } */
+    3|       |
+    4|       |struct S {
+    5|       |  int : 0;
+    6|       |};
+    7|       |union U {
+    8|       |  int : 0;
+    9|       |};
+   10|       |
+   11|      1|int main() {
+   12|      1|  if (__alignof__(struct S) != __alignof__(union U))
+   13|      0|    return 1;
+   14|      1|  return 0;
+   15|      1|}
+

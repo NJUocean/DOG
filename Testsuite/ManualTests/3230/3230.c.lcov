@@ -1,0 +1,40 @@
+    1|       |/* derived from PR c/2100 */
+    2|       |
+    3|       |extern void abort();
+    4|       |extern void exit(int);
+    5|       |
+    6|      8|#define SMALL_N 2
+    7|      3|#define NUM_ELEM 4
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int listElem[NUM_ELEM] = {30, 2, 10, 5};
+   11|      1|  int listSmall[SMALL_N];
+   12|      1|  int i, j;
+   13|      1|  int posGreatest = -1, greatest = -1;
+   14|      1|
+   15|      3|  for (i = 0; i < SMALL_N; i++) {
+   16|      2|    listSmall[i] = listElem[i];
+   17|      2|    if (listElem[i] > greatest) {
+   18|      1|      posGreatest = i;
+   19|      1|      greatest = listElem[i];
+   20|      1|    }
+   21|      2|  }
+   22|      1|
+   23|      3|  for (i = SMALL_N; i < NUM_ELEM; i++) {
+   24|      2|    if (listElem[i] < greatest) {
+   25|      2|      listSmall[posGreatest] = listElem[i];
+   26|      2|      posGreatest = 0;
+   27|      2|      greatest = listSmall[0];
+   28|      4|      for (j = 1; j < SMALL_N; j++)
+   29|      2|        if (listSmall[j] > greatest) {
+   30|      0|          posGreatest = j;
+   31|      0|          greatest = listSmall[j];
+   32|      0|        }
+   33|      2|    }
+   34|      2|  }
+   35|      1|
+   36|      1|  if (listSmall[0] != 5 || listSmall[1] != 2)
+   37|      0|    abort();
+   38|      1|  exit(0);
+   39|      1|}
+

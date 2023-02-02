@@ -1,0 +1,18 @@
+    1|       |
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized-blocks" } */
+    3|       |int a[8];
+    4|  1.00k|__attribute__((noinline)) int t() {
+    5|  1.00k|  int i;
+    6|  4.00k|  for (i = 0; i < 3; i++)
+    7|  3.00k|    if (a[i])
+    8|      0|      break;
+    9|  1.00k|  return i;
+   10|  1.00k|}
+   11|      1|int main() {
+   12|      1|  int i;
+   13|  1.00k|  for (i = 0; i < 1000; i++)
+   14|  1.00k|    t();
+   15|      1|  return 0;
+   16|      1|}
+   17|       |/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */
+

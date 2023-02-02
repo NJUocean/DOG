@@ -1,0 +1,47 @@
+        -:    0:Source:2603.c
+        -:    0:Graph:2603.gcno
+        -:    0:Data:2603.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that the ms_hook_prologue attribute generates the correct code.  */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target ms_hook_prologue } */
+        -:    5:/* { dg-options "-O2 -fomit-frame-pointer" } */
+        -:    6:
+        1:    7:int __attribute__((__ms_hook_prologue__)) foo() {
+        1:    8:  unsigned char *ptr = (unsigned char *)foo;
+        -:    9:
+        -:   10:  /* The NOP mov must not be optimized away by optimizations.
+        -:   11:     The push %ebp, mov %esp, %ebp must not be removed by
+        -:   12:     -fomit-frame-pointer */
+        -:   13:#ifndef __x86_64__
+        -:   14:  /* movl.s %edi, %edi */
+        -:   15:  if (*ptr++ != 0x8b)
+        -:   16:    return 1;
+        -:   17:  if (*ptr++ != 0xff)
+        -:   18:    return 1;
+        -:   19:  /* push %ebp */
+        -:   20:  if (*ptr++ != 0x55)
+        -:   21:    return 1;
+        -:   22:  /* movl.s %esp, %ebp */
+        -:   23:  if (*ptr++ != 0x8b)
+        -:   24:    return 1;
+        -:   25:  if (*ptr++ != 0xec)
+        -:   26:    return 1;
+        -:   27:#else
+        -:   28:  /* leaq 0(%rsp), %rsp */
+        1:   29:  if (*ptr++ != 0x48)
+    #####:   30:    return 1;
+        1:   31:  if (*ptr++ != 0x8d)
+    #####:   32:    return 1;
+        1:   33:  if (*ptr++ != 0xa4)
+    #####:   34:    return 1;
+        1:   35:  if (*ptr++ != 0x24)
+    #####:   36:    return 1;
+        1:   37:  if (ptr[0] != 0 || ptr[1] != 0 || ptr[2] != 0 || ptr[3] != 0)
+    #####:   38:    return 1;
+        -:   39:#endif
+        1:   40:  return 0;
+        -:   41:}
+        -:   42:
+        1:   43:int main() { return foo(); }

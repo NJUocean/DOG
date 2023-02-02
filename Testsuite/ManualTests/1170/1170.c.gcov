@@ -1,0 +1,29 @@
+        -:    0:Source:1170.c
+        -:    0:Graph:1170.gcno
+        -:    0:Data:1170.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/88709 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target store_merge } */
+        -:    4:/* { dg-options "-O2 -fdump-tree-store-merging-details" } */
+        -:    5:/* { dg-final { scan-tree-dump "New sequence of \[12] stores to replace old one
+        -:    6: * of 3 stores" "store-merging" } } */
+        -:    7:
+        -:    8:struct S {
+        -:    9:  char buf[8];
+        -:   10:};
+        -:   11:
+        1:   12:__attribute__((noipa)) void bar(struct S *x) {
+        -:   13:  int i;
+        9:   14:  for (i = 0; i < 8; i++)
+        8:   15:    if (x->buf[i] != ((i == 1) + (i == 3) * 2))
+    #####:   16:      __builtin_abort();
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  __attribute__((aligned(8))) struct S s = {};
+        1:   21:  s.buf[1] = 1;
+        1:   22:  s.buf[3] = 2;
+        1:   23:  bar(&s);
+        1:   24:  return 0;
+        -:   25:}

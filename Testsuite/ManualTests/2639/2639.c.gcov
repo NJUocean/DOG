@@ -1,0 +1,28 @@
+        -:    0:Source:2639.c
+        -:    0:Graph:2639.gcno
+        -:    0:Data:2639.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-mtune=i686 -O1 -fpeel-loops -fschedule-insns2 -ftree-vectorize
+        -:    4: * -fsched2-use-superblocks" } */
+        -:    5:
+        -:    6:extern void abort();
+        -:    7:
+        1:    8:int main() {
+        -:    9:  struct {
+        -:   10:    char ca[16];
+        -:   11:  } s;
+        -:   12:  int i;
+        -:   13:
+       17:   14:  for (i = 0; i < 16; i++) {
+       16:   15:    s.ca[i] = 5;
+        -:   16:  }
+        -:   17:
+       17:   18:  for (i = 0; i < 16; i++) {
+       16:   19:    if (s.ca[i] != 5)
+    #####:   20:      abort();
+        -:   21:  }
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

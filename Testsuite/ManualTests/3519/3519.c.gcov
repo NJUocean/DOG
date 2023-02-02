@@ -1,0 +1,36 @@
+        -:    0:Source:3519.c
+        -:    0:Graph:3519.gcno
+        -:    0:Data:3519.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/83496 */
+        -:    2:/* Reported by Hauke Mehrtens <gcc@hauke-m.de> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef unsigned long mp_digit;
+        -:    7:
+        -:    8:typedef struct {
+        -:    9:  int used, alloc, sign;
+        -:   10:  mp_digit *dp;
+        -:   11:} mp_int;
+        -:   12:
+        -:   13:int mytest(mp_int *a, mp_digit b) __attribute__((noclone, noinline));
+        -:   14:
+        1:   15:int mytest(mp_int *a, mp_digit b) {
+        1:   16:  if (a->sign == 1)
+    #####:   17:    return -1;
+        1:   18:  if (a->used > 1)
+        1:   19:    return 1;
+    #####:   20:  if (a->dp[0] > b)
+    #####:   21:    return 1;
+    #####:   22:  if (a->dp[0] < b)
+    #####:   23:    return -1;
+    #####:   24:  return 0;
+        -:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  mp_int i = {2, 0, -1};
+        1:   29:  if (mytest(&i, 0) != 1)
+    #####:   30:    abort();
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,21 @@
+    1|      2|static inline fu(unsigned short data) { return data; }
+    2|      1|ru(i) {
+    3|      1|  if (fu(i++) != 5)
+    4|      0|    abort();
+    5|      1|  if (fu(++i) != 7)
+    6|      0|    abort();
+    7|      1|}
+    8|      2|static inline fs(signed short data) { return data; }
+    9|      1|rs(i) {
+   10|      1|  if (fs(i++) != 5)
+   11|      0|    abort();
+   12|      1|  if (fs(++i) != 7)
+   13|      0|    abort();
+   14|      1|}
+   15|       |
+   16|      1|main() {
+   17|      1|  ru(5);
+   18|      1|  rs(5);
+   19|      1|  exit(0);
+   20|      1|}
+

@@ -1,0 +1,25 @@
+    1|       |/* Test QBBC recognition */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O1" } */
+    5|       |
+    6|       |/* -O1 in the options is significant.  Without it bit-check-and-branch
+    7|       |   operation may not be optimized to QBBC.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      2|unsigned int test_qbbc_reg(unsigned int a, unsigned int b, unsigned int val) {
+   12|      2|  if (!(val & (1 << 19)))
+   13|      1|    return a;
+   14|      1|  return b;
+   15|      1|}
+   16|       |
+   17|      1|int main(int argc, char **argv) {
+   18|      1|  if (test_qbbc_reg(101, 505, (1u << 19)) != 505)
+   19|      0|    abort();
+   20|      1|  if (test_qbbc_reg(101, 505, (1u << 18)) != 101)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

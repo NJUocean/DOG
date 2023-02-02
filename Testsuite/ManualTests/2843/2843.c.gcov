@@ -1,0 +1,13 @@
+        -:    0:Source:2843.c
+        -:    0:Graph:2843.gcno
+        -:    0:Data:2843.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that sizeof(bool) is 1 if we use the -mone-byte-bool option. */
+        -:    2:/* Matt Austern  <austern@apple.com> */
+        -:    3:/* { dg-do run { target powerpc*-*-darwin* } } */
+        -:    4:/* { dg-options "-mone-byte-bool" } */
+        -:    5:
+        -:    6:int dummy1[sizeof(_Bool)];
+        -:    7:int dummy2[2 - sizeof(_Bool)];
+        -:    8:
+        1:    9:int main() { return sizeof(_Bool) == 1 ? 0 : 1; }

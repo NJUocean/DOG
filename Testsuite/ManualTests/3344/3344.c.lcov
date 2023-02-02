@@ -1,0 +1,15 @@
+    1|       |#include <limits.h>
+    2|       |
+    3|       |extern void abort(void);
+    4|      1|int __attribute__((noinline)) foo(unsigned int u) {
+    5|      1|  return (int)(u + 4) < (int)u;
+    6|      1|}
+    7|       |
+    8|      1|int main(int argc, char *argv[]) {
+    9|      1|  unsigned int u = INT_MAX;
+   10|      1|
+   11|      1|  if (foo(u) == 0)
+   12|      0|    abort();
+   13|      1|  return 0;
+   14|      1|}
+

@@ -1,0 +1,20 @@
+        -:    0:Source:3006.c
+        -:    0:Graph:3006.gcno
+        -:    0:Data:3006.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "mov.w r.,B100" } } */
+        -:    3:
+        -:    4:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:    5:unsigned short B100 __attribute__((__BELOW100__));
+        -:    6:unsigned short *p = &B100;
+        -:    7:
+        -:    8:unsigned short wData = 0x1234;
+        -:    9:
+        1:   10:void Do(void) { wData = B100; }
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  *p = 0x3456;
+        1:   14:  Do();
+        1:   15:  return (wData == 0x3456) ? 0 : 1;
+        -:   16:}

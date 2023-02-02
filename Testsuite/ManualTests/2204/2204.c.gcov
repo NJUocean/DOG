@@ -1,0 +1,27 @@
+        -:    0:Source:2204.c
+        -:    0:Graph:2204.gcno
+        -:    0:Data:2204.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:#ifdef STACK_SIZE
+        -:    4:#define SIZE STACK_SIZE / 8
+        -:    5:#else
+        -:    6:#define SIZE 65536
+        -:    7:#endif
+        -:    8:
+  6553600:    9:memtst(int *p, int a) {
+        -:   10:  do {
+  6553600:   11:    if (p[a] == 1)
+    #####:   12:      break;
+  6553600:   13:  } while (--a);
+      100:   14:}
+        -:   15:
+        1:   16:main() {
+        -:   17:  int a[SIZE];
+        -:   18:  int i;
+        1:   19:  bzero(a, SIZE * 4);
+      101:   20:  for (i = 0; i < 100; i++) {
+      100:   21:    memtst(a, SIZE);
+        -:   22:  }
+        -:   23:}

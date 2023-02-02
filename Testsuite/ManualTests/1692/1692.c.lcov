@@ -1,0 +1,11 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=unreachable" } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+    4|       |/* { dg-shouldfail "ubsan" } */
+    5|       |
+    6|       |int e;
+    7|       |
+    8|      1|int main(void) { return e ? 0 : (__builtin_unreachable(), 1); }
+    9|       |
+   10|       |/* { dg-output "execution reached an unreachable program point" } */
+

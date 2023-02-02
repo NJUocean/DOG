@@ -1,0 +1,59 @@
+        -:    0:Source:3551.c
+        -:    0:Graph:3551.gcno
+        -:    0:Data:3551.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:#include <stdio.h>
+        -:    3:
+        -:    4:struct spurious {
+        -:    5:  int anumber;
+        -:    6:};
+        -:    7:
+        1:    8:int first(char *buf, char *fmt, ...) {
+        -:    9:  int pos, number;
+        -:   10:  va_list args;
+        -:   11:  int dummy;
+        1:   12:  char *bp = buf;
+        -:   13:
+        1:   14:  va_start(args, fmt);
+        5:   15:  for (pos = 0; fmt[pos]; pos++)
+        4:   16:    if (fmt[pos] == 'i') {
+        2:   17:      number = va_arg(args, int);
+        2:   18:      sprintf(bp, "%d", number);
+        2:   19:      bp += strlen(bp);
+        -:   20:    } else
+        2:   21:      *bp++ = fmt[pos];
+        -:   22:
+        1:   23:  va_end(args);
+        1:   24:  *bp = 0;
+        1:   25:  return dummy;
+        -:   26:}
+        -:   27:
+        1:   28:struct spurious second(char *buf, char *fmt, ...) {
+        -:   29:  int pos, number;
+        -:   30:  va_list args;
+        -:   31:  struct spurious dummy;
+        1:   32:  char *bp = buf;
+        -:   33:
+        1:   34:  va_start(args, fmt);
+        5:   35:  for (pos = 0; fmt[pos]; pos++)
+        4:   36:    if (fmt[pos] == 'i') {
+        2:   37:      number = va_arg(args, int);
+        2:   38:      sprintf(bp, "%d", number);
+        2:   39:      bp += strlen(bp);
+        -:   40:    } else
+        2:   41:      *bp++ = fmt[pos];
+        -:   42:
+        1:   43:  va_end(args);
+        1:   44:  *bp = 0;
+        1:   45:  return dummy;
+        -:   46:}
+        -:   47:
+        1:   48:main() {
+        -:   49:  char buf1[100], buf2[100];
+        1:   50:  first(buf1, "i i ", 5, 20);
+        1:   51:  second(buf2, "i i ", 5, 20);
+        1:   52:  if (strcmp("5 20 ", buf1) || strcmp("5 20 ", buf2))
+    #####:   53:    abort();
+        1:   54:  exit(0);
+        -:   55:}

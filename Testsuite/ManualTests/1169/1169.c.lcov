@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable" } */
+    3|       |
+    4|      1|#define INT_MAX __INT_MAX__
+    5|      1|#define LONG_MAX __LONG_MAX__
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  volatile int j = INT_MAX;
+    9|      1|  volatile int i = 2;
+   10|      1|  volatile int k = j * i;
+   11|      1|  k = i * j;
+   12|      1|
+   13|      1|  volatile long int m = LONG_MAX;
+   14|      1|  volatile long int n = 2;
+   15|      1|  volatile long int o = m * n;
+   16|      1|  o = n * m;
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+   20|       |
+   21|       |/* { dg-output "signed integer overflow: 2147483647 \\* 2 cannot be represented
+   22|       | * in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   23|       |/* { dg-output "\[^\n\r]*signed integer overflow: 2 \\* 2147483647 cannot be
+   24|       | * represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   25|       |/* { dg-output "\[^\n\r]*signed integer overflow: \[^\n\r]* \\* 2 cannot be
+   26|       | * represented in type 'long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   27|       |/* { dg-output "\[^\n\r]*signed integer overflow: 2 \\* \[^\n\r]* cannot be
+   28|       | * represented in type 'long int'" } */
+

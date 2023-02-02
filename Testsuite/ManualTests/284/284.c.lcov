@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "--param asan-globals=0" } */
+    3|       |
+    4|       |volatile int ten = 10;
+    5|       |
+    6|      1|int main() {
+    7|      1|  volatile static char XXX[10];
+    8|      1|  XXX[ten];
+    9|      1|  return 0;
+   10|      1|}
+   11|       |
+   12|       |/* { dg-final { scan-assembler-not "__asan_register_globals" } } */
+

@@ -1,0 +1,45 @@
+        -:    0:Source:2605.c
+        -:    0:Graph:2605.gcno
+        -:    0:Data:2605.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-ifunc "" } */
+        -:    3:
+        -:    4:__attribute__((target_clones("avx", "arch=slm", "arch=core-avx2",
+        -:    5:                             "default"))) int
+       2*:    6:foo() {
+       2*:    7:  return -2;
+        -:    8:}
+------------------
+foo.arch_core_avx2.2:
+    #####:    6:foo() {
+    #####:    7:  return -2;
+        -:    8:}
+------------------
+foo.arch_slm.1:
+    #####:    6:foo() {
+    #####:    7:  return -2;
+        -:    8:}
+------------------
+foo.avx.0:
+        2:    6:foo() {
+        2:    7:  return -2;
+        -:    8:}
+------------------
+foo.default.3:
+    #####:    6:foo() {
+    #####:    7:  return -2;
+        -:    8:}
+------------------
+        -:    9:
+        3:   10:int bar() { return 2; }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  int r = 0;
+        1:   14:  r += bar();
+        1:   15:  r += foo();
+        1:   16:  r += bar();
+        1:   17:  r += foo();
+        1:   18:  r += bar();
+        1:   19:  return r - 2;
+        -:   20:}

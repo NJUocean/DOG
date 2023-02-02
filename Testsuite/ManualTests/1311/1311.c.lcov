@@ -1,0 +1,13 @@
+    1|       |/* { dg-do run { target { *-*-linux* } } } */
+    2|       |/* { dg-options "-static-libasan" } */
+    3|       |
+    4|       |#include <time.h>
+    5|       |static int weak_gettime(clockid_t clk_id, struct timespec *tp)
+    6|       |    __attribute__((__weakref__("clock_gettime")));
+    7|      1|int main() {
+    8|      1|  if (!clock_gettime)
+    9|      0|    return 0;
+   10|      1|  struct timespec ts;
+   11|      1|  return weak_gettime(CLOCK_MONOTONIC, &ts);
+   12|      1|}
+

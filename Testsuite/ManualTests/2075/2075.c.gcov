@@ -1,0 +1,36 @@
+        -:    0:Source:2075.c
+        -:    0:Graph:2075.gcno
+        -:    0:Data:2075.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-alias "" } */
+        -:    3:/* { dg-options "-O -fdump-tree-fre1" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct X {
+        -:    8:  int a[128];
+        -:    9:};
+        -:   10:static const struct X a = {0, 1, 2, 3};
+        -:   11:/* Prevent gimplify_modify_expr_rhs / gimplify_init_constructor from
+        -:   12:   expanding the aggregate copy below inline.  */
+        -:   13:static const struct X A __attribute__((alias("a")));
+        -:   14:struct X *q;
+        1:   15:int __attribute__((noinline)) foo() {
+        1:   16:  struct X b = A;
+        1:   17:  int *p = &b.a[2];
+        -:   18:  /* Prevent SRA from decomposing b.  */
+        1:   19:  q = &b;
+        1:   20:  return *p;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  if (foo() != 2)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* Verify the aggregate copy we want to look through is still in place.  */
+        -:   30:/* { dg-final { scan-tree-dump "b = A;" "fre1" } } */
+        -:   31:/* Verify we have propagated the element read all the way to the return.  */
+        -:   32:/* { dg-final { scan-tree-dump "return 2" "fre1" } } */

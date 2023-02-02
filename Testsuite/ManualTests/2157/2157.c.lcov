@@ -1,0 +1,18 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Ensure that __CHAR16_TYPE__ and __CHAR32_TYPE__ exist, and are of the
+    3|       |   correct width. */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    6|       |
+    7|       |typedef __CHAR16_TYPE__ char16_t;
+    8|       |typedef __CHAR32_TYPE__ char32_t;
+    9|       |
+   10|       |extern void abort(void);
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (sizeof(char16_t) != sizeof(u'a'))
+   14|      0|    abort();
+   15|      1|  if (sizeof(char32_t) != sizeof(U'a'))
+   16|      0|    abort();
+   17|      1|}
+

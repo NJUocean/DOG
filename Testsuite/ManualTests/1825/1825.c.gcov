@@ -1,0 +1,19 @@
+        -:    0:Source:1825.c
+        -:    0:Graph:1825.gcno
+        -:    0:Data:1825.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/52027 */
+        -:    2:/* { dg-require-effective-target freorder } */
+        -:    3:/* { dg-options "-O2 -freorder-blocks-and-partition -fno-reorder-functions" } */
+        -:    4:
+     1000:    5:void foo(int len) {
+        -:    6:  char array[1000];
+     1000:    7:  __builtin_memset(array, 0, len);
+     1000:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i;
+     1001:   12:  for (i = 0; i < 1000; i++)
+     1000:   13:    foo(8);
+        1:   14:  return 0;
+        -:   15:}

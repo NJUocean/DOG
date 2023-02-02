@@ -1,0 +1,80 @@
+        -:    0:Source:2841.c
+        -:    0:Graph:2841.gcno
+        -:    0:Data:2841.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc*-*-* && vmx_hw } } } */
+        -:    2:/* { dg-do compile { target { powerpc*-*-* && { ! vmx_hw } } } } */
+        -:    3:/* { dg-require-effective-target powerpc_altivec_ok } */
+        -:    4:/* { dg-options "-maltivec -mabi=altivec -fno-inline" } */
+        -:    5:
+        -:    6:#include <stdarg.h>
+        -:    7:
+        -:    8:extern void exit(int);
+        -:    9:extern void abort(void);
+        -:   10:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:   11:
+        -:   12:#define vector __attribute__((vector_size(16)))
+        -:   13:
+        -:   14:const vector unsigned int v1 = {10, 11, 12, 13};
+        -:   15:const vector unsigned int v2 = {20, 21, 22, 23};
+        -:   16:const vector unsigned int v3 = {30, 31, 32, 33};
+        -:   17:const vector unsigned int v4 = {40, 41, 42, 43};
+        -:   18:
+        1:   19:void foo(vector unsigned int a, ...) {
+        -:   20:  va_list args;
+        -:   21:  vector unsigned int v;
+        -:   22:
+        1:   23:  va_start(args, a);
+        1:   24:  if (memcmp(&a, &v1, sizeof(v)) != 0)
+    #####:   25:    abort();
+        1:   26:  v = va_arg(args, vector unsigned int);
+        1:   27:  if (memcmp(&v, &v2, sizeof(v)) != 0)
+    #####:   28:    abort();
+        1:   29:  v = va_arg(args, vector unsigned int);
+        1:   30:  if (memcmp(&v, &v3, sizeof(v)) != 0)
+    #####:   31:    abort();
+        1:   32:  v = va_arg(args, vector unsigned int);
+        1:   33:  if (memcmp(&v, &v4, sizeof(v)) != 0)
+    #####:   34:    abort();
+        1:   35:  va_end(args);
+        1:   36:}
+        -:   37:
+        1:   38:void bar(vector unsigned int a, ...) {
+        -:   39:  va_list args;
+        -:   40:  vector unsigned int v;
+        -:   41:  int b;
+        -:   42:
+        1:   43:  va_start(args, a);
+        1:   44:  if (memcmp(&a, &v1, sizeof(v)) != 0)
+    #####:   45:    abort();
+        1:   46:  b = va_arg(args, int);
+        1:   47:  if (b != 2)
+    #####:   48:    abort();
+        1:   49:  v = va_arg(args, vector unsigned int);
+        1:   50:  if (memcmp(&v, &v2, sizeof(v)) != 0)
+    #####:   51:    abort();
+        1:   52:  v = va_arg(args, vector unsigned int);
+        1:   53:  if (memcmp(&v, &v3, sizeof(v)) != 0)
+    #####:   54:    abort();
+        1:   55:  va_end(args);
+        1:   56:}
+        -:   57:
+        1:   58:int main1(void) {
+        -:   59:  /* In this call, in the Darwin ABI, the first argument goes into v2
+        -:   60:     the second one into r9-r10 and memory,
+        -:   61:     and the next two in memory.  */
+        1:   62:  foo((vector unsigned int){10, 11, 12, 13},
+        -:   63:      (vector unsigned int){20, 21, 22, 23},
+        -:   64:      (vector unsigned int){30, 31, 32, 33},
+        -:   65:      (vector unsigned int){40, 41, 42, 43});
+        -:   66:  /* In this call, in the Darwin ABI, the first argument goes into v2
+        -:   67:     the second one into r9, then r10 is reserved and
+        -:   68:     there are two words of padding in memory, and the next two arguments
+        -:   69:     go after the padding.  */
+        1:   70:  bar((vector unsigned int){10, 11, 12, 13}, 2,
+        -:   71:      (vector unsigned int){20, 21, 22, 23},
+        -:   72:      (vector unsigned int){30, 31, 32, 33});
+        1:   73:  return 0;
+        -:   74:}
+        -:   75:
+        1:   76:int main(void) { return main1(); }

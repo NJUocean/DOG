@@ -1,0 +1,12 @@
+        -:    0:Source:3757.c
+        -:    0:Graph:3757.gcno
+        -:    0:Data:3757.gcda
+        -:    0:Runs:1
+        1:    1:long f(x, y) long x, y;
+       1*:    2:{ return (x > 1) ? y : (y & 1); }
+        -:    3:
+        1:    4:main() {
+        1:    5:  if (f(2L, 0xdecadeL) != 0xdecadeL)
+    #####:    6:    abort();
+        1:    7:  exit(0);
+        -:    8:}

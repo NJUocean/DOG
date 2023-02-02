@@ -1,0 +1,29 @@
+        -:    0:Source:1105.c
+        -:    0:Graph:1105.gcno
+        -:    0:Data:1105.gcda
+        -:    0:Runs:1
+        -:    1:/* Prove that HANDLE_PRAGMA_PUSH_POP_MACRO handling works somewhat. */
+        -:    2:
+        -:    3:/* { dg-do link { target *-*-mingw* } } */
+        -:    4:
+        -:    5:#define TEXT1 "ABC"
+        -:    6:#define TEXT2 "DEF"
+        -:    7:
+        1:    8:int main() {
+        -:    9:  if (__builtin_strcmp(TEXT1 TEXT2, "ABCDEF") != 0)
+        -:   10:    link_error();
+        -:   11:
+        -:   12:#pragma push_macro("TEXT1")
+        -:   13:#undef TEXT1
+        -:   14:#define TEXT1 "XYZ"
+        -:   15:
+        -:   16:  if (__builtin_strcmp(TEXT1 TEXT2, "XYZDEF") != 0)
+        -:   17:    link_error();
+        -:   18:
+        -:   19:#pragma pop_macro("TEXT1")
+        -:   20:
+        -:   21:  if (__builtin_strcmp(TEXT1 TEXT2, "ABCDEF") != 0)
+        -:   22:    link_error();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

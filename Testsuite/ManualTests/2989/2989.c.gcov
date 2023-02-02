@@ -1,0 +1,42 @@
+        -:    0:Source:2989.c
+        -:    0:Graph:2989.gcno
+        -:    0:Data:2989.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ultrasparc_vis2_hw } */
+        -:    3:/* { dg-options "-mcpu=ultrasparc3 -O" } */
+        -:    4:
+        -:    5:typedef unsigned int Vect __attribute__((vector_size(8)));
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:Vect a, b, c, d;
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void test(void) {
+        1:   12:  Vect mask = {2, 2};
+        -:   13:  int i;
+        -:   14:
+        1:   15:  c = __builtin_shuffle(a, mask);
+        1:   16:  d = __builtin_shuffle(a, b, mask);
+        -:   17:
+        1:   18:  __asm__("" : : "r"(&c), "r"(&d) : "memory");
+        -:   19:
+        3:   20:  for (i = 0; i < 2; ++i)
+        2:   21:    if (c[i] != a[mask[i] & 1])
+    #####:   22:      abort();
+        2:   23:    else if (mask[i] & 2) {
+        2:   24:      if (d[i] != b[mask[i] & 1])
+    #####:   25:        abort();
+        -:   26:    }
+        1:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  int i;
+        3:   31:  for (i = 0; i < 2; ++i) {
+        2:   32:    a[i] = i + 2;
+        2:   33:    b[i] = 2 + i + 2;
+        -:   34:  }
+        -:   35:
+        1:   36:  test();
+        1:   37:  return 0;
+        -:   38:}

@@ -1,0 +1,39 @@
+    1|       |/* Test that __builtin_prefetch does no harm.
+    2|       |
+    3|       |   Data prefetch should not fault if used with an invalid address.  */
+    4|       |
+    5|       |#include <limits.h>
+    6|       |
+    7|    132|#define ARRSIZE 65
+    8|       |int *bad_addr[ARRSIZE];
+    9|       |int arr_used;
+   10|       |
+   11|       |/* Fill bad_addr with a range of values in the hopes that on any target
+   12|       |   some will be invalid addresses.  */
+   13|      1|void init_addrs(void) {
+   14|      1|  int i;
+   15|      1|  int bits_per_ptr = sizeof(void *) * 8;
+   16|     65|  for (i = 0; i < bits_per_ptr; i++)
+   17|     64|    bad_addr[i] = (void *)(1UL << i);
+   18|      1|  arr_used = bits_per_ptr + 1; /* The last element used is zero.  */
+   19|      1|}
+   20|       |
+   21|      1|void prefetch_for_read(void) {
+   22|      1|  int i;
+   23|     66|  for (i = 0; i < ARRSIZE; i++)
+   24|     65|    __builtin_prefetch(bad_addr[i], 0, 0);
+   25|      1|}
+   26|       |
+   27|      1|void prefetch_for_write(void) {
+   28|      1|  int i;
+   29|     66|  for (i = 0; i < ARRSIZE; i++)
+   30|     65|    __builtin_prefetch(bad_addr[i], 1, 0);
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  init_addrs();
+   35|      1|  prefetch_for_read();
+   36|      1|  prefetch_for_write();
+   37|      1|  exit(0);
+   38|      1|}
+

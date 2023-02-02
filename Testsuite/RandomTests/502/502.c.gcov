@@ -1,0 +1,48 @@
+        -:    0:Source:502.c
+        -:    0:Graph:502.gcno
+        -:    0:Data:502.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_2 = (-7L);
+        -:    7:static int32_t g_7[1][2] = {{0xDE2167FAL, 0xDE2167FAL}};
+        -:    8:static volatile uint16_t g_11 = 1UL;
+        -:    9:
+        -:   10:static int64_t func_1(void);
+        -:   11:
+        1:   12:static int64_t func_1(void) {
+        1:   13:  for (g_2 = 18; (g_2 > (-4)); g_2 = safe_sub_func_int32_t_s_s(g_2, 3)) {
+        1:   14:    int32_t *l_5 = (void *)0;
+        1:   15:    int32_t *l_6 = &g_7[0][0];
+        1:   16:    int32_t *l_8 = (void *)0;
+        1:   17:    int32_t *l_9 = &g_7[0][0];
+        1:   18:    int32_t *l_10 = &g_7[0][0];
+        1:   19:    ++g_11;
+        1:   20:    return (*l_6);
+        -:   21:  }
+    #####:   22:  return g_7[0][0];
+        -:   23:}
+        -:   24:
+        1:   25:int main(int argc, char *argv[]) {
+        -:   26:  int i, j;
+        1:   27:  int print_hash_value = 0;
+       1*:   28:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   29:    print_hash_value = 1;
+        1:   30:  platform_main_begin();
+        1:   31:  crc32_gentab();
+        1:   32:  func_1();
+        1:   33:  transparent_crc(g_2, "g_2", print_hash_value);
+        2:   34:  for (i = 0; i < 1; i++) {
+        3:   35:    for (j = 0; j < 2; j++) {
+        2:   36:      transparent_crc(g_7[i][j], "g_7[i][j]", print_hash_value);
+        2:   37:      if (print_hash_value)
+    #####:   38:        printf("index = [%d][%d]\n", i, j);
+        -:   39:    }
+        -:   40:  }
+        1:   41:  transparent_crc(g_11, "g_11", print_hash_value);
+        1:   42:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   43:  return 0;
+        -:   44:}

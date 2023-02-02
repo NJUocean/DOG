@@ -1,0 +1,12 @@
+        -:    0:Source:2336.c
+        -:    0:Graph:2336.gcno
+        -:    0:Data:2336.gcda
+        -:    0:Runs:1
+       1*:    1:unsigned long sub(int a) { return ((0 > a - 2) ? 0 : a - 2) * sizeof(long); }
+        -:    2:
+        1:    3:main() {
+        1:    4:  if (sub(0) != 0)
+    #####:    5:    abort();
+        -:    6:
+        1:    7:  exit(0);
+        -:    8:}

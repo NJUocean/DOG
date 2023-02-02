@@ -1,0 +1,33 @@
+        -:    0:Source:986.c
+        -:    0:Graph:986.gcno
+        -:    0:Data:986.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized-graph" } */
+        -:    3:
+        -:    4:int a, c, d, e, g, h;
+        -:    5:short f;
+        -:    6:
+    #####:    7:int foo() {}
+        -:    8:
+        2:    9:short fn1(void) {
+        -:   10:  int j[2];
+       2*:   11:  for (; e; e++)
+    #####:   12:    if (j[0])
+    #####:   13:      for (;;)
+        -:   14:        ;
+        2:   15:  if (!g)
+        2:   16:    return f;
+    #####:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        2:   20:  for (; a < 1; a++) {
+        3:   21:    for (c = 0; c < 2; c++) {
+       2*:   22:      d && (f = 0);
+        2:   23:      h = fn1();
+        -:   24:    }
+        1:   25:    __builtin_printf("%d\n", (char)f);
+        -:   26:  }
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

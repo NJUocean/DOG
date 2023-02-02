@@ -1,0 +1,13 @@
+        -:    0:Source:772.c
+        -:    0:Graph:772.gcno
+        -:    0:Data:772.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:extern void link_error(void);
+        1:    5:int main() {
+        -:    6:  if ("<12ers" + 1 == 0)
+        -:    7:    link_error();
+        1:    8:  return 0;
+        -:    9:}

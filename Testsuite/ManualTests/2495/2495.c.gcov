@@ -1,0 +1,26 @@
+        -:    0:Source:2495.c
+        -:    0:Graph:2495.gcno
+        -:    0:Data:2495.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target arm_thumb2_ok } */
+        -:    3:/* { dg-options "-mthumb -O -mrestrict-it" }  */
+        -:    4:
+        -:    5:int a;
+        -:    6:
+        2:    7:__attribute__((noinline, noclone)) int fn1(int c, int d) {
+        2:    8:  a -= c == d;
+        2:    9:  return a;
+        -:   10:}
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  a = 10;
+        1:   14:  if (fn1(4, 4) != 9)
+    #####:   15:    __builtin_abort();
+        -:   16:
+        1:   17:  a = 5;
+        1:   18:  if (fn1(3, 4) != 5)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

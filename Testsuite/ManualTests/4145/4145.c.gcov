@@ -1,0 +1,37 @@
+        -:    0:Source:4145.c
+        -:    0:Graph:4145.gcno
+        -:    0:Data:4145.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target fpic } } */
+        -:    2:/* { dg-options "-O2 -fpic" } */
+        -:    3:/* { dg-require-effective-target alloca } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+    #####:    8:void foo(char *x, const char *y, ...) {}
+        -:    9:
+    #####:   10:double bar(const char *x, long y) { return 0.0; }
+        -:   11:
+        -:   12:typedef __SIZE_TYPE__ size_t;
+        -:   13:extern size_t strlen(const char *);
+        -:   14:
+        1:   15:double baz(const char *x) {
+       1*:   16:  if (x[0] != '\0') {
+    #####:   17:    char y[6 + strlen(x)];
+    #####:   18:    foo(y, "FOO", x);
+    #####:   19:    return bar(y, 0);
+        -:   20:  }
+        -:   21:
+        -:   22:  return (__extension__((union {
+        -:   23:            unsigned __l __attribute__((__mode__(__SI__)));
+        -:   24:            float __d;
+        1:   25:          }){__l : 0x3f800000UL})
+        1:   26:              .__d);
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  if (baz("") != 1.0)
+    #####:   31:    abort();
+        1:   32:  exit(0);
+        -:   33:}

@@ -1,0 +1,61 @@
+    1|       |/* OpenACC cache directive: valid usage.  */
+    2|       |/* For execution testing, this file is "#include"d from
+    3|       |   libgomp/testsuite/libgomp.oacc-c-c++-common/cache-1.c.  */
+    4|       |
+    5|      1|int main(int argc, char **argv) {
+    6|      9|#define N 2
+    7|      1|  int a[N], b[N];
+    8|      1|  int i;
+    9|      1|
+   10|      3|  for (i = 0; i < N; i++) {
+   11|      2|    a[i] = 3;
+   12|      2|    b[i] = 0;
+   13|      2|  }
+   14|      1|
+   15|      1|#pragma acc parallel copyin(a [0:N]) copyout(b [0:N])
+   16|      1|  {
+   17|      1|    int ii;
+   18|      1|
+   19|      3|    for (ii = 0; ii < N; ii++) {
+   20|      2|      const int idx = ii;
+   21|      2|      int n = 1;
+   22|      2|      const int len = n;
+   23|      2|
+   24|      2|      /* Have at it, GCC!  */
+   25|      2|#pragma acc cache(a [0:N])
+   26|      2|#pragma acc cache(a [0:N], a [0:N])
+   27|      2|#pragma acc cache(a [0:N], b [0:N])
+   28|      2|#pragma acc cache(a[0])
+   29|      2|#pragma acc cache(a[0], a[1], b [0:N])
+   30|      2|#pragma acc cache(a[i - 5])
+   31|      2|#pragma acc cache(a [i + 5:len])
+   32|      2|#pragma acc cache(a [i + 5:len - 1])
+   33|      2|#pragma acc cache(b[i])
+   34|      2|#pragma acc cache(b [i:len])
+   35|      2|#pragma acc cache(a[ii])
+   36|      2|#pragma acc cache(a [ii:len])
+   37|      2|#pragma acc cache(b[ii - 1])
+   38|      2|#pragma acc cache(b [ii - 1:len])
+   39|      2|#pragma acc cache(b[i - ii + 1])
+   40|      2|#pragma acc cache(b [i + ii - 1:len])
+   41|      2|#pragma acc cache(b [i * ii - 1:len + 1])
+   42|      2|#pragma acc cache(a[idx + 2])
+   43|      2|#pragma acc cache(a [idx:len + 2])
+   44|      2|#pragma acc cache(a[idx])
+   45|      2|#pragma acc cache(a [idx:len])
+   46|      2|#pragma acc cache(a [idx + 2:len])
+   47|      2|#pragma acc cache(a [idx + 2 + i:len])
+   48|      2|#pragma acc cache(a [idx + 2 + i + ii:len])
+   49|      2|
+   50|      2|      b[ii] = a[ii];
+   51|      2|    }
+   52|      1|  }
+   53|      1|
+   54|      3|  for (i = 0; i < N; i++) {
+   55|      2|    if (a[i] != b[i])
+   56|      0|      __builtin_abort();
+   57|      2|  }
+   58|      1|
+   59|      1|  return 0;
+   60|      1|}
+

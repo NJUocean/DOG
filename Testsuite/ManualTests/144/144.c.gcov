@@ -1,0 +1,16 @@
+        -:    0:Source:144.c
+        -:    0:Graph:144.gcno
+        -:    0:Data:144.gcda
+        -:    0:Runs:1
+        -:    1:#define X 5.9486574767861588254287966331400356538172e4931L
+        -:    2:
+        -:    3:long double x = X + X;
+        -:    4:long double y = 2.0L * X;
+        -:    5:
+        1:    6:main() {
+        -:    7:#if !defined(__vax__) && !defined(_CRAY)
+        1:    8:  if (x != y)
+    #####:    9:    abort();
+        -:   10:#endif
+        1:   11:  exit(0);
+        -:   12:}

@@ -1,0 +1,9 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-effective-target fpic } */
+    3|       |/* { dg-options "-fpie" } */
+    4|       |/* { dg-require-effective-target tls } */
+    5|       |
+    6|       |__thread int a;
+    7|       |int b;
+    8|      1|int main() { return a = b; }
+

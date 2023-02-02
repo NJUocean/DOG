@@ -1,0 +1,19 @@
+        -:    0:Source:1896.c
+        -:    0:Graph:1896.gcno
+        -:    0:Data:1896.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fno-tree-loop-im -fdump-tree-pre-stats" } */
+        -:    3:typedef int type[2];
+        1:    4:int main(type *a, int argc) {
+        -:    5:  int i;
+        -:    6:  int e;
+        -:    7:
+        -:    8:  /* Should be able to hoist this out of the loop.  */
+       1*:    9:  for (i = 0; i < argc; i++) {
+    #####:   10:    e = (*a)[argc];
+        -:   11:  }
+        1:   12:  return e;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-tree-dump-times "Eliminated: 1" 1 "pre"} } */

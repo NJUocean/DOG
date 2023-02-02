@@ -1,0 +1,31 @@
+    1|       |/* PR target/80706 */
+    2|       |/* { dg-do run { target sse2_runtime } } */
+    3|       |/* { dg-options "-O2 -msse2" } */
+    4|       |
+    5|       |union U {
+    6|       |  double value;
+    7|       |  struct S {
+    8|       |    int lsw;
+    9|       |    int msw;
+   10|       |  } parts;
+   11|       |};
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) double foo(void) {
+   14|      1|  __asm volatile("" : : : "memory");
+   15|      1|  return 2.0;
+   16|      1|}
+   17|       |
+   18|      1|__attribute__((noinline, noclone)) double bar(void) {
+   19|      1|  double s = foo();
+   20|      1|  union U z;
+   21|      1|  z.value = s;
+   22|      1|  z.parts.lsw = 0;
+   23|      1|  return z.value * z.value + s * s;
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  if (bar() != 8.0)
+   28|      0|    __builtin_abort();
+   29|      1|  return 0;
+   30|      1|}
+

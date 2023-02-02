@@ -1,0 +1,48 @@
+    1|       |/* Test __atomic routines for existence and proper execution on 8 byte
+    2|       |   values with each valid memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target sync_long_long_runtime } */
+    5|       |/* { dg-options "" } */
+    6|       |/* { dg-options "-march=pentium" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+    7|       | * } */
+    8|       |
+    9|       |/* Test the execution of the __atomic_store_n builtin for a long long.  */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|       |long long v, count;
+   14|       |
+   15|      1|int main() {
+   16|      1|  v = 0;
+   17|      1|  count = 0;
+   18|      1|
+   19|      1|  __atomic_store_n(&v, count + 1, __ATOMIC_RELAXED);
+   20|      1|  if (v != ++count)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  __atomic_store_n(&v, count + 1, __ATOMIC_RELEASE);
+   24|      1|  if (v != ++count)
+   25|      0|    abort();
+   26|      1|
+   27|      1|  __atomic_store_n(&v, count + 1, __ATOMIC_SEQ_CST);
+   28|      1|  if (v != ++count)
+   29|      0|    abort();
+   30|      1|
+   31|      1|  /* Now test the generic variant.  */
+   32|      1|  count++;
+   33|      1|
+   34|      1|  __atomic_store(&v, &count, __ATOMIC_RELAXED);
+   35|      1|  if (v != count++)
+   36|      0|    abort();
+   37|      1|
+   38|      1|  __atomic_store(&v, &count, __ATOMIC_RELEASE);
+   39|      1|  if (v != count++)
+   40|      0|    abort();
+   41|      1|
+   42|      1|  __atomic_store(&v, &count, __ATOMIC_SEQ_CST);
+   43|      1|  if (v != count)
+   44|      0|    abort();
+   45|      1|
+   46|      1|  return 0;
+   47|      1|}
+

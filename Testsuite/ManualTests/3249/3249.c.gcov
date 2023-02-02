@@ -1,0 +1,37 @@
+        -:    0:Source:3249.c
+        -:    0:Graph:3249.gcno
+        -:    0:Data:3249.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/7559
+        -:    2:   This testcase was miscompiled on x86-64, because classify_argument
+        -:    3:   wrongly computed the offset of nested structure fields.  */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct A {
+        -:    8:  long x;
+        -:    9:};
+        -:   10:
+        -:   11:struct R {
+        -:   12:  struct A a, b;
+        -:   13:};
+        -:   14:
+        -:   15:struct R R = {100, 200};
+        -:   16:
+        1:   17:void f(struct R r) {
+        1:   18:  if (r.a.x != R.a.x || r.b.x != R.b.x)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:struct R g(void) {
+        1:   23:  return R;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        -:   27:  struct R r;
+        1:   28:  f(R);
+        1:   29:  r = g();
+        1:   30:  if (r.a.x != R.a.x || r.b.x != R.b.x)
+    #####:   31:    abort();
+        1:   32:  return 0;
+        -:   33:}

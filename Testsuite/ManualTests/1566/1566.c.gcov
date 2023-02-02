@@ -1,0 +1,18 @@
+        -:    0:Source:1566.c
+        -:    0:Graph:1566.gcno
+        -:    0:Data:1566.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/69546 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:
+        1:    4:unsigned __int128 foo(void) {
+        1:    5:  unsigned __int128 a = 0xfffffffffffffffeULL;
+        1:    6:  unsigned __int128 b = 0xffffffffffffffffULL;
+        1:    7:  return a % b;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  if (foo() != 0xfffffffffffffffeULL)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

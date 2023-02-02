@@ -1,0 +1,41 @@
+        -:    0:Source:1961.c
+        -:    0:Graph:1961.gcno
+        -:    0:Data:1961.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:#define assert(x)                                                              \
+        -:    5:  if (!(x))                                                                    \
+        -:    6:  __builtin_abort()
+        -:    7:
+        -:    8:int a, b, c, d, e, f, g;
+        -:    9:
+        1:   10:int fn1() {
+        1:   11:  int *h = &c;
+        2:   12:  for (; c < 1; c++) {
+        1:   13:    int *i = &a, *k = &a;
+        1:   14:    f = 0;
+        1:   15:    if (b)
+    #####:   16:      return 0;
+        1:   17:    if (*h) {
+    #####:   18:      int **j = &i;
+    #####:   19:      *j = 0;
+    #####:   20:      d = 0;
+        -:   21:    } else
+        1:   22:      g = e = 0;
+        1:   23:    if (*h) {
+    #####:   24:      int **l = &k;
+    #####:   25:      *l = &g;
+        -:   26:    }
+        1:   27:    d &= *h;
+       1*:   28:    assert(k == &a || k);
+       1*:   29:    assert(i);
+        -:   30:  }
+        1:   31:  return 0;
+        -:   32:}
+        -:   33:
+        1:   34:int main() {
+        1:   35:  fn1();
+        1:   36:  return 0;
+        -:   37:}

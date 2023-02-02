@@ -1,0 +1,19 @@
+        -:    0:Source:3492.c
+        -:    0:Graph:3492.gcno
+        -:    0:Data:3492.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned b4 : 4;
+        -:    5:  unsigned b6 : 6;
+        -:    6:} s;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  s.b6 = 31;
+        1:   10:  s.b4 = s.b6;
+        1:   11:  s.b6 = s.b4;
+        1:   12:  if (s.b6 != 15)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

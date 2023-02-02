@@ -1,0 +1,51 @@
+        -:    0:Source:442.c
+        -:    0:Graph:442.gcno
+        -:    0:Data:442.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -ftree-loop-linear" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#define K 32
+        -:    7:
+        -:    8:int cond_array[2 * K][K];
+        -:    9:int a[K][K];
+        -:   10:int out[K];
+        -:   11:int check_result[K] = {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        -:   12:                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        -:   13:
+        1:   14:__attribute__((noinline)) void foo(int c) {
+        -:   15:  int res, i, j, k, next;
+        -:   16:
+       33:   17:  for (k = 0; k < K; k++) {
+       32:   18:    res = 0;
+     1056:   19:    for (j = 0; j < K; j++)
+    33792:   20:      for (i = 0; i < K; i++) {
+    32768:   21:        next = a[i][j];
+    32768:   22:        res = c > cond_array[i + k][j] ? next : res;
+        -:   23:      }
+        -:   24:
+       32:   25:    out[k] = res;
+        -:   26:  }
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  int i, j, k;
+        -:   31:
+       33:   32:  for (j = 0; j < K; j++) {
+     2080:   33:    for (i = 0; i < 2 * K; i++)
+     2048:   34:      cond_array[i][j] = i + j;
+        -:   35:
+     1056:   36:    for (i = 0; i < K; i++)
+     1024:   37:      a[i][j] = i + 2;
+        -:   38:  }
+        -:   39:
+        1:   40:  foo(5);
+        -:   41:
+       33:   42:  for (k = 0; k < K; k++)
+       32:   43:    if (out[k] != check_result[k])
+    #####:   44:      abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}

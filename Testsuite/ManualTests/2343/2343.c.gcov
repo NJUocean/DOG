@@ -1,0 +1,24 @@
+        -:    0:Source:2343.c
+        -:    0:Graph:2343.gcno
+        -:    0:Data:2343.gcda
+        -:    0:Runs:1
+        -:    1:/* PR gcov-profile/94029 */
+        -:    2:/* { dg-options "-ftest-coverage" } */
+        -:    3:/* { dg-do compile } */
+        -:    4:
+        -:    5:#define impl_test(name)                                                        \
+        -:    6:  void test_##name() {}
+    #####:    7:impl_test(t1) impl_test(t2)
+------------------
+test_t1:
+    #####:    7:impl_test(t1) impl_test(t2)
+------------------
+test_t2:
+    #####:    7:impl_test(t1) impl_test(t2)
+------------------
+        -:    8:
+        1:    9:    int main() {
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        -:   13:/* { dg-final { run-gcov remove-gcda gcov-pr94029.c } } */

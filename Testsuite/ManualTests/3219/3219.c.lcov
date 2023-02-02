@@ -1,0 +1,31 @@
+    1|       |/* Test failed on an architecture that:
+    2|       |
+    3|       |   - had 16-bit registers,
+    4|       |   - passed 64-bit structures in registers,
+    5|       |   - only allowed SImode values in even numbered registers.
+    6|       |
+    7|       |   Before reload, s.i2 in foo() was represented as:
+    8|       |
+    9|       |        (subreg:SI (reg:DI 0) 2)
+   10|       |
+   11|       |   find_dummy_reload would return (reg:SI 1) for the subreg reload,
+   12|       |   despite that not being a valid register.  */
+   13|       |
+   14|       |struct s {
+   15|       |  short i1;
+   16|       |  long i2;
+   17|       |  short i3;
+   18|       |};
+   19|       |
+   20|      1|struct s foo(struct s s) {
+   21|      1|  s.i2++;
+   22|      1|  return s;
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  struct s s = foo((struct s){1000, 2000L, 3000});
+   27|      1|  if (s.i1 != 1000 || s.i2 != 2001L || s.i3 != 3000)
+   28|      0|    abort();
+   29|      1|  exit(0);
+   30|      1|}
+

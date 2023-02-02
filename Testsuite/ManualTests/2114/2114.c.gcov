@@ -1,0 +1,23 @@
+        -:    0:Source:2114.c
+        -:    0:Graph:2114.gcno
+        -:    0:Data:2114.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift-exponent -fno-sanitize=shift-base -w -std=c99"
+        -:    3: * } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int a = -42;
+        1:    7:  int b = -43;
+        1:    8:  volatile int c = 129;
+        1:    9:  int d = 1;
+        1:   10:  b << c;
+        -:   11:  a << 1;
+        -:   12:  a << 1;
+        1:   13:  d <<= 31;
+        1:   14:  b << (c + 1);
+        -:   15:}
+        -:   16:/* { dg-output "shift exponent 129 is too large for \[^\n\r]*-bit type
+        -:   17: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   18:/* { dg-output "\[^\n\r]*shift exponent 130 is too large for \[^\n\r]*-bit type
+        -:   19: * 'int'" } */

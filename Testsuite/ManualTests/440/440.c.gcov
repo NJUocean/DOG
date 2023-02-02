@@ -1,0 +1,69 @@
+        -:    0:Source:440.c
+        -:    0:Graph:440.gcno
+        -:    0:Data:440.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase is from PR43012.
+        -:    2:   You will need CLooG-PPL 0.15.8 or later to have this testcase fixed.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2 -floop-strip-mine" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:#ifdef DBG
+        -:   10:extern int printf(const char *, ...);
+        -:   11:#endif
+        -:   12:
+        -:   13:#define LAST_TOKEN 534
+        -:   14:#define FLOAT_FUNCT_TOKEN 64
+        -:   15:#define VECTOR_FUNCT_TOKEN 77
+        -:   16:#define COLOUR_KEY_TOKEN 89
+        -:   17:
+        -:   18:int Table[LAST_TOKEN];
+        -:   19:
+        1:   20:void pre_init_tokenizer() {
+        -:   21:  int i;
+        -:   22:
+      535:   23:  for (i = 0; i < LAST_TOKEN; i++) {
+      534:   24:    Table[i] = i;
+      534:   25:    if (i < FLOAT_FUNCT_TOKEN)
+       64:   26:      Table[i] = FLOAT_FUNCT_TOKEN;
+        -:   27:    else {
+      470:   28:      if (i < VECTOR_FUNCT_TOKEN)
+       13:   29:        Table[i] = VECTOR_FUNCT_TOKEN;
+        -:   30:      else {
+      457:   31:        if (i < COLOUR_KEY_TOKEN)
+       12:   32:          Table[i] = COLOUR_KEY_TOKEN;
+        -:   33:      }
+        -:   34:    }
+        -:   35:  }
+        1:   36:}
+        -:   37:
+        1:   38:void check() {
+        -:   39:  int i;
+        -:   40:
+       65:   41:  for (i = 0; i < FLOAT_FUNCT_TOKEN; i++)
+       64:   42:    if (Table[i] != FLOAT_FUNCT_TOKEN)
+    #####:   43:      abort();
+       14:   44:  for (i = FLOAT_FUNCT_TOKEN; i < VECTOR_FUNCT_TOKEN; i++)
+       13:   45:    if (Table[i] != VECTOR_FUNCT_TOKEN)
+    #####:   46:      abort();
+       13:   47:  for (i = VECTOR_FUNCT_TOKEN; i < COLOUR_KEY_TOKEN; i++)
+       12:   48:    if (Table[i] != COLOUR_KEY_TOKEN)
+    #####:   49:      abort();
+      446:   50:  for (i = COLOUR_KEY_TOKEN; i < LAST_TOKEN; i++)
+      445:   51:    if (Table[i] != i)
+    #####:   52:      abort();
+        1:   53:}
+        -:   54:
+        1:   55:int main() {
+        -:   56:  int i;
+        -:   57:
+        1:   58:  pre_init_tokenizer();
+        -:   59:#ifdef DBG
+        -:   60:  for (i = 0; i < LAST_TOKEN; i++)
+        -:   61:    printf("%3d: %d\n", i, Table[i]);
+        -:   62:#endif
+        1:   63:  check();
+        1:   64:  return 0;
+        -:   65:}

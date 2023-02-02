@@ -1,0 +1,19 @@
+    1|       |float fx(x) float x;
+    2|      1|{ return 1.0 + 3.0 / (2.302585093 * x); }
+    3|       |
+    4|      1|main() {
+    5|      1|  float fx(), inita(), initc(), a, b, c;
+    6|      1|  a = inita();
+    7|      1|  c = initc();
+    8|      1|  f();
+    9|      1|  b = fx(c) + a;
+   10|      1|  f();
+   11|      1|  if (a != 3.0 || b < 4.3257 || b > 4.3258 || c != 4.0)
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+   15|       |
+   16|      1|float inita() { return 3.0; }
+   17|      1|float initc() { return 4.0; }
+   18|      2|f() {}
+

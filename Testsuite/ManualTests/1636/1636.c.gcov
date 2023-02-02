@@ -1,0 +1,23 @@
+        -:    0:Source:1636.c
+        -:    0:Graph:1636.gcno
+        -:    0:Data:1636.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-w -Wno-psabi" } */
+        -:    3:
+        -:    4:typedef unsigned V __attribute__((vector_size(16)));
+        -:    5:
+        2:    6:V foo(unsigned x, V v) {
+        -:    7:  do {
+        2:    8:    v %= x;
+        2:    9:    x = 1;
+        2:   10:  } while (v[1]);
+        1:   11:  return v;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  V x = foo(5, (V){0, 1});
+        1:   16:  if (x[0] || x[1] || x[2] || x[3])
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

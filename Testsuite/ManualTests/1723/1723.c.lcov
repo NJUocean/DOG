@@ -1,0 +1,15 @@
+    1|       |/* PR tree-optimization/90671 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-additional-options "-w -g" } */
+    4|       |
+    5|       |int a;
+    6|       |
+    7|      1|int main() {
+    8|      1|  int b, c;
+    9|      3|  for (c = 0; c < 2; c++)
+   10|      2|    while (a)
+   11|      0|      if (b)
+   12|      0|        break;
+   13|      1|  return 0;
+   14|      1|}
+

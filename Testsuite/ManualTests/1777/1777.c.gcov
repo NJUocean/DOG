@@ -1,0 +1,38 @@
+        -:    0:Source:1777.c
+        -:    0:Graph:1777.gcno
+        -:    0:Data:1777.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/93047 */
+        -:    2:/* Originator: Andrew Church <gcczilla@achurch.org> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-additional-options "-O3 -frename-registers" } */
+        -:    5:/* { dg-require-effective-target untyped_assembly } */
+        -:    6:
+        -:    7:#ifdef __MMIX__
+        -:    8:/* No parameters on stack for bar.  */
+        -:    9:#define STACK_ARGUMENTS_SIZE 0
+        -:   10:#else
+        -:   11:#define STACK_ARGUMENTS_SIZE 64
+        -:   12:#endif
+        -:   13:
+        -:   14:extern void abort(void);
+        -:   15:
+        1:   16:int foo(int n) { return n + 1; }
+        -:   17:
+        1:   18:int bar(int n) {
+        1:   19:  __builtin_return(__builtin_apply((void (*)(void))foo, __builtin_apply_args(),
+        -:   20:                                   STACK_ARGUMENTS_SIZE));
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        -:   24:  /* Allocate 64 bytes on the stack to make sure that __builtin_apply
+        -:   25:     can read at least 64 bytes above the return address.  */
+        -:   26:  char dummy[64];
+        -:   27:
+        1:   28:  __asm__("" : : ""(dummy));
+        -:   29:
+        1:   30:  if (bar(1) != 2)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

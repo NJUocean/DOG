@@ -1,0 +1,59 @@
+        -:    0:Source:1244.c
+        -:    0:Graph:1244.gcno
+        -:    0:Data:1244.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright 2002 Free Software Foundation, Inc.
+        -:    2:
+        -:    3:   Tests correct signedness of operations on bitfields; in particular
+        -:    4:   that integer promotions are done correctly, including the case when
+        -:    5:   casts are present.
+        -:    6:
+        -:    7:   The C front end was eliding the cast of an unsigned bitfield to
+        -:    8:   unsigned as a no-op, when in fact it forces a conversion to a
+        -:    9:   full-width unsigned int. (At the time of writing, the C++ front end
+        -:   10:   has a different bug; it erroneously promotes the uncast unsigned
+        -:   11:   bitfield to an unsigned int).
+        -:   12:
+        -:   13:   Source: Neil Booth, 25 Jan 2002, based on PR 3325 (and 3326, which
+        -:   14:   is a different manifestation of the same bug).
+        -:   15:*/
+        -:   16:
+        -:   17:extern void abort();
+        -:   18:
+        1:   19:int main(int argc, char *argv[]) {
+        -:   20:  struct x {
+        -:   21:    signed int i : 7;
+        -:   22:    unsigned int u : 7;
+        -:   23:  } bit;
+        -:   24:
+        -:   25:  unsigned int u;
+        -:   26:  int i;
+        1:   27:  unsigned int unsigned_result = -13U % 61;
+        1:   28:  int signed_result = -13 % 61;
+        -:   29:
+        1:   30:  bit.u = 61, u = 61;
+        1:   31:  bit.i = -13, i = -13;
+        -:   32:
+        1:   33:  if (i % u != unsigned_result)
+    #####:   34:    abort();
+        1:   35:  if (i % (unsigned int)u != unsigned_result)
+    #####:   36:    abort();
+        -:   37:
+        -:   38:  /* Somewhat counter-intuitively, bit.u is promoted to an int, making
+        -:   39:     the operands and result an int.  */
+        1:   40:  if (i % bit.u != signed_result)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  if (bit.i % bit.u != signed_result)
+    #####:   44:    abort();
+        -:   45:
+        -:   46:  /* But with a cast to unsigned int, the unsigned int is promoted to
+        -:   47:     itself as a no-op, and the operands and result are unsigned.  */
+        1:   48:  if (i % (unsigned int)bit.u != unsigned_result)
+    #####:   49:    abort();
+        -:   50:
+        1:   51:  if (bit.i % (unsigned int)bit.u != unsigned_result)
+    #####:   52:    abort();
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}

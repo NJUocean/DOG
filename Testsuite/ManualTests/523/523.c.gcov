@@ -1,0 +1,23 @@
+        -:    0:Source:523.c
+        -:    0:Graph:523.gcno
+        -:    0:Data:523.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/54796 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        2:    5:__attribute__((noinline, noclone)) void bar(char *a, int b) {
+        2:    6:  __asm volatile("" : "+r"(a), "+r"(b) : : "memory");
+        2:    7:}
+        -:    8:
+        1:    9:__attribute__((noinline, noclone)) void foo(int a, int b) {
+        1:   10:  int c = a;
+        1:   11:  char d[b]; /* { dg-final { gdb-test .+2 "a" "5" } } */
+        1:   12:  bar(d, 2); /* { dg-final { gdb-test .+1 "b" "6" } } */
+        1:   13:  bar(d, 4); /* { dg-final { gdb-test . "c" "5" } } */
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  foo(5, 6);
+        1:   18:  return 0;
+        -:   19:}

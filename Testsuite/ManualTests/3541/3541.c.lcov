@@ -1,0 +1,13 @@
+    1|       |/* { dg-options "-fwrapv" } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|       |int f(j) int j;
+    7|      1|{ return ++j > 0; }
+    8|      1|int main() {
+    9|      1|  if (f((~0U) >> 1))
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

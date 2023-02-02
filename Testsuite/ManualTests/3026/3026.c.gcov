@@ -1,0 +1,18 @@
+        -:    0:Source:3026.c
+        -:    0:Graph:3026.gcno
+        -:    0:Data:3026.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "clr1 B100\\+1,#0" } } */
+        -:    3:
+        -:    4:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:    5:unsigned short B100 __attribute__((__BELOW100__));
+        -:    6:unsigned short *p = &B100;
+        -:    7:
+        1:    8:void Do(void) { B100 &= ~0x0100; }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  *p = 0xedcb;
+        1:   12:  Do();
+        1:   13:  return (*p == 0xeccb) ? 0 : 1;
+        -:   14:}

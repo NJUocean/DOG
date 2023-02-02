@@ -1,0 +1,21 @@
+    1|       |/* PR sanitizer/82072 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=signed-integer-overflow" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  long long l = -__LONG_LONG_MAX__ - 1;
+    7|      1|  int i = 0;
+    8|      1|  asm volatile("" : "+r"(i));
+    9|      1|  i -= l;
+   10|      1|  asm volatile("" : "+r"(i));
+   11|      1|  i = -l;
+   12|      1|  asm volatile("" : "+r"(i));
+   13|      1|  return 0;
+   14|      1|}
+   15|       |
+   16|       |/* { dg-output "signed integer overflow: 0 - -9223372036854775808 cannot be
+   17|       | * represented in type 'long long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   18|       |/* { dg-output "\[^\n\r]*negation of -9223372036854775808 cannot be represented
+   19|       | * in type 'long long int'\[^\n\r]*; cast to an unsigned type to negate this
+   20|       | * value to itself" } */
+

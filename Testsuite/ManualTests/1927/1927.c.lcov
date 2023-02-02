@@ -1,0 +1,26 @@
+    1|       |/* { dg-options "-O2" } */
+    2|       |
+    3|       |static unsigned int old_serial_port_irq[10];
+    4|       |
+    5|       |static struct uart_8250_port {
+    6|       |  volatile unsigned int slock;
+    7|       |  unsigned int irq;
+    8|       |} serial8250_ports[10];
+    9|       |
+   10|     10|static __inline__ __attribute__((always_inline)) int irq_canonicalize(int irq) {
+   11|     10|  return ((irq == 2) ? 9 : irq);
+   12|     10|}
+   13|       |
+   14|      1|void serial8250_isa_init_ports(void) {
+   15|      1|  struct uart_8250_port *up;
+   16|      1|  int i;
+   17|      1|
+   18|     11|  for (i = 0, up = serial8250_ports; i < 10; i++, up++)
+   19|     10|    up->irq = irq_canonicalize(old_serial_port_irq[i]);
+   20|      1|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  serial8250_isa_init_ports();
+   24|      1|  return 0;
+   25|      1|}
+

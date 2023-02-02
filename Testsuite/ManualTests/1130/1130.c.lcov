@@ -1,0 +1,32 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves
+    3|       | * -fdump-rtl-sms" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |float out[4][4] = {6, 6, 7, 5, 6, 7, 5, 5, 6, 4, 4, 4, 6, 2, 3, 4};
+    8|       |
+    9|      1|void invert(void) {
+   10|      1|  int i, j, k = 0, swap;
+   11|      1|  float tmp[4][4] = {5, 6, 7, 5, 6, 7, 5, 5, 4, 4, 4, 4, 3, 2, 3, 4};
+   12|      1|
+   13|      5|  for (i = 0; i < 4; i++) {
+   14|     10|    for (j = i + 1; j < 4; j++)
+   15|      6|      if (tmp[j][i] > tmp[i][i])
+   16|      1|        swap = j;
+   17|      4|
+   18|      4|    if (swap != i)
+   19|      3|      tmp[i][k] = tmp[swap][k];
+   20|      4|  }
+   21|      1|
+   22|      5|  for (i = 0; i < 4; i++)
+   23|     20|    for (j = 0; j < 4; j++)
+   24|     16|      if (tmp[i][j] != out[i][j])
+   25|      0|        abort();
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  invert();
+   30|      1|  return 0;
+   31|      1|}
+

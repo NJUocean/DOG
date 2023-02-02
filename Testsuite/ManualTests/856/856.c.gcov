@@ -1,0 +1,25 @@
+        -:    0:Source:856.c
+        -:    0:Graph:856.gcno
+        -:    0:Data:856.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-div-by-zero" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  volatile const unsigned long int o = 1UL;
+        1:    6:  int zero = 0;
+        -:    7:
+        1:    8:  o / 0;
+        -:    9:  1UL / 0;
+        1:   10:  1UL / zero;
+        1:   11:  o / zero;
+        1:   12:  o / (++zero - 1);
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-output "division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   18:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   19:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   20:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   21:/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*" } */

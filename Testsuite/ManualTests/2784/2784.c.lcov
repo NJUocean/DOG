@@ -1,0 +1,21 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|void test(int *ptr) {
+    4|      1|  int i = 1;
+    5|      1|  goto useless;
+    6|      1|  if (0) {
+    7|      1|  useless:
+    8|      1|    i = 0;
+    9|      1|  } else
+   10|      0|    i = 1;
+   11|      1|  *ptr = i;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  int i = 1;
+   16|      1|  test(&i);
+   17|      1|  if (i)
+   18|      0|    abort();
+   19|      1|  return 0;
+   20|      1|}
+

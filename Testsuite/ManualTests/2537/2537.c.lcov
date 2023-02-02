@@ -1,0 +1,21 @@
+    1|       |/* Test to make sure memset of small old size works
+    2|       |   correctly. */
+    3|      1|#define SIZE 15
+    4|       |
+    5|       |void f(char *a) __attribute__((noinline));
+    6|      1|void f(char *a) { __builtin_memset(a, 0, SIZE); }
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  int i;
+   10|      1|  char b[SIZE];
+   11|     16|  for (i = 0; i < sizeof(b); i++) {
+   12|     15|    b[i] = i;
+   13|     15|  }
+   14|      1|  f(b);
+   15|     16|  for (i = 0; i < sizeof(b); i++) {
+   16|     15|    if (0 != b[i])
+   17|      0|      __builtin_abort();
+   18|     15|  }
+   19|      1|  return 0;
+   20|      1|}
+

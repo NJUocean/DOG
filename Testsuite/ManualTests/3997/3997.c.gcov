@@ -1,0 +1,21 @@
+        -:    0:Source:3997.c
+        -:    0:Graph:3997.gcno
+        -:    0:Data:3997.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/85156 */
+        -:    2:
+        -:    3:int x, y;
+        -:    4:
+        1:    5:__attribute__((noipa)) int foo(int z) {
+        1:    6:  if (__builtin_expect(x ? y != 0 : 0, z++))
+    #####:    7:    return 7;
+        1:    8:  return z;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  x = 1;
+        1:   13:  asm volatile("" : "+m"(x), "+m"(y));
+        1:   14:  if (foo(10) != 11)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,15 @@
+    1|       |/* { dg-options "-O2 -fdump-tree-tailc -fdump-tree-optimized" } */
+    2|    100|__attribute__((noinline)) int factorial(int x) {
+    3|    100|  if (x == 1)
+    4|      1|    return 1;
+    5|     99|  else
+    6|     99|    return x * factorial(--x);
+    7|    100|}
+    8|       |int gbl;
+    9|      1|int main() {
+   10|      1|  gbl = factorial(100);
+   11|      1|  return 0;
+   12|      1|}
+   13|       |/* { dg-final-use { scan-tree-dump-not "Invalid sum" "tailc"} } */
+   14|       |/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */
+

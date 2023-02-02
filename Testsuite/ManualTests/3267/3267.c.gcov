@@ -1,0 +1,28 @@
+        -:    0:Source:3267.c
+        -:    0:Graph:3267.gcno
+        -:    0:Data:3267.gcda
+        -:    0:Runs:1
+        -:    1:/* Test whether a partly call-clobbered register will be moved over a call.
+        -:    2:   Although the original test case didn't use any GNUisms, it proved
+        -:    3:   difficult to reduce without the named register extension.  */
+        -:    4:#if __SH64__ == 32
+        -:    5:#define LOC asm("r10")
+        -:    6:#else
+        -:    7:#define LOC
+        -:    8:#endif
+        -:    9:
+        1:   10:unsigned int foo(char *c, unsigned int x, unsigned int y) {
+        -:   11:  register unsigned int z LOC;
+        -:   12:
+        1:   13:  sprintf(c, "%d", x / y);
+        1:   14:  z = x + 1;
+        1:   15:  return z / (y + 1);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  char c[16];
+        -:   20:
+        1:   21:  if (foo(c, ~1U, 4) != (~0U / 5))
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

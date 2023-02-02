@@ -1,0 +1,25 @@
+        -:    0:Source:3256.c
+        -:    0:Graph:3256.gcno
+        -:    0:Data:3256.gcda
+        -:    0:Runs:1
+        -:    1:/* PR opt/8165.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:char buf[64];
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  int i;
+        -:    9:
+        1:   10:  __builtin_strcpy(buf, "mystring");
+        1:   11:  if (__builtin_strcmp(buf, "mystring") != 0)
+    #####:   12:    abort();
+        -:   13:
+       17:   14:  for (i = 0; i < 16; ++i) {
+       16:   15:    __builtin_strcpy(buf + i, "mystring");
+       16:   16:    if (__builtin_strcmp(buf + i, "mystring") != 0)
+    #####:   17:      abort();
+        -:   18:  }
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

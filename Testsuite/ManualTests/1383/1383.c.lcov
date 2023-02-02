@@ -1,0 +1,21 @@
+    1|       |/* Undefined behavior from a call to a function cast to a different
+    2|       |   type does not appear until after the function designator and
+    3|       |   arguments have been evaluated.  PR 38483.  */
+    4|       |/* Origin: Joseph Myers <joseph@codesourcery.com> */
+    5|       |/* { dg-require-effective-target untyped_assembly } */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |extern void abort(void);
+    9|       |
+   10|      1|int foo(void) {
+   11|      1|  exit(0);
+   12|      1|  return 0;
+   13|      1|}
+   14|       |
+   15|      0|void bar(void) {}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  ((long (*)(int))bar)(foo());
+   19|      1|  abort();
+   20|      1|}
+

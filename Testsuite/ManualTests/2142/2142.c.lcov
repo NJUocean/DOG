@@ -1,0 +1,16 @@
+    1|       |#include <float.h>
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |static const double C = DBL_MAX;
+    6|       |
+    7|      1|double foo(double x) { return (((x * C) * C) * C); }
+    8|       |
+    9|      1|int main() {
+   10|      1|  double d = foo(0.0);
+   11|      1|  if (d != 0.0)
+   12|      0|    abort();
+   13|      1|
+   14|      1|  return 0;
+   15|      1|}
+

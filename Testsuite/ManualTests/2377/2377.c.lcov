@@ -1,0 +1,21 @@
+    1|      1|int main(void) {
+    2|      1|  long long x;
+    3|      1|  int n;
+    4|      1|
+    5|      1|  if (sizeof(long long) < 8)
+    6|      0|    exit(0);
+    7|      1|
+    8|      1|  n = 9;
+    9|      1|  x = (((long long)n) << 55) / 0xff;
+   10|      1|
+   11|      1|  if (x == 0)
+   12|      0|    abort();
+   13|      1|
+   14|      1|  x = (((long long)9) << 55) / 0xff;
+   15|      1|
+   16|      1|  if (x == 0)
+   17|      0|    abort();
+   18|      1|
+   19|      1|  exit(0);
+   20|      1|}
+

@@ -1,0 +1,16 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -Wall" } */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |extern void __chk_fail(void);
+    6|       |extern int snprintf(char *, size_t, const char *, ...);
+    7|       |
+    8|      1|int main() {
+    9|      1|  char temp[100];
+   10|      1|  unsigned int x;
+   11|      1|  char *str = temp;
+   12|    257|  for (x = 0; x < 256; ++x) {
+   13|    256|    snprintf(str, 4, "%%%02X", x);
+   14|    256|  }
+   15|      1|}
+

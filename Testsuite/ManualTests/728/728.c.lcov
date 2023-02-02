@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=bounds" } */
+    3|       |
+    4|       |struct S {
+    5|       |  unsigned long a[1];
+    6|       |  int l;
+    7|       |};
+    8|       |
+    9|      1|static inline unsigned long fn(const struct S *s, int i) { return s->a[i] / i; }
+   10|       |
+   11|      1|int main() {
+   12|      1|  struct S s;
+   13|      1|  fn(&s, 1);
+   14|      1|}
+   15|       |
+   16|       |/* { dg-output "index 1 out of bounds for type 'long unsigned int \\\[1\\\]'" }
+   17|       | */
+

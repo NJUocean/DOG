@@ -1,0 +1,13 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |typedef __UINTPTR_TYPE__ uintptr_t;
+    4|      1|int main(void) {
+    5|      1|  int a = 0;
+    6|      1|  int *p;
+    7|      1|  uintptr_t b;
+    8|      1|  b = (uintptr_t)(p = &(int[]){0, 1, 2}[1]);
+    9|      1|  if (*p != 1 || *(int *)b != 1)
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

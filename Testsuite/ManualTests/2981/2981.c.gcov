@@ -1,0 +1,35 @@
+        -:    0:Source:2981.c
+        -:    0:Graph:2981.gcno
+        -:    0:Data:2981.gcda
+        -:    0:Runs:1
+        -:    1:void foo(), bar(), baz();
+        1:    2:int main() {
+        -:    3:  __complex__ double x;
+        -:    4:  __complex__ float y;
+        -:    5:  __complex__ long double z;
+        1:    6:  __real__ x = 1.0;
+        1:    7:  __imag__ x = 2.0;
+        1:    8:  foo(x);
+        1:    9:  __real__ y = 3.0f;
+        1:   10:  __imag__ y = 4.0f;
+        1:   11:  bar(y);
+        1:   12:  __real__ z = 5.0L;
+        1:   13:  __imag__ z = 6.0L;
+        1:   14:  baz(z);
+        1:   15:  exit(0);
+        -:   16:}
+        -:   17:
+        1:   18:void foo(__complex__ double x) {
+        1:   19:  if (__real__ x != 1.0 || __imag__ x != 2.0)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+        1:   23:void bar(__complex__ float x) {
+        1:   24:  if (__real__ x != 3.0f || __imag__ x != 4.0f)
+    #####:   25:    abort();
+        1:   26:}
+        -:   27:
+        1:   28:void baz(__complex__ long double x) {
+        1:   29:  if (__real__ x != 5.0L || __imag__ x != 6.0L)
+    #####:   30:    abort();
+        1:   31:}

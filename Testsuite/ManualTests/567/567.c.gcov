@@ -1,0 +1,67 @@
+        -:    0:Source:567.c
+        -:    0:Graph:567.gcno
+        -:    0:Data:567.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized"  } */
+        -:    3:
+        -:    4:#include <stdio.h>
+        -:    5:
+        -:    6:struct container {
+        -:    7:  int x;
+        -:    8:  int y;
+        -:    9:};
+        -:   10:
+        -:   11:static struct container max;
+        -:   12:static int pole[3][3];
+        -:   13:static int pole2[123];
+        -:   14:
+        -:   15:static struct container superpole[10][10];
+        -:   16:
+    #####:   17:void f1(struct container *c) {
+        -:   18:  struct container pes;
+    #####:   19:  pes.x = 123;
+    #####:   20:  pes.y = 123;
+        -:   21:
+    #####:   22:  struct container *pesp = c;
+    #####:   23:  pesp->x = 5;
+        -:   24:
+    #####:   25:  pole[1][2] = 3;
+        -:   26:
+    #####:   27:  superpole[4][3].x = 4;
+    #####:   28:  max.x = 3;
+    #####:   29:  void *x = &pole;
+        -:   30:
+    #####:   31:  int **a = (int **)pole;
+    #####:   32:  a[1][2] = 543;
+        -:   33:
+    #####:   34:  if (x != 0)
+    #####:   35:    pole[1][2] = 123;
+    #####:   36:}
+        -:   37:
+    #####:   38:void f2(struct container *c) {
+        -:   39:  struct container pes;
+    #####:   40:  pes.x = 123;
+    #####:   41:  pes.y = 123;
+        -:   42:
+    #####:   43:  struct container *pesp = c;
+    #####:   44:  pesp->x = 5;
+        -:   45:
+    #####:   46:  pole[1][2] = 3;
+        -:   47:
+    #####:   48:  superpole[4][3].x = 4;
+    #####:   49:  max.x = 3;
+    #####:   50:  void *x = &pole;
+        -:   51:
+    #####:   52:  int **a = (int **)pole;
+    #####:   53:  a[1][2] = 543;
+        -:   54:
+    #####:   55:  if (x != 0)
+    #####:   56:    pole[1][2] = 123;
+    #####:   57:}
+        -:   58:
+        1:   59:int main(int argc, char **argv) { return 0; }
+        -:   60:
+        -:   61:/* { dg-final { scan-ipa-dump "Semantic equality hit:f1/\[0-9+\]+->f2/\[0-9+\]+"
+        -:   62: * "icf"  } } */
+        -:   63:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

@@ -1,0 +1,66 @@
+        -:    0:Source:1521.c
+        -:    0:Graph:1521.gcno
+        -:    0:Data:1521.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void *memcpy(void *, const void *, __SIZE_TYPE__);
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  void *v1;
+        -:    8:  void *v2;
+        -:    9:  void *v3;
+        -:   10:  union {
+        -:   11:    void *f1;
+        -:   12:    void *f2;
+        -:   13:  } u;
+        -:   14:} S;
+        -:   15:
+        -:   16:S *getS();
+        -:   17:void verify_p(void *p);
+        -:   18:double *getP(void *p);
+        -:   19:
+        1:   20:void memcpy_bug() {
+        -:   21:  S *s;
+        1:   22:  double *p = getP(0);
+        -:   23:
+        1:   24:  if (p) {
+        -:   25:    int intSptr[sizeof(S *) / sizeof(int)];
+        1:   26:    unsigned i = 0;
+        3:   27:    for (i = 0; i < sizeof(intSptr) / sizeof(*intSptr); ++i) {
+        2:   28:      intSptr[i] = (int)p[i];
+        -:   29:    }
+        1:   30:    memcpy(&s, intSptr, sizeof(intSptr));
+        1:   31:    (s)->u.f1 = p;
+        1:   32:    verify_p((s)->u.f1);
+        -:   33:  } else {
+    #####:   34:    s = getS();
+        -:   35:  }
+        1:   36:  verify_p(s->u.f1);
+        1:   37:}
+        -:   38:
+        -:   39:double P[4];
+        -:   40:
+        1:   41:double *getP(void *p) {
+        -:   42:  union u {
+        -:   43:    void *p;
+        -:   44:    int i[2];
+        -:   45:  } u;
+        1:   46:  u.p = P;
+        1:   47:  P[0] = u.i[0];
+        1:   48:  P[1] = u.i[1];
+        1:   49:  return P;
+        -:   50:}
+        -:   51:
+    #####:   52:S *getS() { return 0; }
+        -:   53:
+        2:   54:void verify_p(void *p) {
+        2:   55:  if (p != P)
+    #####:   56:    abort();
+        2:   57:}
+        -:   58:
+        1:   59:int main(int argc, char *argv[]) {
+        1:   60:  memcpy_bug();
+        1:   61:  return 0;
+        -:   62:}

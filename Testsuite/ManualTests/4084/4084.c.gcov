@@ -1,0 +1,29 @@
+        -:    0:Source:4084.c
+        -:    0:Graph:4084.gcno
+        -:    0:Data:4084.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  short i __attribute__((aligned(2), packed));
+        -:    3:  int f[2] __attribute__((aligned(2), packed));
+        -:    4:} A;
+        -:    5:
+        1:    6:f(ap) A *ap;
+        -:    7:{
+        1:    8:  short i, j = 1;
+        -:    9:
+        1:   10:  i = ap->f[1];
+        1:   11:  i += ap->f[j];
+        3:   12:  for (j = 0; j < 2; j++)
+        2:   13:    i += ap->f[j];
+        -:   14:
+        1:   15:  return i;
+        -:   16:}
+        -:   17:
+        1:   18:main() {
+        -:   19:  A a;
+        1:   20:  a.f[0] = 100;
+        1:   21:  a.f[1] = 13;
+        1:   22:  if (f(&a) != 139)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

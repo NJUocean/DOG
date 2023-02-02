@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run { target { aarch64*-*-* alpha*-*-* arm*-*-* hppa*-*-*
+    2|       | * powerpc*-*-* s390*-*-* } } } */
+    3|       |/* { dg-options "-O2 -fdump-tree-esra --param
+    4|       | * sra-max-scalarization-size-Ospeed=32" } */
+    5|       |/* { dg-additional-options "-mcpu=ev4" { target alpha*-*-* } } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |struct foo {
+    9|       |  long x;
+   10|       |};
+   11|       |
+   12|       |struct bar {
+   13|       |  struct foo f[2];
+   14|       |};
+   15|       |
+   16|       |struct baz {
+   17|       |  struct bar b[2];
+   18|       |};
+   19|       |
+   20|      1|int main(int argc, char **argv) {
+   21|      1|  struct baz a = {{{{{4}, {5}}}, {{{6}, {7}}}}};
+   22|      1|  int tot = 0;
+   23|      3|  for (int i = 0; i < 2; i++)
+   24|      6|    for (int j = 0; j < 2; j++)
+   25|      4|      tot = (tot * 256) + a.b[i].f[j].x;
+   26|      1|  if (tot == 0x04050607)
+   27|      1|    return 0;
+   28|      0|  abort();
+   29|      0|}
+   30|       |
+   31|       |/* { dg-final { scan-tree-dump-times "Removing load: a = \\\*.?L.?C.?.?.?0;" 1
+   32|       | * "esra" } } */
+   33|       |/* { dg-final { scan-tree-dump-times "SR\[.$\]\[0-9_\]+ =
+   34|       | * \\\*.?L.?C.?.?.?0\\.b\\\[0\\\]\\.f\\\[0\\\]\\.x" 1 "esra" } } */
+   35|       |/* { dg-final { scan-tree-dump-times "SR\[.$\]\[0-9_\]+ =
+   36|       | * \\\*.?L.?C.?.?.?0\\.b\\\[0\\\]\\.f\\\[1\\\]\\.x" 1 "esra" } } */
+   37|       |/* { dg-final { scan-tree-dump-times "SR\[.$\]\[0-9_\]+ =
+   38|       | * \\\*.?L.?C.?.?.?0\\.b\\\[1\\\]\\.f\\\[0\\\]\\.x" 1 "esra" } } */
+   39|       |/* { dg-final { scan-tree-dump-times "SR\[.$\]\[0-9_\]+ =
+   40|       | * \\\*.?L.?C.?.?.?0\\.b\\\[1\\\]\\.f\\\[1\\\]\\.x" 1 "esra" } } */
+

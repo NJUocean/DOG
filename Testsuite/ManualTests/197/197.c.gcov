@@ -1,0 +1,12 @@
+        -:    0:Source:197.c
+        -:    0:Graph:197.gcno
+        -:    0:Data:197.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target alloca } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  char *mem = __builtin_alloca(40);
+        1:    6:  __builtin___clear_cache(mem, mem + 40);
+        1:    7:  return 0;
+        -:    8:}

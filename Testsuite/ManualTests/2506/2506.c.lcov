@@ -1,0 +1,55 @@
+    1|       |/* Test builtin-memcpy (which may emit different code for different N).  */
+    2|       |#include <string.h>
+    3|       |
+    4|       |#define TESTSIZE 80
+    5|       |
+    6|       |char src[TESTSIZE] __attribute__((aligned));
+    7|       |char dst[TESTSIZE] __attribute__((aligned));
+    8|       |
+    9|     80|void check(char *test, char *match, int n) {
+   10|     80|  if (memcmp(test, match, n))
+   11|      0|    abort();
+   12|     80|}
+   13|       |
+   14|       |#define TN(n)                                                                  \
+   15|     80|  {                                                                            \
+   16|     80|    memset(dst, 0, n);                                                         \
+   17|     80|    memcpy(dst, src, n);                                                       \
+   18|     80|    check(dst, src, n);                                                        \
+   19|     80|  }
+   20|       |#define T(n)                                                                   \
+   21|     20|  TN(n)                                                                        \
+   22|     20|  TN((n) + 1)                                                                  \
+   23|     20|  TN((n) + 2)                                                                  \
+   24|     20|  TN((n) + 3)
+   25|       |
+   26|      1|main() {
+   27|      1|  int i, j;
+   28|      1|
+   29|     81|  for (i = 0; i < sizeof(src); ++i)
+   30|     80|    src[i] = 'a' + i % 26;
+   31|      1|
+   32|      1|  T(0);
+   33|      1|  T(4);
+   34|      1|  T(8);
+   35|      1|  T(12);
+   36|      1|  T(16);
+   37|      1|  T(20);
+   38|      1|  T(24);
+   39|      1|  T(28);
+   40|      1|  T(32);
+   41|      1|  T(36);
+   42|      1|  T(40);
+   43|      1|  T(44);
+   44|      1|  T(48);
+   45|      1|  T(52);
+   46|      1|  T(56);
+   47|      1|  T(60);
+   48|      1|  T(64);
+   49|      1|  T(68);
+   50|      1|  T(72);
+   51|      1|  T(76);
+   52|      1|
+   53|      1|  return 0;
+   54|      1|}
+

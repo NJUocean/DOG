@@ -1,0 +1,16 @@
+        -:    0:Source:2155.c
+        -:    0:Graph:2155.gcno
+        -:    0:Data:2155.gcda
+        -:    0:Runs:1
+        -:    1:/* If not gnu99, the u8 prefix should be parsed as separate tokens. */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=gnu89" } */
+        -:    4:
+        -:    5:const void *s0 = u8"a"; /* { dg-error "undeclared" "undeclared" } */
+        -:    6:/* { dg-error "expected ',' or ';'" "expected" { target *-*-* } .-1 } */
+        -:    7:
+        -:    8:#define u8 "a"
+        -:    9:
+        -:   10:const void *s1 = u8"a";
+        -:   11:
+        1:   12:int main() {}

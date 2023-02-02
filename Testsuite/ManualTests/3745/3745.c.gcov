@@ -1,0 +1,37 @@
+        -:    0:Source:3745.c
+        -:    0:Graph:3745.gcno
+        -:    0:Data:3745.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/51323 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct S {
+        -:    5:  int a, b, c;
+        -:    6:};
+        -:    7:int v;
+        -:    8:
+        2:    9:__attribute__((noinline, noclone)) void foo(int x, int y, int z) {
+        2:   10:  if (x != v || y != 0 || z != 9)
+    #####:   11:    abort();
+        2:   12:}
+        -:   13:
+        2:   14:static inline int baz(const struct S *p) { return p->b; }
+        -:   15:
+        2:   16:__attribute__((noinline, noclone)) void bar(int x, struct S y) {
+        2:   17:  foo(baz(&y), 0, x);
+        2:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  struct S s;
+        1:   22:  v = 3;
+        1:   23:  s.a = v - 1;
+        1:   24:  s.b = v;
+        1:   25:  s.c = v + 1;
+        1:   26:  bar(9, s);
+        1:   27:  v = 17;
+        1:   28:  s.a = v - 1;
+        1:   29:  s.b = v;
+        1:   30:  s.c = v + 1;
+        1:   31:  bar(9, s);
+        1:   32:  return 0;
+        -:   33:}

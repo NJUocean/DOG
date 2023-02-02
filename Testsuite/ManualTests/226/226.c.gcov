@@ -1,0 +1,90 @@
+        -:    0:Source:226.c
+        -:    0:Graph:226.gcno
+        -:    0:Data:226.gcda
+        -:    0:Runs:1
+        -:    1:/* This small program uses all the arithmetic operators that may
+        -:    2:   generate calls to library routines which must be implemented in
+        -:    3:   port-specific assembly language.  */
+        -:    4:/* { dg-do link } */
+        -:    5:
+        -:    6:#include <stddef.h>
+        -:    7:
+        -:    8:int foo();
+        -:    9:double dfoo();
+        -:   10:void discard(int);
+        -:   11:void ddiscard(double);
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  int a = foo(), b = foo();
+        1:   15:  unsigned int au = foo(), bu = foo();
+        1:   16:  float af = dfoo(), bf = dfoo();
+        1:   17:  double ad = dfoo(), bd = dfoo();
+        -:   18:
+        1:   19:  discard(a * b);
+        1:   20:  discard(a / b);
+        1:   21:  discard(a % b);
+        -:   22:
+        1:   23:  discard(au / bu);
+        1:   24:  discard(au % bu);
+        -:   25:
+        1:   26:  discard(a >> b);
+        1:   27:  discard(a << b);
+        -:   28:
+        1:   29:  discard(au >> bu);
+        1:   30:  discard(au << bu);
+        -:   31:
+        1:   32:  ddiscard(ad + bd);
+        1:   33:  ddiscard(ad - bd);
+        1:   34:  ddiscard(ad * bd);
+        1:   35:  ddiscard(ad / bd);
+        1:   36:  ddiscard(-ad);
+        -:   37:
+        1:   38:  ddiscard(af + bf);
+        1:   39:  ddiscard(af - bf);
+        1:   40:  ddiscard(af * bf);
+        1:   41:  ddiscard(af / bf);
+        1:   42:  ddiscard(-af);
+        -:   43:
+        1:   44:  discard((int)ad);
+        1:   45:  discard((int)af);
+        -:   46:
+        1:   47:  ddiscard((double)a);
+        1:   48:  ddiscard((float)a);
+        1:   49:  ddiscard((float)ad);
+        -:   50:
+        1:   51:  discard(ad == bd);
+        1:   52:  discard(ad < bd);
+        1:   53:  discard(ad > bd);
+        1:   54:  discard(ad != bd);
+        1:   55:  discard(ad <= bd);
+        1:   56:  discard(ad >= bd);
+        -:   57:
+        1:   58:  discard(af == bf);
+        1:   59:  discard(af < bf);
+        1:   60:  discard(af > bf);
+        1:   61:  discard(af != bf);
+        1:   62:  discard(af <= bf);
+        1:   63:  discard(af >= bf);
+        -:   64:
+        1:   65:  return 0;
+        -:   66:}
+        -:   67:
+       23:   68:void discard(x) int x __attribute__((__unused__));
+       23:   69:{}
+        -:   70:
+       13:   71:void ddiscard(x) double x __attribute__((__unused__));
+       13:   72:{}
+        -:   73:
+        4:   74:int foo() {
+        -:   75:  static int table[] = {20, 69, 4, 12};
+        -:   76:  static int idx;
+        -:   77:
+        4:   78:  return table[idx++];
+        -:   79:}
+        -:   80:
+        4:   81:double dfoo() {
+        -:   82:  static double table[] = {20.4, 69.96, 4.4, 202.202};
+        -:   83:  static int idx;
+        -:   84:
+        4:   85:  return table[idx++];
+        -:   86:}

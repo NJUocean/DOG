@@ -1,0 +1,22 @@
+        -:    0:Source:3332.c
+        -:    0:Graph:3332.gcno
+        -:    0:Data:3332.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/13313 */
+        -:    2:/* Origin: Mike Lerwill <mike@ml-solutions.co.uk> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:void DisplayNumber(unsigned long v) {
+        1:    7:  if (v != 0x9aL)
+    #####:    8:    abort();
+        1:    9:}
+        -:   10:
+        1:   11:unsigned long ReadNumber(void) { return 0x009a0000L; }
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  unsigned long tmp;
+        1:   15:  tmp = (ReadNumber() & 0x00ff0000L) >> 16;
+        1:   16:  DisplayNumber(tmp);
+        1:   17:  return 0;
+        -:   18:}

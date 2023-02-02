@@ -1,0 +1,22 @@
+        -:    0:Source:2699.c
+        -:    0:Graph:2699.gcno
+        -:    0:Data:2699.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/70593 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) unsigned long foo(unsigned x) {
+        1:    6:  unsigned long a, c = x;
+        1:    7:  asm volatile("xorl\t%k1, %k1\n\tmovl\t$7, %k0"
+        -:    8:               : "=c"(c), "=a"(a)
+        -:    9:               : "0"(c), "1"(c)
+        -:   10:               : "memory");
+        1:   11:  return c;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (foo(3) != 7)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

@@ -1,0 +1,11 @@
+    1|      0|double f(double a) {}
+    2|       |double (*const a[])(double) = {&f};
+    3|       |
+    4|      1|main() {
+    5|      1|  double (*p)();
+    6|      1|  p = &f;
+    7|      1|  if (p != a[0])
+    8|      0|    abort();
+    9|      1|  exit(0);
+   10|      1|}
+

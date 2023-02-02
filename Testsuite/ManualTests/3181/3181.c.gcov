@@ -1,0 +1,12 @@
+        -:    0:Source:3181.c
+        -:    0:Graph:3181.gcno
+        -:    0:Data:3181.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { xfail empty-*-* } } */
+        -:    2:/* { dg-xfail-run-if "" { *-*-* } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() {
+        1:    7:  return 0; /* First xfail list didn't match but second did, so XPASS.  */
+        -:    8:}

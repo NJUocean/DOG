@@ -1,0 +1,31 @@
+        -:    0:Source:2644.c
+        -:    0:Graph:2644.gcno
+        -:    0:Data:2644.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/46880 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-strict-aliasing -msse2" } */
+        -:    4:/* { dg-require-effective-target sse2_runtime } */
+        -:    5:
+        -:    6:typedef double __m128d __attribute__((__vector_size__(16), __may_alias__));
+        -:    7:typedef double (*T)[2];
+        -:    8:
+        1:    9:static __attribute__((noinline, noclone)) __m128d foo(__m128d c, __m128d d) {
+        1:   10:  T cp = (T)&c;
+        1:   11:  T dp = (T)&d;
+        1:   12:  __m128d e = {(*cp)[1], (*dp)[1]};
+        1:   13:  return e;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  __m128d c = {1.0, 2.0};
+        1:   18:  __m128d d = {3.0, 4.0};
+        -:   19:  union {
+        -:   20:    __m128d x;
+        -:   21:    double d[2];
+        -:   22:  } u;
+        1:   23:  u.x = foo(c, d);
+        1:   24:  if (u.d[0] != 2.0 || u.d[1] != 4.0)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

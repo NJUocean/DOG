@@ -1,0 +1,40 @@
+        -:    0:Source:2885.c
+        -:    0:Graph:2885.gcno
+        -:    0:Data:2885.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc64le-*-* } } } */
+        -:    2:/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+        -:    3:
+        -:    4:void abort();
+        -:    5:
+        -:    6:#define N 4096
+        -:    7:signed char ca[N] __attribute__((aligned(16)));
+        -:    8:signed char cb[N] __attribute__((aligned(16)));
+        -:    9:signed char cc[N] __attribute__((aligned(16)));
+        -:   10:
+        1:   11:__attribute__((noinline)) void foo() {
+        -:   12:  int i;
+     4097:   13:  for (i = 0; i < N; i++) {
+     4096:   14:    ca[i] = cb[i] - cc[i];
+        -:   15:  }
+        1:   16:}
+        -:   17:
+        1:   18:__attribute__((noinline)) void init() {
+        -:   19:  int i, ii;
+     4097:   20:  for (i = 0, ii = 0; i < N; ++i, ii = (ii + 1) % 128) {
+     4096:   21:    cb[i] = ii - 128;
+     4096:   22:    cc[i] = ii / 2 - 64;
+        -:   23:  }
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        -:   27:  int i, ii;
+        1:   28:  init();
+        1:   29:  foo();
+     4097:   30:  for (i = 0; i < N; ++i) {
+     4096:   31:    ii = i % 128;
+     4096:   32:    if (ca[i] != ii - ii / 2 - 64)
+    #####:   33:      abort();
+        -:   34:  }
+        1:   35:  return 0;
+        -:   36:}

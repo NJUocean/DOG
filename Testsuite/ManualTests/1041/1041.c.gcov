@@ -1,0 +1,23 @@
+        -:    0:Source:1041.c
+        -:    0:Graph:1041.gcno
+        -:    0:Data:1041.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/83364 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fno-forward-propagate -fno-tree-coalesce-vars
+        -:    4: * -fno-tree-ter" } */
+        -:    5:
+        -:    6:int a;
+        -:    7:
+        1:    8:static int __attribute__((noinline, noclone)) foo(unsigned char c) {
+        1:    9:  c <<= (long long)c != a;
+        1:   10:  c = c << 7 | c >> 1;
+        1:   11:  return c;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  asm volatile("" : : : "memory");
+        1:   16:  if (foo(0) != 0)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

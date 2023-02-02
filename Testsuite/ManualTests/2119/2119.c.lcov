@@ -1,0 +1,8 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=shift -fwrapv -w -std=c99" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  int a = 1;
+    6|      1|  a <<= 31;
+    7|      1|}
+

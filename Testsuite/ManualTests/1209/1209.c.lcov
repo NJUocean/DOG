@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target tls_runtime } */
+    3|       |/* { dg-add-options tls } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |static __thread int fstat;
+    8|       |static __thread int fstat = 1;
+    9|       |
+   10|      1|int test_code(int b) {
+   11|      1|  fstat += b;
+   12|      1|  return fstat;
+   13|      1|}
+   14|       |
+   15|      1|int main(int ac, char *av[]) {
+   16|      1|  int a = test_code(1);
+   17|      1|
+   18|      1|  if ((a != 2) || (fstat != 2))
+   19|      0|    abort();
+   20|      1|
+   21|      1|  return 0;
+   22|      1|}
+

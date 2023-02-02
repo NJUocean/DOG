@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|static _Bool foo(_Bool a, _Bool b) {
+    4|      1|  int x = a && !b;
+    5|      1|  return x != 0;
+    6|      1|}
+    7|       |
+    8|       |int y = 1;
+    9|      1|int main() {
+   10|      1|  register _Bool x
+   11|      1|  /* Add register spec for the argv parameter to main.  */
+   12|      1|#if __i386__ || __x86_64__
+   13|      1|      __asm__("%esi")
+   14|      1|#endif
+   15|      1|          ;
+   16|      1|  if (foo(x, y))
+   17|      0|    __builtin_abort();
+   18|      1|  return 0;
+   19|      1|}
+

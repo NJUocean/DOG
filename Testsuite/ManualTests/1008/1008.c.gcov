@@ -1,0 +1,19 @@
+        -:    0:Source:1008.c
+        -:    0:Graph:1008.gcno
+        -:    0:Data:1008.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/77587 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-require-alias "" } */
+        -:    4:/* { dg-require-weak-override "" } */
+        -:    5:
+        1:    6:void foo(long x, long y, long z) {}
+        -:    7:
+        -:    8:void bar(long x, long y, long z) __attribute__((weak, alias("foo")));
+        -:    9:
+        1:   10:void baz(long x, long y, long z) { bar(0, 0, 0); }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  baz(0, 0, 0);
+        1:   14:  return 0;
+        -:   15:}

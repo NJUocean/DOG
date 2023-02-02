@@ -1,0 +1,12 @@
+    1|       |int a, b;
+    2|      1|main() {
+    3|      1|  int c = -2;
+    4|      1|  int d = 0xfe;
+    5|      1|  int e = a & 1;
+    6|      1|  int f = b & 2;
+    7|      1|  if ((char)(c | (e & f)) == (char)d)
+    8|      1|    return 0;
+    9|      0|  else
+   10|      0|    abort();
+   11|      1|}
+

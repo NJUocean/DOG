@@ -1,0 +1,59 @@
+    1|       |/* Machine description pattern tests.  */
+    2|       |
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-mmvcle -dP -save-temps" } */
+    5|       |/* { dg-do run { target { s390_useable_hw } } } */
+    6|       |
+    7|       |/* Skip test if -O0 is present on the command line or -O... is missing:
+    8|       |
+    9|       |    { dg-skip-if "" { *-*-* } { "-march=z9*" "-O0" } { "" } }
+   10|       |    { dg-skip-if "" { *-*-* } { "*" } { "-O*" } }
+   11|       |*/
+   12|       |
+   13|      2|__attribute__((noinline)) void test(char *p, char c, int len) {
+   14|      2|  __builtin_memset(p, c, len);
+   15|      2|}
+   16|       |
+   17|      0|__attribute__((noinline)) void test2(char *p, int c, int len) {
+   18|      0|  __builtin_memset(p, (char)c, len);
+   19|      0|}
+   20|       |
+   21|       |/* Check that the right patterns are used.  */
+   22|       |/* { dg-final { scan-assembler-times {c"?:16:.*{[*]setmem_long_?3?1?z?}} 1 } }
+   23|       | */
+   24|       |/* { dg-final { scan-assembler-times {c"?:22:.*{[*]setmem_long_and_?3?1?z?}} 1 }
+   25|       | * } */
+   26|       |
+   27|  2.01k|#define LEN 500
+   28|       |char buf[LEN + 2];
+   29|       |
+   30|      2|void init_buf(void) {
+   31|      2|  int i;
+   32|      2|
+   33|      2|  buf[0] = 0;
+   34|  1.00k|  for (i = 1; i <= LEN; i++)
+   35|  1.00k|    buf[i] = (0x10 + (i & 0x3f));
+   36|      2|  buf[LEN + 1] = 0x7f;
+   37|      2|}
+   38|       |
+   39|      2|void validate_buf(char val) {
+   40|      2|  int i;
+   41|      2|
+   42|      2|  if (buf[0] != 0)
+   43|      0|    __builtin_abort();
+   44|  1.00k|  for (i = 1; i <= LEN; i++)
+   45|  1.00k|    if (buf[i] != val)
+   46|      0|      __builtin_abort();
+   47|      2|  if (buf[LEN + 1] != 0x7f)
+   48|      0|    __builtin_abort();
+   49|      2|}
+   50|       |
+   51|      1|int main(void) {
+   52|      1|  init_buf();
+   53|      1|  test(buf + 1, 55, LEN);
+   54|      1|  validate_buf(55);
+   55|      1|  init_buf();
+   56|      1|  test(buf + 1, 66, LEN);
+   57|      1|  validate_buf(66);
+   58|      1|}
+

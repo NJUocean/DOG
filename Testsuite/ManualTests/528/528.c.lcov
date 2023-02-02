@@ -1,0 +1,71 @@
+    1|       |/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-options "-g -mgeneral-regs-only" } */
+    3|       |
+    4|       |#include <stddef.h>
+    5|       |
+    6|       |extern void exit(int);
+    7|       |
+    8|       |typedef unsigned int uword_t __attribute__((mode(__word__)));
+    9|       |typedef int aligned __attribute__((aligned(64)));
+   10|       |
+   11|      1|#define IP 0x12345671
+   12|      1|#define CS 0x12345672
+   13|      1|#define FLAGS 0x12345673
+   14|      1|#define SP 0x12345674
+   15|      1|#define SS 0x12345675
+   16|       |
+   17|       |#define STRING(x) XSTRING(x)
+   18|       |#define XSTRING(x) #x
+   19|       |#define ASMNAME(cname) ASMNAME2(__USER_LABEL_PREFIX__, cname)
+   20|       |#define ASMNAME2(prefix, cname) XSTRING(prefix) cname
+   21|       |
+   22|       |struct interrupt_frame {
+   23|       |  uword_t ip;
+   24|       |  uword_t cs;
+   25|       |  uword_t flags;
+   26|       |  uword_t sp;
+   27|       |  uword_t ss;
+   28|       |};
+   29|       |
+   30|      1|int check_int(int *i, int align) {
+   31|      1|  *i = 20;
+   32|      1|  if ((((ptrdiff_t)i) & (align - 1)) != 0)
+   33|      0|    __builtin_abort();
+   34|      1|  return *i;
+   35|      1|}
+   36|       |
+   37|      1|__attribute__((interrupt, used)) void fn(struct interrupt_frame *frame) {
+   38|      1|  aligned i;
+   39|      1|  if (check_int(&i, __alignof__(i)) != i)
+   40|      0|    __builtin_abort();
+   41|      1|
+   42|      1|  if (IP != frame->ip) /* BREAK */
+   43|      0|    __builtin_abort();
+   44|      1|  if (CS != frame->cs)
+   45|      0|    __builtin_abort();
+   46|      1|  if (FLAGS != frame->flags)
+   47|      0|    __builtin_abort();
+   48|      1|  if (SP != frame->sp)
+   49|      0|    __builtin_abort();
+   50|      1|  if (SS != frame->ss)
+   51|      0|    __builtin_abort();
+   52|      1|
+   53|      1|  exit(0);
+   54|      1|}
+   55|       |
+   56|      1|int main() {
+   57|      1|  asm("push	$" STRING(SS) ";		\
+   58|      1|	push	$" STRING(SP) ";		\
+   59|      1|	push	$" STRING(FLAGS) ";		\
+   60|      1|	push	$" STRING(CS) ";		\
+   61|      1|	push	$" STRING(IP) ";		\
+   62|      1|	jmp	 " ASMNAME("fn"));
+   63|      1|  return 0;
+   64|      1|}
+   65|       |
+   66|       |/* { dg-final { gdb-test 46 "frame->ip" "0x12345671" } } */
+   67|       |/* { dg-final { gdb-test 46 "frame->cs" "0x12345672" } } */
+   68|       |/* { dg-final { gdb-test 46 "frame->flags" "0x12345673" } } */
+   69|       |/* { dg-final { gdb-test 46 "frame->sp" "0x12345674" } } */
+   70|       |/* { dg-final { gdb-test 46 "frame->ss" "0x12345675" } } */
+

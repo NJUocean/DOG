@@ -1,0 +1,24 @@
+        -:    0:Source:3210.c
+        -:    0:Graph:3210.gcno
+        -:    0:Data:3210.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: Joseph Myers <jsm28@cam.ac.uk>.  */
+        -:    2:/* Case labels in a switch statement are converted to the promoted
+        -:    3:   type of the controlling expression, not an unpromoted version.
+        -:    4:   Reported as PR c/2454 by
+        -:    5:   Andreas Krakowczyk <Andreas.Krakowczyk@fujitsu-siemens.com>.  */
+        -:    6:
+        -:    7:extern void exit(int);
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:static int i;
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  i = -1;
+        1:   14:  switch ((signed char)i) {
+        -:   15:  case 255:
+        -:   16:    abort();
+        -:   17:  default:
+        1:   18:    exit(0);
+        -:   19:  }
+        -:   20:}

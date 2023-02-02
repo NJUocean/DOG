@@ -1,0 +1,24 @@
+        -:    0:Source:2320.c
+        -:    0:Graph:2320.gcno
+        -:    0:Data:2320.gcda
+        -:    0:Runs:1
+        -:    1:/* Test gcov block mode.  */
+        -:    2:
+        -:    3:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    4:/* { dg-do run { target native } } */
+        -:    5:
+        -:    6:int one = 1; /* subvert constant folder. */
+        -:    7:int zero = 0;
+        -:    8:
+       10:    9:int foo(int ix) { return ix & 1 ? one : zero; /* count(10) */ }
+        -:   10:
+        1:   11:int main() {
+        1:   12:  unsigned ix, jx = 0;
+        -:   13:
+       11:   14:  for (ix = 10; ix--;)
+       10:   15:    jx += foo(ix); /* count(11) */
+        -:   16:
+        1:   17:  return jx != 5;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { run-gcov { -a gcov-11.c } } } */

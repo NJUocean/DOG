@@ -1,0 +1,40 @@
+        -:    0:Source:4037.c
+        -:    0:Graph:4037.gcno
+        -:    0:Data:4037.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct creal_T {
+        -:    2:  double re;
+        -:    3:  double im;
+        -:    4:} creal_T;
+        -:    5:
+        -:    6:#define N 16
+        1:    7:int main() {
+        -:    8:  int k;
+        -:    9:  int i;
+        -:   10:  int j;
+        -:   11:  creal_T t2[N];
+        -:   12:  double inval;
+        -:   13:
+        1:   14:  inval = 1.0;
+       17:   15:  for (j = 0; j < N; ++j) {
+       16:   16:    t2[j].re = 0;
+       16:   17:    t2[j].im = 0;
+        -:   18:  }
+        -:   19:
+        5:   20:  for (j = 0; j < N / 4; j++) {
+        4:   21:    i = j * 4;
+        4:   22:    t2[i].re = inval;
+        4:   23:    t2[i].im = inval;
+        4:   24:    k = i + 3;
+        4:   25:    t2[k].re = inval;
+        4:   26:    t2[k].im = inval;
+        4:   27:    t2[i] = t2[k];
+        4:   28:    t2[k].re = inval;
+        -:   29:  }
+        -:   30:
+        3:   31:  for (i = 0; i < 2; ++i)
+        2:   32:    if (t2[i].re != !i || t2[i].im != !i)
+    #####:   33:      __builtin_abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

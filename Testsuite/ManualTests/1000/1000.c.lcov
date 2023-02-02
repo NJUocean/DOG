@@ -1,0 +1,16 @@
+    1|       |/* This code was miscompiled at -O3 on x86.
+    2|       |   Reported by Jim Meyering; distilled from bash.  */
+    3|       |
+    4|      0|int rl_show_char(int c) { return 0; }
+    5|       |
+    6|      2|int rl_character_len(int c, int pos) { return isprint(c) ? 1 : 2; }
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  int (*x)(int, int) = rl_character_len;
+   10|      1|  if (x('a', 1) != 1)
+   11|      0|    abort();
+   12|      1|  if (x('\002', 1) != 2)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

@@ -1,0 +1,46 @@
+        -:    0:Source:1378.c
+        -:    0:Graph:1378.gcno
+        -:    0:Data:1378.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:#define LEN 4
+        -:    6:
+        1:    7:static inline void unpack(int array[LEN]) {
+        -:    8:  int ii, val;
+        1:    9:  val = 1;
+        5:   10:  for (ii = 0; ii < LEN; ii++) {
+        4:   11:    array[ii] = val % 2;
+        4:   12:    val = val / 2;
+        -:   13:  }
+        1:   14:}
+        -:   15:
+        1:   16:static inline int pack(int array[LEN]) {
+        -:   17:  int ans, ii;
+        1:   18:  ans = 0;
+        5:   19:  for (ii = LEN - 1; ii >= 0; ii--) {
+        4:   20:    ans = 2 * ans + array[ii];
+        -:   21:  }
+        1:   22:  return ans;
+        -:   23:}
+        -:   24:
+        1:   25:int __attribute__((noinline)) foo() {
+        -:   26:  int temp, ans;
+        -:   27:  int array[LEN];
+        1:   28:  unpack(array);
+        1:   29:  temp = array[0];
+        1:   30:  array[0] = array[2];
+        1:   31:  array[2] = temp;
+        1:   32:  ans = pack(array);
+        1:   33:  return ans;
+        -:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        -:   37:  int val;
+        1:   38:  val = foo();
+        1:   39:  if (val != 4)
+    #####:   40:    abort();
+        1:   41:  return 0;
+        -:   42:}

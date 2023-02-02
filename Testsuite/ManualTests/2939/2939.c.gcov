@@ -1,0 +1,40 @@
+        -:    0:Source:2939.c
+        -:    0:Graph:2939.gcno
+        -:    0:Data:2939.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -march=z10 --save-temps -mindirect-branch-table" } */
+        -:    3:
+        -:    4:int gl = 0;
+        -:    5:
+        -:    6:int __attribute__((function_return_reg("thunk"), noinline, noclone))
+        3:    7:bar(int a) {
+        3:    8:  return a + 2;
+        -:    9:}
+        -:   10:
+        1:   11:void __attribute__((noinline, noclone)) foo(int a) {
+        -:   12:  int i;
+        -:   13:
+        1:   14:  if (a == 42)
+    #####:   15:    return;
+        -:   16:
+        4:   17:  for (i = 0; i < a; i++)
+        3:   18:    gl += bar(i);
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  foo(3);
+        1:   23:  if (gl != 9)
+    #####:   24:    __builtin_abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* 1 x bar
+        -:   30:/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 1 } } */
+        -:   31:/* { dg-final { scan-assembler "exrl" } } */
+        -:   32:
+        -:   33:/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+        -:   34:/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+        -:   35:/* { dg-final { scan-assembler     "section\t.s390_return_reg" } } */
+        -:   36:/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */

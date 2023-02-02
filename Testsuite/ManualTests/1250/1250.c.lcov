@@ -1,0 +1,24 @@
+    1|       |/* When comparisons of bit-fields to unsigned constants got shortened,
+    2|       |   the shortened signed constant was wrongly marked as overflowing,
+    3|       |   leading to a later integer_zerop failure and misoptimization.
+    4|       |
+    5|       |   Related to bug tree-optimization/16437 but shows the problem on
+    6|       |   32-bit systems.  */
+    7|       |/* Origin: Joseph Myers <jsm@polyomino.org.uk> */
+    8|       |
+    9|       |/* { dg-require-effective-target int32plus } */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|       |struct s {
+   14|       |  int a : 12, b : 20;
+   15|       |};
+   16|       |
+   17|       |struct s x = {-123, -456};
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  if (x.a != -123U || x.b != -456U)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

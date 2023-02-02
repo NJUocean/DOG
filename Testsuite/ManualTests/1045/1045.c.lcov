@@ -1,0 +1,26 @@
+    1|       |/* PR middle-end/83609 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-tree-forwprop -fno-tree-ccp -fno-tree-fre
+    4|       | * -fno-tree-pre -fno-code-hoisting" } */
+    5|       |
+    6|       |#if __SIZEOF_LONG_LONG__ == 2 * __SIZEOF_FLOAT__
+    7|      1|_Complex float foo(void) {
+    8|      1|  _Complex float c;
+    9|      1|  *((unsigned long long *)&c) = 0x123456789abcdef0ULL;
+   10|      1|  return c;
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  union {
+   15|      1|    _Complex float c;
+   16|      1|    unsigned long long l;
+   17|      1|  } u;
+   18|      1|  u.c = foo();
+   19|      1|  if (u.l != 0x123456789abcdef0ULL)
+   20|      0|    __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+   23|       |#else
+   24|       |int main() { return 0; }
+   25|       |#endif
+

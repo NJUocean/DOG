@@ -1,0 +1,39 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O1 -fipa-sra" } */
+    3|       |
+    4|       |typedef struct {
+    5|       |  int a;
+    6|       |} b;
+    7|       |typedef struct {
+    8|       |  double c;
+    9|       |  double a;
+   10|       |} d;
+   11|       |typedef struct {
+   12|       |  d e;
+   13|       |  d f;
+   14|       |} g;
+   15|       |g h;
+   16|       |b i, m;
+   17|       |int j, k, l, n, o;
+   18|      1|static b q(d s) {
+   19|      1|  int r = s.c ?: 0;
+   20|      1|  if (r)
+   21|      0|    if (j)
+   22|      0|      l = j - 2;
+   23|      1|  o = k;
+   24|      1|  n = l;
+   25|      1|  i = m;
+   26|      1|  return m;
+   27|      1|}
+   28|      1|static void t(g s) {
+   29|      1|  {
+   30|      1|    d p = s.e;
+   31|      1|    int r = p.c ?: 0;
+   32|      1|    if (r) {
+   33|      0|      l = j - 2;
+   34|      0|    }
+   35|      1|  }
+   36|      1|  b f = q(s.f);
+   37|      1|}
+   38|      1|void main() { t(h); }
+

@@ -1,0 +1,31 @@
+    1|       |extern void abort();
+    2|       |
+    3|      2|void __attribute__((noinline)) bar(unsigned long long i) {
+    4|      2|  if (i)
+    5|      0|    abort();
+    6|      2|}
+    7|       |
+    8|      2|static void __attribute__((always_inline)) foo(unsigned long long *r) {
+    9|      2|  int i;
+   10|      2|
+   11|      2|  for (i = 0;; i++)
+   12|      2|    if (*r & ((unsigned long long)1 << (63 - i)))
+   13|      2|      break;
+   14|      2|
+   15|      2|  bar(i);
+   16|      2|}
+   17|       |
+   18|      1|void __attribute__((noinline)) do_test(unsigned long long *r) {
+   19|      1|  int i;
+   20|      1|
+   21|      3|  for (i = 0; i < 2; ++i)
+   22|      2|    foo(r);
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  unsigned long long r = 0x8000000000000001ull;
+   27|      1|
+   28|      1|  do_test(&r);
+   29|      1|  return 0;
+   30|      1|}
+

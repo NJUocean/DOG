@@ -1,0 +1,12 @@
+    1|       |/* { dg-skip-if "small alignment" { pdp11-*-* } } */
+    2|       |
+    3|       |void func(void) __attribute__((aligned(256)));
+    4|       |
+    5|      0|void func(void) {}
+    6|       |
+    7|      1|int main() {
+    8|      1|  if (__alignof__(func) != 256)
+    9|      0|    abort();
+   10|      1|  return 0;
+   11|      1|}
+

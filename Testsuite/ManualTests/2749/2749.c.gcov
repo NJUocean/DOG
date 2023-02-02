@@ -1,0 +1,36 @@
+        -:    0:Source:2749.c
+        -:    0:Graph:2749.gcno
+        -:    0:Data:2749.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/90358 */
+        -:    2:/* { dg-do run { target { sse4_runtime } } } */
+        -:    3:/* { dg-options "-O3 -msse4" } */
+        -:    4:
+        -:    5:struct s {
+        -:    6:  unsigned int a, b, c;
+        -:    7:};
+        -:    8:
+        -:    9:void __attribute__((noipa))
+        1:   10:foo(struct s *restrict s1, struct s *restrict s2, int n) {
+       13:   11:  for (int i = 0; i < n; ++i) {
+       12:   12:    s1[i].b = s2[i].b;
+       12:   13:    s1[i].c = s2[i].c;
+       12:   14:    s2[i].c = 0;
+        -:   15:  }
+        1:   16:}
+        -:   17:
+        -:   18:#define N 12
+        -:   19:
+        1:   20:int main() {
+        -:   21:  struct s s1[N], s2[N];
+       13:   22:  for (unsigned int j = 0; j < N; ++j) {
+       12:   23:    s2[j].a = j * 5;
+       12:   24:    s2[j].b = j * 5 + 2;
+       12:   25:    s2[j].c = j * 5 + 4;
+        -:   26:  }
+        1:   27:  foo(s1, s2, N);
+       13:   28:  for (unsigned int j = 0; j < N; ++j)
+       12:   29:    if (s1[j].b != j * 5 + 2)
+    #####:   30:      __builtin_abort();
+        1:   31:  return 0;
+        -:   32:}

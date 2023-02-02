@@ -1,0 +1,100 @@
+        -:    0:Source:2996.c
+        -:    0:Graph:2996.gcno
+        -:    0:Data:2996.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2009  Free Software Foundation.
+        -:    2:
+        -:    3:   Verify that folding of complex mul and div work correctly.
+        -:    4:   TI C6X specific version, reduced by two tests that fails due to the
+        -:    5:   use of implicit -freciprocal-math.
+        -:    6:
+        -:    7:   Origin: Kaveh R. Ghazi,  August 13, 2009.  */
+        -:    8:
+        -:    9:/* { dg-do run } */
+        -:   10:/* { dg-options "-O2" } */
+        -:   11:/* { dg-add-options ieee } */
+        -:   12:
+        -:   13:extern void link_error(int);
+        -:   14:
+        -:   15:/* Evaluate this expression at compile-time.  */
+        -:   16:#define COMPILETIME_TESTIT(TYPE, X, OP, Y, RES)                                \
+        -:   17:  do {                                                                         \
+        -:   18:    if ((_Complex TYPE)(X)OP(_Complex TYPE)(Y) != (_Complex TYPE)(RES))        \
+        -:   19:      link_error(__LINE__);                                                    \
+        -:   20:  } while (0)
+        -:   21:
+        -:   22:/* Use this error function for cases which only evaluate at
+        -:   23:   compile-time when optimizing.  */
+        -:   24:#ifdef __OPTIMIZE__
+        -:   25:#define ERROR_FUNC(X) link_error(X)
+        -:   26:#else
+        -:   27:#define ERROR_FUNC(X) __builtin_abort()
+        -:   28:#endif
+        -:   29:
+        -:   30:/* Evaluate this expression at compile-time using static initializers.  */
+        -:   31:#define STATICINIT_TESTIT(TYPE, X, OP, Y, RES)                                 \
+        -:   32:  do {                                                                         \
+        -:   33:    static const _Complex TYPE foo = (_Complex TYPE)(X)OP(_Complex TYPE)(Y);   \
+        -:   34:    if (foo != (_Complex TYPE)(RES))                                           \
+        -:   35:      ERROR_FUNC(__LINE__);                                                    \
+        -:   36:  } while (0)
+        -:   37:
+        -:   38:/* Evaluate this expression at runtime.  */
+        -:   39:#define RUNTIME_TESTIT(TYPE, X, OP, Y, RES)                                    \
+        -:   40:  do {                                                                         \
+        -:   41:    volatile _Complex TYPE foo;                                                \
+        -:   42:    foo = (_Complex TYPE)(X);                                                  \
+        -:   43:    foo OP## = (_Complex TYPE)(Y);                                             \
+        -:   44:    if (foo != (_Complex TYPE)(RES))                                           \
+        -:   45:      __builtin_abort();                                                       \
+        -:   46:  } while (0)
+        -:   47:
+        -:   48:/* Evaluate this expression at compile-time and runtime.  */
+        -:   49:#define TESTIT(TYPE, X, OP, Y, RES)                                            \
+        -:   50:  do {                                                                         \
+        -:   51:    STATICINIT_TESTIT(TYPE, X, OP, Y, RES);                                    \
+        -:   52:    COMPILETIME_TESTIT(TYPE, X, OP, Y, RES);                                   \
+        -:   53:    RUNTIME_TESTIT(TYPE, X, OP, Y, RES);                                       \
+        -:   54:  } while (0)
+        -:   55:
+        -:   56:/* Either the real or imaginary parts should be infinity.  */
+        -:   57:#define TEST_ONE_PART_INF(VAL)                                                 \
+        -:   58:  do {                                                                         \
+        -:   59:    static const _Complex double foo = (VAL);                                  \
+        -:   60:    if (!__builtin_isinf(__real foo) && !__builtin_isinf(__imag foo))          \
+        -:   61:      ERROR_FUNC(__LINE__);                                                    \
+        -:   62:    if (!__builtin_isinf(__real(VAL)) && !__builtin_isinf(__imag(VAL)))        \
+        -:   63:      __builtin_abort();                                                       \
+        -:   64:  } while (0)
+        -:   65:
+        1:   66:int main() {
+        -:   67:  /* Test some regular finite values.  */
+       1*:   68:  TESTIT(double, 3. + 4.i, *, 2, 6 + 8i);
+       1*:   69:  TESTIT(double, 3. + 4.i, /, 2, 1.5 + 2i);
+       1*:   70:  TESTIT(int, 3 + 4i, *, 2, 6 + 8i);
+       1*:   71:  TESTIT(int, 3 + 4i, /, 2, 1 + 2i);
+        -:   72:
+       1*:   73:  TESTIT(double, 3. + 4.i, *, 2 + 5i, -14 + 23i);
+       1*:   74:  TESTIT(int, 3 + 4i, *, 2 + 5i, -14 + 23i);
+       1*:   75:  TESTIT(int, 30 + 40i, /, 5i, 8 - 6i);
+       1*:   76:  TESTIT(int, 14 + 6i, /, 7 + 3i, 2);
+       1*:   77:  TESTIT(int, 8 + 24i, /, 4 + 12i, 2);
+        -:   78:
+        -:   79:  /* Test for accuracy.  */
+        -:   80:  COMPILETIME_TESTIT(
+        -:   81:      double, (1 + __DBL_EPSILON__ + 1i), *, (1 - __DBL_EPSILON__ + 1i),
+        -:   82:      -4.93038065763132378382330353301741393545754021943139377981e-32 + 2i);
+        -:   83:
+        -:   84:  /* This becomes (NaN + iInf).  */
+        -:   85:#define VAL1 ((_Complex double)__builtin_inf() * 1i)
+        -:   86:
+        -:   87:  /* Test some C99 Annex G special cases.  */
+       1*:   88:  TEST_ONE_PART_INF((VAL1) * (VAL1));
+       1*:   89:  TEST_ONE_PART_INF((_Complex double)1 / (_Complex double)0);
+       1*:   90:  TEST_ONE_PART_INF((VAL1) / (_Complex double)1);
+        -:   91:
+       1*:   92:  RUNTIME_TESTIT(double, 1, /, VAL1, 0);
+       1*:   93:  STATICINIT_TESTIT(double, 1, /, VAL1, 0);
+        -:   94:
+        1:   95:  return 0;
+        -:   96:}

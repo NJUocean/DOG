@@ -1,0 +1,18 @@
+        -:    0:Source:1074.c
+        -:    0:Graph:1074.gcno
+        -:    0:Data:1074.gcda
+        -:    0:Runs:1
+        -:    1:/* Test against a problem with loop reversal.  */
+        1:    2:static void bug(int size, int tries) {
+        -:    3:  int i;
+        1:    4:  int num = 0;
+        2:    5:  while (num < size) {
+       10:    6:    for (i = 1; i < tries; i++)
+        9:    7:      num++;
+        -:    8:  }
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  bug(5, 10);
+        1:   13:  exit(0);
+        -:   14:}

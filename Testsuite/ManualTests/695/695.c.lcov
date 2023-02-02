@@ -1,0 +1,16 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O0" } } */
+    3|       |
+    4|       |/* Local variables should not have odr indicators.  */
+    5|       |static int a = 2;
+    6|       |/* Thread local variables should not have odr indicators.  */
+    7|       |__thread int b = 3;
+    8|       |/* Externally visible  variables should have odr indicators.  */
+    9|       |int c = 1;
+   10|       |
+   11|      1|int main() { return 0; }
+   12|       |
+   13|       |/* { dg-final { scan-assembler-not "odr_asan\[\.\$\]a" } } */
+   14|       |/* { dg-final { scan-assembler-not "odr_asan\[\.\$\]b" } } */
+   15|       |/* { dg-final { scan-assembler "odr_asan\[\.\$\]c" } } */
+

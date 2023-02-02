@@ -1,0 +1,44 @@
+    1|       |/* PR tree-optimization/33136 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct S {
+    8|       |  void *a;
+    9|       |  int b;
+   10|       |  int *c;
+   11|       |};
+   12|       |static int d, e;
+   13|       |
+   14|       |static struct S s;
+   15|       |
+   16|      1|static int *__attribute__((noinline, const)) foo(void) { return &s.b; }
+   17|       |
+   18|      1|int *__attribute__((noinline)) bar(int **f) {
+   19|      1|  s.c = &d;
+   20|      1|  *f = &e;
+   21|      1|  /* As nothing ever takes the address of any int * field in struct S,
+   22|      1|     the write to *f can't alias with the s.c field.  */
+   23|      1|  return s.c;
+   24|      1|}
+   25|       |
+   26|      1|int __attribute__((noinline)) baz(int *x) {
+   27|      1|  s.b = 1;
+   28|      1|  *x = 4;
+   29|      1|  /* Function foo takes address of an int field in struct S,
+   30|      1|     so *x can alias with the s.b field (and it does in this testcase).  */
+   31|      1|  return s.b;
+   32|      1|}
+   33|       |
+   34|      1|int __attribute__((noinline)) t(void) {
+   35|      1|  int *f = (int *)0;
+   36|      1|  return 10 * (bar(&f) != &d) + baz(foo());
+   37|      1|}
+   38|       |
+   39|      1|int main(void) {
+   40|      1|  if (t() != 4)
+   41|      0|    abort();
+   42|      1|  return 0;
+   43|      1|}
+

@@ -1,0 +1,25 @@
+        -:    0:Source:3632.c
+        -:    0:Graph:3632.gcno
+        -:    0:Data:3632.gcda
+        -:    0:Runs:1
+        -:    1:struct X {
+        -:    2:  int *p;
+        -:    3:} x;
+        -:    4:
+        1:    5:struct X __attribute__((noinline)) foo(int *p) {
+        -:    6:  struct X x;
+        1:    7:  x.p = p;
+        1:    8:  return x;
+        -:    9:}
+        -:   10:
+        1:   11:void __attribute((noinline)) bar() { *x.p = 1; }
+        -:   12:
+        -:   13:extern void abort(void);
+        1:   14:int main() {
+        1:   15:  int i = 0;
+        1:   16:  x = foo(&i);
+        1:   17:  bar();
+        1:   18:  if (i != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

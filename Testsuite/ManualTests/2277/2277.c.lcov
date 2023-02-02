@@ -1,0 +1,58 @@
+    1|       |/* Copyright (C) 2000 Free Software Foundation, Inc.
+    2|       |   Contributed by Nathan Sidwell 23 Feb 2000 <nathan@codesourcery.com> */
+    3|       |
+    4|       |/* __alignof__ should never return a non-power of 2
+    5|       |   eg, sizeof(long double) might be 12, but that means it must be alignable
+    6|       |   on a 4 byte boundary. */
+    7|       |
+    8|     16|void check(char const *type, int align) {
+    9|     16|  if ((align & -align) != align) {
+   10|      0|    abort();
+   11|      0|  }
+   12|     16|}
+   13|       |
+   14|     16|#define QUOTE_(s) #s
+   15|     16|#define QUOTE(s) QUOTE_(s)
+   16|       |
+   17|     16|#define check(t) check(QUOTE(t), __alignof__(t))
+   18|       |
+   19|       |// This struct should have an alignment of the lcm of all the types. If one of
+   20|       |// the base alignments is not a power of two, then A cannot be power of two
+   21|       |// aligned.
+   22|       |struct A {
+   23|       |  char c;
+   24|       |  signed short ss;
+   25|       |  unsigned short us;
+   26|       |  signed int si;
+   27|       |  unsigned int ui;
+   28|       |  signed long sl;
+   29|       |  unsigned long ul;
+   30|       |  signed long long sll;
+   31|       |  unsigned long long ull;
+   32|       |  float f;
+   33|       |  double d;
+   34|       |  long double ld;
+   35|       |  void *dp;
+   36|       |  void (*fp)();
+   37|       |};
+   38|       |
+   39|      1|int main() {
+   40|      1|  check(void);
+   41|      1|  check(char);
+   42|      1|  check(signed short);
+   43|      1|  check(unsigned short);
+   44|      1|  check(signed int);
+   45|      1|  check(unsigned int);
+   46|      1|  check(signed long);
+   47|      1|  check(unsigned long);
+   48|      1|  check(signed long long);
+   49|      1|  check(unsigned long long);
+   50|      1|  check(float);
+   51|      1|  check(double);
+   52|      1|  check(long double);
+   53|      1|  check(void *);
+   54|      1|  check(void (*)());
+   55|      1|  check(struct A);
+   56|      1|  return 0;
+   57|      1|}
+

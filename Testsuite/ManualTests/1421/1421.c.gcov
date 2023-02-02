@@ -1,0 +1,12 @@
+        -:    0:Source:1421.c
+        -:    0:Graph:1421.gcno
+        -:    0:Data:1421.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:int main(void) {
+        1:    4:  int x = 1;
+       33:    5:  while (x)
+       32:    6:    x <<= 1;
+        1:    7:  return x;
+        -:    8:}

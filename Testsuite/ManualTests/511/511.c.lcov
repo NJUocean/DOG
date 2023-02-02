@@ -1,0 +1,23 @@
+    1|       |/* PR debug/49888 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|       |static int v __attribute__((used));
+    6|       |
+    7|      1|static void __attribute__((noinline, noclone)) f(int *p) {
+    8|      1|  int c = *p;
+    9|      1|  v = c;
+   10|      1|  *p = 1; /* { dg-final { gdb-test . "!!c" "0" } } */
+   11|      1|  /* c may very well be optimized out at this point, so we test !c,
+   12|      1|     which will evaluate to the expected value.  We just want to make
+   13|      1|     sure it doesn't remain bound to *p as it did before, in which
+   14|      1|     case !c would evaluate to 0.  *p may also be regarded as aliasing
+   15|      1|     register saves, thus the !!c above.  */
+   16|      1|  v = 0; /* { dg-final { gdb-test . "!c" "1" } } */
+   17|      1|}
+   18|      1|int main() {
+   19|      1|  int a = 0;
+   20|      1|  f(&a);
+   21|      1|  return 0;
+   22|      1|}
+

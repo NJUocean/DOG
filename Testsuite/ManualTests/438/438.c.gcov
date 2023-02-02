@@ -1,0 +1,16 @@
+        -:    0:Source:438.c
+        -:    0:Graph:438.gcno
+        -:    0:Data:438.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:/* { dg-options "-O2 -fgraphite-identity -floop-block" } */
+        -:    3:
+        -:    4:int buffer[256 * 256];
+        1:    5:int main(void) {
+        1:    6:  int *dest = buffer;
+        -:    7:  int x, y;
+      257:    8:  for (x = 0; x < 256; x++)
+    65792:    9:    for (y = 0; y < 256; y++)
+    65536:   10:      *dest++ = 0;
+        1:   11:  return 0;
+        -:   12:}

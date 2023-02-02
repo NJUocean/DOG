@@ -1,0 +1,21 @@
+    1|       |/* { dg-do link } */
+    2|       |
+    3|       |extern inline void foo2(void) __attribute__((always_inline, gnu_inline));
+    4|       |extern inline void foo1(void) __attribute__((always_inline, gnu_inline));
+    5|       |void bar1(void);
+    6|       |void bar2(void);
+    7|       |
+    8|      0|extern inline void __attribute__((always_inline, gnu_inline)) foo2(void) {
+    9|      0|  bar2();
+   10|      0|}
+   11|       |
+   12|      0|void bar1(void) { foo2(); }
+   13|       |
+   14|      0|void bar2(void) { foo1(); }
+   15|       |
+   16|      0|extern inline void __attribute__((always_inline, gnu_inline)) foo1(void) {
+   17|      0|  bar1();
+   18|      0|}
+   19|       |
+   20|      1|int main() { return 0; }
+

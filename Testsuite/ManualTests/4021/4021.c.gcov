@@ -1,0 +1,14 @@
+        -:    0:Source:4021.c
+        -:    0:Graph:4021.gcno
+        -:    0:Data:4021.gcda
+        -:    0:Runs:1
+        -:    1:long int a = 100000;
+        -:    2:long int b = 21475;
+        -:    3:
+        1:    4:long f() { return ((long long)a * (long long)b) >> 16; }
+        -:    5:
+        1:    6:main() {
+        1:    7:  if (f() < 0)
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

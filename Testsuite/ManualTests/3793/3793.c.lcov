@@ -1,0 +1,21 @@
+    1|       |/* PR rtl-optimization/57829 */
+    2|       |
+    3|      1|__attribute__((noinline, noclone)) int f1(int k) {
+    4|      1|  return 2 | ((k - 1) >> ((int)sizeof(int) * __CHAR_BIT__ - 1));
+    5|      1|}
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) long int f2(long int k) {
+    8|      1|  return 2L | ((k - 1L) >> ((int)sizeof(long int) * __CHAR_BIT__ - 1));
+    9|      1|}
+   10|       |
+   11|      2|__attribute__((noinline, noclone)) int f3(int k) {
+   12|      2|  k &= 63;
+   13|      2|  return 4 | ((k + 2) >> 5);
+   14|      2|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  if (f1(1) != 2 || f2(1L) != 2L || f3(63) != 6 || f3(1) != 4)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

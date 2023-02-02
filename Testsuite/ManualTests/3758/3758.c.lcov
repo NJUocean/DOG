@@ -1,0 +1,15 @@
+    1|       |/* PR middle-end/53084 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) void bar(const char *p) {
+    6|      1|  if (p[0] != 'o' || p[1] != 'o' || p[2])
+    7|      0|    abort();
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  static const char *const foo[] = {"foo" + 1};
+   12|      1|  bar(foo[0]);
+   13|      1|  return 0;
+   14|      1|}
+

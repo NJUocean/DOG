@@ -1,0 +1,32 @@
+    1|       |/* PR middle-end/64309 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fdump-tree-original" } */
+    4|       |
+    5|      6|int fn1(int n) { return ((1 << n) & 1) != 0; }
+    6|       |
+    7|      6|int fn2(int n) { return (1 & (1 << n)) != 0; }
+    8|       |
+    9|      6|int fn3(int n) { return ((1 << n) & 1) == 0; }
+   10|       |
+   11|      6|int fn4(int n) { return (1 & (1 << n)) == 0; }
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  if (fn1(0) != 1 || fn1(1) != 0 || fn1(2) != 0 || fn1(3) != 0 || fn1(4) != 0 ||
+   15|      1|      fn1(5) != 0)
+   16|      0|    __builtin_abort();
+   17|      1|
+   18|      1|  if (fn2(0) != 1 || fn2(1) != 0 || fn2(2) != 0 || fn2(3) != 0 || fn2(4) != 0 ||
+   19|      1|      fn2(5) != 0)
+   20|      0|    __builtin_abort();
+   21|      1|
+   22|      1|  if (fn3(0) != 0 || fn3(1) != 1 || fn3(2) != 1 || fn3(3) != 1 || fn3(4) != 1 ||
+   23|      1|      fn3(5) != 1)
+   24|      0|    __builtin_abort();
+   25|      1|
+   26|      1|  if (fn4(0) != 0 || fn4(1) != 1 || fn4(2) != 1 || fn4(3) != 1 || fn4(4) != 1 ||
+   27|      1|      fn4(5) != 1)
+   28|      0|    __builtin_abort();
+   29|      1|}
+   30|       |
+   31|       |/* { dg-final { scan-tree-dump-not "(<<|>>)" "original" } } */
+

@@ -1,0 +1,34 @@
+        -:    0:Source:751.c
+        -:    0:Graph:751.gcno
+        -:    0:Data:751.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-inline" } */
+        -:    3:
+        -:    4:struct usb_interface_descriptor {
+        -:    5:  unsigned short wMaxPacketSize;
+        -:    6:  char e;
+        -:    7:} __attribute__((packed));
+        -:    8:
+        -:    9:struct usb_device {
+        -:   10:  int devnum;
+        -:   11:  struct usb_interface_descriptor if_desc[2];
+        -:   12:};
+        -:   13:
+        -:   14:extern int printf(const char *, ...);
+        -:   15:
+        2:   16:void foo(unsigned short a) { printf("%d\n", a); }
+        -:   17:
+        -:   18:struct usb_device ndev;
+        -:   19:
+        1:   20:void usb_set_maxpacket(int n) {
+        -:   21:  int i;
+        -:   22:
+        3:   23:  for (i = 0; i < n; i++)
+        2:   24:    foo((&ndev)->if_desc[i].wMaxPacketSize);
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  usb_set_maxpacket(2);
+        1:   29:  return 0;
+        -:   30:}

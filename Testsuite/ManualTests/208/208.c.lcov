@@ -1,0 +1,34 @@
+    1|       |/* Test for C99 declarations in for loops.  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int j = 0;
+   11|      1|  int i = -1;
+   12|     11|  for (int i = 1; i <= 10; i++)
+   13|     10|    j += i;
+   14|      1|  if (j != 55)
+   15|      0|    abort();
+   16|      1|  if (i != -1)
+   17|      0|    abort();
+   18|      1|  j = 0;
+   19|     11|  for (auto int i = 1; i <= 10; i++)
+   20|     10|    j += i;
+   21|      1|  if (j != 55)
+   22|      0|    abort();
+   23|      1|  if (i != -1)
+   24|      0|    abort();
+   25|      1|  j = 0;
+   26|     11|  for (register int i = 1; i <= 10; i++)
+   27|     10|    j += i;
+   28|      1|  if (j != 55)
+   29|      0|    abort();
+   30|      1|  if (i != -1)
+   31|      0|    abort();
+   32|      1|  exit(0);
+   33|      1|}
+

@@ -1,0 +1,14 @@
+    1|       |/* Test the tester; previously gcc.misc-tests/dg-2.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-do assemble } */
+    4|       |
+    5|      1|main() { return 0; }
+    6|       |
+    7|       |/* { dg-final { if [file exists dg-do-assemble-exp-P.o] \{	} } */
+    8|       |/* { dg-final {     pass "dg-do-assemble-exp-P.c (assemble: produce .o test)"
+    9|       | * } } */
+   10|       |/* { dg-final { \} else \{					} } */
+   11|       |/* { dg-final {     fail "dg-do-assemble-exp-P.c (assemble: produce .o test)"
+   12|       | * } } */
+   13|       |/* { dg-final { \}						} } */
+

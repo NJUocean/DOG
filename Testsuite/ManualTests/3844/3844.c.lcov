@@ -1,0 +1,12 @@
+    1|       |short a = -1;
+    2|       |int b;
+    3|       |char c;
+    4|       |
+    5|      1|int main() {
+    6|      1|  c = a;
+    7|      1|  b = a | c;
+    8|      1|  if (b != -1)
+    9|      0|    __builtin_abort();
+   10|      1|  return 0;
+   11|      1|}
+

@@ -1,0 +1,60 @@
+    1|       |/* Test that __builtin_prefetch does no harm.
+    2|       |
+    3|       |   Prefetch using all valid combinations of rw and locality values.
+    4|       |   These must be compile-time constants.  */
+    5|       |
+    6|      1|#define NO_TEMPORAL_LOCALITY 0
+    7|      1|#define LOW_TEMPORAL_LOCALITY 1
+    8|      1|#define MODERATE_TEMPORAL_LOCALITY 1
+    9|      1|#define HIGH_TEMPORAL_LOCALITY 3
+   10|       |
+   11|      1|#define WRITE_ACCESS 1
+   12|      1|#define READ_ACCESS 0
+   13|       |
+   14|       |enum locality { none, low, moderate, high };
+   15|       |enum rw { read, write };
+   16|       |
+   17|       |int arr[10];
+   18|       |
+   19|      1|void good_const(const int *p) {
+   20|      1|  __builtin_prefetch(p, 0, 0);
+   21|      1|  __builtin_prefetch(p, 0, 1);
+   22|      1|  __builtin_prefetch(p, 0, 2);
+   23|      1|  __builtin_prefetch(p, READ_ACCESS, 3);
+   24|      1|  __builtin_prefetch(p, 1, NO_TEMPORAL_LOCALITY);
+   25|      1|  __builtin_prefetch(p, 1, LOW_TEMPORAL_LOCALITY);
+   26|      1|  __builtin_prefetch(p, 1, MODERATE_TEMPORAL_LOCALITY);
+   27|      1|  __builtin_prefetch(p, WRITE_ACCESS, HIGH_TEMPORAL_LOCALITY);
+   28|      1|}
+   29|       |
+   30|      1|void good_enum(const int *p) {
+   31|      1|  __builtin_prefetch(p, read, none);
+   32|      1|  __builtin_prefetch(p, read, low);
+   33|      1|  __builtin_prefetch(p, read, moderate);
+   34|      1|  __builtin_prefetch(p, read, high);
+   35|      1|  __builtin_prefetch(p, write, none);
+   36|      1|  __builtin_prefetch(p, write, low);
+   37|      1|  __builtin_prefetch(p, write, moderate);
+   38|      1|  __builtin_prefetch(p, write, high);
+   39|      1|}
+   40|       |
+   41|      1|void good_expr(const int *p) {
+   42|      1|  __builtin_prefetch(p, 1 - 1, 6 - (2 * 3));
+   43|      1|  __builtin_prefetch(p, 1 + 0, 1 + 2);
+   44|      1|}
+   45|       |
+   46|      1|void good_vararg(const int *p) {
+   47|      1|  __builtin_prefetch(p, 0, 3);
+   48|      1|  __builtin_prefetch(p, 0);
+   49|      1|  __builtin_prefetch(p, 1);
+   50|      1|  __builtin_prefetch(p);
+   51|      1|}
+   52|       |
+   53|      1|int main() {
+   54|      1|  good_const(arr);
+   55|      1|  good_enum(arr);
+   56|      1|  good_expr(arr);
+   57|      1|  good_vararg(arr);
+   58|      1|  exit(0);
+   59|      1|}
+

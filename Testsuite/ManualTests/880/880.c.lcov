@@ -1,0 +1,54 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -fno-inline" } */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |static int something;
+    8|       |
+    9|       |static int *converterData[2] = {
+   10|       |    &something,
+   11|       |    &something,
+   12|       |};
+   13|       |
+   14|       |static struct {
+   15|       |  const char *name;
+   16|       |  int type;
+   17|       |} const cnvNameType[] = {{"bocu1", 1}, {"utf7", 1}, {"utf8", 1}};
+   18|       |
+   19|       |const int *getAlgorithmicTypeFromName(const char *realName);
+   20|      1|const int *getAlgorithmicTypeFromName(const char *realName) {
+   21|      1|  unsigned mid, start, limit;
+   22|      1|  unsigned lastMid;
+   23|      1|  int result;
+   24|      1|  start = 0;
+   25|      1|  limit = sizeof(cnvNameType) / sizeof(cnvNameType[0]);
+   26|      1|  mid = limit;
+   27|      1|  lastMid = 0xffffffff;
+   28|      1|
+   29|      2|  for (;;) {
+   30|      2|    mid = (start + limit) / 2;
+   31|      2|    if (lastMid == mid) { /* Have we moved? */
+   32|      0|      break;              /* We haven't moved, and it wasn't found. */
+   33|      0|    }
+   34|      2|    lastMid = mid;
+   35|      2|    result = __builtin_strcmp(realName, cnvNameType[mid].name);
+   36|      2|
+   37|      2|    if (result < 0) {
+   38|      0|      limit = mid;
+   39|      2|    } else if (result > 0) {
+   40|      1|      start = mid;
+   41|      1|    } else {
+   42|      1|      return converterData[cnvNameType[mid].type];
+   43|      1|    }
+   44|      2|  }
+   45|      1|
+   46|      1|  return 0;
+   47|      1|}
+   48|       |
+   49|      1|int main(void) {
+   50|      1|  if (!getAlgorithmicTypeFromName("utf8"))
+   51|      0|    abort();
+   52|      1|  return 0;
+   53|      1|}
+

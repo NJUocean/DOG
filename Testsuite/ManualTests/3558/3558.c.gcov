@@ -1,0 +1,21 @@
+        -:    0:Source:3558.c
+        -:    0:Graph:3558.gcno
+        -:    0:Data:3558.gcda
+        -:    0:Runs:1
+        -:    1:struct foo {
+        -:    2:  unsigned long long b : 40;
+        -:    3:} x;
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:void test1(unsigned long long res) {
+        -:    8:  /* The shift is carried out in 40 bit precision.  */
+        1:    9:  if (x.b << 32 != res)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  x.b = 0x0100;
+        1:   15:  test1(0);
+        1:   16:  return 0;
+        -:   17:}

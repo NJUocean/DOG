@@ -1,0 +1,15 @@
+        -:    0:Source:52.c
+        -:    0:Graph:52.gcno
+        -:    0:Data:52.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2005  Free Software Foundation.
+        -:    2:
+        -:    3:   by Gabriel Dos Reis  <gdr@integrable-solutions.net>  */
+        -:    4:
+        -:    5:/* { dg-do compile }  */
+        -:    6:/* { dg-options "-Wchar-subscripts" } */
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  int ary[256] = {0};
+        1:   10:  return ary['a'];
+        -:   11:}

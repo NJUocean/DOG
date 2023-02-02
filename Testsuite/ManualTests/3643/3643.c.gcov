@@ -1,0 +1,22 @@
+        -:    0:Source:3643.c
+        -:    0:Graph:3643.gcno
+        -:    0:Data:3643.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that that Thumb-1 epilogue size optimization does not clobber the
+        -:    2:   return value.  */
+        -:    3:
+        -:    4:long long v = 0x123456789abc;
+        -:    5:
+        1:    6:__attribute__((noinline)) void bar(int *x) { asm volatile("" : "=m"(x)::); }
+        -:    7:
+        1:    8:__attribute__((noinline)) long long foo() {
+        -:    9:  int x;
+        1:   10:  bar(&x);
+        1:   11:  return v;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (foo() != v)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

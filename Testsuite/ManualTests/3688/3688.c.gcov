@@ -1,0 +1,18 @@
+        -:    0:Source:3688.c
+        -:    0:Graph:3688.gcno
+        -:    0:Data:3688.gcda
+        -:    0:Runs:1
+        -:    1:struct a {
+        -:    2:  char b[100];
+        -:    3:};
+        1:    4:int foo(struct a *a) {
+        1:    5:  if (&a->b)
+    #####:    6:    return 1;
+        1:    7:  return 0;
+        -:    8:}
+        -:    9:extern void abort(void);
+        1:   10:int main() {
+        1:   11:  if (foo((struct a *)0) != 0)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

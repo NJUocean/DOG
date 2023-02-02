@@ -1,0 +1,74 @@
+        -:    0:Source:4066.c
+        -:    0:Graph:4066.gcno
+        -:    0:Data:4066.gcda
+        -:    0:Runs:1
+        -:    1:#define vector(elcount, type)                                                  \
+        -:    2:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    3:
+        -:    4:#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+        -:    5:
+        -:    6:#define operl(a, b, op) (a op b)
+        -:    7:#define operr(a, b, op) (b op a)
+        -:    8:
+        -:    9:#define check(type, count, vec0, vec1, num, op, lr)                            \
+        -:   10:  do {                                                                         \
+        -:   11:    int __i;                                                                   \
+        -:   12:    for (__i = 0; __i < count; __i++) {                                        \
+        -:   13:      if (vidx(type, vec1, __i) != oper##lr(num, vidx(type, vec0, __i), op))   \
+        -:   14:        __builtin_abort();                                                     \
+        -:   15:    }                                                                          \
+        -:   16:  } while (0)
+        -:   17:
+        -:   18:#define veccompare(type, count, v0, v1)                                        \
+        -:   19:  do {                                                                         \
+        -:   20:    int __i;                                                                   \
+        -:   21:    for (__i = 0; __i < count; __i++) {                                        \
+        -:   22:      if (vidx(type, v0, __i) != vidx(type, v1, __i))                          \
+        -:   23:        __builtin_abort();                                                     \
+        -:   24:    }                                                                          \
+        -:   25:  } while (0)
+        -:   26:
+        3:   27:long __attribute__((noinline)) vlng() { return (long)42; }
+        8:   28:int __attribute__((noinline)) vint() { return (int)43; }
+       17:   29:short __attribute__((noinline)) vsrt() { return (short)42; }
+       34:   30:char __attribute__((noinline)) vchr() { return (char)42; }
+        -:   31:
+        1:   32:int main(int argc, char *argv[]) {
+        1:   33:  vector(16, char) c0 = {argc, 1, 2, 3, 4, 5, 6, 7, argc, 1, 2, 3, 4, 5, 6, 7};
+        -:   34:  vector(16, char) c1;
+        -:   35:
+        1:   36:  vector(8, short) s0 = {argc, 1, 2, 3, 4, 5, 6, 7};
+        -:   37:  vector(8, short) s1;
+        -:   38:
+        1:   39:  vector(4, int) i0 = {argc, 1, 2, 3};
+        -:   40:  vector(4, int) i1;
+        -:   41:
+        1:   42:  vector(2, long) l0 = {argc, 1};
+        -:   43:  vector(2, long) l1;
+        -:   44:
+        1:   45:  c1 = vchr() + c0;
+      17*:   46:  check(char, 16, c0, c1, vchr(), +, l);
+        -:   47:
+        1:   48:  s1 = vsrt() + s0;
+       9*:   49:  check(short, 8, s0, s1, vsrt(), +, l);
+        1:   50:  s1 = vchr() + s0;
+       9*:   51:  check(short, 8, s0, s1, vchr(), +, l);
+        -:   52:
+        1:   53:  i1 = vint() * i0;
+       5*:   54:  check(int, 4, i0, i1, vint(), *, l);
+        1:   55:  i1 = vsrt() * i0;
+       5*:   56:  check(int, 4, i0, i1, vsrt(), *, l);
+        1:   57:  i1 = vchr() * i0;
+       5*:   58:  check(int, 4, i0, i1, vchr(), *, l);
+        -:   59:
+        1:   60:  l1 = vlng() * l0;
+       3*:   61:  check(long, 2, l0, l1, vlng(), *, l);
+        1:   62:  l1 = vint() * l0;
+       3*:   63:  check(long, 2, l0, l1, vint(), *, l);
+        1:   64:  l1 = vsrt() * l0;
+       3*:   65:  check(long, 2, l0, l1, vsrt(), *, l);
+        1:   66:  l1 = vchr() * l0;
+       3*:   67:  check(long, 2, l0, l1, vchr(), *, l);
+        -:   68:
+        1:   69:  return 0;
+        -:   70:}

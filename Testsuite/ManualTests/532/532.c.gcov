@@ -1,0 +1,41 @@
+        -:    0:Source:532.c
+        -:    0:Graph:532.gcno
+        -:    0:Data:532.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        1:    4:void __attribute__((noinline)) optimize_me_not() {
+        1:    5:  __asm__ volatile("" : : : "memory");
+        1:    6:}
+        -:    7:char c, d = 22, f;
+        -:    8:short e, g;
+        -:    9:int h;
+    #####:   10:char(a)() {}
+        1:   11:char(b)() { return 0; }
+        1:   12:void i() {
+        -:   13:  char j;
+        2:   14:  for (; h < 1;) {
+        1:   15:    short k[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+        1:   16:    int l, i = 5;
+        1:   17:    short m[3] = {0, 0, 0};
+        8:   18:    for (; h < 7; h++)
+        7:   19:      for (; d >= 33;) {
+    #####:   20:        ++k[8];
+    #####:   21:        f = (c || a()) && g;
+        -:   22:      }
+        1:   23:    i++;
+       1*:   24:    j = b() || m[2];
+        1:   25:    l = 0;
+        2:   26:    for (; l <= 6; l = d)
+        1:   27:      e = k[8];
+        -:   28:    /* i may very well be optimized out, so we cannot test for i == 6.
+        -:   29:       Instead test i + 1 which will make the test UNSUPPORTED if i
+        -:   30:       is optimized out.  Since the test previously had wrong debug
+        -:   31:       with i == 5 this is acceptable.  Optimally we'd produce a
+        -:   32:       debug stmt for the final value of the loop which would fix
+        -:   33:       the UNSUPPORTED cases.  */
+        1:   34:    optimize_me_not(); /* { dg-final { gdb-test . "i + 1" "7" } } */
+        -:   35:  }
+        1:   36:}
+        1:   37:int main() { i(); }

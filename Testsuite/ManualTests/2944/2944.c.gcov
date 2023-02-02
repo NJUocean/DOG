@@ -1,0 +1,23 @@
+        -:    0:Source:2944.c
+        -:    0:Graph:2944.gcno
+        -:    0:Data:2944.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:
+        -:    3:char q;
+        -:    4:void *a[2];
+        -:    5:
+        1:    6:void foo(char *p) {
+        -:    7:  int i;
+        3:    8:  for (i = 0; i < 2; i++)
+        2:    9:    a[i] += p - &q;
+        1:   10:}
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int i;
+        1:   14:  foo(&q);
+        3:   15:  for (i = 0; i < 2; i++)
+        2:   16:    if (a[i])
+    #####:   17:      abort();
+        1:   18:  return 0;
+        -:   19:}

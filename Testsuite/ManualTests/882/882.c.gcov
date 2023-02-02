@@ -1,0 +1,25 @@
+        -:    0:Source:882.c
+        -:    0:Graph:882.gcno
+        -:    0:Data:882.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Jürgen Keil <jrgn.keil@googlemail.com> */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-profiling "-pg" } */
+        -:    5:/* { dg-options "-O2 -pg" } */
+        -:    6:/* { dg-options "-O2 -pg -static" { target hppa*-*-hpux* } } */
+        -:    7:
+        -:    8:extern char *strdup(const char *);
+        -:    9:
+        1:   10:void func(char *a, char *b, char *c) {
+        1:   11:  void *p = strdup(a);
+        1:   12:  p = strdup(b);
+        1:   13:  p = strdup(c);
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  func("a", "b", "c");
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        -:   21:/* { dg-final { cleanup-profile-file } } */

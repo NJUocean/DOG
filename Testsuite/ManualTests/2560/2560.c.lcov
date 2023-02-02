@@ -1,0 +1,40 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|      2|static inline __attribute__((always_inline)) void prefetch(void *x) {
+    8|      2|  asm volatile("prefetcht0 %0" : : "m"(*(unsigned long *)x));
+    9|      2|}
+   10|       |
+   11|       |struct hlist_head {
+   12|       |  struct hlist_node *first;
+   13|       |};
+   14|       |
+   15|       |struct hlist_node {
+   16|       |  struct hlist_node *next;
+   17|       |  unsigned long i_ino;
+   18|       |};
+   19|       |
+   20|      1|struct hlist_node *find_inode_fast(struct hlist_head *head, unsigned long ino) {
+   21|      1|  struct hlist_node *node;
+   22|      1|
+   23|      3|  for (node = head->first; node && (prefetch(node->next), 1);
+   24|      2|       node = node->next) {
+   25|      2|    if (node->i_ino == ino)
+   26|      0|      break;
+   27|      2|  }
+   28|      1|  return node ? node : 0;
+   29|      1|}
+   30|       |
+   31|       |struct hlist_node g2;
+   32|       |struct hlist_node g1 = {&g2};
+   33|       |struct hlist_head h = {&g1};
+   34|       |
+   35|      1|int main() {
+   36|      1|  if (find_inode_fast(&h, 1) != 0)
+   37|      0|    abort();
+   38|      1|  exit(0);
+   39|      1|}
+

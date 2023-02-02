@@ -1,0 +1,20 @@
+        -:    0:Source:2836.c
+        -:    0:Graph:2836.gcno
+        -:    0:Data:2836.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/19449 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int y;
+        -:    6:int z = __builtin_choose_expr(!__builtin_constant_p(y), 3, 4);
+        -:    7:
+        1:    8:int foo(int x) {
+        1:    9:  return __builtin_choose_expr(!__builtin_constant_p(x), 3, y++);
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (y || z != 3 || foo(4) != 3)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

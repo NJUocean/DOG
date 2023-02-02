@@ -1,0 +1,47 @@
+        -:    0:Source:401.c
+        -:    0:Graph:401.gcno
+        -:    0:Data:401.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:double u[1782225];
+        -:    9:
+        1:   10:static void __attribute__((noinline)) foo(int N, int *res) {
+        -:   11:  int i, j;
+        1:   12:  double sum = 0.0;
+        -:   13:
+     1336:   14:  for (i = 0; i < N; i++)
+  1783560:   15:    for (j = 0; j < N; j++)
+  1782225:   16:      sum = sum + u[i + 1335 * j];
+        -:   17:
+     1336:   18:  for (i = 0; i < N; i++)
+  1783560:   19:    for (j = 0; j < N; j++)
+  1782225:   20:      sum = sum + u[i + 1335 * j];
+        -:   21:
+        1:   22:  *res = sum + N + u[1336 * 2] + u[1336];
+        1:   23:}
+        -:   24:
+        -:   25:extern void abort();
+        -:   26:
+        1:   27:int main(void) {
+        -:   28:  int i, res;
+        -:   29:
+  1782226:   30:  for (i = 0; i < 1782225; i++)
+  1782225:   31:    u[i] = 2;
+        -:   32:
+        1:   33:  foo(1335, &res);
+        -:   34:
+        -:   35:#if DEBUG
+        -:   36:  fprintf(stderr, "res = %d \n", res);
+        -:   37:#endif
+        -:   38:
+        1:   39:  if (res != 7130239)
+    #####:   40:    abort();
+        -:   41:
+        1:   42:  return 0;
+        -:   43:}

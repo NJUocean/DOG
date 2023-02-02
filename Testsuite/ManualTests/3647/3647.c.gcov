@@ -1,0 +1,24 @@
+        -:    0:Source:3647.c
+        -:    0:Graph:3647.gcno
+        -:    0:Data:3647.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct A {
+        -:    4:  int i;
+        -:    5:};
+        -:    6:struct B {
+        -:    7:  struct A a;
+        -:    8:  int j;
+        -:    9:};
+        -:   10:
+        1:   11:static void foo(struct B *p) { ((struct A *)p)->i = 1; }
+        -:   12:
+        1:   13:int main() {
+        -:   14:  struct A a;
+        1:   15:  a.i = 0;
+        1:   16:  foo((struct B *)&a);
+        1:   17:  if (a.i != 1)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

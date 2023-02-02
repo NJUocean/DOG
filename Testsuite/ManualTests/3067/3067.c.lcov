@@ -1,0 +1,59 @@
+    1|       |/* Verify that flexible arrays can be initialized from STRING_CST
+    2|       |   constructors. */
+    3|       |
+    4|       |/* Baselines.  */
+    5|       |struct {
+    6|       |  char a1c;
+    7|       |  char *a1p;
+    8|       |} a1 = {'4', "62"};
+    9|       |
+   10|       |struct {
+   11|       |  char a2c;
+   12|       |  char a2p[2];
+   13|       |} a2 = {'v', "cq"};
+   14|       |
+   15|       |/* The tests.  */
+   16|       |struct {
+   17|       |  char a3c;
+   18|       |  char a3p[];
+   19|       |} a3 = {'o', "wx"};
+   20|       |
+   21|       |struct {
+   22|       |  char a4c;
+   23|       |  char a4p[];
+   24|       |} a4 = {'9', {'e', 'b'}};
+   25|       |
+   26|      1|main() {
+   27|      1|  if (a1.a1c != '4')
+   28|      0|    abort();
+   29|      1|  if (a1.a1p[0] != '6')
+   30|      0|    abort();
+   31|      1|  if (a1.a1p[1] != '2')
+   32|      0|    abort();
+   33|      1|  if (a1.a1p[2] != '\0')
+   34|      0|    abort();
+   35|      1|
+   36|      1|  if (a2.a2c != 'v')
+   37|      0|    abort();
+   38|      1|  if (a2.a2p[0] != 'c')
+   39|      0|    abort();
+   40|      1|  if (a2.a2p[1] != 'q')
+   41|      0|    abort();
+   42|      1|
+   43|      1|  if (a3.a3c != 'o')
+   44|      0|    abort();
+   45|      1|  if (a3.a3p[0] != 'w')
+   46|      0|    abort();
+   47|      1|  if (a3.a3p[1] != 'x')
+   48|      0|    abort();
+   49|      1|
+   50|      1|  if (a4.a4c != '9')
+   51|      0|    abort();
+   52|      1|  if (a4.a4p[0] != 'e')
+   53|      0|    abort();
+   54|      1|  if (a4.a4p[1] != 'b')
+   55|      0|    abort();
+   56|      1|
+   57|      1|  return 0;
+   58|      1|}
+

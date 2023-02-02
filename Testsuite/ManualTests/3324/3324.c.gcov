@@ -1,0 +1,36 @@
+        -:    0:Source:3324.c
+        -:    0:Graph:3324.gcno
+        -:    0:Data:3324.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:/* PR optimization/8750
+        -:    4:   Used to fail under Cygwin with
+        -:    5:   -O2 -fomit-frame-pointer
+        -:    6:   Testcase by David B. Trout     */
+        -:    7:
+        -:    8:#if defined(STACK_SIZE) && STACK_SIZE < 16000
+        -:    9:#define ARRAY_SIZE (STACK_SIZE / 2)
+        -:   10:#define STRLEN (ARRAY_SIZE - 9)
+        -:   11:#else
+        -:   12:#define ARRAY_SIZE 15000
+        -:   13:#define STRLEN 13371
+        -:   14:#endif
+        -:   15:
+        -:   16:extern void *memset(void *, int, __SIZE_TYPE__);
+        -:   17:extern void abort(void);
+        -:   18:
+        1:   19:static void foo() {
+        -:   20:  char a[ARRAY_SIZE];
+        -:   21:
+        1:   22:  a[0] = 0;
+        1:   23:  memset(&a[0], 0xCD, STRLEN);
+        1:   24:  a[STRLEN] = 0;
+        1:   25:  if (strlen(a) != STRLEN)
+    #####:   26:    abort();
+        1:   27:}
+        -:   28:
+        1:   29:int main(int argc, char *argv[]) {
+        1:   30:  foo();
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,15 @@
+        -:    0:Source:1022.c
+        -:    0:Graph:1022.gcno
+        -:    0:Data:1022.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c++/52703 */
+        -:    2:/* { dg-options -Wsign-conversion } */
+        -:    3:
+        1:    4:unsigned f(unsigned x) { return x; }
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned short a = 0;
+        1:    8:  unsigned b = a + 1;
+        1:    9:  f(a + 1);
+        1:   10:  return 0;
+        -:   11:}

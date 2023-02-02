@@ -1,0 +1,15 @@
+        -:    0:Source:1125.c
+        -:    0:Graph:1125.gcno
+        -:    0:Data:1125.gcda
+        -:    0:Runs:1
+        -:    1:/* Some versions of Solaris <math.h> give strict-aliasing warnings for
+        -:    2:   signbit.  */
+        -:    3:/* { dg-require-effective-target c99_runtime } */
+        -:    4:/* { dg-options "-std=c99 -O2 -Wstrict-aliasing" } */
+        -:    5:
+        -:    6:#include <math.h>
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  return signbit(1.0f) | signbit(1.0) | signbit(1.0l);
+        -:   10:  ;
+        -:   11:}

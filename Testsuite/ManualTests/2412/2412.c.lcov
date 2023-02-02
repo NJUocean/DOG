@@ -1,0 +1,10 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-additional-options "-march=armv8.2-a+crypto+nosha2" } */
+    3|       |
+    4|      1|int main() { return 0; }
+    5|       |
+    6|       |/* { dg-final { scan-assembler-times {\.arch armv8\.2\-a\+crypto\+crc} 1 } } */
+    7|       |
+    8|       |/* Group as a whole was requested to be turned on, crypto itself is a bit and so
+    9|       |   just turning off one feature can't turn it off.   */
+

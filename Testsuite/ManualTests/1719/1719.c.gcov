@@ -1,0 +1,26 @@
+        -:    0:Source:1719.c
+        -:    0:Graph:1719.gcno
+        -:    0:Data:1719.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef unsigned short u16;
+        -:    4:typedef unsigned int u32;
+        -:    5:typedef unsigned long long u64;
+        -:    6:
+        -:    7:u32 a, b, c, d;
+        -:    8:
+        1:    9:u32 foo(u32 f, u32 g, u32 g2, u32 g3, u16 h, u16 i) {
+        -:   10:  (void)g, (void)g2, (void)g3, (void)h;
+        1:   11:  d = __builtin_bswap64(i);
+        1:   12:  __builtin_sub_overflow(0, d, &b);
+        1:   13:  __builtin_memset(&i, c, 2);
+        1:   14:  a = 0;
+        1:   15:  return b + f + i + c;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  u32 x = foo(0, 0, 0, 0, 0, 0);
+        1:   20:  asm("" ::"r"(x));
+        1:   21:  return 0;
+        -:   22:}

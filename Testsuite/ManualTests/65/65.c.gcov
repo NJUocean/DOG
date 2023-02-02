@@ -1,0 +1,17 @@
+        -:    0:Source:65.c
+        -:    0:Graph:65.gcno
+        -:    0:Data:65.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -Wswitch-enum" } */
+        -:    3:
+        -:    4:typedef enum { a = 2 } T;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  switch ((T)a) /* { dg-warning "enumeration value 'a' not handled" "a" } */
+        -:    8:  {
+        -:    9:  case 1: /* { dg-warning "case value '1' not in enumerated" "1" } */
+        -:   10:    break;
+        -:   11:  }
+        1:   12:  return 0;
+        -:   13:}

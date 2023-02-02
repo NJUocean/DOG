@@ -1,0 +1,43 @@
+        -:    0:Source:3602.c
+        -:    0:Graph:3602.gcno
+        -:    0:Data:3602.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/36038 */
+        -:    2:
+        -:    3:long long list[10];
+        -:    4:long long expect[10] = {0, 1, 2, 3, 4, 4, 5, 6, 7, 9};
+        -:    5:long long *stack_base;
+        -:    6:int indices[10];
+        -:    7:int *markstack_ptr;
+        -:    8:
+        1:    9:void doit(void) {
+        -:   10:  long long *src;
+        -:   11:  long long *dst;
+        1:   12:  long long *sp = stack_base + 5;
+        1:   13:  int diff = 2;
+        -:   14:  int shift;
+        -:   15:  int count;
+        -:   16:
+        1:   17:  shift = diff - (markstack_ptr[-1] - markstack_ptr[-2]);
+        1:   18:  count = (sp - stack_base) - markstack_ptr[-1] + 2;
+        1:   19:  src = sp;
+        1:   20:  dst = (sp += shift);
+        5:   21:  while (--count)
+        4:   22:    *dst-- = *src--;
+        1:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  int i;
+       11:   27:  for (i = 0; i < 10; i++)
+       10:   28:    list[i] = i;
+        -:   29:
+        1:   30:  markstack_ptr = indices + 9;
+        1:   31:  markstack_ptr[-1] = 2;
+        1:   32:  markstack_ptr[-2] = 1;
+        -:   33:
+        1:   34:  stack_base = list + 2;
+        1:   35:  doit();
+        1:   36:  if (__builtin_memcmp(expect, list, sizeof(list)))
+    #####:   37:    __builtin_abort();
+        1:   38:  return 0;
+        -:   39:}

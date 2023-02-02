@@ -1,0 +1,38 @@
+    1|       |/* PR middle-end/31448, this used to ICE during expand because
+    2|       |   reduce_to_bit_field_precision was not ready to handle constants. */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |typedef struct _st {
+    6|       |  int iIndex : 24;
+    7|       |  int iIndex1 : 24;
+    8|       |} st;
+    9|       |st *next;
+   10|      0|void g(void) {
+   11|      0|  st *next = 0;
+   12|      0|  int nIndx;
+   13|      0|  const static int constreg[] = {
+   14|      0|      0,
+   15|      0|  };
+   16|      0|  nIndx = 0;
+   17|      0|  next->iIndex = constreg[nIndx];
+   18|      0|}
+   19|      1|void f(void) {
+   20|      1|  int nIndx;
+   21|      1|  const static int constreg[] = {
+   22|      1|      0xFEFEFEFE,
+   23|      1|  };
+   24|      1|  nIndx = 0;
+   25|      1|  next->iIndex = constreg[nIndx];
+   26|      1|  next->iIndex1 = constreg[nIndx];
+   27|      1|}
+   28|      1|int main(void) {
+   29|      1|  st a;
+   30|      1|  next = &a;
+   31|      1|  f();
+   32|      1|  if (next->iIndex != 0xFFFEFEFE)
+   33|      0|    __builtin_abort();
+   34|      1|  if (next->iIndex1 != 0xFFFEFEFE)
+   35|      0|    __builtin_abort();
+   36|      1|  return 0;
+   37|      1|}
+

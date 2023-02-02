@@ -1,0 +1,25 @@
+    1|       |/* PR rtl-optimization/63843 */
+    2|       |
+    3|       |static inline __attribute__((always_inline)) unsigned short
+    4|      1|foo(unsigned short v) {
+    5|      1|  return (v << 8) | (v >> 8);
+    6|      1|}
+    7|       |
+    8|      1|unsigned short __attribute__((noinline, noclone, hot)) bar(unsigned char *x) {
+    9|      1|  unsigned int a;
+   10|      1|  unsigned short b;
+   11|      1|  __builtin_memcpy(&a, &x[0], sizeof(a));
+   12|      1|  a ^= 0x80808080U;
+   13|      1|  __builtin_memcpy(&x[0], &a, sizeof(a));
+   14|      1|  __builtin_memcpy(&b, &x[2], sizeof(b));
+   15|      1|  return foo(b);
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  unsigned char x[8] = {0x01, 0x01, 0x01, 0x01};
+   20|      1|  if (__CHAR_BIT__ == 8 && sizeof(short) == 2 && sizeof(int) == 4 &&
+   21|      1|      bar(x) != 0x8181U)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

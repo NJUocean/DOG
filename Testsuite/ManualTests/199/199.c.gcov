@@ -1,0 +1,90 @@
+        -:    0:Source:199.c
+        -:    0:Graph:199.gcno
+        -:    0:Data:199.gcda
+        -:    0:Runs:1
+        -:    1:/* Test C11 alignment support.  Test valid code using stdalign.h.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    4:
+        -:    5:#include <stdalign.h>
+        -:    6:#include <stddef.h>
+        -:    7:
+        -:    8:extern int strcmp(const char *, const char *);
+        -:    9:
+        -:   10:extern void exit(int);
+        -:   11:extern void abort(void);
+        -:   12:
+        -:   13:alignas(alignof(max_align_t)) char c;
+        -:   14:extern alignas(max_align_t) char c;
+        -:   15:extern char c;
+        -:   16:
+        -:   17:extern alignas(max_align_t) short s;
+        -:   18:alignas(max_align_t) short s;
+        -:   19:
+        -:   20:alignas(int) int i;
+        -:   21:extern int i;
+        -:   22:
+        -:   23:alignas(max_align_t) long l;
+        -:   24:
+        -:   25:alignas(max_align_t) long long ll;
+        -:   26:
+        -:   27:alignas(max_align_t) float f;
+        -:   28:
+        -:   29:alignas(max_align_t) double d;
+        -:   30:
+        -:   31:alignas(max_align_t) _Complex long double cld;
+        -:   32:
+        -:   33:alignas(0) alignas(int) alignas(char) char ca[10];
+        -:   34:
+        -:   35:alignas((int)alignof(max_align_t) + 0) int x;
+        -:   36:
+        -:   37:enum e { E = alignof(max_align_t) };
+        -:   38:alignas(E) int y;
+        -:   39:
+    #####:   40:void func(void) { alignas(max_align_t) long long auto_ll; }
+        -:   41:
+        -:   42:/* Valid, but useless.  */
+        -:   43:alignas(0) struct s; /* { dg-warning "useless" } */
+        -:   44:
+        -:   45:#ifndef alignas
+        -:   46:#error "alignas not defined"
+        -:   47:#endif
+        -:   48:
+        -:   49:#ifndef alignof
+        -:   50:#error "alignof not defined"
+        -:   51:#endif
+        -:   52:
+        -:   53:#ifndef __alignas_is_defined
+        -:   54:#error "__alignas_is_defined not defined"
+        -:   55:#endif
+        -:   56:
+        -:   57:#if __alignas_is_defined != 1
+        -:   58:#error "__alignas_is_defined not 1"
+        -:   59:#endif
+        -:   60:
+        -:   61:#ifndef __alignof_is_defined
+        -:   62:#error "__alignof_is_defined not defined"
+        -:   63:#endif
+        -:   64:
+        -:   65:#if __alignof_is_defined != 1
+        -:   66:#error "__alignof_is_defined not 1"
+        -:   67:#endif
+        -:   68:
+        -:   69:#define str(x) #x
+        -:   70:#define xstr(x) str(x)
+        -:   71:
+        -:   72:const char *s1 = xstr(alignas);
+        -:   73:const char *s2 = xstr(alignof);
+        -:   74:const char *s3 = xstr(__alignas_is_defined);
+        -:   75:const char *s4 = xstr(__alignof_is_defined);
+        -:   76:
+        1:   77:int main(void) {
+        1:   78:  if (strcmp(s1, "_Alignas") != 0)
+    #####:   79:    abort();
+        1:   80:  if (strcmp(s2, "_Alignof") != 0)
+    #####:   81:    abort();
+        1:   82:  if (strcmp(s3, "1") != 0)
+    #####:   83:    abort();
+        1:   84:  if (strcmp(s4, "1") != 0)
+    #####:   85:    abort();
+        -:   86:}

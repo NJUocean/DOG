@@ -1,0 +1,37 @@
+    1|       |/* Test float on alpha. */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-mieee -O2" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern int printf(const char *, ...);
+    8|       |
+    9|       |typedef int int32_t __attribute__((__mode__(__SI__)));
+   10|       |typedef union {
+   11|       |  float value;
+   12|       |  int32_t word;
+   13|       |} ieee_float_shape_type;
+   14|       |
+   15|      1|int isinff(float x) {
+   16|      1|  int32_t ix, t;
+   17|      1|  ieee_float_shape_type gf_u;
+   18|      1|  gf_u.value = x;
+   19|      1|  ix = gf_u.word;
+   20|      1|  printf("%x\n", ix);
+   21|      1|  t = ix & 0x7fffffff;
+   22|      1|  t ^= 0x7f800000;
+   23|      1|  t |= -t;
+   24|      1|  return ~(t >> 31) & (1 - ((ix & 0x80000000) >> 30));
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  float x = 1.0 / 0.0;
+   29|      1|  int i = isinff(x);
+   30|      1|
+   31|      1|  if (i == 0)
+   32|      0|    abort();
+   33|      1|
+   34|      1|  printf("%d\n", i);
+   35|      1|  return 0;
+   36|      1|}
+

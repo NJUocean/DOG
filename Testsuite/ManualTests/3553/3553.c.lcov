@@ -1,0 +1,28 @@
+    1|       |/* 920730-1.c */
+    2|       |#include <limits.h>
+    3|      1|f1() {
+    4|      1|  int b = INT_MIN;
+    5|      1|  return b >= INT_MIN;
+    6|      1|}
+    7|       |
+    8|      1|f2() {
+    9|      1|  int b = INT_MIN + 1;
+   10|      1|  return b >= (unsigned)(INT_MAX + 2);
+   11|      1|}
+   12|       |
+   13|      1|f3() {
+   14|      1|  int b = INT_MAX;
+   15|      1|  return b >= INT_MAX;
+   16|      1|}
+   17|       |
+   18|      1|f4() {
+   19|      1|  int b = -1;
+   20|      1|  return b >= UINT_MAX;
+   21|      1|}
+   22|       |
+   23|      1|main() {
+   24|      1|  if ((f1() & f2() & f3() & f4()) != 1)
+   25|      0|    abort();
+   26|      1|  exit(0);
+   27|      1|}
+

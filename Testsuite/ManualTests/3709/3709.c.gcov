@@ -1,0 +1,25 @@
+        -:    0:Source:3709.c
+        -:    0:Graph:3709.gcno
+        -:    0:Data:3709.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-xfail-if "can cause stack underflow" { nios2-*-* } } */
+        -:    2:/* { dg-require-effective-target untyped_assembly } */
+        -:    3:#define INTEGER_ARG 5
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        2:    7:static void foo(int arg) {
+        2:    8:  if (arg != INTEGER_ARG)
+    #####:    9:    abort();
+        2:   10:}
+        -:   11:
+        1:   12:static void bar(int arg) {
+        1:   13:  foo(arg);
+        1:   14:  __builtin_apply(foo, __builtin_apply_args(), 16);
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  bar(INTEGER_ARG);
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

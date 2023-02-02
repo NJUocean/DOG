@@ -1,0 +1,21 @@
+        -:    0:Source:1495.c
+        -:    0:Graph:1495.gcno
+        -:    0:Data:1495.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:unsigned char value[4] = {66, 9, 160, 255};
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  volatile float f;
+        -:    9:  unsigned char a[4];
+        -:   10:
+        1:   11:  __builtin_memcpy((void *)&f, value, 4);
+        1:   12:  __builtin_memcpy(a, (void *)&f, 4);
+        1:   13:  if (a[2] != 160)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

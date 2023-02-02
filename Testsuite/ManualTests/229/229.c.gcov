@@ -1,0 +1,13 @@
+        -:    0:Source:229.c
+        -:    0:Graph:229.gcno
+        -:    0:Data:229.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __builtin_FILE(). */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fmacro-prefix-map==MACRO-PREFIX" } */
+        -:    4:
+        -:    5:#include <stdio.h>
+        -:    6:
+        1:    7:int main() { printf("__builtin_FILE starts with %s\n", __builtin_FILE()); }
+        -:    8:
+        -:    9:/* { dg-output "__builtin_FILE starts with MACRO-PREFIX" } */

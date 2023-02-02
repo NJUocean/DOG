@@ -1,0 +1,19 @@
+        -:    0:Source:2815.c
+        -:    0:Graph:2815.gcno
+        -:    0:Data:2815.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "(-mips16)" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:__complex float f = {-1.0 + -1.0i};
+        1:    7:__complex float __attribute__((nomips16)) foo(void) { return f; }
+        -:    8:__complex float (*volatile foop)(void) = foo;
+        1:    9:__complex float __attribute__((mips16, noinline)) bar(void) { return foop(); }
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (bar() != f)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

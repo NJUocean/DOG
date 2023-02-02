@@ -1,0 +1,39 @@
+        -:    0:Source:3747.c
+        -:    0:Graph:3747.gcno
+        -:    0:Data:3747.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/51466 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) int foo(int i) {
+        -:    6:  volatile int v[4];
+        -:    7:  int *p;
+        1:    8:  v[i] = 6;
+        1:    9:  p = (int *)&v[i];
+        1:   10:  return *p;
+        -:   11:}
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) int bar(int i) {
+        -:   14:  volatile int v[4];
+        -:   15:  int *p;
+        1:   16:  v[i] = 6;
+        1:   17:  p = (int *)&v[i];
+        1:   18:  *p = 8;
+        1:   19:  return v[i];
+        -:   20:}
+        -:   21:
+        2:   22:__attribute__((noinline, noclone)) int baz(int i) {
+        -:   23:  volatile int v[4];
+        -:   24:  int *p;
+        2:   25:  v[i] = 6;
+        2:   26:  p = (int *)&v[0];
+        2:   27:  *p = 8;
+        2:   28:  return v[i];
+        -:   29:}
+        -:   30:
+        1:   31:int main() {
+        1:   32:  if (foo(3) != 6 || bar(2) != 8 || baz(0) != 8 || baz(1) != 6)
+    #####:   33:    abort();
+        1:   34:  return 0;
+        -:   35:}

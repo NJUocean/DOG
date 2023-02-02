@@ -1,0 +1,13 @@
+    1|       |#define X 5.9486574767861588254287966331400356538172e4931L
+    2|       |
+    3|       |long double x = X + X;
+    4|       |long double y = 2.0L * X;
+    5|       |
+    6|      1|main() {
+    7|      1|#if !defined(__vax__) && !defined(_CRAY)
+    8|      1|  if (x != y)
+    9|      0|    abort();
+   10|      1|#endif
+   11|      1|  exit(0);
+   12|      1|}
+

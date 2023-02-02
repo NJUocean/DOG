@@ -1,0 +1,37 @@
+        -:    0:Source:208.c
+        -:    0:Graph:208.gcno
+        -:    0:Data:208.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for C99 declarations in for loops.  */
+        -:    2:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int j = 0;
+        1:   11:  int i = -1;
+       11:   12:  for (int i = 1; i <= 10; i++)
+       10:   13:    j += i;
+        1:   14:  if (j != 55)
+    #####:   15:    abort();
+        1:   16:  if (i != -1)
+    #####:   17:    abort();
+        1:   18:  j = 0;
+       11:   19:  for (auto int i = 1; i <= 10; i++)
+       10:   20:    j += i;
+        1:   21:  if (j != 55)
+    #####:   22:    abort();
+        1:   23:  if (i != -1)
+    #####:   24:    abort();
+        1:   25:  j = 0;
+       11:   26:  for (register int i = 1; i <= 10; i++)
+       10:   27:    j += i;
+        1:   28:  if (j != 55)
+    #####:   29:    abort();
+        1:   30:  if (i != -1)
+    #####:   31:    abort();
+        1:   32:  exit(0);
+        -:   33:}

@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |extern int rand(void);
+    5|       |
+    6|      2|static void copy(int *r, int *a, int na) {
+    7|      2|  int i;
+    8|     12|  for (i = 0; i < na; i++)
+    9|     10|    r[i] = a[i];
+   10|      2|}
+   11|       |
+   12|      2|static void foo(int *a, int na) {
+   13|      2|  int i;
+   14|     12|  for (i = 0; i < na; i++)
+   15|     10|    a[i] = rand();
+   16|      2|}
+   17|       |
+   18|      2|static int cmp(int *a, int *b, int n) {
+   19|      2|  int i;
+   20|     12|  for (i = 0; i < n; i++)
+   21|     10|    if (a[i] != b[i])
+   22|      0|      return -1;
+   23|      2|  return 0;
+   24|      2|}
+   25|       |
+   26|      1|void __attribute__((noinline, noclone)) test(int sz, int comm) {
+   27|      1|  int j, n;
+   28|      1|  int v[64], w[64];
+   29|      3|  for (j = 1; j <= sz; j++) {
+   30|      2|    n = (2 * j - 1) * (2 * j - 1);
+   31|      2|    foo(w, n);
+   32|      2|    copy(v, w, n);
+   33|      2|    if (comm)
+   34|      2|      if (cmp(v, w, n))
+   35|      0|        abort();
+   36|      2|  }
+   37|      1|}
+   38|       |
+   39|      1|int main() {
+   40|      1|  test(2, 1);
+   41|      1|  return 0;
+   42|      1|}
+

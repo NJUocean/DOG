@@ -1,0 +1,42 @@
+        -:    0:Source:1118.c
+        -:    0:Graph:1118.gcno
+        -:    0:Data:1118.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fwrapv" } */
+        -:    3:/* Make sure vectorized absolute difference behaves same as scalar version.  */
+        -:    4:
+        -:    5:#define N 16
+        -:    6:signed char a[] = {-100, -100, -100, -100, -100, -100, -100, -100,
+        -:    7:                   -100, -100, -100, -100, -100, -100, -100, -100};
+        -:    8:signed char b[] = {100, 100, 100, 100, 100, 100, 100, 100,
+        -:    9:                   100, 100, 100, 100, 100, 100, 100, 100};
+        -:   10:
+        -:   11:signed char out[N];
+        -:   12:
+        1:   13:__attribute__((noinline, noipa)) void foo(void) {
+       17:   14:  for (int i = 0; i < N; i++) {
+       16:   15:    signed char diff = b[i] - a[i];
+       16:   16:    out[i] = diff > 0 ? diff : -diff;
+        -:   17:  }
+        1:   18:}
+        -:   19:
+        -:   20:signed char out2[N];
+        -:   21:
+        1:   22:__attribute__((noinline, noipa)) void foo_scalar(void) {
+       17:   23:  for (int i = 0; i < N; i++) {
+       16:   24:    asm volatile("");
+       16:   25:    signed char diff = b[i] - a[i];
+       16:   26:    out2[i] = diff > 0 ? diff : -diff;
+        -:   27:  }
+        1:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  foo();
+        1:   32:  foo_scalar();
+       17:   33:  for (int i = 0; i < N; i++)
+       16:   34:    if (out[i] != out2[i])
+    #####:   35:      __builtin_abort();
+        -:   36:
+        1:   37:  return 0;
+        -:   38:}

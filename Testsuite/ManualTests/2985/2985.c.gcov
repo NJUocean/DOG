@@ -1,0 +1,20 @@
+        -:    0:Source:2985.c
+        -:    0:Graph:2985.gcno
+        -:    0:Data:2985.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/79749 */
+        -:    2:/* Reported by Rainer Orth <ro@gcc.gnu.org> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-fomit-frame-pointer" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int foo(int x1, int x2, int x3, int x4, int x5, int x6, int x7) { return x7; }
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (foo(100, 200, 300, 400, 500, 600, 700) != 700)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

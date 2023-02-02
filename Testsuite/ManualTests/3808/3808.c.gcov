@@ -1,0 +1,33 @@
+        -:    0:Source:3808.c
+        -:    0:Graph:3808.gcno
+        -:    0:Data:3808.gcda
+        -:    0:Runs:1
+        -:    1:char a, h;
+        -:    2:int b, d, e, g, j, k;
+        -:    3:volatile int c;
+        -:    4:short i;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int m;
+        -:    8:
+        1:    9:  m = i ^= 1;
+        2:   10:  for (b = 0; b < 1; b++) {
+        1:   11:    char o = m;
+        1:   12:    g = k;
+       1*:   13:    j = j || c;
+        1:   14:    if (a != o)
+        2:   15:      for (; d < 1; d++)
+        -:   16:        ;
+        -:   17:    else {
+    #####:   18:      char *p = &h;
+    #####:   19:      *p = 1;
+    #####:   20:      for (; e; e++)
+        -:   21:        ;
+        -:   22:    }
+        -:   23:  }
+        -:   24:
+        1:   25:  if (h != 0)
+    #####:   26:    __builtin_abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

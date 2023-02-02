@@ -1,0 +1,13 @@
+    1|       |struct ack {
+    2|       |  char a, b, c;
+    3|       |};
+    4|       |
+    5|      1|main() {
+    6|      1|  struct ack bad;
+    7|      1|
+    8|      1|  foo(bad);
+    9|      1|}
+   10|       |
+   11|       |foo(c) struct ack c;
+   12|      1|{}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:1818.c
+        -:    0:Graph:1818.gcno
+        -:    0:Data:1818.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O3 -fdump-tree-cunroll-details -fno-unroll-loops -fpeel-loops"
+        -:    2: * } */
+        -:    3:void abort();
+        -:    4:
+        -:    5:int a[1000];
+     1000:    6:int __attribute__((noinline)) t() {
+        -:    7:  int i;
+    1000*:    8:  for (i = 0; i < 1000; i++)
+     1000:    9:    if (!a[i])
+     1000:   10:      return 1;
+    #####:   11:  abort();
+        -:   12:}
+        1:   13:int main() {
+        -:   14:  int i;
+     1001:   15:  for (i = 0; i < 1000; i++)
+     1000:   16:    t();
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:/* { dg-final-use { scan-tree-dump "Peeled loop ., 1 times" "cunroll" } } */

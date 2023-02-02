@@ -1,0 +1,22 @@
+        -:    0:Source:1306.c
+        -:    0:Graph:1306.gcno
+        -:    0:Data:1306.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:void abort(void);
+        -:    4:void exit(int);
+        -:    5:
+     1001:    6:void foo(int i) {
+        -:    7:  static int n;
+     1001:    8:  if (i < -128 || i > 127)
+    #####:    9:    abort();
+     1001:   10:  if (++n > 1000)
+        1:   11:    exit(0);
+     1000:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  signed char c;
+        1:   16:  for (c = 0;; c++)
+     1001:   17:    foo(c);
+        -:   18:}

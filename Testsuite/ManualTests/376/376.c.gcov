@@ -1,0 +1,19 @@
+        -:    0:Source:376.c
+        -:    0:Graph:376.gcno
+        -:    0:Data:376.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/38676 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fopenmp" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int bar, foo = 1;
+        -:    7:#pragma omp parallel for shared(foo)
+        4:    8:  for (bar = 0; bar < 3; bar++) {
+        3:    9:    switch (foo) {
+        3:   10:    case 1:
+        3:   11:      break;
+        -:   12:    }
+        3:   13:  }
+        1:   14:  return 0;
+        -:   15:}

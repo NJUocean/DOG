@@ -1,0 +1,22 @@
+        -:    0:Source:824.c
+        -:    0:Graph:824.gcno
+        -:    0:Data:824.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:int spinlock[2];
+        1:    5:int main() {
+        -:    6:  volatile int *spinlock0;
+        -:    7:  volatile int *spinlock1;
+        1:    8:  spinlock0 = &spinlock[0];
+        1:    9:  spinlock1 = &spinlock[1];
+        -:   10:
+        1:   11:  *spinlock0 = 0;
+        1:   12:  *spinlock1 = 0;
+        1:   13:  while (*spinlock0)
+        -:   14:    ;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-final { scan-tree-dump "={v} .*spinlock" "optimized" } } */
+        -:   18:/* { dg-final { scan-tree-dump "spinlock.* ={v}" "optimized" } } */

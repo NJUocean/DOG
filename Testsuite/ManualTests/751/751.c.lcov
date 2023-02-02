@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fno-inline" } */
+    3|       |
+    4|       |struct usb_interface_descriptor {
+    5|       |  unsigned short wMaxPacketSize;
+    6|       |  char e;
+    7|       |} __attribute__((packed));
+    8|       |
+    9|       |struct usb_device {
+   10|       |  int devnum;
+   11|       |  struct usb_interface_descriptor if_desc[2];
+   12|       |};
+   13|       |
+   14|       |extern int printf(const char *, ...);
+   15|       |
+   16|      2|void foo(unsigned short a) { printf("%d\n", a); }
+   17|       |
+   18|       |struct usb_device ndev;
+   19|       |
+   20|      1|void usb_set_maxpacket(int n) {
+   21|      1|  int i;
+   22|      1|
+   23|      3|  for (i = 0; i < n; i++)
+   24|      2|    foo((&ndev)->if_desc[i].wMaxPacketSize);
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  usb_set_maxpacket(2);
+   29|      1|  return 0;
+   30|      1|}
+

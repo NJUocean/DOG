@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-ftree-tail-merge -Wno-div-by-zero -O2 -fno-dce
+    3|       | * -fno-isolate-erroneous-paths-dereference -fno-tree-dce -fno-tree-vrp" } */
+    4|       |/* { dg-require-effective-target ptr_eq_long } */
+    5|       |
+    6|       |int b, c, d, e;
+    7|       |
+    8|      0|__attribute__((noinline, noclone)) int foo(short f) {
+    9|      0|  f %= 0;
+   10|      0|  return f;
+   11|      0|}
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  b = (unsigned char)__builtin_parity(d);
+   15|      1|  e ? foo(0) : (long)&c;
+   16|      1|  return 0;
+   17|      1|}
+

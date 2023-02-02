@@ -1,0 +1,70 @@
+        -:    0:Source:1898.c
+        -:    0:Graph:1898.gcno
+        -:    0:Data:1898.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target { nonpic || pie_enabled } } } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-pre-stats -fdump-tree-fre1" } */
+        -:    3:#include <stddef.h>
+        -:    4:
+        -:    5:union tree_node;
+        -:    6:typedef union tree_node *tree;
+        -:    7:
+        -:    8:struct tree_common {
+        -:    9:  tree chain;
+        -:   10:};
+        -:   11:
+        -:   12:struct tree_list {
+        -:   13:  struct tree_common common;
+        -:   14:  tree value;
+        -:   15:};
+        -:   16:
+        -:   17:union tree_node
+        -:   18:
+        -:   19:{
+        -:   20:  struct tree_common common;
+        -:   21:  struct tree_list list;
+        -:   22:};
+        -:   23:
+        -:   24:extern void abort(void) __attribute__((noreturn));
+        -:   25:
+    #####:   26:void __attribute__((noinline)) foo(void) { abort(); }
+        -:   27:
+        -:   28:/* There are some reloaded loads of *cell, and cell->common.chain on various
+        -:   29:   branches.  */
+        -:   30:void __attribute__((noinline))
+        1:   31:remove_useless_vars(tree *unexpanded_var_list, int dump_file) {
+        -:   32:  tree var, *cell;
+        1:   33:  int c = 0;
+        3:   34:  for (cell = unexpanded_var_list; *cell;) {
+        2:   35:    var = (*cell)->list.value;
+        2:   36:    if (var) {
+        1:   37:      if (dump_file)
+    #####:   38:        foo();
+        -:   39:
+        1:   40:      *cell = ((*cell)->common.chain);
+        1:   41:      continue;
+        -:   42:    }
+        -:   43:
+        1:   44:    cell = &((*cell)->common.chain);
+        -:   45:  }
+        1:   46:}
+        -:   47:extern void *malloc(__SIZE_TYPE__) __attribute__((malloc));
+        -:   48:
+        1:   49:int main(void) {
+        -:   50:  int i;
+        1:   51:  tree unexpanded_var_list, last = (tree)0;
+        -:   52:
+        3:   53:  for (i = 0; i < 2; i++) {
+        2:   54:    unexpanded_var_list = malloc(sizeof(struct tree_list));
+        2:   55:    unexpanded_var_list->list.value = (tree)(ptrdiff_t)(i & 1);
+        2:   56:    unexpanded_var_list->common.chain = last;
+        2:   57:    last = unexpanded_var_list;
+        -:   58:  }
+        -:   59:
+        1:   60:  remove_useless_vars(&unexpanded_var_list, 0);
+        1:   61:  return 0;
+        -:   62:}
+        -:   63:
+        -:   64:/* { dg-final { scan-tree-dump-not "= unexpanded_var_list;" "fre1" } } */
+        -:   65:/* { dg-final { scan-tree-dump-times "Eliminated: 1" 1 "pre" } } */
+        -:   66:/* { dg-final { scan-tree-dump-times "Insertions: 1" 1 "pre" } } */

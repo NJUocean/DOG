@@ -1,0 +1,70 @@
+        -:    0:Source:2919.c
+        -:    0:Graph:2919.gcno
+        -:    0:Data:2919.gcda
+        -:    0:Runs:1
+        -:    1:/* Machine description pattern tests.  */
+        -:    2:
+        -:    3:/* { dg-do compile { target { lp64 } } } */
+        -:    4:/* Starting with arch13 the and with complement instruction is
+        -:    5:   available and the splitter is disabled.  */
+        -:    6:/* { dg-options "-march=z14 -mzarch -save-temps -dP" } */
+        -:    7:/* { dg-do run { target { lp64 && s390_useable_hw } } } */
+        -:    8:/* Skip test if -O0 is present on the command line:
+        -:    9:
+        -:   10:    { dg-skip-if "" { *-*-* } { "-O0" } { "" } }
+        -:   11:
+        -:   12:   Skip test if the -O option is missing from the command line
+        -:   13:    { dg-skip-if "" { *-*-* } { "*" } { "-O*" } }
+        -:   14:*/
+        -:   15:
+        1:   16:__attribute__((noinline)) unsigned long andc_vv(unsigned long a,
+        -:   17:                                                unsigned long b) {
+        1:   18:  return ~b & a;
+        -:   19:}
+        -:   20:/* { dg-final { scan-assembler ":18:.\* \{\\*anddi3\}" } } */
+        -:   21:/* { dg-final { scan-assembler ":18:.\* \{\\*xordi3\}" } } */
+        -:   22:
+        1:   23:__attribute__((noinline)) unsigned long andc_pv(unsigned long *a,
+        -:   24:                                                unsigned long b) {
+        1:   25:  return ~b & *a;
+        -:   26:}
+        -:   27:/* { dg-final { scan-assembler ":24:.\* \{\\*anddi3\}" } } */
+        -:   28:/* { dg-final { scan-assembler ":24:.\* \{\\*xordi3\}" } } */
+        -:   29:
+        1:   30:__attribute__((noinline)) unsigned long andc_vp(unsigned long a,
+        -:   31:                                                unsigned long *b) {
+        1:   32:  return ~*b & a;
+        -:   33:}
+        -:   34:/* { dg-final { scan-assembler ":30:.\* \{\\*anddi3\}" } } */
+        -:   35:/* { dg-final { scan-assembler ":30:.\* \{\\*xordi3\}" } } */
+        -:   36:
+        1:   37:__attribute__((noinline)) unsigned long andc_pp(unsigned long *a,
+        -:   38:                                                unsigned long *b) {
+        1:   39:  return ~*b & *a;
+        -:   40:}
+        -:   41:/* { dg-final { scan-assembler ":36:.\* \{\\*anddi3\}" } } */
+        -:   42:/* { dg-final { scan-assembler ":36:.\* \{\\*xordi3\}" } } */
+        -:   43:
+        -:   44:/* { dg-final { scan-assembler-times "\tngr\?k\?\t" 4 } } */
+        -:   45:/* { dg-final { scan-assembler-times "\txgr\?\t" 4 } } */
+        -:   46:
+        1:   47:int main(void) {
+        1:   48:  unsigned long a = 0xc00000000000000cllu;
+        1:   49:  unsigned long b = 0x500000000000000allu;
+        1:   50:  unsigned long e = 0x8000000000000004llu;
+        -:   51:  unsigned long c;
+        -:   52:
+        1:   53:  c = andc_vv(a, b);
+        1:   54:  if (c != e)
+    #####:   55:    __builtin_abort();
+        1:   56:  c = andc_pv(&a, b);
+        1:   57:  if (c != e)
+    #####:   58:    __builtin_abort();
+        1:   59:  c = andc_vp(a, &b);
+        1:   60:  if (c != e)
+    #####:   61:    __builtin_abort();
+        1:   62:  c = andc_pp(&a, &b);
+        1:   63:  if (c != e)
+    #####:   64:    __builtin_abort();
+        1:   65:  return 0;
+        -:   66:}

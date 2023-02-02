@@ -1,0 +1,31 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |/* { dg-options "-fno-strict-overflow" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |__attribute__((noinline)) void foo(short unsigned int *p1,
+    8|      1|                                   short unsigned int *p2) {
+    9|      1|  short unsigned int x1, x4;
+   10|      1|  int x2, x3, x5, x6;
+   11|      1|  unsigned int x7;
+   12|      1|
+   13|      1|  x1 = *p1;
+   14|      1|  x2 = (int)x1;
+   15|      1|  x3 = x2 * 65536;
+   16|      1|  x4 = *p2;
+   17|      1|  x5 = (int)x4;
+   18|      1|  x6 = x3 + x4;
+   19|      1|  x7 = (unsigned int)x6;
+   20|      1|  if (x7 <= 268435455U)
+   21|      0|    abort();
+   22|      1|  exit(0);
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  short unsigned int x, y;
+   27|      1|  x = -5;
+   28|      1|  y = -10;
+   29|      1|  foo(&x, &y);
+   30|      1|}
+

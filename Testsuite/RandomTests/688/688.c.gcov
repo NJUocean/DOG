@@ -1,0 +1,44 @@
+        -:    0:Source:688.c
+        -:    0:Graph:688.gcno
+        -:    0:Data:688.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static const volatile uint16_t g_2[4] = {0x6B9DL, 0x6B9DL, 0x6B9DL, 0x6B9DL};
+        -:    7:static uint32_t g_6 = 0UL;
+        -:    8:
+        -:    9:static uint32_t func_1(void);
+        -:   10:
+        1:   11:static uint32_t func_1(void) {
+        -:   12:  int32_t l_5[1];
+        -:   13:  int i;
+        2:   14:  for (i = 0; i < 1; i++)
+        1:   15:    l_5[i] = 0x82ABBF9AL;
+        1:   16:  g_6 |= (((18446744073709551615UL | 0x1E814B733C633843LL) > g_2[1]) > (safe_rshift_func_int32_t_s_s(l_5[0], l_5[0])));
+       1*:   17:  for (g_6 = 0; (g_6 != 0); g_6 = safe_add_func_int32_t_s_s(g_6, 9)) {
+    #####:   18:    if (g_2[0])
+    #####:   19:      break;
+        -:   20:  }
+        1:   21:  return l_5[0];
+        -:   22:}
+        -:   23:
+        1:   24:int main(int argc, char *argv[]) {
+        -:   25:  int i;
+        1:   26:  int print_hash_value = 0;
+       1*:   27:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   28:    print_hash_value = 1;
+        1:   29:  platform_main_begin();
+        1:   30:  crc32_gentab();
+        1:   31:  func_1();
+        5:   32:  for (i = 0; i < 4; i++) {
+        4:   33:    transparent_crc(g_2[i], "g_2[i]", print_hash_value);
+        4:   34:    if (print_hash_value)
+    #####:   35:      printf("index = [%d]\n", i);
+        -:   36:  }
+        1:   37:  transparent_crc(g_6, "g_6", print_hash_value);
+        1:   38:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   39:  return 0;
+        -:   40:}

@@ -1,0 +1,24 @@
+        -:    0:Source:1293.c
+        -:    0:Graph:1293.gcno
+        -:    0:Data:1293.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#include <limits.h>
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int f(unsigned int a, unsigned int b) {
+        1:    7:  if (a > INT_MAX - 15)
+    #####:    8:    return 0;
+        1:    9:  if (b > INT_MAX - 15)
+    #####:   10:    return 0;
+        -:   11:
+        1:   12:  int c = (a - 20) + (b - 20);
+        1:   13:  return c > INT_MAX - 15;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  if (f(INT_MAX - 15, 41) != 1)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

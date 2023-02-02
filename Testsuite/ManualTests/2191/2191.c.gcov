@@ -1,0 +1,20 @@
+        -:    0:Source:2191.c
+        -:    0:Graph:2191.gcno
+        -:    0:Data:2191.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target vect_int } */
+        -:    3:
+        -:    4:int a[128];
+        -:    5:
+        1:    6:int main() {
+        -:    7:  short i;
+        -:    8:
+       65:    9:  for (i = 0; i < 64; i++) {
+       64:   10:    a[i] = (int)i;
+        -:   11:  }
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-tree-dump-times "vectorized 1 loops" 1 "vect" { target
+        -:   16: * vect_unpack } } } */

@@ -1,0 +1,25 @@
+        -:    0:Source:3950.c
+        -:    0:Graph:3950.gcno
+        -:    0:Data:3950.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78720 */
+        -:    2:
+        3:    3:__attribute__((noinline, noclone)) long int foo(signed char x) {
+        3:    4:  return x < 0 ? 0x80000L : 0L;
+        -:    5:}
+        -:    6:
+        3:    7:__attribute__((noinline, noclone)) long int bar(signed char x) {
+        3:    8:  return x < 0 ? 0x80L : 0L;
+        -:    9:}
+        -:   10:
+        3:   11:__attribute__((noinline, noclone)) long int baz(signed char x) {
+        3:   12:  return x < 0 ? 0x20L : 0L;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        2:   16:  if (foo(-1) != 0x80000L || bar(-1) != 0x80L || baz(-1) != 0x20L ||
+        3:   17:      foo(0) != 0L || bar(0) != 0L || baz(0) != 0L || foo(31) != 0L ||
+        2:   18:      bar(31) != 0L || baz(31) != 0L)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

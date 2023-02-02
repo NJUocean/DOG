@@ -1,0 +1,45 @@
+    1|       |extern void abort();
+    2|       |
+    3|      1|#define HOST_WIDE_INT long
+    4|      2|#define HOST_BITS_PER_WIDE_INT (sizeof(long) * 8)
+    5|       |
+    6|       |struct tree_type {
+    7|       |  unsigned int precision : 9;
+    8|       |};
+    9|       |
+   10|       |int sign_bit_p(struct tree_type *t, HOST_WIDE_INT val_hi,
+   11|      1|               unsigned HOST_WIDE_INT val_lo) {
+   12|      1|  unsigned HOST_WIDE_INT mask_lo, lo;
+   13|      1|  HOST_WIDE_INT mask_hi, hi;
+   14|      1|  int width = t->precision;
+   15|      1|
+   16|      1|  if (width > HOST_BITS_PER_WIDE_INT) {
+   17|      0|    hi = (unsigned HOST_WIDE_INT)1 << (width - HOST_BITS_PER_WIDE_INT - 1);
+   18|      0|    lo = 0;
+   19|      0|
+   20|      0|    mask_hi =
+   21|      0|        ((unsigned HOST_WIDE_INT) - 1 >> (2 * HOST_BITS_PER_WIDE_INT - width));
+   22|      0|    mask_lo = -1;
+   23|      1|  } else {
+   24|      1|    hi = 0;
+   25|      1|    lo = (unsigned HOST_WIDE_INT)1 << (width - 1);
+   26|      1|
+   27|      1|    mask_hi = 0;
+   28|      1|    mask_lo =
+   29|      1|        ((unsigned HOST_WIDE_INT) - 1 >> (HOST_BITS_PER_WIDE_INT - width));
+   30|      1|  }
+   31|      1|
+   32|      1|  if ((val_hi & mask_hi) == hi && (val_lo & mask_lo) == lo)
+   33|      1|    return 1;
+   34|      0|
+   35|      0|  return 0;
+   36|      0|}
+   37|       |
+   38|      1|int main() {
+   39|      1|  struct tree_type t;
+   40|      1|  t.precision = 1;
+   41|      1|  if (!sign_bit_p(&t, 0, -1))
+   42|      0|    abort();
+   43|      1|  return 0;
+   44|      1|}
+

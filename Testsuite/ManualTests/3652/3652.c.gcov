@@ -1,0 +1,23 @@
+        -:    0:Source:3652.c
+        -:    0:Graph:3652.gcno
+        -:    0:Data:3652.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/41917 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:unsigned int a = 1;
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  unsigned int b, c, d;
+        -:    8:
+        -:    9:  if (sizeof(int) != 4 || (int)0xc7d24b5e > 0)
+        -:   10:    return 0;
+        -:   11:
+        1:   12:  c = 0xc7d24b5e;
+        1:   13:  d = a | -2;
+       1*:   14:  b = (d == 0) ? c : (c % d);
+        1:   15:  if (b != c)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

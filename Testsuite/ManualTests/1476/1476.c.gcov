@@ -1,0 +1,35 @@
+        -:    0:Source:1476.c
+        -:    0:Graph:1476.gcno
+        -:    0:Data:1476.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  int msgLength;
+        -:    7:  unsigned char data[1000];
+        -:    8:} SMsg;
+        -:    9:
+        -:   10:typedef struct {
+        -:   11:  int dummy;
+        -:   12:  int d[0];
+        -:   13:} SData;
+        -:   14:
+        -:   15:int condition = 3;
+        -:   16:
+        1:   17:int main() {
+        -:   18:  SMsg msg;
+        1:   19:  SData *pData = (SData *)(msg.data);
+        1:   20:  unsigned int i = 0;
+        2:   21:  for (i = 0; i < 1; i++) {
+        1:   22:    pData->d[i] = 0;
+        1:   23:    if (condition & 1)
+        1:   24:      pData->d[i] |= 0x55;
+        1:   25:    if (condition & 2)
+        1:   26:      pData->d[i] |= 0xaa;
+        -:   27:  }
+        1:   28:  if (pData->d[0] != 0xff)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,36 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|      2|void foo(char *bp, unsigned n) {
+    5|      2|  register char c;
+    6|      2|  register char *ep = bp + n;
+    7|      2|  register char *sp;
+    8|      2|
+    9|      4|  while (bp < ep) {
+   10|      2|    sp = bp + 3;
+   11|      2|    c = *sp;
+   12|      2|    *sp = *bp;
+   13|      2|    *bp++ = c;
+   14|      2|    sp = bp + 1;
+   15|      2|    c = *sp;
+   16|      2|    *sp = *bp;
+   17|      2|    *bp++ = c;
+   18|      2|    bp += 2;
+   19|      2|  }
+   20|      2|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  int one = 1;
+   24|      1|
+   25|      1|  if (sizeof(int) != 4 * sizeof(char))
+   26|      0|    exit(0);
+   27|      1|
+   28|      1|  foo((char *)&one, sizeof(one));
+   29|      1|  foo((char *)&one, sizeof(one));
+   30|      1|
+   31|      1|  if (one != 1)
+   32|      0|    abort();
+   33|      1|
+   34|      1|  exit(0);
+   35|      1|}
+

@@ -1,0 +1,38 @@
+        -:    0:Source:1051.c
+        -:    0:Graph:1051.gcno
+        -:    0:Data:1051.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:#include <inttypes.h>
+        -:    5:
+        -:    6:struct U {
+        -:    7:  int M0;
+        -:    8:  int M1;
+        -:    9:} __attribute((aligned(16)));
+        -:   10:
+        -:   11:volatile struct U p0 = {1, 0};
+        -:   12:
+        1:   13:void __attribute__((noinline)) foo(struct U p) {
+        -:   14:
+        1:   15:  volatile intptr_t mask = 0b1111;
+        -:   16:  volatile int dummy[2];
+        1:   17:  struct U p1 = p;
+        1:   18:  dummy[1] = p.M0;
+        -:   19:
+        1:   20:  if ((intptr_t)(&p1) & mask)
+    #####:   21:    __builtin_abort();
+        1:   22:  if ((intptr_t)(&p) & mask)
+    #####:   23:    __builtin_abort();
+        -:   24:
+        1:   25:  if (p1.M0 != dummy[1])
+    #####:   26:    __builtin_abort();
+        1:   27:  if (p1.M1 != p.M1)
+    #####:   28:    __builtin_abort();
+        1:   29:}
+        -:   30:
+        1:   31:int main() {
+        1:   32:  foo(p0);
+        1:   33:  return 0;
+        -:   34:}

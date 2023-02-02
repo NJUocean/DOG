@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct S {
+    6|       |  int *i[4];
+    7|       |  int *p1;
+    8|       |  int *p2;
+    9|       |  int *p3;
+   10|       |  int *p4;
+   11|       |};
+   12|       |int **b;
+   13|      1|int main() {
+   14|      1|  int i = 1;
+   15|      1|  struct S s;
+   16|      1|  s.p3 = &i;
+   17|      1|  int **p;
+   18|      1|  if (b)
+   19|      0|    p = b;
+   20|      1|  else
+   21|      1|    p = &s.i[2];
+   22|      1|  p += 4;
+   23|      1|  if (!b)
+   24|      1|    **p = 0;
+   25|      1|  if (i != 0)
+   26|      0|    abort();
+   27|      1|  return i;
+   28|      1|}
+

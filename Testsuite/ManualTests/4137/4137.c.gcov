@@ -1,0 +1,22 @@
+        -:    0:Source:4137.c
+        -:    0:Graph:4137.gcno
+        -:    0:Data:4137.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:int ii;
+        -:    3:typedef struct {
+        -:    4:} raw_spinlock_t;
+        -:    5:typedef struct {
+        -:    6:  raw_spinlock_t raw_lock;
+        -:    7:} spinlock_t;
+        1:    8:raw_spinlock_t one_raw_spinlock(void) {
+        -:    9:  raw_spinlock_t raw_lock;
+        1:   10:  ii++;
+        1:   11:  return raw_lock;
+        -:   12:}
+        1:   13:int main(void) {
+        1:   14:  spinlock_t lock = (spinlock_t){.raw_lock = one_raw_spinlock()};
+        1:   15:  if (ii != 1)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

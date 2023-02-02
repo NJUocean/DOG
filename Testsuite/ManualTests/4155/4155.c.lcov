@@ -1,0 +1,21 @@
+    1|       |/* This used to fail on H8/300 due to incorrect specification of pushi1.  */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |/* { dg-options "-O2 -fomit-frame-pointer" { target h8300-*-* } } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|      1|void bar(int a, int b, int c, int d, int e) {
+   11|      1|  if (d != 1)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|      1|void foo(int a, int b, int c, int d, int e) { bar(a, b, c, d, e); }
+   16|       |
+   17|      1|int main() {
+   18|      1|  foo(0, 0, 0, 1, 2);
+   19|      1|  exit(0);
+   20|      1|}
+

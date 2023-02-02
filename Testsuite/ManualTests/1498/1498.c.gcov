@@ -1,0 +1,34 @@
+        -:    0:Source:1498.c
+        -:    0:Graph:1498.gcno
+        -:    0:Data:1498.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target size32plus } */
+        -:    3:
+        -:    4:/* Large so an out-of-bound read will crash.  */
+        -:    5:unsigned char c[0x30001] = {1};
+        -:    6:int j = 2;
+        -:    7:
+        1:    8:static void foo(unsigned long *x, unsigned char *y) {
+        -:    9:  int i;
+        1:   10:  unsigned long w = x[0];
+        3:   11:  for (i = 0; i < j; i++) {
+        2:   12:    w += *y;
+        2:   13:    y += 0x10000;
+        2:   14:    w += *y;
+        2:   15:    y += 0x10000;
+        -:   16:  }
+        1:   17:  x[1] = w;
+        1:   18:}
+        -:   19:
+        1:   20:__attribute__((noinline, noclone)) void bar(unsigned long *x) { foo(x, c); }
+        -:   21:
+        1:   22:int main() {
+        1:   23:  unsigned long a[2] = {0, -1UL};
+        1:   24:  asm volatile("" ::"r"(c) : "memory");
+        1:   25:  c[0] = 0;
+        1:   26:  bar(a);
+        1:   27:  if (a[1] != 0)
+    #####:   28:    __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

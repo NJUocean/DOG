@@ -1,0 +1,31 @@
+        -:    0:Source:164.c
+        -:    0:Graph:164.gcno
+        -:    0:Data:164.gcda
+        -:    0:Runs:1
+        -:    1:/* pr39500: autopar fails to parallel */
+        -:    2:/* origin: nemokingdom@gmail.com(LiFeng) */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O2 -fno-tree-loop-distribute-patterns
+        -:    5: * -ftree-parallelize-loops=4 -fdump-tree-parloops2-details" } */
+        -:    6:
+        -:    7:void abort(void);
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  int i;
+        -:   11:  int x[100000];
+        -:   12:
+    10001:   13:  for (i = 0; i < 10000; i++)
+    10000:   14:    x[i] = x[i + 10000];
+        -:   15:
+    10001:   16:  for (i = 0; i < 10000; i++) {
+    10000:   17:    if (x[i] != x[i + 10000])
+    #####:   18:      abort();
+        -:   19:  }
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}
+        -:   23:
+        -:   24:/* Check that the first loop in parloop got parallelized.  */
+        -:   25:
+        -:   26:/* { dg-final { scan-tree-dump-times "SUCCESS: may be parallelized" 1
+        -:   27: * "parloops2" } } */

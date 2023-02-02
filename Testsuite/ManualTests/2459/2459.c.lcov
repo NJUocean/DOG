@@ -1,0 +1,20 @@
+    1|       |/* Tests that the may_alias attribute works as expected.
+    2|       |   Author: Osku Salerma <osku@iki.fi> Apr 2002.  */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |typedef short __attribute__((__may_alias__)) short_a;
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int a = 0x12345678;
+   11|      1|  short_a *b = (short_a *)&a;
+   12|      1|
+   13|      1|  b[1] = 0;
+   14|      1|
+   15|      1|  if (a == 0x12345678)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+

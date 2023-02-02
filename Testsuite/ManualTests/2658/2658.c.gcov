@@ -1,0 +1,23 @@
+        -:    0:Source:2658.c
+        -:    0:Graph:2658.gcno
+        -:    0:Data:2658.gcda
+        -:    0:Runs:1
+        1:    1:long long signed_poly(long long sum, long x) {
+        1:    2:  sum += (long long)(long)sum * (long long)x;
+        1:    3:  return sum;
+        -:    4:}
+        -:    5:
+        1:    6:unsigned long long unsigned_poly(unsigned long long sum, unsigned long x) {
+        1:    7:  sum += (unsigned long long)(unsigned long)sum * (unsigned long long)x;
+        1:    8:  return sum;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (signed_poly(2LL, -3) != -4LL)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  if (unsigned_poly(2ULL, 3) != 8ULL)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  exit(0);
+        -:   19:}

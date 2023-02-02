@@ -1,0 +1,13 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -fipa-icf -fdump-ipa-icf-details" } */
+    3|       |
+    4|      1|int __attribute__((optimize("Os"), noinline, noclone)) foo(int a) {
+    5|      1|  return a * a;
+    6|      1|}
+    7|       |
+    8|      1|__attribute__((noinline, noclone)) int bar(int b) { return b * b; }
+    9|       |
+   10|      1|int main() { return foo(0) + bar(0); }
+   11|       |
+   12|       |/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */
+

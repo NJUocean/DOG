@@ -1,0 +1,28 @@
+        -:    0:Source:2964.c
+        -:    0:Graph:2964.gcno
+        -:    0:Data:2964.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that the __builtin_strnlen returns 0 with with
+        -:    2:   non-constant 0 length.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:
+        -:    6:extern int snprintf(char *, int, const char *, ...);
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int main() {
+        -:   10:  int i;
+        1:   11:  int cmp = 0;
+        -:   12:  char buffer[1024];
+        1:   13:  const char *s = "the string";
+        -:   14:
+        1:   15:  snprintf(buffer, 4, "%s", s);
+        -:   16:
+        4:   17:  for (i = 1; i < 4; i++)
+        3:   18:    cmp += __builtin_strncmp(buffer, s, i - 1);
+        -:   19:
+        1:   20:  if (cmp)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

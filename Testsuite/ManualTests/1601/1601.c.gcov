@@ -1,0 +1,26 @@
+        -:    0:Source:1601.c
+        -:    0:Graph:1601.gcno
+        -:    0:Data:1601.gcda
+        -:    0:Runs:1
+        -:    1:/* The composite type of int and an enum compatible with int might be
+        -:    2:   either of the two types, but it isn't an unsigned type.  */
+        -:    3:/* Origin: Joseph Myers <jsm@polyomino.org.uk> */
+        -:    4:
+        -:    5:#include <limits.h>
+        -:    6:
+        -:    7:#include <stdio.h>
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:
+        -:   12:enum e { a = INT_MIN };
+        -:   13:
+        -:   14:int *p;
+        -:   15:enum e *q;
+        1:   16:int main(void) {
+        1:   17:  enum e x = a;
+        1:   18:  q = &x;
+        1:   19:  if (*(1 ? q : p) > 0)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

@@ -1,0 +1,73 @@
+    1|       |
+    2|       |/* { dg-do run  } */
+    3|       |/* { dg-options "-O0" } */
+    4|       |
+    5|       |#include <limits.h>
+    6|     17|#define ABS(x) (((x) >= 0) ? (x) : -(x))
+    7|       |
+    8|       |#define DEF_TEST(TYPE)                                                         \
+    9|     17|  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+   10|     17|    TYPE t = ABS(x);                                                           \
+   11|     17|    if (t != y)                                                                \
+   12|     17|      __builtin_abort();                                                       \
+   13|     17|  }
+  ------------------
+  | foo_char:
+  |    9|      5|  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+  |   10|      5|    TYPE t = ABS(x);                                                           \
+  |   11|      5|    if (t != y)                                                                \
+  |   12|      5|      __builtin_abort();                                                       \
+  |   13|      5|  }
+  ------------------
+  | foo_short:
+  |    9|      4|  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+  |   10|      4|    TYPE t = ABS(x);                                                           \
+  |   11|      4|    if (t != y)                                                                \
+  |   12|      4|      __builtin_abort();                                                       \
+  |   13|      4|  }
+  ------------------
+  | foo_int:
+  |    9|      4|  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+  |   10|      4|    TYPE t = ABS(x);                                                           \
+  |   11|      4|    if (t != y)                                                                \
+  |   12|      4|      __builtin_abort();                                                       \
+  |   13|      4|  }
+  ------------------
+  | foo_long:
+  |    9|      4|  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+  |   10|      4|    TYPE t = ABS(x);                                                           \
+  |   11|      4|    if (t != y)                                                                \
+  |   12|      4|      __builtin_abort();                                                       \
+  |   13|      4|  }
+  ------------------
+   14|       |
+   15|       |DEF_TEST(char);
+   16|       |DEF_TEST(short);
+   17|       |DEF_TEST(int);
+   18|       |DEF_TEST(long);
+   19|       |
+   20|      1|int main() {
+   21|      1|  foo_char(SCHAR_MIN + 1, SCHAR_MAX);
+   22|      1|  foo_char(0, 0);
+   23|      1|  foo_char(-1, 1);
+   24|      1|  foo_char(1, 1);
+   25|      1|  foo_char(SCHAR_MAX, SCHAR_MAX);
+   26|      1|
+   27|      1|  foo_int(-1, 1);
+   28|      1|  foo_int(0, 0);
+   29|      1|  foo_int(INT_MAX, INT_MAX);
+   30|      1|  foo_int(INT_MIN + 1, INT_MAX);
+   31|      1|
+   32|      1|  foo_short(-1, 1);
+   33|      1|  foo_short(0, 0);
+   34|      1|  foo_short(SHRT_MAX, SHRT_MAX);
+   35|      1|  foo_short(SHRT_MIN + 1, SHRT_MAX);
+   36|      1|
+   37|      1|  foo_long(-1, 1);
+   38|      1|  foo_long(0, 0);
+   39|      1|  foo_long(LONG_MAX, LONG_MAX);
+   40|      1|  foo_long(LONG_MIN + 1, LONG_MAX);
+   41|      1|
+   42|      1|  return 0;
+   43|      1|}
+

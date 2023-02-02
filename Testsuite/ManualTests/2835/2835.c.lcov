@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-additional-options "-Wno-pedantic" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  goto L2;
+    6|      0|L1:
+    7|      0|  return 0;
+    8|      1|L2 : {
+    9|      1|  void *ptr = &&L1; /* { dg-message "sorry, unimplemented: target cannot support
+   10|      1|                       label values" "" } */
+   11|      1|}
+   12|      1|}
+

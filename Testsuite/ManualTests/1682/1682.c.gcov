@@ -1,0 +1,19 @@
+        -:    0:Source:1682.c
+        -:    0:Graph:1682.gcno
+        -:    0:Data:1682.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fno-omit-frame-pointer -w" } */
+        -:    3:
+        -:    4:#define SIZE 8
+        -:    5:
+        1:    6:main() {
+        1:    7:  int a[SIZE] = {1};
+        -:    8:  int i;
+        -:    9:
+        8:   10:  for (i = 1; i < SIZE; i++)
+        7:   11:    if (a[i] != 0)
+    #####:   12:      abort();
+        -:   13:
+        1:   14:  exit(0);
+        -:   15:}

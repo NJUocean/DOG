@@ -1,0 +1,36 @@
+        -:    0:Source:3485.c
+        -:    0:Graph:3485.gcno
+        -:    0:Data:3485.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/50569 */
+        -:    2:/* Reported by Paul Koning <pkoning@gcc.gnu.org> */
+        -:    3:/* Reduced testcase by Mikael Pettersson <mikpe@it.uu.se> */
+        -:    4:
+        -:    5:struct event {
+        -:    6:  struct {
+        -:    7:    unsigned int sec;
+        -:    8:  } sent __attribute__((packed));
+        -:    9:};
+        -:   10:
+        1:   11:void __attribute__((noinline, noclone)) frob_entry(char *buf) {
+        -:   12:  struct event event;
+        -:   13:
+        1:   14:  __builtin_memcpy(&event, buf, sizeof(event));
+        1:   15:  if (event.sent.sec < 64) {
+        1:   16:    event.sent.sec = -1U;
+        1:   17:    __builtin_memcpy(buf, &event, sizeof(event));
+        -:   18:  }
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        -:   22:  union {
+        -:   23:    char buf[1 + sizeof(struct event)];
+        -:   24:    int align;
+        -:   25:  } u;
+        -:   26:
+        1:   27:  __builtin_memset(&u, 0, sizeof u);
+        -:   28:
+        1:   29:  frob_entry(&u.buf[1]);
+        -:   30:
+        1:   31:  return 0;
+        -:   32:}

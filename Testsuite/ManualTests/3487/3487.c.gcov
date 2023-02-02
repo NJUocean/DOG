@@ -1,0 +1,24 @@
+        -:    0:Source:3487.c
+        -:    0:Graph:3487.gcno
+        -:    0:Data:3487.gcda
+        -:    0:Runs:1
+        -:    1:struct __attribute__((packed)) S {
+        -:    2:  int a, b, c;
+        -:    3:};
+        -:    4:
+        1:    5:static int __attribute__((noinline, noclone)) extract(const char *p) {
+        -:    6:  struct S s;
+        1:    7:  __builtin_memcpy(&s, p, sizeof(struct S));
+        1:    8:  return s.a;
+        -:    9:}
+        -:   10:
+        -:   11:volatile int i;
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  char p[sizeof(struct S) + 1];
+        -:   15:
+        1:   16:  __builtin_memset(p, 0, sizeof(struct S) + 1);
+        1:   17:  i = extract(p + 1);
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

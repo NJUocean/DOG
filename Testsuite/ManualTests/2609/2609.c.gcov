@@ -1,0 +1,27 @@
+        -:    0:Source:2609.c
+        -:    0:Graph:2609.gcno
+        -:    0:Data:2609.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-ifunc "" } */
+        -:    3:
+       2*:    4:__attribute__((target_clones("default", "avx"))) int foo() { return -2; }
+------------------
+foo.avx.0:
+        2:    4:__attribute__((target_clones("default", "avx"))) int foo() { return -2; }
+------------------
+foo.default.1:
+    #####:    4:__attribute__((target_clones("default", "avx"))) int foo() { return -2; }
+------------------
+        -:    5:
+        3:    6:int bar() { return 2; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  int r = 0;
+        1:   10:  r += bar();
+        1:   11:  r += foo();
+        1:   12:  r += bar();
+        1:   13:  r += foo();
+        1:   14:  r += bar();
+        1:   15:  return r - 2;
+        -:   16:}

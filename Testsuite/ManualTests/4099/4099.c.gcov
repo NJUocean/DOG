@@ -1,0 +1,22 @@
+        -:    0:Source:4099.c
+        -:    0:Graph:4099.gcno
+        -:    0:Data:4099.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  unsigned char a __attribute__((packed));
+        -:    3:  unsigned short b __attribute__((packed));
+        -:    4:} three_byte_t;
+        -:    5:
+        1:    6:unsigned char f(void) { return 0xab; }
+        -:    7:
+        1:    8:unsigned short g(void) { return 0x1234; }
+        -:    9:
+        1:   10:main() {
+        -:   11:  three_byte_t three_byte;
+        -:   12:
+        1:   13:  three_byte.a = f();
+        1:   14:  three_byte.b = g();
+        1:   15:  if (three_byte.a != 0xab || three_byte.b != 0x1234)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fmodulo-sched -funroll-loops -fdump-rtl-sms --param
+    3|       | * sms-min-sc=1 -fmodulo-sched-allow-regmoves" } */
+    4|       |/* { dg-options "-O2 -fmodulo-sched -funroll-loops -fdump-rtl-sms --param
+    5|       | * sms-min-sc=1 -fmodulo-sched-allow-regmoves -fno-sched-pressure" { target
+    6|       | * powerpc*-*-* } } */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |int X[1000] = {0};
+   11|       |int Y[1000] = {0};
+   12|       |
+   13|       |extern void abort(void);
+   14|       |
+   15|      1|__attribute__((noinline)) int foo(int len, long a) {
+   16|      1|  int i;
+   17|      1|  long res = a;
+   18|      1|
+   19|      1|  len = 1000;
+   20|  1.00k|  for (i = 0; i < len; i++)
+   21|  1.00k|    res += X[i] * Y[i];
+   22|      1|
+   23|      1|  if (res != 601)
+   24|      0|    abort();
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  X[0] = Y[1] = 2;
+   29|      1|  Y[0] = X[1] = 21;
+   30|      1|  X[2] = Y[3] = 3;
+   31|      1|  Y[2] = X[3] = 31;
+   32|      1|  X[4] = Y[5] = 4;
+   33|      1|  Y[4] = X[5] = 41;
+   34|      1|
+   35|      1|  foo(6, 3);
+   36|      1|  return 0;
+   37|      1|}
+   38|       |
+   39|       |/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms" { target
+   40|       | * powerpc*-*-* } } } */
+

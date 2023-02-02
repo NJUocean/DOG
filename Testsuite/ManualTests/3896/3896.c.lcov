@@ -1,0 +1,27 @@
+    1|      1|#define NULL 0
+    2|       |
+    3|       |struct stuff {
+    4|       |  int a;
+    5|       |  int b;
+    6|       |  int c;
+    7|       |  int d;
+    8|       |  int e;
+    9|       |  char *f;
+   10|       |  int g;
+   11|       |};
+   12|       |
+   13|      1|void __attribute__((noinline)) bar(struct stuff *x) {
+   14|      1|  if (x->g != 2)
+   15|      0|    __builtin_abort();
+   16|      1|}
+   17|       |
+   18|      1|int main(int argc, char **argv) {
+   19|      1|  struct stuff x = {0, 0, 0, 0, 0, NULL, 0};
+   20|      1|  x.a = 100;
+   21|      1|  x.d = 100;
+   22|      1|  x.g = 2;
+   23|      1|  /* Struct should now look like {100, 0, 0, 100, 0, 0, 0, 2}.  */
+   24|      1|  bar(&x);
+   25|      1|  return 0;
+   26|      1|}
+

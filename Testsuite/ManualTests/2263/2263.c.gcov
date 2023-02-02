@@ -1,0 +1,24 @@
+        -:    0:Source:2263.c
+        -:    0:Graph:2263.gcno
+        -:    0:Data:2263.gcda
+        -:    0:Runs:1
+        -:    1:/* Checks that pure functions are not treated as const.  */
+        -:    2:
+        -:    3:char *p;
+        -:    4:
+        4:    5:static int __attribute__((pure)) is_end_of_statement(void) {
+        4:    6:  return *p == '\n' || *p == ';' || *p == '!';
+        -:    7:}
+        -:    8:
+        1:    9:void foo(void) {
+        -:   10:  /* The is_end_of_statement call was moved out of the loop at one stage,
+        -:   11:     resulting in an endless loop.  */
+        4:   12:  while (!is_end_of_statement())
+        3:   13:    p++;
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  p = "abc\n";
+        1:   18:  foo();
+        1:   19:  return 0;
+        -:   20:}

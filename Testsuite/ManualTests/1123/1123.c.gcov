@@ -1,0 +1,34 @@
+        -:    0:Source:1123.c
+        -:    0:Graph:1123.gcno
+        -:    0:Data:1123.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    3:/* { dg-options "-fsanitize=undefined" } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int a;
+        -:    7:  int b;
+        -:    8:};
+        -:    9:
+        -:   10:static inline __attribute__((always_inline)) int foo(struct S *p) {
+        -:   11:  volatile int a;
+        1:   12:  a = p->a; /* OK */
+        1:   13:  return p->b;
+        -:   14:}
+        -:   15:
+        1:   16:int bar(void) {
+        1:   17:  struct S *p = (struct S *)__builtin_calloc(sizeof(int) + sizeof(int) / 2, 1);
+        1:   18:  return foo(p);
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  bar();
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+        -:   27: * of type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   28:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   29:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   30:/* { dg-output "\[^\n\r]*\\^" } */

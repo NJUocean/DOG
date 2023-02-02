@@ -1,0 +1,28 @@
+        -:    0:Source:853.c
+        -:    0:Graph:853.gcno
+        -:    0:Data:853.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        1:    6:__attribute__((noinline)) void f(int i) {
+        -:    7:#if (__SIZEOF_INT__ >= 4)
+        1:    8:  if (i != 0x87654321)
+        -:    9:#else
+        -:   10:  if (i != 0x4321)
+        -:   11:#endif
+    #####:   12:    abort();
+        1:   13:  asm("");
+        1:   14:}
+        -:   15:
+        1:   16:__attribute__((noinline)) void g(long long a) {
+        1:   17:  f(a);
+        1:   18:  asm("");
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  g(0x1234567887654321ll);
+        1:   23:  return 0;
+        -:   24:}

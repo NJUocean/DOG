@@ -1,0 +1,26 @@
+        -:    0:Source:3107.c
+        -:    0:Graph:3107.gcno
+        -:    0:Data:3107.gcda
+        -:    0:Runs:1
+        -:    1:/* Test whether store motion recognizes pure functions as potentially reading
+        -:    2:   any memory.  */
+        -:    3:
+        -:    4:typedef __SIZE_TYPE__ size_t;
+        -:    5:extern void *memcpy(void *dest, const void *src, size_t n);
+        -:    6:extern size_t strlen(const char *s);
+        -:    7:extern int strcmp(const char *s1, const char *s2) __attribute__((pure));
+        -:    8:
+        -:    9:char buf[50];
+        -:   10:
+        1:   11:static void foo(void) {
+        1:   12:  if (memcpy(buf, "abc", 4) != buf)
+    #####:   13:    abort();
+        1:   14:  if (strcmp(buf, "abc"))
+    #####:   15:    abort();
+        1:   16:  memcpy(buf, "abcdefgh", strlen("abcdefgh") + 1);
+        1:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  foo();
+        1:   21:  return 0;
+        -:   22:}

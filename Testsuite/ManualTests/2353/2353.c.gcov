@@ -1,0 +1,36 @@
+        -:    0:Source:2353.c
+        -:    0:Graph:2353.gcno
+        -:    0:Data:2353.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:typedef __attribute__((__aligned__(8))) int alignedint;
+        -:    8:
+        -:    9:alignedint a = 11;
+        -:   10:alignedint b = 13;
+        -:   11:alignedint c = 17;
+        -:   12:alignedint d = 19;
+        -:   13:alignedint e = 23;
+        -:   14:alignedint f = 29;
+        -:   15:alignedint g = 31;
+        -:   16:alignedint h = 37;
+        -:   17:alignedint i = 41;
+        -:   18:alignedint j = 43;
+        -:   19:
+        1:   20:void test_passing_many_alignedint(alignedint x0, alignedint x1, alignedint x2,
+        -:   21:                                  alignedint x3, alignedint x4, alignedint x5,
+        -:   22:                                  alignedint x6, alignedint x7,
+        -:   23:                                  alignedint stack, alignedint stack8) {
+        1:   24:  if (x0 != a || x1 != b || x2 != c || x3 != d || x4 != e || x5 != f ||
+        1:   25:      x6 != g || x7 != h || stack != i || stack8 != j)
+    #####:   26:    abort();
+        1:   27:}
+        -:   28:
+        1:   29:int main(int argc, char **argv) {
+        1:   30:  test_passing_many_alignedint(a, b, c, d, e, f, g, h, i, j);
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,25 @@
+        -:    0:Source:4002.c
+        -:    0:Graph:4002.gcno
+        -:    0:Data:4002.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/85529 */
+        -:    2:
+       63:    3:__attribute__((noipa)) int foo(int x) {
+       63:    4:  x &= 63;
+       63:    5:  x -= 50;
+       63:    6:  x |= 1;
+       63:    7:  if (x < 0)
+       50:    8:    return 1;
+       13:    9:  int y = x >> 2;
+       13:   10:  if (x >= y)
+       13:   11:    return 1;
+    #####:   12:  return 0;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        -:   16:  int i;
+       64:   17:  for (i = 0; i < 63; i++)
+       63:   18:    if (foo(i) != 1)
+    #####:   19:      __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

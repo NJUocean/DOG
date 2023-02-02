@@ -1,0 +1,65 @@
+        -:    0:Source:2532.c
+        -:    0:Graph:2532.gcno
+        -:    0:Data:2532.gcda
+        -:    0:Runs:1
+        -:    1:struct table_elt {
+        -:    2:  void *exp;
+        -:    3:  struct table_elt *next_same_hash;
+        -:    4:  struct table_elt *prev_same_hash;
+        -:    5:  struct table_elt *next_same_value;
+        -:    6:  struct table_elt *prev_same_value;
+        -:    7:  struct table_elt *first_same_value;
+        -:    8:  struct table_elt *related_value;
+        -:    9:  int cost;
+        -:   10:  int mode;
+        -:   11:  char in_memory;
+        -:   12:  char in_struct;
+        -:   13:  char is_const;
+        -:   14:  char flag;
+        -:   15:};
+        -:   16:
+        -:   17:struct write_data {
+        -:   18:  int sp : 1;
+        -:   19:  int var : 1;
+        -:   20:  int nonscalar : 1;
+        -:   21:  int all : 1;
+        -:   22:};
+        -:   23:
+        -:   24:int cse_rtx_addr_varies_p(void *);
+        -:   25:void remove_from_table(struct table_elt *, int);
+        -:   26:static struct table_elt *table[32];
+        -:   27:
+        1:   28:void invalidate_memory(writes) struct write_data *writes;
+        -:   29:{
+        -:   30:  register int i;
+        -:   31:  register struct table_elt *p, *next;
+        1:   32:  int all = writes->all;
+        1:   33:  int nonscalar = writes->nonscalar;
+        -:   34:
+       32:   35:  for (i = 0; i < 31; i++)
+       32:   36:    for (p = table[i]; p; p = next) {
+        1:   37:      next = p->next_same_hash;
+        1:   38:      if (p->in_memory &&
+        1:   39:          (all || (nonscalar && p->in_struct) || cse_rtx_addr_varies_p(p->exp)))
+    #####:   40:        remove_from_table(p, i);
+        -:   41:    }
+        1:   42:}
+        -:   43:
+        1:   44:int cse_rtx_addr_varies_p(void *x) { return 0; }
+    #####:   45:void remove_from_table(struct table_elt *x, int y) { abort(); }
+        -:   46:
+        1:   47:int main() {
+        -:   48:  struct write_data writes;
+        -:   49:  struct table_elt elt;
+        -:   50:
+        1:   51:  __builtin_memset(&elt, 0, sizeof(elt));
+        1:   52:  elt.in_memory = 1;
+        1:   53:  table[0] = &elt;
+        -:   54:
+        1:   55:  __builtin_memset(&writes, 0, sizeof(writes));
+        1:   56:  writes.var = 1;
+        1:   57:  writes.nonscalar = 1;
+        -:   58:
+        1:   59:  invalidate_memory(&writes);
+        1:   60:  return 0;
+        -:   61:}

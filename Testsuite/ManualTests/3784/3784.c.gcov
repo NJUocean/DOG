@@ -1,0 +1,24 @@
+        -:    0:Source:3784.c
+        -:    0:Graph:3784.gcno
+        -:    0:Data:3784.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57281 */
+        -:    2:
+        -:    3:int a = 1, b, d, *e = &d;
+        -:    4:long long c, *g = &c;
+        -:    5:volatile long long f;
+        -:    6:
+       20:    7:int foo(int h) {
+       20:    8:  int j = *g = b;
+      20*:    9:  return h == 0 ? j : 0;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  int h = a;
+       21:   14:  for (; b != -20; b--) {
+       20:   15:    (int)f;
+       20:   16:    *e = 0;
+       20:   17:    *e = foo(h);
+        -:   18:  }
+        1:   19:  return 0;
+        -:   20:}

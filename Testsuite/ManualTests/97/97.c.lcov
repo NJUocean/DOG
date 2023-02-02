@@ -1,0 +1,47 @@
+    1|       |// { dg-do run }
+    2|       |// { dg-additional-options "-fdump-tree-asan0" }
+    3|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O0" } } */
+    4|       |
+    5|      1|int main(int argc, char **argv) {
+    6|      1|  int a = 123;
+    7|      1|  int b = 123;
+    8|      1|  int c = 123;
+    9|      1|  int d = 123;
+   10|      1|  int e = 123;
+   11|      1|  int f = 123;
+   12|      1|
+   13|      1|  if (argc == 0) {
+   14|      0|    int *ptr;
+   15|      0|    int *ptr2;
+   16|      0|    int *ptr3;
+   17|      0|    int *ptr4;
+   18|      0|    int *ptr5;
+   19|      0|    int *ptr6;
+   20|      1|  label : {
+   21|      1|    ptr = &a;
+   22|      1|    *ptr = 1;
+   23|      1|    ptr2 = &b;
+   24|      1|    *ptr2 = 1;
+   25|      1|    ptr3 = &c;
+   26|      1|    *ptr3 = 1;
+   27|      1|    ptr4 = &d;
+   28|      1|    *ptr4 = 1;
+   29|      1|    ptr5 = &e;
+   30|      1|    *ptr5 = 1;
+   31|      1|    ptr6 = &f;
+   32|      1|    *ptr6 = 1;
+   33|      1|    return 0;
+   34|      1|  }
+   35|      1|  } else
+   36|      1|    goto label;
+   37|      0|
+   38|      0|  return 0;
+   39|      0|}
+   40|       |
+   41|       |/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &a, 4\\);" 2
+   42|       | * "asan0" } }  */
+   43|       |/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &c, 4\\);" 2
+   44|       | * "asan0" } }  */
+   45|       |/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &e, 4\\);" 2
+   46|       | * "asan0" } }  */
+

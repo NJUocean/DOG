@@ -1,0 +1,34 @@
+        -:    0:Source:2788.c
+        -:    0:Graph:2788.gcno
+        -:    0:Data:2788.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that the compiler properly optimizes vector rotate instructions vector
+        -:    2:   into prot on XOP systems.  */
+        -:    3:
+        -:    4:/* { dg-do compile { target { ! ia32 } } } */
+        -:    5:/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize" } */
+        -:    6:
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+        -:   10:
+        -:   11:#define SIZE 10240
+        -:   12:
+        -:   13:union {
+        -:   14:  __m128i i_align;
+        -:   15:  unsigned u32[SIZE];
+        -:   16:} a, b, c;
+        -:   17:
+        1:   18:void left_rotate32(void) {
+        -:   19:  int i;
+        -:   20:
+    10241:   21:  for (i = 0; i < SIZE; i++)
+    10240:   22:    a.u32[i] = (b.u32[i] << ((sizeof(int) * 8) - 4)) | (b.u32[i] >> 4);
+        1:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  left_rotate32();
+        1:   27:  exit(0);
+        -:   28:}
+        -:   29:
+        -:   30:/* { dg-final { scan-assembler "vprotd" } } */

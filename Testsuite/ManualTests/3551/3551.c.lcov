@@ -1,0 +1,56 @@
+    1|       |#include <stdarg.h>
+    2|       |#include <stdio.h>
+    3|       |
+    4|       |struct spurious {
+    5|       |  int anumber;
+    6|       |};
+    7|       |
+    8|      1|int first(char *buf, char *fmt, ...) {
+    9|      1|  int pos, number;
+   10|      1|  va_list args;
+   11|      1|  int dummy;
+   12|      1|  char *bp = buf;
+   13|      1|
+   14|      1|  va_start(args, fmt);
+   15|      5|  for (pos = 0; fmt[pos]; pos++)
+   16|      4|    if (fmt[pos] == 'i') {
+   17|      2|      number = va_arg(args, int);
+   18|      2|      sprintf(bp, "%d", number);
+   19|      2|      bp += strlen(bp);
+   20|      2|    } else
+   21|      2|      *bp++ = fmt[pos];
+   22|      1|
+   23|      1|  va_end(args);
+   24|      1|  *bp = 0;
+   25|      1|  return dummy;
+   26|      1|}
+   27|       |
+   28|      1|struct spurious second(char *buf, char *fmt, ...) {
+   29|      1|  int pos, number;
+   30|      1|  va_list args;
+   31|      1|  struct spurious dummy;
+   32|      1|  char *bp = buf;
+   33|      1|
+   34|      1|  va_start(args, fmt);
+   35|      5|  for (pos = 0; fmt[pos]; pos++)
+   36|      4|    if (fmt[pos] == 'i') {
+   37|      2|      number = va_arg(args, int);
+   38|      2|      sprintf(bp, "%d", number);
+   39|      2|      bp += strlen(bp);
+   40|      2|    } else
+   41|      2|      *bp++ = fmt[pos];
+   42|      1|
+   43|      1|  va_end(args);
+   44|      1|  *bp = 0;
+   45|      1|  return dummy;
+   46|      1|}
+   47|       |
+   48|      1|main() {
+   49|      1|  char buf1[100], buf2[100];
+   50|      1|  first(buf1, "i i ", 5, 20);
+   51|      1|  second(buf2, "i i ", 5, 20);
+   52|      1|  if (strcmp("5 20 ", buf1) || strcmp("5 20 ", buf2))
+   53|      0|    abort();
+   54|      1|  exit(0);
+   55|      1|}
+

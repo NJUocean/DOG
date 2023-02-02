@@ -1,0 +1,25 @@
+        -:    0:Source:3832.c
+        -:    0:Graph:3832.gcno
+        -:    0:Data:3832.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:int a[6], c = 1, d;
+        -:    5:short e;
+        -:    6:
+        1:    7:int __attribute__((noinline)) fn1(int p) { return a[p]; }
+        -:    8:
+        1:    9:int main() {
+        -:   10:  if (sizeof(long long) != 8)
+        -:   11:    exit(0);
+        -:   12:
+        1:   13:  a[0] = 1;
+        1:   14:  if (c)
+        1:   15:    e--;
+        1:   16:  d = e;
+        1:   17:  long long f = e;
+        1:   18:  if (fn1((f >> 56) & 1) != 0)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

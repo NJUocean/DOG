@@ -1,0 +1,26 @@
+        -:    0:Source:211.c
+        -:    0:Graph:211.gcno
+        -:    0:Data:211.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for hex floating point constants: in C99 only.  Preprocessor test.  */
+        -:    2:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:#define f (
+        -:    7:#define l )
+        -:    8:#define str(x) #x
+        -:    9:#define xstr(x) str(x)
+        -:   10:
+        -:   11:/* C90: "0x1p+( 0x1p+)"; C99: "0x1p+f 0x1p+l" */
+        -:   12:const char *s = xstr(0x1p+f 0x1p+l);
+        -:   13:
+        -:   14:extern void abort(void);
+        -:   15:extern int strcmp(const char *, const char *);
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  if (strcmp(s, "0x1p+f 0x1p+l"))
+    #####:   19:    abort();
+        -:   20:  else
+        1:   21:    return 0; /* Correct C99 behavior.  */
+        -:   22:}

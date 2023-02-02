@@ -1,0 +1,15 @@
+        -:    0:Source:2006.c
+        -:    0:Graph:2006.gcno
+        -:    0:Data:2006.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -fdump-tree-cddce1-details" } */
+        -:    3:
+        1:    4:int main() {
+2147483649:    5:  for (unsigned i = 0; i < (1u << 31); ++i) {
+        -:    6:  }
+        1:    7:  return 0;
+        -:    8:}
+        -:    9:
+        -:   10:/* { dg-final { scan-tree-dump-times "Found loop 1 to be finite: upper bound
+        -:   11: * found" 1 "cddce1" } } */

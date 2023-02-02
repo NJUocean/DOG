@@ -1,0 +1,32 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void) __attribute__((__nothrow__))
+    5|       |__attribute__((__noreturn__));
+    6|       |extern void exit(int __status) __attribute__((__nothrow__))
+    7|       |__attribute__((__noreturn__));
+    8|       |int useboot(void *);
+    9|       |
+   10|       |struct bootLoader {
+   11|       |  int x;
+   12|       |};
+   13|       |
+   14|      1|void zap(struct bootLoader *bootLoader) {
+   15|      1|  /* The expression on the RHS of the assignment is *not* a
+   16|      1|     dereference of pointer 'bootLoader'.  It is merely used as an
+   17|      1|     offset calculation.  VRP was erroneously removing the if()
+   18|      1|     because it thought that 'bootLoader' was always dereferenced.  */
+   19|      1|  int *boot = &bootLoader->x;
+   20|      1|
+   21|      1|  if (bootLoader) {
+   22|      0|    useboot(boot);
+   23|      0|  }
+   24|      1|}
+   25|       |
+   26|      0|int useboot(void *boot) { abort(); }
+   27|       |
+   28|      1|int main() {
+   29|      1|  zap(0);
+   30|      1|  return 0;
+   31|      1|}
+

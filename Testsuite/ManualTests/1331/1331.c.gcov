@@ -1,0 +1,35 @@
+        -:    0:Source:1331.c
+        -:    0:Graph:1331.gcno
+        -:    0:Data:1331.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fdump-tree-alias" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+        -:    4:
+        -:    5:typedef __INTPTR_TYPE__ intptr_t;
+        -:    6:
+        -:    7:int i;
+        1:    8:void __attribute__((noinline)) foo(long b, intptr_t q) {
+        -:    9:  int *y;
+        1:   10:  int **a = &y, **x;
+        -:   11:  int ***p;
+        1:   12:  if (b)
+    #####:   13:    p = (int ***)q;
+        -:   14:  else
+        1:   15:    p = &a;
+        1:   16:  x = *p;
+        1:   17:  *x = &i; /* *ANYTHING = &i has to make sure that y points to i.  */
+        1:   18:  *y = 0;
+        1:   19:}
+        -:   20:extern void abort(void);
+        1:   21:int main() {
+        1:   22:  i = 1;
+        1:   23:  foo(0, 0);
+        1:   24:  if (i != 0)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-tree-dump "y.._. = { i }" "alias" } } */
+        -:   30:/* { dg-final { scan-tree-dump "y.._., points-to NULL, points-to vars: { D.....
+        -:   31: * }" "alias" } } */

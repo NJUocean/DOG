@@ -1,0 +1,28 @@
+        -:    0:Source:1767.c
+        -:    0:Graph:1767.gcno
+        -:    0:Data:1767.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:static inline __attribute__((always_inline)) void copy(int *restrict a,
+        -:    6:                                                       int *restrict b) {
+        3:    7:  *b = *a;
+        3:    8:  *a = 7;
+        3:    9:}
+        -:   10:
+        -:   11:void __attribute__((noinline))
+        1:   12:floppy(int mat[static 2], unsigned idxs[static 3]) {
+        4:   13:  for (int i = 0; i < 3; i++)
+        3:   14:    copy(&mat[i % 2], &mat[idxs[i]]);
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  int mat[2] = {10, 20};
+        1:   19:  unsigned idxs[3] = {1, 0, 1};
+        1:   20:  floppy(mat, idxs);
+        1:   21:  if (mat[0] != 7 || mat[1] != 10)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

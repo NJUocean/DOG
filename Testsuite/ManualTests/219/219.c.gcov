@@ -1,0 +1,25 @@
+        -:    0:Source:219.c
+        -:    0:Graph:219.gcno
+        -:    0:Data:219.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/23241 */
+        -:    2:/* Origin: Josh Conner <jconner@apple.com> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:struct fbs {
+        -:   10:  unsigned char uc;
+        -:   11:} fbs1 = {255};
+        -:   12:
+        1:   13:void fn(struct fbs *fbs_ptr) {
+       1*:   14:  if ((fbs_ptr->uc != 255) && (fbs_ptr->uc != 0))
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  fn(&fbs1);
+        1:   20:  return 0;
+        -:   21:}

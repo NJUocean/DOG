@@ -1,0 +1,19 @@
+        -:    0:Source:18.c
+        -:    0:Graph:18.gcno
+        -:    0:Data:18.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-Waddress" } */
+        -:    2:/* Origin: Andrew Morton <akpm@osdl.org> */
+        -:    3:/* Warn if a function address of a non-weak function is used
+        -:    4:   as a truth value.  */
+        -:    5:/* See thread starting at http://gcc.gnu.org/ml/gcc/2003-10/msg00414.html  */
+        -:    6:
+    #####:    7:void foo(void) {}
+        -:    8:
+        1:    9:void bar(void) {}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  if (foo) /* { dg-warning "" } */
+        1:   13:    bar();
+        1:   14:  return 0;
+        -:   15:}

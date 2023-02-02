@@ -1,0 +1,32 @@
+        -:    0:Source:428.c
+        -:    0:Graph:428.gcno
+        -:    0:Data:428.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  char *addr;
+        -:    3:  long type;
+        -:    4:} object;
+        -:    5:
+    #####:    6:object bar(object blah) { abort(); }
+        -:    7:
+        1:    8:object foo(object x, object y) {
+        1:    9:  object z = *(object *)(x.addr);
+        1:   10:  if (z.type & 64) {
+        1:   11:    y = *(object *)(z.addr + sizeof(object));
+        1:   12:    z = *(object *)(z.addr);
+        1:   13:    if (z.type & 64)
+    #####:   14:      y = bar(y);
+        -:   15:  }
+        1:   16:  return y;
+        -:   17:}
+        -:   18:
+        -:   19:int nil;
+        -:   20:object cons1[2] = {{(char *)&nil, 0}, {(char *)&nil, 0}};
+        -:   21:object cons2[2] = {{(char *)&cons1, 64}, {(char *)&nil, 0}};
+        -:   22:
+        1:   23:main() {
+        1:   24:  object x = {(char *)&cons2, 64};
+        1:   25:  object y = {(char *)&nil, 0};
+        1:   26:  object three = foo(x, y);
+        1:   27:  return 0;
+        -:   28:}

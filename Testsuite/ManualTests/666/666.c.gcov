@@ -1,0 +1,17 @@
+        -:    0:Source:666.c
+        -:    0:Graph:666.gcno
+        -:    0:Data:666.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -fgnu89-inline } } */
+        -:    2:typedef struct {
+        -:    3:} mem_attrs;
+        1:    4:int main(void) { return 0; }
+        -:    5:void *malloc(__SIZE_TYPE__ size);
+        -:    6:void *memcpy(void *dest, const void *src, __SIZE_TYPE__ n);
+    #####:    7:static mem_attrs *get_mem_attrs() {
+        -:    8:  void **slot;
+    #####:    9:  *slot = malloc(3);
+    #####:   10:  memcpy(*slot, 0, 3);
+    #####:   11:}
+    #####:   12:void set_mem_attributes() { get_mem_attrs(); }
+    #####:   13:void set_mem_alias_set() { get_mem_attrs(); }

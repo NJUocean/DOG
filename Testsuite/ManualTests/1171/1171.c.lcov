@@ -1,0 +1,34 @@
+    1|       |/* PR tree-optimization/88709 */
+    2|       |/* { dg-do run { target int32 } } */
+    3|       |/* { dg-require-effective-target store_merge } */
+    4|       |/* { dg-options "-O2 -fdump-tree-store-merging-details" } */
+    5|       |/* { dg-final { scan-tree-dump "New sequence of 3 stores to replace old one of 6
+    6|       | * stores" "store-merging" { target { le && { ! arm*-*-* } } } } } */
+    7|       |/* { dg-final { scan-tree-dump "New sequence of \[34] stores to replace old one
+    8|       | * of 6 stores" "store-merging" { target { be && { ! arm*-*-* } } } } } */
+    9|       |
+   10|       |struct T {
+   11|       |  char a[1024];
+   12|       |};
+   13|       |
+   14|      1|__attribute__((noipa)) void bar(struct T *t) {
+   15|      1|  int x = 0x506;
+   16|      1|  if (__builtin_memcmp(&t->a[97], &x, sizeof(x)))
+   17|      0|    __builtin_abort();
+   18|      1|  __builtin_memset(&t->a[97], '\0', sizeof(x));
+   19|      9|  for (int i = 0; i < 8; ++i)
+   20|      8|    if (t->a[i] != ((i == 54) + 2 * (i == 52) + 3 * (i == 95) + 4 * (i == 96)))
+   21|      0|      __builtin_abort();
+   22|      1|}
+   23|       |
+   24|      1|int main() {
+   25|      1|  struct T t = {};
+   26|      1|  t.a[54] = 1;
+   27|      1|  t.a[52] = 2;
+   28|      1|  t.a[95] = 3;
+   29|      1|  t.a[96] = 4;
+   30|      1|  int x = 0x506;
+   31|      1|  __builtin_memcpy(&t.a[97], &x, sizeof(x));
+   32|      1|  bar(&t);
+   33|      1|}
+

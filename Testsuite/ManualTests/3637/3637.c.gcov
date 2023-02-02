@@ -1,0 +1,28 @@
+        -:    0:Source:3637.c
+        -:    0:Graph:3637.gcno
+        -:    0:Data:3637.gcda
+        -:    0:Runs:1
+        -:    1:typedef union {
+        -:    2:  struct {
+        -:    3:    char h, l;
+        -:    4:  } b;
+        -:    5:} T;
+        -:    6:
+        1:    7:f(x) int x;
+        -:    8:{
+        1:    9:  int num = 0;
+        -:   10:  T reg;
+        -:   11:
+        1:   12:  reg.b.l = x;
+        2:   13:  while ((reg.b.l & 1) == 0) {
+        1:   14:    num++;
+        1:   15:    reg.b.l >>= 1;
+        -:   16:  }
+        1:   17:  return num;
+        -:   18:}
+        -:   19:
+        1:   20:main() {
+        1:   21:  if (f(2) != 1)
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

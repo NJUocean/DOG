@@ -1,0 +1,13 @@
+        -:    0:Source:3185.c
+        -:    0:Graph:3185.gcno
+        -:    0:Data:3185.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously part of gcc.misc-tests/dg-9.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-options "-Wall" } */
+        -:    4:
+    #####:    5:f() { /* { dg-error "return type" "warning test" } */
+    #####:    6:} /* { dg-error "control reaches end" "warning test" } */
+        -:    7:
+        1:    8:main(int argc, char *argv[]) { /* { dg-error "return type" "warning test" } */
+        -:    9:} /* { dg-error "control reaches end" "warning test" } */

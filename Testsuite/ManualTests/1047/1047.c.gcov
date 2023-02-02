@@ -1,0 +1,69 @@
+        -:    0:Source:1047.c
+        -:    0:Graph:1047.gcno
+        -:    0:Data:1047.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/84503 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:
+        -:    5:typedef __SIZE_TYPE__ size_t;
+        -:    6:typedef __UINTPTR_TYPE__ uintptr_t;
+        -:    7:
+        -:    8:struct S {
+        -:    9:  int a;
+        -:   10:  unsigned short b;
+        -:   11:  int c, d, e;
+        -:   12:  long f, g, h;
+        -:   13:  int i, j;
+        -:   14:};
+        -:   15:static struct S *k;
+        -:   16:static size_t l = 0;
+        -:   17:int m;
+        -:   18:
+       15:   19:static int bar(void) {
+        -:   20:  unsigned i;
+        -:   21:  int j;
+       15:   22:  if (k[0].c == 0) {
+        4:   23:    ++m;
+        4:   24:    size_t n = l * 2;
+        -:   25:    struct S *o;
+        4:   26:    o = (struct S *)__builtin_realloc(k, sizeof(struct S) * n);
+        4:   27:    if (!o)
+    #####:   28:      __builtin_exit(0);
+        4:   29:    k = o;
+       19:   30:    for (i = l; i < n; i++) {
+       15:   31:      void *p = (void *)&k[i];
+       15:   32:      int q = 0;
+       15:   33:      size_t r = sizeof(struct S);
+       30:   34:      if ((((uintptr_t)p) % __alignof__(long)) == 0 && r % sizeof(long) == 0) {
+       15:   35:        long __attribute__((may_alias)) *s = (long *)p;
+       15:   36:        long *t = (long *)((char *)s + r);
+      120:   37:        while (s < t)
+      105:   38:          *s++ = 0;
+        -:   39:      } else
+    #####:   40:        __builtin_memset(p, q, r);
+       15:   41:      k[i].c = i + 1;
+       15:   42:      k[i].a = -1;
+        -:   43:    }
+        4:   44:    k[n - 1].c = 0;
+        4:   45:    k[0].c = l;
+        4:   46:    l = n;
+        -:   47:  }
+       15:   48:  j = k[0].c;
+       15:   49:  k[0].c = k[j].c;
+       15:   50:  return j;
+        -:   51:}
+        -:   52:
+        1:   53:int main() {
+        1:   54:  k = (struct S *)__builtin_malloc(sizeof(struct S));
+        1:   55:  if (!k)
+    #####:   56:    __builtin_exit(0);
+        1:   57:  __builtin_memset(k, '\0', sizeof(struct S));
+        1:   58:  k->a = -1;
+        1:   59:  l = 1;
+       16:   60:  for (int i = 0; i < 15; ++i)
+       15:   61:    bar();
+        1:   62:  if (m != 4)
+    #####:   63:    __builtin_abort();
+        1:   64:  return 0;
+        -:   65:}

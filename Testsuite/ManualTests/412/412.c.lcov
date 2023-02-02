@@ -1,0 +1,44 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |
+    3|       |/* Formerly known as ltrans-4.c */
+    4|       |
+    5|       |#define DEBUG 0
+    6|       |#if DEBUG
+    7|       |#include <stdio.h>
+    8|       |#endif
+    9|       |
+   10|       |double u[1782225];
+   11|       |
+   12|      1|static int __attribute__((noinline)) foo(int N, int *res) {
+   13|      1|  int i, j;
+   14|      1|  double sum = 0;
+   15|  1.33k|  for (i = 0; i < N; i++)
+   16|  1.78M|    for (j = 0; j < N; j++)
+   17|  1.78M|      sum = sum + u[i + 1335 * j];
+   18|      1|
+   19|  1.33k|  for (i = 0; i < N; i++)
+   20|  1.33k|    u[1336 * i] *= 2;
+   21|      1|
+   22|      1|  *res = sum + N + u[1336 * 2] + u[1336];
+   23|      1|}
+   24|       |
+   25|       |extern void abort();
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  int i, j, res;
+   29|      1|
+   30|  1.78M|  for (i = 0; i < 1782225; i++)
+   31|  1.78M|    u[i] = 2;
+   32|      1|
+   33|      1|  foo(1335, &res);
+   34|      1|
+   35|       |#if DEBUG
+   36|       |  fprintf(stderr, "res = %d \n", res);
+   37|       |#endif
+   38|      1|
+   39|      1|  if (res != 3565793)
+   40|      0|    abort();
+   41|      1|
+   42|      1|  return 0;
+   43|      1|}
+

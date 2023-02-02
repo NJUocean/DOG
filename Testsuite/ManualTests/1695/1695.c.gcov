@@ -1,0 +1,50 @@
+        -:    0:Source:1695.c
+        -:    0:Graph:1695.gcno
+        -:    0:Data:1695.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:struct s {
+        -:    5:  __INT64_TYPE__ e;
+        -:    6:};
+        -:    7:
+        1:    8:static void f(struct s *ps) {
+        1:    9:  volatile __INT64_TYPE__ m = 9223372036854775807;
+        1:   10:  const char *str = "11E";
+        -:   11:  int r;
+        -:   12:  __INT64_TYPE__ sum;
+        -:   13:
+        1:   14:  ps->e = 0;
+        -:   15:
+        -:   16:  for (;;) {
+        3:   17:    if (*str++ != '1')
+        1:   18:      break;
+        2:   19:    ps->e++;
+        -:   20:  }
+        -:   21:
+        1:   22:  r = 1;
+        1:   23:  sum = m;
+        -:   24:
+        2:   25:  if (sum >= 0 && ps->e >= 0) {
+        -:   26:    __UINT64_TYPE__ uc;
+        1:   27:    uc = (__UINT64_TYPE__)sum + (__UINT64_TYPE__)ps->e;
+        1:   28:    if (uc > 9223372036854775807)
+        1:   29:      r = 2;
+        -:   30:    else
+    #####:   31:      sum = 17;
+        -:   32:  } else
+    #####:   33:    sum = sum + ps->e;
+        -:   34:
+        1:   35:  if (sum != 9223372036854775807)
+    #####:   36:    __builtin_abort();
+        1:   37:  if (r != 2)
+    #####:   38:    __builtin_abort();
+        1:   39:  ps->e = sum;
+        1:   40:}
+        -:   41:
+        1:   42:int main(void) {
+        -:   43:  struct s s;
+        1:   44:  f(&s);
+        1:   45:  return 0;
+        -:   46:}

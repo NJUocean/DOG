@@ -1,0 +1,29 @@
+        -:    0:Source:5.c
+        -:    0:Graph:5.gcno
+        -:    0:Data:5.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/7559
+        -:    2:   This testcase was miscompiled on x86-64 due to wrong access to the struct
+        -:    3:   members.  */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct A {
+        -:    8:  long x;
+        -:    9:};
+        -:   10:
+        -:   11:struct R {
+        -:   12:  struct A a, b;
+        -:   13:};
+        -:   14:
+        -:   15:struct R R = {{100}, {200}};
+        -:   16:
+        1:   17:void f(struct R r) {
+        1:   18:  if (r.a.x != R.a.x || r.b.x != R.b.x)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  f(R);
+        1:   24:  return 0;
+        -:   25:}

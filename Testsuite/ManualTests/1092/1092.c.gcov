@@ -1,0 +1,48 @@
+        -:    0:Source:1092.c
+        -:    0:Graph:1092.gcno
+        -:    0:Data:1092.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/92860.  */
+        -:    2:/* Testcase derived from 20111227-1.c to ensure that REE is combining
+        -:    3:   redundant zero extends with zero extend to wider mode.  */
+        -:    4:/* { dg-do compile  { target i?86-*-* x86_64-*-* } } */
+        -:    5:/* { dg-options "-fdump-rtl-ree" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:unsigned short s;
+        -:   10:unsigned int i;
+        -:   11:unsigned long l;
+        -:   12:unsigned char v = -1;
+        -:   13:
+    #####:   14:void __attribute__((optimize("-O2"))) baz() {}
+        -:   15:
+        3:   16:void __attribute__((noinline, noclone)) bar(int t) {
+        3:   17:  if (t == 2 && s != 0xff)
+    #####:   18:    abort();
+        3:   19:  if (t == 1 && i != 0xff)
+    #####:   20:    abort();
+        3:   21:  if (t == 0 && l != 0xff)
+    #####:   22:    abort();
+        3:   23:}
+        -:   24:
+        3:   25:void __attribute__((noinline, noclone)) foo(unsigned char *a, int t) {
+        3:   26:  unsigned char r = v;
+        -:   27:
+        3:   28:  if (t == 2)
+        1:   29:    s = (unsigned short)r;
+        2:   30:  else if (t == 1)
+        1:   31:    i = (unsigned int)r;
+        1:   32:  else if (t == 0)
+        1:   33:    l = (unsigned long)r;
+        3:   34:  bar(t);
+        3:   35:}
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  foo(&v, 0);
+        1:   39:  foo(&v, 1);
+        1:   40:  foo(&v, 2);
+        1:   41:  return 0;
+        -:   42:}
+        -:   43:
+        -:   44:/* { dg-final { scan-rtl-dump-not "Elimination opportunities" "ree" } }  */

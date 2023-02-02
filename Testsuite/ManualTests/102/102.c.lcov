@@ -1,0 +1,44 @@
+    1|       |/* { dg-do run { target { ilp32 || lp64 } } } */
+    2|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O2 -Wno-address-of-packed-member" } }
+    3|       | */
+    4|       |/* { dg-additional-options "-fno-omit-frame-pointer" { target *-*-darwin* } } */
+    5|       |/* { dg-shouldfail "asan" } */
+    6|       |
+    7|       |struct S {
+    8|       |  int i;
+    9|       |} __attribute__((packed));
+   10|       |
+   11|      1|__attribute__((noinline, noclone)) int foo(struct S *s) { return s->i; }
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) int bar(int *s) { return *s; }
+   14|       |
+   15|      0|__attribute__((noinline, noclone)) struct S baz(struct S *s) { return *s; }
+   16|       |
+   17|      1|int main() {
+   18|      1|  struct T {
+   19|      1|    char a[3];
+   20|      1|    struct S b[3];
+   21|      1|    char c;
+   22|      1|  } t;
+   23|      1|  int v = 5;
+   24|      1|  struct S *p = t.b;
+   25|      1|  asm volatile("" : "+rm"(p));
+   26|      1|  p += 3;
+   27|      1|  if (bar(&v) != 5)
+   28|      0|    __builtin_abort();
+   29|      1|  volatile int w = foo(p);
+   30|      1|  return 0;
+   31|      1|}
+   32|       |
+   33|       |/* { dg-output "ERROR: AddressSanitizer:\[^\n\r]*on address\[^\n\r]*" } */
+   34|       |/* { dg-output "0x\[0-9a-f\]+ at pc 0x\[0-9a-f\]+ bp 0x\[0-9a-f\]+ sp
+   35|       | * 0x\[0-9a-f\]+\[^\n\r]*(\n|\r\n|\r)" } */
+   36|       |/* { dg-output "\[^\n\r]*READ of size 4 at 0x\[0-9a-f\]+ thread
+   37|       | * T0\[^\n\r]*(\n|\r\n|\r)" } */
+   38|       |/* { dg-output "    #0 0x\[0-9a-f\]+ +(in
+   39|       | * _*foo(\[^\n\r]*misalign-1.c:1\[01]|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\])\[^\n\r]*(\n|\r\n|\r)"
+   40|       | * } */
+   41|       |/* { dg-output "    #1 0x\[0-9a-f\]+ +(in _*main
+   42|       | * (\[^\n\r]*misalign-1.c:3\[45]|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\]).*(\n|\r\n|\r)"
+   43|       | * } */
+

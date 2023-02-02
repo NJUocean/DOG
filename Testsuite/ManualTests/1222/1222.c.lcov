@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct list {
+    4|       |  struct list *n;
+    5|       |};
+    6|       |
+    7|       |struct obj {
+    8|       |  int n;
+    9|       |  struct list l;
+   10|       |} _o;
+   11|       |
+   12|       |struct list _l = {.n = &_o.l};
+   13|       |
+   14|      1|int main(int argc, char *argv[]) {
+   15|      1|  struct obj *o = &_o;
+   16|      1|  _o.l.n = &_l;
+   17|      2|  while (&o->l != &_l)
+   18|      1|    /* Note the following is invoking undefined behavior but in
+   19|      1|       this kind of "obvious" cases we don't want to break things
+   20|      1|       unnecessarily and thus we avoid analyzing o as pointing
+   21|      1|       to nothing via the undefined pointer subtraction.  Instead
+   22|      1|       we canonicalize the pointer subtraction followed by the
+   23|      1|       pointer conversion to pointer offsetting.  */
+   24|      1|    o = ((struct obj *)((const char *)(o->l.n) -
+   25|      1|                        (const char *)&((struct obj *)0)->l));
+   26|      1|  return 0;
+   27|      1|}
+

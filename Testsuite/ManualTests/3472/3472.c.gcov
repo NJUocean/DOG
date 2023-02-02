@@ -1,0 +1,35 @@
+        -:    0:Source:3472.c
+        -:    0:Graph:3472.gcno
+        -:    0:Data:3472.gcda
+        -:    0:Runs:1
+        -:    1:extern void *memset(void *, int, __SIZE_TYPE__);
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct reg_stat {
+        -:    5:  void *last_death;
+        -:    6:  void *last_set;
+        -:    7:  void *last_set_value;
+        -:    8:  int last_set_label;
+        -:    9:  char last_set_sign_bit_copies;
+        -:   10:  int last_set_mode : 8;
+        -:   11:  char last_set_invalid;
+        -:   12:  char sign_bit_copies;
+        -:   13:  long nonzero_bits;
+        -:   14:};
+        -:   15:
+        -:   16:static struct reg_stat *reg_stat;
+        -:   17:
+        1:   18:void __attribute__((noinline)) init_reg_last(void) {
+        1:   19:  memset(reg_stat, 0, __builtin_offsetof(struct reg_stat, sign_bit_copies));
+        1:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        -:   23:  struct reg_stat r;
+        -:   24:
+        1:   25:  reg_stat = &r;
+        1:   26:  r.nonzero_bits = -1;
+        1:   27:  init_reg_last();
+        1:   28:  if (r.nonzero_bits != -1)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

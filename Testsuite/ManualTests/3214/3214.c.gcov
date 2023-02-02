@@ -1,0 +1,62 @@
+        -:    0:Source:3214.c
+        -:    0:Graph:3214.gcno
+        -:    0:Data:3214.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase failed at -O2 on IA-64, because scheduling did not take
+        -:    2:   into account conditional execution when using cselib for alias
+        -:    3:   analysis.  */
+        -:    4:
+        -:    5:struct D {
+        -:    6:  int d1;
+        -:    7:  struct D *d2;
+        -:    8:};
+        -:    9:struct C {
+        -:   10:  struct D c1;
+        -:   11:  long c2, c3, c4, c5, c6;
+        -:   12:};
+        -:   13:struct A {
+        -:   14:  struct A *a1;
+        -:   15:  struct C *a2;
+        -:   16:};
+        -:   17:struct B {
+        -:   18:  struct C b1;
+        -:   19:  struct A *b2;
+        -:   20:};
+        -:   21:
+        -:   22:extern void abort(void);
+        -:   23:extern void exit(int);
+        -:   24:
+        1:   25:void foo(struct B *x, struct B *y) {
+        1:   26:  if (x->b2 == 0) {
+        -:   27:    struct A *a;
+        -:   28:
+        1:   29:    x->b2 = a = y->b2;
+        1:   30:    y->b2 = 0;
+       1*:   31:    for (; a; a = a->a1)
+    #####:   32:      a->a2 = &x->b1;
+        -:   33:  }
+        -:   34:
+        1:   35:  if (y->b2 != 0)
+    #####:   36:    abort();
+        -:   37:
+        1:   38:  if (x->b1.c3 == -1) {
+        1:   39:    x->b1.c3 = y->b1.c3;
+        1:   40:    x->b1.c4 = y->b1.c4;
+        1:   41:    y->b1.c3 = -1;
+        1:   42:    y->b1.c4 = 0;
+        -:   43:  }
+        -:   44:
+        1:   45:  if (y->b1.c3 != -1)
+    #####:   46:    abort();
+        1:   47:}
+        -:   48:
+        -:   49:struct B x, y;
+        -:   50:
+        1:   51:int main() {
+        1:   52:  y.b1.c1.d1 = 6;
+        1:   53:  y.b1.c3 = 145;
+        1:   54:  y.b1.c4 = 2448;
+        1:   55:  x.b1.c3 = -1;
+        1:   56:  foo(&x, &y);
+        1:   57:  exit(0);
+        -:   58:}

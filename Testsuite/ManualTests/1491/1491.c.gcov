@@ -1,0 +1,21 @@
+        -:    0:Source:1491.c
+        -:    0:Graph:1491.gcno
+        -:    0:Data:1491.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/59561 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:int a[] = {0, 0, 0, 0, 0, 0, 0, 6};
+        -:    6:
+        -:    7:int b;
+        1:    8:int main() {
+        -:    9:  for (;;) {
+        8:   10:    for (b = 7; b; --b)
+        7:   11:      a[b] = a[7] > 1;
+        1:   12:    break;
+        -:   13:  }
+        1:   14:  if (a[1] != 0)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

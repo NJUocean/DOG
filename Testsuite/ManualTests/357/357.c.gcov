@@ -1,0 +1,17 @@
+        -:    0:Source:357.c
+        -:    0:Graph:357.gcno
+        -:    0:Data:357.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-ftrapv" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        1:    5:unsigned long foo(long i, long j) {
+        -:    6:  /* We may not fold this to (unsigned long)(i * j).  */
+        1:    7:  return -(unsigned long)(i * -j);
+        -:    8:}
+        1:    9:int main() {
+        1:   10:  if (foo(-__LONG_MAX__ - 1, -1) != -(unsigned long)(-__LONG_MAX__ - 1))
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

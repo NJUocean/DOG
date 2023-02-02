@@ -1,0 +1,17 @@
+        -:    0:Source:3969.c
+        -:    0:Graph:3969.gcno
+        -:    0:Data:3969.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target dfp } */
+        -:    2:
+        1:    3:int main() {
+        1:    4:  _Decimal64 d64 = -0.DD;
+        -:    5:
+        1:    6:  if (d64 != 0.DD)
+    #####:    7:    __builtin_abort();
+        -:    8:
+        1:    9:  if (d64 != -0.DD)
+    #####:   10:    __builtin_abort();
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

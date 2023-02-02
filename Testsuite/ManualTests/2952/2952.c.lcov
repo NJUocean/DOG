@@ -1,0 +1,92 @@
+    1|       |/* The z13 stpcpy implementation plays some alignment tricks for good
+    2|       |   performance.  This test tries to make sure it works correctly and
+    3|       |   does not access bytes beyond the source and destination
+    4|       |   strings.  */
+    5|       |
+    6|       |/* { dg-do run } */
+    7|       |/* { dg-require-effective-target s390_vx } */
+    8|       |/* { dg-options "-O3 -mzarch -march=z13" } */
+    9|       |
+   10|       |#include <stdio.h>
+   11|       |#include <sys/mman.h>
+   12|       |
+   13|     53|#define PAGE_SIZE 4096
+   14|       |
+   15|       |struct {
+   16|       |  char unused[PAGE_SIZE - 32];
+   17|       |  char m32[15]; /* page bndry - 32 */
+   18|       |  char m17[1];
+   19|       |  char m16[1];
+   20|       |  char m15[14];
+   21|       |  char m1[1];
+   22|       |  char next_page[PAGE_SIZE];
+   23|       |} s, d __attribute__((aligned(PAGE_SIZE)));
+   24|       |
+   25|    250|char *__attribute__((noinline)) my_stpcpy(char *dest, const char *src) {
+   26|    250|  return __builtin_stpcpy(dest, src);
+   27|    250|}
+   28|       |
+   29|    250|void __attribute__((noinline)) check(char *dest, char *src, size_t len) {
+   30|    250|  char *result;
+   31|    250|
+   32|    250|  result = my_stpcpy(dest, src);
+   33|    250|  if (result != dest + len)
+   34|      0|    __builtin_abort();
+   35|    250|  if (__builtin_memcmp(src, dest, len) != 0)
+   36|      0|    __builtin_abort();
+   37|    250|}
+   38|       |
+   39|      1|int main() {
+   40|      1|  char *src[5] = {s.m32, s.m17, s.m16, s.m15, s.m1};
+   41|      1|  char *dst[5] = {d.m32, d.m17, d.m16, d.m15, d.m1};
+   42|      1|  int len[8] = {33, 32, 31, 17, 16, 15, 1, 0};
+   43|      1|  int i, j, k;
+   44|      1|  char backup;
+   45|      1|
+   46|  8.19k|  for (i = 0; i < sizeof(s); i++)
+   47|  8.19k|    ((char *)&s)[i] = i % 26 + 97;
+   48|      1|
+   49|      6|  for (i = 0; i < 5; i++)
+   50|     30|    for (j = 0; j < 5; j++)
+   51|    225|      for (k = 0; k < 8; k++) {
+   52|    200|        backup = src[j][len[k]];
+   53|    200|        src[j][len[k]] = 0;
+   54|    200|        __builtin_memset(&d, 0, sizeof(d));
+   55|    200|        check(dst[i], src[j], len[k]);
+   56|    200|        src[j][len[k]] = backup;
+   57|    200|      }
+   58|      1|
+   59|      1|  /* Make all source strings end before the page boundary.  */
+   60|      1|  backup = s.m1[0];
+   61|      1|  s.m1[0] = 0;
+   62|      1|
+   63|      1|  if (mprotect(&s.next_page, PAGE_SIZE, PROT_NONE) == -1)
+   64|      0|    perror("mprotect src");
+   65|      1|
+   66|      6|  for (i = 0; i < 5; i++)
+   67|     30|    for (j = 0; j < 5; j++)
+   68|     25|      check(dst[i], src[j],
+   69|     25|            PAGE_SIZE - ((unsigned long)src[j] & ((1UL << 12) - 1)) - 1);
+   70|      1|
+   71|      1|  if (mprotect(&s.next_page, PAGE_SIZE, PROT_READ | PROT_WRITE) == -1)
+   72|      0|    perror("mprotect src");
+   73|      1|
+   74|      1|  s.m1[0] = backup;
+   75|      1|
+   76|      1|  if (mprotect(&d.next_page, PAGE_SIZE, PROT_NONE) == -1)
+   77|      0|    perror("mprotect dst");
+   78|      1|
+   79|      6|  for (i = 0; i < 5; i++)
+   80|     30|    for (j = 0; j < 5; j++) {
+   81|     25|      int len = PAGE_SIZE - ((unsigned long)dst[i] & ((1UL << 12) - 1)) - 1;
+   82|     25|      char backup = src[j][len];
+   83|     25|
+   84|     25|      src[j][len] = 0;
+   85|     25|      __builtin_memset(&d, 0, (unsigned long)&d.next_page - (unsigned long)&d);
+   86|     25|      check(dst[i], src[j], len);
+   87|     25|      src[j][len] = backup;
+   88|     25|    }
+   89|      1|
+   90|      1|  return 0;
+   91|      1|}
+

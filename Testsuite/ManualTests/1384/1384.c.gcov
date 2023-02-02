@@ -1,0 +1,33 @@
+        -:    0:Source:1384.c
+        -:    0:Graph:1384.gcno
+        -:    0:Data:1384.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct X {
+        -:    6:  int *p;
+        -:    7:  int *q;
+        -:    8:};
+        -:    9:
+        1:   10:void __attribute__((noinline, noclone)) foo(struct X x) { *x.q = 0; }
+        -:   11:
+        -:   12:volatile int what;
+        -:   13:struct X y;
+        -:   14:
+        1:   15:int main() {
+        -:   16:  int i, j;
+        -:   17:  struct X x, *p;
+        1:   18:  x.p = &i;
+        1:   19:  x.q = &j;
+        1:   20:  if (what)
+    #####:   21:    p = &y;
+        -:   22:  else
+        1:   23:    p = &x;
+        1:   24:  j = 1;
+        1:   25:  foo(*p);
+        1:   26:  if (j != 0)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

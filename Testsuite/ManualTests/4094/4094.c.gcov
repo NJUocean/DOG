@@ -1,0 +1,16 @@
+        -:    0:Source:4094.c
+        -:    0:Graph:4094.gcno
+        -:    0:Data:4094.gcda
+        -:    0:Runs:1
+        -:    1:struct S {
+        -:    2:  char f1;
+        -:    3:  int f2[2];
+        -:    4:};
+        -:    5:
+        -:    6:struct S object = {'X', 8, 9};
+        -:    7:
+        1:    8:main() {
+        1:    9:  if (object.f1 != 'X' || object.f2[0] != 8 || object.f2[1] != 9)
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

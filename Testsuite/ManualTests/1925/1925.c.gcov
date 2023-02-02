@@ -1,0 +1,27 @@
+        -:    0:Source:1925.c
+        -:    0:Graph:1925.gcno
+        -:    0:Data:1925.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:// this testcase fails also on amd64:
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:int f() { return -1; }
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int b, c, i;
+        -:   12:
+        1:   13:  b = 0;
+        1:   14:  c = f();
+        1:   15:  if (c <= 0) {
+        1:   16:    c = -c;
+        2:   17:    for (i = 0; i < c; i++)
+        1:   18:      b = 1;
+        1:   19:    if (!b)
+    #####:   20:      abort();
+        -:   21:  }
+        1:   22:  return 0;
+        -:   23:}

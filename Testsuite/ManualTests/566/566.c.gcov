@@ -1,0 +1,33 @@
+        -:    0:Source:566.c
+        -:    0:Graph:566.gcno
+        -:    0:Data:566.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf"  } */
+        -:    3:
+    #####:    4:__attribute__((noinline)) int foo(int x) {
+    #####:    5:  int c = x;
+        -:    6:
+    #####:    7:  if (x > 10)
+    #####:    8:    c += 2;
+        -:    9:  else
+    #####:   10:    c -= 3;
+        -:   11:
+    #####:   12:  return c;
+        -:   13:}
+        -:   14:
+    #####:   15:__attribute__((noinline)) int bar(int y) {
+    #####:   16:  int d = y;
+        -:   17:
+    #####:   18:  if (y > 11)
+    #####:   19:    d += 2;
+        -:   20:  else
+    #####:   21:    d -= 3;
+        -:   22:
+    #####:   23:  return d;
+        -:   24:}
+        -:   25:
+        1:   26:int main() { return 0; }
+        -:   27:
+        -:   28:/* { dg-final { scan-ipa-dump-not "Semantic equality hit:" "icf"  } } */
+        -:   29:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

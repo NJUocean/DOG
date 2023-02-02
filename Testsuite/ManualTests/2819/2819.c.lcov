@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-mno-plt" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |struct lispstruct {
+    7|       |  int e;
+    8|       |  int t;
+    9|       |};
+   10|       |
+   11|       |struct lispstruct Cnil_body;
+   12|       |struct lispstruct Ct_body;
+   13|       |int nvalues;
+   14|       |
+   15|      1|struct lispstruct *__attribute__((noinline)) fLlistp(struct lispstruct *x0) {
+   16|      1|  if (x0 == &Cnil_body || (((unsigned long)x0 >= 0x80000000)
+   17|      1|                               ? 0
+   18|      1|                               : (!x0->e ? (x0 != &Cnil_body) : x0->t)))
+   19|      0|    x0 = &Ct_body;
+   20|      1|  else
+   21|      1|    x0 = &Cnil_body;
+   22|      1|  nvalues = 1;
+   23|      1|  return x0;
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  if (fLlistp((struct lispstruct *)0xa0000001) != &Cnil_body)
+   28|      0|    abort();
+   29|      1|  return 0;
+   30|      1|}
+

@@ -1,0 +1,14 @@
+        -:    0:Source:2982.c
+        -:    0:Graph:2982.gcno
+        -:    0:Data:2982.gcda
+        -:    0:Runs:1
+        -:    1:/* Check whether rte is generated only for an ISRs.  */
+        -:    2:/* { dg-do compile }  */
+        -:    3:/* { dg-final { scan-assembler-times "rte" 1 } }  */
+        -:    4:
+        -:    5:#pragma interrupt
+    #####:    6:void isr(void) {}
+        -:    7:
+    #####:    8:void delay(int a) {}
+        -:    9:
+        1:   10:int main(void) { return 0; }

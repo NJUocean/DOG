@@ -1,0 +1,39 @@
+    1|       |/* { dg-options "-O2 -save-temps" } */
+    2|       |
+    3|       |#include <stdio.h>
+    4|       |
+    5|  10.0k|__attribute__((noinline, noclone)) void sink(const char *s) {
+    6|  10.0k|  asm("" ::"r"(s));
+    7|  10.0k|}
+    8|       |
+    9|  10.0k|void foo(int ch) {
+   10|  10.0k|  switch (ch) {
+   11|    100|  case 100:
+   12|    100|    sink("100");
+   13|    100|    break;
+   14|    900|  case 10:
+   15|    900|    sink("10");
+   16|    900|    break;
+   17|  9.00k|  case 1:
+   18|  9.00k|    sink("1");
+   19|  9.00k|    break;
+   20|  10.0k|  }
+   21|  10.0k|}
+   22|       |
+   23|      1|int main() {
+   24|  10.0k|  for (int i = 0; i < 10000; i++) {
+   25|  10.0k|    int v;
+   26|  10.0k|    if (i % 100 == 0)
+   27|    100|      v = 100;
+   28|  9.90k|    else if (i % 10 == 0)
+   29|    900|      v = 10;
+   30|  9.00k|    else
+   31|  9.00k|      v = 1;
+   32|  10.0k|    foo(v);
+   33|  10.0k|  }
+   34|      1|}
+   35|       |
+   36|       |/* { dg-final-use-not-autofdo { scan-assembler
+   37|       | * "\n_?foo:\n.*cmp.*1,.*cmp.*10,.*cmp.*100" { target i?86-*-* x86_64-*-* } } }
+   38|       | */
+

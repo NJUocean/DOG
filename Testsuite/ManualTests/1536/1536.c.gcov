@@ -1,0 +1,28 @@
+        -:    0:Source:1536.c
+        -:    0:Graph:1536.gcno
+        -:    0:Data:1536.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a[6], b, c = 226, d, e, f;
+        -:    4:signed char g;
+        -:    5:
+        1:    6:void fn1(int p1) { b = a[p1]; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  a[0] = 1;
+       10:   10:  for (f = 0; f < 9; f++) {
+        9:   11:    signed char h = c;
+        9:   12:    int i = 1;
+       9*:   13:    g = h < 0 ? h : h >> i;
+        9:   14:    e = g;
+       18:   15:    for (d = 1; d; d = 0)
+        -:   16:      ;
+        -:   17:  }
+        1:   18:  fn1(g >> 8 & 1);
+        -:   19:
+        1:   20:  if (b != 0)
+    #####:   21:    __builtin_abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

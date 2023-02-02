@@ -1,0 +1,62 @@
+        -:    0:Source:2921.c
+        -:    0:Graph:2921.gcno
+        -:    0:Data:2921.gcda
+        -:    0:Runs:1
+        -:    1:/* Machine description pattern tests.  */
+        -:    2:
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-mmvcle -dP -save-temps" } */
+        -:    5:/* { dg-do run { target { s390_useable_hw } } } */
+        -:    6:
+        -:    7:/* Skip test if -O0 is present on the command line or -O... is missing:
+        -:    8:
+        -:    9:    { dg-skip-if "" { *-*-* } { "-march=z9*" "-O0" } { "" } }
+        -:   10:    { dg-skip-if "" { *-*-* } { "*" } { "-O*" } }
+        -:   11:*/
+        -:   12:
+        2:   13:__attribute__((noinline)) void test(char *p, char c, int len) {
+        2:   14:  __builtin_memset(p, c, len);
+        2:   15:}
+        -:   16:
+    #####:   17:__attribute__((noinline)) void test2(char *p, int c, int len) {
+    #####:   18:  __builtin_memset(p, (char)c, len);
+    #####:   19:}
+        -:   20:
+        -:   21:/* Check that the right patterns are used.  */
+        -:   22:/* { dg-final { scan-assembler-times {c"?:16:.*{[*]setmem_long_?3?1?z?}} 1 } }
+        -:   23: */
+        -:   24:/* { dg-final { scan-assembler-times {c"?:22:.*{[*]setmem_long_and_?3?1?z?}} 1 }
+        -:   25: * } */
+        -:   26:
+        -:   27:#define LEN 500
+        -:   28:char buf[LEN + 2];
+        -:   29:
+        2:   30:void init_buf(void) {
+        -:   31:  int i;
+        -:   32:
+        2:   33:  buf[0] = 0;
+     1002:   34:  for (i = 1; i <= LEN; i++)
+     1000:   35:    buf[i] = (0x10 + (i & 0x3f));
+        2:   36:  buf[LEN + 1] = 0x7f;
+        2:   37:}
+        -:   38:
+        2:   39:void validate_buf(char val) {
+        -:   40:  int i;
+        -:   41:
+        2:   42:  if (buf[0] != 0)
+    #####:   43:    __builtin_abort();
+     1002:   44:  for (i = 1; i <= LEN; i++)
+     1000:   45:    if (buf[i] != val)
+    #####:   46:      __builtin_abort();
+        2:   47:  if (buf[LEN + 1] != 0x7f)
+    #####:   48:    __builtin_abort();
+        2:   49:}
+        -:   50:
+        1:   51:int main(void) {
+        1:   52:  init_buf();
+        1:   53:  test(buf + 1, 55, LEN);
+        1:   54:  validate_buf(55);
+        1:   55:  init_buf();
+        1:   56:  test(buf + 1, 66, LEN);
+        1:   57:  validate_buf(66);
+        -:   58:}

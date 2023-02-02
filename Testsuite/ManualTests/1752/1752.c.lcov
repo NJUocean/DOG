@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |/* PR C/31499, test that the C front-end treats vectors like an array
+    4|       |   and that it works at runtime. */
+    5|       |
+    6|      2|#define vector __attribute__((__vector_size__(4 * sizeof(int))))
+    7|       |vector signed int v1[] = {0, 1, 2, 3, 4, 5, 6, 7};
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int i;
+   11|      3|  for (i = 0; i < sizeof(v1) / sizeof(v1[0]); i++) {
+   12|      2|    vector int t = v1[i];
+   13|      2|    int *d = (int *)&t;
+   14|      2|    int j;
+   15|     10|    for (j = 0; j < 4; j++) {
+   16|      8|      if (d[j] != i * 4 + j)
+   17|      0|        __builtin_abort();
+   18|      8|    }
+   19|      2|  }
+   20|      1|  return 0;
+   21|      1|}
+

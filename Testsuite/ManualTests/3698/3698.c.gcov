@@ -1,0 +1,29 @@
+        -:    0:Source:3698.c
+        -:    0:Graph:3698.gcno
+        -:    0:Data:3698.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/45262 */
+        -:    2:
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        3:    7:int foo(unsigned int x) { return ((int)x < 0) || ((int)(-x) < 0); }
+        -:    8:
+        3:    9:int bar(unsigned int x) { return x >> 31 || (-x) >> 31; }
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (foo(1) != 1)
+    #####:   13:    abort();
+        1:   14:  if (foo(0) != 0)
+    #####:   15:    abort();
+        1:   16:  if (foo(-1) != 1)
+    #####:   17:    abort();
+        1:   18:  if (bar(1) != 1)
+    #####:   19:    abort();
+        1:   20:  if (bar(0) != 0)
+    #####:   21:    abort();
+        1:   22:  if (bar(-1) != 1)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

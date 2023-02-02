@@ -1,0 +1,48 @@
+        -:    0:Source:788.c
+        -:    0:Graph:788.gcno
+        -:    0:Data:788.gcda
+        -:    0:Runs:1
+        -:    1:/* dg-do run */
+        -:    2:/* dg-options "-O2" */
+        -:    3:
+        -:    4:/* PR target/20126 was not really target-specific, but rather a loop's
+        -:    5:   failure to take into account the possibility that a DEST_ADDR giv
+        -:    6:   replacement might fail, such as when you attempt to replace a REG
+        -:    7:   with a PLUS in one of the register_operands of cmpstrqi_rex_1.  */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:typedef struct {
+        -:   12:  int a;
+        -:   13:  char b[3];
+        -:   14:} S;
+        -:   15:S c = {2, "aa"}, d = {2, "aa"};
+        -:   16:
+    #####:   17:void *bar(const void *x, int y, int z) { return (void *)0; }
+        -:   18:
+        1:   19:int foo(S *x, S *y) {
+        -:   20:  const char *e, *f, *g;
+        -:   21:  int h;
+        -:   22:
+        1:   23:  h = y->a;
+        1:   24:  f = y->b;
+        1:   25:  e = x->b;
+        -:   26:
+        1:   27:  if (h == 1)
+    #####:   28:    return bar(e, *f, x->a) != 0;
+        -:   29:
+        1:   30:  g = e + x->a - h;
+        1:   31:  while (e <= g) {
+        1:   32:    const char *t = e + 1;
+        1:   33:    if (__builtin_memcmp(e, f, h) == 0)
+        1:   34:      return 1;
+    #####:   35:    e = t;
+        -:   36:  }
+    #####:   37:  return 0;
+        -:   38:}
+        -:   39:
+        1:   40:int main(void) {
+        1:   41:  if (foo(&c, &d) != 1)
+    #####:   42:    abort();
+        1:   43:  return 0;
+        -:   44:}

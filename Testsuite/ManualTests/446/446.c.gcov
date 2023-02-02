@@ -1,0 +1,28 @@
+        -:    0:Source:446.c
+        -:    0:Graph:446.gcno
+        -:    0:Data:446.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Os -ftree-loop-linear" } */
+        -:    3:
+        -:    4:#define N 16
+        -:    5:
+        1:    6:int main1(int n, int *a) {
+        -:    7:  int i, j;
+        -:    8:
+       17:    9:  for (i = 0; i < n; i++)
+      272:   10:    for (j = 0; j < n; j++)
+      256:   11:      a[j] = i + n;
+        -:   12:
+       17:   13:  for (j = 0; j < n; j++)
+       16:   14:    if (a[j] != i + n - 1)
+    #####:   15:      __builtin_abort();
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  int a[N];
+        1:   22:  main1(N, a);
+        1:   23:  return 0;
+        -:   24:}

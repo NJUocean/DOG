@@ -1,0 +1,37 @@
+    1|       |/* { dg-do run } */
+    2|       |/* Based on PR target/27386 testcase by Joerg Wunsch.  */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |#if __INT_MAX__ >= 9223372036854775807LL
+    8|       |typedef unsigned int uint64_t;
+    9|       |#elif __LONG_MAX__ >= 9223372036854775807LL
+   10|       |typedef unsigned long int uint64_t;
+   11|       |#elif __LONG_LONG_MAX__ >= 9223372036854775807LL
+   12|       |typedef unsigned long long int uint64_t;
+   13|       |#else
+   14|       |int main(void) { exit(0); }
+   15|       |#endif
+   16|       |
+   17|       |uint64_t a, b, c;
+   18|       |
+   19|      1|int foo(uint64_t x, uint64_t y, uint64_t z, int i) {
+   20|      1|  a = x;
+   21|      1|  b = y;
+   22|      1|  c = z;
+   23|      1|  return 2 * i;
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  if (foo(1234512345123ull, 3456734567345ull, 7897897897897ull, 42) != 84)
+   28|      0|    abort();
+   29|      1|  if (a != 1234512345123ull)
+   30|      0|    abort();
+   31|      1|  if (b != 3456734567345ull)
+   32|      0|    abort();
+   33|      1|  if (c != 7897897897897ull)
+   34|      0|    abort();
+   35|      1|  exit(0);
+   36|      1|}
+

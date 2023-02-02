@@ -1,0 +1,33 @@
+    1|       |/* PR target/52129 */
+    2|       |/* { dg-xfail-if "ptxas crashes" { nvptx-*-* } { "-O1" } { "" } } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct S {
+    6|       |  void *p;
+    7|       |  unsigned int q;
+    8|       |};
+    9|       |struct T {
+   10|       |  char a[64];
+   11|       |  char b[64];
+   12|       |} t;
+   13|       |
+   14|       |__attribute__((noinline, noclone)) int foo(void *x, struct S s, void *y,
+   15|      1|                                           void *z) {
+   16|      1|  if (x != &t.a[2] || s.p != &t.b[5] || s.q != 27 || y != &t.a[17] ||
+   17|      1|      z != &t.b[17])
+   18|      0|    abort();
+   19|      1|  return 29;
+   20|      1|}
+   21|       |
+   22|       |__attribute__((noinline, noclone)) int bar(void *x, void *y, void *z,
+   23|      1|                                           struct S s, int t, struct T *u) {
+   24|      1|  return foo(x, s, &u->a[t], &u->b[t]);
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  struct S s = {&t.b[5], 27};
+   29|      1|  if (bar(&t.a[2], (void *)0, (void *)0, s, 17, &t) != 29)
+   30|      0|    abort();
+   31|      1|  return 0;
+   32|      1|}
+

@@ -1,0 +1,48 @@
+        -:    0:Source:125.c
+        -:    0:Graph:125.gcno
+        -:    0:Data:125.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and proper execution on 2 byte
+        -:    2:   values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target sync_char_short } */
+        -:    5:
+        -:    6:/* Test the execution of the __atomic_store_n builtin for a short.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:short v, count;
+        -:   11:
+        1:   12:int main() {
+        1:   13:  v = 0;
+        1:   14:  count = 0;
+        -:   15:
+        1:   16:  __atomic_store_n(&v, count + 1, __ATOMIC_RELAXED);
+        1:   17:  if (v != ++count)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  __atomic_store_n(&v, count + 1, __ATOMIC_RELEASE);
+        1:   21:  if (v != ++count)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  __atomic_store_n(&v, count + 1, __ATOMIC_SEQ_CST);
+        1:   25:  if (v != ++count)
+    #####:   26:    abort();
+        -:   27:
+        -:   28:  /* Now test the generic variant.  */
+        1:   29:  count++;
+        -:   30:
+        1:   31:  __atomic_store(&v, &count, __ATOMIC_RELAXED);
+        1:   32:  if (v != count++)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  __atomic_store(&v, &count, __ATOMIC_RELEASE);
+        1:   36:  if (v != count++)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  __atomic_store(&v, &count, __ATOMIC_SEQ_CST);
+        1:   40:  if (v != count)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  return 0;
+        -:   44:}

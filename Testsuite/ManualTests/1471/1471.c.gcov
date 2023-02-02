@@ -1,0 +1,15 @@
+        -:    0:Source:1471.c
+        -:    0:Graph:1471.gcno
+        -:    0:Data:1471.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, c;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int e = -1;
+        1:    7:  short d = (c <= 0) ^ e;
+       1*:    8:  if ((unsigned int)a - (a || d) <= (unsigned int)a)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

@@ -1,0 +1,81 @@
+        -:    0:Source:163.c
+        -:    0:Graph:163.gcno
+        -:    0:Data:163.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:struct S0 {
+        -:    7:  int8_t f0;
+        -:    8:  const int8_t f1;
+        -:    9:};
+        -:   10:
+        -:   11:#pragma pack(push)
+        -:   12:#pragma pack(1)
+        -:   13:struct S1 {
+        -:   14:  int64_t f0;
+        -:   15:  int32_t f1;
+        -:   16:  uint8_t f2;
+        -:   17:  uint32_t f3;
+        -:   18:  struct S0 f4;
+        -:   19:};
+        -:   20:#pragma pack(pop)
+        -:   21:
+        -:   22:static volatile int8_t g_2 = 0x83L;
+        -:   23:static int32_t g_4 = 0L;
+        -:   24:static uint8_t g_25 = 255UL;
+        -:   25:static struct S1 g_29 = {-1L, -1L, 0x64L, 0x6BD29A2AL, {0x7FL, 0xA1L}};
+        -:   26:
+        -:   27:static uint8_t func_1(void);
+        -:   28:
+        1:   29:static uint8_t func_1(void) {
+        1:   30:  int32_t *l_3 = &g_4;
+        1:   31:  int32_t *l_5 = &g_4;
+        1:   32:  int32_t *l_6 = (void *)0;
+        1:   33:  int32_t l_7 = 0x3F7BF48CL;
+        1:   34:  int32_t *l_8 = &g_4;
+        1:   35:  int32_t *l_9 = &g_4;
+        1:   36:  int32_t *l_10 = &l_7;
+        1:   37:  int32_t *l_11 = &l_7;
+        1:   38:  int32_t *l_12 = &l_7;
+        1:   39:  int32_t *l_13 = (void *)0;
+        1:   40:  int32_t *l_14 = &l_7;
+        1:   41:  int32_t *l_15 = &g_4;
+        1:   42:  int32_t *l_16 = &g_4;
+        1:   43:  int32_t *l_17 = &l_7;
+        1:   44:  int32_t *l_18 = (void *)0;
+        1:   45:  int32_t *l_19 = &l_7;
+        1:   46:  int32_t *l_20 = &g_4;
+        1:   47:  int32_t *l_21 = &g_4;
+        1:   48:  int32_t *l_22 = &g_4;
+        1:   49:  int32_t *l_23[4] = {(void *)0, (void *)0, (void *)0, (void *)0};
+        1:   50:  int32_t l_24 = 0x2FE81720L;
+        1:   51:  struct S1 *l_28 = &g_29;
+        1:   52:  struct S1 **l_30 = &l_28;
+        -:   53:  int i;
+        1:   54:  --g_25;
+        1:   55:  (*l_30) = l_28;
+        1:   56:  return (*l_15);
+        -:   57:}
+        -:   58:
+        1:   59:int main(int argc, char *argv[]) {
+        1:   60:  int print_hash_value = 0;
+       1*:   61:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   62:    print_hash_value = 1;
+        1:   63:  platform_main_begin();
+        1:   64:  crc32_gentab();
+        1:   65:  func_1();
+        1:   66:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   67:  transparent_crc(g_4, "g_4", print_hash_value);
+        1:   68:  transparent_crc(g_25, "g_25", print_hash_value);
+        1:   69:  transparent_crc(g_29.f0, "g_29.f0", print_hash_value);
+        1:   70:  transparent_crc(g_29.f1, "g_29.f1", print_hash_value);
+        1:   71:  transparent_crc(g_29.f2, "g_29.f2", print_hash_value);
+        1:   72:  transparent_crc(g_29.f3, "g_29.f3", print_hash_value);
+        1:   73:  transparent_crc(g_29.f4.f0, "g_29.f4.f0", print_hash_value);
+        1:   74:  transparent_crc(g_29.f4.f1, "g_29.f4.f1", print_hash_value);
+        1:   75:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   76:  return 0;
+        -:   77:}

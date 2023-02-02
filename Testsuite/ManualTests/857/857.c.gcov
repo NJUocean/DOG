@@ -1,0 +1,30 @@
+        -:    0:Source:857.c
+        -:    0:Graph:857.gcno
+        -:    0:Data:857.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-options "-O2 -msse2 -mtune=core2 -mfpmath=387" { target { i?86-*-*
+        -:    4: * x86_64-*-* } } } */
+        -:    5:/* { dg-require-effective-target sse2_runtime { target { i?86-*-* x86_64-*-* } }
+        -:    6: * } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  double arr[1000];
+        -:   12:  double a, b;
+        -:   13:
+        -:   14:  int i;
+        -:   15:
+     1001:   16:  for (i = 0; i < 1000; i++)
+     1000:   17:    arr[i] = 4294967296.0 + (double)i;
+        -:   18:
+        1:   19:  a = arr[0];
+        1:   20:  b = (unsigned int)((unsigned long long int)a % 4294967296ULL);
+        -:   21:
+        1:   22:  if (b >= 4294967296.0)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

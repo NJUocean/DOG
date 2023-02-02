@@ -1,0 +1,16 @@
+        -:    0:Source:3728.c
+        -:    0:Graph:3728.gcno
+        -:    0:Data:3728.gcda
+        -:    0:Runs:1
+        -:    1:/* PR lto/49123 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:static struct S { int f : 1; } s;
+        -:    5:static int v = -1;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  s.f = v < 0;
+        1:    9:  if ((unsigned int)s.f != -1U)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

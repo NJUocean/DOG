@@ -1,0 +1,13 @@
+        -:    0:Source:874.c
+        -:    0:Graph:874.gcno
+        -:    0:Data:874.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-overflow" } */
+        -:    3:
+        -:    4:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  /* This should not fail.  */
+        1:    8:  return (unsigned int)INT_MIN / -1;
+        -:    9:}

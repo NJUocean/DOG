@@ -1,0 +1,24 @@
+        -:    0:Source:1341.c
+        -:    0:Graph:1341.gcno
+        -:    0:Data:1341.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fwrapv" } */
+        -:    3:
+        1:    4:int __attribute__((noinline)) foo(long i, long j) {
+        1:    5:  if (i >= 1)
+        1:    6:    if (j > -(long)(((unsigned long)(long)-1) >> 1)) {
+        -:    7:      long x;
+        1:    8:      j--;
+        1:    9:      x = i + j;
+        1:   10:      if (x >= 0)
+        1:   11:        return 1;
+        -:   12:    }
+    #####:   13:  return 0;
+        -:   14:}
+        -:   15:extern void abort(void);
+        1:   16:int main() {
+        1:   17:  if (foo(1, 1) != 1)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

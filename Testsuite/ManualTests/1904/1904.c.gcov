@@ -1,0 +1,64 @@
+        -:    0:Source:1904.c
+        -:    0:Graph:1904.gcno
+        -:    0:Data:1904.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/83337 */
+        -:    2:/* { dg-do run { target int32plus } } */
+        -:    3:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    4:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    5:
+        -:    6:/* Copied from graphite/interchange-5.c */
+        -:    7:
+        -:    8:#define DEBUG 0
+        -:    9:#if DEBUG
+        -:   10:#include <stdio.h>
+        -:   11:#endif
+        -:   12:
+        -:   13:#define N 100
+        -:   14:#define M 1111
+        -:   15:struct S {
+        -:   16:  int a : 3;
+        -:   17:  int b : 17;
+        -:   18:  int c : 12;
+        -:   19:};
+        -:   20:struct S A[N][M];
+        -:   21:
+        1:   22:static int __attribute__((noinline)) foo(void) {
+        -:   23:  int i, j;
+        -:   24:
+     1112:   25:  for (i = 0; i < M; i++)
+   112211:   26:    for (j = 0; j < N; j++)
+   111100:   27:      A[j][i].b = 5 * A[j][i].b;
+        -:   28:
+        1:   29:  return A[0][0].b + A[N - 1][M - 1].b;
+        -:   30:}
+        -:   31:
+        -:   32:extern void abort();
+        -:   33:
+      100:   34:static void __attribute__((noinline)) init(int i) {
+        -:   35:  int j;
+        -:   36:
+   111200:   37:  for (j = 0; j < M; j++)
+   111100:   38:    A[i][j].b = 2;
+      100:   39:}
+        -:   40:
+        1:   41:int main(void) {
+        -:   42:  int i, j, res;
+        -:   43:
+      101:   44:  for (i = 0; i < N; i++)
+      100:   45:    init(i);
+        -:   46:
+        1:   47:  res = foo();
+        -:   48:
+        -:   49:#if DEBUG
+        -:   50:  fprintf(stderr, "res = %d \n", res);
+        -:   51:#endif
+        -:   52:
+        1:   53:  if (res != 20)
+    #####:   54:    abort();
+        -:   55:
+        1:   56:  return 0;
+        -:   57:}
+        -:   58:
+        -:   59:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   60: * interchanged" 1 "linterchange"} } */

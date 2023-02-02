@@ -1,0 +1,19 @@
+    1|       |struct F {
+    2|       |  int i;
+    3|       |};
+    4|       |
+    5|      1|void f1(struct F *x, struct F *y) {
+    6|      1|  int timeout = 0;
+    7|      2|  for (; ((const struct F *)x)->i < y->i; x->i++)
+    8|      1|    if (++timeout > 5)
+    9|      0|      abort();
+   10|      1|}
+   11|       |
+   12|      1|main() {
+   13|      1|  struct F x, y;
+   14|      1|  x.i = 0;
+   15|      1|  y.i = 1;
+   16|      1|  f1(&x, &y);
+   17|      1|  exit(0);
+   18|      1|}
+

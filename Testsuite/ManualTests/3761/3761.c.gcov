@@ -1,0 +1,33 @@
+        -:    0:Source:3761.c
+        -:    0:Graph:3761.gcno
+        -:    0:Data:3761.gcda
+        -:    0:Runs:1
+        -:    1:char headline[256];
+        -:    2:struct hdr {
+        -:    3:  char part1[9];
+        -:    4:  char part2[8];
+        -:    5:} p;
+        -:    6:
+        1:    7:void __attribute__((noinline, noclone)) init() {
+        1:    8:  __builtin_memcpy(p.part1, "FOOBARFOO", sizeof(p.part1));
+        1:    9:  __builtin_memcpy(p.part2, "SPEC CPU", sizeof(p.part2));
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  char *x;
+        -:   14:  int c;
+        1:   15:  init();
+        1:   16:  __builtin_memcpy(&headline[0], p.part1, 9);
+        1:   17:  c = 9;
+        1:   18:  x = &headline[0];
+        1:   19:  x = x + c;
+        1:   20:  __builtin_memset(x, ' ', 245);
+        1:   21:  __builtin_memcpy(&headline[10], p.part2, 8);
+        1:   22:  c = 18;
+        1:   23:  x = &headline[0];
+        1:   24:  x = x + c;
+        1:   25:  __builtin_memset(x, ' ', 238);
+        1:   26:  if (headline[10] != 'S')
+    #####:   27:    __builtin_abort();
+        1:   28:  return 0;
+        -:   29:}

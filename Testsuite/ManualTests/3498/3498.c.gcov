@@ -1,0 +1,36 @@
+        -:    0:Source:3498.c
+        -:    0:Graph:3498.gcno
+        -:    0:Data:3498.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/60116 */
+        -:    2:/* Reported by Zhendong Su <su@cs.ucdavis.edu> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int a, b, c, d = 1, e, f = 1, h, i, k;
+        -:    7:char g, j;
+        -:    8:
+        1:    9:void fn1(void) {
+        -:   10:  int l;
+        1:   11:  e = 0;
+        1:   12:  c = 0;
+        -:   13:  for (;;) {
+       1*:   14:    k = a && b;
+        1:   15:    j = k * 54;
+        1:   16:    g = j * 147;
+        1:   17:    l = ~g + (long long)e && 1;
+        1:   18:    if (d)
+        1:   19:      c = l;
+        -:   20:    else
+    #####:   21:      h = i = l * 9UL;
+        1:   22:    if (f)
+        1:   23:      return;
+        -:   24:  }
+        -:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  fn1();
+        1:   29:  if (c != 1)
+    #####:   30:    abort();
+        1:   31:  return 0;
+        -:   32:}

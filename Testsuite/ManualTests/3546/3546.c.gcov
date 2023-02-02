@@ -1,0 +1,15 @@
+        -:    0:Source:3546.c
+        -:    0:Graph:3546.gcno
+        -:    0:Data:3546.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fwrapv" } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        1:    6:int f(long a) { return (--a > 0); }
+        1:    7:int main() {
+        1:    8:  if (f(0x80000000L) == 0)
+    #####:    9:    abort();
+        1:   10:  exit(0);
+        -:   11:}

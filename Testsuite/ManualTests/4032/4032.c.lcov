@@ -1,0 +1,48 @@
+    1|       |/* PR target/91635 */
+    2|       |
+    3|       |#if __CHAR_BIT__ == 8 && __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 &&       \
+    4|       |    __SIZEOF_LONG_LONG__ == 8
+    5|       |unsigned short b, c;
+    6|       |int u, v, w, x;
+    7|       |
+    8|      1|__attribute__((noipa)) int foo(unsigned short c) {
+    9|      1|  c <<= __builtin_add_overflow(-c, -1, &b);
+   10|      1|  c >>= 1;
+   11|      1|  return c;
+   12|      1|}
+   13|       |
+   14|      1|__attribute__((noipa)) int bar(unsigned short b) {
+   15|      1|  b <<= -14 & 15;
+   16|      1|  b = b >> -~1;
+   17|      1|  return b;
+   18|      1|}
+   19|       |
+   20|      1|__attribute__((noipa)) int baz(unsigned short e) {
+   21|      1|  e <<= 1;
+   22|      1|  e >>= __builtin_add_overflow(8719476735, u, &v);
+   23|      1|  return e;
+   24|      1|}
+   25|       |
+   26|      1|__attribute__((noipa)) int qux(unsigned int e) {
+   27|      1|  c = ~1;
+   28|      1|  c *= e;
+   29|      1|  c = c >> (-15 & 5);
+   30|      1|  return c + w + x;
+   31|      1|}
+   32|       |#endif
+   33|       |
+   34|      1|int main() {
+   35|      1|#if __CHAR_BIT__ == 8 && __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 &&       \
+   36|      1|    __SIZEOF_LONG_LONG__ == 8
+   37|      1|  if (foo(0xffff) != 0x7fff)
+   38|      0|    __builtin_abort();
+   39|      1|  if (bar(5) != 5)
+   40|      0|    __builtin_abort();
+   41|      1|  if (baz(~0) != 0x7fff)
+   42|      0|    __builtin_abort();
+   43|      1|  if (qux(2) != 0x7ffe)
+   44|      0|    __builtin_abort();
+   45|      1|#endif
+   46|      1|  return 0;
+   47|      1|}
+

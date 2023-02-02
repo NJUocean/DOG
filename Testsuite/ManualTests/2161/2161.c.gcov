@@ -1,0 +1,47 @@
+        -:    0:Source:2161.c
+        -:    0:Graph:2161.gcno
+        -:    0:Data:2161.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+        -:    2:/* Test the support for char32_t character constants. */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu99 -Wall -Werror" } */
+        -:    5:
+        -:    6:typedef __CHAR32_TYPE__ char32_t;
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:char32_t c0 = U'a';
+        -:   11:char32_t c1 = U'\0';
+        -:   12:char32_t c2 = U'\u0024';
+        -:   13:char32_t c3 = U'\u2029';
+        -:   14:char32_t c4 = U'\U00064321';
+        -:   15:
+        -:   16:#define A 0x00000061
+        -:   17:#define D 0x00000024
+        -:   18:#define X 0x00002029
+        -:   19:#define Y 0x00064321
+        -:   20:
+        1:   21:int main() {
+        -:   22:  if (sizeof(U'a') != sizeof(char32_t))
+        -:   23:    abort();
+        -:   24:  if (sizeof(U'\0') != sizeof(char32_t))
+        -:   25:    abort();
+        -:   26:  if (sizeof(U'\u0024') != sizeof(char32_t))
+        -:   27:    abort();
+        -:   28:  if (sizeof(U'\u2029') != sizeof(char32_t))
+        -:   29:    abort();
+        -:   30:  if (sizeof(U'\U00064321') != sizeof(char32_t))
+        -:   31:    abort();
+        -:   32:
+        1:   33:  if (c0 != A)
+    #####:   34:    abort();
+        1:   35:  if (c1 != 0x0000)
+    #####:   36:    abort();
+        1:   37:  if (c2 != D)
+    #####:   38:    abort();
+        1:   39:  if (c3 != X)
+    #####:   40:    abort();
+        1:   41:  if (c4 != Y)
+    #####:   42:    abort();
+        -:   43:}

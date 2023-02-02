@@ -1,0 +1,26 @@
+    1|       |/* PR target/87807 */
+    2|       |/* Reported by Rainer Orth <ro@gcc.gnu.org> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=c99" } */
+    6|       |
+    7|       |#include <stdarg.h>
+    8|       |
+    9|       |typedef float __attribute__((vector_size(8))) vector_float;
+   10|       |
+   11|       |vector_float v2sf = {1.0f, 2.0f};
+   12|       |
+   13|      1|void f(vector_float a, ...) {
+   14|      1|  va_list argp;
+   15|      1|  va_start(argp, a);
+   16|      1|  vector_float x = va_arg(argp, vector_float);
+   17|      1|  if (x[0] != a[0] || x[1] != a[1])
+   18|      0|    __builtin_abort();
+   19|      1|  va_end(argp);
+   20|      1|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  f(v2sf, v2sf);
+   24|      1|  return 0;
+   25|      1|}
+

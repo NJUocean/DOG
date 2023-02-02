@@ -1,0 +1,23 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:union U
+        -:    2:{
+        -:    3:    int f0;
+        -:    4:    unsigned char f1;
+        -:    5:};
+        -:    6:
+        1:    7:int main()
+        -:    8:{
+        1:    9:    int i = 0;
+        1:   10:    union U u = {0};
+        1:   11:    for (u.f1 = 0; u.f1 != -2; ++u.f1) {
+    #####:   12:        i ^= u.f1;
+        1:   13:        if (i < 1)
+        1:   14:            return 0;
+        -:   15:    }
+        -:   16:
+        -:   17:    return 1;
+        -:   18:}

@@ -1,0 +1,30 @@
+        -:    0:Source:854.c
+        -:    0:Graph:854.gcno
+        -:    0:Data:854.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fwrapv" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#define VALUE ((int)((long long)U1 * (long long)3) + 2)
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  long long Y, Y2;
+        -:   10:#if (__SIZEOF_INT__ >= 4)
+        -:   11:  int U1;
+        -:   12:#else
+        -:   13:  long U1;
+        -:   14:#endif
+        -:   15:  int t;
+        1:   16:  U1 = -2147483647 - 1;
+        -:   17:
+        1:   18:  Y = ((long long)(VALUE * VALUE) * 3);
+        -:   19:
+        1:   20:  t = VALUE;
+        1:   21:  Y2 = ((long long)(t * t) * 3);
+        -:   22:
+        1:   23:  if (Y != Y2)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

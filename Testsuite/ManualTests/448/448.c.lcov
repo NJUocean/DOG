@@ -1,0 +1,22 @@
+    1|       |/* { dg-options "-O2 -floop-nest-optimize" } */
+    2|       |
+    3|       |int au[4] = {0};
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int dc;
+    7|      1|  int m7;
+    8|      1|  int lv;
+    9|      1|  int f2;
+   10|      1|  int uq[3] = {1};
+   11|      3|  for (dc = 0; dc < 2; ++dc) {
+   12|      6|    for (lv = 0; lv < 2; ++lv)
+   13|     16|      for (m7 = 0; m7 < 3; ++m7) {
+   14|     12|        if (uq[dc] == 0)
+   15|      6|          continue;
+   16|     24|        for (f2 = 0; f2 < 3; ++f2)
+   17|     18|          au[dc + 2] = uq[f2];
+   18|      6|      }
+   19|      2|  }
+   20|      1|  return 0;
+   21|      1|}
+

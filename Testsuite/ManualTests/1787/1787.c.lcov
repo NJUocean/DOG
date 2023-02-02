@@ -1,0 +1,18 @@
+    1|       |/* Tail call optimizations would reverse the order of multiplications
+    2|       |   in func().  */
+    3|       |
+    4|      4|double func(const double *array) {
+    5|      4|  double d = *array;
+    6|      4|  if (d == 1.0)
+    7|      1|    return d;
+    8|      3|  else
+    9|      3|    return d * func(array + 1);
+   10|      4|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  double values[] = {__DBL_MAX__, 2.0, 0.5, 1.0};
+   14|      1|  if (func(values) != __DBL_MAX__)
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

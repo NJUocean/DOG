@@ -1,0 +1,29 @@
+        -:    0:Source:1415.c
+        -:    0:Graph:1415.gcno
+        -:    0:Data:1415.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:union u {
+        -:    6:  int i;
+        -:    7:  _Bool b;
+        -:    8:};
+        -:    9:
+        2:   10:void f(union u *vp, union u v) { *vp = v; }
+        -:   11:
+        1:   12:int main() {
+        -:   13:  union u v;
+        -:   14:  union u v1;
+        -:   15:  union u v2;
+        -:   16:
+        1:   17:  v.i = 10;
+        1:   18:  f(&v1, v);
+        -:   19:
+        1:   20:  v.b = 0;
+        1:   21:  f(&v2, v);
+        1:   22:  if (v2.b != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

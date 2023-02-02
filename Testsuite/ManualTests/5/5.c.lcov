@@ -1,0 +1,26 @@
+    1|       |/* PR target/7559
+    2|       |   This testcase was miscompiled on x86-64 due to wrong access to the struct
+    3|       |   members.  */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct A {
+    8|       |  long x;
+    9|       |};
+   10|       |
+   11|       |struct R {
+   12|       |  struct A a, b;
+   13|       |};
+   14|       |
+   15|       |struct R R = {{100}, {200}};
+   16|       |
+   17|      1|void f(struct R r) {
+   18|      1|  if (r.a.x != R.a.x || r.b.x != R.b.x)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  f(R);
+   24|      1|  return 0;
+   25|      1|}
+

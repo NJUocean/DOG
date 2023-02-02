@@ -1,0 +1,46 @@
+    1|       |/* Test __builtin_bswap64 . */
+    2|       |
+    3|       |unsigned long long g(unsigned long long a) __attribute__((noinline));
+    4|      8|unsigned long long g(unsigned long long a) { return __builtin_bswap64(a); }
+    5|       |
+    6|      8|unsigned long long f(unsigned long long c) {
+    7|      8|  union {
+    8|      8|    unsigned long long a;
+    9|      8|    unsigned char b[8];
+   10|      8|  } a, b;
+   11|      8|  a.a = c;
+   12|      8|  b.b[0] = a.b[7];
+   13|      8|  b.b[1] = a.b[6];
+   14|      8|  b.b[2] = a.b[5];
+   15|      8|  b.b[3] = a.b[4];
+   16|      8|  b.b[4] = a.b[3];
+   17|      8|  b.b[5] = a.b[2];
+   18|      8|  b.b[6] = a.b[1];
+   19|      8|  b.b[7] = a.b[0];
+   20|      8|  return b.a;
+   21|      8|}
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  unsigned long long i;
+   25|      1|  /* The rest of the testcase assumes 8 byte long long. */
+   26|      1|  if (sizeof(i) != sizeof(char) * 8)
+   27|      0|    return 0;
+   28|      1|  if (f(0x12) != g(0x12))
+   29|      0|    __builtin_abort();
+   30|      1|  if (f(0x1234) != g(0x1234))
+   31|      0|    __builtin_abort();
+   32|      1|  if (f(0x123456) != g(0x123456))
+   33|      0|    __builtin_abort();
+   34|      1|  if (f(0x12345678ull) != g(0x12345678ull))
+   35|      0|    __builtin_abort();
+   36|      1|  if (f(0x1234567890ull) != g(0x1234567890ull))
+   37|      0|    __builtin_abort();
+   38|      1|  if (f(0x123456789012ull) != g(0x123456789012ull))
+   39|      0|    __builtin_abort();
+   40|      1|  if (f(0x12345678901234ull) != g(0x12345678901234ull))
+   41|      0|    __builtin_abort();
+   42|      1|  if (f(0x1234567890123456ull) != g(0x1234567890123456ull))
+   43|      0|    __builtin_abort();
+   44|      1|  return 0;
+   45|      1|}
+

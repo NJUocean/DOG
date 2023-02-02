@@ -1,0 +1,68 @@
+        -:    0:Source:977.c
+        -:    0:Graph:977.gcno
+        -:    0:Data:977.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-ra" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#if (__SIZEOF_LONG_LONG__ == __SIZEOF_POINTER__)
+        -:    7:#define ADD_SUFFIX(a) a##ULL
+        -:    8:#elif (__SIZEOF_LONG__ == __SIZEOF_POINTER__)
+        -:    9:#define ADD_SUFFIX(a) a##UL
+        -:   10:#elif (__SIZEOF_INT__ == __SIZEOF_POINTER__)
+        -:   11:#define ADD_SUFFIX(a) a##U
+        -:   12:#else
+        -:   13:#error Add target support here
+        -:   14:#endif
+        -:   15:
+        -:   16:#if __SIZEOF_POINTER__ <= 4
+        -:   17:/* Use a 16 bit pointer to have a valid pointer for 16-bit to 31-bit pointer
+        -:   18:   architectures.  Using sizeof, we cannot distinguish between 31-bit and 32-bit
+        -:   19:   pointer types, so we also handle the 32-bit pointer type case here.  */
+        -:   20:#define CONST_PTR ADD_SUFFIX(0x800)
+        -:   21:#else
+        -:   22:/* For x86_64 -m64, the problem reproduces with this 32-bit CONST_PTR, but not
+        -:   23:   with a 2-power below it.  */
+        -:   24:#define CONST_PTR ADD_SUFFIX(0x80000000)
+        -:   25:#endif
+        -:   26:
+        1:   27:int __attribute__((noinline, noclone)) bar(void) { return 1; }
+        -:   28:
+        -:   29:struct S {
+        -:   30:  unsigned long p, q, r;
+        -:   31:  void *v;
+        -:   32:};
+        -:   33:
+        -:   34:struct S *s1;
+        -:   35:struct S *s2;
+        -:   36:
+        1:   37:void __attribute__((noinline, noclone)) fn2(struct S *x) { s2 = x; }
+        -:   38:
+        1:   39:__attribute__((noinline, noclone)) void *fn1(struct S *x) {
+        -:   40:  /* Just a statement to make it a non-const function.  */
+        1:   41:  s1 = x;
+        -:   42:
+        1:   43:  return (void *)0;
+        -:   44:}
+        -:   45:
+        1:   46:int __attribute__((noinline, noclone)) baz(void) {
+        1:   47:  struct S *x = (struct S *)CONST_PTR;
+        -:   48:
+        1:   49:  x += bar();
+        -:   50:
+        1:   51:  fn1(x);
+        1:   52:  fn2(x);
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}
+        -:   56:
+        1:   57:int main(void) {
+        1:   58:  baz();
+        -:   59:
+        1:   60:  if (s2 != (((struct S *)CONST_PTR) + 1))
+    #####:   61:    abort();
+        -:   62:
+        1:   63:  return 0;
+        -:   64:}

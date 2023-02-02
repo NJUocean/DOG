@@ -1,0 +1,14 @@
+    1|       |int a = 0;
+    2|       |
+    3|      1|void foo() { a++; }
+    4|      1|void bar() { a++; }
+    5|       |
+    6|       |int main()
+    7|      1|{
+    8|      1|  foo(); goto lbl2; lbl1: bar ();
+    9|      1|
+   10|      2|  lbl2:
+   11|      2|    if (a == 1)
+   12|      1|      goto lbl1;
+   13|      1|}
+

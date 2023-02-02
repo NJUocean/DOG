@@ -1,0 +1,46 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|       |struct tiny {
+    4|       |  char c;
+    5|       |  char d;
+    6|       |  char e;
+    7|       |};
+    8|       |
+    9|      1|f(int n, ...) {
+   10|      1|  struct tiny x;
+   11|      1|  int i;
+   12|      1|
+   13|      1|  va_list ap;
+   14|      1|  va_start(ap, n);
+   15|      4|  for (i = 0; i < n; i++) {
+   16|      3|    x = va_arg(ap, struct tiny);
+   17|      3|    if (x.c != i + 10)
+   18|      0|      abort();
+   19|      3|    if (x.d != i + 20)
+   20|      0|      abort();
+   21|      3|    if (x.e != i + 30)
+   22|      0|      abort();
+   23|      3|  }
+   24|      1|  {
+   25|      1|    long x = va_arg(ap, long);
+   26|      1|    if (x != 123)
+   27|      0|      abort();
+   28|      1|  }
+   29|      1|  va_end(ap);
+   30|      1|}
+   31|       |
+   32|      1|main() {
+   33|      1|  struct tiny x[3];
+   34|      1|  x[0].c = 10;
+   35|      1|  x[1].c = 11;
+   36|      1|  x[2].c = 12;
+   37|      1|  x[0].d = 20;
+   38|      1|  x[1].d = 21;
+   39|      1|  x[2].d = 22;
+   40|      1|  x[0].e = 30;
+   41|      1|  x[1].e = 31;
+   42|      1|  x[2].e = 32;
+   43|      1|  f(3, x[0], x[1], x[2], (long)123);
+   44|      1|  exit(0);
+   45|      1|}
+

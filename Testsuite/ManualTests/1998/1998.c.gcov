@@ -1,0 +1,53 @@
+        -:    0:Source:1998.c
+        -:    0:Graph:1998.gcno
+        -:    0:Data:1998.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:#if __SIZEOF_INT__ == 2
+        -:    5:#define int __INT32_TYPE__
+        -:    6:#endif
+        -:    7:
+        -:    8:struct A {
+        -:    9:  int b;
+        -:   10:  int c;
+        -:   11:  int d;
+        -:   12:};
+        -:   13:
+        -:   14:struct E {
+        -:   15:  int f;
+        -:   16:  int g : 18;
+        -:   17:  struct A h;
+        -:   18:};
+        -:   19:
+        -:   20:struct I {
+        -:   21:  int b;
+        -:   22:  int j;
+        -:   23:  struct E k;
+        -:   24:};
+        -:   25:
+        -:   26:int l, *m = &l;
+        -:   27:
+        -:   28:struct A n;
+        -:   29:struct I o;
+        -:   30:
+        1:   31:void __attribute__((noipa)) test_l(void) {
+        1:   32:  if (l != 1)
+    #####:   33:    __builtin_abort();
+        1:   34:}
+        -:   35:
+        -:   36:#undef int
+        -:   37:
+        1:   38:int main() {
+        -:   39:  while (1) {
+        1:   40:    struct I q = {0, 0, {0, 0, {1, 1, 1}}}, p = q, r = p, *s = &q;
+        1:   41:    if (p.k.h.c)
+        1:   42:      o = p;
+        1:   43:    *m = r.k.h.d;
+        1:   44:    n = (*s).k.h;
+        1:   45:    break;
+        -:   46:  }
+        1:   47:  test_l();
+        1:   48:  return 0;
+        -:   49:}

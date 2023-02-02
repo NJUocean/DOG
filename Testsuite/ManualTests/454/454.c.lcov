@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |#define vector __attribute__((vector_size(16)))
+    3|       |
+    4|       |/* Check whether register declaration of vector type still
+    5|       |   allow us to subscript this type.  */
+    6|       |
+    7|       |typedef vector short myvec_t;
+    8|       |
+    9|       |struct vec_s {
+   10|       |  vector short member;
+   11|       |};
+   12|       |
+   13|      1|int main() {
+   14|      1|  register short vector v0 = {1, 2, 3, 4, 5, 6, 7};
+   15|      1|  register myvec_t v1 = {1, 2, 3, 4, 5, 6, 7};
+   16|      1|  register struct vec_s v2;
+   17|      1|
+   18|      1|  v2.member = v1;
+   19|      1|
+   20|      1|  short r = v0[0] + v1[1] + v2.member[2];
+   21|      1|  if (r != 6)
+   22|      0|    __builtin_abort();
+   23|      1|
+   24|      1|  return 0;
+   25|      1|}
+

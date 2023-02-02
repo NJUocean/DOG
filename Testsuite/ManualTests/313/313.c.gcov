@@ -1,0 +1,20 @@
+        -:    0:Source:313.c
+        -:    0:Graph:313.gcno
+        -:    0:Data:313.gcda
+        -:    0:Runs:1
+        -:    1:long long acc;
+        -:    2:
+        1:    3:addhi(short a) { acc += (long long)a << 32; }
+        -:    4:
+        1:    5:subhi(short a) { acc -= (long long)a << 32; }
+        -:    6:
+        1:    7:main() {
+        1:    8:  acc = 0xffff00000000ll;
+        1:    9:  addhi(1);
+        1:   10:  if (acc != 0x1000000000000ll)
+    #####:   11:    abort();
+        1:   12:  subhi(1);
+        1:   13:  if (acc != 0xffff00000000ll)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

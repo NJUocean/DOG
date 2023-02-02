@@ -1,0 +1,19 @@
+    1|       |/* PR c/8032 */
+    2|       |/* Verify that an empty initializer inside a partial
+    3|       |   parent initializer doesn't confuse GCC.  */
+    4|       |
+    5|       |struct X {
+    6|       |  int a;
+    7|       |  int b;
+    8|       |  int z[];
+    9|       |};
+   10|       |
+   11|       |struct X x = {.b = 40, .z = {}};
+   12|       |
+   13|      1|int main() {
+   14|      1|  if (x.b != 40)
+   15|      0|    abort();
+   16|      1|
+   17|      1|  return 0;
+   18|      1|}
+

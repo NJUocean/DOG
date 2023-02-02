@@ -1,0 +1,28 @@
+        -:    0:Source:3378.c
+        -:    0:Graph:3378.gcno
+        -:    0:Data:3378.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/19857 */
+        -:    2:
+        -:    3:typedef struct {
+        -:    4:  char c[8];
+        -:    5:} V
+        -:    6:#ifdef __ELF__
+        -:    7:    __attribute__((aligned(8)))
+        -:    8:#endif
+        -:    9:    ;
+        -:   10:typedef __SIZE_TYPE__ size_t;
+        -:   11:V v;
+        -:   12:void abort(void);
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  V *w = &v;
+        1:   16:  if (((size_t)((float *)((size_t)w & ~(size_t)3)) % 8) != 0 ||
+        1:   17:      ((size_t)w & 1)) {
+        -:   18:#ifndef __ELF__
+        -:   19:    if (((size_t)&v & 7) == 0)
+        -:   20:#endif
+    #####:   21:      abort();
+        -:   22:  }
+        1:   23:  return 0;
+        -:   24:}

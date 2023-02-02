@@ -1,0 +1,24 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |void foo(int) __attribute__((noinline));
+    4|       |void bar(void) __attribute__((noinline));
+    5|       |
+    6|       |/* Make sure foo is not inlined or considered pure/const.  */
+    7|       |int x;
+    8|      4|void foo(int i) { x = i; }
+    9|      1|void bar(void) { exit(0); }
+   10|       |
+   11|      1|int main(int argc, char *argv[]) {
+   12|      1|  int i;
+   13|      1|  int numbers[4] = {0xdead, 0xbeef, 0x1337, 0x4242};
+   14|      1|
+   15|      8|  for (i = 1; i <= 12; i++) {
+   16|      7|    if (i <= 4)
+   17|      4|      foo(numbers[i - 1]);
+   18|      3|    else if (i >= 7 && i <= 9)
+   19|      1|      bar();
+   20|      7|  }
+   21|      1|
+   22|      1|  abort();
+   23|      1|}
+

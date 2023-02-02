@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |enum e1 { A, B };
+    4|       |enum e2 { C, D };
+    5|       |
+    6|      1|__attribute__((noinline, noclone)) enum e1 f(unsigned int *p) {
+    7|      1|  *(enum e1 *)p = A;
+    8|      1|  *(enum e2 *)p = D;
+    9|      1|  return *(enum e1 *)p;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  unsigned int storage;
+   14|      1|
+   15|      1|  if (f(&storage) != B)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

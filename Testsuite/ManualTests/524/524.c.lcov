@@ -1,0 +1,11 @@
+    1|       |/* PR63300 'const volatile' sometimes stripped in debug info */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|      1|int main(int argc, char **argv) {
+    6|      1|  const volatile int v = argc;
+    7|      1|  return v - argc;
+    8|      1|}
+    9|       |
+   10|       |/* { dg-final { gdb-test 9 "type:v" "const volatile int" } } */
+

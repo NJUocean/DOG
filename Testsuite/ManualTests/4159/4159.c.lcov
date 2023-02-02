@@ -1,0 +1,28 @@
+    1|       |/* This testcase caused ICE in do_SUBST on IA-32, because 0xf6 constant
+    2|       |   was not sign-extended for QImode.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |/* { dg-options "-O2 -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+    6|       | * } */
+    7|       |
+    8|       |#include <limits.h>
+    9|       |
+   10|       |void abort(void);
+   11|       |void exit(int);
+   12|       |
+   13|      1|void foo(void) {
+   14|      1|  int i;
+   15|      1|  char *p;
+   16|      1|
+   17|      1|  p = (char *)&i;
+   18|      1|  *p = -10;
+   19|      1|  if (*(unsigned char *)p != 0x100 - 10)
+   20|      0|    abort();
+   21|      1|}
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  if (UCHAR_MAX == 255)
+   25|      1|    foo();
+   26|      1|  exit(0);
+   27|      1|}
+

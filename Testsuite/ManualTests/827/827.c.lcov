@@ -1,0 +1,26 @@
+    1|       |/* PR tree-optimization/33017 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -ftree-vectorize" } */
+    4|       |
+    5|       |extern __SIZE_TYPE__ strlen(const char *);
+    6|       |extern void abort(void);
+    7|       |
+    8|      1|char *__attribute__((noinline)) foo(const char *string) {
+    9|      1|  int len;
+   10|      1|  static char var[0x104];
+   11|      1|  int off;
+   12|      1|  len = strlen(string);
+   13|     65|  for (off = 0; off < 64; off++)
+   14|     64|    var[len + off + 2] = 0x57;
+   15|      1|  return var;
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  char *p = foo("abcd");
+   20|      1|  int i;
+   21|    261|  for (i = 0; i < 0x104; i++)
+   22|    260|    if (p[i] != ((i >= 6 && i < 70) ? 0x57 : 0))
+   23|      0|      abort();
+   24|      1|  return 0;
+   25|      1|}
+

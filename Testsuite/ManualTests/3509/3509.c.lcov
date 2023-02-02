@@ -1,0 +1,15 @@
+    1|       |int f(long long a) __attribute__((noinline, noclone));
+    2|      2|int f(long long a) {
+    3|      2|  if (a & 0x3ffffffffffffffull)
+    4|      1|    return 1;
+    5|      1|  return 1024;
+    6|      1|}
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  if (f(0x48375d8000000000ull) != 1)
+   10|      0|    __builtin_abort();
+   11|      1|  if (f(0xfc00000000000000ull) != 1024)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

@@ -1,0 +1,20 @@
+    1|       |/* PR rtl-optimization/57130 */
+    2|       |
+    3|       |struct S {
+    4|       |  int a, b, c, d;
+    5|       |} s[2] = {{6, 8, -8, -5}, {0, 2, -1, 2}};
+    6|       |
+    7|      2|__attribute__((noinline, noclone)) void foo(struct S r) {
+    8|      2|  static int cnt;
+    9|      2|  if (__builtin_memcmp(&r, &s[cnt++], sizeof r) != 0)
+   10|      0|    __builtin_abort();
+   11|      2|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  struct S r = {6, 8, -8, -5};
+   15|      1|  foo(r);
+   16|      1|  r = (struct S){0, 2, -1, 2};
+   17|      1|  foo(r);
+   18|      1|  return 0;
+   19|      1|}
+

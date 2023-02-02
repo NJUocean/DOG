@@ -1,0 +1,57 @@
+        -:    0:Source:1871.c
+        -:    0:Graph:1871.gcno
+        -:    0:Data:1871.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fno-inline-functions" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:/* Gimplification problem exposed by zsh.  All the side-effects in
+        -:    5:   function arguments and in the called expression should happen
+        -:    6:   before the actual function call.  */
+        -:    7:extern void abort(void);
+        -:    8:int A;
+        -:    9:
+        -:   10:typedef void (*fnptr)(void);
+        -:   11:fnptr *F;
+        -:   12:
+        1:   13:void foo(int x) {
+        1:   14:  if (A == x)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:void bar(int x, int y) {
+        1:   19:  if (x == 5 || y != 3)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+    #####:   23:void boz(void) { abort(); }
+        -:   24:
+        1:   25:void baz(void) {
+        1:   26:  if (*F != boz)
+    #####:   27:    abort();
+        1:   28:}
+        -:   29:
+        -:   30:fnptr B[2] = {baz, boz};
+        -:   31:
+        1:   32:int main() {
+        -:   33:  int b, c;
+        -:   34:
+        -:   35:  /* The gimplifier was emitting A++ after the call to foo.  */
+        1:   36:  A = 5;
+        1:   37:  foo(A++);
+        -:   38:
+        -:   39:  /* The increment to 'b' and 'c' must happen before the call.  However,
+        -:   40:     the first argument to bar() must be the original value of 'b', while
+        -:   41:     the second argument must be the new value of 'c'.  */
+        1:   42:  b = 4;
+        1:   43:  c = 2;
+        1:   44:  bar(b++, ++c);
+        -:   45:
+        -:   46:  /* This call via function pointer *F should go to baz, but F should
+        -:   47:     be incremented before the actual call (i.e., right before the
+        -:   48:     call F should be pointing to boz).  */
+        1:   49:  F = &B[0];
+        1:   50:  (*F++)();
+        -:   51:
+        1:   52:  return 0;
+        -:   53:}

@@ -1,0 +1,28 @@
+        -:    0:Source:99.c
+        -:    0:Graph:99.gcno
+        -:    0:Data:99.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        1:    2:g() { return '\n'; }
+        -:    3:
+        1:    4:f() {
+        1:    5:  char s[] = "abcedfg012345";
+        1:    6:  char *sp = s + 12;
+        -:    7:
+        1:    8:  switch (g()) {
+        1:    9:  case '\n':
+        1:   10:    break;
+        -:   11:  }
+        -:   12:
+        1:   13:  while (*--sp == '0')
+        -:   14:    ;
+        1:   15:  sprintf(sp + 1, "X");
+        -:   16:
+        1:   17:  if (s[12] != 'X')
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        1:   21:main() {
+        1:   22:  f();
+        1:   23:  exit(0);
+        -:   24:}

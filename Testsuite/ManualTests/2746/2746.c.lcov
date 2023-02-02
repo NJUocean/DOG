@@ -1,0 +1,26 @@
+    1|      1|int foo1(void) {
+    2|      1|  union {
+    3|      1|    char a[sizeof(unsigned)];
+    4|      1|    unsigned b;
+    5|      1|  } u;
+    6|      1|
+    7|      1|  u.b = 0x01;
+    8|      1|  return u.a[0];
+    9|      1|}
+   10|       |
+   11|      1|int foo2(void) {
+   12|      1|  volatile union {
+   13|      1|    char a[sizeof(unsigned)];
+   14|      1|    unsigned b;
+   15|      1|  } u;
+   16|      1|
+   17|      1|  u.b = 0x01;
+   18|      1|  return u.a[0];
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  if (foo1() != foo2())
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

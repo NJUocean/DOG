@@ -1,0 +1,32 @@
+        -:    0:Source:935.c
+        -:    0:Graph:935.gcno
+        -:    0:Data:935.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/55023 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-inline" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:typedef long long int64_t;
+        -:    7:
+        -:    8:struct foo {
+        -:    9:  int x;
+        -:   10:  int y;
+        -:   11:};
+        -:   12:
+        1:   13:int64_t foo(int64_t a, int64_t b, int64_t c) { return a + b + c; }
+        -:   14:
+        1:   15:int64_t bar(int64_t a, struct foo bq, struct foo cq) {
+        1:   16:  int64_t b = bq.x + bq.y;
+        1:   17:  int64_t c = cq.x + cq.y;
+        1:   18:  return foo(a, b, c);
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  int64_t a = 1;
+        1:   23:  struct foo b = {2, 3};
+        1:   24:  struct foo c = {4, 5};
+        1:   25:  if (bar(a, b, c) != 15)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

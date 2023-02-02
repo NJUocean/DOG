@@ -1,0 +1,23 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -march=k8" } */
+    3|       |/* { dg-final { scan-assembler "sbb" } } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |/* Conditional increment is best done using sbb $-1, val.  */
+    8|       |int t[] = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1};
+    9|  10.0M|void q() {
+   10|  10.0M|  int sum = 0;
+   11|  10.0M|  int i;
+   12|   110M|  for (i = 0; i < 10; i++)
+   13|   100M|    if (t[i])
+   14|  60.0M|      sum++;
+   15|  10.0M|  if (sum != 6)
+   16|      0|    abort();
+   17|  10.0M|}
+   18|      1|int main() {
+   19|      1|  int i;
+   20|  10.0M|  for (i = 0; i < 10000000; i++)
+   21|  10.0M|    q();
+   22|      1|}
+

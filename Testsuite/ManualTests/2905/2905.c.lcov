@@ -1,0 +1,48 @@
+    1|       |
+    2|       |/* The testcase failed due to corrupted alias information.
+    3|       |   During the crossjump analyzing step the mem alias info of the
+    4|       |   st instructions are merged and get copied during basic block
+    5|       |   reordering which leads to an insn with wrong alias info.
+    6|       |   The scheduler afterwards exchanges the mvc and st instructions
+    7|       |   not recognizing the anti dependence.  */
+    8|       |/* { dg-do run } */
+    9|       |/* { dg-options "-O3 -mtune=z990 -fno-inline" } */
+   10|       |
+   11|       |extern void exit(int);
+   12|       |extern void abort(void);
+   13|       |
+   14|       |int f;
+   15|       |int g;
+   16|       |int h;
+   17|       |
+   18|       |int *x = &f;
+   19|       |int *p1 = &g;
+   20|       |int *p2 = &h;
+   21|       |
+   22|      1|int foo(void) {
+   23|      1|
+   24|      1|  if (*x == 0) {
+   25|      1|    x = p1;        /* mvc - memory to memory */
+   26|      1|    p1 = (int *)0; /* st  - register to memory */
+   27|      1|    return 1;
+   28|      1|  }
+   29|      0|  if (*x == 5) {
+   30|      0|    f = 1;
+   31|      0|    g = 2;
+   32|      0|
+   33|      0|    p2 = (int *)0; /* st */
+   34|      0|    return 1;
+   35|      0|  }
+   36|      0|}
+   37|       |
+   38|      1|int main(int argc, char **argv) {
+   39|      1|  foo();
+   40|      1|
+   41|      1|  /* If the scheduler has exchanged the mvc and st instructions,
+   42|      1|     x is 0. The expected result is &g.  */
+   43|      1|  if (x == &g)
+   44|      1|    exit(0);
+   45|      0|  else
+   46|      0|    abort();
+   47|      1|}
+

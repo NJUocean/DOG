@@ -1,0 +1,15 @@
+    1|       |/* PR c/49120 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |/* { dg-require-effective-target alloca } */
+    5|       |
+    6|      1|int main() {
+    7|      1|  int a = 1;
+    8|      1|  int c = ({
+    9|      1|    char b[a + 1];
+   10|      1|    b[0] = 0;
+   11|      1|    b[0];
+   12|      1|  });
+   13|      1|  return c;
+   14|      1|}
+

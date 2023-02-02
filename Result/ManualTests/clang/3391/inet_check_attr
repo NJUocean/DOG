@@ -1,0 +1,21 @@
+// control flow context
+digraph {
+	__N0 [label="2-func-entry--1, -1"]
+	EXIT
+	__N8 [label="1-exit-15, 15"]
+	__N0 -> __N8 [label=FEL color=red]
+	__N8 -> EXIT [label="=1"]
+	__N5 [label="2-exit-20, 20"]
+	__N0 -> __N5 [label=FEL color=red]
+	__N5 -> EXIT [label="=2"]
+	__N3 [label="21-while-for-11, 11"]
+	__N3__N4 [label=20 style=dotted]
+	__N3 -> __N3__N4 [label=ON color=red]
+	__N4 [label="20-passive-12, 12"]
+	__N3__N4 -> __N4 [label=agent color=lightblue]
+	__N3__N5 [label=2 style=dotted]
+	__N3 -> __N3__N5 [label=ON color=red]
+	__N5 [label="2-exit-20, 20"]
+	__N3__N5 -> __N5 [label=agent color=lightblue]
+	__N5 [color=yellow style=filled]
+}

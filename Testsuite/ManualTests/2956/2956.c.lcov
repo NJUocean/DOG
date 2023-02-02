@@ -1,0 +1,45 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -mzarch -march=z13 --save-temps" } */
+    3|       |/* { dg-require-effective-target s390_vx } */
+    4|       |
+    5|       |typedef unsigned char uv16qi __attribute__((vector_size(16)));
+    6|       |typedef unsigned short uv8hi __attribute__((vector_size(16)));
+    7|       |typedef unsigned int uv4si __attribute__((vector_size(16)));
+    8|       |typedef unsigned long long uv2di __attribute__((vector_size(16)));
+    9|       |
+   10|      1|uv2di __attribute__((noinline)) foo1() { return (uv2di){0x7f0f, 0x7f0f}; }
+   11|       |/* { dg-final { scan-assembler-times "vrepig\t%v24,32527" 1 } } */
+   12|       |
+   13|      1|uv4si __attribute__((noinline)) foo2() {
+   14|      1|  return (uv4si){0x7f0f, 0x7f0f, 0x7f0f, 0x7f0f};
+   15|      1|}
+   16|       |/* { dg-final { scan-assembler-times "vrepif\t%v24,32527" 1 } } */
+   17|       |
+   18|      1|uv8hi __attribute__((noinline)) foo3() {
+   19|      1|  return (uv8hi){0x7f0f, 0x7f0f, 0x7f0f, 0x7f0f,
+   20|      1|                 0x7f0f, 0x7f0f, 0x7f0f, 0x7f0f};
+   21|      1|}
+   22|       |/* { dg-final { scan-assembler-times "vrepih\t%v24,32527" 1 } } */
+   23|       |
+   24|      1|uv16qi __attribute__((noinline)) foo4() {
+   25|      1|  return (uv16qi){0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,
+   26|      1|                  0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77};
+   27|      1|}
+   28|       |/* { dg-final { scan-assembler-times "vrepib\t%v24,119" 1 } } */
+   29|       |
+   30|      1|int main() {
+   31|      1|  if (foo1()[1] != 0x7f0f)
+   32|      0|    __builtin_abort();
+   33|      1|
+   34|      1|  if (foo2()[1] != 0x7f0f)
+   35|      0|    __builtin_abort();
+   36|      1|
+   37|      1|  if (foo3()[1] != 0x7f0f)
+   38|      0|    __builtin_abort();
+   39|      1|
+   40|      1|  if (foo4()[1] != 0x77)
+   41|      0|    __builtin_abort();
+   42|      1|
+   43|      1|  return 0;
+   44|      1|}
+

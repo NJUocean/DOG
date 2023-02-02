@@ -1,0 +1,30 @@
+        -:    0:Source:2659.c
+        -:    0:Graph:2659.gcno
+        -:    0:Data:2659.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Os -fomit-frame-pointer -fno-asynchronous-unwind-tables" } */
+        -:    3:/* { dg-additional-options "-march=i686" { target ia32 } } */
+        -:    4:
+        -:    5:struct A {
+        -:    6:  char a[16];
+        -:    7:} a;
+        -:    8:
+        1:    9:void __attribute__((noinline, noclone)) foo(struct A b) {
+        1:   10:  if (__builtin_memcmp(b.a, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16))
+    #####:   11:    __builtin_abort();
+        1:   12:  asm volatile("" : : : "memory");
+        1:   13:}
+        -:   14:
+        1:   15:void __attribute__((noinline, noclone)) bar(struct A b) {
+        1:   16:  foo(a);
+        1:   17:  a = b;
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  struct A b = {"\0\1\2\3\4\5\6\7\10\11\12\13\14\15\16\17"};
+        1:   22:  bar(b);
+        1:   23:  if (__builtin_memcmp(a.a, b.a, 16))
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

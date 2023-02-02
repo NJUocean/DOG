@@ -1,0 +1,34 @@
+        -:    0:Source:3538.c
+        -:    0:Graph:3538.gcno
+        -:    0:Data:3538.gcda
+        -:    0:Runs:1
+        1:    1:foo(int *bar) { *bar = 8; }
+        -:    2:
+        1:    3:bugger() {
+        -:    4:  int oldDepth, newDepth;
+        -:    5:
+        1:    6:  foo(&oldDepth);
+        -:    7:
+        1:    8:  switch (oldDepth) {
+        1:    9:  case 8:
+        -:   10:  case 500:
+        1:   11:    newDepth = 8;
+        1:   12:    break;
+        -:   13:
+    #####:   14:  case 5000:
+    #####:   15:    newDepth = 500;
+    #####:   16:    break;
+        -:   17:
+    #####:   18:  default:
+    #####:   19:    newDepth = 17;
+    #####:   20:    break;
+        -:   21:  }
+        -:   22:
+        1:   23:  return newDepth - oldDepth;
+        -:   24:}
+        -:   25:
+        1:   26:main() {
+        1:   27:  if (bugger() != 0)
+    #####:   28:    abort();
+        1:   29:  exit(0);
+        -:   30:}

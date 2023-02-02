@@ -1,0 +1,31 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Test the support for char32_t* string constants. */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    5|       |
+    6|       |typedef __CHAR32_TYPE__ char32_t;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |char32_t *s0 = U"ab";
+   11|       |char32_t *s1 = U"a\u0024";
+   12|       |char32_t *s2 = U"a\u2029";
+   13|       |char32_t *s3 = U"a\U00064321";
+   14|       |
+   15|      8|#define A 0x00000061
+   16|      2|#define B 0x00000062
+   17|      2|#define D 0x00000024
+   18|      2|#define X 0x00002029
+   19|      2|#define Y 0x00064321
+   20|       |
+   21|      1|int main() {
+   22|      1|  if (s0[0] != A || s0[1] != B || s0[2] != 0x00000000)
+   23|      0|    abort();
+   24|      1|  if (s1[0] != A || s1[1] != D || s0[2] != 0x00000000)
+   25|      0|    abort();
+   26|      1|  if (s2[0] != A || s2[1] != X || s0[2] != 0x00000000)
+   27|      0|    abort();
+   28|      1|  if (s3[0] != A || s3[1] != Y || s3[2] != 0x00000000)
+   29|      0|    abort();
+   30|      1|}
+

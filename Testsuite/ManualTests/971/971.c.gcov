@@ -1,0 +1,29 @@
+        -:    0:Source:971.c
+        -:    0:Graph:971.gcno
+        -:    0:Data:971.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  double epsilon;
+        -:    3:} material_type;
+        -:    4:
+       10:    5:material_type foo(double x) {
+        -:    6:  material_type m;
+        -:    7:
+       10:    8:  m.epsilon = 1.0 + x;
+       10:    9:  return m;
+        -:   10:}
+        -:   11:
+        1:   12:main() {
+        -:   13:  int i;
+        -:   14:  material_type x;
+        -:   15:
+        -:   16:  /* We must iterate enough times to overflow the FP stack on the
+        -:   17:     x86.  */
+       11:   18:  for (i = 0; i < 10; i++) {
+       10:   19:    x = foo(1.0);
+       10:   20:    if (x.epsilon != 1.0 + 1.0)
+    #####:   21:      abort();
+        -:   22:  }
+        -:   23:
+        1:   24:  exit(0);
+        -:   25:}

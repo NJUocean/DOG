@@ -1,0 +1,41 @@
+    1|       |/* PR tree-optimization/27285 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |struct S {
+    6|       |  unsigned char a, b, c, d[16];
+    7|       |};
+    8|       |
+    9|      1|void __attribute__((noinline)) foo(struct S *x, struct S *y) {
+   10|      1|  int a, b;
+   11|      1|  unsigned char c, *d, *e;
+   12|      1|
+   13|      1|  b = x->b;
+   14|      1|  d = x->d;
+   15|      1|  e = y->d;
+   16|      1|  a = 0;
+   17|      5|  while (b) {
+   18|      4|    if (b >= 8) {
+   19|      3|      c = 0xff;
+   20|      3|      b -= 8;
+   21|      3|    } else {
+   22|      1|      c = 0xff << (8 - b);
+   23|      1|      b = 0;
+   24|      1|    }
+   25|      4|
+   26|      4|    e[a] = d[a] & c;
+   27|      4|    a++;
+   28|      4|  }
+   29|      1|}
+   30|       |
+   31|      1|int main(void) {
+   32|      1|  struct S x = {0, 25, 0, {0xaa, 0xbb, 0xcc, 0xdd}};
+   33|      1|  struct S y = {0, 0, 0, {0}};
+   34|      1|
+   35|      1|  foo(&x, &y);
+   36|      1|  if (x.d[0] != y.d[0] || x.d[1] != y.d[1] || x.d[2] != y.d[2] ||
+   37|      1|      (x.d[3] & 0x80) != y.d[3])
+   38|      0|    abort();
+   39|      1|  return 0;
+   40|      1|}
+

@@ -1,0 +1,15 @@
+    1|       |/* PR 12281  The darwin back-end was causing the function
+    2|       |   f is not being emitted. TREE_SYMBOL_REFERENCED was being set
+    3|       |   instead of calling mark_referenced.  */
+    4|       |
+    5|       |/* { dg-require-effective-target indirect_calls } */
+    6|       |
+    7|       |static void f(void);
+    8|      1|void g(void (*x)(void)) { x(); }
+    9|      1|static inline void f(void) {}
+   10|      1|void h() { g(f); }
+   11|      1|int main() {
+   12|      1|  h();
+   13|      1|  return 0;
+   14|      1|}
+

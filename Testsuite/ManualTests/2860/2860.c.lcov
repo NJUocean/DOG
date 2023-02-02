@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run { target { powerpc*-*-darwin* powerpc*-*-aix* rs6000-*-*
+    2|       | * powerpc*-*-linux* } } } */
+    3|       |/* { dg-options "-O2 -mlong-double-128" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |volatile long double l, m, n;
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  l = __builtin_copysignl(0.0L, -1.0L);
+   11|      1|  m = __builtin_copysignl(0.0L, -1.0L);
+   12|      1|  n = l + m;
+   13|      1|  if (__builtin_copysignl(1.0L, n) >= 0.0L)
+   14|      0|    abort();
+   15|      1|  return 0;
+   16|      1|}
+

@@ -1,0 +1,38 @@
+        -:    0:Source:2627.c
+        -:    0:Graph:2627.gcno
+        -:    0:Data:2627.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { *-*-linux* *-*-gnu* } && ilp32 } } } */
+        -:    2:/* { dg-options "-Os" } */
+        -:    3:/* PR target/36613 */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:static inline int lshifts(int val, int cnt) {
+        1:    8:  if (val < 0)
+    #####:    9:    return val;
+        1:   10:  return val << cnt;
+        -:   11:}
+        -:   12:
+        1:   13:static inline unsigned int lshiftu(unsigned int val, unsigned int cnt) {
+        1:   14:  if (cnt >= sizeof(unsigned int) * __CHAR_BIT__ ||
+        1:   15:      val > ((__INT_MAX__ * 2U) >> cnt))
+    #####:   16:    return val;
+        1:   17:  return val << cnt;
+        -:   18:}
+        -:   19:
+        1:   20:static inline int rshifts(int val, unsigned int cnt) {
+        1:   21:  if (val < 0 || cnt >= sizeof(int) * __CHAR_BIT__)
+    #####:   22:    return val;
+        1:   23:  return val >> cnt;
+        -:   24:}
+        -:   25:
+        1:   26:int foo(unsigned int val) {
+        1:   27:  return rshifts(1 + val, lshifts(lshiftu(val, val), 1));
+        -:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  if (foo(1) != 0)
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

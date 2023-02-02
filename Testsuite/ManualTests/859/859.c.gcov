@@ -1,0 +1,30 @@
+        -:    0:Source:859.c
+        -:    0:Graph:859.gcno
+        -:    0:Data:859.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target sync_char_short } */
+        -:    3:/* { dg-options "-Wsync-nand" } */
+        -:    4:/* { dg-options "-Wsync-nand -march=i486" { target { { i?86-*-* x86_64-*-* } &&
+        -:    5: * ia32 } } } */
+        -:    6:/* { dg-options "-Wsync-nand -mcpu=v9" { target sparc*-*-* } } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:
+        -:   12:  short xLoc;
+        1:   13:  short xIn, xOut, xExpect, i = 1;
+        -:   14:
+        1:   15:  xLoc = xIn = ~(1 << i);
+        1:   16:  xExpect = ~(xIn & 0x7F);
+        -:   17:
+        1:   18:  xOut = __sync_nand_and_fetch(
+        -:   19:      &xLoc, 0x7F); /* { dg-message "note: '__sync_nand_and_fetch' changed
+        -:   20:                       semantics in GCC 4.4" } */
+        -:   21:
+        1:   22:  if (xOut != xExpect)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

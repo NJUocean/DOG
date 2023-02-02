@@ -1,0 +1,54 @@
+    1|       |/* Duff's device is legal C; test to make sure the compiler
+    2|       |   doesn't complain about it.
+    3|       |
+    4|       |   Roger Sayle <roger@eyesopen.com>
+    5|       |   Derived from duff-2.c.  */
+    6|       |
+    7|       |/* { dg-do run } */
+    8|       |/* { dg-options "-O2" } */
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|       |#if __INT_MAX__ >= 2147483647
+   14|       |/* At least 32-bit integers. */
+   15|       |typedef int type32;
+   16|       |#else
+   17|       |typedef long type32;
+   18|       |#endif
+   19|       |
+   20|      1|type32 cksum(const unsigned char *src, unsigned long size) {
+   21|      1|  type32 ck = 0;
+   22|      1|
+   23|      1|  switch (size & 3) {
+   24|     11|    do {
+   25|     11|    case 0:
+   26|     11|      ck ^= (type32)*src++ << 24;
+   27|     11|      --size;
+   28|     11|    case 3:
+   29|     11|      ck ^= (type32)*src++ << 16;
+   30|     11|      --size;
+   31|     12|    case 2:
+   32|     12|      ck ^= (type32)*src++ << 8;
+   33|     12|      --size;
+   34|     12|    case 1:
+   35|     12|      ck ^= (type32)*src++;
+   36|     12|      --size;
+   37|     12|    } while (size > 0);
+   38|      1|  }
+   39|      1|
+   40|      1|  return ck;
+   41|      1|}
+   42|       |
+   43|       |const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+   44|       |
+   45|      1|int main() {
+   46|      1|  type32 ck;
+   47|      1|
+   48|      1|  ck = cksum((const unsigned char *)testpat, sizeof(testpat));
+   49|      1|  if (ck != 925902908)
+   50|      0|    abort();
+   51|      1|
+   52|      1|  exit(0);
+   53|      1|}
+

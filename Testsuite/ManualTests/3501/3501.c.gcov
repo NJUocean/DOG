@@ -1,0 +1,22 @@
+        -:    0:Source:3501.c
+        -:    0:Graph:3501.gcno
+        -:    0:Data:3501.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/60941 */
+        -:    2:/* Reported by Martin Husemann <martin@netbsd.org> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:static void __attribute__((noinline)) set(unsigned long *l) { *l = 31; }
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  unsigned long l;
+        -:   10:  int i;
+        -:   11:
+        1:   12:  set(&l);
+        1:   13:  i = (int)l;
+        1:   14:  l = (unsigned long)(2U << i);
+        1:   15:  if (l != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

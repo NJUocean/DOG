@@ -1,0 +1,42 @@
+        -:    0:Source:1241.c
+        -:    0:Graph:1241.gcno
+        -:    0:Data:1241.gcda
+        -:    0:Runs:1
+        -:    1:/* Test infinities convert to __float128 infinity.  Bug 77265.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target __float128 } */
+        -:    4:/* { dg-require-effective-target base_quadfloat_support } */
+        -:    5:/* { dg-add-options __float128 } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        -:   10:volatile float finf = __builtin_inff();
+        -:   11:volatile double dinf = __builtin_inf();
+        -:   12:volatile long double ldinf = __builtin_infl();
+        -:   13:volatile float nfinf = -__builtin_inff();
+        -:   14:volatile double ndinf = -__builtin_inf();
+        -:   15:volatile long double nldinf = -__builtin_infl();
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  volatile __float128 r;
+        1:   19:  r = (__float128)finf;
+        1:   20:  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+    #####:   21:    abort();
+        1:   22:  r = (__float128)dinf;
+        1:   23:  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+    #####:   24:    abort();
+        1:   25:  r = (__float128)ldinf;
+        1:   26:  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+    #####:   27:    abort();
+        1:   28:  r = (__float128)nfinf;
+        1:   29:  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+    #####:   30:    abort();
+        1:   31:  r = (__float128)ndinf;
+        1:   32:  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+    #####:   33:    abort();
+        1:   34:  r = (__float128)nldinf;
+        1:   35:  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+    #####:   36:    abort();
+        1:   37:  exit(0);
+        -:   38:}

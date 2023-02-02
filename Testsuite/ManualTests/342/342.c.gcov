@@ -1,0 +1,19 @@
+        -:    0:Source:342.c
+        -:    0:Graph:342.gcno
+        -:    0:Data:342.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int : 0;
+        -:    6:};
+        -:    7:union U {
+        -:    8:  int : 0;
+        -:    9:};
+        -:   10:
+        1:   11:int main() {
+        -:   12:  if (__alignof__(struct S) != __alignof__(union U))
+        -:   13:    return 1;
+        1:   14:  return 0;
+        -:   15:}

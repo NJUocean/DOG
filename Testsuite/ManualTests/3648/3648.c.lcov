@@ -1,0 +1,26 @@
+    1|       |typedef union {
+    2|       |  long align;
+    3|       |  struct {
+    4|       |    short h, l;
+    5|       |  } b;
+    6|       |} T;
+    7|       |
+    8|       |f(x) int x;
+    9|      1|{
+   10|      1|  int num = 0;
+   11|      1|  T reg;
+   12|      1|
+   13|      1|  reg.b.l = x;
+   14|      2|  while ((reg.b.l & 1) == 0) {
+   15|      1|    num++;
+   16|      1|    reg.b.l >>= 1;
+   17|      1|  }
+   18|      1|  return num;
+   19|      1|}
+   20|       |
+   21|      1|main() {
+   22|      1|  if (f(2) != 1)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

@@ -1,0 +1,32 @@
+    1|       |void foo(), bar(), baz();
+    2|      1|int main() {
+    3|      1|  __complex__ double x;
+    4|      1|  __complex__ float y;
+    5|      1|  __complex__ long double z;
+    6|      1|  __real__ x = 1.0;
+    7|      1|  __imag__ x = 2.0;
+    8|      1|  foo(x);
+    9|      1|  __real__ y = 3.0f;
+   10|      1|  __imag__ y = 4.0f;
+   11|      1|  bar(y);
+   12|      1|  __real__ z = 5.0L;
+   13|      1|  __imag__ z = 6.0L;
+   14|      1|  baz(z);
+   15|      1|  exit(0);
+   16|      1|}
+   17|       |
+   18|      1|void foo(__complex__ double x) {
+   19|      1|  if (__real__ x != 1.0 || __imag__ x != 2.0)
+   20|      0|    abort();
+   21|      1|}
+   22|       |
+   23|      1|void bar(__complex__ float x) {
+   24|      1|  if (__real__ x != 3.0f || __imag__ x != 4.0f)
+   25|      0|    abort();
+   26|      1|}
+   27|       |
+   28|      1|void baz(__complex__ long double x) {
+   29|      1|  if (__real__ x != 5.0L || __imag__ x != 6.0L)
+   30|      0|    abort();
+   31|      1|}
+

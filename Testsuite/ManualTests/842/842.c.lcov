@@ -1,0 +1,58 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |/* Same test as 990128-1.c.  */
+    4|       |
+    5|       |extern int printf(const char *, ...);
+    6|       |extern void abort(void);
+    7|       |
+    8|       |struct s {
+    9|       |  struct s *n;
+   10|       |} * p;
+   11|       |struct s ss;
+   12|     12|#define MAX 10
+   13|       |struct s sss[MAX];
+   14|       |int count = 0;
+   15|       |
+   16|       |void sub(struct s *p, struct s **pp);
+   17|       |int look(struct s *p, struct s **pp);
+   18|       |
+   19|      1|int main() {
+   20|      1|  struct s *pp;
+   21|      1|  struct s *next;
+   22|      1|  int i;
+   23|      1|
+   24|      1|  p = &ss;
+   25|      1|  next = p;
+   26|     11|  for (i = 0; i < MAX; i++) {
+   27|     10|    next->n = &sss[i];
+   28|     10|    next = next->n;
+   29|     10|  }
+   30|      1|  next->n = 0;
+   31|      1|
+   32|      1|  sub(p, &pp);
+   33|      1|  if (count != MAX + 2)
+   34|      0|    abort();
+   35|      1|
+   36|      1|  return (0);
+   37|      1|}
+   38|       |
+   39|      1|void sub(struct s *p, struct s **pp) {
+   40|     12|  for (; look(p, pp);) {
+   41|     12|    if (p)
+   42|     11|      p = p->n;
+   43|      1|    else
+   44|      1|      break;
+   45|     12|  }
+   46|      1|}
+   47|       |
+   48|     12|int look(struct s *p, struct s **pp) {
+   49|     78|  for (; p; p = p->n)
+   50|     66|    ;
+   51|     12|  *pp = p;
+   52|     12|  count++;
+   53|     12|  return (1);
+   54|     12|}
+   55|       |
+   56|       |/* { dg-final { scan-tree-dump "Cleaned-up latch block of loop with single BB"
+   57|       | * "optimized" { xfail { *-*-* } } } } */
+

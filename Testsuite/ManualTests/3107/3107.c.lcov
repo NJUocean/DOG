@@ -1,0 +1,23 @@
+    1|       |/* Test whether store motion recognizes pure functions as potentially reading
+    2|       |   any memory.  */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |extern void *memcpy(void *dest, const void *src, size_t n);
+    6|       |extern size_t strlen(const char *s);
+    7|       |extern int strcmp(const char *s1, const char *s2) __attribute__((pure));
+    8|       |
+    9|       |char buf[50];
+   10|       |
+   11|      1|static void foo(void) {
+   12|      1|  if (memcpy(buf, "abc", 4) != buf)
+   13|      0|    abort();
+   14|      1|  if (strcmp(buf, "abc"))
+   15|      0|    abort();
+   16|      1|  memcpy(buf, "abcdefgh", strlen("abcdefgh") + 1);
+   17|      1|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  foo();
+   21|      1|  return 0;
+   22|      1|}
+

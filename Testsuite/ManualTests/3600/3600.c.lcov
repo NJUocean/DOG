@@ -1,0 +1,35 @@
+    1|       |/* PR preprocessor/57580 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-fopenmp -save-temps -fdump-tree-gimple" } */
+    4|       |
+    5|       |#define PS                                                                     \
+    6|      2|  _Pragma("omp parallel num_threads(2)") {                                     \
+    7|      2|    _Pragma("omp single") { ret = 0; }                                         \
+    8|      2|  }
+    9|       |
+   10|      1|int main() {
+   11|      1|  int ret;
+   12|      1|  _Pragma("omp parallel num_threads(3)") {
+   13|      1|    _Pragma("omp single") { ret = 0; }
+   14|      1|  }
+   15|      1|  _Pragma("omp parallel num_threads(4)"){_Pragma("omp single"){ret = 0;
+   16|      1|}
+   17|      1|}
+   18|      1|{
+   19|      1|  _Pragma("omp parallel num_threads(5)") {
+   20|      1|    _Pragma("omp single") { ret = 0; }
+   21|      1|  }
+   22|      1|}
+   23|      1|PS PS return ret;
+   24|      1|}
+   25|       |
+   26|       |/* { dg-final { scan-tree-dump-times "#pragma omp
+   27|       | * parallel\[^\n\r]*num_threads\\(2\\)" 2 "gimple" } } */
+   28|       |/* { dg-final { scan-tree-dump-times "#pragma omp
+   29|       | * parallel\[^\n\r]*num_threads\\(3\\)" 1 "gimple" } } */
+   30|       |/* { dg-final { scan-tree-dump-times "#pragma omp
+   31|       | * parallel\[^\n\r]*num_threads\\(4\\)" 1 "gimple" } } */
+   32|       |/* { dg-final { scan-tree-dump-times "#pragma omp
+   33|       | * parallel\[^\n\r]*num_threads\\(5\\)" 1 "gimple" } } */
+   34|       |/* { dg-final { scan-tree-dump-times "#pragma omp single" 5 "gimple" } } */
+

@@ -1,0 +1,23 @@
+    1|       |/* { dg-add-options stack_size } */
+    2|       |
+    3|       |#ifdef STACK_SIZE
+    4|       |#define SIZE STACK_SIZE / 8
+    5|       |#else
+    6|       |#define SIZE 10000000
+    7|       |#endif
+    8|       |
+    9|       |struct foo {
+   10|       |  int a, b, c;
+   11|       |  int arr[SIZE];
+   12|       |};
+   13|       |
+   14|       |struct foo s, ss;
+   15|       |
+   16|      1|main() {
+   17|      1|
+   18|      1|  s.b = 2;
+   19|      1|  s.c = 3;
+   20|      1|  ss.b = 2;
+   21|      1|  ss.c = 3;
+   22|      1|}
+

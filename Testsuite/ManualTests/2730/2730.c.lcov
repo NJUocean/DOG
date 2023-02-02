@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -march=i686 -mtune=generic -fstack-clash-protection" } */
+    3|       |/* { dg-require-effective-target ia32 } */
+    4|       |
+    5|       |__attribute__((noinline, noclone, weak, regparm(3))) int
+    6|      1|f1(long arg0, int (*pf)(long, void *)) {
+    7|      1|  unsigned char buf[32768];
+    8|      1|  return pf(arg0, buf);
+    9|      1|}
+   10|       |
+   11|      1|__attribute__((noinline, noclone, weak)) int f2(long arg0, void *ignored) {
+   12|      1|  if (arg0 != 17)
+   13|      0|    __builtin_abort();
+   14|      1|  return 19;
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  if (f1(17, f2) != 19)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

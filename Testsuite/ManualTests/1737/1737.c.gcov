@@ -1,0 +1,22 @@
+        -:    0:Source:1737.c
+        -:    0:Graph:1737.gcno
+        -:    0:Data:1737.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:union U {
+        -:    3:  long long i;
+        -:    4:  long f;
+        -:    5:} v;
+        -:    6:
+        1:    7:long foo(long *f) {
+        1:    8:  *f = 1;
+        1:    9:  v.i = 0;
+        1:   10:  v.f = 0;
+        1:   11:  return *f;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (foo(&v.f) != 0)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

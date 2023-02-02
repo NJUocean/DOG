@@ -1,0 +1,23 @@
+        -:    0:Source:4003.c
+        -:    0:Graph:4003.gcno
+        -:    0:Data:4003.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/85582 */
+        -:    2:
+        -:    3:int a, b, d = 2, e;
+        -:    4:long long c = 1;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int g = 6;
+        1:    8:L1:
+        1:    9:  e = d;
+        1:   10:  if (a)
+    #####:   11:    goto L1;
+        1:   12:  g--;
+        1:   13:  int i = c >> ~(~e | ~g);
+        1:   14:L2:
+        1:   15:  c = (b % c) * i;
+        1:   16:  if (!e)
+    #####:   17:    goto L2;
+        1:   18:  return 0;
+        -:   19:}

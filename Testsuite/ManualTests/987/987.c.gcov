@@ -1,0 +1,24 @@
+        -:    0:Source:987.c
+        -:    0:Graph:987.gcno
+        -:    0:Data:987.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/68671 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options " -O2 -fno-tree-dce" } */
+        -:    4:/* { dg-xfail-if "ptxas crashes" { nvptx-*-* } } */
+        -:    5:
+        -:    6:volatile int a = -1;
+        -:    7:volatile int b;
+        -:    8:
+        1:    9:static inline int fn1(signed char p1, int p2) {
+       1*:   10:  return (p1 < 0) || (p1 > (1 >> p2)) ? 0 : (p1 << 1);
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  signed char c = a;
+        1:   15:  b = fn1(c, 1);
+        1:   16:  c = ((128 | c) < 0 ? 1 : 0);
+        1:   17:  if (c != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

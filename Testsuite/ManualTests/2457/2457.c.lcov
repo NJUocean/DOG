@@ -1,0 +1,18 @@
+    1|       |typedef struct trio {
+    2|       |  int a, b, c;
+    3|       |} trio;
+    4|       |
+    5|      1|int bar(int i, int j, int k, trio t) {
+    6|      1|  if (t.a != 1 || t.b != 2 || t.c != 3 || i != 4 || j != 5 || k != 6)
+    7|      0|    abort();
+    8|      1|}
+    9|       |
+   10|      1|int foo(trio t, int i, int j, int k) { return bar(i, j, k, t); }
+   11|       |
+   12|      1|main() {
+   13|      1|  trio t = {1, 2, 3};
+   14|      1|
+   15|      1|  foo(t, 4, 5, 6);
+   16|      1|  exit(0);
+   17|      1|}
+

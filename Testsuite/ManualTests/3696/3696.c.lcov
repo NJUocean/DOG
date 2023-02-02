@@ -1,0 +1,41 @@
+    1|       |extern void abort(void);
+    2|    256|static void fixnum_neg(signed char x, signed char *py, int *pv) {
+    3|    256|  unsigned char ux, uy;
+    4|    256|
+    5|    256|  ux = (unsigned char)x;
+    6|    256|  uy = -ux;
+    7|    256|  *py = (uy <= 127) ? (signed char)uy : (-(signed char)(255 - uy) - 1);
+    8|    256|  *pv = (x == -128) ? 1 : 0;
+    9|    256|}
+   10|       |
+   11|    256|void __attribute__((noinline)) foo(int x, int y, int v) {
+   12|    256|  if (y < -128 || y > 127)
+   13|      0|    abort();
+   14|    256|}
+   15|       |
+   16|      1|int test_neg(void) {
+   17|      1|  signed char x, y;
+   18|      1|  int v, err;
+   19|      1|
+   20|      1|  err = 0;
+   21|      1|  x = -128;
+   22|    256|  for (;;) {
+   23|    256|    fixnum_neg(x, &y, &v);
+   24|    256|    foo((int)x, (int)y, v);
+   25|    256|    if ((v && x != -128) || (!v && x == -128))
+   26|      0|      ++err;
+   27|    256|    if (x == 127)
+   28|      1|      break;
+   29|    255|    ++x;
+   30|    255|  }
+   31|      1|  return err;
+   32|      1|}
+   33|       |
+   34|      1|int main(void) {
+   35|      1|  if (sizeof(char) != 1)
+   36|      0|    return 0;
+   37|      1|  if (test_neg() != 0)
+   38|      0|    abort();
+   39|      1|  return 0;
+   40|      1|}
+

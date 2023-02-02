@@ -1,0 +1,18 @@
+    1|       |/* { dg-lto-do run } */
+    2|       |
+    3|       |struct X {
+    4|       |  int a;
+    5|       |};
+    6|       |
+    7|       |typedef struct list_node *list;
+    8|       |
+    9|       |struct list_node {
+   10|       |  list next;
+   11|       |  list *ptr;
+   12|       |  struct X *value;
+   13|       |};
+   14|       |
+   15|      0|list f(list lst) { return lst->next; }
+   16|       |
+   17|      1|int main(void) { return 0; }
+

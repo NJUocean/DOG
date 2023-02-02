@@ -1,0 +1,19 @@
+        -:    0:Source:3226.c
+        -:    0:Graph:3226.gcno
+        -:    0:Data:3226.gcda
+        -:    0:Runs:1
+        -:    1:/* We used to handle pointer addition wrongly
+        -:    2:   at the time of recombining to an ARRAY_REF
+        -:    3:   in the case of
+        -:    4:     p + -4B
+        -:    5:   where -4B is represented as unsigned.  */
+        -:    6:
+        -:    7:void abort(void);
+        1:    8:int main() {
+        -:    9:  int a[10], *p, *q;
+        1:   10:  q = &a[1];
+        1:   11:  p = &q[-1];
+        1:   12:  if (p >= &a[9])
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

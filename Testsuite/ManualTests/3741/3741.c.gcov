@@ -1,0 +1,36 @@
+        -:    0:Source:3741.c
+        -:    0:Graph:3741.gcno
+        -:    0:Data:3741.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-builtin-memset" } */
+        -:    3:/* { dg-shouldfail "asan" } */
+        -:    4:
+        -:    5:extern
+        -:    6:#ifdef __cplusplus
+        -:    7:    "C"
+        -:    8:#endif
+        -:    9:    void *
+        -:   10:    memset(void *, int, __SIZE_TYPE__);
+        -:   11:
+        -:   12:volatile int ten = 10;
+        -:   13:
+        1:   14:int main() {
+        -:   15:  static char XXX[10];
+        -:   16:  static char YYY[10];
+        -:   17:  static char ZZZ[10];
+        1:   18:  memset(XXX, 0, 10);
+        1:   19:  memset(YYY, 0, 10);
+        1:   20:  memset(ZZZ, 0, 10);
+        1:   21:  int res = YYY[ten]; /* BOOOM */
+        1:   22:  res += XXX[ten / 10] + ZZZ[ten / 10];
+        1:   23:  return res;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-output "READ of size 1 at 0x\[0-9a-f\]+ thread T0.*(\n|\r\n|\r)" } */
+        -:   27:/* { dg-output "    #0 0x\[0-9a-f\]+ +(in _*main
+        -:   28: * (\[^\n\r]*global-overflow-1.c:20|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\])\[^\n\r]*(\n|\r\n|\r).*"
+        -:   29: * } */
+        -:   30:/* { dg-output "0x\[0-9a-f\]+ is located 0 bytes to the right of global
+        -:   31: * variable" } */
+        -:   32:/* { dg-output ".*YYY\[^\n\r]* of size 10\[^\n\r]*(\n|\r\n|\r)" } */

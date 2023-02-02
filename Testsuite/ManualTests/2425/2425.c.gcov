@@ -1,0 +1,53 @@
+        -:    0:Source:2425.c
+        -:    0:Graph:2425.gcno
+        -:    0:Data:2425.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef unsigned int __u32;
+        -:    7:
+        1:    8:__u32 __rev16_32_alt(__u32 x) {
+        2:    9:  return (((__u32)(x) & (__u32)0xff00ff00UL) >> 8) |
+        1:   10:         (((__u32)(x) & (__u32)0x00ff00ffUL) << 8);
+        -:   11:}
+        -:   12:
+        1:   13:__u32 __rev16_32(__u32 x) {
+        2:   14:  return (((__u32)(x) & (__u32)0x00ff00ffUL) << 8) |
+        1:   15:         (((__u32)(x) & (__u32)0xff00ff00UL) >> 8);
+        -:   16:}
+        -:   17:
+        -:   18:typedef unsigned long long __u64;
+        -:   19:
+        1:   20:__u64 __rev16_64_alt(__u64 x) {
+        2:   21:  return (((__u64)(x) & (__u64)0xff00ff00ff00ff00UL) >> 8) |
+        1:   22:         (((__u64)(x) & (__u64)0x00ff00ff00ff00ffUL) << 8);
+        -:   23:}
+        -:   24:
+        1:   25:__u64 __rev16_64(__u64 x) {
+        2:   26:  return (((__u64)(x) & (__u64)0x00ff00ff00ff00ffUL) << 8) |
+        1:   27:         (((__u64)(x) & (__u64)0xff00ff00ff00ff00UL) >> 8);
+        -:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  volatile __u32 in32 = 0x12345678;
+        1:   32:  volatile __u32 expected32 = 0x34127856;
+        1:   33:  volatile __u64 in64 = 0x1234567890abcdefUL;
+        1:   34:  volatile __u64 expected64 = 0x34127856ab90efcdUL;
+        -:   35:
+        1:   36:  if (__rev16_32(in32) != expected32)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  if (__rev16_32_alt(in32) != expected32)
+    #####:   40:    abort();
+        -:   41:
+        1:   42:  if (__rev16_64(in64) != expected64)
+    #####:   43:    abort();
+        -:   44:
+        1:   45:  if (__rev16_64_alt(in64) != expected64)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  return 0;
+        -:   49:}

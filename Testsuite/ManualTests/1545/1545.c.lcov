@@ -1,0 +1,16 @@
+    1|       |/* PR tree-optimization/67953 */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|      1|unsigned int fn1(signed int a) { return (unsigned int)a - ((a / 3) * 3); }
+    5|       |
+    6|      1|unsigned int fn2(signed int a) { return a - ((a / 3) * 3); }
+    7|       |
+    8|      1|unsigned int fn3(int a) { return a - (unsigned)((a / 3) * 3); }
+    9|       |
+   10|      1|signed int fn4(int a) { return (unsigned)a - (unsigned)((a / 3) * 3); }
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (fn1(-5) != -2 || fn2(-5) != -2 || fn3(-5) != -2 || fn4(-5) != -2)
+   14|      0|    __builtin_abort();
+   15|      1|}
+

@@ -1,0 +1,36 @@
+        -:    0:Source:2638.c
+        -:    0:Graph:2638.gcno
+        -:    0:Data:2638.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:void t1(int x) {
+        1:    5:  if (x != 4100)
+    #####:    6:    abort();
+        1:    7:}
+        -:    8:
+        1:    9:int t2(void) {
+        -:   10:  int i;
+        1:   11:  t1((i = 4096) + 4);
+        1:   12:  return i;
+        -:   13:}
+        -:   14:
+        1:   15:void t3(long long x) {
+        1:   16:  if (x != 0x80000fffULL)
+    #####:   17:    abort();
+        1:   18:}
+        -:   19:
+        1:   20:long long t4(void) {
+        -:   21:  long long i;
+        1:   22:  t3((i = 4096) + 0x7fffffffULL);
+        1:   23:  return i;
+        -:   24:}
+        -:   25:
+        1:   26:main() {
+        1:   27:  if (t2() != 4096)
+    #####:   28:    abort();
+        1:   29:  if (t4() != 4096)
+    #####:   30:    abort();
+        1:   31:  exit(0);
+        -:   32:}

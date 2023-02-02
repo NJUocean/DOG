@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct S {
+    4|       |  _Bool x;
+    5|       |};
+    6|       |
+    7|      1|void foo(struct S *s) {
+    8|      1|  __builtin_memset(s, 0x11, sizeof(struct S));
+    9|      1|  s->x = 1;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  struct S s;
+   14|      1|  foo(&s);
+   15|      1|  char c;
+   16|      1|  __builtin_memcpy(&c, &s.x, 1);
+   17|      1|  if (c != 1)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

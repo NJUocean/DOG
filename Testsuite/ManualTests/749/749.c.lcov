@@ -1,0 +1,22 @@
+    1|       |/* PR c/11446: packed on a struct takes precedence over aligned on the type
+    2|       |   of a field.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-additional-options "-mno-ms-bitfields" { target *-*-mingw* } } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |struct A {
+    9|       |  double d;
+   10|       |} __attribute__((aligned));
+   11|       |
+   12|       |struct B {
+   13|       |  char c;
+   14|       |  struct A a;
+   15|       |} __attribute__((packed));
+   16|       |
+   17|      1|int main() {
+   18|      1|  if (sizeof(struct B) != sizeof(char) + sizeof(struct A))
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

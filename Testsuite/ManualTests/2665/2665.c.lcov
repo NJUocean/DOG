@@ -1,0 +1,70 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target fpic } */
+    3|       |/* { dg-options "-O2 -fPIC" } */
+    4|       |
+    5|       |void (*pfn)(void);
+    6|       |
+    7|       |struct s {
+    8|       |  void **q;
+    9|       |  int h;
+   10|       |  int t;
+   11|       |  int s;
+   12|       |};
+   13|       |
+   14|       |void *f(struct s *, struct s *) __attribute__((noinline, regparm(1)));
+   15|       |
+   16|      1|void *__attribute__((regparm(1))) f(struct s *p, struct s *p2) {
+   17|      1|  void *gp, *gp1;
+   18|      1|  int t, h, s, t2, h2, c, i;
+   19|      1|
+   20|      1|  if (p2->h == p2->t)
+   21|      0|    return 0;
+   22|      1|
+   23|      1|  (*pfn)();
+   24|      1|
+   25|      1|  h = p->h;
+   26|      1|  t = p->t;
+   27|      1|  s = p->s;
+   28|      1|
+   29|      1|  h2 = p2->h;
+   30|      1|  t2 = p2->t;
+   31|      1|
+   32|      1|  gp = p2->q[h2++];
+   33|      1|
+   34|      1|  c = (t2 - h2) / 2;
+   35|      2|  for (i = 0; i != c; i++) {
+   36|      1|    if (t == h || (h == 0 && t == s - 1))
+   37|      0|      break;
+   38|      1|    gp1 = p2->q[h2++];
+   39|      1|    p->q[t++] = gp1;
+   40|      1|    if (t == s)
+   41|      0|      t = 0;
+   42|      1|  }
+   43|      1|
+   44|      1|  p2->h = h2;
+   45|      1|  return gp;
+   46|      1|}
+   47|       |
+   48|      1|static void gn() {}
+   49|       |
+   50|      1|int main() {
+   51|      1|  struct s s1, s2;
+   52|      1|  void *q[10];
+   53|      1|
+   54|      1|  pfn = gn;
+   55|      1|
+   56|      1|  s1.q = q;
+   57|      1|  s1.h = 0;
+   58|      1|  s1.t = 2;
+   59|      1|  s1.s = 4;
+   60|      1|
+   61|      1|  s2.q = q;
+   62|      1|  s2.h = 0;
+   63|      1|  s2.t = 4;
+   64|      1|  s2.s = 2;
+   65|      1|
+   66|      1|  f(&s1, &s2);
+   67|      1|
+   68|      1|  return 0;
+   69|      1|}
+

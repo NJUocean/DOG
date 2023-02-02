@@ -1,0 +1,47 @@
+        -:    0:Source:194.c
+        -:    0:Graph:194.gcno
+        -:    0:Data:194.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { ilp32 || lp64 } } } */
+        -:    2:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O2 -Wno-address-of-packed-member" } }
+        -:    3: */
+        -:    4:/* { dg-additional-options "-fno-omit-frame-pointer" { target *-*-darwin* } } */
+        -:    5:/* { dg-shouldfail "asan" } */
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int i;
+        -:    9:} __attribute__((packed));
+        -:   10:
+    #####:   11:__attribute__((noinline, noclone)) int foo(struct S *s) { return s->i; }
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) int bar(int *s) { return *s; }
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) struct S baz(struct S *s) { return *s; }
+        -:   16:
+        1:   17:int main() {
+        -:   18:  struct T {
+        -:   19:    char a[3];
+        -:   20:    struct S b[3];
+        -:   21:    char c;
+        -:   22:  } t;
+        1:   23:  int v = 5;
+        1:   24:  struct S *p = t.b;
+        1:   25:  asm volatile("" : "+rm"(p));
+        1:   26:  p += 3;
+        1:   27:  if (bar(&v) != 5)
+    #####:   28:    __builtin_abort();
+        1:   29:  volatile struct S w = baz(p);
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-output "ERROR: AddressSanitizer:\[^\n\r]*on address\[^\n\r]*" } */
+        -:   34:/* { dg-output "0x\[0-9a-f\]+ at pc 0x\[0-9a-f\]+ bp 0x\[0-9a-f\]+ sp
+        -:   35: * 0x\[0-9a-f\]+\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   36:/* { dg-output "\[^\n\r]*READ of size 4 at 0x\[0-9a-f\]+ thread
+        -:   37: * T0\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   38:/* { dg-output "    #0 0x\[0-9a-f\]+ +(in
+        -:   39: * _*baz(\[^\n\r]*misalign-2.c:2\[23]|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\])\[^\n\r]*(\n|\r\n|\r)"
+        -:   40: * } */
+        -:   41:/* { dg-output "    #1 0x\[0-9a-f\]+ +(in _*main
+        -:   42: * (\[^\n\r]*misalign-2.c:3\[45]|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\]).*(\n|\r\n|\r)"
+        -:   43: * } */

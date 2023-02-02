@@ -1,0 +1,42 @@
+        -:    0:Source:1828.c
+        -:    0:Graph:1828.gcno
+        -:    0:Data:1828.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -save-temps" } */
+        -:    2:
+        -:    3:#include <stdio.h>
+        -:    4:
+    10000:    5:__attribute__((noinline, noclone)) void sink(const char *s) {
+    10000:    6:  asm("" ::"r"(s));
+    10000:    7:}
+        -:    8:
+    10000:    9:void foo(int ch) {
+    10000:   10:  switch (ch) {
+      100:   11:  case 100:
+      100:   12:    sink("100");
+      100:   13:    break;
+      900:   14:  case 10:
+      900:   15:    sink("10");
+      900:   16:    break;
+     9000:   17:  case 1:
+     9000:   18:    sink("1");
+     9000:   19:    break;
+        -:   20:  }
+    10000:   21:}
+        -:   22:
+        1:   23:int main() {
+    10001:   24:  for (int i = 0; i < 10000; i++) {
+        -:   25:    int v;
+    10000:   26:    if (i % 100 == 0)
+      100:   27:      v = 100;
+     9900:   28:    else if (i % 10 == 0)
+      900:   29:      v = 10;
+        -:   30:    else
+     9000:   31:      v = 1;
+    10000:   32:    foo(v);
+        -:   33:  }
+        -:   34:}
+        -:   35:
+        -:   36:/* { dg-final-use-not-autofdo { scan-assembler
+        -:   37: * "\n_?foo:\n.*cmp.*1,.*cmp.*10,.*cmp.*100" { target i?86-*-* x86_64-*-* } } }
+        -:   38: */

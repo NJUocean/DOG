@@ -1,0 +1,44 @@
+        -:    0:Source:3242.c
+        -:    0:Graph:3242.gcno
+        -:    0:Data:3242.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/6677 */
+        -:    2:/* Verify that GCC doesn't perform illegal simplifications
+        -:    3:   when folding constants.  */
+        -:    4:
+        -:    5:#include <limits.h>
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  int i;
+        -:   12:  signed char j;
+        -:   13:  unsigned char k;
+        -:   14:
+        1:   15:  i = SCHAR_MAX;
+        -:   16:
+        1:   17:  j = ((signed char)(i << 1)) / 2;
+        -:   18:
+        1:   19:  if (j != -1)
+    #####:   20:    abort();
+        -:   21:
+        1:   22:  j = ((signed char)(i * 2)) / 2;
+        -:   23:
+        1:   24:  if (j != -1)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  i = UCHAR_MAX;
+        -:   28:
+        1:   29:  k = ((unsigned char)(i << 1)) / 2;
+        -:   30:
+        1:   31:  if (k != UCHAR_MAX / 2)
+    #####:   32:    abort();
+        -:   33:
+        1:   34:  k = ((unsigned char)(i * 2)) / 2;
+        -:   35:
+        1:   36:  if (k != UCHAR_MAX / 2)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  exit(0);
+        -:   40:}

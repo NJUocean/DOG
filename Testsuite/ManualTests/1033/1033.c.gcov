@@ -1,0 +1,28 @@
+        -:    0:Source:1033.c
+        -:    0:Graph:1033.gcno
+        -:    0:Data:1033.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/82274 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:int main() {
+        -:    6:#ifdef __SIZEOF_INT128__
+        1:    7:  __int128 m = -(((__int128)1) << (__CHAR_BIT__ * __SIZEOF_INT128__ / 2));
+        1:    8:  volatile __int128 mv = m;
+        -:    9:  __int128 r;
+        -:   10:#else
+        -:   11:  long long m = -(1LL << (__CHAR_BIT__ * __SIZEOF_LONG_LONG__ / 2));
+        -:   12:  volatile long long mv = m;
+        -:   13:  long long r;
+        -:   14:#endif
+        1:   15:  if (!__builtin_mul_overflow(mv, mv, &r))
+    #####:   16:    __builtin_abort();
+        1:   17:  if (!__builtin_mul_overflow_p(mv, mv, r))
+    #####:   18:    __builtin_abort();
+        1:   19:  if (!__builtin_mul_overflow(m, m, &r))
+    #####:   20:    __builtin_abort();
+        1:   21:  if (!__builtin_mul_overflow_p(m, m, r))
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

@@ -1,0 +1,21 @@
+    1|       |/* PR 8848 */
+    2|       |
+    3|       |extern void abort();
+    4|       |
+    5|      1|int foo(int status) {
+    6|      1|  int s = 0;
+    7|      1|  if (status == 1)
+    8|      0|    s = 1;
+    9|      1|  if (status == 3)
+   10|      1|    s = 3;
+   11|      1|  if (status == 4)
+   12|      0|    s = 4;
+   13|      1|  return s;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  if (foo(3) != 3)
+   18|      0|    abort();
+   19|      1|  return 0;
+   20|      1|}
+

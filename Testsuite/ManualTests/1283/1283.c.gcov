@@ -1,0 +1,54 @@
+        -:    0:Source:1283.c
+        -:    0:Graph:1283.gcno
+        -:    0:Data:1283.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fstrict-overflow" } */
+        -:    3:
+        -:    4:extern void link_error(void);
+        -:    5:
+        1:    6:void test0(int a, int b) {
+        -:    7:  if ((a < b) != (b > a))
+        -:    8:    link_error();
+        -:    9:
+        -:   10:  if ((a - 1 < b) != (a <= b))
+        -:   11:    link_error();
+        -:   12:  if ((a - 2 < b) != (a - 1 <= b))
+        -:   13:    link_error();
+        -:   14:  if ((a + -1 < b) != (a <= b))
+        -:   15:    link_error();
+        -:   16:  if ((a + -2 < b) != (a + -1 <= b))
+        -:   17:    link_error();
+        -:   18:
+        -:   19:  if ((a + 1 > b) != (a >= b))
+        -:   20:    link_error();
+        -:   21:  if ((a + 2 > b) != (a + 1 >= b))
+        -:   22:    link_error();
+        -:   23:  if ((a - -1 > b) != (a >= b))
+        -:   24:    link_error();
+        -:   25:  if ((a - -2 > b) != (a - -1 >= b))
+        -:   26:    link_error();
+        -:   27:
+        -:   28:  if ((a + 1 <= b) != (a < b))
+        -:   29:    link_error();
+        -:   30:  if ((a + 2 <= b) != (a + 1 < b))
+        -:   31:    link_error();
+        -:   32:  if ((a - -1 <= b) != (a < b))
+        -:   33:    link_error();
+        -:   34:  if ((a - -2 <= b) != (a - -1 < b))
+        -:   35:    link_error();
+        -:   36:
+        -:   37:  if ((a - 1 >= b) != (a > b))
+        -:   38:    link_error();
+        -:   39:  if ((a - 2 >= b) != (a - 1 > b))
+        -:   40:    link_error();
+        -:   41:  if ((a + -1 >= b) != (a > b))
+        -:   42:    link_error();
+        -:   43:  if ((a + -2 >= b) != (a + -1 > b))
+        -:   44:    link_error();
+        1:   45:}
+        -:   46:
+        1:   47:int main() {
+        1:   48:  test0(1, 2);
+        1:   49:  return 0;
+        -:   50:}

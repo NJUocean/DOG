@@ -1,0 +1,22 @@
+        -:    0:Source:3824.c
+        -:    0:Graph:3824.gcno
+        -:    0:Data:3824.gcda
+        -:    0:Runs:1
+        -:    1:// PR preprocessor/48740
+        -:    2:// { dg-options "-std=gnu99 -trigraphs -save-temps" { target c } }
+        -:    3:// { dg-options "-std=c++0x -save-temps" { target c++ } }
+        -:    4:// { dg-do run }
+        -:    5:
+        1:    6:int main() {
+        1:    7:  return __builtin_memcmp(R"raw(foo%sbar%sfred%sbob?????)raw",
+        -:    8:                          "foo%sbar%sfred%sbob?"
+        -:    9:                          "?"
+        -:   10:                          "?"
+        -:   11:                          "?"
+        -:   12:                          "?",
+        -:   13:                          sizeof("foo%sbar%sfred%sbob?"
+        -:   14:                                 "?"
+        -:   15:                                 "?"
+        -:   16:                                 "?"
+        -:   17:                                 "?"));
+        -:   18:}

@@ -1,0 +1,17 @@
+    1|       |// PR target/86314
+    2|       |// { dg-do run { target sync_int_long } }
+    3|       |// { dg-options "-O2" }
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) unsigned long foo(unsigned long *p) {
+    6|      1|  unsigned long m = 1UL << ((*p & 1) ? 1 : 0);
+    7|      1|  unsigned long n = __atomic_fetch_or(p, m, __ATOMIC_SEQ_CST);
+    8|      1|  return (n & m) == 0;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  unsigned long v = 1;
+   13|      1|  if (foo(&v) != 1)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

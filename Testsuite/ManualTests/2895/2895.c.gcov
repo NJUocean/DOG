@@ -1,0 +1,40 @@
+        -:    0:Source:2895.c
+        -:    0:Graph:2895.gcno
+        -:    0:Data:2895.gcda
+        -:    0:Runs:1
+        -:    1:/* Test LOOP recognition */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O1 -mloop" } */
+        -:    5:
+        -:    6:/* -O1 in the options is significant.  Without it do-loop will not be
+        -:    7:   run.  */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:volatile unsigned int int_12345 = 12345;
+        -:   12:volatile unsigned int int_0 = 0;
+        -:   13:volatile unsigned int int_1 = 1;
+        -:   14:
+        3:   15:unsigned int test_loop(unsigned int n) {
+        -:   16:  unsigned int i;
+        3:   17:  volatile unsigned int s = 0;
+        -:   18:
+        3:   19:  if (n >= 0x10000)
+    #####:   20:    return 0;
+        -:   21:
+    12349:   22:  for (i = 0; i < n; i++)
+    12346:   23:    s++;
+        3:   24:  return s;
+        -:   25:}
+        -:   26:
+        1:   27:int main(int argc, char **argv) {
+        1:   28:  if (test_loop(int_0) != 0)
+    #####:   29:    abort();
+        1:   30:  if (test_loop(int_1) != 1)
+    #####:   31:    abort();
+        1:   32:  if (test_loop(int_12345) != 12345)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

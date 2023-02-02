@@ -1,0 +1,38 @@
+        -:    0:Source:4113.c
+        -:    0:Graph:4113.gcno
+        -:    0:Data:4113.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:typedef int TYPE;
+        -:    4:
+        1:    5:void vafunction(char *dummy, ...) {
+        -:    6:  va_list ap;
+        -:    7:
+        1:    8:  va_start(ap, dummy);
+        1:    9:  if (va_arg(ap, TYPE) != 1)
+    #####:   10:    abort();
+        1:   11:  if (va_arg(ap, TYPE) != 2)
+    #####:   12:    abort();
+        1:   13:  if (va_arg(ap, TYPE) != 3)
+    #####:   14:    abort();
+        1:   15:  if (va_arg(ap, TYPE) != 4)
+    #####:   16:    abort();
+        1:   17:  if (va_arg(ap, TYPE) != 5)
+    #####:   18:    abort();
+        1:   19:  if (va_arg(ap, TYPE) != 6)
+    #####:   20:    abort();
+        1:   21:  if (va_arg(ap, TYPE) != 7)
+    #####:   22:    abort();
+        1:   23:  if (va_arg(ap, TYPE) != 8)
+    #####:   24:    abort();
+        1:   25:  if (va_arg(ap, TYPE) != 9)
+    #####:   26:    abort();
+        1:   27:  va_end(ap);
+        1:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  vafunction("", 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        1:   32:  exit(0);
+        -:   33:  return 0;
+        -:   34:}

@@ -1,0 +1,24 @@
+        -:    0:Source:512.c
+        -:    0:Graph:512.gcno
+        -:    0:Data:512.gcda
+        -:    0:Runs:1
+        2:    1:int compare(x, y) unsigned int x;
+        -:    2:unsigned int y;
+        -:    3:{
+        2:    4:  if (x == y)
+        2:    5:    return 0;
+        -:    6:  else
+    #####:    7:    return 1;
+        -:    8:}
+        -:    9:
+        1:   10:main() {
+        -:   11:  unsigned int i, j, k, l;
+        1:   12:  i = 5;
+        1:   13:  j = 2;
+        1:   14:  k = 0;
+        1:   15:  l = 2;
+        1:   16:  if (compare(5 % (~(unsigned)2), i % ~j) || compare(0, k % ~l))
+    #####:   17:    abort();
+        -:   18:  else
+        1:   19:    exit(0);
+        -:   20:}

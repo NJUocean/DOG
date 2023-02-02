@@ -1,0 +1,54 @@
+        -:    0:Source:431.c
+        -:    0:Graph:431.gcno
+        -:    0:Data:431.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-common" { target { hppa*-*-hpux* } } } */
+        -:    3:#define vector __attribute__((vector_size(sizeof(int) * 4)))
+        -:    4:
+        -:    5:/* Check to make sure that we extract and insert the vector at the same
+        -:    6:   location for vector subscripting and that vectors layout are the same
+        -:    7:   as arrays. */
+        -:    8:
+        -:    9:struct TV4 {
+        -:   10:  vector int v;
+        -:   11:};
+        -:   12:
+        -:   13:typedef struct TV4 MYV4;
+        8:   14:static inline int *f(MYV4 *a, int i) { return &(a->v[i]); }
+        -:   15:
+        1:   16:static inline MYV4 myfunc2(int x, int y, int z, int w) {
+        -:   17:  MYV4 temp;
+        1:   18:  *f(&temp, 0) = x;
+        1:   19:  *f(&temp, 1) = y;
+        1:   20:  *f(&temp, 2) = z;
+        1:   21:  *f(&temp, 3) = w;
+        1:   22:  return temp;
+        -:   23:}
+        -:   24:
+        -:   25:MYV4 val3;
+        -:   26:
+        1:   27:__attribute__((noinline)) void modify(void) { val3 = myfunc2(1, 2, 3, 4); }
+        -:   28:
+        1:   29:int main(int argc, char *argv[]) {
+        -:   30:  int a[4];
+        -:   31:  int i;
+        -:   32:
+        1:   33:  modify();
+        -:   34:
+        1:   35:  if (*f(&val3, 0) != 1)
+    #####:   36:    __builtin_abort();
+        1:   37:  if (*f(&val3, 1) != 2)
+    #####:   38:    __builtin_abort();
+        1:   39:  if (*f(&val3, 2) != 3)
+    #####:   40:    __builtin_abort();
+        1:   41:  if (*f(&val3, 3) != 4)
+    #####:   42:    __builtin_abort();
+        -:   43:
+        1:   44:  __builtin_memcpy(a, &val3, sizeof(a));
+        5:   45:  for (i = 0; i < 4; i++)
+        4:   46:    if (a[i] != i + 1)
+    #####:   47:      __builtin_abort();
+        -:   48:
+        1:   49:  return 0;
+        -:   50:}

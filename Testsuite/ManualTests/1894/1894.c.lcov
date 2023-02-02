@@ -1,0 +1,36 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -ftree-loop-distribution -fdump-tree-ldist-details" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int a[130], b[128], c[128];
+    7|       |
+    8|      1|int __attribute__((noinline, noclone)) foo(int len, int x) {
+    9|      1|  int i;
+   10|    128|  for (i = 1; i <= len; ++i) {
+   11|    127|    a[i] = a[i + 2] + 1;
+   12|    127|    b[i] = 0;
+   13|    127|    a[i + 1] = a[i] - 3;
+   14|    127|    if (i < x)
+   15|     66|      c[i] = a[i];
+   16|    127|  }
+   17|      1|  return i;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  int i;
+   22|    131|  for (i = 0; i < 130; ++i)
+   23|    130|    a[i] = i;
+   24|      1|  foo(127, 67);
+   25|      1|  if (a[0] != 0 || a[1] != 4 || a[127] != 130)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+   29|       |
+   30|       |/* Loop splitting splits the iteration space so we end up with two
+   31|       |   loops entering loop distribution.  Both should have the b[i] = 0
+   32|       |   part split out as memset.  */
+   33|       |/* { dg-final { scan-tree-dump-times "distributed: split to 1 loops and 1
+   34|       | * library calls" 2 "ldist" } } */
+   35|       |/* { dg-final { scan-tree-dump-times "generated memset zero" 2 "ldist" } } */
+

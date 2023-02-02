@@ -1,0 +1,43 @@
+        -:    0:Source:2280.c
+        -:    0:Graph:2280.gcno
+        -:    0:Data:2280.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O3 -fno-vect-cost-model" } */
+        -:    2:struct {
+        -:    3:  float real;
+        -:    4:  float img;
+        -:    5:} g[11];
+        -:    6:
+        1:    7:float __attribute__((noclone)) foo_11(void) {
+        1:    8:  float sum = 0.0;
+       12:    9:  for (int i = 0; i < 11; ++i)
+       11:   10:    sum += g[i].real;
+        1:   11:  return sum;
+        -:   12:}
+        -:   13:
+        1:   14:float __attribute__((noclone)) foo_10(void) {
+        1:   15:  float sum = 0.0;
+       11:   16:  for (int i = 0; i < 10; ++i)
+       10:   17:    sum += g[i].real;
+        1:   18:  return sum;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  float check_10 = 0.0;
+        1:   23:  float check_11 = 0.0;
+       12:   24:  for (int i = 0; i < 11; ++i) {
+       11:   25:    asm volatile("" : : : "memory");
+       11:   26:    g[i].real = (float)i;
+       11:   27:    g[i].img = (float)-i;
+       11:   28:    if (i < 10)
+       10:   29:      check_10 += (float)i;
+       11:   30:    check_11 += (float)i;
+        -:   31:  }
+        -:   32:
+        1:   33:  if (foo_10() != check_10)
+    #####:   34:    __builtin_abort();
+        1:   35:  if (foo_11() != check_11)
+    #####:   36:    __builtin_abort();
+        -:   37:
+        1:   38:  return 0;
+        -:   39:}

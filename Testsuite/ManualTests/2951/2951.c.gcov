@@ -1,0 +1,28 @@
+        -:    0:Source:2951.c
+        -:    0:Graph:2951.gcno
+        -:    0:Data:2951.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -mzarch -march=z13 --save-temps" } */
+        -:    3:
+        -:    4:struct a {
+        -:    5:  int b;
+        -:    6:  char c;
+        -:    7:};
+        -:    8:struct a d = {1, 16};
+        -:    9:struct a *e = &d;
+        -:   10:
+        -:   11:int f = 0;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  struct a g = {0, 0};
+        1:   15:  f = 0;
+        -:   16:
+        3:   17:  for (; f <= 1; f++) {
+        2:   18:    g = d;
+        2:   19:    *e = g;
+        -:   20:  }
+        -:   21:
+        1:   22:  if (d.c != 16)
+    #####:   23:    __builtin_abort();
+        -:   24:}

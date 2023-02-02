@@ -1,0 +1,64 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target store_merge } */
+    3|       |/* { dg-options "-O2 -fdump-tree-store-merging" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct S1 {
+    8|       |  unsigned int flag : 1;
+    9|       |  unsigned int size : 31;
+   10|       |};
+   11|       |
+   12|      1|__attribute__((noipa)) void foo1(struct S1 *s, unsigned int size) {
+   13|      1|  s->flag = 1;
+   14|      1|  s->size = size & 0x7FFFFFFF;
+   15|      1|}
+   16|       |
+   17|       |struct S2 {
+   18|       |  unsigned int flag : 1;
+   19|       |  unsigned int size : 15;
+   20|       |  unsigned short count;
+   21|       |};
+   22|       |
+   23|      1|__attribute__((noipa)) void foo2(struct S2 *s, unsigned short size) {
+   24|      1|  s->flag = 1;
+   25|      1|  s->size = size;
+   26|      1|  s->count = 0xABCD;
+   27|      1|}
+   28|       |
+   29|       |struct S3 {
+   30|       |  unsigned int n1 : 4;
+   31|       |  unsigned int c : 8;
+   32|       |  unsigned int n2 : 4;
+   33|       |};
+   34|       |
+   35|       |__attribute__((noipa)) void foo3(struct S3 *s, unsigned char n1,
+   36|      1|                                 unsigned char c, unsigned char n2) {
+   37|      1|  s->n1 = n1 & 0xF;
+   38|      1|  s->n2 = n2 & 0xF;
+   39|      1|  s->c = c;
+   40|      1|}
+   41|       |
+   42|      1|int main(void) {
+   43|      1|  struct S1 s1;
+   44|      1|  struct S2 s2;
+   45|      1|  struct S3 s3;
+   46|      1|
+   47|      1|  foo1(&s1, 0x12345678);
+   48|      1|  if (s1.flag != 1 || s1.size != 0x12345678)
+   49|      0|    abort();
+   50|      1|
+   51|      1|  foo2(&s2, 0x1234);
+   52|      1|  if (s2.flag != 1 || s2.size != 0x1234 || s2.count != 0xABCD)
+   53|      0|    abort();
+   54|      1|
+   55|      1|  foo3(&s3, 0x12, 0x34, 0x56);
+   56|      1|  if (s3.n1 != 0x2 || s3.c != 0x34 || s3.n2 != 0x6)
+   57|      0|    abort();
+   58|      1|
+   59|      1|  return 0;
+   60|      1|}
+   61|       |
+   62|       |/* { dg-final { scan-tree-dump-times "Merging successful" 3 "store-merging" } }
+   63|       | */
+

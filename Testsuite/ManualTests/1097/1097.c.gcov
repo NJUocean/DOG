@@ -1,0 +1,26 @@
+        -:    0:Source:1097.c
+        -:    0:Graph:1097.gcno
+        -:    0:Data:1097.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93820 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-tree-dse" } */
+        -:    4:
+        -:    5:typedef int v4si __attribute__((vector_size(4 * sizeof(int))));
+        -:    6:int a[10];
+        -:    7:
+        1:    8:__attribute__((noipa)) int foo(int *p) {
+        1:    9:  a[6] = *p;
+        1:   10:  a[4] = 1;
+        1:   11:  *(((v4si *)&a[0]) + 1) = (v4si){0, 0, 0, 0};
+        1:   12:  a[3] = 0;
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  int i = 0;
+        1:   17:  foo(&i);
+       11:   18:  for (i = 0; i < 10; i++)
+       10:   19:    if (a[i])
+    #####:   20:      __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,21 @@
+        -:    0:Source:1683.c
+        -:    0:Graph:1683.gcno
+        -:    0:Data:1683.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static int p[48], v;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  p[32] = 1;
+       49:    7:  for (int i = 48; i--;) {
+       48:    8:    if (!p[i])
+       47:    9:      continue;
+        1:   10:    if ((i & 7) > 2)
+    #####:   11:      break;
+        1:   12:    v = i & 1;
+        -:   13:  }
+        1:   14:  if (v != 0)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

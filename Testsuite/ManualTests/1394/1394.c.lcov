@@ -1,0 +1,92 @@
+    1|       |/*
+    2|       | * ====================================================
+    3|       | * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+    4|       | *
+    5|       | * Developed at SunPro, a Sun Microsystems, Inc. business.
+    6|       | * Permission to use, copy, modify, and distribute this
+    7|       | * software is freely granted, provided that this notice
+    8|       | * is preserved.
+    9|       | * ====================================================
+   10|       | */
+   11|       |
+   12|       |#ifndef __vax__
+   13|       |static const unsigned long B1 = 715094163, /* B1 = (682-0.03306235651)*2**20 */
+   14|       |    B2 = 696219795;                        /* B2 = (664-0.03306235651)*2**20 */
+   15|       |
+   16|       |static const double
+   17|       |    C = 5.42857142857142815906e-01,  /* 19/35     = 0x3FE15F15, 0xF15F15F1 */
+   18|       |    D = -7.05306122448979611050e-01, /* -864/1225 = 0xBFE691DE, 0x2532C834 */
+   19|       |    E = 1.41428571428571436819e+00,  /* 99/70     = 0x3FF6A0EA, 0x0EA0EA0F */
+   20|       |    F = 1.60714285714285720630e+00,  /* 45/28     = 0x3FF9B6DB, 0x6DB6DB6E */
+   21|       |    G = 3.57142857142857150787e-01;  /* 5/14      = 0x3FD6DB6D, 0xB6DB6DB7 */
+   22|       |
+   23|      1|double cbrtl(double x) {
+   24|      1|  long hx;
+   25|      1|  double r, s, w;
+   26|      1|  double lt;
+   27|      1|  unsigned sign;
+   28|      1|  typedef unsigned unsigned32 __attribute__((mode(SI)));
+   29|      1|  union {
+   30|      1|    double t;
+   31|      1|    unsigned32 pt[2];
+   32|      1|  } ut, ux;
+   33|      1|  int n0;
+   34|      1|
+   35|      1|  ut.t = 1.0;
+   36|      1|  n0 = (ut.pt[0] == 0);
+   37|      1|
+   38|      1|  ut.t = 0.0;
+   39|      1|  ux.t = x;
+   40|      1|
+   41|      1|  hx = ux.pt[n0];         /* high word of x */
+   42|      1|  sign = hx & 0x80000000; /* sign= sign(x) */
+   43|      1|  hx ^= sign;
+   44|      1|  if (hx >= 0x7ff00000)
+   45|      0|    return (x + x); /* cbrt(NaN,INF) is itself */
+   46|      1|  if ((hx | ux.pt[1 - n0]) == 0)
+   47|      0|    return (ux.t); /* cbrt(0) is itself */
+   48|      1|
+   49|      1|  ux.pt[n0] = hx;
+   50|      1|  /* rough cbrt to 5 bits */
+   51|      1|  if (hx < 0x00100000) /* subnormal number */
+   52|      0|  {
+   53|      0|    ut.pt[n0] = 0x43500000; /* set t= 2**54 */
+   54|      0|    ut.t *= x;
+   55|      0|    ut.pt[n0] = ut.pt[n0] / 3 + B2;
+   56|      0|  } else
+   57|      1|    ut.pt[n0] = hx / 3 + B1;
+   58|      1|
+   59|      1|  /* new cbrt to 23 bits, may be implemented in single precision */
+   60|      1|  r = ut.t * ut.t / ux.t;
+   61|      1|  s = C + r * ut.t;
+   62|      1|  ut.t *= G + F / (s + E + D / s);
+   63|      1|
+   64|      1|  /* chopped to 20 bits and make it larger than cbrt(x) */
+   65|      1|  ut.pt[1 - n0] = 0;
+   66|      1|  ut.pt[n0] += 0x00000001;
+   67|      1|
+   68|      1|  /* one step newton iteration to 53 bits with error less than 0.667 ulps */
+   69|      1|  s = ut.t * ut.t; /* t*t is exact */
+   70|      1|  r = ux.t / s;
+   71|      1|  w = ut.t + ut.t;
+   72|      1|  r = (r - ut.t) / (w + r); /* r-s is exact */
+   73|      1|  ut.t = ut.t + ut.t * r;
+   74|      1|
+   75|      1|  /* restore the sign bit */
+   76|      1|  ut.pt[n0] |= sign;
+   77|      1|
+   78|      1|  lt = ut.t;
+   79|      1|  lt -= (lt - (x / (lt * lt))) * 0.333333333333333333333;
+   80|      1|  return lt;
+   81|      1|}
+   82|       |
+   83|      1|main() {
+   84|      1|  if ((int)(cbrtl(27.0) + 0.5) != 3)
+   85|      0|    abort();
+   86|      1|
+   87|      1|  exit(0);
+   88|      1|}
+   89|       |#else
+   90|       |main() { exit(0); }
+   91|       |#endif
+

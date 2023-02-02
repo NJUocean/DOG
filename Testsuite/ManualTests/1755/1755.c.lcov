@@ -1,0 +1,15 @@
+    1|       |#include <stdio.h>
+    2|       |double normalize(x) double x;
+    3|      1|{
+    4|      1|  if (x == 0)
+    5|      1|    x = 0;
+    6|      1|  return x;
+    7|      1|}
+    8|      1|main() {
+    9|      1|  char b[9];
+   10|      1|  sprintf(b, "%g", normalize(-0.0));
+   11|      1|  if (strcmp(b, "0"))
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+

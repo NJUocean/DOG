@@ -1,0 +1,21 @@
+    1|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk>.  */
+    2|       |/* Case labels in a switch statement are converted to the promoted
+    3|       |   type of the controlling expression, not an unpromoted version.
+    4|       |   Reported as PR c/2454 by
+    5|       |   Andreas Krakowczyk <Andreas.Krakowczyk@fujitsu-siemens.com>.  */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |extern void abort(void);
+    9|       |
+   10|       |static int i;
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  i = -1;
+   14|      1|  switch ((signed char)i) {
+   15|      0|  case 255:
+   16|      0|    abort();
+   17|      1|  default:
+   18|      1|    exit(0);
+   19|      1|  }
+   20|      1|}
+

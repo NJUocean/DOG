@@ -1,0 +1,35 @@
+        -:    0:Source:1873.c
+        -:    0:Graph:1873.gcno
+        -:    0:Data:1873.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void) __attribute__((__nothrow__))
+        -:    5:__attribute__((__noreturn__));
+        -:    6:extern void exit(int __status) __attribute__((__nothrow__))
+        -:    7:__attribute__((__noreturn__));
+        -:    8:int useboot(void *);
+        -:    9:
+        -:   10:struct bootLoader {
+        -:   11:  int x;
+        -:   12:};
+        -:   13:
+        1:   14:void zap(struct bootLoader *bootLoader) {
+        -:   15:  /* The expression on the RHS of the assignment is *not* a
+        -:   16:     dereference of pointer 'bootLoader'.  It is merely used as an
+        -:   17:     offset calculation.  VRP was erroneously removing the if()
+        -:   18:     because it thought that 'bootLoader' was always dereferenced.  */
+        1:   19:  int *boot = &bootLoader->x;
+        -:   20:
+        1:   21:  if (bootLoader) {
+    #####:   22:    useboot(boot);
+        -:   23:  }
+        1:   24:}
+        -:   25:
+    #####:   26:int useboot(void *boot) { abort(); }
+        -:   27:
+        1:   28:int main() {
+        1:   29:  zap(0);
+        1:   30:  return 0;
+        -:   31:}

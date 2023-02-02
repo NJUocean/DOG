@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |static volatile struct S0 {
+    6|       |  short f3[9];
+    7|       |  unsigned f8 : 15;
+    8|       |} s = {1};
+    9|       |static unsigned short sh = 0x1234;
+   10|       |
+   11|       |struct S0 a, b;
+   12|       |int vi = 0;
+   13|       |
+   14|      1|void func_4() {
+   15|      1|  s.f8 |= 1;
+   16|      1|  sh = 15;
+   17|      1|  if (vi)
+   18|      0|    a = b;
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  func_4();
+   23|      1|  if (sh != 15)
+   24|      0|    abort();
+   25|      1|  return 0;
+   26|      1|}
+

@@ -1,0 +1,22 @@
+        -:    0:Source:1016.c
+        -:    0:Graph:1016.gcno
+        -:    0:Data:1016.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/78768 - -Walloca-larger-than and -Wformat-overflow warnings disabled
+        -:    2:   by -flto
+        -:    3:  { dg-do link }
+        -:    4:  { dg-require-effective-target lto }
+        -:    5:  { dg-require-linker-plugin "" }
+        -:    6:  { dg-options "-O2 -Walloca-larger-than=10 -Wformat -Wformat-overflow -flto" }
+        -:    7:*/
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  char *d = (char *)__builtin_alloca(
+        -:   11:      12); /* { dg-warning "argument to .alloca. is too large" } */
+        -:   12:
+        1:   13:  __builtin_sprintf(d, "%32s",
+        -:   14:                    "x"); /* { dg-warning "directive writing 32 bytes into a
+        -:   15:                             region of size 12" "-Wformat-overflow" } */
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

@@ -1,0 +1,33 @@
+        -:    0:Source:3833.c
+        -:    0:Graph:3833.gcno
+        -:    0:Data:3833.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/60017 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S0 {
+        -:    6:  short m0;
+        -:    7:  short m1;
+        -:    8:};
+        -:    9:
+        -:   10:struct S1 {
+        -:   11:  unsigned m0 : 1;
+        -:   12:  char m1[2][2];
+        -:   13:  struct S0 m2[2];
+        -:   14:};
+        -:   15:
+        -:   16:struct S1 x = {1, {{2, 3}, {4, 5}}, {{6, 7}, {8, 9}}};
+        -:   17:
+        1:   18:struct S1 func(void) {
+        1:   19:  return x;
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  struct S1 ret = func();
+        -:   24:
+        1:   25:  if (ret.m2[1].m1 != 9)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

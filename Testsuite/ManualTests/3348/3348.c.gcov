@@ -1,0 +1,23 @@
+        -:    0:Source:3348.c
+        -:    0:Graph:3348.gcno
+        -:    0:Data:3348.gcda
+        -:    0:Runs:1
+        -:    1:/* From PR target/16176 */
+        -:    2:struct __attribute__((packed)) s {
+        -:    3:  struct s *next;
+        -:    4:};
+        -:    5:
+        1:    6:struct s *__attribute__((noinline)) maybe_next(struct s *s, int t) {
+        1:    7:  if (t)
+        1:    8:    s = s->next;
+        1:    9:  return s;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  struct s s1, s2;
+        -:   14:
+        1:   15:  s1.next = &s2;
+        1:   16:  if (maybe_next(&s1, 1) != &s2)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

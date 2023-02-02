@@ -1,0 +1,26 @@
+        -:    0:Source:2530.c
+        -:    0:Graph:2530.gcno
+        -:    0:Data:2530.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* { dg-do run { target sync_int_long } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:volatile int mem;
+        -:    6:
+        2:    7:int bar(int x, int y) {
+        2:    8:  if (x)
+        1:    9:    __sync_fetch_and_add(&mem, y);
+        2:   10:  return 0;
+        -:   11:}
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:
+        1:   15:int main(int argc, char *argv[]) {
+        1:   16:  mem = 0;
+        1:   17:  bar(0, 1);
+        1:   18:  bar(1, 1);
+        1:   19:  if (mem != 1)
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

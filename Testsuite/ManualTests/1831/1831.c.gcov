@@ -1,0 +1,28 @@
+        -:    0:Source:1831.c
+        -:    0:Graph:1831.gcno
+        -:    0:Data:1831.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fno-tree-vectorize -funroll-loops --param
+        -:    2: * max-unroll-times=4 -fno-inline -fdump-rtl-alignments" } */
+        -:    3:
+        -:    4:volatile long int g;
+        -:    5:volatile long int j = 0;
+        -:    6:
+        1:    7:void foo(long int *a, long int *b, long int n) {
+        -:    8:  long int i;
+        -:    9:
+  1000001:   10:  for (i = 0; i < n; i++)
+  1000000:   11:    a[j] = *b;
+        1:   12:}
+        -:   13:
+        -:   14:long int a, b;
+        1:   15:int main() {
+        1:   16:  a = 1;
+        1:   17:  b = 2;
+        1:   18:  foo(&a, &b, 1000000);
+        1:   19:  g = a + b;
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        -:   23:/* { dg-final-use-not-autofdo { scan-rtl-dump-times "internal loop alignment
+        -:   24: * added" 1 "alignments"} } */

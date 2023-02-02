@@ -1,0 +1,19 @@
+        -:    0:Source:3881.c
+        -:    0:Graph:3881.gcno
+        -:    0:Data:3881.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65418 */
+        -:    2:
+      110:    3:__attribute__((noinline, noclone)) int foo(int x) {
+      110:    4:  if (x == -216 || x == -132 || x == -218 || x == -146)
+        4:    5:    return 1;
+      106:    6:  return 0;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        -:   10:  volatile int i;
+      111:   11:  for (i = -230; i < -120; i++)
+      110:   12:    if (foo(i) != (i == -216 || i == -132 || i == -218 || i == -146))
+    #####:   13:      __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

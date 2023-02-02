@@ -1,0 +1,36 @@
+    1|       |/* Test volatile access to unaligned field.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fstrict-volatile-bitfields" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|#define test_type unsigned long long
+    8|      4|#define MAGIC 0x102030405060708ull
+    9|       |
+   10|       |typedef struct s {
+   11|       |  unsigned char Prefix;
+   12|       |  test_type Type;
+   13|       |} __attribute((__packed__)) ss;
+   14|       |
+   15|       |volatile ss v;
+   16|       |ss g;
+   17|       |
+   18|      1|void __attribute__((noinline)) foo(test_type u) { v.Type = u; }
+   19|       |
+   20|      1|test_type __attribute__((noinline)) bar(void) { return v.Type; }
+   21|       |
+   22|      1|int main() {
+   23|      1|  test_type temp;
+   24|      1|  foo(MAGIC);
+   25|      1|  __builtin_memcpy(&g, (void *)&v, sizeof(g));
+   26|      1|  if (g.Type != MAGIC)
+   27|      1|    abort();
+   28|      1|
+   29|      1|  g.Type = MAGIC;
+   30|      1|  __builtin_memcpy((void *)&v, &g, sizeof(v));
+   31|      1|  temp = bar();
+   32|      1|  if (temp != MAGIC)
+   33|      1|    abort();
+   34|      1|  return 0;
+   35|      1|}
+

@@ -1,0 +1,43 @@
+    1|       |/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+    2|       |/* { dg-final { scan-assembler "b\[np\] B100A,#7," } } */
+    3|       |/* { dg-final { scan-assembler "b\[np\] B100B,#7," } } */
+    4|       |
+    5|       |typedef struct {
+    6|       |  unsigned short b0 : 1;
+    7|       |  unsigned short b1 : 1;
+    8|       |  unsigned short b2 : 1;
+    9|       |  unsigned short b3 : 1;
+   10|       |  unsigned short b4 : 1;
+   11|       |  unsigned short b5 : 1;
+   12|       |  unsigned short b6 : 1;
+   13|       |  unsigned short b7 : 1;
+   14|       |  unsigned short b8 : 1;
+   15|       |  unsigned short b9 : 1;
+   16|       |  unsigned short b10 : 1;
+   17|       |  unsigned short b11 : 1;
+   18|       |  unsigned short b12 : 1;
+   19|       |  unsigned short b13 : 1;
+   20|       |  unsigned short b14 : 1;
+   21|       |  unsigned short b15 : 1;
+   22|       |} BitField;
+   23|       |
+   24|       |char acDummy[0xf0] __attribute__((__BELOW100__));
+   25|       |BitField B100A __attribute__((__BELOW100__)) = {1, 1, 0, 1, 0, 0, 1, 1,
+   26|       |                                                1, 0, 1, 1, 0, 1, 1, 1};
+   27|       |unsigned short *pA = (unsigned short *)&B100A;
+   28|       |BitField B100B __attribute__((__BELOW100__)) = {0, 0, 1, 0, 1, 1, 0, 0,
+   29|       |                                                0, 1, 0, 0, 1, 0, 0, 0};
+   30|       |unsigned short *pB = (unsigned short *)&B100B;
+   31|       |
+   32|      1|char *Do(void) {
+   33|      1|  if (B100A.b7) {
+   34|      1|    if (B100B.b7)
+   35|      0|      return "Fail";
+   36|      1|    else
+   37|      1|      return "Success";
+   38|      0|  } else
+   39|      0|    return "Fail";
+   40|      1|}
+   41|       |
+   42|      1|int main(void) { return Do()[0] == 'F'; }
+

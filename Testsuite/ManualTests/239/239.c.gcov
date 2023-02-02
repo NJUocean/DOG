@@ -1,0 +1,25 @@
+        -:    0:Source:239.c
+        -:    0:Graph:239.gcno
+        -:    0:Data:239.gcda
+        -:    0:Runs:1
+        -:    1:long val = 0x5e000000;
+        -:    2:
+        1:    3:long f1(void) { return 0x132; }
+        -:    4:
+        1:    5:long f2(void) { return 0x5e000000; }
+        -:    6:
+        1:    7:void f3(long b) { val = b; }
+        -:    8:
+        1:    9:void f4() {
+        1:   10:  long v = f1();
+        1:   11:  long o = f2();
+        1:   12:  v = (v & 0x00ffffff) | (o & 0xff000000);
+        1:   13:  f3(v);
+        1:   14:}
+        -:   15:
+        1:   16:main() {
+        1:   17:  f4();
+        1:   18:  if (val != 0x5e000132)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

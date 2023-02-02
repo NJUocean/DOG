@@ -1,0 +1,48 @@
+    1|       |/* PR middle-end/7847 */
+    2|       |/* Originator: <jk@tools.de> */
+    3|       |/* { dg-do run } */
+    4|       |
+    5|       |/* This used to fail on SPARC at runtime because of
+    6|       |   an unaligned memory access.  */
+    7|       |
+    8|       |typedef char int8_t;
+    9|       |typedef short int16_t;
+   10|       |typedef int int32_t;
+   11|       |typedef unsigned char uint8_t;
+   12|       |typedef unsigned short uint16_t;
+   13|       |typedef unsigned int uint32_t;
+   14|       |
+   15|       |typedef struct {
+   16|       |  uint32_t address;
+   17|       |  uint16_t size;
+   18|       |} __attribute__((packed)) sml_agl_data_t;
+   19|       |
+   20|       |typedef struct {
+   21|       |  sml_agl_data_t data[9];
+   22|       |} __attribute__((packed)) sml_agli_t;
+   23|       |
+   24|       |typedef struct {
+   25|       |  sml_agli_t sml_agli;
+   26|       |} __attribute__((packed)) dsi_t;
+   27|       |
+   28|       |typedef struct {
+   29|       |  int a;
+   30|       |  dsi_t dsi_pack;
+   31|       |} dvd_priv_t;
+   32|       |
+   33|      1|int dvd_read_sector(dvd_priv_t *d, unsigned char *data) {
+   34|      1|  int i, skip = 0;
+   35|      1|
+   36|     10|  for (i = 0; i < 9; i++)
+   37|      9|    if ((skip = d->dsi_pack.sml_agli.data[i].address) != 0)
+   38|      0|      break;
+   39|      1|
+   40|      1|  return skip;
+   41|      1|}
+   42|       |
+   43|      1|int main(void) {
+   44|      1|  static dvd_priv_t dvd_priv;
+   45|      1|  dvd_read_sector(&dvd_priv, 0);
+   46|      1|  return 0;
+   47|      1|}
+

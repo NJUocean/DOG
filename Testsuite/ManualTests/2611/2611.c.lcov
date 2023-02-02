@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run { target lto } } */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |/* { dg-options "-O2 -flto" } */
+    4|       |
+    5|       |__attribute__((target_clones("avx", "arch=slm", "arch=core-avx2",
+    6|       |                             "default"))) int
+    7|      2|foo() {
+    8|      2|  return -2;
+    9|      2|}
+   10|       |
+   11|      3|int bar() { return 2; }
+   12|       |
+   13|      1|int main() {
+   14|      1|  int r = 0;
+   15|      1|  r += bar();
+   16|      1|  r += foo();
+   17|      1|  r += bar();
+   18|      1|  r += foo();
+   19|      1|  r += bar();
+   20|      1|  return r - 2;
+   21|      1|}
+

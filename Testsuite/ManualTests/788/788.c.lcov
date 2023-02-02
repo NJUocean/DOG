@@ -1,0 +1,45 @@
+    1|       |/* dg-do run */
+    2|       |/* dg-options "-O2" */
+    3|       |
+    4|       |/* PR target/20126 was not really target-specific, but rather a loop's
+    5|       |   failure to take into account the possibility that a DEST_ADDR giv
+    6|       |   replacement might fail, such as when you attempt to replace a REG
+    7|       |   with a PLUS in one of the register_operands of cmpstrqi_rex_1.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |typedef struct {
+   12|       |  int a;
+   13|       |  char b[3];
+   14|       |} S;
+   15|       |S c = {2, "aa"}, d = {2, "aa"};
+   16|       |
+   17|      0|void *bar(const void *x, int y, int z) { return (void *)0; }
+   18|       |
+   19|      1|int foo(S *x, S *y) {
+   20|      1|  const char *e, *f, *g;
+   21|      1|  int h;
+   22|      1|
+   23|      1|  h = y->a;
+   24|      1|  f = y->b;
+   25|      1|  e = x->b;
+   26|      1|
+   27|      1|  if (h == 1)
+   28|      0|    return bar(e, *f, x->a) != 0;
+   29|      1|
+   30|      1|  g = e + x->a - h;
+   31|      1|  while (e <= g) {
+   32|      1|    const char *t = e + 1;
+   33|      1|    if (__builtin_memcmp(e, f, h) == 0)
+   34|      1|      return 1;
+   35|      0|    e = t;
+   36|      0|  }
+   37|      1|  return 0;
+   38|      1|}
+   39|       |
+   40|      1|int main(void) {
+   41|      1|  if (foo(&c, &d) != 1)
+   42|      0|    abort();
+   43|      1|  return 0;
+   44|      1|}
+

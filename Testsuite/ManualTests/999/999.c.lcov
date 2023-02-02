@@ -1,0 +1,35 @@
+    1|       |/* PR rtl-optimization/69896 */
+    2|       |/* { dg-do run { target int128 } } */
+    3|       |/* { dg-options "-w -O -fcaller-saves -fno-dse -frename-registers -fno-tree-ter"
+    4|       | * } */
+    5|       |/* { dg-additional-options "-mno-sse" { target x86_64-*-* i?86-*-* } } */
+    6|       |
+    7|       |typedef unsigned short A;
+    8|       |typedef unsigned short B __attribute__((vector_size(32)));
+    9|       |typedef unsigned int C;
+   10|       |typedef unsigned int D __attribute__((vector_size(32)));
+   11|       |typedef unsigned long long E;
+   12|       |typedef unsigned long long F __attribute__((vector_size(32)));
+   13|       |typedef unsigned __int128 G;
+   14|       |typedef unsigned __int128 H __attribute__((vector_size(32)));
+   15|       |
+   16|       |G __attribute__((noinline, noclone))
+   17|       |foo(A a, C b, E c, G d, A e, C f, E g, G h, B i, D j, F k, H l, B m, D n, F o,
+   18|      1|    H p) {
+   19|      1|  j /= (D){-c, -c, ~h, 1, ~l[0], -m[0], p[0], 1} | 1;
+   20|      1|  l %= (H)o | 1;
+   21|      1|  l[1] = (l[1] << (e & 127)) | (l[1] >> (e & 127));
+   22|      1|  return j[6] + l[0] + l[1] + n[7] + o[0] + o[2] + o[3] + p[0] + p[1];
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  if (__CHAR_BIT__ != 8 || sizeof(A) != 2 || sizeof(C) != 4 || sizeof(E) != 8 ||
+   27|      1|      sizeof(G) != 16)
+   28|      0|    return 0;
+   29|      1|  G x = foo(0, 1, 2, 3, 4, 5, 6, 7, (B){}, (D){}, (F){}, (H){}, (B){}, (D){},
+   30|      1|            (F){}, (H){0xffffffffffffffffULL, 0x74a3e4aULL});
+   31|      1|  if ((E)x != 0x00000000074a3e49ULL || (E)(x >> 64) != 1)
+   32|      0|    __builtin_abort();
+   33|      1|  return 0;
+   34|      1|}
+

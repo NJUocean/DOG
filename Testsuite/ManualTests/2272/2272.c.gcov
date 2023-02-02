@@ -1,0 +1,22 @@
+        -:    0:Source:2272.c
+        -:    0:Graph:2272.gcno
+        -:    0:Data:2272.gcda
+        -:    0:Runs:1
+        -:    1:struct x {
+        -:    2:  unsigned x1 : 1;
+        -:    3:  unsigned x2 : 2;
+        -:    4:  unsigned x3 : 3;
+        -:    5:};
+        -:    6:
+        1:    7:foobar(int x, int y, int z) {
+        1:    8:  struct x a = {x, y, z};
+        1:    9:  struct x b = {x, y, z};
+        1:   10:  struct x *c = &b;
+        -:   11:
+        1:   12:  c->x3 += (a.x2 - a.x1) * c->x2;
+        1:   13:  if (a.x1 != 1 || c->x3 != 5)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}
+        -:   17:
+        1:   18:main() { foobar(1, 2, 3); }

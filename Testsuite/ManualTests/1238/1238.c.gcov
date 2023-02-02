@@ -1,0 +1,24 @@
+        -:    0:Source:1238.c
+        -:    0:Graph:1238.gcno
+        -:    0:Data:1238.gcda
+        -:    0:Runs:1
+        -:    1:/* Test floating-point contraction occurs only within source language
+        -:    2:   expressions.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c99 -pedantic-errors" } */
+        -:    5:/* { dg-skip-if "ptx only loosely follows IEEE" { "nvptx-*-*" } } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        -:   10:volatile float a = 1 + 0x1p-23f, b = 1 - 0x1p-23f, c = -1;
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  float av = a, bv = b, cv = c;
+        1:   14:  float p = av * bv;
+        1:   15:  float r = p + cv;
+        1:   16:  if (r == 0)
+        1:   17:    exit(0);
+        -:   18:  else
+    #####:   19:    abort();
+        -:   20:}

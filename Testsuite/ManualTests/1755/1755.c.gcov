@@ -1,0 +1,18 @@
+        -:    0:Source:1755.c
+        -:    0:Graph:1755.gcno
+        -:    0:Data:1755.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        1:    2:double normalize(x) double x;
+        -:    3:{
+        1:    4:  if (x == 0)
+        1:    5:    x = 0;
+        1:    6:  return x;
+        -:    7:}
+        1:    8:main() {
+        -:    9:  char b[9];
+        1:   10:  sprintf(b, "%g", normalize(-0.0));
+        1:   11:  if (strcmp(b, "0"))
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

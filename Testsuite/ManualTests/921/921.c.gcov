@@ -1,0 +1,30 @@
+        -:    0:Source:921.c
+        -:    0:Graph:921.gcno
+        -:    0:Data:921.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct rtx_def {
+        -:    2:  int f1 : 1;
+        -:    3:  int f2 : 1;
+        -:    4:} * rtx;
+        -:    5:
+        1:    6:static rtx f(orig) register rtx orig;
+        -:    7:{
+       1*:    8:  if (orig->f1 || orig->f2)
+        1:    9:    return orig;
+    #####:   10:  orig->f2 = 1;
+    #####:   11:  return orig;
+        -:   12:}
+        -:   13:
+    #####:   14:void f2() { abort(); }
+        -:   15:
+        1:   16:main() {
+        -:   17:  struct rtx_def foo;
+        -:   18:  rtx bar;
+        -:   19:
+        1:   20:  foo.f1 = 1;
+        1:   21:  foo.f2 = 0;
+        1:   22:  bar = f(&foo);
+        1:   23:  if (bar != &foo || bar->f2 != 0)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

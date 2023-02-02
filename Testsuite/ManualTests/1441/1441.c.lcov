@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fschedule-insns" { target scheduling } } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |struct S {
+    7|       |  int i;
+    8|       |  int j;
+    9|       |};
+   10|       |
+   11|       |struct U {
+   12|       |  struct S s;
+   13|       |} __attribute__((may_alias));
+   14|       |
+   15|      1|int __attribute__((noinline, noclone)) foo(struct U *p, struct U *q) {
+   16|      1|  int i;
+   17|      1|  q->s.j = 1;
+   18|      1|  i = p->s.i;
+   19|      1|  return i;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  int a[3];
+   24|      1|  int *p = a;
+   25|      1|  p[1] = 0;
+   26|      1|  if (foo((struct U *)(p + 1), (struct U *)p) != 1)
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

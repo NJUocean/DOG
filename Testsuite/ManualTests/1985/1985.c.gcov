@@ -1,0 +1,11 @@
+        -:    0:Source:1985.c
+        -:    0:Graph:1985.gcno
+        -:    0:Data:1985.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-size "4*4*2*80" } */
+        -:    2:
+        -:    3:#define A "This is a long test that tests the structure initialization"
+        -:    4:#define B A, A
+        -:    5:#define C B, B, B, B
+        -:    6:#define D C, C, C, C
+        1:    7:int main() { char *subs[] = {D, D, D, D, D, D, D, D, D, D, D, D, D, D, D}; }

@@ -1,0 +1,18 @@
+    1|       |/* PR middle-end/38422 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |struct S {
+    6|       |  int s : (sizeof(int) * __CHAR_BIT__ - 2);
+    7|       |} s;
+    8|       |
+    9|      1|void foo(void) { s.s *= 2; }
+   10|       |
+   11|      1|int main() {
+   12|      1|  s.s = 24;
+   13|      1|  foo();
+   14|      1|  if (s.s != 48)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

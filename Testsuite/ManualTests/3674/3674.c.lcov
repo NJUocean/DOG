@@ -1,0 +1,29 @@
+    1|       |int g_21;
+    2|       |int g_211;
+    3|       |int g_261;
+    4|       |
+    5|      1|static void __attribute__((noinline, noclone)) func_32(int b) {
+    6|      1|  if (b) {
+    7|      0|  lbl_370:
+    8|      0|    g_21 = 1;
+    9|      0|  }
+   10|      1|
+   11|      1|  for (g_261 = -1; g_261 > -2; g_261--) {
+   12|      1|    if (g_211 + 1) {
+   13|      1|      return;
+   14|      1|    } else {
+   15|      0|      g_21 = 1;
+   16|      0|      goto lbl_370;
+   17|      0|    }
+   18|      1|  }
+   19|      1|}
+   20|       |
+   21|       |extern void abort(void);
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  func_32(0);
+   25|      1|  if (g_261 != -1)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+

@@ -1,0 +1,29 @@
+        -:    0:Source:2125.c
+        -:    0:Graph:2125.gcno
+        -:    0:Data:2125.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/78232 */
+        -:    2:/* PR rtl-optimization/78248 */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-fsanitize=undefined" } */
+        -:    5:
+        -:    6:static struct S { int f0 : 15; } a;
+        -:    7:
+        -:    8:int b[1], c = 2, d, e, f, g;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  struct S h = {-2};
+      641:   12:  for (; e < 640; e++)
+      641:   13:    for (; f < 1; f++) {
+        1:   14:      if (c < 2) {
+    #####:   15:        d = b[e];
+    #####:   16:        h = a;
+        -:   17:      }
+        1:   18:      g = c;
+        1:   19:      c = 1;
+        1:   20:      if (!h.f0)
+    #####:   21:        break;
+        1:   22:      c = g;
+        -:   23:    }
+        1:   24:  return 0;
+        -:   25:}

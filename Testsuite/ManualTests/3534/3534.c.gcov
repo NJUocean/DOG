@@ -1,0 +1,32 @@
+        -:    0:Source:3534.c
+        -:    0:Graph:3534.gcno
+        -:    0:Data:3534.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target label_values } */
+        -:    2:/* { dg-require-effective-target trampolines } */
+        -:    3:/* { dg-add-options stack_size } */
+        -:    4:
+        -:    5:#ifdef STACK_SIZE
+        -:    6:#define DEPTH ((STACK_SIZE) / 512 + 1)
+        -:    7:#else
+        -:    8:#define DEPTH 1000
+        -:    9:#endif
+        -:   10:
+        1:   11:x(a) {
+        -:   12:  __label__ xlab;
+     1001:   13:  void y(a) {
+     1001:   14:    if (a == 0)
+        1:   15:      goto xlab;
+     1000:   16:    y(a - 1);
+    #####:   17:  }
+        1:   18:  y(a);
+        1:   19:xlab:;
+        1:   20:  return a;
+        -:   21:}
+        -:   22:
+        1:   23:main() {
+        1:   24:  if (x(DEPTH) != DEPTH)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  exit(0);
+        -:   28:}

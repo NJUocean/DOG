@@ -1,0 +1,28 @@
+        -:    0:Source:2852.c
+        -:    0:Graph:2852.gcno
+        -:    0:Data:2852.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target powerpc*-*-darwin* } } */
+        -:    2:/* { dg-options "-O2 -mpowerpc64 -mdynamic-no-pic" } */
+        -:    3:
+        -:    4:long long knight_attacks[64];
+        -:    5:long long InitializeAttackBoards(void);
+        -:    6:
+        1:    7:int main() { return InitializeAttackBoards(); }
+        -:    8:
+        1:    9:long long InitializeAttackBoards(void) {
+        -:   10:
+        -:   11:  int i, j;
+        -:   12:
+       65:   13:  for (i = 0; i < 64; i++) {
+        -:   14:  }
+        -:   15:
+       65:   16:  for (i = 0; i < 64; i++) {
+       64:   17:    knight_attacks[i] = 0;
+      576:   18:    for (j = 0; j < 8; j++) {
+      512:   19:      knight_attacks[i] = 0;
+        -:   20:    }
+        -:   21:  }
+        -:   22:
+        1:   23:  return knight_attacks[0];
+        -:   24:}

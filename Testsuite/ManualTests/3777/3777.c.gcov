@@ -1,0 +1,41 @@
+        -:    0:Source:3777.c
+        -:    0:Graph:3777.gcno
+        -:    0:Data:3777.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56899 */
+        -:    2:
+        -:    3:#if __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+        1:    4:__attribute__((noinline, noclone)) void f1(int v) {
+        1:    5:  int x = -214748365 * (v - 1);
+        1:    6:  if (x != -1932735285)
+    #####:    7:    __builtin_abort();
+        1:    8:}
+        -:    9:
+        1:   10:__attribute__((noinline, noclone)) void f2(int v) {
+        1:   11:  int x = 214748365 * (v + 1);
+        1:   12:  if (x != -1932735285)
+    #####:   13:    __builtin_abort();
+        1:   14:}
+        -:   15:
+        1:   16:__attribute__((noinline, noclone)) void f3(unsigned int v) {
+        1:   17:  unsigned int x = -214748365U * (v - 1);
+        1:   18:  if (x != -1932735285U)
+    #####:   19:    __builtin_abort();
+        1:   20:}
+        -:   21:
+        1:   22:__attribute__((noinline, noclone)) void f4(unsigned int v) {
+        1:   23:  unsigned int x = 214748365U * (v + 1);
+        1:   24:  if (x != -1932735285U)
+    #####:   25:    __builtin_abort();
+        1:   26:}
+        -:   27:#endif
+        -:   28:
+        1:   29:int main() {
+        -:   30:#if __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+        1:   31:  f1(10);
+        1:   32:  f2(-10);
+        1:   33:  f3(10);
+        1:   34:  f4(-10U);
+        -:   35:#endif
+        1:   36:  return 0;
+        -:   37:}

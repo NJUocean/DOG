@@ -1,0 +1,23 @@
+    1|       |/* PR target/90867 */
+    2|       |/* { dg-do run { target lp64 } } */
+    3|       |/* { dg-options "-O2 -msse2" } */
+    4|       |
+    5|       |unsigned long long freq = 3600000000UL; /* 3.6 GHz = 3600.0 MHz */
+    6|       |
+    7|      4|__attribute__((noipa)) void bar(double x) {
+    8|      4|  static double d = 3600000000.0;
+    9|      4|  if (x != d)
+   10|      0|    __builtin_abort();
+   11|      4|  d /= 1000.0;
+   12|      4|}
+   13|       |
+   14|      1|__attribute__((target("arch=x86-64"))) int foo() {
+   15|      1|  bar((double)freq);
+   16|      1|  bar(1e-3 * freq);
+   17|      1|  bar(1e-6 * freq);
+   18|      1|  bar(1e-9 * freq);
+   19|      1|  return 0;
+   20|      1|}
+   21|       |
+   22|      1|int main() { return foo(); }
+

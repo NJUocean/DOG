@@ -1,0 +1,56 @@
+    1|       |/* PR rtl-optimization/65401 */
+    2|       |
+    3|       |struct S {
+    4|       |  unsigned short s[64];
+    5|       |};
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) void foo(struct S *x) {
+    8|      1|  unsigned int i;
+    9|      1|  unsigned char *s;
+   10|      1|
+   11|      1|  s = (unsigned char *)x->s;
+   12|     65|  for (i = 0; i < 64; i++)
+   13|     64|    x->s[i] = s[i * 2] | (s[i * 2 + 1] << 8);
+   14|      1|}
+   15|       |
+   16|      1|__attribute__((noinline, noclone)) void bar(struct S *x) {
+   17|      1|  unsigned int i;
+   18|      1|  unsigned char *s;
+   19|      1|
+   20|      1|  s = (unsigned char *)x->s;
+   21|     65|  for (i = 0; i < 64; i++)
+   22|     64|    x->s[i] = (s[i * 2] << 8) | s[i * 2 + 1];
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  unsigned int i;
+   27|      1|  struct S s;
+   28|      1|  if (sizeof(unsigned short) != 2)
+   29|      0|    return 0;
+   30|     65|  for (i = 0; i < 64; i++)
+   31|     64|    s.s[i] = i + ((64 - i) << 8);
+   32|      1|  foo(&s);
+   33|       |#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+   34|       |  for (i = 0; i < 64; i++)
+   35|       |    if (s.s[i] != (64 - i) + (i << 8))
+   36|       |      __builtin_abort();
+   37|       |#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   38|     65|  for (i = 0; i < 64; i++)
+   39|     64|    if (s.s[i] != i + ((64 - i) << 8))
+   40|      0|      __builtin_abort();
+   41|      1|#endif
+   42|     65|  for (i = 0; i < 64; i++)
+   43|     64|    s.s[i] = i + ((64 - i) << 8);
+   44|      1|  bar(&s);
+   45|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   46|     65|  for (i = 0; i < 64; i++)
+   47|     64|    if (s.s[i] != (64 - i) + (i << 8))
+   48|      0|      __builtin_abort();
+   49|       |#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+   50|       |  for (i = 0; i < 64; i++)
+   51|       |    if (s.s[i] != i + ((64 - i) << 8))
+   52|       |      __builtin_abort();
+   53|       |#endif
+   54|      1|  return 0;
+   55|      1|}
+

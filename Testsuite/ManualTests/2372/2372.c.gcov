@@ -1,0 +1,30 @@
+        -:    0:Source:2372.c
+        -:    0:Graph:2372.gcno
+        -:    0:Data:2372.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:/* It's unsafe to use CMN in these comparisons.  */
+        -:    7:
+        1:    8:void __attribute__((noinline)) foo_s32(int a, int b) {
+        1:    9:  if (a < -b)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        -:   13:void __attribute__((noinline))
+        1:   14:foo_s64(unsigned long long a, unsigned long long b) {
+        1:   15:  if (a > -b)
+    #####:   16:    abort();
+        1:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  int a = 30;
+        1:   21:  int b = 42;
+        1:   22:  foo_s32(a, b);
+        1:   23:  foo_s64(a, b);
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:/* { dg-final { scan-assembler-not "cmn\t" } } */

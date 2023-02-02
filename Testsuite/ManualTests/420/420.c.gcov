@@ -1,0 +1,45 @@
+        -:    0:Source:420.c
+        -:    0:Graph:420.gcno
+        -:    0:Data:420.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define N 111
+        -:    9:#define M 111
+        -:   10:
+        1:   11:static int __attribute__((noinline)) foo(int *x) {
+        -:   12:  int i, j;
+        1:   13:  int sum = 0;
+        -:   14:
+      112:   15:  for (j = 0; j < M; ++j)
+    12432:   16:    for (i = 0; i < N; ++i)
+    12321:   17:      sum += x[M * i + j];
+        -:   18:
+        1:   19:  return sum;
+        -:   20:}
+        -:   21:
+        -:   22:extern void abort();
+        -:   23:
+        1:   24:int main(void) {
+        -:   25:  int A[N * M];
+        -:   26:  int i, res;
+        -:   27:
+    12322:   28:  for (i = 0; i < N * M; i++)
+    12321:   29:    A[i] = 2;
+        -:   30:
+        1:   31:  res = foo(A);
+        -:   32:
+        -:   33:#if DEBUG
+        -:   34:  fprintf(stderr, "res = %d \n", res);
+        -:   35:#endif
+        -:   36:
+        1:   37:  if (res != 24642)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  return 0;
+        -:   41:}

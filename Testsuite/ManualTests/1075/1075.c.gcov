@@ -1,0 +1,57 @@
+        -:    0:Source:1075.c
+        -:    0:Graph:1075.gcno
+        -:    0:Data:1075.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/81094 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    4:/* { dg-options "-fsanitize=object-size" } */
+        -:    5:
+        -:    6:#define N 20
+        -:    7:
+        -:    8:struct S {
+        -:    9:  int i;
+        -:   10:};
+        -:   11:
+        4:   12:__attribute__((noinline, noclone)) void f0(struct S s) {
+        4:   13:  asm volatile("" : : "r"(s.i) : "memory");
+        4:   14:}
+        -:   15:
+        1:   16:__attribute__((noinline, noclone)) void f1(int i) {
+        -:   17:  char *orig;
+        -:   18:  struct S *p;
+        1:   19:  orig = (char *)__builtin_calloc(N, sizeof(struct S));
+        1:   20:  p = (struct S *)orig;
+        1:   21:  f0(*(p + i));
+        1:   22:  f0(p[i]);
+        1:   23:  p++;
+        1:   24:  f0(p[i - 1]);
+        1:   25:  f0(*(p + i - 1));
+        1:   26:  __builtin_free(orig);
+        1:   27:}
+        -:   28:
+        -:   29:/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+        -:   30: * of type 'struct S'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   31:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   32:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   33:/* { dg-output "\[^\n\r]*\\^\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   34:/* { dg-output "\[^\n\r]*load of address \[^\n\r]* with insufficient space for
+        -:   35: * an object of type 'struct S'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   36:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   37:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   38:/* { dg-output "\[^\n\r]*\\^\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   39:/* { dg-output "\[^\n\r]*load of address \[^\n\r]* with insufficient space for
+        -:   40: * an object of type 'struct S'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   41:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   42:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   43:/* { dg-output "\[^\n\r]*\\^\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   44:/* { dg-output "\[^\n\r]*load of address \[^\n\r]* with insufficient space for
+        -:   45: * an object of type 'struct S'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   46:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   47:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   48:/* { dg-output "\[^\n\r]*\\^" } */
+        -:   49:
+        1:   50:int main() {
+        1:   51:  f1(N);
+        1:   52:  return 0;
+        -:   53:}

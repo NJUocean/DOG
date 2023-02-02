@@ -1,0 +1,31 @@
+        -:    0:Source:3399.c
+        -:    0:Graph:3399.gcno
+        -:    0:Data:3399.gcda
+        -:    0:Runs:1
+        -:    1:void add_unwind_adjustsp(long);
+        -:    2:void abort(void);
+        -:    3:
+        -:    4:unsigned char bytes[5];
+        -:    5:
+        1:    6:void add_unwind_adjustsp(long offset) {
+        -:    7:  int n;
+        -:    8:  unsigned long o;
+        -:    9:
+        1:   10:  o = (long)((offset - 0x204) >> 2);
+        -:   11:
+        1:   12:  n = 0;
+        3:   13:  while (o) {
+        2:   14:    bytes[n] = o & 0x7f;
+        2:   15:    o >>= 7;
+        2:   16:    if (o)
+        1:   17:      bytes[n] |= 0x80;
+        2:   18:    n++;
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  add_unwind_adjustsp(4132);
+        1:   24:  if (bytes[0] != 0x88 || bytes[1] != 0x07)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

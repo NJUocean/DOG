@@ -1,0 +1,11 @@
+        -:    0:Source:271.c
+        -:    0:Graph:271.gcno
+        -:    0:Data:271.gcda
+        -:    0:Runs:1
+        -:    1:/* Test -segaddr.  */
+        -:    2:/* Contributed by Devang Patel  <dpatel@apple.com>  */
+        -:    3:
+        -:    4:/* { dg-do compile { target *-*-darwin* } } */
+        -:    5:/* { dg-options "-segaddr __DATA 4000" } */
+        -:    6:
+        1:    7:int main() { return 0; }

@@ -1,0 +1,20 @@
+        -:    0:Source:2860.c
+        -:    0:Graph:2860.gcno
+        -:    0:Data:2860.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc*-*-darwin* powerpc*-*-aix* rs6000-*-*
+        -:    2: * powerpc*-*-linux* } } } */
+        -:    3:/* { dg-options "-O2 -mlong-double-128" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:volatile long double l, m, n;
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  l = __builtin_copysignl(0.0L, -1.0L);
+        1:   11:  m = __builtin_copysignl(0.0L, -1.0L);
+        1:   12:  n = l + m;
+        1:   13:  if (__builtin_copysignl(1.0L, n) >= 0.0L)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

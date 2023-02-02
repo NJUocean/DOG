@@ -1,0 +1,62 @@
+    1|       |/* Check that certain subnormal numbers (formerly known as denormalized
+    2|       |   numbers) are rounded to within 0.5 ulp.  PR other/14354.  */
+    3|       |
+    4|       |/* This test requires that float and unsigned int are the same size and
+    5|       |   that the sign-bit of the float is at MSB of the unsigned int.  */
+    6|       |
+    7|       |#if __INT_MAX__ != 2147483647L
+    8|       |int main() { exit(0); }
+    9|       |#else
+   10|       |
+   11|       |union uf {
+   12|       |  unsigned int u;
+   13|       |  float f;
+   14|       |};
+   15|       |
+   16|     12|static float u2f(unsigned int v) {
+   17|     12|  union uf u;
+   18|     12|  u.u = v;
+   19|     12|  return u.f;
+   20|     12|}
+   21|       |
+   22|      6|static unsigned int f2u(float v) {
+   23|      6|  union uf u;
+   24|      6|  u.f = v;
+   25|      6|  return u.u;
+   26|      6|}
+   27|       |
+   28|       |int ok = 1;
+   29|       |
+   30|      6|static void tstmul(unsigned int ux, unsigned int uy, unsigned int ur) {
+   31|      6|  float x = u2f(ux);
+   32|      6|  float y = u2f(uy);
+   33|      6|
+   34|      6|  if (f2u(x * y) != ur)
+   35|      0|    /* Set a variable rather than aborting here, to simplify tracing when
+   36|      0|       several computations are wrong.  */
+   37|      0|    ok = 0;
+   38|      6|}
+   39|       |
+   40|       |/* We don't want to make this const and static, or else we risk inlining
+   41|       |   causing the test to fold as constants at compile-time.  */
+   42|       |struct {
+   43|       |  unsigned int p1, p2, res;
+   44|       |} expected[] = {{0xfff, 0x3f800400, 0xfff},
+   45|       |                {0xf, 0x3fc88888, 0x17},
+   46|       |                {0xf, 0x3f844444, 0xf}};
+   47|       |
+   48|      1|int main() {
+   49|      1|  unsigned int i;
+   50|      1|
+   51|      4|  for (i = 0; i < sizeof(expected) / sizeof(expected[0]); i++) {
+   52|      3|    tstmul(expected[i].p1, expected[i].p2, expected[i].res);
+   53|      3|    tstmul(expected[i].p2, expected[i].p1, expected[i].res);
+   54|      3|  }
+   55|      1|
+   56|      1|  if (!ok)
+   57|      0|    abort();
+   58|      1|
+   59|      1|  exit(0);
+   60|      1|}
+   61|       |#endif
+

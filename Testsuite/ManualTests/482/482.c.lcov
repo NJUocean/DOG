@@ -1,0 +1,142 @@
+    1|       |/* PR debug/49676 */
+    2|       |/* { dg-do run { target lp64 } } */
+    3|       |/* { dg-options "-g -fno-ipa-icf" } */
+    4|       |
+    5|       |volatile int v;
+    6|       |
+    7|       |__attribute__((noinline, noclone)) unsigned long long
+    8|      1|foo(unsigned long long x) {
+    9|      1|  unsigned long long a =
+   10|      1|      x * (0x17ULL
+   11|      1|           << 31); /* { dg-final { gdb-test .+18 "a" "(0x17ULL << 31)" } } */
+   12|      1|  unsigned long long b =
+   13|      1|      x *
+   14|      1|      (0x7ULL << 33); /* { dg-final { gdb-test .+17 "b" "(0x7ULL << 33)" } } */
+   15|      1|  unsigned long long c =
+   16|      1|      x *
+   17|      1|      (0x1ULL << 35); /* { dg-final { gdb-test .+16 "c" "(0x1ULL << 35)" } } */
+   18|      1|  unsigned long long d =
+   19|      1|      x * (0x17ULL
+   20|      1|           << 15); /* { dg-final { gdb-test .+15 "d" "(0x17ULL << 15)" } } */
+   21|      1|  unsigned long long e =
+   22|      1|      x * (0x17ULL
+   23|      1|           << 50); /* { dg-final { gdb-test .+14 "e" "(0x17ULL << 50)" } } */
+   24|      1|  unsigned long long f =
+   25|      1|      x * (0x37ULL
+   26|      1|           << 31); /* { dg-final { gdb-test .+13 "f" "(0x37ULL << 31)" } } */
+   27|      1|  unsigned long long g =
+   28|      1|      x * (0x37ULL
+   29|      1|           << 50); /* { dg-final { gdb-test .+12 "g" "(0x37ULL << 50)" } } */
+   30|      1|  unsigned long long h =
+   31|      1|      x * (0x1efULL
+   32|      1|           << 33); /* { dg-final { gdb-test .+11 "h" "(0x1efULL << 33)" } } */
+   33|      1|  unsigned long long i =
+   34|      1|      x * (0x1efULL
+   35|      1|           << 50); /* { dg-final { gdb-test .+10 "i" "(0x1efULL << 50)" } } */
+   36|      1|  unsigned long long j =
+   37|      1|      x * -(0x17ULL
+   38|      1|            << 31); /* { dg-final { gdb-test .+9 "j" "-(0x17ULL << 31)" } } */
+   39|      1|  unsigned long long k =
+   40|      1|      x *
+   41|      1|      -(0x7ULL << 33); /* { dg-final { gdb-test .+8 "k" "-(0x7ULL << 33)" } } */
+   42|      1|  unsigned long long l =
+   43|      1|      x *
+   44|      1|      -(0x1ULL << 35); /* { dg-final { gdb-test .+7 "l" "-(0x1ULL << 35)" } } */
+   45|      1|  unsigned long long m =
+   46|      1|      x * -(0x17ULL
+   47|      1|            << 15); /* { dg-final { gdb-test .+6 "m" "-(0x17ULL << 15)" } } */
+   48|      1|  unsigned long long n =
+   49|      1|      x * -(0x17ULL
+   50|      1|            << 50); /* { dg-final { gdb-test .+5 "n" "-(0x17ULL << 50)" } } */
+   51|      1|  unsigned long long o =
+   52|      1|      x * -(0x37ULL
+   53|      1|            << 31); /* { dg-final { gdb-test .+4 "o" "-(0x37ULL << 31)" } } */
+   54|      1|  unsigned long long p =
+   55|      1|      x * -(0x37ULL
+   56|      1|            << 50); /* { dg-final { gdb-test .+3 "p" "-(0x37ULL << 50)" } } */
+   57|      1|  unsigned long long q =
+   58|      1|      x * -(0x1efULL
+   59|      1|            << 33); /* { dg-final { gdb-test .+2 "q" "-(0x1efULL << 33)" } } */
+   60|      1|  unsigned long long r =
+   61|      1|      x * -(0x1efULL
+   62|      1|            << 50); /* { dg-final { gdb-test .+1 "r" "-(0x1efULL << 50)" } } */
+   63|      1|  v++;
+   64|      1|  return x;
+   65|      1|}
+   66|       |
+   67|       |__attribute__((noinline, noclone)) unsigned long long
+   68|      1|bar(unsigned long long x) {
+   69|      1|  unsigned long long a =
+   70|      1|      (x & 255) +
+   71|      1|      (0x17ULL
+   72|      1|       << 31); /* { dg-final { gdb-test .+18 "a" "(0x17ULL << 31)" } } */
+   73|      1|  unsigned long long b =
+   74|      1|      (x & 255) +
+   75|      1|      (0x7ULL << 33); /* { dg-final { gdb-test .+17 "b" "(0x7ULL << 33)" } } */
+   76|      1|  unsigned long long c =
+   77|      1|      (x & 255) +
+   78|      1|      (0x1ULL << 35); /* { dg-final { gdb-test .+16 "c" "(0x1ULL << 35)" } } */
+   79|      1|  unsigned long long d =
+   80|      1|      (x & 255) +
+   81|      1|      (0x17ULL
+   82|      1|       << 15); /* { dg-final { gdb-test .+15 "d" "(0x17ULL << 15)" } } */
+   83|      1|  unsigned long long e =
+   84|      1|      (x & 255) +
+   85|      1|      (0x17ULL
+   86|      1|       << 50); /* { dg-final { gdb-test .+14 "e" "(0x17ULL << 50)" } } */
+   87|      1|  unsigned long long f =
+   88|      1|      (x & 255) +
+   89|      1|      (0x37ULL
+   90|      1|       << 31); /* { dg-final { gdb-test .+13 "f" "(0x37ULL << 31)" } } */
+   91|      1|  unsigned long long g =
+   92|      1|      (x & 255) +
+   93|      1|      (0x37ULL
+   94|      1|       << 50); /* { dg-final { gdb-test .+12 "g" "(0x37ULL << 50)" } } */
+   95|      1|  unsigned long long h =
+   96|      1|      (x & 255) +
+   97|      1|      (0x1efULL
+   98|      1|       << 33); /* { dg-final { gdb-test .+11 "h" "(0x1efULL << 33)" } } */
+   99|      1|  unsigned long long i =
+  100|      1|      (x & 255) +
+  101|      1|      (0x1efULL
+  102|      1|       << 50); /* { dg-final { gdb-test .+10 "i" "(0x1efULL << 50)" } } */
+  103|      1|  unsigned long long j =
+  104|      1|      (x & 255) +
+  105|      1|      -(0x17ULL
+  106|      1|        << 31); /* { dg-final { gdb-test .+9 "j" "-(0x17ULL << 31)" } } */
+  107|      1|  unsigned long long k =
+  108|      1|      (x & 255) +
+  109|      1|      -(0x7ULL << 33); /* { dg-final { gdb-test .+8 "k" "-(0x7ULL << 33)" } } */
+  110|      1|  unsigned long long l =
+  111|      1|      (x & 255) +
+  112|      1|      -(0x1ULL << 35); /* { dg-final { gdb-test .+7 "l" "-(0x1ULL << 35)" } } */
+  113|      1|  unsigned long long m =
+  114|      1|      (x & 255) +
+  115|      1|      -(0x17ULL
+  116|      1|        << 15); /* { dg-final { gdb-test .+6 "m" "-(0x17ULL << 15)" } } */
+  117|      1|  unsigned long long n =
+  118|      1|      (x & 255) +
+  119|      1|      -(0x17ULL
+  120|      1|        << 50); /* { dg-final { gdb-test .+5 "n" "-(0x17ULL << 50)" } } */
+  121|      1|  unsigned long long o =
+  122|      1|      (x & 255) +
+  123|      1|      -(0x37ULL
+  124|      1|        << 31); /* { dg-final { gdb-test .+4 "o" "-(0x37ULL << 31)" } } */
+  125|      1|  unsigned long long p =
+  126|      1|      (x & 255) +
+  127|      1|      -(0x37ULL
+  128|      1|        << 50); /* { dg-final { gdb-test .+3 "p" "-(0x37ULL << 50)" } } */
+  129|      1|  unsigned long long q =
+  130|      1|      (x & 255) +
+  131|      1|      -(0x1efULL
+  132|      1|        << 33); /* { dg-final { gdb-test .+2 "q" "-(0x1efULL << 33)" } } */
+  133|      1|  unsigned long long r =
+  134|      1|      (x & 255) +
+  135|      1|      -(0x1efULL
+  136|      1|        << 50); /* { dg-final { gdb-test .+1 "r" "-(0x1efULL << 50)" } } */
+  137|      1|  v++;
+  138|      1|  return x;
+  139|      1|}
+  140|       |
+  141|      1|int main() { return foo(1) + bar(256) - 257; }
+

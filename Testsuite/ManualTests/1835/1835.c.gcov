@@ -1,0 +1,29 @@
+        -:    0:Source:1835.c
+        -:    0:Graph:1835.gcno
+        -:    0:Data:1835.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-optimized -fdump-ipa-profile-optimized" } */
+        -:    2:int a[1000];
+        -:    3:int b[1000];
+        -:    4:int size = 1;
+        -:    5:int max = 10000;
+        -:    6:#ifdef __mips
+        -:    7:/* We allow short memcpy()s for MIPS16.  */
+        -:    8:int __attribute__((nomips16))
+        -:    9:#else
+        -:   10:int
+        -:   11:#endif
+        1:   12:main() {
+        -:   13:  int i;
+    10001:   14:  for (i = 0; i < max; i++) {
+    10000:   15:    __builtin_memset(a, 10, size * sizeof(a[0]));
+    10000:   16:    asm("");
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:/* autofdo doesn't support value profiling for now: */
+        -:   21:/* { dg-final-use-not-autofdo { scan-ipa-dump "Transformation done: single value
+        -:   22: * 4 stringop" "profile"} } */
+        -:   23:/* The versioned memset of size 4 should be optimized to an assignment.
+        -:   24:   { dg-final-use-not-autofdo { scan-tree-dump "MEM <\[a-z \]+> \\\[\\(void
+        -:   25:   .\\)&a\\\] = 168430090" "optimized" } } */

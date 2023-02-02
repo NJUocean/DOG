@@ -1,0 +1,40 @@
+        -:    0:Source:238.c
+        -:    0:Graph:238.gcno
+        -:    0:Data:238.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:
+        -:    4:/* First two tests sourced from a bug report of Thomas Pornin.
+        -:    5:   Varargs test source Jamie Lokier.
+        -:    6:   All adapted for the testsuite by Neil Booth, Oct 2000.  */
+        -:    7:
+        -:    8:/* Tests various macro abuse is correctly expanded.  */
+        -:    9:static int d = 4;
+        -:   10:#define c(x) d
+        -:   11:#define d(x) c(2)
+        -:   12:
+        -:   13:#if 0
+        -:   14:/* This macro chain above sucks up the whole file once it starts, so
+        -:   15:   I've commented it out.  The example is left for idle amusement :-) */
+        -:   16:#define a(x) b(
+        -:   17:#define b(x) a(
+        -:   18:#endif
+        -:   19:
+        -:   20:#define apply(...) apply2(__VA_ARGS__)
+        -:   21:#define half(x) ((x) / 2)
+        -:   22:#define apply2(f, x) f(x)
+        -:   23:
+        -:   24:extern void abort(void);
+        -:   25:extern void exit(int);
+        -:   26:
+        1:   27:int main() {
+        -:   28:  /* Expands to c(2) then d.  */
+        1:   29:  if (c(c)(c) != 4)
+    #####:   30:    abort();
+        -:   31:
+        -:   32:  if (apply(half, 200) != 100)
+        -:   33:    abort();
+        -:   34:
+        1:   35:  exit(0);
+        -:   36:}

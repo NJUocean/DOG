@@ -1,0 +1,24 @@
+        -:    0:Source:2335.c
+        -:    0:Graph:2335.gcno
+        -:    0:Data:2335.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    2:/* { dg-do run { target native } } */
+        -:    3:
+        -:    4:int a = 0;
+        -:    5:
+        2:    6:int main() {
+        1:    7:  for (;; a++) {
+        -:    8:    int c[1];
+        2:    9:    if (a) {
+        1:   10:      break;
+        -:   11:      a;
+        1:   12:      continue; /* count(1) */
+        -:   13:    }
+        1:   14:    continue; /* count(1) */
+        -:   15:  }
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { run-gcov gcov-pr85217.c } } */

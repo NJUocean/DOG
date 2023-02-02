@@ -1,0 +1,35 @@
+        -:    0:Source:1271.c
+        -:    0:Graph:1271.gcno
+        -:    0:Data:1271.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* m32c is already packed.  */
+        -:    3:/* { dg-skip-if "" { "m32c-*-*" } } */
+        -:    4:
+        -:    5:void *memcpy(void *dest, const void *src, __SIZE_TYPE__ n);
+        -:    6:
+        -:    7:struct timeval {
+        -:    8:  long tv_sec;
+        -:    9:};
+        -:   10:
+        -:   11:struct outdata {
+        -:   12:  long align;
+        -:   13:  char seq;
+        -:   14:  struct timeval tv
+        -:   15:      __attribute__((packed)); /* { dg-warning "attribute ignored" "" { target
+        -:   16:                                  default_packed } } */
+        -:   17:};
+        -:   18:
+        -:   19:void send_probe(struct outdata *outdata, struct timeval *tp)
+        -:   20:    __attribute__((noinline));
+        1:   21:void send_probe(struct outdata *outdata, struct timeval *tp) {
+        1:   22:  memcpy(&outdata->tv, tp, sizeof outdata->tv);
+        1:   23:}
+        -:   24:
+        -:   25:struct timeval t;
+        -:   26:struct outdata outdata;
+        -:   27:
+        1:   28:int main() {
+        1:   29:  send_probe(&outdata, &t);
+        1:   30:  return 0;
+        -:   31:}

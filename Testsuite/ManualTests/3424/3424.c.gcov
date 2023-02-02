@@ -1,0 +1,29 @@
+        -:    0:Source:3424.c
+        -:    0:Graph:3424.gcno
+        -:    0:Data:3424.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:void do_exit(void) { exit(0); }
+    #####:    5:void do_abort(void) { abort(); }
+        -:    6:
+        1:    7:void foo(int x, int a) {
+        1:    8:  if (x < a)
+    #####:    9:    goto doit;
+        1:   10:  do_exit();
+    #####:   11:  if (x != a)
+    #####:   12:    goto doit;
+        -:   13:
+        -:   14:  /* else */
+    #####:   15:  do_abort();
+    #####:   16:  return;
+        -:   17:
+    #####:   18:doit:
+    #####:   19:  do_abort();
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(1, 0);
+    #####:   24:  return 0;
+        -:   25:}

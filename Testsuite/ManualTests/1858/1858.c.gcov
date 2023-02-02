@@ -1,0 +1,20 @@
+        -:    0:Source:1858.c
+        -:    0:Graph:1858.gcno
+        -:    0:Data:1858.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -Wno-coverage-mismatch" } */
+        -:    2:
+    #####:    3:int __attribute__((noinline)) bar(void) {}
+        -:    4:
+        1:    5:int foo(int i) {
+        -:    6:#ifdef _PROFILE_USE
+        -:    7:  if (i)
+        -:    8:    bar();
+        -:    9:#endif
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        1:   13:int main(int argc, char **argv) {
+        1:   14:  foo(argc);
+        1:   15:  return 0;
+        -:   16:}

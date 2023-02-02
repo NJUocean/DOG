@@ -1,0 +1,34 @@
+        -:    0:Source:161.c
+        -:    0:Graph:161.gcno
+        -:    0:Data:161.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -ftree-parallelize-loops=4 -fdump-tree-parloops2-details
+        -:    3: * -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        1:    7:void parloop(int N) {
+        -:    8:  int i, j;
+        -:    9:  int x[500][500];
+        -:   10:
+      501:   11:  for (i = 0; i < N; i++)
+   125250:   12:    for (j = 0; j < i; j++)
+   124750:   13:      x[i][j] = i + j + 3;
+        -:   14:
+      501:   15:  for (i = 0; i < N; i++)
+   125250:   16:    for (j = 0; j < i; j++)
+   124750:   17:      if (x[i][j] != i + j + 3)
+    #####:   18:        abort();
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  parloop(500);
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* Check that outer loop is parallelized.  */
+        -:   28:/* { dg-final { scan-tree-dump-times "parallelizing outer loop" 1 "parloops2" }
+        -:   29: * } */
+        -:   30:/* { dg-final { scan-tree-dump-times "loopfn" 4 "optimized" } } */

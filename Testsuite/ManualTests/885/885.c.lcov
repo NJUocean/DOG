@@ -1,0 +1,55 @@
+    1|       |/* PR target/44606 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |/* { dg-skip-if "requires io" { freestanding } }  */
+    5|       |
+    6|       |#include <stdio.h>
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |typedef struct _PixelPacket {
+   11|       |  unsigned char r, g, b;
+   12|       |} PixelPacket;
+   13|      6|#define ARRAYLEN(X) (sizeof(X) / sizeof(X[0]))
+   14|       |PixelPacket q[6];
+   15|      6|#define COLS (ARRAYLEN(q) - 1)
+   16|       |PixelPacket p[2 * COLS + 22];
+   17|       |#define Minify(POS, WEIGHT)                                                    \
+   18|     45|  do {                                                                         \
+   19|     45|    total_r += (WEIGHT) * (p[POS].r);                                          \
+   20|     45|    total_g += (WEIGHT) * (p[POS].g);                                          \
+   21|     45|    total_b += (WEIGHT) * (p[POS].b);                                          \
+   22|     45|  } while (0)
+   23|       |unsigned long columns = COLS;
+   24|      1|int main(void) {
+   25|      1|  static const unsigned char answers[COLS] = {31, 32, 34, 35, 36};
+   26|      1|  unsigned long x;
+   27|     33|  for (x = 0; x < sizeof(p) / sizeof(p[0]); x++) {
+   28|     32|    p[x].b = (x + 34) | 1;
+   29|     32|  }
+   30|      6|  for (x = 0; x < columns; x++) {
+   31|      5|    double total_r = 0, total_g = 0, total_b = 0;
+   32|      5|    double saved_r = 0, saved_g = 0, saved_b = 0;
+   33|      5|    Minify(2 * x + 0, 3.0);
+   34|      5|    Minify(2 * x + 1, 7.0);
+   35|      5|    Minify(2 * x + 2, 7.0);
+   36|      5|    saved_r = total_r;
+   37|      5|    saved_g = total_g;
+   38|      5|    Minify(2 * x + 11, 15.0);
+   39|      5|    Minify(2 * x + 12, 7.0);
+   40|      5|    Minify(2 * x + 18, 7.0);
+   41|      5|    Minify(2 * x + 19, 15.0);
+   42|      5|    Minify(2 * x + 20, 15.0);
+   43|      5|    Minify(2 * x + 21, 7.0);
+   44|      5|    q[x].r = (unsigned char)(total_r / 128.0 + 0.5);
+   45|      5|    q[x].g = (unsigned char)(total_g / 128.0 + 0.5);
+   46|      5|    q[x].b = (unsigned char)(total_b / 128.0 + 0.5);
+   47|      5|    fprintf(stderr, "r:%f g:%f b:%f\n", saved_r, saved_g, saved_b);
+   48|      5|  }
+   49|      6|  for (x = 0; x < COLS; x++) {
+   50|      5|    if (answers[x] != q[x].b)
+   51|      0|      abort();
+   52|      5|  }
+   53|      1|  return 0;
+   54|      1|}
+

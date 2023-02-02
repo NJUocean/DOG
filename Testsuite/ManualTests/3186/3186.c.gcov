@@ -1,0 +1,13 @@
+        -:    0:Source:3186.c
+        -:    0:Graph:3186.gcno
+        -:    0:Data:3186.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously gcc.misc-tests/dg-8.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-options "-Wall" } */
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-excess-errors "excess errors" } */
+        -:    6:
+        -:    7:/* should get warning about defaulting return type - excess error */
+        -:    8:
+        1:    9:main() { return 0; }

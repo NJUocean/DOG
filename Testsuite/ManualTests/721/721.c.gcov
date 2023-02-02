@@ -1,0 +1,24 @@
+        -:    0:Source:721.c
+        -:    0:Graph:721.gcno
+        -:    0:Data:721.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-mpc64"  { target { i?86-*-* x86_64-*-* } } } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        1:    6:void fpEq(double x, double y) {
+        1:    7:  if (x != y)
+    #####:    8:    abort();
+        1:    9:}
+        -:   10:
+        1:   11:void fpTest(double x, double y) {
+        1:   12:  double result1 = (35.7 * 100.0) / 45.0;
+        1:   13:  double result2 = (x * 100.0) / y;
+        1:   14:  fpEq(result1, result2);
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  fpTest(35.7, 45.0);
+        1:   19:  exit(0);
+        -:   20:}

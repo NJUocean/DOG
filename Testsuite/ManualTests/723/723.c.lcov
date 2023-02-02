@@ -1,0 +1,39 @@
+    1|       |/* PR middle-end/18548 */
+    2|       |/* Test case reduced by Andrew Pinski <pinskia@physics.uc.edu> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O1 " } */
+    5|       |/* Option -fno-tree-lrs removed By Andrew MacLeod since it is no longer
+    6|       |   supported in the compiler beginning with GCC 4.3.  */
+    7|       |/* m32c has varying sized pointers */
+    8|       |/* { dg-skip-if "" { "m32c-*-*" } { "*" } { "-mcpu=m32c" "-mcpu=m32cm" } } */
+    9|       |
+   10|       |__extension__ typedef __INTPTR_TYPE__ intptr_t;
+   11|       |
+   12|       |extern void abort(void);
+   13|       |
+   14|       |intptr_t fff[10];
+   15|       |
+   16|      1|void f(intptr_t a, intptr_t b) {
+   17|      1|  intptr_t crcc = b;
+   18|      1|  intptr_t d = *((intptr_t *)(a + 1));
+   19|      1|  int i;
+   20|      1|
+   21|      1|  a = d >= b ? d : b;
+   22|      1|
+   23|     11|  for (i = 0; i < 10; i++)
+   24|     10|    fff[i] = a;
+   25|      1|}
+   26|       |
+   27|       |/* The variable a cannot be a local variable as we get better aliasing
+   28|       |   now and decide that the store to a is dead.  The better aliasing comes
+   29|       |   from better representation of pointer arithmetic. */
+   30|       |intptr_t a = 10;
+   31|      1|int main(void) {
+   32|      1|  int i;
+   33|      1|  f((intptr_t)(&a) - 1, 0);
+   34|     11|  for (i = 0; i < 10; i++)
+   35|     10|    if (fff[i] != 10)
+   36|      0|      abort();
+   37|      1|  return 0;
+   38|      1|}
+

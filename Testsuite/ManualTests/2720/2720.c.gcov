@@ -1,0 +1,20 @@
+        -:    0:Source:2720.c
+        -:    0:Graph:2720.gcno
+        -:    0:Data:2720.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { ! x32 } } } */
+        -:    2:/* { dg-options "-Ofast -mabi=ms -mavx512f" } */
+        -:    3:/* { dg-require-effective-target avx512f } */
+        -:    4:
+        -:    5:int a[56];
+        -:    6:int b;
+        1:    7:int main(int argc, char *argv[]) {
+        -:    8:  int c;
+       1*:    9:  for (; b; b++) {
+    #####:   10:    c = b;
+    #####:   11:    if (b & 1)
+    #####:   12:      c = 2;
+    #####:   13:    a[b] = c;
+        -:   14:  }
+        1:   15:  return 0;
+        -:   16:}

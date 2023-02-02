@@ -1,0 +1,15 @@
+    1|       |/* PR target/84945 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  /* AVX512_VNNI instructions are all EVEX encoded, so if
+    7|      1|     __builtin_cpu_supports says avx512vnni is available and avx512f is not,
+    8|      1|     this is a GCC bug.  Ditto for AVX512_BITALG  */
+    9|      1|  if (!__builtin_cpu_supports("avx512f") &&
+   10|      1|      (__builtin_cpu_supports("avx512vnni") ||
+   11|      0|       __builtin_cpu_supports("avx512bitalg")))
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

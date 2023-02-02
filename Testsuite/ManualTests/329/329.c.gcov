@@ -1,0 +1,28 @@
+        -:    0:Source:329.c
+        -:    0:Graph:329.gcno
+        -:    0:Data:329.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/60971 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:#ifndef __cplusplus
+        -:    5:#define bool _Bool
+        -:    6:#endif
+        -:    7:
+        -:    8:volatile unsigned char c;
+        -:    9:
+        2:   10:__attribute__((noinline)) unsigned char foo(void) { return c; }
+        -:   11:
+        2:   12:__attribute__((noinline)) bool bar(void) { return foo() & 1; }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  c = 0x41;
+        1:   16:  c = bar();
+        1:   17:  if (c != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  c = 0x20;
+        1:   20:  c = bar();
+        1:   21:  if (c != 0)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

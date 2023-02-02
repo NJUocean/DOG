@@ -1,0 +1,36 @@
+        -:    0:Source:2555.c
+        -:    0:Graph:2555.gcno
+        -:    0:Data:2555.gcda
+        -:    0:Runs:1
+        -:    1:/* PR opt/6722 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:/* We need this type to be as wide as the register chosen below, so
+        -:    6:   that, when we preserve it across main, we preserve all of it.  */
+        -:    7:typedef int __attribute__((mode(__word__))) reg_type;
+        -:    8:
+        -:    9:#if !__PIC__
+        -:   10:register reg_type k asm("%ebx");
+        -:   11:#elif __amd64
+        -:   12:register reg_type k asm("%r12");
+        -:   13:#else
+        -:   14:register reg_type k asm("%esi");
+        -:   15:#endif
+        -:   16:
+       10:   17:void __attribute__((noinline)) foo() { k = 1; }
+        -:   18:
+        1:   19:void test() {
+        -:   20:  reg_type i;
+       11:   21:  for (i = 0; i < 10; i += k) {
+       10:   22:    k = 0;
+       10:   23:    foo();
+        -:   24:  }
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  reg_type old = k;
+        1:   29:  test();
+        1:   30:  k = old;
+        1:   31:  return 0;
+        -:   32:}

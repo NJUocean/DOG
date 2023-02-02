@@ -1,0 +1,19 @@
+        -:    0:Source:1545.c
+        -:    0:Graph:1545.gcno
+        -:    0:Data:1545.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/67953 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:unsigned int fn1(signed int a) { return (unsigned int)a - ((a / 3) * 3); }
+        -:    5:
+        1:    6:unsigned int fn2(signed int a) { return a - ((a / 3) * 3); }
+        -:    7:
+        1:    8:unsigned int fn3(int a) { return a - (unsigned)((a / 3) * 3); }
+        -:    9:
+        1:   10:signed int fn4(int a) { return (unsigned)a - (unsigned)((a / 3) * 3); }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (fn1(-5) != -2 || fn2(-5) != -2 || fn3(-5) != -2 || fn4(-5) != -2)
+    #####:   14:    __builtin_abort();
+        -:   15:}

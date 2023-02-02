@@ -1,0 +1,24 @@
+        -:    0:Source:2362.c
+        -:    0:Graph:2362.gcno
+        -:    0:Data:2362.gcda
+        -:    0:Runs:1
+        -:    1:#include <limits.h>
+        -:    2:
+        -:    3:int n = 0;
+        -:    4:
+        4:    5:g(i) { n++; }
+        -:    6:
+        1:    7:f(m) {
+        -:    8:  int i;
+        1:    9:  i = m;
+        -:   10:  do {
+        4:   11:    g((int)((unsigned)i * INT_MAX) / 2);
+        4:   12:  } while (--i > 0);
+        1:   13:}
+        -:   14:
+        1:   15:main() {
+        1:   16:  f(4);
+        1:   17:  if (n != 4)
+    #####:   18:    abort();
+        1:   19:  exit(0);
+        -:   20:}

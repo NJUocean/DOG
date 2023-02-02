@@ -1,0 +1,36 @@
+        -:    0:Source:1864.c
+        -:    0:Graph:1864.gcno
+        -:    0:Data:1864.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:
+        -:    3:/* Test that (p!=0) + (q!=0) is computed as int,
+        -:    4:    not boolean */
+        -:    5:/* { dg-options "-O3" } */
+        -:    6:/* { dg-do run } */
+        -:    7:extern void abort(void);
+        1:    8:char *foo(char *p, char *q) {
+        1:    9:  int x = (p != 0) + (q != 0);
+        1:   10:  if (x == 2)
+        1:   11:    return "a";
+        -:   12:  else
+    #####:   13:    return 0;
+        -:   14:}
+        -:   15:extern char *bar(char *, char *) __attribute__((noinline));
+        1:   16:char *bar(char *first, char *last) {
+        -:   17:  int y;
+        1:   18:  if (!first)
+    #####:   19:    return last;
+        1:   20:  if (!last)
+    #####:   21:    return first;
+        1:   22:  if (*first == 'a')
+        1:   23:    return foo(first, last);
+    #####:   24:  return 0;
+        -:   25:}
+        1:   26:int main() {
+        1:   27:  char *p = "a", *q = "b";
+        1:   28:  if (p)
+        1:   29:    if (bar(p, q))
+        1:   30:      return 0;
+    #####:   31:  abort();
+        -:   32:}

@@ -1,0 +1,31 @@
+        -:    0:Source:282.c
+        -:    0:Graph:282.gcno
+        -:    0:Data:282.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/4461
+        -:    2:   This testcase failed to link in Dwarf-2 because
+        -:    3:   constant -4.0 in constant pool was never referenced by anything
+        -:    4:   but Dwarf-2 location descriptor.  */
+        -:    5:/* { dg-do run } */
+        -:    6:
+        -:    7:void __attribute__((noinline))
+    #####:    8:foo(const char *x __attribute__((unused)),
+        -:    9:    __complex__ long double y __attribute__((unused)),
+    #####:   10:    __complex__ long double z __attribute__((unused))) {}
+        -:   11:
+    #####:   12:void bar(void) {
+    #####:   13:  foo("", __builtin_conjl(({
+        -:   14:        __complex__ long double r;
+    #####:   15:        __real__ r = 3.0;
+    #####:   16:        __imag__ r = -4.0;
+    #####:   17:        r;
+        -:   18:      })),
+        -:   19:      ({
+        -:   20:        __complex__ long double s;
+    #####:   21:        __real__ s = 3.0;
+    #####:   22:        __imag__ s = 4.0;
+    #####:   23:        s;
+        -:   24:      }));
+    #####:   25:}
+        -:   26:
+        1:   27:int main(void) { return 0; }

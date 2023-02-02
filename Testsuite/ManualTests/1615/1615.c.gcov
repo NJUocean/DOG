@@ -1,0 +1,26 @@
+        -:    0:Source:1615.c
+        -:    0:Graph:1615.gcno
+        -:    0:Data:1615.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef struct {
+        -:    4:  unsigned char x;
+        -:    5:} A;
+        -:    6:typedef struct {
+        -:    7:  unsigned char x;
+        -:    8:} B;
+        -:    9:
+        -:   10:int idx = 0;
+        -:   11:
+        -:   12:A objs[1] = {{0}};
+        -:   13:
+        1:   14:int main() {
+        1:   15:  B *b = (B *)&objs[idx];
+        1:   16:  b->x++;
+        1:   17:  if (b->x)
+        1:   18:    b->x = 0;
+        1:   19:  if (b->x)
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

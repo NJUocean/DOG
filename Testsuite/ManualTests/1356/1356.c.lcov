@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-skip-if "Too much RAM needed" { "avr-*-*" } } */
+    3|       |
+    4|       |int result[64][16];
+    5|       |
+    6|      1|int main() {
+    7|      1|  double dbuf[1000] = {0.0};
+    8|      1|  int ibuf[900];
+    9|      1|  int i, j;
+   10|      1|
+   11|      1|  double d1 = 0.0;
+   12|      1|  double d2 = 0.0;
+   13|    901|  for (i = 0; i < 900; ++i) {
+   14|    900|    ibuf[i] = (int)(d2 - d1);
+   15|    900|    d1 += dbuf[i];
+   16|    900|    d2 += dbuf[i + 64];
+   17|    900|  }
+   18|      1|
+   19|     65|  for (i = 0; i < 64; ++i) {
+   20|    576|    for (j = 0; j < 8; ++j) {
+   21|    512|      result[i][j] = ibuf[64 - i + 64 * j];
+   22|    512|      result[i][15 - j] = ibuf[i + 64 * j];
+   23|    512|    }
+   24|     64|  }
+   25|      1|
+   26|      1|  return 0;
+   27|      1|}
+

@@ -1,0 +1,24 @@
+    1|       |/* PR target/63618 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -mtune=corei7 -fno-inline" } */
+    4|       |/* { dg-additional-options "-msse4.2" { target sse4 } } */
+    5|       |/* { dg-additional-options "-fpic" { target fpic } } */
+    6|       |
+    7|       |static const __float128 cf = 0.1E+10Q;
+    8|       |
+    9|      1|__float128 f128_square(__float128 x) { return x * x; }
+   10|       |
+   11|      1|__float128 f128_p3(__float128 x) { return x * x * x; }
+   12|       |
+   13|      1|__float128 cond_f128_square(__float128 x, int p) {
+   14|      1|  x = f128_p3(x);
+   15|      1|  if (p)
+   16|      1|    x = f128_square(cf);
+   17|      1|  return x;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  __float128 x = cond_f128_square(cf, 1);
+   22|      1|  return (int)(x < cf);
+   23|      1|}
+

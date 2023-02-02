@@ -1,0 +1,13 @@
+        -:    0:Source:675.c
+        -:    0:Graph:675.gcno
+        -:    0:Data:675.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options {{-fstrict-aliasing -flto}} } */
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:} t_commrec;
+        -:    6:typedef struct {
+        -:    7:} t_fft_c;
+    #####:    8:void solve_pme(t_commrec *cr) { t_fft_c *ptr; }
+        1:    9:int main() { return 0; }

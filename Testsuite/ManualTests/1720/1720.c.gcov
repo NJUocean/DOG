@@ -1,0 +1,29 @@
+        -:    0:Source:1720.c
+        -:    0:Graph:1720.gcno
+        -:    0:Data:1720.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "No undefined weak" { hppa*-*-hpux* || powerpc-ibm-aix* } } */
+        -:    3:/* { dg-require-weak "" } */
+        -:    4:/* { dg-additional-options "-Wl,-undefined,dynamic_lookup" { target *-*-darwin*
+        -:    5: * } } */
+        -:    6:/* { dg-additional-options "-Wl,-flat_namespace" { target *-*-darwin[89]* } } */
+        -:    7:
+        1:    8:void __attribute__((noinline, noclone)) check(int i) {
+        1:    9:  if (i == 0)
+        1:   10:    __builtin_exit(0);
+    #####:   11:}
+        -:   12:
+        -:   13:int i;
+        -:   14:extern int x __attribute__((weak));
+        -:   15:
+        1:   16:int main(int argc, char **argv) {
+        1:   17:  if (argc) {
+        1:   18:    check(i);
+    #####:   19:    return x;
+        -:   20:  } else {
+    #####:   21:    check(i);
+    #####:   22:    return x - 1;
+        -:   23:  }
+        -:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,23 @@
+        -:    0:Source:2338.c
+        -:    0:Graph:2338.gcno
+        -:    0:Data:2338.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    2:/* { dg-do run { target native } } */
+        -:    3:
+        1:    4:void Test(long long Val, int Amt) {
+        1:    5:  __builtin_printf("  lshr: 0x%llx \t\t shl: 0x%llx\n", Val >> Amt,
+        -:    6:                   Val << Amt);                       /* count(1) */
+        1:    7:  __builtin_printf("  lshr: 0x%llx\t\tshl: 0x%llx\n", /* count(1) */
+        -:    8:                   Val >> Amt, Val << Amt);
+        1:    9:  __builtin_printf("  lshr: 0x%llx \t\t shl: 0x%llx\n", /* count(1) */
+        1:   10:                   (unsigned long long)Val >> Amt, Val << Amt);
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  Test(10, 4);
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        -:   19:/* { dg-final { run-gcov gcov-pr85338.c } } */

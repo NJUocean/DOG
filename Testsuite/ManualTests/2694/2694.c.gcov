@@ -1,0 +1,30 @@
+        -:    0:Source:2694.c
+        -:    0:Graph:2694.gcno
+        -:    0:Data:2694.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c++/65690 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:typedef double T[4][4] __attribute__((aligned(2 * __alignof__(double))));
+        -:    5:void foo(const T);
+        -:    6:struct S {
+        -:    7:  T s;
+        -:    8:};
+        -:    9:
+        1:   10:int main() {
+        -:   11:  if (__alignof__(struct S) != 2 * __alignof__(double) ||
+        -:   12:      __alignof__(T) != 2 * __alignof__(double) ||
+        -:   13:      __alignof__(const struct S) != 2 * __alignof__(double) ||
+        -:   14:      __alignof__(const T) != 2 * __alignof__(double))
+        -:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        -:   19:#if defined(__cplusplus) && __cplusplus >= 201103L
+        -:   20:static_assert(alignof(S) == 2 * __alignof__(double), "alignment of S");
+        -:   21:static_assert(alignof(T) == 2 * __alignof__(double), "alignment of T");
+        -:   22:static_assert(alignof(const S) == 2 * __alignof__(double),
+        -:   23:              "alignment of const S");
+        -:   24:static_assert(alignof(const T) == 2 * __alignof__(double),
+        -:   25:              "alignment of const T");
+        -:   26:#endif

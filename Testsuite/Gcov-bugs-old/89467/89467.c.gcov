@@ -1,0 +1,28 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        1:    1:void foo(int p)
+        -:    2:{
+        -:    3:  int e;
+        1:    4:  int b = 0, f = 0, d = 0;
+        3:    5:  if ((p < f) && p) {
+        1:    6:L:
+        2:    7:    for (e = 0; 0;) ;
+    #####:    8:  } else if (d) {
+    #####:    9:    b = (0 >= b);
+        -:   10:  }
+        -:   11:
+        6:   12:  for (; e <= 3; e++) {
+        5:   13:    if (b) { continue; }
+        1:   14:    b = 3;
+        1:   15:    goto L;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:void main()
+        -:   20:{
+        1:   21:  int a = -1;
+        1:   22:  foo(a);
+        1:   23:}

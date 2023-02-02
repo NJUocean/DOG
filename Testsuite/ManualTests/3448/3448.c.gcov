@@ -1,0 +1,28 @@
+        -:    0:Source:3448.c
+        -:    0:Graph:3448.gcno
+        -:    0:Data:3448.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/36008 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int g[48][3][3];
+        -:    6:
+        8:    7:void __attribute__((noinline)) bar(int x[3][3], int y[3][3]) {
+        -:    8:  static int i;
+        8:    9:  if (x != g[i + 8] || y != g[i++])
+    #####:   10:    abort();
+        8:   11:}
+        -:   12:
+        -:   13:static inline void __attribute__((always_inline)) foo(int x[][3][3]) {
+        -:   14:  int i;
+        9:   15:  for (i = 0; i < 8; i++) {
+        8:   16:    int k = i + 8;
+        8:   17:    bar(x[k], x[k - 8]);
+        -:   18:  }
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        -:   22:  foo(g);
+        1:   23:  return 0;
+        -:   24:}

@@ -1,0 +1,38 @@
+    1|       |/* The same test as loop-3c.c.  It failed on ia64
+    2|       |   due to not handling of subreg in the lhs that is fixed.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves
+    5|       | * -fdump-rtl-sms" } */
+    6|       |
+    7|       |#include <limits.h>
+    8|       |extern void abort(void);
+    9|       |
+   10|       |void *a[255];
+   11|       |
+   12|      2|__attribute__((noinline)) void f(int m) {
+   13|      2|  int i;
+   14|      2|  int sh = 0x100;
+   15|      2|  i = m;
+   16|      5|  do {
+   17|      5|    a[sh >>= 1] = ((unsigned)i << 3) + (char *)a;
+   18|      5|    i += 4;
+   19|      5|  } while (i < INT_MAX / 2 + 1 + 4 * 4);
+   20|      2|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  a[0x10] = 0;
+   24|      1|  a[0x08] = 0;
+   25|      1|  f(INT_MAX / 2 + INT_MAX / 4 + 2);
+   26|      1|  if (a[0x10] || a[0x08])
+   27|      0|    abort();
+   28|      1|  a[0x10] = 0;
+   29|      1|  a[0x08] = 0;
+   30|      1|  f(INT_MAX / 2 + 1);
+   31|      1|  if (!a[0x10] || a[0x08])
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+   35|       |
+   36|       |/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms"  { target
+   37|       | * powerpc*-*-* } } } */
+

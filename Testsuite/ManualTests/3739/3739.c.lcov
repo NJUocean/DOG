@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/49712 */
+    2|       |
+    3|       |int a[2], b, c, d, e;
+    4|       |
+    5|      0|void foo(int x, int y) {}
+    6|       |
+    7|      0|int bar(void) {
+    8|      0|  int i;
+    9|      0|  for (; d <= 0; d = 1)
+   10|      0|    for (i = 0; i < 4; i++)
+   11|      0|      for (e = 0; e; e = 1)
+   12|      0|        ;
+   13|      0|  return 0;
+   14|      0|}
+   15|       |
+   16|      1|int main() {
+   17|      3|  for (b = 0; b < 2; b++)
+   18|      2|    while (c)
+   19|      0|      foo(a[b] = 0, bar());
+   20|      1|  return 0;
+   21|      1|}
+

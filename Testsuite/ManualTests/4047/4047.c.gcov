@@ -1,0 +1,16 @@
+        -:    0:Source:4047.c
+        -:    0:Graph:4047.gcno
+        -:    0:Data:4047.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/94134 */
+        -:    2:
+        -:    3:static volatile int a = 0;
+        -:    4:static volatile int b = 1;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  a++;
+        1:    8:  b++;
+        1:    9:  if (a != 1 || b != 2)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

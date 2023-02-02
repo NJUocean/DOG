@@ -1,0 +1,25 @@
+        -:    0:Source:1308.c
+        -:    0:Graph:1308.gcno
+        -:    0:Data:1308.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-ftree-vrp" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  struct S *field;
+        -:    6:};
+        -:    7:struct S True, False, Z;
+        1:    8:static inline int f(void) { return 1; }
+       1*:    9:static inline int g(struct S **obj) { return f() && *obj == &Z; }
+        1:   10:struct S **h(struct S **x) {
+        1:   11:  if (x)
+       1*:   12:    return g(x) ? &True.field : &False.field;
+        -:   13:  else
+    #####:   14:    return &True.field;
+        -:   15:}
+        -:   16:extern void abort(void);
+        1:   17:int main() {
+        1:   18:  if (h(&False.field) != &False.field)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

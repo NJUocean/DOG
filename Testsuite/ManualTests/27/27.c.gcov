@@ -1,0 +1,16 @@
+        -:    0:Source:27.c
+        -:    0:Graph:27.gcno
+        -:    0:Data:27.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-require-effective-target ptr32plus } */
+        -:    3:/* { dg-skip-if "exceeds eBPF stack limit" { bpf-*-* } } */
+        -:    4:/* This validates codegen for [r1+32760] on Darwin. */
+        -:    5:void f(char x[32688], double *y, double *z) __attribute__((noinline));
+        1:    6:void f(char x[32688], double *y, double *z) {}
+        1:    7:main() {
+        -:    8:  char x[32688];
+        -:    9:  double y, z;
+        1:   10:  y = z = 3.0;
+        1:   11:  f(x, &y, &z);
+        -:   12:}

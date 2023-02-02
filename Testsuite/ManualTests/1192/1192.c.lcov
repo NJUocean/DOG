@@ -1,0 +1,23 @@
+    1|       |/* This should not warn about the case label being out of range.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O0" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|int foo(unsigned int i) {
+    9|      1|  switch (i) {
+   10|      0|  case 123456123456ULL: /* { dg-warning "conversion from .long long unsigned
+   11|      0|                           int. to .unsigned int. changes value" } */
+   12|      0|    return 0;
+   13|      1|  default:
+   14|      1|    return 3;
+   15|      1|  }
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  if (foo(10) != 3)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

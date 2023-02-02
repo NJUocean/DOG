@@ -1,0 +1,47 @@
+    1|       |/* Test gcov block mode.  Compiler generates following CFG:
+    2|       |
+    3|       |  <bb 3>:
+    4|       |  if (false_var_4 != 0)
+    5|       |    goto <bb 4>;
+    6|       |  else
+    7|       |    goto <bb 5>;
+    8|       |
+    9|       |  <bb 4>:
+   10|       |  ret_6 = 111;
+   11|       |  PROF_edge_counter_10 = __gcov0.UuT[0];
+   12|       |  PROF_edge_counter_11 = PROF_edge_counter_10 + 1;
+   13|       |  __gcov0.UuT[0] = PROF_edge_counter_11;
+   14|       |
+   15|       |  <bb 5>:
+   16|       |  # ret_1 = PHI <ret_5(3), ret_6(4)>
+   17|       |  goto <bb 7>;
+   18|       |
+   19|       |It's important not to include <bb 5> to any line as it's actually shared
+   20|       |by both branches of the condition in <bb 3>.
+   21|       |
+   22|       |*/
+   23|       |
+   24|       |/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+   25|       |/* { dg-do run { target native } } */
+   26|       |
+   27|      1|unsigned int UuT(void) {
+   28|      1|  unsigned int true_var = 1;
+   29|      1|  unsigned int false_var = 0;
+   30|      1|  unsigned int ret = 0;
+   31|      1|
+   32|      1|  if (true_var) /* count(1) */
+   33|      1|  {
+   34|      1|    if (false_var) /* count(1) */
+   35|      0|      ret = 111;   /* count(#####) */
+   36|      1|  } else
+   37|      0|    ret = 999; /* count(#####) */
+   38|      1|  return ret;
+   39|      1|}
+   40|       |
+   41|      1|int main(int argc, char **argv) {
+   42|      1|  UuT();
+   43|      1|  return 0;
+   44|      1|}
+   45|       |
+   46|       |/* { dg-final { run-gcov { -a gcov-17.c } } } */
+

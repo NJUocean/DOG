@@ -1,0 +1,10 @@
+    1|       |/* Test lang in N_SO stab.  */
+    2|       |/* Contributed by Devang Patel  <dpatel@apple.com>  */
+    3|       |
+    4|       |/* { dg-do compile { target stabs } } */
+    5|       |/* { dg-options "-gstabs" } */
+    6|       |
+    7|      1|int main() { return 0; }
+    8|       |
+    9|       |/* { dg-final { scan-assembler ".stabs.*100,0,2" } } */
+

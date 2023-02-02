@@ -1,0 +1,25 @@
+        -:    0:Source:989.c
+        -:    0:Graph:989.gcno
+        -:    0:Data:989.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/68835 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) unsigned __int128 foo(void) {
+        1:    6:  unsigned __int128 x = (unsigned __int128)0xffffffffffffffffULL;
+        -:    7:  struct {
+        -:    8:    unsigned __int128 a : 65;
+        -:    9:  } w;
+        1:   10:  w.a = x;
+        1:   11:  w.a += x;
+        1:   12:  return w.a;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  unsigned __int128 x = foo();
+        1:   17:  if ((unsigned long long)x != 0xfffffffffffffffeULL ||
+        1:   18:      (unsigned long long)(x >> 64) != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,21 @@
+        -:    0:Source:1843.c
+        -:    0:Graph:1843.gcno
+        -:    0:Data:1843.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized-blocks" } */
+        -:    3:int a[8];
+     1000:    4:__attribute__((noinline)) int t() {
+        -:    5:  int i;
+     4000:    6:  for (i = 0; i < 3; i++)
+     3000:    7:    if (a[i])
+    #####:    8:      break;
+     1000:    9:  return i;
+        -:   10:}
+        1:   11:int main() {
+        -:   12:  int i;
+     1001:   13:  for (i = 0; i < 1000; i++)
+     1000:   14:    t();
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */

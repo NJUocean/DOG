@@ -1,0 +1,8 @@
+        -:    0:Source:1366.c
+        -:    0:Graph:1366.gcno
+        -:    0:Data:1366.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:char one[50] = "ijk";
+        1:    4:int main(void) { return __builtin_strlen(one) != 3; }

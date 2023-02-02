@@ -1,0 +1,19 @@
+    1|       |/* PR tree-optimization/59413 */
+    2|       |
+    3|       |typedef unsigned int uint32_t;
+    4|       |
+    5|       |uint32_t a;
+    6|       |int b;
+    7|       |
+    8|      1|int main() {
+    9|      1|  uint32_t c;
+   10|      1|  for (a = 7; a <= 1; a++) {
+   11|      0|    char d = a;
+   12|      0|    c = d;
+   13|      0|    b = a == c;
+   14|      0|  }
+   15|      1|  if (a != 7)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

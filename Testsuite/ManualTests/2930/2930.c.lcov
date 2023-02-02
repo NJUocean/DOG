@@ -1,0 +1,14 @@
+    1|       |/* Leaf functions with many arguments.  */
+    2|       |
+    3|       |int add(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j,
+    4|      1|        int k, int l, int m) {
+    5|      1|  return a + b + c + d + e + f + g + h + i + j + k + l + m;
+    6|      1|}
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  if (add(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13) != 91)
+   10|      0|    abort();
+   11|      1|
+   12|      1|  exit(0);
+   13|      1|}
+

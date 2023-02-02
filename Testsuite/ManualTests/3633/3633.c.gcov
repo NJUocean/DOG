@@ -1,0 +1,38 @@
+        -:    0:Source:3633.c
+        -:    0:Graph:3633.gcno
+        -:    0:Data:3633.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options ieee } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:static inline int __attribute__((always_inline)) testf(float b) {
+        1:    6:  float c = 1.01f * b;
+        -:    7:
+        1:    8:  return __builtin_isinff(c);
+        -:    9:}
+        -:   10:
+        -:   11:static inline int __attribute__((always_inline)) test(double b) {
+        1:   12:  double c = 1.01 * b;
+        -:   13:
+        1:   14:  return __builtin_isinf(c);
+        -:   15:}
+        -:   16:
+        -:   17:static inline int __attribute__((always_inline)) testl(long double b) {
+        1:   18:  long double c = 1.01L * b;
+        -:   19:
+        1:   20:  return __builtin_isinfl(c);
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  if (testf(__FLT_MAX__) < 1)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  if (test(__DBL_MAX__) < 1)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  if (testl(__LDBL_MAX__) < 1)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

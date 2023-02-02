@@ -1,0 +1,27 @@
+        -:    0:Source:2460.c
+        -:    0:Graph:2460.gcno
+        -:    0:Data:2460.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-inline --save-temps" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef float float32x2_t __attribute__((__vector_size__((8))));
+        -:    7:typedef unsigned int uint32x2_t __attribute__((__vector_size__((8))));
+        -:    8:
+        1:    9:float32x2_t test_dup_1(float32x2_t in) {
+        1:   10:  return __builtin_shuffle(in, (uint32x2_t){1, 1});
+        -:   11:}
+        -:   12:
+        1:   13:int main(int argc, char **argv) {
+        1:   14:  float32x2_t test = {2.718, 3.141};
+        1:   15:  float32x2_t res = test_dup_1(test);
+        1:   16:  if (res[0] != test[1] || res[1] != test[1])
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        -:   21:/* { dg-final { scan-assembler-times "\[ \t\]*dup\[ \t\]+v\[0-9\]+\.2s,
+        -:   22: * ?v\[0-9\]+\.s\\\[\[01\]\\\]" 1 } } */
+        -:   23:/* { dg-final { scan-assembler-not "zip" } } */

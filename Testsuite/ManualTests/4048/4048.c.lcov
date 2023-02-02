@@ -1,0 +1,19 @@
+    1|       |/* PR middle-end/94412 */
+    2|       |
+    3|       |typedef unsigned V __attribute__((__vector_size__(sizeof(unsigned) * 2)));
+    4|       |
+    5|      1|void foo(V *v, V *w) { *w = -*v / 11; }
+    6|       |
+    7|      1|void bar(V *v, V *w) { *w = -18 / -*v; }
+    8|       |
+    9|      1|int main() {
+   10|      1|  V a = (V){1, 0};
+   11|      1|  V b = (V){3, __INT_MAX__};
+   12|      1|  V c, d;
+   13|      1|  foo(&a, &c);
+   14|      1|  bar(&b, &d);
+   15|      1|  if (c[0] != -1U / 11 || c[1] != 0 || d[0] != 0 || d[1] != -18U / -__INT_MAX__)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

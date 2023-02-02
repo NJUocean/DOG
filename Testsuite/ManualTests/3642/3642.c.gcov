@@ -1,0 +1,23 @@
+        -:    0:Source:3642.c
+        -:    0:Graph:3642.gcno
+        -:    0:Data:3642.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        4:    2:static char *__attribute__((noinline)) itos(int num) { return (char *)0; }
+        4:    3:static void __attribute__((noinline)) foo(int i, const char *x) {
+        4:    4:  if (i >= 4)
+    #####:    5:    abort();
+        4:    6:}
+        1:    7:int main() {
+        1:    8:  int x = -__INT_MAX__ + 3;
+        -:    9:  int i;
+        -:   10:
+        5:   11:  for (i = 0; i < 4; ++i) {
+        -:   12:    char *p;
+        4:   13:    --x;
+        4:   14:    p = itos(x);
+        4:   15:    foo(i, p);
+        -:   16:  }
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

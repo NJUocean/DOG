@@ -1,0 +1,41 @@
+        -:    0:Source:2912.c
+        -:    0:Graph:2912.gcno
+        -:    0:Data:2912.gcda
+        -:    0:Runs:1
+        -:    1:typedef __SIZE_TYPE__ size_t;
+        -:    2:extern size_t strlen(const char *s);
+        -:    3:
+        -:    4:typedef struct A {
+        -:    5:  int a, b;
+        -:    6:} A;
+        -:    7:
+        -:    8:typedef struct B {
+        -:    9:  struct A **a;
+        -:   10:  int b;
+        -:   11:} B;
+        -:   12:
+        -:   13:A *a;
+        -:   14:int b = 1, c;
+        -:   15:B d[1];
+        -:   16:
+        1:   17:void foo(A *x, const char *y, int z) { c = y[4] + z * 25; }
+        -:   18:
+        1:   19:A *bar(const char *v, int w, int x, const char *y, int z) {
+        1:   20:  if (w)
+    #####:   21:    abort();
+        1:   22:  exit(0);
+        -:   23:}
+        -:   24:
+        1:   25:void test(const char *x, int *y) {
+        1:   26:  foo(d->a[d->b], "test", 200);
+       1*:   27:  d->a[d->b] = bar(x, b ? 0 : 65536, strlen(x), "test", 201);
+    #####:   28:  d->a[d->b]->a++;
+    #####:   29:  if (y)
+    #####:   30:    d->a[d->b]->b = *y;
+    #####:   31:}
+        -:   32:
+        1:   33:int main() {
+        1:   34:  d->b = 0;
+        1:   35:  d->a = &a;
+        1:   36:  test("", 0);
+        -:   37:}

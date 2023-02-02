@@ -1,0 +1,36 @@
+    1|       |struct S {
+    2|       |  char c1, c2, c3, c4;
+    3|       |} __attribute__((aligned(4)));
+    4|       |
+    5|       |static char bar(char **p) __attribute__((noclone, noinline));
+    6|       |static struct S foo(void) __attribute__((noclone, noinline));
+    7|       |
+    8|       |int i;
+    9|       |
+   10|      1|static char bar(char **p) {
+   11|      1|  i = 1;
+   12|      1|  return 0;
+   13|      1|}
+   14|       |
+   15|      1|static struct S foo(void) {
+   16|      1|  struct S ret;
+   17|      1|  char r, s, c1, c2;
+   18|      1|  char *p = &r;
+   19|      1|
+   20|      1|  s = bar(&p);
+   21|      1|  if (s)
+   22|      0|    c2 = *p;
+   23|      1|  c1 = 0;
+   24|      1|
+   25|      1|  ret.c1 = c1;
+   26|      1|  ret.c2 = c2;
+   27|      1|  return ret;
+   28|      1|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  struct S s = foo();
+   32|      1|  if (s.c1 != 0)
+   33|      0|    __builtin_abort();
+   34|      1|  return 0;
+   35|      1|}
+

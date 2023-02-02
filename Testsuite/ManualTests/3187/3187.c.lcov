@@ -1,0 +1,10 @@
+    1|       |/* Test the tester.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-excess-errors "excess errors" } */
+    6|       |
+    7|       |/* No messages, so unexpected pass.  */
+    8|       |
+    9|      1|int main() { return 0; }
+

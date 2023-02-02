@@ -1,0 +1,27 @@
+        -:    0:Source:2592.c
+        -:    0:Graph:2592.gcno
+        -:    0:Data:2592.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -msse -fipa-ra" } */
+        -:    3:
+        -:    4:typedef double v2df __attribute__((vector_size(16)));
+        -:    5:
+        1:    6:static v2df __attribute__((noinline)) bar(v2df a) {
+        1:    7:  return a + (v2df){3.0, 3.0};
+        -:    8:}
+        -:    9:
+        1:   10:v2df __attribute__((noinline)) foo(v2df y) { return y + bar(y); }
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int success;
+        -:   14:  union {
+        -:   15:    v2df v;
+        -:   16:    double d[2];
+        -:   17:  } u;
+        -:   18:
+        1:   19:  u.v = foo((v2df){5.0, 5.0});
+       1*:   20:  success = (u.d[0] == 13.0 && u.d[1] == 13.0);
+        -:   21:
+        1:   22:  return !success;
+        -:   23:}

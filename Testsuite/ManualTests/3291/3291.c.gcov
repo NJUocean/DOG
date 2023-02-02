@@ -1,0 +1,17 @@
+        -:    0:Source:3291.c
+        -:    0:Graph:3291.gcno
+        -:    0:Data:3291.gcda
+        -:    0:Runs:1
+        -:    1:/* PR opt/10011 */
+        -:    2:/* This is link test for builtin_constant_p simplification + DCE.  */
+        -:    3:
+        -:    4:extern void link_error(void);
+    #####:    5:static void usb_hub_port_wait_reset(unsigned int delay) {
+        -:    6:  int delay_time;
+    #####:    7:  for (delay_time = 0; delay_time < 500; delay_time += delay) {
+        -:    8:    if (__builtin_constant_p(delay))
+        -:    9:      link_error();
+        -:   10:  }
+    #####:   11:}
+        -:   12:
+        1:   13:int main() { return 0; }

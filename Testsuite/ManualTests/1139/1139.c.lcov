@@ -1,0 +1,57 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable
+    3|       | * -fno-sanitize-recover=signed-integer-overflow" } */
+    4|       |
+    5|      1|#define SCHAR_MAX __SCHAR_MAX__
+    6|      1|#define SHRT_MAX __SHRT_MAX__
+    7|      1|#define INT_MAX __INT_MAX__
+    8|      1|#define INT_MIN (-__INT_MAX__ - 1)
+    9|       |
+   10|     10|void __attribute__((noinline, noclone)) check(int i, int j) {
+   11|     10|  if (i != j)
+   12|      0|    __builtin_abort();
+   13|     10|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|#if __INT_MAX__ == 2147483647
+   17|      1|  /* Here, nothing should fail.  */
+   18|      1|  volatile int j = INT_MAX;
+   19|      1|  volatile int i = -1;
+   20|      1|  volatile int k = j + i;
+   21|      1|  check(k, 2147483646);
+   22|      1|  k = i + j;
+   23|      1|  check(k, 2147483646);
+   24|      1|  j--;
+   25|      1|  check(j, 2147483646);
+   26|      1|
+   27|      1|  i = 1;
+   28|      1|  j = INT_MIN;
+   29|      1|  k = i + j;
+   30|      1|  check(k, -2147483647);
+   31|      1|  k = j + i;
+   32|      1|  check(k, -2147483647);
+   33|      1|  j++;
+   34|      1|  check(j, -2147483647);
+   35|      1|#endif
+   36|      1|
+   37|      1|  /* Test integer promotion.  */
+   38|      1|#if __SCHAR_MAX__ == 127
+   39|      1|  volatile signed char a = SCHAR_MAX;
+   40|      1|  volatile signed char b = 1;
+   41|      1|  volatile signed char c = a + b;
+   42|      1|  check(c, -128);
+   43|      1|  a++;
+   44|      1|  check(a, -128);
+   45|      1|#endif
+   46|      1|
+   47|      1|#if __SHRT_MAX__ == 32767
+   48|      1|  volatile short d = SHRT_MAX;
+   49|      1|  volatile short e = 1;
+   50|      1|  volatile short f = d + e;
+   51|      1|  check(f, -32768);
+   52|      1|  d++;
+   53|      1|  check(d, -32768);
+   54|      1|#endif
+   55|      1|  return 0;
+   56|      1|}
+

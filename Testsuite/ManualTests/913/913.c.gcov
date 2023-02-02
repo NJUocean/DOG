@@ -1,0 +1,18 @@
+        -:    0:Source:913.c
+        -:    0:Graph:913.gcno
+        -:    0:Data:913.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/49120 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-Wall" } */
+        -:    4:/* { dg-require-effective-target alloca } */
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int a = 1;
+        1:    8:  int c = ({
+        1:    9:    char b[a + 1];
+        1:   10:    b[0] = 0;
+        1:   11:    b[0];
+        -:   12:  });
+        1:   13:  return c;
+        -:   14:}

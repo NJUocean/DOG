@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |unsigned char first_ones_8bit[256];
+    6|       |unsigned char connected_passed[256];
+    7|       |
+    8|      1|int main() {
+    9|      1|  int i, j;
+   10|    257|  for (i = 0; i < 256; i++) {
+   11|    256|    connected_passed[i] = 0;
+   12|    256|    first_ones_8bit[i] = 0;
+   13|  1.04k|    for (j = 7; j > 0; j--) {
+   14|    992|      if ((i & (3 << (7 - j))) == (3 << (7 - j))) {
+   15|    201|        connected_passed[i] = j;
+   16|    201|        break;
+   17|    201|      }
+   18|    992|    }
+   19|    256|  }
+   20|      1|  if (connected_passed[3] != 7)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

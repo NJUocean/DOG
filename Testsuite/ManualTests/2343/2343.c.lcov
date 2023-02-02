@@ -1,0 +1,19 @@
+    1|       |/* PR gcov-profile/94029 */
+    2|       |/* { dg-options "-ftest-coverage" } */
+    3|       |/* { dg-do compile } */
+    4|       |
+    5|       |#define impl_test(name)                                                        \
+    6|      0|  void test_##name() {}
+  ------------------
+  | Unexecuted instantiation: test_t1
+  ------------------
+  | Unexecuted instantiation: test_t2
+  ------------------
+    7|       |impl_test(t1) impl_test(t2)
+    8|       |
+    9|      1|    int main() {
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|       |/* { dg-final { run-gcov remove-gcda gcov-pr94029.c } } */
+

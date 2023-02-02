@@ -1,0 +1,26 @@
+        -:    0:Source:1490.c
+        -:    0:Graph:1490.gcno
+        -:    0:Data:1490.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:static struct X {
+        -:    4:  void *a;
+        -:    5:  void *b;
+        -:    6:} a, b;
+        -:    7:
+        1:    8:void __attribute__((noinline)) foo(void) {
+        1:    9:  void *tem = a.b;
+        1:   10:  a.b = (void *)0;
+        1:   11:  b.b = tem;
+        1:   12:  b.a = a.a;
+        1:   13:  a.a = tem;
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  a.b = &a;
+        1:   18:  foo();
+        1:   19:  if (b.b != &a)
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,29 @@
+        -:    0:Source:73.c
+        -:    0:Graph:73.gcno
+        -:    0:Data:73.gcda
+        -:    0:Runs:1
+        -:    1:/* PR java/10145
+        -:    2:   Test that requesting an alignment of 1 does not increase the alignment
+        -:    3:   of a long long field.
+        -:    4:
+        -:    5:   { dg-do run }
+        -:    6:   { dg-options "" }
+        -:    7:*/
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:struct A {
+        -:   12:  char c;
+        -:   13:  long long i;
+        -:   14:};
+        -:   15:
+        -:   16:struct B {
+        -:   17:  char c;
+        -:   18:  long long i __attribute((__aligned__(1)));
+        -:   19:};
+        -:   20:
+        1:   21:int main() {
+        -:   22:  if (sizeof(struct A) != sizeof(struct B))
+        -:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

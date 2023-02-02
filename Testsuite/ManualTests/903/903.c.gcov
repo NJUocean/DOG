@@ -1,0 +1,19 @@
+        -:    0:Source:903.c
+        -:    0:Graph:903.gcno
+        -:    0:Data:903.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/47391 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:const volatile int v = 1;
+        -:    6:int i = 0;
+        -:    7:
+        1:    8:void foo(void) { i = v; }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  foo();
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        -:   15:/* { dg-final { scan-tree-dump-not "i = 1;" "optimized" } } */

@@ -1,0 +1,17 @@
+        -:    0:Source:893.c
+        -:    0:Graph:893.gcno
+        -:    0:Data:893.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/46499 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O -fno-tree-ccp -fno-tree-dominator-opts" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        2:    7:static inline int foo(void) { return 0; }
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if ((foo() == 1) & (foo() == 1))
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

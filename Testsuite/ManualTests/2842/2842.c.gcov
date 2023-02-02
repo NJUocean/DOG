@@ -1,0 +1,55 @@
+        -:    0:Source:2842.c
+        -:    0:Graph:2842.gcno
+        -:    0:Data:2842.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc64*-*-* && vsx_hw } } } */
+        -:    2:/* { dg-options "-mfloat128 -mvsx" } */
+        -:    3:
+        -:    4:void abort();
+        -:    5:
+        -:    6:typedef unsigned long long int uint64_t;
+        -:    7:
+        -:    8:typedef union {
+        -:    9:  __float128 value;
+        -:   10:
+        -:   11:  struct {
+        -:   12:#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   13:    unsigned negative : 1;
+        -:   14:    unsigned exponent : 15;
+        -:   15:    unsigned quiet_nan : 1;
+        -:   16:    uint64_t mant_high : 47;
+        -:   17:    uint64_t mant_low : 64;
+        -:   18:#else
+        -:   19:    uint64_t mant_low : 64;
+        -:   20:    uint64_t mant_high : 47;
+        -:   21:    unsigned quiet_nan : 1;
+        -:   22:    unsigned exponent : 15;
+        -:   23:    unsigned negative : 1;
+        -:   24:#endif
+        -:   25:  } nan;
+        -:   26:
+        -:   27:} ieee854_float128;
+        -:   28:
+        1:   29:int main(int argc, int *argv[]) {
+        -:   30:  ieee854_float128 x, y, z;
+        -:   31:
+        1:   32:  x.nan.negative = 0;
+        1:   33:  x.nan.exponent = 0x22;
+        1:   34:  x.nan.quiet_nan = 0;
+        1:   35:  x.nan.mant_high = 0x1234;
+        1:   36:  x.nan.mant_low = 0xabcdef;
+        -:   37:
+        1:   38:  y.nan.negative = 1;
+        1:   39:  y.nan.exponent = 0;
+        1:   40:  y.nan.quiet_nan = 0;
+        1:   41:  y.nan.mant_high = 0;
+        1:   42:  y.nan.mant_low = 0;
+        -:   43:
+        1:   44:  z.value = __builtin_copysignq(x.value, y.value);
+        -:   45:
+        1:   46:  if (z.nan.negative != 1 || z.nan.exponent != 0x22 || z.nan.quiet_nan != 0 ||
+        1:   47:      z.nan.mant_high != 0x1234 || z.nan.mant_low != 0xabcdef)
+    #####:   48:    abort();
+        -:   49:
+        1:   50:  return 0;
+        -:   51:}

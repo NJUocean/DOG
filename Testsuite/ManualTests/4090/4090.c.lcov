@@ -1,0 +1,56 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation.
+    2|       |
+    3|       |   Test strlen with various combinations of pointer alignments and lengths to
+    4|       |   make sure any optimizations in the library are correct.
+    5|       |
+    6|       |   Written by Michael Meissner, March 9, 2002.  */
+    7|       |
+    8|       |#include <stddef.h>
+    9|       |#include <string.h>
+   10|       |
+   11|       |#ifndef MAX_OFFSET
+   12|      9|#define MAX_OFFSET (sizeof(long long))
+   13|       |#endif
+   14|       |
+   15|       |#ifndef MAX_TEST
+   16|    520|#define MAX_TEST (8 * sizeof(long long))
+   17|       |#endif
+   18|       |
+   19|       |#ifndef MAX_EXTRA
+   20|  4.60k|#define MAX_EXTRA (sizeof(long long))
+   21|       |#endif
+   22|       |
+   23|       |#define MAX_LENGTH (MAX_OFFSET + MAX_TEST + MAX_EXTRA + 1)
+   24|       |
+   25|       |static union {
+   26|       |  char buf[MAX_LENGTH];
+   27|       |  long long align_int;
+   28|       |  long double align_fp;
+   29|       |} u;
+   30|       |
+   31|      1|main() {
+   32|      1|  size_t off, len, len2, i;
+   33|      1|  char *p;
+   34|      1|
+   35|      9|  for (off = 0; off < MAX_OFFSET; off++)
+   36|    520|    for (len = 0; len < MAX_TEST; len++) {
+   37|    512|      p = u.buf;
+   38|  2.30k|      for (i = 0; i < off; i++)
+   39|  1.79k|        *p++ = '\0';
+   40|    512|
+   41|  16.6k|      for (i = 0; i < len; i++)
+   42|  16.1k|        *p++ = 'a';
+   43|    512|
+   44|    512|      *p++ = '\0';
+   45|  4.60k|      for (i = 0; i < MAX_EXTRA; i++)
+   46|  4.09k|        *p++ = 'b';
+   47|    512|
+   48|    512|      p = u.buf + off;
+   49|    512|      len2 = strlen(p);
+   50|    512|      if (len != len2)
+   51|      0|        abort();
+   52|    512|    }
+   53|      1|
+   54|      1|  exit(0);
+   55|      1|}
+

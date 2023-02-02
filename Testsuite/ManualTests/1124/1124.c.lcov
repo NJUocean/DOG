@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -foptimize-sibling-calls" } */
+    3|       |
+    4|       |typedef struct {
+    5|       |  int data[4];
+    6|       |} arr16_t;
+    7|       |
+    8|       |int result = 0;
+    9|       |
+   10|      1|void func2(int i, int j, arr16_t arr) {
+   11|      1|  result = (arr.data[0] != 1 || arr.data[1] != 2 || arr.data[2] != 3 ||
+   12|      1|            arr.data[3] != 4);
+   13|      1|}
+   14|       |
+   15|      1|void func1(int i, int j, int k, arr16_t a) { func2(i, j, a); }
+   16|       |
+   17|      1|int main(int argc, const char *argv[]) {
+   18|      1|  arr16_t arr = {{1, 2, 3, 4}};
+   19|      1|
+   20|      1|  func1(0, 0, 0, arr);
+   21|      1|  return result;
+   22|      1|}
+

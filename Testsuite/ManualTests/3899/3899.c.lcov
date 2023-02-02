@@ -1,0 +1,34 @@
+    1|       |/* PR rtl-optimization/68250 */
+    2|       |
+    3|       |signed char a, b, h, k, l, m, o;
+    4|       |short c, d, n;
+    5|       |int e, f, g, j, q;
+    6|       |
+    7|      1|void fn1(void) {
+    8|      1|  int p = b || a;
+    9|      1|  n = o > 0 || d > 1 >> o ? d : d << o;
+   10|      1|  for (; j; j++)
+   11|      0|    m = c < 0 || m || c << p;
+   12|      1|  l = f + 1;
+   13|      2|  for (; f < 1; f = 1)
+   14|      1|    k = h + 1;
+   15|      1|}
+   16|       |
+   17|      1|__attribute__((noinline, noclone)) void fn2(int k) {
+   18|      1|  if (k != 1)
+   19|      0|    __builtin_abort();
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  signed char i;
+   24|      2|  for (; e < 1; e++) {
+   25|      1|    fn1();
+   26|      1|    if (k)
+   27|      1|      i = k;
+   28|      1|    if (i > q)
+   29|      1|      g = 0;
+   30|      1|  }
+   31|      1|  fn2(k);
+   32|      1|  return 0;
+   33|      1|}
+

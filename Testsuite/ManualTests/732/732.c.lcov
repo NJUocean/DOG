@@ -1,0 +1,50 @@
+    1|       |extern int printf(const char *, ...);
+    2|       |
+    3|       |struct s {
+    4|       |  struct s *n;
+    5|       |} * p;
+    6|       |struct s ss;
+    7|     12|#define MAX 10
+    8|       |struct s sss[MAX];
+    9|       |int count = 0;
+   10|       |
+   11|       |void sub(struct s *p, struct s **pp);
+   12|       |int look(struct s *p, struct s **pp);
+   13|       |
+   14|      1|main() {
+   15|      1|  struct s *pp;
+   16|      1|  struct s *next;
+   17|      1|  int i;
+   18|      1|
+   19|      1|  p = &ss;
+   20|      1|  next = p;
+   21|     11|  for (i = 0; i < MAX; i++) {
+   22|     10|    next->n = &sss[i];
+   23|     10|    next = next->n;
+   24|     10|  }
+   25|      1|  next->n = 0;
+   26|      1|
+   27|      1|  sub(p, &pp);
+   28|      1|  if (count != MAX + 2)
+   29|      0|    abort();
+   30|      1|
+   31|      1|  exit(0);
+   32|      1|}
+   33|       |
+   34|      1|void sub(struct s *p, struct s **pp) {
+   35|     12|  for (; look(p, pp);) {
+   36|     12|    if (p)
+   37|     11|      p = p->n;
+   38|      1|    else
+   39|      1|      break;
+   40|     12|  }
+   41|      1|}
+   42|       |
+   43|     12|int look(struct s *p, struct s **pp) {
+   44|     78|  for (; p; p = p->n)
+   45|     66|    ;
+   46|     12|  *pp = p;
+   47|     12|  count++;
+   48|     12|  return (1);
+   49|     12|}
+

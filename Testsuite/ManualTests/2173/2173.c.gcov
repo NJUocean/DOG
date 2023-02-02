@@ -1,0 +1,52 @@
+        -:    0:Source:2173.c
+        -:    0:Graph:2173.gcno
+        -:    0:Data:2173.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target vect_int } */
+        -:    2:
+        -:    3:#define ARR_SIZE 1000
+        -:    4:
+        1:    5:void __attribute__((optimize(0))) foo(int *a, int *b) {
+        -:    6:  int i;
+      999:    7:  for (i = 0; i < (ARR_SIZE - 2); ++i)
+      998:    8:    a[i] = b[0] + b[1] + b[i + 1] + b[i + 2];
+        1:    9:}
+        -:   10:
+        1:   11:void bar(int *a, int *b) {
+        -:   12:  int i;
+      999:   13:  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+      998:   14:    a[i] = b[0];
+        -:   15:  }
+      999:   16:  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+      998:   17:    a[i] = a[i] + b[1];
+        -:   18:  }
+      999:   19:  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+      998:   20:    a[i] = a[i] + b[i + 1];
+        -:   21:  }
+      999:   22:  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+      998:   23:    a[i] = a[i] + b[i + 2];
+        -:   24:  }
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        -:   28:  int a1[ARR_SIZE];
+        -:   29:  int a2[ARR_SIZE];
+        -:   30:  int b[ARR_SIZE];
+        -:   31:  int i;
+        -:   32:
+     1001:   33:  for (i = 0; i < ARR_SIZE; i++) {
+     1000:   34:    a1[i] = 0;
+     1000:   35:    a2[i] = 0;
+     1000:   36:    b[i] = i;
+        -:   37:  }
+        -:   38:
+        1:   39:  foo(a1, b);
+        1:   40:  bar(a2, b);
+        -:   41:
+     1001:   42:  for (i = 0; i < ARR_SIZE; i++)
+     1000:   43:    if (a1[i] != a2[i])
+    #####:   44:      return 1;
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}
+        -:   48:/* { dg-final { scan-tree-dump-not "vectorizing stmts using SLP" "slp1" } } */

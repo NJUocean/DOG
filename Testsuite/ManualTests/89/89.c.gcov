@@ -1,0 +1,13 @@
+        -:    0:Source:89.c
+        -:    0:Graph:89.gcno
+        -:    0:Data:89.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/81923 */
+        -:    2:/* { dg-do link } */
+        -:    3:
+        -:    4:#define STR1(X) #X
+        -:    5:#define STR2(X) STR1(X)
+        -:    6:
+        -:    7:int foobar __asm(STR2(__USER_LABEL_PREFIX__) "barbaz") = 34;
+        -:    8:
+        1:    9:int main() { return 0; }

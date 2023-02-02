@@ -1,0 +1,26 @@
+        -:    0:Source:4103.c
+        -:    0:Graph:4103.gcno
+        -:    0:Data:4103.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:typedef unsigned long L;
+        1:    4:f(L p0, L p1, L p2, L p3, L p4, L p5, L p6, L p7, L p8, ...) {
+        -:    5:  va_list select;
+        -:    6:
+        1:    7:  va_start(select, p8);
+        -:    8:
+        1:    9:  if (va_arg(select, L) != 10)
+    #####:   10:    abort();
+        1:   11:  if (va_arg(select, L) != 11)
+    #####:   12:    abort();
+        1:   13:  if (va_arg(select, L) != 0)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  va_end(select);
+        1:   17:}
+        -:   18:
+        1:   19:main() {
+        1:   20:  f(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 0L);
+        1:   21:  exit(0);
+        -:   22:}

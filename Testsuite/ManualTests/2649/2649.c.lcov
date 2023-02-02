@@ -1,0 +1,34 @@
+    1|       |/* PR tree-optimization/51987 */
+    2|       |/* { dg-do run { target { ! ia32 } } } */
+    3|       |/* { dg-options "-O3" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |union U {
+    7|       |  unsigned long long l;
+    8|       |  struct {
+    9|       |    unsigned int l, h;
+   10|       |  } i;
+   11|       |};
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) void foo(char *x, char *y) {
+   14|      1|  int i;
+   15|     65|  for (i = 0; i < 64; i++) {
+   16|     64|    union U u;
+   17|     64|    asm("movl %1, %k0; salq $32, %0" : "=r"(u.l) : "r"(i));
+   18|     64|    x[i] = u.i.h;
+   19|     64|    union U v;
+   20|     64|    asm("movl %1, %k0; salq $32, %0" : "=r"(v.l) : "r"(i));
+   21|     64|    y[i] = v.i.h;
+   22|     64|  }
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  char a[64], b[64];
+   27|      1|  int i;
+   28|      1|  foo(a, b);
+   29|     65|  for (i = 0; i < 64; i++)
+   30|     64|    if (a[i] != i || b[i] != i)
+   31|      0|      abort();
+   32|      1|  return 0;
+   33|      1|}
+

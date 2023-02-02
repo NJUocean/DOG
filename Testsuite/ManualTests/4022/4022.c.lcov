@@ -1,0 +1,65 @@
+    1|       |/* PR target/89369 */
+    2|       |
+    3|       |#if __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8 && __CHAR_BIT__ == 8
+    4|       |struct S {
+    5|       |  unsigned int u[4];
+    6|       |};
+    7|       |
+    8|      1|static void foo(struct S *out, struct S const *in, int shift) {
+    9|      1|  unsigned long long th, tl, oh, ol;
+   10|      1|  th = ((unsigned long long)in->u[3] << 32) | in->u[2];
+   11|      1|  tl = ((unsigned long long)in->u[1] << 32) | in->u[0];
+   12|      1|  oh = th >> (shift * 8);
+   13|      1|  ol = tl >> (shift * 8);
+   14|      1|  ol |= th << (64 - shift * 8);
+   15|      1|  out->u[1] = ol >> 32;
+   16|      1|  out->u[0] = ol;
+   17|      1|  out->u[3] = oh >> 32;
+   18|      1|  out->u[2] = oh;
+   19|      1|}
+   20|       |
+   21|      1|static void bar(struct S *out, struct S const *in, int shift) {
+   22|      1|  unsigned long long th, tl, oh, ol;
+   23|      1|  th = ((unsigned long long)in->u[3] << 32) | in->u[2];
+   24|      1|  tl = ((unsigned long long)in->u[1] << 32) | in->u[0];
+   25|      1|  oh = th << (shift * 8);
+   26|      1|  ol = tl << (shift * 8);
+   27|      1|  oh |= tl >> (64 - shift * 8);
+   28|      1|  out->u[1] = ol >> 32;
+   29|      1|  out->u[0] = ol;
+   30|      1|  out->u[3] = oh >> 32;
+   31|      1|  out->u[2] = oh;
+   32|      1|}
+   33|       |
+   34|       |__attribute__((noipa)) static void baz(struct S *r, struct S *a, struct S *b,
+   35|      1|                                       struct S *c, struct S *d) {
+   36|      1|  struct S x, y;
+   37|      1|  bar(&x, a, 1);
+   38|      1|  foo(&y, c, 1);
+   39|      1|  r->u[0] = a->u[0] ^ x.u[0] ^ ((b->u[0] >> 11) & 0xdfffffefU) ^ y.u[0] ^
+   40|      1|            (d->u[0] << 18);
+   41|      1|  r->u[1] = a->u[1] ^ x.u[1] ^ ((b->u[1] >> 11) & 0xddfecb7fU) ^ y.u[1] ^
+   42|      1|            (d->u[1] << 18);
+   43|      1|  r->u[2] = a->u[2] ^ x.u[2] ^ ((b->u[2] >> 11) & 0xbffaffffU) ^ y.u[2] ^
+   44|      1|            (d->u[2] << 18);
+   45|      1|  r->u[3] = a->u[3] ^ x.u[3] ^ ((b->u[3] >> 11) & 0xbffffff6U) ^ y.u[3] ^
+   46|      1|            (d->u[3] << 18);
+   47|      1|}
+   48|       |
+   49|      1|int main() {
+   50|      1|  struct S a[] = {{0x000004d3, 0xbc5448db, 0xf22bde9f, 0xebb44f8f},
+   51|      1|                  {0x03a32799, 0x60be8246, 0xa2d266ed, 0x7aa18536},
+   52|      1|                  {0x15a38518, 0xcf655ce1, 0xf3e09994, 0x50ef69fe},
+   53|      1|                  {0x88274b07, 0xe7c94866, 0xc0ea9f47, 0xb6a83c43},
+   54|      1|                  {0xcd0d0032, 0x5d47f5d7, 0x5a0afbf6, 0xaea87b24},
+   55|      1|                  {0, 0, 0, 0}};
+   56|      1|  baz(&a[5], &a[0], &a[1], &a[2], &a[3]);
+   57|      1|  if (a[4].u[0] != a[5].u[0] || a[4].u[1] != a[5].u[1] ||
+   58|      1|      a[4].u[2] != a[5].u[2] || a[4].u[3] != a[5].u[3])
+   59|      0|    __builtin_abort();
+   60|      1|  return 0;
+   61|      1|}
+   62|       |#else
+   63|       |int main() { return 0; }
+   64|       |#endif
+

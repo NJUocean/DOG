@@ -1,0 +1,16 @@
+        -:    0:Source:2829.c
+        -:    0:Graph:2829.gcno
+        -:    0:Data:2829.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile} */
+        -:    2:/* Annotate no return functions with a trailing 'trap'.  */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        1:    6:int main(int argc, char **argv) {
+        1:    7:  if (argc > 2)
+    #####:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}
+        -:   11:
+        -:   12:/* { dg-final { scan-assembler "call abort;\[\r\n\t \]+trap;" } } */

@@ -1,0 +1,17 @@
+    1|       |/* PR rtl-optimization/17099 */
+    2|       |
+    3|       |extern void exit(int);
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|void check(int a) {
+    7|      1|  if (a != 1)
+    8|      0|    abort();
+    9|      1|}
+   10|       |
+   11|      1|void test(int a, int b) { check((a ? 1 : 0) | (b ? 2 : 0)); }
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  test(1, 0);
+   15|      1|  exit(0);
+   16|      1|}
+

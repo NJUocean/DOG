@@ -1,0 +1,25 @@
+    1|       |/* ifcvt accidentally deletes a referenced label while generating
+    2|       |   conditional traps on machines having such patterns */
+    3|       |
+    4|       |struct foo {
+    5|       |  int a;
+    6|       |};
+    7|       |
+    8|      1|void gcc_crash(struct foo *p) {
+    9|      1|  if (__builtin_expect(p->a < 52, 0))
+   10|      0|    __builtin_trap();
+   11|      1|top:
+   12|      1|  p->a++;
+   13|      1|  if (p->a >= 62)
+   14|      0|    goto top;
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  struct foo x;
+   19|      1|
+   20|      1|  x.a = 53;
+   21|      1|  gcc_crash(&x);
+   22|      1|
+   23|      1|  exit(0);
+   24|      1|}
+

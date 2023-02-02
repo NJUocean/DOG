@@ -1,0 +1,39 @@
+    1|       |/* Test infinities convert to __float128 infinity.  Bug 77265.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-effective-target __float128 } */
+    4|       |/* { dg-require-effective-target base_quadfloat_support } */
+    5|       |/* { dg-add-options __float128 } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|       |volatile float finf = __builtin_inff();
+   11|       |volatile double dinf = __builtin_inf();
+   12|       |volatile long double ldinf = __builtin_infl();
+   13|       |volatile float nfinf = -__builtin_inff();
+   14|       |volatile double ndinf = -__builtin_inf();
+   15|       |volatile long double nldinf = -__builtin_infl();
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  volatile __float128 r;
+   19|      1|  r = (__float128)finf;
+   20|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+   21|      0|    abort();
+   22|      1|  r = (__float128)dinf;
+   23|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+   24|      0|    abort();
+   25|      1|  r = (__float128)ldinf;
+   26|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) != 0)
+   27|      0|    abort();
+   28|      1|  r = (__float128)nfinf;
+   29|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+   30|      0|    abort();
+   31|      1|  r = (__float128)ndinf;
+   32|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+   33|      0|    abort();
+   34|      1|  r = (__float128)nldinf;
+   35|      1|  if (!__builtin_isinf(r) || __builtin_signbit(r) == 0)
+   36|      0|    abort();
+   37|      1|  exit(0);
+   38|      1|}
+

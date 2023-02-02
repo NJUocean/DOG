@@ -1,0 +1,9 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-additional-options "-march=armv8.2-a+aes+sha2+crypto" } */
+    3|       |
+    4|      1|int main() { return 0; }
+    5|       |
+    6|       |/* { dg-final { scan-assembler-times {\.arch armv8\.2\-a\+crypto\+crc} 1 } } */
+    7|       |
+    8|       |/* Check if smallest set is maintained when outputting. */
+

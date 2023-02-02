@@ -1,0 +1,26 @@
+        -:    0:Source:2078.c
+        -:    0:Graph:2078.gcno
+        -:    0:Data:2078.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O -fdump-tree-fre1" } */
+        -:    3:
+        -:    4:int x = 1;
+        1:    5:int __attribute__((noinline, noclone)) fn() { return x; }
+        -:    6:int (*f)();
+        1:    7:int main() {
+        -:    8:  int res;
+        1:    9:  f = fn;
+        1:   10:  x = 0;
+        1:   11:  res = f();
+        1:   12:  res += x;
+        1:   13:  if (res != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* We should be able to optimize the load from x in main and thus the
+        -:   19:   addition.  */
+        -:   20:
+        -:   21:/* { dg-final { scan-tree-dump-times "= x;" 1 "fre1" } } */
+        -:   22:/* { dg-final { scan-tree-dump-times " \\\+ " 0 "fre1" } } */

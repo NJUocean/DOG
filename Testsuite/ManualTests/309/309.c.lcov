@@ -1,0 +1,42 @@
+    1|       |/* PR debug/29609 */
+    2|       |/* Verify that breakpoint on both goto failure; stmts is hit.
+    3|       |   This version of the test just checks that it can be compiled, linked
+    4|       |   and executed, further testing is done in corresponding gcc.dg/dwarf2/
+    5|       |   test and hopefully in gdb testsuite.  */
+    6|       |/* { dg-do run } */
+    7|       |/* { dg-options "-O0 -g -dA" } */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |int x;
+   11|       |
+   12|      3|int foo(void) { return 0 ^ x; }
+   13|       |
+   14|      2|int bar(void) { return 1 ^ x; }
+   15|       |
+   16|      3|int baz(void) {
+   17|      3|  int c;
+   18|      3|
+   19|      3|  if (!foo())
+   20|      1|    goto failure;
+   21|      2|
+   22|      2|  if (!bar())
+   23|      1|    goto failure;
+   24|      1|
+   25|      1|  return 0;
+   26|      2|
+   27|      2|failure:
+   28|      2|  return 1;
+   29|      1|}
+   30|       |
+   31|      1|int main(void) {
+   32|      1|  if (baz() != 1)
+   33|      0|    abort();
+   34|      1|  x = 1;
+   35|      1|  if (baz() != 1)
+   36|      0|    abort();
+   37|      1|  x = 2;
+   38|      1|  if (baz() != 0)
+   39|      0|    abort();
+   40|      1|  return 0;
+   41|      1|}
+

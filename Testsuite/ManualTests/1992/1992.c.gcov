@@ -1,0 +1,29 @@
+        -:    0:Source:1992.c
+        -:    0:Graph:1992.gcno
+        -:    0:Data:1992.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:struct A {
+        -:    5:  int b;
+        -:    6:  int c : 2;
+        -:    7:};
+        -:    8:
+        -:    9:struct B {
+        -:   10:  int e;
+        -:   11:  struct A f;
+        -:   12:} g = {0, {0, 1}}, j;
+        -:   13:
+        -:   14:struct A *h = &g.f;
+        -:   15:
+        1:   16:int main() {
+        -:   17:  struct A k;
+        1:   18:  struct B l = j, i = l;
+        1:   19:  if (!i.f.b)
+        1:   20:    k = i.f;
+        1:   21:  *h = k;
+        1:   22:  if (g.f.c != 0)
+    #####:   23:    __builtin_abort();
+        1:   24:  return 0;
+        -:   25:}

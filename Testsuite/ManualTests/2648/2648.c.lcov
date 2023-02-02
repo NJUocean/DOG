@@ -1,0 +1,40 @@
+    1|       |typedef unsigned long long ULL;
+    2|       |ULL back;
+    3|       |ULL hpart, lpart;
+    4|     12|ULL build(long h, long l) {
+    5|     12|  hpart = h;
+    6|     12|  hpart <<= 32;
+    7|     12|  lpart = l;
+    8|     12|  lpart &= 0xFFFFFFFFLL;
+    9|     12|  back = hpart | lpart;
+   10|     12|  return back;
+   11|     12|}
+   12|       |
+   13|      1|main() {
+   14|      1|  if (build(0, 1) != 0x0000000000000001LL)
+   15|      0|    abort();
+   16|      1|  if (build(0, 0) != 0x0000000000000000LL)
+   17|      0|    abort();
+   18|      1|  if (build(0, 0xFFFFFFFF) != 0x00000000FFFFFFFFLL)
+   19|      0|    abort();
+   20|      1|  if (build(0, 0xFFFFFFFE) != 0x00000000FFFFFFFELL)
+   21|      0|    abort();
+   22|      1|  if (build(1, 1) != 0x0000000100000001LL)
+   23|      0|    abort();
+   24|      1|  if (build(1, 0) != 0x0000000100000000LL)
+   25|      0|    abort();
+   26|      1|  if (build(1, 0xFFFFFFFF) != 0x00000001FFFFFFFFLL)
+   27|      0|    abort();
+   28|      1|  if (build(1, 0xFFFFFFFE) != 0x00000001FFFFFFFELL)
+   29|      0|    abort();
+   30|      1|  if (build(0xFFFFFFFF, 1) != 0xFFFFFFFF00000001LL)
+   31|      0|    abort();
+   32|      1|  if (build(0xFFFFFFFF, 0) != 0xFFFFFFFF00000000LL)
+   33|      0|    abort();
+   34|      1|  if (build(0xFFFFFFFF, 0xFFFFFFFF) != 0xFFFFFFFFFFFFFFFFLL)
+   35|      0|    abort();
+   36|      1|  if (build(0xFFFFFFFF, 0xFFFFFFFE) != 0xFFFFFFFFFFFFFFFELL)
+   37|      0|    abort();
+   38|      1|  exit(0);
+   39|      1|}
+

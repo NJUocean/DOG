@@ -1,0 +1,44 @@
+        -:    0:Source:318.c
+        -:    0:Graph:318.gcno
+        -:    0:Data:318.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3 = (-1L);
+        -:    7:static volatile int32_t g_6[2] = {(-1L), (-1L)};
+        -:    8:
+        -:    9:static int64_t func_1(void);
+        -:   10:
+        1:   11:static int64_t func_1(void) {
+        1:   12:  int32_t *l_2 = &g_3;
+        -:   13:  int32_t *l_4[1];
+        1:   14:  int32_t l_5 = 0x5E53494AL;
+        1:   15:  int8_t l_7 = 0L;
+        1:   16:  uint8_t l_8[2][5][5] = {{{0UL, 0UL, 250UL, 250UL, 0UL}, {0x09L, 0xEBL, 0x09L, 0xEBL, 0x09L}, {0UL, 250UL, 250UL, 0UL, 0UL}, {251UL, 0xEBL, 251UL, 0xEBL, 251UL}, {0UL, 0UL, 250UL, 250UL, 0UL}}, {{0x09L, 0xEBL, 0x09L, 0xEBL, 0x09L}, {0UL, 250UL, 250UL, 0UL, 0UL}, {251UL, 0xEBL, 251UL, 0xEBL, 251UL}, {0UL, 0UL, 250UL, 250UL, 0UL}, {0x09L, 0xEBL, 0x09L, 0xEBL, 0x09L}}};
+        -:   17:  int i, j, k;
+        2:   18:  for (i = 0; i < 1; i++)
+        1:   19:    l_4[i] = &g_3;
+        1:   20:  ++l_8[1][0][1];
+        1:   21:  return g_3;
+        -:   22:}
+        -:   23:
+        1:   24:int main(int argc, char *argv[]) {
+        -:   25:  int i;
+        1:   26:  int print_hash_value = 0;
+       1*:   27:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   28:    print_hash_value = 1;
+        1:   29:  platform_main_begin();
+        1:   30:  crc32_gentab();
+        1:   31:  func_1();
+        1:   32:  transparent_crc(g_3, "g_3", print_hash_value);
+        3:   33:  for (i = 0; i < 2; i++) {
+        2:   34:    transparent_crc(g_6[i], "g_6[i]", print_hash_value);
+        2:   35:    if (print_hash_value)
+    #####:   36:      printf("index = [%d]\n", i);
+        -:   37:  }
+        1:   38:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   39:  return 0;
+        -:   40:}

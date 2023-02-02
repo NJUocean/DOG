@@ -1,0 +1,35 @@
+        -:    0:Source:3322.c
+        -:    0:Graph:3322.gcno
+        -:    0:Data:3322.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that MAX_EXPR and MIN_EXPR are working properly.  */
+        -:    2:
+        -:    3:#define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+        -:    4:#define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int ll_bitsize, ll_bitpos;
+        -:   10:  int rl_bitsize, rl_bitpos;
+        -:   11:  int end_bit;
+        -:   12:
+        1:   13:  ll_bitpos = 32;
+        1:   14:  ll_bitsize = 32;
+        1:   15:  rl_bitpos = 0;
+        1:   16:  rl_bitsize = 32;
+        -:   17:
+        1:   18:  end_bit = MAX(ll_bitpos + ll_bitsize, rl_bitpos + rl_bitsize);
+        1:   19:  if (end_bit != 64)
+    #####:   20:    abort();
+        1:   21:  end_bit = MAX(rl_bitpos + rl_bitsize, ll_bitpos + ll_bitsize);
+        1:   22:  if (end_bit != 64)
+    #####:   23:    abort();
+        1:   24:  end_bit = MIN(ll_bitpos + ll_bitsize, rl_bitpos + rl_bitsize);
+        1:   25:  if (end_bit != 32)
+    #####:   26:    abort();
+        1:   27:  end_bit = MIN(rl_bitpos + rl_bitsize, ll_bitpos + ll_bitsize);
+        1:   28:  if (end_bit != 32)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

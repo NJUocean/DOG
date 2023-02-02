@@ -1,0 +1,22 @@
+        -:    0:Source:1605.c
+        -:    0:Graph:1605.gcno
+        -:    0:Data:1605.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:enum e1 { A, B };
+        -:    4:enum e2 { C, D };
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) enum e1 f(unsigned int *p) {
+        1:    7:  *(enum e1 *)p = A;
+        1:    8:  *(enum e2 *)p = D;
+        1:    9:  return *(enum e1 *)p;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  unsigned int storage;
+        -:   14:
+        1:   15:  if (f(&storage) != B)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

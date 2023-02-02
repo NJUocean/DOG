@@ -1,0 +1,30 @@
+        -:    0:Source:2510.c
+        -:    0:Graph:2510.gcno
+        -:    0:Data:2510.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/128 from Martin Sebor <sebor@roguewave.com>, adapted
+        -:    2:   as a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+        -:    3:*/
+        -:    4:/* Character arrays initialized by a string literal must have
+        -:    5:   uninitialized elements zeroed.  This isn't clear in the 1990
+        -:    6:   standard, but was fixed in TC2 and C99; see DRs #060, #092.
+        -:    7:*/
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int foo(void) {
+        1:   11:  char s[2] = "";
+        1:   12:  return 0 == s[1];
+        -:   13:}
+        -:   14:
+        -:   15:char *t;
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  {
+        1:   19:    char s[] = "x";
+        1:   20:    t = s;
+        -:   21:  }
+        1:   22:  if (foo())
+        1:   23:    exit(0);
+        -:   24:  else
+    #####:   25:    abort();
+        -:   26:}

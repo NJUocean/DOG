@@ -1,0 +1,64 @@
+    1|       |/* { dg-skip-if "too many arguments in function call" { bpf-*-* } } */
+    2|       |
+    3|       |struct foo {
+    4|       |  int a, b, c, d;
+    5|       |  double doubl;
+    6|       |} s1, s2;
+    7|       |
+    8|       |#ifndef ONLY2
+    9|       |
+   10|       |struct foo structret(s1, i1, i2, s2) struct foo s1, s2;
+   11|       |int i1, i2;
+   12|      3|{
+   13|      3|  if (i1 != i2) {
+   14|      2|    if (i1 < i2)
+   15|      1|      return s1;
+   16|      1|    else
+   17|      1|      return s2;
+   18|      1|  }
+   19|      1|  s2.a = 11;
+   20|      1|  s2.b = 22;
+   21|      1|  s2.c = s1.c;
+   22|      1|  s2.d = s1.d;
+   23|      1|  return s2;
+   24|      1|}
+   25|       |
+   26|       |#endif
+   27|       |
+   28|       |#ifndef ONLY1
+   29|       |
+   30|      3|struct foo mani(a, b) {
+   31|      3|  return structret(s1, a, b, s2);
+   32|      3|}
+   33|       |
+   34|      3|init() {
+   35|      3|  s1.a = 1;
+   36|      3|  s1.b = 2;
+   37|      3|  s1.c = 3;
+   38|      3|  s1.d = 4;
+   39|      3|  s1.doubl = 3.1415;
+   40|      3|  s2.a = -1;
+   41|      3|  s2.b = -2;
+   42|      3|  s2.c = -3;
+   43|      3|  s2.d = -4;
+   44|      3|  s2.doubl = 2.71818;
+   45|      3|}
+   46|       |
+   47|      1|main() {
+   48|      1|  struct foo s;
+   49|      1|
+   50|      1|  init();
+   51|      1|  s = mani(1, 1);
+   52|      1|  printf("%d, %d, %d, %d : %f\n", s.a, s.b, s.c, s.d, s.doubl);
+   53|      1|
+   54|      1|  init();
+   55|      1|  s = mani(2, 1);
+   56|      1|  printf("%d, %d, %d, %d : %f\n", s.a, s.b, s.c, s.d, s.doubl);
+   57|      1|
+   58|      1|  init();
+   59|      1|  s = mani(1, 2);
+   60|      1|  printf("%d, %d, %d, %d : %f\n", s.a, s.b, s.c, s.d, s.doubl);
+   61|      1|}
+   62|       |
+   63|       |#endif
+

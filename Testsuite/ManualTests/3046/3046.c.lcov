@@ -1,0 +1,26 @@
+    1|       |/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+    2|       |/* { dg-final { scan-assembler "clr1 B100,#0" } } */
+    3|       |
+    4|       |typedef struct {
+    5|       |  unsigned char b0 : 1;
+    6|       |  unsigned char b1 : 1;
+    7|       |  unsigned char b2 : 1;
+    8|       |  unsigned char b3 : 1;
+    9|       |  unsigned char b4 : 1;
+   10|       |  unsigned char b5 : 1;
+   11|       |  unsigned char b6 : 1;
+   12|       |  unsigned char b7 : 1;
+   13|       |} BitField;
+   14|       |
+   15|       |char acDummy[0xf0] __attribute__((__BELOW100__));
+   16|       |BitField B100 __attribute__((__BELOW100__));
+   17|       |unsigned char *p = (unsigned char *)&B100;
+   18|       |
+   19|      1|void Do(void) { B100.b0 = 0; }
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  *p = 0xcb;
+   23|      1|  Do();
+   24|      1|  return (*p == 0xca) ? 0 : 1;
+   25|      1|}
+

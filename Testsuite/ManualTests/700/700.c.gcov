@@ -1,0 +1,8 @@
+        -:    0:Source:700.c
+        -:    0:Graph:700.gcno
+        -:    0:Data:700.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do assemble }  */
+    #####:    2:void baz(void) {}
+        -:    3:void *y = (void *)baz;
+        1:    4:int main() { return 0; }

@@ -1,0 +1,38 @@
+        -:    0:Source:735.c
+        -:    0:Graph:735.gcno
+        -:    0:Data:735.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fno-inline" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:/* Return 0 and clobber the static chain.  */
+        -:    7:
+        1:    8:int zero(int n) {
+        1:    9:  int nested(int m) { return m - n; }
+        -:   10:
+        1:   11:  return nested(n);
+        -:   12:}
+        -:   13:
+        -:   14:/* Return the triple of ARG in a convoluted manner.  */
+        -:   15:
+        1:   16:int triple(int arg) {
+        2:   17:  int read_arg(void) { return arg; }
+        -:   18:
+        2:   19:  int parent(int nested_arg) {
+        1:   20:    int child1(void) { return parent(zero(5)); }
+        -:   21:
+        2:   22:    int child2(void) { return nested_arg + read_arg(); }
+        -:   23:
+        2:   24:    return (nested_arg == 0 ? 0 : child1()) + child2();
+        -:   25:  }
+        -:   26:
+        1:   27:  return parent(arg);
+        -:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  if (triple(13) != 3 * 13)
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

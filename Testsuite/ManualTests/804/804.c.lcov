@@ -1,0 +1,15 @@
+    1|       |/* PR target/27758 */
+    2|       |/* { dg-do run { target fpic } } */
+    3|       |/* { dg-options "-O0 -fpic" } */
+    4|       |
+    5|       |typedef int (*fn)(void);
+    6|       |
+    7|      1|static inline int foo(void) { return 1; }
+    8|       |
+    9|      1|fn test(void) { return foo; }
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  fn f = test();
+   13|      1|  return f() != 1;
+   14|      1|}
+

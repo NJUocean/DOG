@@ -1,0 +1,19 @@
+    1|       |/* PR tree-optimization/71854 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-additional-options "-O3 -ftree-loop-if-convert" } */
+    4|       |
+    5|       |char a, f = 1;
+    6|       |int b, c, e[8];
+    7|       |short d;
+    8|       |
+    9|      8|short foo(short x) { return x >= 2 || x >> c ? x : x << c; }
+   10|       |
+   11|      1|int main() {
+   12|      2|  while (f)
+   13|      9|    for (d = 0; d <= 7; d++) {
+   14|      8|      f = 7 >> b ? a : a << b;
+   15|      8|      e[d] = foo(f);
+   16|      8|    }
+   17|      1|  return 0;
+   18|      1|}
+

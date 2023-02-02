@@ -1,0 +1,36 @@
+        -:    0:Source:128.c
+        -:    0:Graph:128.gcno
+        -:    0:Data:128.gcda
+        -:    0:Runs:1
+        -:    1:/* Test we're able use __atomic_fetch_* where possible and verify
+        -:    2:   we generate correct code.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors -fdump-tree-original" } */
+        -:    5:
+        -:    6:#include <limits.h>
+        -:    7:#include <stdatomic.h>
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:#define TEST_TYPE(TYPE, MAX)                                                   \
+        -:   12:  do {                                                                         \
+        -:   13:    struct S {                                                                 \
+        -:   14:      char a[(MAX) + 1];                                                       \
+        -:   15:    };                                                                         \
+        -:   16:    TYPE t = 1;                                                                \
+        -:   17:    struct S a[2][2];                                                          \
+        -:   18:    struct S(*_Atomic p)[2] = &a[0];                                           \
+        -:   19:    p += t;                                                                    \
+        -:   20:    if (p != &a[1])                                                            \
+        -:   21:      abort();                                                                 \
+        -:   22:    p -= t;                                                                    \
+        -:   23:    if (p != &a[0])                                                            \
+        -:   24:      abort();                                                                 \
+        -:   25:  } while (0)
+        -:   26:
+        1:   27:int main(void) {
+       1*:   28:  TEST_TYPE(signed char, UCHAR_MAX);
+       1*:   29:  TEST_TYPE(signed short, USHRT_MAX);
+        -:   30:}
+        -:   31:
+        -:   32:/* { dg-final { scan-tree-dump-not "__atomic_compare_exchange" "original" } } */

@@ -1,0 +1,25 @@
+        -:    0:Source:2434.c
+        -:    0:Graph:2434.gcno
+        -:    0:Data:2434.gcda
+        -:    0:Runs:1
+        -:    1:struct F {
+        -:    2:  int x;
+        -:    3:  int y;
+        -:    4:};
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int timeout = 0;
+        1:    8:  int x = 0;
+        1:    9:  while (1) {
+        2:   10:    const struct F i = {
+        2:   11:        x++,
+        -:   12:    };
+        2:   13:    if (i.x > 0)
+        1:   14:      break;
+        1:   15:    if (++timeout > 5)
+    #####:   16:      goto die;
+        -:   17:  }
+        1:   18:  return 0;
+    #####:   19:die:
+    #####:   20:  abort();
+        -:   21:}

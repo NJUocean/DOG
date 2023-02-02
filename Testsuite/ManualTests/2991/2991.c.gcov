@@ -1,0 +1,30 @@
+        -:    0:Source:2991.c
+        -:    0:Graph:2991.gcno
+        -:    0:Data:2991.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -mstd-struct-return" } */
+        -:    3:/* { dg-require-effective-target ilp32 } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int x, y, z;
+        -:    9:};
+        -:   10:
+        -:   11:extern void bar(struct S *s) __attribute__((noinline, noclone));
+        -:   12:
+        1:   13:void bar(struct S *s) { s->x++; }
+        -:   14:
+        1:   15:struct S foo(void) {
+        1:   16:  struct S s = {0, 2, 3};
+        1:   17:  bar(&s);
+        1:   18:  return s;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  struct S s = foo();
+        1:   23:  if (s.x != 1)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

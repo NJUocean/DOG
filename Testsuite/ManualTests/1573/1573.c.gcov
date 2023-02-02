@@ -1,0 +1,28 @@
+        -:    0:Source:1573.c
+        -:    0:Graph:1573.gcno
+        -:    0:Data:1573.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fstrict-aliasing" } */
+        -:    3:
+        -:    4:extern void *malloc(__SIZE_TYPE__);
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:void __attribute__((noinline, noclone)) foo(int *pi) {
+        1:    8:  if (*pi != 1)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  void *p = malloc(sizeof(double));
+        1:   14:  int *pi = p;
+        1:   15:  double *pd = p;
+        -:   16:
+        1:   17:  *pi = 1;
+        1:   18:  int a = *pi;
+        1:   19:  *pd = 0;
+        1:   20:  *pi = a;
+        1:   21:  foo(pi);
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

@@ -1,0 +1,26 @@
+    1|      1|double g0(double x) { return 1.0; }
+    2|       |
+    3|      1|double g1(double x) { return -1.0; }
+    4|       |
+    5|      1|double g2(double x) { return 0.0; }
+    6|       |
+    7|      1|__complex__ double xcexp(__complex__ double x) {
+    8|      1|  double r;
+    9|      1|
+   10|      1|  r = g0(__real__ x);
+   11|      1|  __real__ x = r * g1(__imag__ x);
+   12|      1|  __imag__ x = r * g2(__imag__ x);
+   13|      1|  return x;
+   14|      1|}
+   15|       |
+   16|      1|main() {
+   17|      1|  __complex__ double x;
+   18|      1|
+   19|      1|  x = xcexp(1.0i);
+   20|      1|  if (__real__ x != -1.0)
+   21|      0|    abort();
+   22|      1|  if (__imag__ x != 0.0)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

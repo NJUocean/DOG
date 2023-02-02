@@ -1,0 +1,23 @@
+    1|       |/* PR tree-optimization/70586 */
+    2|       |
+    3|       |int a, e, f;
+    4|       |short b, c, d;
+    5|       |
+    6|      6|int foo(int x, int y) { return (y == 0 || (x && y == 1)) ? x : x % y; }
+    7|       |
+    8|      1|static short bar(void) {
+    9|      1|  int i = foo(c, f);
+   10|      1|  f = foo(d, 2);
+   11|      1|  int g = foo(b, c);
+   12|      1|  int h = foo(g > 0, c);
+   13|      1|  c = (3 >= h ^ 7) <= foo(i, c);
+   14|      1|  if (foo(e, 1))
+   15|      0|    return a;
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  bar();
+   21|      1|  return 0;
+   22|      1|}
+

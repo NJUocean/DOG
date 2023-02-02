@@ -1,0 +1,24 @@
+        -:    0:Source:1565.c
+        -:    0:Graph:1565.gcno
+        -:    0:Data:1565.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/69546 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:
+        1:    4:unsigned __int128 __attribute__((noinline, noclone)) foo(unsigned long long x) {
+        1:    5:  unsigned __int128 y = ~0ULL;
+        1:    6:  x >>= 63;
+        1:    7:  return y / (x | 1);
+        -:    8:}
+        -:    9:
+        1:   10:unsigned __int128 __attribute__((noinline, noclone)) bar(unsigned long long x) {
+        1:   11:  unsigned __int128 y = ~33ULL;
+        1:   12:  x >>= 63;
+        1:   13:  return y / (x | 1);
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  if (foo(1) != ~0ULL || bar(17) != ~33ULL)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

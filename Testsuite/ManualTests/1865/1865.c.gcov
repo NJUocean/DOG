@@ -1,0 +1,30 @@
+        -:    0:Source:1865.c
+        -:    0:Graph:1865.gcno
+        -:    0:Data:1865.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -fdump-tree-phiopt1-details" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:void exit(int);
+        -:    6:
+        -:    7:int x, y;
+        -:    8:
+        1:    9:static void __attribute__((noinline)) init_xy(void) {
+        1:   10:  x = 3;
+        1:   11:  y = 2;
+        1:   12:}
+        -:   13:
+        1:   14:void test4(void) {
+        1:   15:  init_xy();
+       1*:   16:  if ((x < y ? x++ : y++) != 2)
+    #####:   17:    abort();
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  test4();
+        1:   22:  exit(0);
+        -:   23:}
+        -:   24:
+        -:   25:/* Should have no more than two ifs left after straightening.  */
+        -:   26:/* { dg-final { scan-tree-dump-times "if " 2 "phiopt1"} } */

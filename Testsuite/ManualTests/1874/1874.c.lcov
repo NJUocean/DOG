@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |struct s {
+    5|       |  long long a : 12;
+    6|       |  long long b : 12;
+    7|       |  long long c : 40;
+    8|       |};
+    9|       |
+   10|       |struct s s, *p = &s;
+   11|       |
+   12|      1|int main() {
+   13|      1|  p->a = 1;
+   14|      1|  s.a = 0;
+   15|      1|  s.b = 0;
+   16|      1|  return p->a + s.b;
+   17|      1|}
+

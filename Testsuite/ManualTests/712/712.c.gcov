@@ -1,0 +1,23 @@
+        -:    0:Source:712.c
+        -:    0:Graph:712.gcno
+        -:    0:Data:712.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options { { -O2 -flto -fopenmp-simd } } } */
+        -:    3:
+        -:    4:float b[3][3];
+        -:    5:
+        1:    6:__attribute__((used, noinline)) void foo() {
+        -:    7:  int v1, v2;
+        -:    8:#pragma omp simd collapse(2)
+        4:    9:  for (v1 = 0; v1 < 3; v1++)
+       12:   10:    for (v2 = 0; v2 < 3; v2++)
+        9:   11:      b[v1][v2] = 2.5;
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  asm volatile("" : : "g"(b) : "memory");
+        1:   16:  foo();
+        1:   17:  asm volatile("" : : "g"(b) : "memory");
+        1:   18:  return 0;
+        -:   19:}

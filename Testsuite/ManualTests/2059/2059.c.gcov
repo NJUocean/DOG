@@ -1,0 +1,23 @@
+        -:    0:Source:2059.c
+        -:    0:Graph:2059.gcno
+        -:    0:Data:2059.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/19899 */
+        -:    2:/* Decrementing a floating-point variable in a loop caused an ICE.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O -ftree-vectorize" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int main() {
+        1:   10:  double a = 20;
+        -:   11:  int i;
+        -:   12:
+       11:   13:  for (i = 0; i < 10; ++i)
+       10:   14:    a -= 2;
+        -:   15:
+        1:   16:  if (a)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

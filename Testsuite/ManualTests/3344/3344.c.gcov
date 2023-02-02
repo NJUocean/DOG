@@ -1,0 +1,18 @@
+        -:    0:Source:3344.c
+        -:    0:Graph:3344.gcno
+        -:    0:Data:3344.gcda
+        -:    0:Runs:1
+        -:    1:#include <limits.h>
+        -:    2:
+        -:    3:extern void abort(void);
+        1:    4:int __attribute__((noinline)) foo(unsigned int u) {
+        1:    5:  return (int)(u + 4) < (int)u;
+        -:    6:}
+        -:    7:
+        1:    8:int main(int argc, char *argv[]) {
+        1:    9:  unsigned int u = INT_MAX;
+        -:   10:
+        1:   11:  if (foo(u) == 0)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

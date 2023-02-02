@@ -1,0 +1,38 @@
+        -:    0:Source:491.c
+        -:    0:Graph:491.gcno
+        -:    0:Data:491.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+        -:    4:
+        -:    5:typedef __UINTPTR_TYPE__ uintptr_t;
+        -:    6:
+        -:    7:typedef struct {
+        -:    8:  uintptr_t pa;
+        -:    9:  uintptr_t pb;
+        -:   10:} fatp_t __attribute__((aligned(2 * __alignof__(uintptr_t))));
+        -:   11:
+        2:   12:__attribute__((noinline, noclone)) void clear_stack(void) {
+        -:   13:  char a[128 * 1024 + 128];
+        -:   14:
+        2:   15:  __builtin_memset(a + 128 * 1024, 0, 128);
+        2:   16:}
+        -:   17:
+        2:   18:__attribute__((noinline, noclone)) void foo(fatp_t str, int count) {
+        -:   19:  char a[128 * 1024];
+        -:   20:
+        2:   21:  if (count > 0)
+        1:   22:    foo(str, count - 1);
+        2:   23:  clear_stack();
+        2:   24:  count--; /* BREAK */
+        2:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  fatp_t ptr = {31415927, 27182818};
+        1:   29:  foo(ptr, 1);
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-final { gdb-test 26 "str.pa" "31415927" } } */
+        -:   34:/* { dg-final { gdb-test 26 "str.pb" "27182818" } } */

@@ -1,0 +1,46 @@
+        -:    0:Source:4100.c
+        -:    0:Graph:4100.gcno
+        -:    0:Data:4100.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2003  Free Software Foundation.
+        -:    2:
+        -:    3:   Test that switch statements suitable using case bit tests are
+        -:    4:   implemented correctly.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 01/25/2001.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+       67:   10:int foo(int x) {
+       67:   11:  switch (x) {
+        4:   12:  case 4:
+        -:   13:  case 6:
+        -:   14:  case 9:
+        -:   15:  case 11:
+        4:   16:    return 30;
+        -:   17:  }
+       63:   18:  return 31;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        -:   22:  int i, r;
+        -:   23:
+       68:   24:  for (i = -1; i < 66; i++) {
+       67:   25:    r = foo(i);
+       67:   26:    if (i == 4) {
+        1:   27:      if (r != 30)
+    #####:   28:        abort();
+       66:   29:    } else if (i == 6) {
+        1:   30:      if (r != 30)
+    #####:   31:        abort();
+       65:   32:    } else if (i == 9) {
+        1:   33:      if (r != 30)
+    #####:   34:        abort();
+       64:   35:    } else if (i == 11) {
+        1:   36:      if (r != 30)
+    #####:   37:        abort();
+       63:   38:    } else if (r != 31)
+    #####:   39:      abort();
+        -:   40:  }
+        1:   41:  return 0;
+        -:   42:}

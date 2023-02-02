@@ -1,0 +1,55 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -ftree-vectorize" } */
+    3|       |
+    4|       |unsigned short v1[] __attribute__((aligned(16))) = {
+    5|       |    0x8000, 0x9000, 1,      10,     0xa000, 0xb000, 2,  20,
+    6|       |    3,      30,     0xd000, 0xe000, 0xf000, 0xe000, 25, 30};
+    7|       |unsigned short v2[] __attribute__((aligned(16))) = {
+    8|       |    4,      40,     0xb000, 0x8000, 5, 50, 0xc000, 0xf000,
+    9|       |    0xd000, 0xa000, 6,      65,     7, 75, 0xe000, 0xc000};
+   10|       |
+   11|       |unsigned short max[] = {0x8000, 0x9000, 0xb000, 0x8000, 0xa000, 0xb000,
+   12|       |                        0xc000, 0xf000, 0xd000, 0xa000, 0xd000, 0xe000,
+   13|       |                        0xf000, 0xe000, 0xe000, 0xc000};
+   14|       |
+   15|       |unsigned short min[] = {4, 40, 1, 10, 5, 50, 2,  20,
+   16|       |                        3, 30, 6, 65, 7, 75, 25, 30};
+   17|       |
+   18|       |unsigned short res[16] __attribute__((aligned(16)));
+   19|       |
+   20|       |extern void abort(void);
+   21|       |
+   22|      1|void find_max(void) {
+   23|      1|  int i;
+   24|      1|
+   25|     17|  for (i = 0; i < 16; i++)
+   26|     16|    res[i] = v1[i] < v2[i] ? v2[i] : v1[i];
+   27|      1|}
+   28|       |
+   29|      1|void find_min(void) {
+   30|      1|  int i;
+   31|      1|
+   32|     17|  for (i = 0; i < 16; i++)
+   33|     16|    res[i] = v1[i] > v2[i] ? v2[i] : v1[i];
+   34|      1|}
+   35|       |
+   36|      1|int main(void) {
+   37|      1|  int i;
+   38|      1|  int err = 0;
+   39|      1|
+   40|      1|  find_max();
+   41|     17|  for (i = 0; i < 16; i++)
+   42|     16|    if (res[i] != max[i])
+   43|      0|      err++;
+   44|      1|
+   45|      1|  find_min();
+   46|     17|  for (i = 0; i < 16; i++)
+   47|     16|    if (res[i] != min[i])
+   48|      0|      err++;
+   49|      1|
+   50|      1|  if (err)
+   51|      0|    abort();
+   52|      1|
+   53|      1|  return 0;
+   54|      1|}
+

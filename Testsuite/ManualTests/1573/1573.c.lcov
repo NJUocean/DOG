@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fstrict-aliasing" } */
+    3|       |
+    4|       |extern void *malloc(__SIZE_TYPE__);
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|void __attribute__((noinline, noclone)) foo(int *pi) {
+    8|      1|  if (*pi != 1)
+    9|      0|    abort();
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  void *p = malloc(sizeof(double));
+   14|      1|  int *pi = p;
+   15|      1|  double *pd = p;
+   16|      1|
+   17|      1|  *pi = 1;
+   18|      1|  int a = *pi;
+   19|      1|  *pd = 0;
+   20|      1|  *pi = a;
+   21|      1|  foo(pi);
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

@@ -1,0 +1,20 @@
+        -:    0:Source:1746.c
+        -:    0:Graph:1746.gcno
+        -:    0:Data:1746.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target lp64 } } */
+        -:    2:
+        -:    3:struct {
+        -:    4:  unsigned long x : 33;
+        -:    5:} s;
+        -:    6:typedef __typeof__(s.x + 0) uint33;
+        -:    7:
+        1:    8:int main() {
+        -:    9:  uint33 x;
+        -:   10:  __builtin_memset(&x, -1, sizeof x);
+        -:   11:  unsigned long u;
+        1:   12:  __builtin_memcpy(&u, &x, sizeof u);
+        1:   13:  if (u != -1ul)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

@@ -1,0 +1,25 @@
+        -:    0:Source:4050.c
+        -:    0:Graph:4050.gcno
+        -:    0:Data:4050.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/94524 */
+        -:    2:
+        -:    3:typedef signed char __attribute__((__vector_size__(16))) V;
+        -:    4:
+        3:    5:static __attribute__((__noinline__, __noclone__)) V foo(V c) {
+        3:    6:  c %= (signed char)-128;
+        3:    7:  return (V)c;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  V x = foo((V){-128});
+        1:   12:  if (x[0] != 0)
+    #####:   13:    __builtin_abort();
+        1:   14:  x = foo((V){-127});
+        1:   15:  if (x[0] != -127)
+    #####:   16:    __builtin_abort();
+        1:   17:  x = foo((V){127});
+        1:   18:  if (x[0] != 127)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

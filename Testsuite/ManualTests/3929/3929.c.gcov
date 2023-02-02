@@ -1,0 +1,23 @@
+        -:    0:Source:3929.c
+        -:    0:Graph:3929.gcno
+        -:    0:Data:3929.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/71554 */
+        -:    2:
+        -:    3:int v;
+        -:    4:
+    #####:    5:__attribute__((noinline, noclone)) void bar(void) { v++; }
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) void foo(unsigned int x) {
+        1:    8:  signed int y = ((-__INT_MAX__ - 1) / 2);
+        -:    9:  signed int r;
+        1:   10:  if (__builtin_mul_overflow(x, y, &r))
+    #####:   11:    bar();
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  foo(2);
+        1:   16:  if (v)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

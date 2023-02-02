@@ -1,0 +1,44 @@
+    1|       |/* PR tree-optimization/49161 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |int c;
+    6|       |
+    7|      3|__attribute__((noinline, noclone)) void bar(int x) {
+    8|      3|  if (x != c++)
+    9|      0|    abort();
+   10|      3|}
+   11|       |
+   12|      1|__attribute__((noinline, noclone)) void foo(int x) {
+   13|      1|  switch (x) {
+   14|      1|  case 3:
+   15|      1|    goto l1;
+   16|      0|  case 4:
+   17|      0|    goto l2;
+   18|      0|  case 6:
+   19|      0|    goto l3;
+   20|      0|  default:
+   21|      0|    return;
+   22|      1|  }
+   23|      1|l1:
+   24|      1|  goto l4;
+   25|      0|l2:
+   26|      0|  goto l4;
+   27|      0|l3:
+   28|      0|  bar(-1);
+   29|      1|l4:
+   30|      1|  bar(0);
+   31|      1|  if (x != 4)
+   32|      1|    bar(1);
+   33|      1|  if (x != 3)
+   34|      0|    bar(-1);
+   35|      1|  bar(2);
+   36|      1|}
+   37|       |
+   38|      1|int main() {
+   39|      1|  foo(3);
+   40|      1|  if (c != 3)
+   41|      0|    abort();
+   42|      1|  return 0;
+   43|      1|}
+

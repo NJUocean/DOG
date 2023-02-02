@@ -1,0 +1,22 @@
+        -:    0:Source:2099.c
+        -:    0:Graph:2099.gcno
+        -:    0:Data:2099.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:#include <limits.h>
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:void decCompareOp(int result) {
+        1:    8:  if (result != (int)(INT_MAX + 1U)) {
+        1:    9:    result = -result;
+        1:   10:    if (result != (int)(INT_MAX + 2U))
+    #####:   11:      abort();
+        -:   12:  }
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  decCompareOp(INT_MAX);
+        1:   17:  return 0;
+        -:   18:}

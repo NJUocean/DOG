@@ -1,0 +1,12 @@
+digraph "" {
+  graph [bgcolor="white", fillcolor="#FFFFCC", pack="true", packmode="clust", fontname="Arial", label="", fontsize="12", compound="true", style="rounded,filled"];
+  node [node_initialized="no", fillcolor="white", fontname="Arial", label="", color="grey", fontsize="12", fixedsize="false", compound="true", shape="rectangle", style="filled"];
+  edge [arrowtail="none", lhead="", fontcolor="black", fontname="Arial", label="", color="black", fontsize="12", arrowhead="normal", arrowsize="0.5", compound="true", ltail="", dir="forward"];
+  __N1 [fillcolor="#ffffff", label="2 - passive 35,18,2,18,18,,33 - passive 35,19,2,19,16,,4", color="#0000ff", shape="box", style="filled"];
+  __N2 [fillcolor="#ffffff", label="1 - passive-implicit 36,,,,,,2\n\nstart", color="#006400", shape="box", style="filled"];
+  __N3 [fillcolor="#ffffff", label="4 - return 30,20,2,20,9,,5", color="#0000ff", shape="box", style="filled"];
+  __N4 [fillcolor="#ffffff", label="5 - passive-implicit 36,,,,,,\n\nend", color="#a52a2a", shape="box", style="filled"];
+  __N2 -> __N1 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N1 -> __N3 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N3 -> __N4 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+}

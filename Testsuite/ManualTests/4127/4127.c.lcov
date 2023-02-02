@@ -1,0 +1,22 @@
+    1|       |extern void exit(int);
+    2|       |extern void abort();
+    3|       |
+    4|      1|void test(int x, int y) {
+    5|      1|  int c;
+    6|      1|
+    7|      1|  if (x == 1)
+    8|      0|    abort();
+    9|      1|  if (y == 1)
+   10|      0|    abort();
+   11|      1|
+   12|      1|  c = x / y;
+   13|      1|
+   14|      1|  if (c != 1)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  test(2, 2);
+   20|      1|  exit(0);
+   21|      1|}
+

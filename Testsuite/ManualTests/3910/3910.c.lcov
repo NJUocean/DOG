@@ -1,0 +1,27 @@
+    1|     16|static inline int foo(int *x, int y) {
+    2|     16|  int z = *x;
+    3|     26|  while (y > z)
+    4|     10|    z *= 2;
+    5|     16|  return z;
+    6|     16|}
+    7|       |
+    8|      1|int main() {
+    9|      1|  int i;
+   10|     17|  for (i = 1; i < 17; i++) {
+   11|     16|    int j;
+   12|     16|    int k;
+   13|     16|    j = foo(&i, 7);
+   14|     16|    if (i >= 7)
+   15|     10|      k = i;
+   16|      6|    else if (i >= 4)
+   17|      3|      k = 8 + (i - 4) * 2;
+   18|      3|    else if (i == 3)
+   19|      1|      k = 12;
+   20|      2|    else
+   21|      2|      k = 8;
+   22|     16|    if (j != k)
+   23|      0|      __builtin_abort();
+   24|     16|  }
+   25|      1|  return 0;
+   26|      1|}
+

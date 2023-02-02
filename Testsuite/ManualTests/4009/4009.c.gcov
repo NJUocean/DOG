@@ -1,0 +1,21 @@
+        -:    0:Source:4009.c
+        -:    0:Graph:4009.gcno
+        -:    0:Data:4009.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-require-effective-target alloca }
+        -:    2:/* PR middle-end/86528 */
+        -:    3:
+        1:    4:void __attribute__((noinline, noclone)) test(char *data, __SIZE_TYPE__ len) {
+        -:    5:  static char const appended[] = "/./";
+        1:    6:  char *buf = __builtin_alloca(len + sizeof appended);
+        1:    7:  __builtin_memcpy(buf, data, len);
+        1:    8:  __builtin_strcpy(buf + len, &appended[data[len - 1] == '/']);
+        1:    9:  if (__builtin_strcmp(buf, "test1234/./"))
+    #####:   10:    __builtin_abort();
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  char *arg = "test1234/";
+        1:   15:  test(arg, __builtin_strlen(arg));
+        1:   16:  return 0;
+        -:   17:}

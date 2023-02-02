@@ -1,0 +1,31 @@
+        -:    0:Source:2616.c
+        -:    0:Graph:2616.gcno
+        -:    0:Data:2616.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-march=i386 -O3 -fomit-frame-pointer" } */
+        -:    4:
+        -:    5:/* For this test case, we used to do an invalid load motion after
+        -:    6:   reload, because we missed autoincrements of the stack pointer.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:static int j;
+        -:   11:
+        1:   12:static void __attribute__((noinline)) f1(int a, int b, int c, int d, int e) {
+        1:   13:  j = a;
+        1:   14:}
+        -:   15:
+        1:   16:int __attribute__((noinline)) f2(int a, int b, int c, int d, int e) {
+        1:   17:  if ((b & 0x1111) != 1)
+        1:   18:    f1(a, b, c, d, e);
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  f2(123, 0, 0, 0, 0);
+        1:   24:  if (j != 123)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

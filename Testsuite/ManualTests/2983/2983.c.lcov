@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |const char *s = "astc";
+    6|       |const char *s1 = "-----BEGIN RSA PRIVATE KEY-----";
+    7|       |const char *s2 = "atextaac";
+    8|       |
+    9|      1|main() {
+   10|      1|  if (!__builtin_strncmp("astb", s, 4))
+   11|      0|    abort();
+   12|      1|
+   13|      1|  if (__builtin_strncmp(s1, "-----BEGIN ", 11))
+   14|      0|    abort();
+   15|      1|
+   16|      1|  if (!__builtin_strncmp("atextaacb", s2, 9))
+   17|      0|    abort();
+   18|      1|
+   19|      1|  return 0;
+   20|      1|}
+

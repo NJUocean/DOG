@@ -1,0 +1,42 @@
+        -:    0:Source:723.c
+        -:    0:Graph:723.gcno
+        -:    0:Data:723.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/18548 */
+        -:    2:/* Test case reduced by Andrew Pinski <pinskia@physics.uc.edu> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O1 " } */
+        -:    5:/* Option -fno-tree-lrs removed By Andrew MacLeod since it is no longer
+        -:    6:   supported in the compiler beginning with GCC 4.3.  */
+        -:    7:/* m32c has varying sized pointers */
+        -:    8:/* { dg-skip-if "" { "m32c-*-*" } { "*" } { "-mcpu=m32c" "-mcpu=m32cm" } } */
+        -:    9:
+        -:   10:__extension__ typedef __INTPTR_TYPE__ intptr_t;
+        -:   11:
+        -:   12:extern void abort(void);
+        -:   13:
+        -:   14:intptr_t fff[10];
+        -:   15:
+        1:   16:void f(intptr_t a, intptr_t b) {
+        1:   17:  intptr_t crcc = b;
+        1:   18:  intptr_t d = *((intptr_t *)(a + 1));
+        -:   19:  int i;
+        -:   20:
+        1:   21:  a = d >= b ? d : b;
+        -:   22:
+       11:   23:  for (i = 0; i < 10; i++)
+       10:   24:    fff[i] = a;
+        1:   25:}
+        -:   26:
+        -:   27:/* The variable a cannot be a local variable as we get better aliasing
+        -:   28:   now and decide that the store to a is dead.  The better aliasing comes
+        -:   29:   from better representation of pointer arithmetic. */
+        -:   30:intptr_t a = 10;
+        1:   31:int main(void) {
+        -:   32:  int i;
+        1:   33:  f((intptr_t)(&a) - 1, 0);
+       11:   34:  for (i = 0; i < 10; i++)
+       10:   35:    if (fff[i] != 10)
+    #####:   36:      abort();
+        1:   37:  return 0;
+        -:   38:}

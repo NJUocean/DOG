@@ -1,0 +1,31 @@
+        -:    0:Source:823.c
+        -:    0:Graph:823.gcno
+        -:    0:Data:823.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Joost VandeVondele  <jv244@cam.ac.uk> */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-profiling "-pg" } */
+        -:    5:/* { dg-options "-O2 -pg" } */
+        -:    6:/* { dg-options "-O2 -pg -mtune=core2" { target { i?86-*-* x86_64-*-* } } } */
+        -:    7:/* { dg-options "-O2 -pg -static" { target hppa*-*-hpux* } } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:int stack_pointer;
+        -:   12:
+    #####:   13:void __attribute__((noinline)) mystop() { abort(); }
+        -:   14:
+        1:   15:void __attribute__((noinline)) add() {
+        1:   16:  if (stack_pointer + 1 > 10)
+    #####:   17:    mystop();
+        -:   18:
+        1:   19:  stack_pointer = stack_pointer + 1;
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  add();
+        1:   24:  return stack_pointer - 1;
+        -:   25:}
+        -:   26:
+        -:   27:/* { dg-final { cleanup-profile-file } } */

@@ -1,0 +1,28 @@
+        -:    0:Source:1952.c
+        -:    0:Graph:1952.gcno
+        -:    0:Data:1952.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-cunrolli-details" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        1:    5:int __attribute__((noinline, noclone)) foo(char *p) {
+        1:    6:  int h = 0;
+        -:    7:  do {
+        2:    8:    if (*p == '\0')
+        1:    9:      break;
+        1:   10:    ++h;
+        1:   11:    if (p == 0)
+    #####:   12:      abort();
+        1:   13:    ++p;
+        -:   14:  } while (1);
+        1:   15:  return h;
+        -:   16:}
+        1:   17:int main() {
+        1:   18:  if (foo("a") != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        -:   23:/* { dg-final { scan-tree-dump-times "bounded by 0x0\[^0-9a-f\]" 0 "cunrolli"} }
+        -:   24: */

@@ -1,0 +1,33 @@
+        -:    0:Source:3867.c
+        -:    0:Graph:3867.gcno
+        -:    0:Data:3867.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/64979 */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        1:    5:void __attribute__((noinline, noclone)) bar(int x, va_list *ap) {
+        1:    6:  if (ap) {
+        -:    7:    int i;
+       11:    8:    for (i = 0; i < 10; i++)
+       10:    9:      if (i != va_arg(*ap, int))
+    #####:   10:        __builtin_abort();
+        1:   11:    if (va_arg(*ap, double) != 0.5)
+    #####:   12:      __builtin_abort();
+        -:   13:  }
+        1:   14:}
+        -:   15:
+        1:   16:void __attribute__((noinline, noclone)) foo(int x, ...) {
+        -:   17:  va_list ap;
+        -:   18:  int n;
+        -:   19:
+        1:   20:  va_start(ap, x);
+        1:   21:  n = va_arg(ap, int);
+       1*:   22:  bar(x, (va_list *)((n == 0) ? ((void *)0) : &ap));
+        1:   23:  va_end(ap);
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  foo(100, 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0.5);
+        1:   28:  return 0;
+        -:   29:}

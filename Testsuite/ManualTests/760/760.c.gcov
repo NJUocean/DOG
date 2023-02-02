@@ -1,0 +1,15 @@
+        -:    0:Source:760.c
+        -:    0:Graph:760.gcno
+        -:    0:Data:760.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the ggcplug plugin.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int i = 0, j = 0;
+     1001:    7:  for (i = 0; i < 1000; i++)
+     1000:    8:    if (i % 8 == 0)
+      125:    9:      j++;
+        1:   10:  return 0;
+        -:   11:}

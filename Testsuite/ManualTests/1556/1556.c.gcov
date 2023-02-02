@@ -1,0 +1,30 @@
+        -:    0:Source:1556.c
+        -:    0:Graph:1556.gcno
+        -:    0:Data:1556.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int a, b, c, *d, **e = &d;
+        -:    6:
+        1:    7:int *fn1() {
+        -:    8:  for (;;) {
+        1:    9:    for (; a;)
+    #####:   10:      if (b)
+    #####:   11:        abort();
+        1:   12:    break;
+        -:   13:  }
+        1:   14:  for (; c;)
+        -:   15:    ;
+        1:   16:  return &a;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  *e = fn1();
+        -:   21:
+        1:   22:  if (!d)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

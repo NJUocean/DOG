@@ -1,0 +1,32 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fgraphite-identity -fstack-reuse=none -fwrapv -fno-tree-ch
+    3|       | * -fno-tree-dce -fno-tree-dominator-opts -fno-tree-loop-ivcanon" } */
+    4|       |
+    5|       |int xy, tb;
+    6|       |
+    7|      1|void bt(void) {
+    8|      2|  for (xy = 0; xy >= 0; --xy) {
+    9|      1|    int yt[8] = {0};
+   10|      1|    int pz[2] = {0};
+   11|      1|    int sa[32] = {0};
+   12|      1|    int us;
+   13|      1|
+   14|      9|    for (us = 0; us < 8; ++us)
+   15|      8|      yt[us] = 0;
+   16|      1|
+   17|      1|    (void)yt;
+   18|      1|    (void)pz;
+   19|      1|    (void)sa;
+   20|      1|  }
+   21|      1|
+   22|      1|  tb = 1;
+   23|      1|}
+   24|       |
+   25|      1|int main(void) {
+   26|      1|  bt();
+   27|      1|  if (xy != -1)
+   28|      0|    __builtin_abort();
+   29|      1|
+   30|      1|  return 0;
+   31|      1|}
+

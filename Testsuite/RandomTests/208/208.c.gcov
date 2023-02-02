@@ -1,0 +1,37 @@
+        -:    0:Source:208.c
+        -:    0:Graph:208.gcno
+        -:    0:Data:208.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3 = (-5L);
+        -:    7:static int16_t g_5 = 0x66A7L;
+        -:    8:static volatile uint16_t g_6 = 0UL;
+        -:    9:
+        -:   10:static int32_t func_1(void);
+        -:   11:
+        1:   12:static int32_t func_1(void) {
+        1:   13:  int32_t *l_2 = &g_3;
+        1:   14:  int32_t *l_4[3][3][4] = {{{&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}}, {{&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}}, {{&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}, {&g_3, &g_3, &g_3, &g_3}}};
+        1:   15:  int8_t l_9 = 0x9BL;
+        -:   16:  int i, j, k;
+        1:   17:  --g_6;
+        1:   18:  return l_9;
+        -:   19:}
+        -:   20:
+        1:   21:int main(int argc, char *argv[]) {
+        1:   22:  int print_hash_value = 0;
+       1*:   23:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   24:    print_hash_value = 1;
+        1:   25:  platform_main_begin();
+        1:   26:  crc32_gentab();
+        1:   27:  func_1();
+        1:   28:  transparent_crc(g_3, "g_3", print_hash_value);
+        1:   29:  transparent_crc(g_5, "g_5", print_hash_value);
+        1:   30:  transparent_crc(g_6, "g_6", print_hash_value);
+        1:   31:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   32:  return 0;
+        -:   33:}

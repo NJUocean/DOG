@@ -1,0 +1,59 @@
+        -:    0:Source:419.c
+        -:    0:Graph:419.gcno
+        -:    0:Data:419.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:#define vector(elcount, type)                                                  \
+        -:    3:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    4:
+        -:    5:#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+        -:    6:#define uint unsigned int
+        -:    7:
+        1:    8:int main(int argc, char *argv[]) {
+        1:    9:  vector(4, uint) vuint = {1, 2, 3, 4};
+        1:   10:  vector(4, int) vint0 = {1, 1, 1, 1};
+        1:   11:  vector(4, int) vint1 = {-1, -1, -1, -1};
+        -:   12:
+        -:   13:  vector(4, int) i1, i2, i3;
+        -:   14:  vector(4, uint) u1, u2, u3;
+        -:   15:
+        1:   16:  i1 = vint1 << vint0;
+        -:   17:
+        1:   18:  if (vidx(int, i1, 0) != ((int)-1 << (int)1))
+    #####:   19:    __builtin_abort();
+        1:   20:  if (vidx(int, i1, 1) != ((int)-1 << (int)1))
+    #####:   21:    __builtin_abort();
+        1:   22:  if (vidx(int, i1, 2) != ((int)-1 << (int)1))
+    #####:   23:    __builtin_abort();
+        1:   24:  if (vidx(int, i1, 3) != ((int)-1 << (int)1))
+    #####:   25:    __builtin_abort();
+        -:   26:
+        1:   27:  u1 = vuint << vint0;
+        -:   28:
+        1:   29:  if (vidx(int, u1, 0) != ((uint)1 << (int)1))
+    #####:   30:    __builtin_abort();
+        1:   31:  if (vidx(int, u1, 1) != ((uint)2 << (int)1))
+    #####:   32:    __builtin_abort();
+        1:   33:  if (vidx(int, u1, 2) != ((uint)3 << (int)1))
+    #####:   34:    __builtin_abort();
+        1:   35:  if (vidx(int, u1, 3) != ((uint)4 << (int)1))
+    #####:   36:    __builtin_abort();
+        -:   37:
+        1:   38:  i2 = vint1 >> vuint;
+        -:   39:
+        1:   40:  if (vidx(int, i2, 0) != ((int)-1 >> (uint)1))
+    #####:   41:    __builtin_abort();
+        1:   42:  if (vidx(int, i2, 1) != ((int)-1 >> (uint)2))
+    #####:   43:    __builtin_abort();
+        1:   44:  if (vidx(int, i2, 2) != ((int)-1 >> (uint)3))
+    #####:   45:    __builtin_abort();
+        1:   46:  if (vidx(int, i2, 3) != ((int)-1 >> (uint)4))
+    #####:   47:    __builtin_abort();
+        -:   48:
+        1:   49:  vint1 >>= vuint;
+        -:   50:
+        1:   51:  vuint <<= vint0;
+        1:   52:  vuint <<= vint1;
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}

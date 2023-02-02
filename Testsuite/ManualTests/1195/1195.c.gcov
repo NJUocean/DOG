@@ -1,0 +1,17 @@
+        -:    0:Source:1195.c
+        -:    0:Graph:1195.gcno
+        -:    0:Data:1195.gcda
+        -:    0:Runs:1
+        -:    1:struct {
+        -:    2:  long f8 : 8;
+        -:    3:  long f24 : 24;
+        -:    4:} a;
+        -:    5:struct {
+        -:    6:  long f32 : 32;
+        -:    7:} b;
+        -:    8:
+        1:    9:main() {
+        -:   10:  if (sizeof(a) != sizeof(b))
+        -:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

@@ -1,0 +1,37 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "" } */
+    3|       |
+    4|       |/* Verify that GCC's initialized flexible array member extension
+    5|       |   works properly.  */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|       |typedef int T[];
+   11|       |typedef int T0[0];
+   12|       |
+   13|       |struct f {
+   14|       |  int w;
+   15|       |  T x;
+   16|       |};
+   17|       |struct g {
+   18|       |  int w;
+   19|       |  T0 x;
+   20|       |};
+   21|       |
+   22|       |static struct f f = {4, {0, 1, 2, 3}};
+   23|       |static int junk1[] = {-1, -1, -1, -1};
+   24|       |static struct g g = {
+   25|       |    4,
+   26|       |    {0, 1, 2,
+   27|       |     3}}; /* { dg-warning "(excess elements)|(near initialization)" } */
+   28|       |static int junk2[] = {-1, -1, -1, -1};
+   29|       |
+   30|      1|int main() {
+   31|      1|  int i;
+   32|      5|  for (i = 0; i < f.w; ++i)
+   33|      4|    if (f.x[i] != i)
+   34|      0|      abort();
+   35|      1|  exit(0);
+   36|      1|}
+

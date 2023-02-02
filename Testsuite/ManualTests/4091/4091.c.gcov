@@ -1,0 +1,42 @@
+        -:    0:Source:4091.c
+        -:    0:Graph:4091.gcno
+        -:    0:Data:4091.gcda
+        -:    0:Runs:1
+        -:    1:/* Test to verify that a strlen() call with a pointer to a dynamic type
+        -:    2:   doesn't make assumptions based on the static type of the original
+        -:    3:   pointer.  See g++.dg/init/strlen.C for the corresponding C++ test.  */
+        -:    4:
+        -:    5:struct A {
+        -:    6:  int i;
+        -:    7:  char a[1];
+        -:    8:  void (*p)();
+        -:    9:};
+        -:   10:struct B {
+        -:   11:  char a[sizeof(struct A) - __builtin_offsetof(struct A, a)];
+        -:   12:};
+        -:   13:
+        1:   14:__attribute__((noipa)) void init(char *d, const char *s) {
+        1:   15:  __builtin_strcpy(d, s);
+        1:   16:}
+        -:   17:
+        -:   18:struct B b;
+        -:   19:
+        1:   20:__attribute__((noipa)) void test_dynamic_type(struct A *p) {
+        -:   21:  /* The following call is undefined because it writes past the end
+        -:   22:     of the p->a subobject, but the corresponding GIMPLE considers
+        -:   23:     it valid and there's apparently no way to distinguish invalid
+        -:   24:     cases from ones like it that might be valid.  If/when GIMPLE
+        -:   25:     changes to make this possible this test can be removed.  */
+        1:   26:  char *q = (char *)__builtin_memcpy(p->a, &b, sizeof b);
+        -:   27:
+        1:   28:  init(q, "foobar");
+        -:   29:
+        1:   30:  if (6 != __builtin_strlen(q))
+    #####:   31:    __builtin_abort();
+        1:   32:}
+        -:   33:
+        1:   34:int main(void) {
+        1:   35:  struct A *p = (struct A *)__builtin_malloc(sizeof *p);
+        1:   36:  test_dynamic_type(p);
+        1:   37:  return 0;
+        -:   38:}

@@ -1,0 +1,18 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |#if (__SIZEOF_INT__ <= 2)
+    4|       |struct S {
+    5|       |  unsigned long ui17 : 17;
+    6|       |} s;
+    7|       |#else
+    8|       |struct S {
+    9|       |  unsigned int ui17 : 17;
+   10|       |} s;
+   11|       |#endif
+   12|      1|int main() {
+   13|      1|  s.ui17 = 0x1ffff;
+   14|      1|  if (s.ui17 >= 0xfffffffeu)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

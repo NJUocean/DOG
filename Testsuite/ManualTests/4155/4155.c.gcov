@@ -1,0 +1,24 @@
+        -:    0:Source:4155.c
+        -:    0:Graph:4155.gcno
+        -:    0:Data:4155.gcda
+        -:    0:Runs:1
+        -:    1:/* This used to fail on H8/300 due to incorrect specification of pushi1.  */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:/* { dg-options "-O2 -fomit-frame-pointer" { target h8300-*-* } } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        1:   10:void bar(int a, int b, int c, int d, int e) {
+        1:   11:  if (d != 1)
+    #####:   12:    abort();
+        1:   13:}
+        -:   14:
+        1:   15:void foo(int a, int b, int c, int d, int e) { bar(a, b, c, d, e); }
+        -:   16:
+        1:   17:int main() {
+        1:   18:  foo(0, 0, 0, 1, 2);
+        1:   19:  exit(0);
+        -:   20:}

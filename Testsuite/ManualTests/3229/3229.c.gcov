@@ -1,0 +1,26 @@
+        -:    0:Source:3229.c
+        -:    0:Graph:3229.gcno
+        -:    0:Data:3229.gcda
+        -:    0:Runs:1
+        -:    1:int b = 0;
+        -:    2:
+    #####:    3:func() {}
+        -:    4:
+        1:    5:void testit(int x) {
+        1:    6:  if (x != 20)
+    #####:    7:    abort();
+        1:    8:}
+        -:    9:
+        1:   10:int main()
+        -:   11:
+        -:   12:{
+        1:   13:  int a = 0;
+        -:   14:
+        1:   15:  if (b)
+    #####:   16:    func();
+        -:   17:
+        -:   18:  /* simplify_and_const_int would incorrectly omit the mask in
+        -:   19:     the line below.  */
+        1:   20:  testit((a + 23) & 0xfffffffc);
+        1:   21:  exit(0);
+        -:   22:}

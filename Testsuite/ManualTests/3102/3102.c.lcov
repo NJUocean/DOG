@@ -1,0 +1,14 @@
+    1|       |/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+    2|       |/* { dg-final { scan-assembler "set1 B100\\+1,#0" } } */
+    3|       |
+    4|       |char acDummy[0xf0] __attribute__((__BELOW100__));
+    5|       |unsigned short B100 __attribute__((__BELOW100__)) = 0x1234;
+    6|       |unsigned short *p = &B100;
+    7|       |
+    8|      1|void Do(void) { B100 |= 0x0100; }
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  Do();
+   12|      1|  return (*p == 0x1334) ? 0 : 1;
+   13|      1|}
+

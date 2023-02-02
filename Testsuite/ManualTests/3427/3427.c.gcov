@@ -1,0 +1,14 @@
+        -:    0:Source:3427.c
+        -:    0:Graph:3427.gcno
+        -:    0:Data:3427.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:
+        -:    3:static unsigned char magic[] = "\235";
+        -:    4:static unsigned char value = '\235';
+        -:    5:
+        1:    6:int main() {
+        1:    7:  if (value != magic[0])
+    #####:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}

@@ -1,0 +1,18 @@
+    1|       |/* PR tree-optimization/86066 */
+    2|       |/* Testcase by Zhendong Su <Zhendong Su> */
+    3|       |
+    4|       |struct A {
+    5|       |  int b : 2;
+    6|       |  int c : 2;
+    7|       |  unsigned d : 8;
+    8|       |};
+    9|       |
+   10|      1|int main() {
+   11|      1|  struct A t = {0, 0, 2};
+   12|      1|L:
+   13|      1|  t.d = ~(~(~0 % t.d) % 2);
+   14|      1|  if (!t.d)
+   15|      0|    goto L;
+   16|      1|  return 0;
+   17|      1|}
+

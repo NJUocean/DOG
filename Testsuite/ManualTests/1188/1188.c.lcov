@@ -1,0 +1,27 @@
+    1|       |/* PR tree-optimization/93982 - Assignment incorrectly omitted by
+    2|       |   -foptimize-strlen
+    3|       |   { dg-do run }
+    4|       |   { dg-options "-O2 -Wall" } */
+    5|       |
+    6|       |struct A {
+    7|       |  const char **a;
+    8|       |};
+    9|       |const char *buf[5];
+   10|       |
+   11|      1|__attribute__((noipa)) struct A foo(char *p) {
+   12|      1|  struct A r = {(const char **)p};
+   13|      1|  r.a[0] = "12345678";
+   14|      1|  r.a[1] = "";
+   15|      1|  r.a[2] = "";
+   16|      1|  r.a[3] = "";
+   17|      1|  r.a[4] = "";
+   18|      1|  return r;
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  struct A r = foo((char *)&buf[0]);
+   23|      1|  if (!r.a[1] || r.a[1][0] != '\0')
+   24|      0|    __builtin_abort();
+   25|      1|  return 0;
+   26|      1|}
+

@@ -1,0 +1,29 @@
+        -:    0:Source:1427.c
+        -:    0:Graph:1427.gcno
+        -:    0:Data:1427.gcda
+        -:    0:Runs:1
+        1:    1:double g0(double x) { return 1.0; }
+        -:    2:
+        1:    3:double g1(double x) { return -1.0; }
+        -:    4:
+        1:    5:double g2(double x) { return 0.0; }
+        -:    6:
+        1:    7:__complex__ double xcexp(__complex__ double x) {
+        -:    8:  double r;
+        -:    9:
+        1:   10:  r = g0(__real__ x);
+        1:   11:  __real__ x = r * g1(__imag__ x);
+        1:   12:  __imag__ x = r * g2(__imag__ x);
+        1:   13:  return x;
+        -:   14:}
+        -:   15:
+        1:   16:main() {
+        -:   17:  __complex__ double x;
+        -:   18:
+        1:   19:  x = xcexp(1.0i);
+        1:   20:  if (__real__ x != -1.0)
+    #####:   21:    abort();
+        1:   22:  if (__imag__ x != 0.0)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

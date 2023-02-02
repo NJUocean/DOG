@@ -1,0 +1,8 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-skip-if "" { ! { arm_thumb1_ok || arm_thumb2_ok } } } */
+    3|       |/* { dg-options "-O -mthumb -fno-omit-frame-pointer" } */
+    4|       |
+    5|      1|int main() { return 0; }
+    6|       |
+    7|       |/* { dg-final { scan-assembler-not "\tadd\tr7, sp, #8\n" } } */
+

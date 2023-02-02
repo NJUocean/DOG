@@ -1,0 +1,21 @@
+        -:    0:Source:3982.c
+        -:    0:Graph:3982.gcno
+        -:    0:Data:3982.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/82388 */
+        -:    2:
+        -:    3:struct A {
+        -:    4:  int b;
+        -:    5:  int c;
+        -:    6:  int d;
+        -:    7:} e;
+        -:    8:
+        1:    9:struct A foo(void) {
+        1:   10:  struct A h[30] = {{0, 0, 0}};
+        1:   11:  return h[29];
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  e = foo();
+        1:   16:  return e.b;
+        -:   17:}

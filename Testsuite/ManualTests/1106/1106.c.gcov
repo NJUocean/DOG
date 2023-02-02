@@ -1,0 +1,45 @@
+        -:    0:Source:1106.c
+        -:    0:Graph:1106.gcno
+        -:    0:Data:1106.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    3:/* { dg-options "-fsanitize=object-size" } */
+        -:    4:
+        -:    5:/* Test structures with -fsanitize=object-size.  */
+        -:    6:
+        -:    7:#define N 20
+        -:    8:
+        -:    9:struct S {
+        -:   10:  char *p;
+        -:   11:  int i;
+        -:   12:};
+        -:   13:struct T {
+        -:   14:  struct S *s;
+        -:   15:};
+        -:   16:
+        2:   17:__attribute__((noinline, noclone)) void f1(int i) {
+        -:   18:  volatile int j;
+        -:   19:  struct S s;
+        2:   20:  s.p = (char *)__builtin_calloc(N, 1);
+        2:   21:  j = s.p[i];
+        2:   22:  j = *(s.p + i);
+        2:   23:  __builtin_free(s.p);
+        2:   24:}
+        -:   25:
+        -:   26:/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+        -:   27: * of type 'char'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   28:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   29:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   30:/* { dg-output "\[^\n\r]*\\^\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   31:/* { dg-output "\[^\n\r]*load of address \[^\n\r]* with insufficient space for
+        -:   32: * an object of type 'char'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   33:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   34:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   35:/* { dg-output "\[^\n\r]*\\^" } */
+        -:   36:
+        1:   37:int main() {
+        1:   38:  f1(N);
+        1:   39:  f1(N - 1);
+        1:   40:  return 0;
+        -:   41:}

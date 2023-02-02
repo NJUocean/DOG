@@ -1,0 +1,16 @@
+        -:    0:Source:3691.c
+        -:    0:Graph:3691.gcno
+        -:    0:Data:3691.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:static signed char foo(signed char si1, signed char si2) { return si1 * si2; }
+        -:    4:
+        -:    5:int a = 0x105F61CA;
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int b = 0x0332F5C8;
+        1:    9:  if (foo(b, a) > 0)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

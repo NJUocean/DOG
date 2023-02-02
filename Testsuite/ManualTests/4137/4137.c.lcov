@@ -1,0 +1,19 @@
+    1|       |void abort(void);
+    2|       |int ii;
+    3|       |typedef struct {
+    4|       |} raw_spinlock_t;
+    5|       |typedef struct {
+    6|       |  raw_spinlock_t raw_lock;
+    7|       |} spinlock_t;
+    8|      1|raw_spinlock_t one_raw_spinlock(void) {
+    9|      1|  raw_spinlock_t raw_lock;
+   10|      1|  ii++;
+   11|      1|  return raw_lock;
+   12|      1|}
+   13|      1|int main(void) {
+   14|      1|  spinlock_t lock = (spinlock_t){.raw_lock = one_raw_spinlock()};
+   15|      1|  if (ii != 1)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

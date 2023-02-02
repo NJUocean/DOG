@@ -1,0 +1,57 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation
+    2|       |
+    3|       |   Check that constant folding of shift operations is working.
+    4|       |
+    5|       |   Roger Sayle, 10th October 2002.  */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void link_error(void);
+    9|       |
+   10|      2|void utest(unsigned int x) {
+   11|      2|  if (x >> 0 != x)
+   12|      0|    link_error();
+   13|      2|
+   14|      2|  if (x << 0 != x)
+   15|      0|    link_error();
+   16|      2|
+   17|      2|  if (0 << x != 0)
+   18|      0|    link_error();
+   19|      2|
+   20|      2|  if (0 >> x != 0)
+   21|      0|    link_error();
+   22|      2|
+   23|      2|  if (-1 >> x != -1)
+   24|      0|    link_error();
+   25|      2|
+   26|      2|  if (~0 >> x != ~0)
+   27|      0|    link_error();
+   28|      2|}
+   29|       |
+   30|      2|void stest(int x) {
+   31|      2|  if (x >> 0 != x)
+   32|      0|    link_error();
+   33|      2|
+   34|      2|  if (x << 0 != x)
+   35|      0|    link_error();
+   36|      2|
+   37|      2|  if (0 << x != 0)
+   38|      0|    link_error();
+   39|      2|
+   40|      2|  if (0 >> x != 0)
+   41|      0|    link_error();
+   42|      2|}
+   43|       |
+   44|      1|int main() {
+   45|      1|  utest(9);
+   46|      1|  utest(0);
+   47|      1|
+   48|      1|  stest(9);
+   49|      1|  stest(0);
+   50|      1|
+   51|      1|  return 0;
+   52|      1|}
+   53|       |
+   54|       |#ifndef __OPTIMIZE__
+   55|      0|void link_error() { abort(); }
+   56|       |#endif
+

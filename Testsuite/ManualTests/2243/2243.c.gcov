@@ -1,0 +1,19 @@
+        -:    0:Source:2243.c
+        -:    0:Graph:2243.gcno
+        -:    0:Data:2243.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/64494 */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:unsigned char c;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int d;
+        1:    8:  a = 0;
+        3:    9:  for (d = 0; d < 2; d++) {
+        2:   10:    a &= (b >= 1);
+       2*:   11:    c = (204 > (((unsigned char)~0) >> a)) ? 0 : 204 << a;
+        2:   12:    b = 0;
+        -:   13:  }
+        1:   14:  return 0;
+        -:   15:}

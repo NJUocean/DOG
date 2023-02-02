@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |short foo[100];
+    4|       |
+    5|      1|int main() {
+    6|      1|  short *bar = &foo[50];
+    7|      1|  short i = 1;
+    8|      1|  short j = 1;
+    9|      1|  short value = bar[8 - i * 2 * j];
+   10|      1|  return value;
+   11|      1|}
+

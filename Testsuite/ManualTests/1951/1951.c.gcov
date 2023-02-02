@@ -1,0 +1,48 @@
+        -:    0:Source:1951.c
+        -:    0:Graph:1951.gcno
+        -:    0:Data:1951.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/27285 */
+        -:    2:/* PR tree-optimization/45122 */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:struct S {
+        -:   10:  unsigned char a, b, c, d[16];
+        -:   11:};
+        -:   12:
+        1:   13:void __attribute__((noinline)) foo(struct S *x, struct S *y) {
+        -:   14:  int a, b;
+        -:   15:  unsigned char c, *d, *e;
+        -:   16:
+        1:   17:  b = x->b;
+        1:   18:  d = x->d;
+        1:   19:  e = y->d;
+        1:   20:  a = 0;
+        5:   21:  while (b) {
+        4:   22:    if (b >= 8) {
+        3:   23:      c = 0xff;
+        3:   24:      b -= 8;
+        -:   25:    } else {
+        1:   26:      c = 0xff << (8 - b);
+        1:   27:      b = 0;
+        -:   28:    }
+        -:   29:
+        4:   30:    e[a] = d[a] & c;
+        4:   31:    a++;
+        -:   32:  }
+        1:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        1:   36:  struct S x = {0, 25, 0, {0xaa, 0xbb, 0xcc, 0xdd}};
+        1:   37:  struct S y = {0, 0, 0, {0}};
+        -:   38:
+        1:   39:  foo(&x, &y);
+        1:   40:  if (x.d[0] != y.d[0] || x.d[1] != y.d[1] || x.d[2] != y.d[2] ||
+        1:   41:      (x.d[3] & 0x80) != y.d[3])
+    #####:   42:    abort();
+        1:   43:  return 0;
+        -:   44:}

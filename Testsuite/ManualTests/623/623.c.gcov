@@ -1,0 +1,56 @@
+        -:    0:Source:623.c
+        -:    0:Graph:623.gcno
+        -:    0:Data:623.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:int printf(const char *, ...);
+        -:    6:
+        -:    7:int a, b = 1, d;
+        -:    8:
+        -:    9:union U1 {
+        -:   10:  unsigned int f0;
+        -:   11:  int f1;
+        -:   12:};
+        -:   13:
+        -:   14:union U2 {
+        -:   15:  int f2;
+        -:   16:  int f3;
+        -:   17:} c;
+        -:   18:
+        1:   19:int fn1(int p) {
+       1*:   20:  int t = p && a || p && a && p;
+       1*:   21:  return t ? t : a;
+        -:   22:}
+        -:   23:
+        1:   24:unsigned fn2(union U1 p1, union U2 p2) {
+        1:   25:  if (p1.f1 <= 0) {
+        1:   26:    for (; p2.f2;)
+    #####:   27:      c.f2 = 0;
+        1:   28:    p2.f2 = fn1(d);
+        -:   29:  }
+        1:   30:  return p2.f3;
+        -:   31:}
+        -:   32:
+        -:   33:int g = 0;
+        -:   34:
+        1:   35:int foo() {
+        1:   36:  if (b) {
+        1:   37:    union U1 f = {0xFFFFFFFFU};
+        -:   38:
+        1:   39:    fn2(f, c);
+        -:   40:  }
+        1:   41:  g = 1;
+        1:   42:  return 0;
+        -:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  foo();
+        -:   47:
+        1:   48:  if (g == 0)
+    #####:   49:    __builtin_abort();
+        -:   50:
+        1:   51:  return 0;
+        -:   52:}

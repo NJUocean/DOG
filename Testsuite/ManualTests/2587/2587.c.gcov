@@ -1,0 +1,19 @@
+        -:    0:Source:2587.c
+        -:    0:Graph:2587.gcno
+        -:    0:Data:2587.gcda
+        -:    0:Runs:1
+        -:    1:struct x {
+        -:    2:  int a, b;
+        -:    3:} z = {-4028, 4096};
+        -:    4:
+        1:    5:int foo(struct x *p, int y) {
+        1:    6:  if ((y & 0xff) != y || -p->b >= p->a)
+    #####:    7:    return 1;
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:main() {
+        1:   12:  if (foo(&z, 10))
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

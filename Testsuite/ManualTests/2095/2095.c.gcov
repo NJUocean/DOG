@@ -1,0 +1,18 @@
+        -:    0:Source:2095.c
+        -:    0:Graph:2095.gcno
+        -:    0:Data:2095.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:int x = 1;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int t = (1 / (1 >= x)) >> 1;
+        1:    8:  if (t != 0)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        -:   13:/* { dg-final { scan-tree-dump "<bb 2> \\\[local count: \[0-9INV\]*\\\]:\[\n\r
+        -:   14: * \]*return 0;" "optimized" } } */

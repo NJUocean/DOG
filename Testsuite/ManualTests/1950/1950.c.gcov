@@ -1,0 +1,51 @@
+        -:    0:Source:1950.c
+        -:    0:Graph:1950.gcno
+        -:    0:Data:1950.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ftree-loop-distribution" } */
+        -:    3:
+        -:    4:/* Checks if loop distribution works correctly if the subscript used
+        -:    5:   is assigned to a loop invariant value.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:struct S {
+        -:    9:  int a;
+        -:   10:  int b;
+        -:   11:  int c;
+        -:   12:};
+        -:   13:
+        4:   14:int get_rr_node_index(int i) { return i; }
+        -:   15:
+        -:   16:struct S nodes[8];
+        -:   17:struct S *rr_node = nodes;
+        -:   18:volatile int io_rat = 2;
+        1:   19:void doit(int i, int j) {
+        -:   20:  int s_node, p_node, inode, ipad, iloop;
+        -:   21:
+        3:   22:  for (ipad = 0; ipad < io_rat; ipad++) {
+        2:   23:    p_node = get_rr_node_index(ipad + 2);
+        2:   24:    inode = get_rr_node_index(ipad);
+        -:   25:
+        6:   26:    for (iloop = 1; iloop <= 2; iloop++) {
+        4:   27:      rr_node[inode].a = i;
+        4:   28:      rr_node[inode].b = j;
+        4:   29:      rr_node[inode].c = ipad;
+        4:   30:      inode = p_node;
+        -:   31:    }
+        -:   32:  }
+        1:   33:}
+        -:   34:
+        1:   35:int main() {
+        -:   36:  int i;
+        -:   37:
+        1:   38:  doit(1, 2);
+        -:   39:
+        1:   40:  if (rr_node[0].a != rr_node[1].a || rr_node[2].a != rr_node[3].a ||
+        1:   41:      rr_node[1].a != 1 || rr_node[0].b != rr_node[1].b ||
+        1:   42:      rr_node[2].b != rr_node[3].b || rr_node[1].b != 2 || rr_node[0].c != 0 ||
+        1:   43:      rr_node[1].c != 1 || rr_node[2].c != 0 || rr_node[3].c != 1)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}

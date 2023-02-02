@@ -1,0 +1,40 @@
+        -:    0:Source:909.c
+        -:    0:Graph:909.gcno
+        -:    0:Data:909.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/48774 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -funroll-loops" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:unsigned long int s[24] = {12, ~1,   12, ~2,   12, ~4,    12, ~8,
+        -:    7:                           12, ~16,  12, ~32,  12, ~64,   12, ~128,
+        -:    8:                           12, ~256, 12, ~512, 12, ~1024, 12, ~2048};
+        -:    9:struct {
+        -:   10:  int n;
+        -:   11:  unsigned long *e[12];
+        -:   12:} g = {12,
+        -:   13:       {&s[0], &s[2], &s[4], &s[6], &s[8], &s[10], &s[12], &s[14], &s[16],
+        -:   14:        &s[18], &s[20], &s[22]}};
+        -:   15:int c[12];
+        -:   16:
+        1:   17:__attribute__((noinline, noclone)) void foo(void) {
+        -:   18:  int i, j;
+       13:   19:  for (i = 0; i < g.n; i++)
+      156:   20:    for (j = 0; j < g.n; j++) {
+      144:   21:      if (i == j && j < g.e[0][0] && (g.e[i][1] & (1UL << j)))
+    #####:   22:        abort();
+      144:   23:      if (j < g.e[0][0] && (g.e[i][1] & (1UL << j)))
+      132:   24:        c[i]++;
+        -:   25:    }
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        -:   29:  int i;
+        1:   30:  asm volatile("" : "+m"(s), "+m"(g), "+m"(c));
+        1:   31:  foo();
+       13:   32:  for (i = 0; i < 12; i++)
+       12:   33:    if (c[i] != 11)
+    #####:   34:      abort();
+        1:   35:  return 0;
+        -:   36:}

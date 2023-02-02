@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |char buf[8];
+    8|       |
+    9|      1|void bar(char *p) {}
+   10|       |
+   11|      1|int main() {
+   12|      1|  union {
+   13|      1|    unsigned int val;
+   14|      1|    unsigned char p[4];
+   15|      1|  } serial;
+   16|      1|
+   17|      1|  int i;
+   18|      1|  serial.val = 0;
+   19|      1|  bar(buf);
+   20|      3|  for (i = 0; i < 8; i += 4) {
+   21|      2|    serial.p[0] += buf[i + 0];
+   22|      2|    serial.p[1] += buf[i + 1];
+   23|      2|    serial.p[2] += buf[i + 2];
+   24|      2|    serial.p[3] += buf[i + 3];
+   25|      2|  }
+   26|      1|  if (serial.val)
+   27|      0|    abort();
+   28|      1|  exit(0);
+   29|      1|}
+

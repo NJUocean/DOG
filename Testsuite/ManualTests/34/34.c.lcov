@@ -1,0 +1,31 @@
+    1|       |/* 20050922-1.c does not trigger the expand_shift rotate bug on sh4-elf, but
+    2|       |   this does.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O1 -std=c99" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|       |#if __INT_MAX__ == 2147483647
+   11|       |typedef unsigned int uint32_t;
+   12|       |#elif __LONG_MAX__ == 2147483647
+   13|       |typedef unsigned long uint32_t;
+   14|       |#else
+   15|       |#error unable to find 32-bit integer type
+   16|       |#endif
+   17|       |
+   18|      1|#define rotl(x, n) (((x) << ((int)(n))) | ((x) >> (32 - (int)(n))))
+   19|       |
+   20|      1|uint32_t f(uint32_t a, uint32_t b) {
+   21|      1|
+   22|      1|  b = rotl(a, b & 31);
+   23|      1|  return b;
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  if (f(2, 31) != 1)
+   28|      0|    abort();
+   29|      1|  exit(0);
+   30|      1|}
+

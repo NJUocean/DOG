@@ -1,0 +1,26 @@
+        -:    0:Source:1209.c
+        -:    0:Graph:1209.gcno
+        -:    0:Data:1209.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls_runtime } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:static __thread int fstat;
+        -:    8:static __thread int fstat = 1;
+        -:    9:
+        1:   10:int test_code(int b) {
+        1:   11:  fstat += b;
+        1:   12:  return fstat;
+        -:   13:}
+        -:   14:
+        1:   15:int main(int ac, char *av[]) {
+        1:   16:  int a = test_code(1);
+        -:   17:
+        1:   18:  if ((a != 2) || (fstat != 2))
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,26 @@
+    1|       |/* Test va_arg when the result is ignored and only the pointer increment
+    2|       |   side effect is used.  */
+    3|       |#include <stdarg.h>
+    4|       |
+    5|      1|static int foo(int a, ...) {
+    6|      1|  va_list va;
+    7|      1|  int i, res;
+    8|      1|
+    9|      1|  va_start(va, a);
+   10|      1|
+   11|      5|  for (i = 0; i < 4; ++i)
+   12|      4|    (void)va_arg(va, int);
+   13|      1|
+   14|      1|  res = va_arg(va, int);
+   15|      1|
+   16|      1|  va_end(va);
+   17|      1|
+   18|      1|  return res;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  if (foo(5, 4, 3, 2, 1, 0))
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

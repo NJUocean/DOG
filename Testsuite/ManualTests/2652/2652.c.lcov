@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run { target tls_runtime } } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-add-options tls } */
+    4|       |
+    5|       |__thread unsigned char tls_array[64];
+    6|       |
+    7|       |unsigned char __attribute__((noinline))
+    8|     64|tls_array_lookup_with_negative_constant(long long int position) {
+    9|     64|  return tls_array[position - 1];
+   10|     64|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|      1|
+   15|     65|  for (i = 0; i < sizeof(tls_array) / sizeof(tls_array[0]); i++)
+   16|     64|    tls_array[i] = i;
+   17|      1|
+   18|     65|  for (i = 0; i < sizeof(tls_array) / sizeof(tls_array[0]); i++)
+   19|     64|    if (i != tls_array_lookup_with_negative_constant(i + 1))
+   20|      0|      __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+

@@ -1,0 +1,18 @@
+    1|       |extern void exit(int);
+    2|       |extern void abort(void);
+    3|       |
+    4|       |struct {
+    5|       |  int a;
+    6|       |  int b[5];
+    7|       |} x;
+    8|       |int *y;
+    9|       |
+   10|      1|int foo(void) { return y - x.b; }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  y = x.b;
+   14|      1|  if (foo())
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

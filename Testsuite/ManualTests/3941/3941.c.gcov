@@ -1,0 +1,20 @@
+        -:    0:Source:3941.c
+        -:    0:Graph:3941.gcno
+        -:    0:Data:3941.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/78438 */
+        -:    2:
+        -:    3:char a = 0;
+        -:    4:int b = 197412621;
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) void foo() { a = 0 > (short)(b >> 11); }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  asm volatile("" : : : "memory");
+        -:   10:  if (__CHAR_BIT__ != 8 || sizeof(short) != 2 || sizeof(int) < 4)
+        -:   11:    return 0;
+        1:   12:  foo();
+        1:   13:  if (a != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

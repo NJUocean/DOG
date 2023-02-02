@@ -1,0 +1,31 @@
+        -:    0:Source:3701.c
+        -:    0:Graph:3701.gcno
+        -:    0:Data:3701.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/46309 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:unsigned int *q;
+        -:    6:
+        4:    7:__attribute__((noinline, noclone)) void bar(unsigned int *p) {
+        4:    8:  if (*p != 2 && *p != 3)
+       2*:    9:    (!(!(*q & 263) || *p != 1)) ? abort() : 0;
+        4:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  unsigned int x, y;
+        1:   14:  asm volatile("" : : : "memory");
+        1:   15:  x = 2;
+        1:   16:  bar(&x);
+        1:   17:  x = 3;
+        1:   18:  bar(&x);
+        1:   19:  y = 1;
+        1:   20:  x = 0;
+        1:   21:  q = &y;
+        1:   22:  bar(&x);
+        1:   23:  y = 0;
+        1:   24:  x = 1;
+        1:   25:  bar(&x);
+        1:   26:  return 0;
+        -:   27:}

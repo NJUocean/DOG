@@ -1,0 +1,15 @@
+    1|       |/* { dg-options "-fdelayed-branch" { target sparc*-*-* } } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int __attribute__((noinline, noclone)) callee(int i) { return i * i; }
+    6|       |
+    7|      1|int __attribute__((noinline, noclone)) caller(int i) { return callee(i + 1); }
+    8|       |
+    9|      1|int main(int argc, const char **argv) {
+   10|      1|  int result = caller(5);
+   11|      1|  if (result != 36)
+   12|      0|    abort();
+   13|      1|  return 0;
+   14|      1|}
+

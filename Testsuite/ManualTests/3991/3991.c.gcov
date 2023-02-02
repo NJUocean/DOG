@@ -1,0 +1,25 @@
+        -:    0:Source:3991.c
+        -:    0:Graph:3991.gcno
+        -:    0:Data:3991.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/84169 */
+        -:    2:
+        -:    3:#ifdef __SIZEOF_INT128__
+        -:    4:typedef unsigned __int128 T;
+        -:    5:#else
+        -:    6:typedef unsigned long long T;
+        -:    7:#endif
+        -:    8:
+        -:    9:T b;
+        -:   10:
+        1:   11:static __attribute__((noipa)) T foo(T c, T d, T e, T f, T g, T h) {
+        1:   12:  __builtin_mul_overflow((unsigned char)h, -16, &h);
+        1:   13:  return b + h;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  T x = foo(0, 0, 0, 0, 0, 4);
+        1:   18:  if (x != -64)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

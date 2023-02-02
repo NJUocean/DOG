@@ -1,0 +1,48 @@
+        -:    0:Source:657.c
+        -:    0:Graph:657.gcno
+        -:    0:Data:657.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/71691 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fno-tree-vrp -O2 -funswitch-loops
+        -:    4: * -fdump-tree-unswitch-details" } */
+        -:    5:
+        -:    6:/* Note: The -fno-tree-vrp above is only there to avoid VRP papering
+        -:    7:   over the problem.  */
+        -:    8:
+        -:    9:char b;
+        -:   10:short f;
+        -:   11:unsigned e;
+        -:   12:int g = 20;
+        -:   13:
+        1:   14:void foo() {
+        -:   15:  int l, h;
+        9:   16:  for (l = 0; l <= 7; l++) {
+        8:   17:    int j = 38;
+        8:   18:    if (g)
+        1:   19:      h = 0;
+       16:   20:    for (; h <= 7; h++) {
+        8:   21:      int i, k = b % (j % 4);
+        8:   22:      g = f;
+        -:   23:      for (;;) {
+        8:   24:        j = 6 || b;
+        8:   25:        if (e) {
+    #####:   26:          for (; j; --j)
+    #####:   27:            if (k)
+    #####:   28:              __builtin_printf("%d", 9);
+    #####:   29:          if (i)
+    #####:   30:            __builtin_printf("%d", j);
+        -:   31:        }
+        8:   32:        if (l)
+    #####:   33:          continue;
+        8:   34:        break;
+        -:   35:      }
+       8*:   36:      i = f || b;
+        -:   37:    }
+        -:   38:  }
+        1:   39:}
+        -:   40:
+        1:   41:int main() {
+        1:   42:  foo();
+        1:   43:  return 0;
+        -:   44:}

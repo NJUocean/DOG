@@ -1,0 +1,19 @@
+        -:    0:Source:3879.c
+        -:    0:Graph:3879.gcno
+        -:    0:Data:3879.gcda
+        -:    0:Runs:1
+        2:    1:unsigned f1(x) { return ((unsigned)(x != 0) - 3) / 2; }
+        -:    2:
+        2:    3:unsigned long long f2(x) { return ((unsigned long long)(x != 0) - 3) / 2; }
+        -:    4:
+        1:    5:main() {
+        1:    6:  if (f1(1) != (~(unsigned)0) >> 1)
+    #####:    7:    abort();
+        1:    8:  if (f1(0) != ((~(unsigned)0) >> 1) - 1)
+    #####:    9:    abort();
+        1:   10:  if (f2(1) != (~(unsigned long long)0) >> 1)
+    #####:   11:    abort();
+        1:   12:  if (f2(0) != ((~(unsigned long long)0) >> 1) - 1)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

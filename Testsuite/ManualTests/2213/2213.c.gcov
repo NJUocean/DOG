@@ -1,0 +1,23 @@
+        -:    0:Source:2213.c
+        -:    0:Graph:2213.gcno
+        -:    0:Data:2213.gcda
+        -:    0:Runs:1
+        -:    1:#include <string.h>
+        -:    2:
+        -:    3:#define SIZE 400
+        -:    4:
+        -:    5:int foo[SIZE];
+        -:    6:char bar[SIZE];
+        -:    7:
+        1:    8:void __attribute__((noinline)) foo_func(void) {
+        -:    9:  int i;
+      400:   10:  for (i = 1; i < SIZE; i++)
+      399:   11:    if (bar[i])
+      399:   12:      foo[i] = 1;
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  memset(bar, 1, sizeof(bar));
+        1:   17:  foo_func();
+        1:   18:  return 0;
+        -:   19:}

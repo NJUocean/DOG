@@ -1,0 +1,28 @@
+    1|       |/* PR target/58595 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |/* { dg-additional-options "-fpic" { target fpic } } */
+    5|       |/* { dg-add-options tls } */
+    6|       |/* { dg-require-effective-target tls_runtime } */
+    7|       |/* { dg-require-effective-target sync_int_long } */
+    8|       |
+    9|       |struct S {
+   10|       |  unsigned long a, b;
+   11|       |};
+   12|       |__thread struct S s;
+   13|       |void bar(unsigned long *);
+   14|       |
+   15|      1|__attribute__((noinline)) void foo(void) {
+   16|      1|  int i;
+   17|     11|  for (i = 0; i < 10; i++)
+   18|     10|    __sync_fetch_and_add(&s.b, 1L);
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  s.b = 12;
+   23|      1|  foo();
+   24|      1|  if (s.b != 22)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

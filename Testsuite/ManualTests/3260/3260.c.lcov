@@ -1,0 +1,31 @@
+    1|       |/* Origin: PR c/8467 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |
+    6|       |int aim_callhandler(int sess, int conn, unsigned short family,
+    7|       |                    unsigned short type);
+    8|       |
+    9|       |int aim_callhandler(int sess, int conn, unsigned short family,
+   10|      2|                    unsigned short type) {
+   11|      2|  static int i = 0;
+   12|      2|
+   13|      2|  if (!conn)
+   14|      0|    return 0;
+   15|      2|
+   16|      2|  if (type == 0xffff) {
+   17|      1|    return 0;
+   18|      1|  }
+   19|      1|
+   20|      1|  if (i >= 1)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  i++;
+   24|      1|  return aim_callhandler(sess, conn, family, (unsigned short)0xffff);
+   25|      1|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  aim_callhandler(0, 1, 0, 0);
+   29|      1|  exit(0);
+   30|      1|}
+

@@ -1,0 +1,37 @@
+        -:    0:Source:3899.c
+        -:    0:Graph:3899.gcno
+        -:    0:Data:3899.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/68250 */
+        -:    2:
+        -:    3:signed char a, b, h, k, l, m, o;
+        -:    4:short c, d, n;
+        -:    5:int e, f, g, j, q;
+        -:    6:
+        1:    7:void fn1(void) {
+       1*:    8:  int p = b || a;
+       1*:    9:  n = o > 0 || d > 1 >> o ? d : d << o;
+       1*:   10:  for (; j; j++)
+    #####:   11:    m = c < 0 || m || c << p;
+        1:   12:  l = f + 1;
+        2:   13:  for (; f < 1; f = 1)
+        1:   14:    k = h + 1;
+        1:   15:}
+        -:   16:
+        1:   17:__attribute__((noinline, noclone)) void fn2(int k) {
+        1:   18:  if (k != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        -:   23:  signed char i;
+        2:   24:  for (; e < 1; e++) {
+        1:   25:    fn1();
+        1:   26:    if (k)
+        1:   27:      i = k;
+        1:   28:    if (i > q)
+        1:   29:      g = 0;
+        -:   30:  }
+        1:   31:  fn2(k);
+        1:   32:  return 0;
+        -:   33:}

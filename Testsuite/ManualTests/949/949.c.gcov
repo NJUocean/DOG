@@ -1,0 +1,59 @@
+        -:    0:Source:949.c
+        -:    0:Graph:949.gcno
+        -:    0:Data:949.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-additional-options "-minline-stringops-dynamically" { target { i?86-*-*
+        -:    4: * x86_64-*-* } } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:#define MAX_OFFSET (sizeof(long long))
+        -:    9:#ifndef MAX_COPY
+        -:   10:#define MAX_COPY (1024 + 8192)
+        -:   11:#endif
+        -:   12:#define MAX_EXTRA (sizeof(long long))
+        -:   13:
+        -:   14:#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + MAX_EXTRA)
+        -:   15:
+        -:   16:static union {
+        -:   17:  char buf[MAX_LENGTH];
+        -:   18:  long long align_int;
+        -:   19:  long double align_fp;
+        -:   20:} u;
+        -:   21:
+        -:   22:char A[MAX_LENGTH];
+        -:   23:
+        1:   24:int main() {
+        -:   25:  int off, len, i;
+        -:   26:  char *p, *q;
+        -:   27:
+     9233:   28:  for (i = 0; i < MAX_LENGTH; i++)
+     9232:   29:    A[i] = 'A';
+        -:   30:
+        9:   31:  for (off = 0; off < MAX_OFFSET; off++)
+    73728:   32:    for (len = 1; len < MAX_COPY; len++) {
+680656760:   33:      for (i = 0; i < MAX_LENGTH; i++)
+680583040:   34:        u.buf[i] = 'a';
+        -:   35:
+    73720:   36:      p = __builtin_memcpy(u.buf + off, A, len);
+    73720:   37:      if (p != u.buf + off)
+    #####:   38:        abort();
+        -:   39:
+    73720:   40:      q = u.buf;
+   331740:   41:      for (i = 0; i < off; i++, q++)
+   258020:   42:        if (*q != 'a')
+    #####:   43:          abort();
+        -:   44:
+339775480:   45:      for (i = 0; i < len; i++, q++)
+339701760:   46:        if (*q != 'A')
+    #####:   47:          abort();
+        -:   48:
+   663480:   49:      for (i = 0; i < MAX_EXTRA; i++, q++)
+   589760:   50:        if (*q != 'a')
+    #####:   51:          abort();
+        -:   52:    }
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}

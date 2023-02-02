@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-add-options ieee } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |typedef float vf128 __attribute__((vector_size(16)));
+    6|       |typedef float vf64 __attribute__((vector_size(8)));
+    7|      1|int main() {
+    8|      1|#if !__FINITE_MATH_ONLY__
+    9|      1|#if __FLT_HAS_QUIET_NAN__
+   10|      1|  vf128 v = (vf128){0.f, 0.f, 0.f, 0.f};
+   11|      1|  vf64 u = (vf64){0.f, 0.f};
+   12|      1|  v = v / (vf128){0.f, 0.f, 0.f, 0.f};
+   13|      1|  if (v[0] == v[0])
+   14|      0|    abort();
+   15|      1|  u = u / (vf64){0.f, 0.f};
+   16|      1|  if (u[0] == u[0])
+   17|      0|    abort();
+   18|      1|#endif
+   19|      1|#endif
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,41 @@
+        -:    0:Source:2756.c
+        -:    0:Graph:2756.gcno
+        -:    0:Data:2756.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase originally provoked an unaligned access fault on Alpha.
+        -:    2:
+        -:    3:   Since Digital Unix and Linux (and probably others) by default fix
+        -:    4:   these up in the kernel, the failure was not visible unless one
+        -:    5:   is sitting at the console examining logs.
+        -:    6:
+        -:    7:   So: If we know how, ask the kernel to deliver SIGBUS instead so
+        -:    8:   that the test case visibly fails.  */
+        -:    9:
+        -:   10:#if defined(__alpha__) && defined(__linux__)
+        -:   11:#include <asm/sysinfo.h>
+        -:   12:#include <asm/unistd.h>
+        -:   13:
+        -:   14:static inline int setsysinfo(unsigned long op, void *buffer, unsigned long size,
+        -:   15:                             int *start, void *arg, unsigned long flag) {
+        -:   16:  syscall(__NR_osf_setsysinfo, op, buffer, size, start, arg, flag);
+        -:   17:}
+        -:   18:
+        -:   19:static void __attribute__((constructor)) trap_unaligned(void) {
+        -:   20:  unsigned int buf[2];
+        -:   21:  buf[0] = SSIN_UACPROC;
+        -:   22:  buf[1] = UAC_SIGBUS | UAC_NOPRINT;
+        -:   23:  setsysinfo(SSI_NVPAIRS, buf, 1, 0, 0, 0);
+        -:   24:}
+        -:   25:#endif /* alpha */
+        -:   26:
+        1:   27:void foo(char *a, char *b) {}
+        -:   28:
+        1:   29:void showinfo() {
+        1:   30:  char uname[33] = "", tty[38] = "/dev/";
+        1:   31:  foo(uname, tty);
+        1:   32:}
+        -:   33:
+        1:   34:int main() {
+        1:   35:  showinfo();
+        1:   36:  exit(0);
+        -:   37:}

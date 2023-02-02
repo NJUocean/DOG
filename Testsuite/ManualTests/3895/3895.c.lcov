@@ -1,0 +1,9 @@
+    1|      1|int __attribute__((noinline, noclone)) foo(float a) { return a * 4.9f; }
+    2|       |
+    3|      1|int main(void) {
+    4|      1|  if (foo(10.0f) != 49)
+    5|      0|    __builtin_abort();
+    6|      1|
+    7|      1|  return 0;
+    8|      1|}
+

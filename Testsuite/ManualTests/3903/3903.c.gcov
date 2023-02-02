@@ -1,0 +1,25 @@
+        -:    0:Source:3903.c
+        -:    0:Graph:3903.gcno
+        -:    0:Data:3903.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/68376 */
+        -:    2:
+        -:    3:int a, b, c = 1;
+        -:    4:signed char d;
+        -:    5:
+        1:    6:int main() {
+        2:    7:  for (; a < 1; a++)
+        2:    8:    for (; b < 1; b++) {
+        1:    9:      signed char e = ~d;
+        1:   10:      if (d < 1)
+        1:   11:        e = d;
+        1:   12:      d = e;
+        1:   13:      if (!c)
+    #####:   14:        __builtin_abort();
+        -:   15:    }
+        -:   16:
+        1:   17:  if (d != 0)
+    #####:   18:    __builtin_abort();
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

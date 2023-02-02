@@ -1,0 +1,15 @@
+        -:    0:Source:50.c
+        -:    0:Graph:50.gcno
+        -:    0:Data:50.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -Warray-bounds" } */
+        -:    3:
+        -:    4:char *p;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  p = "";
+       1*:    8:  if (p[0] == 0 || (p[0] == '_' && p[1] == 0)) /* { dg-bogus "array bounds" } */
+        1:    9:    return 0;
+    #####:   10:  return 1;
+        -:   11:}

@@ -1,0 +1,49 @@
+    1|       |/* PR debug/41353 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|       |int vari __attribute__((used)) = 17, varj;
+    6|       |
+    7|      1|__attribute__((noinline)) int f1(void) {
+    8|      1|  /* { dg-final { gdb-test .+7 "vari" "17" } } */
+    9|      1|  int vari1 = 2 * vari; /* { dg-final { gdb-test .+6 "vari1" "2 * 17" } } */
+   10|      1|  int vari2 = 3 * vari; /* { dg-final { gdb-test .+5 "vari2" "3 * 17" } } */
+   11|      1|  int vari3 = 2 * vari; /* { dg-final { gdb-test .+4 "vari3" "2 * 17" } } */
+   12|      1|  int vari4 = 3 * vari; /* { dg-final { gdb-test .+3 "vari4" "3 * 17" } } */
+   13|      1|  int vari5 = 4 * vari; /* { dg-final { gdb-test .+2 "vari5" "4 * 17" } } */
+   14|      1|  int vari6 = 5 * vari; /* { dg-final { gdb-test .+1 "vari6" "5 * 17" } } */
+   15|      1|  return varj;
+   16|      1|}
+   17|       |
+   18|      1|__attribute__((noinline)) int f2(int i, int j) {
+   19|      1|  j += i;
+   20|      1|  /* { dg-final { gdb-test .+4 "i" "37" } } */
+   21|      1|  /* { dg-final { gdb-test .+3 "j" "28 + 37" { xfail *-*-* } } } */
+   22|      1|  int i1 = 2 * i; /* { dg-final { gdb-test .+2 "i1" "2 * 37" } } */
+   23|      1|  int i2 = 3 * i; /* { dg-final { gdb-test .+1 "i2" "3 * 37" } } */
+   24|      1|  return j;
+   25|      1|}
+   26|       |
+   27|      1|__attribute__((noinline)) int f3(int i) {
+   28|      1|  asm volatile("" : "+r"(i));
+   29|      1|  /* { dg-final { gdb-test .+4 "i" "12" } } */
+   30|      1|  int i1 = 2 * i; /* { dg-final { gdb-test .+3 "i1" "2 * 12" } } */
+   31|      1|  int i2 = 2 * i; /* { dg-final { gdb-test .+2 "i2" "2 * 12" } } */
+   32|      1|  int i3 = 3 * i; /* { dg-final { gdb-test .+1 "i3" "3 * 12" } } */
+   33|      1|  return i;
+   34|      1|}
+   35|       |
+   36|       |int (*volatile fnp1)(void) = f1;
+   37|       |int (*volatile fnp2)(int, int) = f2;
+   38|       |int (*volatile fnp3)(int) = f3;
+   39|       |
+   40|      1|int main(int argc, char *argv[]) {
+   41|      1|  asm volatile("" : : "r"(&fnp1) : "memory");
+   42|      1|  asm volatile("" : : "r"(&fnp2) : "memory");
+   43|      1|  asm volatile("" : : "r"(&fnp3) : "memory");
+   44|      1|  fnp1();
+   45|      1|  fnp2(37, 28);
+   46|      1|  fnp3(12);
+   47|      1|  return 0;
+   48|      1|}
+

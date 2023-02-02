@@ -1,0 +1,19 @@
+        -:    0:Source:1462.c
+        -:    0:Graph:1462.gcno
+        -:    0:Data:1462.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fstrict-overflow" } */
+        -:    3:
+        -:    4:int a, b, c, d, e;
+        -:    5:
+        1:    6:int main() {
+       35:    7:  for (b = 4; b > -30; b--)
+       34:    8:    for (; c;)
+        -:    9:      for (;;) {
+    #####:   10:        e = a > __INT_MAX__ - b;
+    #####:   11:        if (d)
+    #####:   12:          break;
+        -:   13:      }
+        1:   14:  return 0;
+        -:   15:}

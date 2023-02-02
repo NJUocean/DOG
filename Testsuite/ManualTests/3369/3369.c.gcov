@@ -1,0 +1,19 @@
+        -:    0:Source:3369.c
+        -:    0:Graph:3369.gcno
+        -:    0:Data:3369.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:int test(int n) {
+        1:    4:  struct s {
+        1:    5:    char b[n];
+        -:    6:  } __attribute__((packed));
+        1:    7:  n++;
+        1:    8:  return sizeof(struct s);
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (test(123) != 123)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

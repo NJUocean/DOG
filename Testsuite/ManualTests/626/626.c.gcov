@@ -1,0 +1,16 @@
+        -:    0:Source:626.c
+        -:    0:Graph:626.gcno
+        -:    0:Data:626.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-alias "" } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:const int __new_sys_siglist[] = {};
+        -:    6:
+        -:    7:extern __typeof(__new_sys_siglist) _new_sys_siglist
+        -:    8:    __attribute__((alias("__new_sys_siglist")));
+        -:    9:extern __typeof(__new_sys_siglist) _sys_siglist
+        -:   10:    __attribute__((alias("__new_sys_siglist")));
+        -:   11:
+        1:   12:int main() { return 0; }

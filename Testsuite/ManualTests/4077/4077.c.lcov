@@ -1,0 +1,19 @@
+    1|       |extern void abort(void);
+    2|       |extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+    3|       |
+    4|       |typedef unsigned char v8qi __attribute__((vector_size(8)));
+    5|       |
+    6|      1|v8qi foo(v8qi x, v8qi y) { return x * y; }
+    7|       |
+    8|      1|int main() {
+    9|      1|  v8qi a = {1, 2, 3, 4, 5, 6, 7, 8};
+   10|      1|  v8qi b = {3, 3, 3, 3, 3, 3, 3, 3};
+   11|      1|  v8qi c = {3, 6, 9, 12, 15, 18, 21, 24};
+   12|      1|  v8qi r;
+   13|      1|
+   14|      1|  r = foo(a, b);
+   15|      1|  if (memcmp(&r, &c, 8) != 0)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

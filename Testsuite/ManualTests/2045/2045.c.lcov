@@ -1,0 +1,21 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |
+    4|       |unsigned int a, b, c, d;
+    5|       |extern int printf(const char *, ...);
+    6|      1|int main(void) {
+    7|      1|  unsigned int e;
+    8|      1|  unsigned int f;
+    9|      1|  /* We should be able to transform these into the same expression, and only
+   10|      1|   * have two additions.  */
+   11|      1|  e = a + b;
+   12|      1|  e = e + c;
+   13|      1|  f = c + a;
+   14|      1|  f = f + b;
+   15|      1|  printf("%d %d\n", e, f);
+   16|      1|}
+   17|       |
+   18|       |/* { dg-final { scan-tree-dump-times "\[ab\].._. \\\+ \[ab\].._." 1 "optimized"
+   19|       | * } } */
+   20|       |/* { dg-final { scan-tree-dump-times " \\\+ " 2 "optimized" } } */
+

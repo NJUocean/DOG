@@ -1,0 +1,34 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fdump-tree-alias" } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |struct X {
+    7|       |  int *p;
+    8|       |  int *q;
+    9|       |  int *r;
+   10|       |};
+   11|      3|int __attribute__((noinline)) foo(int i, int j, int k, __SIZE_TYPE__ off) {
+   12|      3|  struct X x;
+   13|      3|  int **p, *q;
+   14|      3|  x.p = &i;
+   15|      3|  x.q = &j;
+   16|      3|  x.r = &k;
+   17|      3|  p = &x.q;
+   18|      3|  p += off;
+   19|      3|  /* *p points to { i, j, k } */
+   20|      3|  q = *p;
+   21|      3|  return *q;
+   22|      3|}
+   23|      1|int main() {
+   24|      1|  if (foo(1, 2, 3, -1) != 1)
+   25|      0|    abort();
+   26|      1|  if (foo(1, 2, 3, 0) != 2)
+   27|      0|    abort();
+   28|      1|  if (foo(1, 2, 3, 1) != 3)
+   29|      0|    abort();
+   30|      1|  return 0;
+   31|      1|}
+   32|       |
+   33|       |/* { dg-final { scan-tree-dump "q_\[0-9\]* = { i j k }" "alias" } } */
+

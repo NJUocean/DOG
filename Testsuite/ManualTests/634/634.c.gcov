@@ -1,0 +1,23 @@
+        -:    0:Source:634.c
+        -:    0:Graph:634.gcno
+        -:    0:Data:634.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:static void __attribute__((noinline)) foo(double *a, double x) { *a = x; }
+        -:    5:
+        1:    6:static double __attribute__((noinline)) f_c1(int m, double *a) {
+        1:    7:  foo(a, m);
+        1:    8:  return *a;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  double data;
+        1:   13:  double ret = 0;
+        -:   14:
+        1:   15:  if ((ret = f_c1(2, &data)) != 2) {
+    #####:   16:    __builtin_abort();
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}

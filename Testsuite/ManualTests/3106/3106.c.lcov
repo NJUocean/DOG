@@ -1,0 +1,9 @@
+    1|       |/* { dg-do preprocess } */
+    2|       |/* { dg-additional-options "-dD" } */
+    3|       |
+    4|       |#if __has_include("who cares")
+    5|       |#endif
+    6|      1|int main() { return 0; }
+    7|       |
+    8|       |/* { dg-final { scan-file-not pr93452-2.i {__has_include} } } */
+

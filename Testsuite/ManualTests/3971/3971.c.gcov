@@ -1,0 +1,38 @@
+        -:    0:Source:3971.c
+        -:    0:Graph:3971.gcno
+        -:    0:Data:3971.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/81423 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:unsigned long long int ll = 0;
+        -:    6:unsigned long long int ull1 = 1ULL;
+        -:    7:unsigned long long int ull2 = 12008284144813806346ULL;
+        -:    8:unsigned long long int ull3;
+        -:    9:
+        1:   10:unsigned long long int __attribute__((noinline)) foo(void) {
+        1:   11:  ll = -5597998501375493990LL;
+        -:   12:
+        1:   13:  ll = (unsigned int)(5677365550390624949LL - ll) - (ull1 > 0);
+        -:   14:  unsigned long long int ull3;
+        1:   15:  ull3 = (unsigned int)(2067854353LL
+        1:   16:                        << (((ll + -2129105131LL) ^ 10280750144413668236ULL) -
+        1:   17:                            10280750143997242009ULL)) >>
+        1:   18:         ((2873442921854271231ULL | ull2) - 12098357307243495419ULL);
+        -:   19:
+        1:   20:  return ull3;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        -:   24:  /* We need a long long of exactly 64 bits and int of exactly 32 bits
+        -:   25:     for this test.  */
+        -:   26:  if (__SIZEOF_LONG_LONG__ * __CHAR_BIT__ != 64 ||
+        -:   27:      __SIZEOF_INT__ * __CHAR_BIT__ != 32)
+        -:   28:    return 0;
+        -:   29:
+        1:   30:  ull3 = foo();
+        1:   31:  if (ull3 != 3998784)
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

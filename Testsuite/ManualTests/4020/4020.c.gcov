@@ -1,0 +1,22 @@
+        -:    0:Source:4020.c
+        -:    0:Graph:4020.gcno
+        -:    0:Data:4020.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/89195 */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  unsigned i : 24;
+        -:    6:};
+        -:    7:
+        -:    8:volatile unsigned char x;
+        -:    9:
+        1:   10:__attribute__((noipa)) int foo(struct S d) { return d.i & x; }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  struct S d = {0x123456};
+        1:   14:  x = 0x75;
+        1:   15:  if (foo(d) != (0x56 & 0x75))
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

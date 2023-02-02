@@ -1,0 +1,20 @@
+        -:    0:Source:3920.c
+        -:    0:Graph:3920.gcno
+        -:    0:Data:3920.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/70222 */
+        -:    2:
+        -:    3:#if __CHAR_BIT__ == 8 && __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8
+        3:    4:__attribute__((noinline, noclone)) unsigned int foo(int x) {
+        3:    5:  unsigned long long y = -1ULL >> x;
+        3:    6:  return (unsigned int)y >> 31;
+        -:    7:}
+        -:    8:#endif
+        -:    9:
+        1:   10:int main() {
+        -:   11:#if __CHAR_BIT__ == 8 && __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8
+        1:   12:  if (foo(15) != 1 || foo(32) != 1 || foo(33) != 0)
+    #####:   13:    __builtin_abort();
+        -:   14:#endif
+        1:   15:  return 0;
+        -:   16:}

@@ -1,0 +1,29 @@
+    1|       |/* PR optimization/8746 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-effective-target ia32 } */
+    4|       |/* { dg-options "-O1 -mtune=i586" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |volatile int j;
+    9|       |
+   10|      0|void f0() { j = 0; }
+   11|      1|void f1() { j = 1; }
+   12|       |
+   13|      1|int foo(int x) {
+   14|      1|  if ((short int)(x & 0x8000) > (short int)0) {
+   15|      0|    f0();
+   16|      0|    return 0;
+   17|      1|  } else {
+   18|      1|    f1();
+   19|      1|    return 1;
+   20|      1|  }
+   21|      1|}
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  if (foo(0x8000) != 1)
+   25|      0|    abort();
+   26|      1|
+   27|      1|  return 0;
+   28|      1|}
+

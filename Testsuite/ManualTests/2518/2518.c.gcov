@@ -1,0 +1,33 @@
+        -:    0:Source:2518.c
+        -:    0:Graph:2518.gcno
+        -:    0:Data:2518.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target arm_neon_hw } */
+        -:    3:/* { dg-additional-options "-O3 -fno-inline -std=gnu99" } */
+        -:    4:/* { dg-add-options arm_neon } */
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  int x, y;
+        -:    8:} X;
+        -:    9:
+        1:   10:void f4(X *p, int n) {
+      101:   11:  for (int i = 0; i < n; i++) {
+      100:   12:    p[i].x = i;
+      100:   13:    p[i].y = i + 1;
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        -:   17:__attribute((aligned(16))) X arr[100];
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  volatile int fail = 0;
+        1:   21:  f4(arr, 100);
+      101:   22:  for (int i = 0; i < 100; i++)
+      100:   23:    if (arr[i].y != i + 1 || arr[i].x != i)
+    #####:   24:      fail = 1;
+        1:   25:  if (fail)
+    #####:   26:    __builtin_abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

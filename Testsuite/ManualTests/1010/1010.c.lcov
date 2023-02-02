@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-Og -funroll-loops" } */
+    3|       |
+    4|      1|static __attribute__((noinline, noclone)) unsigned foo(unsigned x) {
+    5|      1|  do
+    6|      1|    x++;
+    7|      1|  while (x <= 15);
+    8|      1|  return x;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  unsigned x = foo(-2);
+   13|      1|  if (x != (unsigned)-1)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

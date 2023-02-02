@@ -1,0 +1,50 @@
+    1|       |typedef union {
+    2|       |  struct {
+    3|       |    int a;
+    4|       |    int b;
+    5|       |  } s;
+    6|       |  double d;
+    7|       |} T;
+    8|       |
+    9|       |int h(T *);
+   10|       |T g(T);
+   11|       |
+   12|       |#if COMPILER != 1
+   13|      2|h(T *x) {
+   14|      2|  if (x->s.a != 0 || x->s.b != 1)
+   15|      0|    abort();
+   16|      2|}
+   17|       |#endif
+   18|       |
+   19|       |#if COMPILER != 2
+   20|      2|T g(T x) {
+   21|      2|  if (x.s.a != 13 || x.s.b != 47)
+   22|      0|    abort();
+   23|      2|  x.s.a = 0;
+   24|      2|  x.s.b = 1;
+   25|      2|  h(&x);
+   26|      2|  return x;
+   27|      2|}
+   28|       |#endif
+   29|       |
+   30|       |#if COMPILER != 1
+   31|      1|f() {
+   32|      1|  T x;
+   33|      1|  x.s.a = 13;
+   34|      1|  x.s.b = 47;
+   35|      1|  g(x);
+   36|      1|  if (x.s.a != 13 || x.s.b != 47)
+   37|      0|    abort();
+   38|      1|  x = g(x);
+   39|      1|  if (x.s.a != 0 || x.s.b != 1)
+   40|      0|    abort();
+   41|      1|}
+   42|       |#endif
+   43|       |
+   44|       |#if COMPILER != 2
+   45|      1|main() {
+   46|      1|  f();
+   47|      1|  exit(0);
+   48|      1|}
+   49|       |#endif
+

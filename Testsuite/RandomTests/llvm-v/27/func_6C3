@@ -1,0 +1,33 @@
+// control flow context
+digraph {
+	"1-while-for-77, 77" [shape=box]
+	in__N8__N10 [label=0 style=dotted]
+	in__N8 [label="1-if-85, 85"]
+	in__N8 -> in__N8__N10
+	in__N10 [label="0-passive-91, 98" color=lightblue style=filled]
+	in__N8__N10 -> in__N10
+	in__N8__N10 -> "1-while-for-77, 77"
+	in__N9__N12 [label=-1 style=dotted]
+	in__N9 [label="1-while-for-86, 86"]
+	in__N9 -> in__N9__N12
+	in__N9__N12 -> "1-while-for-77, 77"
+	in__N0__N2 [label=1 style=dotted]
+	in__N0 [label="1-func-entry-70, 70"]
+	in__N0 -> in__N0__N2
+	in__N1 [label="1-passive-71, 74" color=lightblue style=filled]
+	in__N0__N2 -> in__N1
+	in__N0__N2 -> "1-while-for-77, 77"
+	out__N5__N6 [label=1 style=dotted]
+	"1-while-for-77, 77" -> out__N5__N6 [color=red]
+	out__N6 [label="1-passive-78, 84"]
+	out__N6 [color=lightblue style=filled]
+	out__N5__N6 -> out__N6
+	out__N8 [label="1-if-85, 85"]
+	out__N8 [color=lightblue style=filled]
+	out__N5__N6 -> out__N8
+	out__N5__N7 [label=1 style=dotted]
+	"1-while-for-77, 77" -> out__N5__N7 [color=red]
+	out__N7 [label="1-exit-118, 118"]
+	out__N7 [color=lightblue style=filled]
+	out__N5__N7 -> out__N7
+}

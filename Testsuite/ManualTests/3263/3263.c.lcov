@@ -1,0 +1,15 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|      2|int foo(int x) {
+    5|      2|  if (x == -2 || -x - 100 >= 0)
+    6|      0|    abort();
+    7|      2|  return 0;
+    8|      2|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  foo(-3);
+   12|      1|  foo(-99);
+   13|      1|  exit(0);
+   14|      1|}
+

@@ -1,0 +1,7 @@
+    1|      1|long long foo(long long v) { return v / -0x080000000LL; }
+    2|      1|int main(int argc, char **argv) {
+    3|      1|  if (foo(0x080000000LL) != -1)
+    4|      0|    abort();
+    5|      1|  exit(0);
+    6|      1|}
+

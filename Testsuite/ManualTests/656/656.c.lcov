@@ -1,0 +1,33 @@
+    1|       |/* { dg-xfail-if "alias analysis conflicts with instruction scheduling" {
+    2|       | * m32r-*-* } { "-O2" "-O1" "-O0" "-Os"} { "" } } */
+    3|       |struct s {
+    4|       |  int a;
+    5|       |  int b;
+    6|       |};
+    7|       |struct s s1;
+    8|       |struct s s2 = {
+    9|       |    1,
+   10|       |    2,
+   11|       |};
+   12|       |
+   13|       |void check(a, b) int a;
+   14|       |int b;
+   15|      1|{
+   16|      1|  if (a == b)
+   17|      1|    exit(0);
+   18|      0|  else
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  int *p;
+   24|      1|  int x;
+   25|      1|
+   26|      1|  s1.a = 9;
+   27|      1|  p = &s1.a;
+   28|      1|  s1 = s2;
+   29|      1|  x = *p;
+   30|      1|
+   31|      1|  check(x, 1);
+   32|      1|}
+

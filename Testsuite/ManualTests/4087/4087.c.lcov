@@ -1,0 +1,14 @@
+    1|      1|static inline p(int *p) { return !((long)p & 1); }
+    2|       |
+    3|      1|int f(int *q) {
+    4|      1|  if (p(q) && *q)
+    5|      0|    return 1;
+    6|      1|  return 0;
+    7|      1|}
+    8|       |
+    9|      1|main() {
+   10|      1|  if (f((int *)0xffffffff) != 0)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

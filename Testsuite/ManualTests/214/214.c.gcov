@@ -1,0 +1,29 @@
+        -:    0:Source:214.c
+        -:    0:Graph:214.gcno
+        -:    0:Data:214.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for C99 mixed declarations and code.  */
+        -:    2:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int i = 0;
+        1:   11:  if (i != 0)
+    #####:   12:    abort();
+        1:   13:  i++;
+        1:   14:  if (i != 1)
+    #####:   15:    abort();
+        1:   16:  int j = i;
+        1:   17:  if (j != 1)
+    #####:   18:    abort();
+        -:   19:  struct foo {
+        -:   20:    int i0;
+        1:   21:  } k = {4};
+        1:   22:  if (k.i0 != 4)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

@@ -1,0 +1,29 @@
+        -:    0:Source:546.c
+        -:    0:Graph:546.gcno
+        -:    0:Data:546.gcda
+        -:    0:Runs:1
+        -:    1:/*
+        -:    2:{ dg-do run }
+        -:    3:{ dg-options "-O2" }
+        -:    4:*/
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:enum Status { P_ON_LOWER = -4, P_ON_UPPER = -2, P_FREE = -1 };
+        -:    9:
+        1:   10:void foo(enum Status *stat, double newUpper, double lower, double max) {
+        1:   11:  if (newUpper >= max)
+    #####:   12:    *stat = P_FREE;
+        1:   13:  else if (newUpper == lower)
+    #####:   14:    *stat = P_ON_LOWER;
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  enum Status stat = P_ON_UPPER;
+        -:   19:
+        1:   20:  foo(&stat, 5.0, -10.0, 10.0);
+        -:   21:
+        1:   22:  if (stat != P_ON_UPPER)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

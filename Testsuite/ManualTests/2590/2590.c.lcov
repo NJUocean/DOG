@@ -1,0 +1,7 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -msse2 -march=k8" } */
+    3|       |/* { dg-final { scan-assembler-not "cvtss2sd" } } */
+    4|       |extern double fabs(double);
+    5|       |float a, b;
+    6|      1|int main() { a = fabs(b) + 1.0; }
+

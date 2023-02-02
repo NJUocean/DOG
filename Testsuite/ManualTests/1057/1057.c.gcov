@@ -1,0 +1,19 @@
+        -:    0:Source:1057.c
+        -:    0:Graph:1057.gcno
+        -:    0:Data:1057.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -Wall" } */
+        -:    3:
+        -:    4:typedef __SIZE_TYPE__ size_t;
+        -:    5:extern void __chk_fail(void);
+        -:    6:extern int snprintf(char *, size_t, const char *, ...);
+        -:    7:
+        1:    8:int main() {
+        -:    9:  char temp[100];
+        -:   10:  unsigned int x;
+        1:   11:  char *str = temp;
+      257:   12:  for (x = 0; x < 256; ++x) {
+      256:   13:    snprintf(str, 4, "%%%02X", x);
+        -:   14:  }
+        -:   15:}

@@ -1,0 +1,34 @@
+        -:    0:Source:752.c
+        -:    0:Graph:752.gcno
+        -:    0:Data:752.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/27945 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "" } */
+        -:    4:/* { dg-require-effective-target alloca } */
+        -:    5:
+        -:    6:extern int printf(const char *, ...);
+        -:    7:extern void abort();
+        -:    8:
+        1:    9:int func(int levels) {
+        1:   10:  struct bar {
+        -:   11:    unsigned char a;
+        1:   12:    int b[levels];
+        1:   13:  } __attribute__((__packed__)) bar;
+        -:   14:
+        -:   15:  struct foo {
+        -:   16:    unsigned char a;
+        -:   17:    int b[4];
+        -:   18:  } __attribute__((__packed__)) foo;
+        -:   19:
+        1:   20:  printf("foo %d\n", sizeof(foo));
+        1:   21:  printf("bar %d\n", sizeof(bar));
+        -:   22:
+        1:   23:  if (sizeof(foo) != sizeof(bar))
+    #####:   24:    abort();
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  func(4);
+        1:   29:  return 0;
+        -:   30:}

@@ -1,0 +1,32 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Test the support for char16_t* string literals. */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    5|       |
+    6|       |typedef __CHAR16_TYPE__ char16_t;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |char16_t *s0 = u"ab";
+   11|       |char16_t *s1 = u"a\u0024";
+   12|       |char16_t *s2 = u"a\u2029";
+   13|       |char16_t *s3 = u"a\U00064321";
+   14|       |
+   15|      8|#define A 0x0061
+   16|      2|#define B 0x0062
+   17|      2|#define D 0x0024
+   18|      2|#define X 0x2029
+   19|      2|#define Y1 0xD950
+   20|      2|#define Y2 0xDF21
+   21|       |
+   22|      1|int main() {
+   23|      1|  if (s0[0] != A || s0[1] != B || s0[2] != 0x0000)
+   24|      0|    abort();
+   25|      1|  if (s1[0] != A || s1[1] != D || s0[2] != 0x0000)
+   26|      0|    abort();
+   27|      1|  if (s2[0] != A || s2[1] != X || s0[2] != 0x0000)
+   28|      0|    abort();
+   29|      1|  if (s3[0] != A || s3[1] != Y1 || s3[2] != Y2 || s3[3] != 0x0000)
+   30|      0|    abort();
+   31|      1|}
+

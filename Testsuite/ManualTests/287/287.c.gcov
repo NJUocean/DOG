@@ -1,0 +1,12 @@
+        -:    0:Source:287.c
+        -:    0:Graph:287.gcno
+        -:    0:Data:287.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/14492 */
+        -:    2:/* { dg-options "" } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  double d = 1.0;
+        1:    6:  char x[(int)d];
+        1:    7:  return 0;
+        -:    8:}

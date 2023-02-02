@@ -1,0 +1,14 @@
+    1|       |/* PR target/14343 */
+    2|       |/* Origin: <Pawe Sikora <pluto@ds14.agh.edu.pl> */
+    3|       |
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-require-effective-target ia32 } */
+    6|       |/* { dg-options "-march=pentium3" } */
+    7|       |
+    8|      1|int main() {
+    9|      1|  typedef long long int v __attribute__((vector_size(16)));
+   10|      1|  v a, b;
+   11|      1|  a = b;
+   12|      1|  return 0;
+   13|      1|}
+

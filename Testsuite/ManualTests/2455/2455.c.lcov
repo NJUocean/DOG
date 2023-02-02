@@ -1,0 +1,18 @@
+    1|       |/* Extracted from gas.  Incorrectly generated non-pic code at -O0 for
+    2|       |   IA-64, which produces linker errors on some operating systems.  */
+    3|       |
+    4|       |struct {
+    5|       |  int offset;
+    6|       |  struct slot {
+    7|       |    int field[6];
+    8|       |  } slot[4];
+    9|       |} s;
+   10|       |
+   11|      0|int x() {
+   12|      0|  int toggle = 0;
+   13|      0|  int r = s.slot[0].field[!toggle];
+   14|      0|  return r;
+   15|      0|}
+   16|       |
+   17|      1|int main() { return 0; }
+

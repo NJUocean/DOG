@@ -1,0 +1,10 @@
+    1|       |char a[10] = "deadbeef";
+    2|       |
+    3|      1|char acc_a(long i) { return a[i - 2000000000L]; }
+    4|       |
+    5|      1|main() {
+    6|      1|  if (acc_a(2000000000L) != 'd')
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

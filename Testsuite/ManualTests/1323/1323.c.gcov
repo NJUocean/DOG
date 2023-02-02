@@ -1,0 +1,19 @@
+        -:    0:Source:1323.c
+        -:    0:Graph:1323.gcno
+        -:    0:Data:1323.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:
+        -:    5:unsigned long long xh = 1;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  unsigned long long yh = 0xffffffffull;
+        1:    9:  unsigned long long z = xh * yh;
+        -:   10:
+        1:   11:  if (z != yh)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}

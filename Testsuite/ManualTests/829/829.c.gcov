@@ -1,0 +1,29 @@
+        -:    0:Source:829.c
+        -:    0:Graph:829.gcno
+        -:    0:Data:829.gcda
+        -:    0:Runs:1
+        -:    1:char a[] = "12345";
+        -:    2:char b[] = "12345";
+        -:    3:
+        6:    4:void loop(char *pz, char *pzDta) {
+        -:    5:  for (;;) {
+        6:    6:    switch (*(pz++) = *(pzDta++)) {
+        1:    7:    case 0:
+        1:    8:      goto loopDone2;
+        -:    9:
+    #####:   10:    case '"':
+        -:   11:    case '\\':
+    #####:   12:      pz[-1] = '\\';
+    #####:   13:      *(pz++) = pzDta[-1];
+        -:   14:    }
+        -:   15:  }
+        1:   16:loopDone2:;
+        -:   17:
+        1:   18:  if (a - pz != b - pzDta)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:main() {
+        1:   23:  loop(a, b);
+        1:   24:  exit(0);
+        -:   25:}

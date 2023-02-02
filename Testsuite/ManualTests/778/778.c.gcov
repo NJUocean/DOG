@@ -1,0 +1,66 @@
+        -:    0:Source:778.c
+        -:    0:Graph:778.gcno
+        -:    0:Data:778.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=gnu99 -Wall -Wextra -O1" } */
+        -:    3:
+        -:    4:extern void *memset(void *, int, __SIZE_TYPE__);
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct radix_tree_root {
+        -:    8:  unsigned int height;
+        -:    9:  struct radix_tree_node *rnode;
+        -:   10:};
+        -:   11:
+        -:   12:struct radix_tree_node {
+        -:   13:  unsigned int count;
+        -:   14:  void *slots[64];
+        -:   15:  unsigned long tags[2];
+        -:   16:};
+        -:   17:
+        -:   18:struct radix_tree_path {
+        -:   19:  struct radix_tree_node *node, **slot;
+        -:   20:  int offset;
+        -:   21:};
+        -:   22:
+        1:   23:void radix_tree_tag_clear(struct radix_tree_root *root, unsigned long index) {
+        1:   24:  struct radix_tree_path path[7], *pathp = path;
+        -:   25:  unsigned int height, shift;
+        -:   26:  volatile unsigned long *addr;
+        -:   27:
+        1:   28:  height = root->height;
+        -:   29:
+        1:   30:  shift = (height - 1) * 6;
+        1:   31:  path[0].slot = &root->rnode;
+        -:   32:
+        2:   33:  while (height > 0) {
+        -:   34:    int offset;
+        -:   35:
+        1:   36:    offset = (index >> shift) & (64 - 1);
+        1:   37:    pathp[1].offset = offset;
+        1:   38:    pathp[1].node = *pathp[0].slot;
+        1:   39:    pathp[1].slot = (struct radix_tree_node **)(pathp[1].node->slots + offset);
+        1:   40:    pathp++;
+        1:   41:    shift -= 6;
+        1:   42:    height--;
+        -:   43:  }
+        -:   44:
+        1:   45:  addr = &(pathp->node->tags[0]) + 1;
+        1:   46:  *addr = 574;
+        1:   47:}
+        -:   48:
+        -:   49:struct radix_tree_root r;
+        -:   50:struct radix_tree_node node;
+        -:   51:
+        1:   52:int main() {
+        1:   53:  r.height = 1;
+        1:   54:  r.rnode = &node;
+        -:   55:
+        1:   56:  memset(&node, 0, sizeof(node));
+        -:   57:
+        1:   58:  node.count = 1;
+        -:   59:
+        1:   60:  radix_tree_tag_clear(&r, 13);
+        1:   61:  return 0;
+        -:   62:}

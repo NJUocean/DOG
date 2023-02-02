@@ -1,0 +1,16 @@
+        -:    0:Source:1626.c
+        -:    0:Graph:1626.gcno
+        -:    0:Data:1626.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static const int a;
+        -:    4:int b;
+        -:    5:int *c, *d;
+        1:    6:int main() {
+        1:    7:  c = (int *)&a;
+        1:    8:  c == d ?: __builtin_exit(0);
+    #####:    9:  for (; b; b++ >= (*d = a))
+        -:   10:    ;
+    #####:   11:  return 0;
+        -:   12:}

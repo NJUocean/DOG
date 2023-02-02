@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int __attribute__((noinline, noclone)) f(int *pi, long *pl) {
+    6|      1|  *pi = 1;
+    7|      1|  *pl = 0;
+    8|      1|  return *(char *)pi;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  union {
+   13|      1|    long l;
+   14|      1|    int i;
+   15|      1|  } a;
+   16|      1|  if (f(&a.i, &a.l) != 0)
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

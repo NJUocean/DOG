@@ -1,0 +1,39 @@
+        -:    0:Source:2330.c
+        -:    0:Graph:2330.gcno
+        -:    0:Data:2330.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that call return percentages are reported correctly by gcov,
+        -:    2:   along with line counts and branch percentages.  This test case is
+        -:    3:   meant to be simple, as it was added at the same time that checking
+        -:    4:   for call return percentages was added.  */
+        -:    5:
+        -:    6:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    7:/* { dg-do run { target native } } */
+        -:    8:
+        -:    9:extern void exit(int);
+        -:   10:
+        -:   11:int val;
+        -:   12:
+        5:   13:void foo(int i) {
+        -:   14:  /* branch(80) */
+        5:   15:  if (i < 0) /* count(5) */
+        -:   16:             /* branch(end) */
+        -:   17:             /* returns(0) */
+        1:   18:    exit(0); /* count(1) */
+        -:   19:             /* returns(end) */
+        4:   20:  val += i;  /* count(4) */
+        4:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  int i;
+        -:   25:
+        -:   26:  /* returns(100) */
+        1:   27:  foo(100); /* count(1) */
+        -:   28:            /* returns(end) */
+        4:   29:  for (i = 2; i > -10; i--)
+        -:   30:    /* returns(75) */
+        4:   31:    foo(i); /* count(4) */
+        -:   32:            /* returns(end) */
+        -:   33:}
+        -:   34:
+        -:   35:/* { dg-final { run-gcov branches calls { -b gcov-6.c } } } */

@@ -1,0 +1,31 @@
+        -:    0:Source:3285.c
+        -:    0:Graph:3285.gcno
+        -:    0:Data:3285.gcda
+        -:    0:Runs:1
+        -:    1:/* Make sure that we don't free any temp stack slots associated with
+        -:    2:   initializing marker before we're finished with them.  */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  short v16;
+        -:    8:} __attribute__((packed)) jint16_t;
+        -:    9:
+        -:   10:struct node {
+        -:   11:  jint16_t magic;
+        -:   12:  jint16_t nodetype;
+        -:   13:  int totlen;
+        -:   14:} __attribute__((packed));
+        -:   15:
+        -:   16:struct node node, *node_p = &node;
+        -:   17:
+        1:   18:int main() {
+        1:   19:  struct node marker = {.magic = (jint16_t){0x1985},
+        -:   20:                        .nodetype = (jint16_t){0x2003},
+        1:   21:                        .totlen = node_p->totlen};
+        1:   22:  if (marker.magic.v16 != 0x1985)
+    #####:   23:    abort();
+        1:   24:  if (marker.nodetype.v16 != 0x2003)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

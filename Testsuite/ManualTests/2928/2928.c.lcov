@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3  -march=z10 --save-temps -mindirect-branch-call=thunk
+    3|       | * -mindirect-branch-table" } */
+    4|       |
+    5|       |int gl;
+    6|       |
+    7|      1|void __attribute__((noinline, noclone)) foo(int a) { gl = a + 40; }
+    8|       |
+    9|      1|int __attribute__((noinline, noclone)) foo_value(int a) { return a + 40; }
+   10|       |
+   11|      2|void *__attribute__((noinline, noclone)) get_fptr(int a) {
+   12|      2|  switch (a) {
+   13|      1|  case 0:
+   14|      1|    return &foo;
+   15|      0|    break;
+   16|      1|  case 1:
+   17|      1|    return &foo_value;
+   18|      0|    break;
+   19|      0|  default:
+   20|      0|    __builtin_abort();
+   21|      2|  }
+   22|      2|}
+   23|       |
+   24|       |void (*f)(int);
+   25|       |int (*g)(int);
+   26|       |
+   27|      1|int main() {
+   28|      1|  int res;
+   29|      1|
+   30|      1|  f = get_fptr(0);
+   31|      1|  f(2);
+   32|      1|  if (gl != 42)
+   33|      0|    __builtin_abort();
+   34|      1|
+   35|      1|  g = get_fptr(1);
+   36|      1|  if (g(2) != 42)
+   37|      0|    __builtin_abort();
+   38|      1|
+   39|      1|  return 0;
+   40|      1|}
+   41|       |
+   42|       |/* 2 x main
+   43|       |/* { dg-final { scan-assembler-times "brasl\t%r\[0-9\]*,__s390_indirect_jump" 2
+   44|       |} } */
+   45|       |/* { dg-final { scan-assembler "exrl" } } */
+   46|       |
+   47|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   48|       |/* { dg-final { scan-assembler     "section\t.s390_indirect_call" } } */
+   49|       |/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+   50|       |/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */
+

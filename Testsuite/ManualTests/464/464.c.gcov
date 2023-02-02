@@ -1,0 +1,55 @@
+        -:    0:Source:464.c
+        -:    0:Graph:464.gcno
+        -:    0:Data:464.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -ftree-vectorize -fno-vect-cost-model -fno-tree-scev-cprop
+        -:    2: * -fgraphite-identity" } */
+        -:    3:/* { dg-require-effective-target vect_int } */
+        -:    4:
+        -:    5:/* gcc.dg/vect/no-scevccp-outer-22.c was miscompiled by Graphite.
+        -:    6:   Adding it here to always test it with Graphite.  */
+        -:    7:
+        -:    8:#include <stdarg.h>
+        -:    9:
+        -:   10:extern void abort();
+        -:   11:#define N 40
+        -:   12:
+        -:   13:int a[N];
+        -:   14:
+        1:   15:__attribute__((noinline)) int foo(int n) {
+        -:   16:  int i, j;
+        -:   17:  int sum;
+        -:   18:
+        1:   19:  if (n <= 0)
+    #####:   20:    return 0;
+        -:   21:
+        -:   22:  /* inner-loop index j used after the inner-loop */
+       41:   23:  for (i = 0; i < N; i++) {
+       40:   24:    sum = 0;
+      840:   25:    for (j = 0; j < n; j += 2) {
+      800:   26:      sum += j;
+        -:   27:    }
+       40:   28:    a[i] = sum + j;
+        -:   29:  }
+        1:   30:}
+        -:   31:
+        1:   32:int main(void) {
+        -:   33:  int i, j;
+        -:   34:  int sum;
+        -:   35:
+       41:   36:  for (i = 0; i < N; i++)
+       40:   37:    a[i] = i;
+        -:   38:
+        1:   39:  foo(N);
+        -:   40:
+        -:   41:  /* check results:  */
+       41:   42:  for (i = 0; i < N; i++) {
+       40:   43:    sum = 0;
+      840:   44:    for (j = 0; j < N; j += 2)
+      800:   45:      sum += j;
+       40:   46:    if (a[i] != sum + j)
+    #####:   47:      abort();
+        -:   48:  }
+        -:   49:
+        1:   50:  return 0;
+        -:   51:}

@@ -1,0 +1,15 @@
+        -:    0:Source:1740.c
+        -:    0:Graph:1740.gcno
+        -:    0:Data:1740.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=vla-bound -fno-sanitize-recover=vla-bound" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  int x = 1;
+        -:    6:  /* Check that the size of an array is evaluated only once.  */
+        1:    7:  int a[++x];
+        1:    8:  if (x != 2)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

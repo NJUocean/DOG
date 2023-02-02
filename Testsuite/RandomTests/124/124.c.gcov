@@ -1,0 +1,47 @@
+        -:    0:Source:124.c
+        -:    0:Graph:124.gcno
+        -:    0:Data:124.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  const signed f0 : 9;
+        -:   10:  const signed f1 : 26;
+        -:   11:};
+        -:   12:#pragma pack(pop)
+        -:   13:
+        -:   14:static int32_t g_7 = 0L;
+        -:   15:static int32_t *g_6 = &g_7;
+        -:   16:static const int32_t *g_11[2][2][4] = {{{&g_7, &g_7, &g_7, &g_7}, {&g_7, &g_7, &g_7, &g_7}}, {{&g_7, &g_7, &g_7, &g_7}, {&g_7, &g_7, &g_7, &g_7}}};
+        -:   17:static const int32_t **volatile g_10 = &g_11[1][1][3];
+        -:   18:
+        -:   19:static uint8_t func_1(void);
+        -:   20:static const int32_t *func_2(uint32_t p_3, struct S0 p_4, int32_t *p_5);
+        -:   21:
+        1:   22:static uint8_t func_1(void) {
+        1:   23:  struct S0 l_8[3] = {{8, -5941}, {8, -5941}, {8, -5941}};
+        1:   24:  int32_t *l_9 = &g_7;
+        -:   25:  int i;
+        1:   26:  (*g_10) = func_2((g_6 == &g_7), l_8[1], l_9);
+        1:   27:  return (*l_9);
+        -:   28:}
+        -:   29:
+        1:   30:static const int32_t *func_2(uint32_t p_3, struct S0 p_4, int32_t *p_5) { return p_5; }
+        -:   31:
+        1:   32:int main(int argc, char *argv[]) {
+        -:   33:  int i, j, k;
+        1:   34:  int print_hash_value = 0;
+       1*:   35:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   36:    print_hash_value = 1;
+        1:   37:  platform_main_begin();
+        1:   38:  crc32_gentab();
+        1:   39:  func_1();
+        1:   40:  transparent_crc(g_7, "g_7", print_hash_value);
+        1:   41:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   42:  return 0;
+        -:   43:}

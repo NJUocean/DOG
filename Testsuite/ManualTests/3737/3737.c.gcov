@@ -1,0 +1,39 @@
+        -:    0:Source:3737.c
+        -:    0:Graph:3737.gcno
+        -:    0:Data:3737.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49419 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int w, x, y;
+        -:    7:} * t;
+        -:    8:
+        1:    9:int foo(int n, int f, int *s, int m) {
+        -:   10:  int x, i, a;
+        1:   11:  if (n == -1)
+    #####:   12:    return 0;
+        2:   13:  for (x = n, i = 0; t[x].w == f && i < m; i++)
+        1:   14:    x = t[x].x;
+        1:   15:  if (i == m)
+    #####:   16:    abort();
+        1:   17:  a = i + 1;
+        2:   18:  for (x = n; i > 0; i--) {
+        1:   19:    s[i] = t[x].y;
+        1:   20:    x = t[x].x;
+        -:   21:  }
+        1:   22:  s[0] = x;
+        1:   23:  return a;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        -:   27:  int s[3], i;
+        1:   28:  struct S buf[3] = {{1, 1, 2}, {0, 0, 0}, {0, 0, 0}};
+        1:   29:  t = buf;
+        1:   30:  if (foo(0, 1, s, 3) != 2)
+    #####:   31:    abort();
+        1:   32:  if (s[0] != 1 || s[1] != 2)
+    #####:   33:    abort();
+        1:   34:  return 0;
+        -:   35:}

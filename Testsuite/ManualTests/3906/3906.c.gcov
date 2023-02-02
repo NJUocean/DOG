@@ -1,0 +1,52 @@
+        -:    0:Source:3906.c
+        -:    0:Graph:3906.gcno
+        -:    0:Data:3906.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fno-builtin-abort" } */
+        -:    2:
+        -:    3:int a, b, m, n, o, p, s, u, i;
+        -:    4:char c, q, y;
+        -:    5:short d;
+        -:    6:unsigned char e;
+        -:    7:static int f, h;
+        -:    8:static short g, r, v;
+        -:    9:unsigned t;
+        -:   10:
+        -:   11:extern void abort();
+        -:   12:
+      31*:   13:int fn1(int p1) { return a ? p1 : p1 + a; }
+        -:   14:
+       31:   15:unsigned char fn2(unsigned char p1, int p2) { return p2 >= 2 ? p1 : p1 >> p2; }
+        -:   16:
+        1:   17:static short fn3() {
+        1:   18:  int w, x = 0;
+       32:   19:  for (; p < 31; p++) {
+       31:   20:    s = fn1(c | ((1 && c) == c));
+       31:   21:    t = fn2(s, x);
+      31*:   22:    c = (unsigned)c > -(unsigned)((o = (m = d = t) == p) <= 4UL) && n;
+       31:   23:    v = -c;
+       31:   24:    y = 1;
+     7936:   25:    for (; y; y++)
+     7905:   26:      e = v == 1;
+       31:   27:    d = 0;
+       31:   28:    for (; h != 2;) {
+        -:   29:      for (;;) {
+       31:   30:        if (!m)
+    #####:   31:          abort();
+       31:   32:        r = 7 - f;
+       31:   33:        x = e = i | r;
+       31:   34:        q = u * g;
+       31:   35:        w = b == q;
+       31:   36:        if (w)
+       31:   37:          break;
+        -:   38:      }
+       31:   39:      break;
+        -:   40:    }
+        -:   41:  }
+        1:   42:  return x;
+        -:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  fn3();
+        1:   47:  return 0;
+        -:   48:}

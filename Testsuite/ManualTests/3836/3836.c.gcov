@@ -1,0 +1,29 @@
+        -:    0:Source:3836.c
+        -:    0:Graph:3836.gcno
+        -:    0:Data:3836.gcda
+        -:    0:Runs:1
+        -:    1:/* PR preprocessor/57824 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=gnu99" { target c } } */
+        -:    4:/* { dg-options "-std=c++11" { target c++ } } */
+        -:    5:
+        -:    6:#define S(s) s
+        -:    7:#define T(s) s "\n"
+        -:    8:
+        -:    9:const char x[] = R"(
+        -:   10:abc
+        -:   11:)";
+        -:   12:const char y[] = S(R"(
+        -:   13:abc
+        -:   14:)");
+        -:   15:const char z[] = "\nabc\n";
+        -:   16:const char w[] = T(R"(
+        -:   17:abc)");
+        -:   18:
+        1:   19:int main() {
+        -:   20:  if (sizeof x != sizeof y || sizeof x != sizeof z || sizeof x != sizeof w ||
+        -:   21:      __builtin_memcmp(x, y, sizeof x) || __builtin_memcmp(x, z, sizeof x) ||
+        -:   22:      __builtin_memcmp(x, w, sizeof x))
+        -:   23:    __builtin_abort();
+        1:   24:  return 0;
+        -:   25:}

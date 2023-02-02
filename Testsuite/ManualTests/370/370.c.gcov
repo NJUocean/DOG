@@ -1,0 +1,18 @@
+        -:    0:Source:370.c
+        -:    0:Graph:370.gcno
+        -:    0:Data:370.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-fopenmp-simd -fdump-tree-original" } */
+        -:    3:
+        -:    4:/* PR c/65586 */
+        -:    5:
+        5:    6:void foo() {}
+        -:    7:
+        1:    8:int main() {
+        -:    9:#pragma omp for collapse(1)
+        6:   10:  for (int i = 1; i <= 151; i += 31)
+        5:   11:    foo();
+        -:   12:}
+        -:   13:
+        -:   14:/* { dg-final { scan-tree-dump-not "omp" "original" } } */

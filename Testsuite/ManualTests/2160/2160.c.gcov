@@ -1,0 +1,62 @@
+        -:    0:Source:2160.c
+        -:    0:Graph:2160.gcno
+        -:    0:Data:2160.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+        -:    2:/* Test concatenation of char16_t* string literals. */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu99 -Wall -Werror" } */
+        -:    5:
+        -:    6:typedef __CHAR16_TYPE__ char16_t;
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:char16_t *s0 = u"a"
+        -:   11:               u"b";
+        -:   12:
+        -:   13:char16_t *s1 = u"a"
+        -:   14:               "b";
+        -:   15:char16_t *s2 = "a"
+        -:   16:               u"b";
+        -:   17:char16_t *s3 = u"a"
+        -:   18:               "\u2029";
+        -:   19:char16_t *s4 = "\u2029"
+        -:   20:               u"b";
+        -:   21:char16_t *s5 = u"a"
+        -:   22:               "\U00064321";
+        -:   23:char16_t *s6 = "\U00064321"
+        -:   24:               u"b";
+        -:   25:
+        -:   26:#define A 0x0061
+        -:   27:#define B 0x0062
+        -:   28:#define X 0x2029
+        -:   29:#define Y1 0xD950
+        -:   30:#define Y2 0xDF21
+        -:   31:
+        1:   32:int main() {
+        -:   33:  if (sizeof((u"a"
+        -:   34:              u"b")[0]) != sizeof(char16_t))
+        -:   35:    abort();
+        -:   36:  if (sizeof((u"a"
+        -:   37:              "b")[0]) != sizeof(char16_t))
+        -:   38:    abort();
+        -:   39:  if (sizeof(("a"
+        -:   40:              u"b")[0]) != sizeof(char16_t))
+        -:   41:    abort();
+        -:   42:
+        1:   43:  if (s0[0] != A || s0[1] != B || s0[2] != 0x0000)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  if (s1[0] != A || s1[1] != B || s1[2] != 0x0000)
+    #####:   47:    abort();
+        1:   48:  if (s2[0] != A || s2[1] != B || s2[2] != 0x0000)
+    #####:   49:    abort();
+        1:   50:  if (s3[0] != A || s3[1] != X || s3[2] != 0x0000)
+    #####:   51:    abort();
+        1:   52:  if (s4[0] != X || s4[1] != B || s4[2] != 0x0000)
+    #####:   53:    abort();
+        1:   54:  if (s5[0] != A || s5[1] != Y1 || s5[2] != Y2 || s5[3] != 0x0000)
+    #####:   55:    abort();
+        1:   56:  if (s6[0] != Y1 || s6[1] != Y2 || s6[2] != B || s6[3] != 0x0000)
+    #####:   57:    abort();
+        -:   58:}

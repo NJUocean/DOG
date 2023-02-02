@@ -1,0 +1,41 @@
+        -:    0:Source:2879.c
+        -:    0:Graph:2879.gcno
+        -:    0:Data:2879.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target { powerpc64le-*-* } } } */
+        -:    2:/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+        -:    3:/* { dg-final { scan-assembler "lxvd2x" } } */
+        -:    4:/* { dg-final { scan-assembler "stxvd2x" } } */
+        -:    5:/* { dg-final { scan-assembler-not "xxpermdi" } } */
+        -:    6:
+        -:    7:void abort();
+        -:    8:
+        -:    9:#define N 256
+        -:   10:signed char ca[N] __attribute__((aligned(16)));
+        -:   11:signed char cb[N] __attribute__((aligned(16)));
+        -:   12:signed char cc[N] __attribute__((aligned(16)));
+        -:   13:
+        1:   14:__attribute__((noinline)) void foo() {
+        -:   15:  int i;
+      257:   16:  for (i = 0; i < N; i++) {
+      256:   17:    ca[i] = cb[i] - cc[i];
+        -:   18:  }
+        1:   19:}
+        -:   20:
+        1:   21:__attribute__((noinline)) void init() {
+        -:   22:  int i;
+      257:   23:  for (i = 0; i < N; ++i) {
+      256:   24:    cb[i] = i - 128;
+      256:   25:    cc[i] = i / 2 - 64;
+        -:   26:  }
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  int i;
+        1:   31:  init();
+        1:   32:  foo();
+      257:   33:  for (i = 0; i < N; ++i)
+      256:   34:    if (ca[i] != i - i / 2 - 64)
+    #####:   35:      abort();
+        1:   36:  return 0;
+        -:   37:}

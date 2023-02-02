@@ -1,0 +1,94 @@
+        -:    0:Source:2120.c
+        -:    0:Graph:2120.gcno
+        -:    0:Data:2120.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=float-cast-overflow" } */
+        -:    3:
+        -:    4:struct {
+        -:    5:  int i : 1;
+        -:    6:} s;
+        -:    7:
+        -:    8:struct {
+        -:    9:  unsigned int i : 1;
+        -:   10:} t;
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  volatile double d;
+        -:   14:
+        -:   15:#define CHECK_BOUNDARY(VAR, VAL)                                               \
+        -:   16:  (VAR) = (VAL)-1.5;                                                           \
+        -:   17:  (VAR) = (VAL)-1.0;                                                           \
+        -:   18:  (VAR) = (VAL)-0.5;                                                           \
+        -:   19:  (VAR) = (VAL)-0.0000001;                                                     \
+        -:   20:  (VAR) = (VAL)-0.0;                                                           \
+        -:   21:  (VAR) = (VAL);                                                               \
+        -:   22:  (VAR) = (VAL) + 0.0;                                                         \
+        -:   23:  (VAR) = (VAL) + 0.0000001;                                                   \
+        -:   24:  (VAR) = (VAL) + 0.5;                                                         \
+        -:   25:  (VAR) = (VAL) + 1.0;                                                         \
+        -:   26:  (VAR) = (VAL) + 1.5;
+        -:   27:
+        -:   28:  /* Signed bit-field.  (-1, 0) is valid.  */
+        1:   29:  d = -1.0;
+        1:   30:  CHECK_BOUNDARY(s.i, d);
+        1:   31:  d = 0.0;
+        1:   32:  CHECK_BOUNDARY(s.i, d);
+        1:   33:  d = 1.0;
+        1:   34:  CHECK_BOUNDARY(s.i, d);
+        -:   35:
+        -:   36:  /* Unsigned bit-field.  (0, 1) is valid.  */
+        1:   37:  d = -1.0;
+        1:   38:  CHECK_BOUNDARY(t.i, d);
+        1:   39:  d = 0.0;
+        1:   40:  CHECK_BOUNDARY(t.i, d);
+        1:   41:  d = 1.0;
+        1:   42:  CHECK_BOUNDARY(t.i, d);
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}
+        -:   46:
+        -:   47:/* { dg-output " -2.5 is outside the range of representable values of
+        -:   48: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   49:/* { dg-output "\[^\n\r]* -2 is outside the range of representable values of
+        -:   50: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   51:/* { dg-output "\[^\n\r]* 1 is outside the range of representable values of
+        -:   52: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   53:/* { dg-output "\[^\n\r]* 1.5 is outside the range of representable values of
+        -:   54: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   55:/* { dg-output "\[^\n\r]* 1 is outside the range of representable values of
+        -:   56: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   57:/* { dg-output "\[^\n\r]* 1 is outside the range of representable values of
+        -:   58: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   59:/* { dg-output "\[^\n\r]* 1 is outside the range of representable values of
+        -:   60: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   61:/* { dg-output "\[^\n\r]* 1 is outside the range of representable values of
+        -:   62: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   63:/* { dg-output "\[^\n\r]* 1.5 is outside the range of representable values of
+        -:   64: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   65:/* { dg-output "\[^\n\r]* 2 is outside the range of representable values of
+        -:   66: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   67:/* { dg-output "\[^\n\r]* 2.5 is outside the range of representable values of
+        -:   68: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   69:/* { dg-output "\[^\n\r]* -2.5 is outside the range of representable values of
+        -:   70: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   71:/* { dg-output "\[^\n\r]* -2 is outside the range of representable values of
+        -:   72: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   73:/* { dg-output "\[^\n\r]* -1.5 is outside the range of representable values of
+        -:   74: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   75:/* { dg-output "\[^\n\r]* -1 is outside the range of representable values of
+        -:   76: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   77:/* { dg-output "\[^\n\r]* -1 is outside the range of representable values of
+        -:   78: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   79:/* { dg-output "\[^\n\r]* -1 is outside the range of representable values of
+        -:   80: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   81:/* { dg-output "\[^\n\r]* -1 is outside the range of representable values of
+        -:   82: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   83:/* { dg-output "\[^\n\r]* -1.5 is outside the range of representable values of
+        -:   84: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   85:/* { dg-output "\[^\n\r]* -1 is outside the range of representable values of
+        -:   86: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   87:/* { dg-output "\[^\n\r]* 2 is outside the range of representable values of
+        -:   88: * type\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   89:/* { dg-output "\[^\n\r]* 2.5 is outside the range of representable values of
+        -:   90: * type" } */

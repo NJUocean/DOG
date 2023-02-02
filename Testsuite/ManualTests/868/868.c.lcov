@@ -1,0 +1,22 @@
+    1|      0|unsigned long bad(int reg, unsigned long inWord) {
+    2|      0|  union {
+    3|      0|    unsigned long word;
+    4|      0|    unsigned char byte[4];
+    5|      0|  } data;
+    6|      0|
+    7|      0|  data.word = inWord;
+    8|      0|  data.byte[reg] = 0;
+    9|      0|
+   10|      0|  return data.word;
+   11|      0|}
+   12|       |
+   13|      1|main() {
+   14|      1|  /* XXX This test could be generalized.  */
+   15|      1|  if (sizeof(long) != 4)
+   16|      1|    exit(0);
+   17|      0|
+   18|      0|  if (bad(0, 0xdeadbeef) == 0xdeadbeef)
+   19|      0|    abort();
+   20|      0|  exit(0);
+   21|      0|}
+

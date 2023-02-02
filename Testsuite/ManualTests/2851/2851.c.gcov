@@ -1,0 +1,31 @@
+        -:    0:Source:2851.c
+        -:    0:Graph:2851.gcno
+        -:    0:Data:2851.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-mlongcall" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#define VAL 12345678
+        -:    7:
+        -:    8:int j = VAL;
+        -:    9:
+        1:   10:void bar(void) {
+        1:   11:  if (j != VAL)
+    #####:   12:    abort();
+        1:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  int i = VAL;
+        -:   17:
+        1:   18:  int foo(void) {
+        1:   19:    if (i != VAL)
+    #####:   20:      abort();
+        1:   21:  }
+        -:   22:
+        1:   23:  foo();
+        1:   24:  bar();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

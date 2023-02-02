@@ -1,0 +1,19 @@
+        -:    0:Source:1141.c
+        -:    0:Graph:1141.gcno
+        -:    0:Data:1141.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 3997 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-alias "" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:void foo(void) { exit(0); }
+        -:    9:
+        -:   10:static void bar(void) __attribute__((alias("foo")));
+        -:   11:
+        1:   12:int main() {
+        1:   13:  bar();
+    #####:   14:  abort();
+        -:   15:}

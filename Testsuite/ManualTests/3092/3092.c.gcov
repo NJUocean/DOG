@@ -1,0 +1,21 @@
+        -:    0:Source:3092.c
+        -:    0:Graph:3092.gcno
+        -:    0:Data:3092.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct {
+        -:    5:  int a;
+        -:    6:  int b[5];
+        -:    7:} x;
+        -:    8:int *y;
+        -:    9:
+        1:   10:int foo(void) { return y - x.b; }
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  y = x.b;
+        1:   14:  if (foo())
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

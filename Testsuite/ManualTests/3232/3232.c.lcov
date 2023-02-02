@@ -1,0 +1,23 @@
+    1|       |/* PR optimization/6177
+    2|       |   This testcase ICEd because expr.c did not expect to see a CONCAT
+    3|       |   as array rtl.  */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|__complex__ float foo(void) {
+    9|      1|  __complex__ float f[1];
+   10|      1|  __real__ f[0] = 1.0;
+   11|      1|  __imag__ f[0] = 1.0;
+   12|      1|  f[0] = __builtin_conjf(f[0]);
+   13|      1|  return f[0];
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  __complex__ double d[1];
+   18|      1|  d[0] = foo();
+   19|      1|  if (__real__ d[0] != 1.0 || __imag__ d[0] != -1.0)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

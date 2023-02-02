@@ -1,0 +1,21 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |typedef unsigned char __attribute__((vector_size(4))) uvec;
+    4|       |
+    5|      1|int main(int argc, char *argv[]) {
+    6|      1|  int i;
+    7|      1|  int x = 0;
+    8|      1|  uvec uc0 = (uvec){argc, 1, 2, 10};
+    9|      1|  unsigned char uc1[4] = {0, 3, 2, 200};
+   10|      1|  signed char ucg[4] = {1, 0, 0, 0};
+   11|      1|  signed char ucl[4] = {0, 1, 0, 1};
+   12|      1|
+   13|      8|#define uc0_ ((unsigned char *)&uc0)
+   14|      1|
+   15|      5|  for (i = 0; i < 4; i++) {
+   16|      4|    x |= ucg[i] != (uc0_[i] > uc1[i]);
+   17|      4|    x |= ucl[i] != (uc0_[i] < uc1[i]);
+   18|      4|  }
+   19|      1|  return x;
+   20|      1|}
+

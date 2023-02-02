@@ -1,0 +1,23 @@
+        -:    0:Source:260.c
+        -:    0:Graph:260.gcno
+        -:    0:Data:260.gcda
+        -:    0:Runs:1
+        -:    1:/*
+        -:    2:This is a really long comment. This is a really long comment. This is a really
+        -:    3:long comment. This is a really long comment. This is a really long comment. This
+        -:    4:is a really long comment. This is a really long comment. This is a really long
+        -:    5:comment. This is a really long comment. This is a really long comment. This is a
+        -:    6:really long comment. This is a really long comment. This is a really long
+        -:    7:comment. This is a really long comment. This is a really long comment. This is a
+        -:    8:really long comment.
+        -:    9: */
+        -:   10:/* This testcase for PR 20907 is a bit finicky about the placement of
+        -:   11:   comment so avoid editing the text above here. */
+        -:   12:/* { dg-options "-Wall" } */
+        -:   13:/* { dg-do compile } */
+        -:   14:#warning test warning /* { dg-warning "test warning" } */
+        -:   15:#include <stdio.h>
+        1:   16:int main() {
+        1:   17:  printf("This is line %d\n", __LINE__);
+        1:   18:  return 0;
+        -:   19:}

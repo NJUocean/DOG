@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/83383 */
+    2|       |
+    3|       |unsigned long long int a = 16ULL;
+    4|       |unsigned char b = 195;
+    5|       |unsigned long long int c = ~0ULL;
+    6|       |unsigned char d = 1;
+    7|       |unsigned long long int e[2] = {3625445792498952486ULL, 0};
+    8|       |unsigned long long int f[2] = {0, 8985037393681294663ULL};
+    9|       |unsigned long long int g = 5052410635626804928ULL;
+   10|       |
+   11|      1|void foo() {
+   12|      1|  a = ((signed char)a) < b;
+   13|      1|  c = (d ? e[0] : 0) - (f[1] * a ? 1 : g);
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  foo();
+   18|      1|  if (a != 1 || c != 3625445792498952485ULL)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

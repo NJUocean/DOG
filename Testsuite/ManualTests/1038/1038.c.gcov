@@ -1,0 +1,47 @@
+        -:    0:Source:1038.c
+        -:    0:Graph:1038.gcno
+        -:    0:Data:1038.gcda
+        -:    0:Runs:1
+        -:    1:/* PR bootstrap/82916 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-tree-dse" } */
+        -:    4:
+        -:    5:struct A {
+        -:    6:  struct A *next;
+        -:    7:};
+        -:    8:struct C {
+        -:    9:  int *of;
+        -:   10:  struct C *parent, *prev, *next;
+        -:   11:  int depth;
+        -:   12:  int min;
+        -:   13:  struct C *min_occ;
+        -:   14:};
+        -:   15:
+        1:   16:__attribute__((noipa)) struct C *foo(int *node) {
+        1:   17:  struct A *p = __builtin_malloc(sizeof(struct C));
+        1:   18:  if (!p)
+    #####:   19:    return 0;
+        1:   20:  p->next = 0;
+        -:   21:  /* Originally placement new.  */
+        1:   22:  struct C *nw = (struct C *)(void *)p;
+        1:   23:  nw->of = node;
+        1:   24:  nw->parent = 0;
+        1:   25:  nw->prev = 0;
+        1:   26:  nw->next = 0;
+        1:   27:  nw->depth = 0;
+        1:   28:  nw->min_occ = nw;
+        1:   29:  nw->min = 0;
+        1:   30:  return nw;
+        -:   31:}
+        -:   32:
+        1:   33:int main() {
+        -:   34:  int o;
+        1:   35:  struct C *p = foo(&o);
+        1:   36:  if (p) {
+        1:   37:    if (p->of != &o || p->parent || p->prev || p->next || p->depth || p->min ||
+        1:   38:        p->min_occ != p)
+    #####:   39:      __builtin_abort();
+        -:   40:  }
+        1:   41:  __builtin_free(p);
+        1:   42:  return 0;
+        -:   43:}

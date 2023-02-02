@@ -1,0 +1,24 @@
+        -:    0:Source:3974.c
+        -:    0:Graph:3974.gcno
+        -:    0:Data:3974.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/81555 */
+        -:    2:
+        -:    3:unsigned int a = 1, d = 0xfaeU, e = 0xe376U;
+        -:    4:_Bool b = 0, f = 1;
+        -:    5:unsigned char g = 1;
+        -:    6:
+        1:    7:void foo(void) {
+        1:    8:  _Bool c = a != b;
+        1:    9:  if (c)
+        1:   10:    f = 0;
+        1:   11:  if (e & c & (unsigned char)d & c)
+    #####:   12:    g = 0;
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  foo();
+        1:   17:  if (f || g != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

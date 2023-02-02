@@ -1,0 +1,10 @@
+    1|      1|int main(void) {
+    2|      1|  char *c1 = "foo";
+    3|      1|  char *c2 = "foo";
+    4|      1|  int i;
+    5|      4|  for (i = 0; i < 3; i++)
+    6|      3|    if (c1[i] != c2[i])
+    7|      0|      abort();
+    8|      1|  exit(0);
+    9|      1|}
+

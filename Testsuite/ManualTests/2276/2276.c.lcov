@@ -1,0 +1,15 @@
+    1|      1|unsigned short int showbug(unsigned short int *a, unsigned short int *b) {
+    2|      1|  *a += *b - 8;
+    3|      1|  return (*a >= 8);
+    4|      1|}
+    5|       |
+    6|      1|int main() {
+    7|      1|  unsigned short int x = 0;
+    8|      1|  unsigned short int y = 10;
+    9|      1|
+   10|      1|  if (showbug(&x, &y) != 0)
+   11|      0|    abort();
+   12|      1|
+   13|      1|  exit(0);
+   14|      1|}
+

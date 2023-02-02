@@ -1,0 +1,64 @@
+        -:    0:Source:450.c
+        -:    0:Graph:450.gcno
+        -:    0:Data:450.gcda
+        -:    0:Runs:1
+        -:    1:/* OpenACC cache directive: valid usage.  */
+        -:    2:/* For execution testing, this file is "#include"d from
+        -:    3:   libgomp/testsuite/libgomp.oacc-c-c++-common/cache-1.c.  */
+        -:    4:
+        1:    5:int main(int argc, char **argv) {
+        -:    6:#define N 2
+        -:    7:  int a[N], b[N];
+        -:    8:  int i;
+        -:    9:
+        3:   10:  for (i = 0; i < N; i++) {
+        2:   11:    a[i] = 3;
+        2:   12:    b[i] = 0;
+        -:   13:  }
+        -:   14:
+        -:   15:#pragma acc parallel copyin(a [0:N]) copyout(b [0:N])
+        -:   16:  {
+        -:   17:    int ii;
+        -:   18:
+        3:   19:    for (ii = 0; ii < N; ii++) {
+        2:   20:      const int idx = ii;
+        2:   21:      int n = 1;
+        2:   22:      const int len = n;
+        -:   23:
+        -:   24:      /* Have at it, GCC!  */
+        -:   25:#pragma acc cache(a [0:N])
+        -:   26:#pragma acc cache(a [0:N], a [0:N])
+        -:   27:#pragma acc cache(a [0:N], b [0:N])
+        -:   28:#pragma acc cache(a[0])
+        -:   29:#pragma acc cache(a[0], a[1], b [0:N])
+        -:   30:#pragma acc cache(a[i - 5])
+        -:   31:#pragma acc cache(a [i + 5:len])
+        -:   32:#pragma acc cache(a [i + 5:len - 1])
+        -:   33:#pragma acc cache(b[i])
+        -:   34:#pragma acc cache(b [i:len])
+        -:   35:#pragma acc cache(a[ii])
+        -:   36:#pragma acc cache(a [ii:len])
+        -:   37:#pragma acc cache(b[ii - 1])
+        -:   38:#pragma acc cache(b [ii - 1:len])
+        -:   39:#pragma acc cache(b[i - ii + 1])
+        -:   40:#pragma acc cache(b [i + ii - 1:len])
+        -:   41:#pragma acc cache(b [i * ii - 1:len + 1])
+        -:   42:#pragma acc cache(a[idx + 2])
+        -:   43:#pragma acc cache(a [idx:len + 2])
+        -:   44:#pragma acc cache(a[idx])
+        -:   45:#pragma acc cache(a [idx:len])
+        -:   46:#pragma acc cache(a [idx + 2:len])
+        -:   47:#pragma acc cache(a [idx + 2 + i:len])
+        -:   48:#pragma acc cache(a [idx + 2 + i + ii:len])
+        -:   49:
+        2:   50:      b[ii] = a[ii];
+        -:   51:    }
+        -:   52:  }
+        -:   53:
+        3:   54:  for (i = 0; i < N; i++) {
+        2:   55:    if (a[i] != b[i])
+    #####:   56:      __builtin_abort();
+        -:   57:  }
+        -:   58:
+        1:   59:  return 0;
+        -:   60:}

@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fipa-ra" } */
+    3|       |/* Testing -fipa-ra optimization option.  */
+    4|       |
+    5|      1|static int __attribute__((noinline)) bar(int x) { return x + 3; }
+    6|       |
+    7|      1|int __attribute__((noinline)) foo(int y) { return y + bar(y); }
+    8|       |
+    9|      1|int main(void) { return !(foo(5) == 13); }
+   10|       |
+   11|       |/* { dg-final { scan-assembler-times "\\\[sp, -16\\\]!" 2 } } */
+   12|       |/* { dg-final { scan-assembler-not "\\\[sp, -32\\\]!" } } */
+

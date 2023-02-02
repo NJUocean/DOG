@@ -1,0 +1,21 @@
+    1|       |/* PR sanitizer/80308 */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|      4|__attribute__((noinline, noclone)) int foo(char *a) {
+    5|      4|  int i, j = 0;
+    6|      4|  asm volatile("" : "+r"(a) : : "memory");
+    7|     52|  for (i = 0; i < 12; i++)
+    8|     48|    j += a[i];
+    9|      4|  return j;
+   10|      4|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i, j = 0;
+   14|      5|  for (i = 0; i < 4; i++) {
+   15|      4|    char a[12];
+   16|      4|    __builtin_memset(a, 0, sizeof(a));
+   17|      4|    j += foo(a);
+   18|      4|  }
+   19|      1|  return j;
+   20|      1|}
+

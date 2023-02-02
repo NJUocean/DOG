@@ -1,0 +1,19 @@
+    1|       |/* PR rtl-optimization/78132 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O3 -mavx512f -mno-avx512bw -mno-avx512dq -masm=att" } */
+    4|       |/* { dg-final { scan-assembler-not "kmov\[dq]\t" } } */
+    5|       |
+    6|       |unsigned short c;
+    7|       |char a, d, f, b;
+    8|       |short e;
+    9|       |long g;
+   10|       |
+   11|      1|int main() {
+   12|      1|  g = c;
+   13|      1|  f = c & e;
+   14|      1|  d = c & a | e;
+   15|      1|  if (a)
+   16|      0|    b = c;
+   17|      1|  return 0;
+   18|      1|}
+

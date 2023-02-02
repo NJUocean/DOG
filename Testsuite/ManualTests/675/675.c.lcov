@@ -1,0 +1,10 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options {{-fstrict-aliasing -flto}} } */
+    3|       |
+    4|       |typedef struct {
+    5|       |} t_commrec;
+    6|       |typedef struct {
+    7|       |} t_fft_c;
+    8|      0|void solve_pme(t_commrec *cr) { t_fft_c *ptr; }
+    9|      1|int main() { return 0; }
+

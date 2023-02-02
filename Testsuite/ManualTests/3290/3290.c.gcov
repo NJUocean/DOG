@@ -1,0 +1,15 @@
+        -:    0:Source:3290.c
+        -:    0:Graph:3290.gcno
+        -:    0:Data:3290.gcda
+        -:    0:Runs:1
+        1:    1:int f(unsigned number_of_digits_to_use) {
+        1:    2:  if (number_of_digits_to_use > 1294)
+    #####:    3:    return 0;
+        1:    4:  return (number_of_digits_to_use * 3321928 / 1000000 + 1) / 16;
+        -:    5:}
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  if (f(11) != 2)
+    #####:    9:    __builtin_abort();
+        1:   10:  exit(0);
+        -:   11:}

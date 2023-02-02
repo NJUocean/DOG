@@ -1,0 +1,16 @@
+        -:    0:Source:3809.c
+        -:    0:Graph:3809.gcno
+        -:    0:Data:3809.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/58564 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a, b;
+        -:    5:short *c, **d = &c;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  b = (0, 0 > ((&c == d) & (1 && (a ^ 1)))) | 0U;
+        1:    9:  if (b != 0)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

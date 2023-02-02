@@ -1,0 +1,36 @@
+        -:    0:Source:2500.c
+        -:    0:Graph:2500.gcno
+        -:    0:Data:2500.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:int bar(void);
+        -:    4:int baz(void);
+        -:    5:
+        -:    6:struct foo {
+        -:    7:  struct foo *next;
+        -:    8:};
+        -:    9:
+        1:   10:struct foo *test(struct foo *node) {
+        3:   11:  while (node) {
+       2*:   12:    if (bar() && !baz())
+    #####:   13:      break;
+        2:   14:    node = node->next;
+        -:   15:  }
+        1:   16:  return node;
+        -:   17:}
+        -:   18:
+        2:   19:int bar(void) { return 0; }
+        -:   20:
+    #####:   21:int baz(void) { return 0; }
+        -:   22:
+        1:   23:int main(void) {
+        -:   24:  struct foo a, b, *c;
+        -:   25:
+        1:   26:  a.next = &b;
+        1:   27:  b.next = (struct foo *)0;
+        1:   28:  c = test(&a);
+        1:   29:  if (c)
+    #####:   30:    abort();
+        1:   31:  exit(0);
+        -:   32:}

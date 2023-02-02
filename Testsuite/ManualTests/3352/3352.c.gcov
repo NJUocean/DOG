@@ -1,0 +1,31 @@
+        -:    0:Source:3352.c
+        -:    0:Graph:3352.gcno
+        -:    0:Data:3352.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-size "0x12000" } */
+        -:    2:
+        -:    3:#if __INT_MAX__ < 32768
+        -:    4:int main() { exit(0); }
+        -:    5:#else
+        -:    6:int a[2] = {2, 3};
+        -:    7:
+        2:    8:static int __attribute__((noinline)) bar(int x, void *b) {
+        2:    9:  a[0]++;
+        2:   10:  return x;
+        -:   11:}
+        -:   12:
+        1:   13:static int __attribute__((noinline)) foo(int x) {
+        -:   14:  char buf[0x10000];
+        1:   15:  int y = a[0];
+        1:   16:  a[1] = y;
+        1:   17:  x = bar(x, buf);
+        1:   18:  y = bar(y, buf);
+        1:   19:  return x + y;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  if (foo(100) != 102)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}
+        -:   27:#endif

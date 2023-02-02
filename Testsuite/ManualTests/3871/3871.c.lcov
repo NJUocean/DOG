@@ -1,0 +1,24 @@
+    1|       |/* PR tree-optimization/65170 */
+    2|       |
+    3|       |#ifdef __SIZEOF_INT128__
+    4|       |typedef unsigned __int128 V;
+    5|       |typedef unsigned long long int H;
+    6|       |#else
+    7|       |typedef unsigned long long int V;
+    8|       |typedef unsigned int H;
+    9|       |#endif
+   10|       |
+   11|      1|__attribute__((noinline, noclone)) void foo(V b, V c) {
+   12|      1|  V a;
+   13|      1|  b &= (H)-1;
+   14|      1|  c &= (H)-1;
+   15|      1|  a = b * c;
+   16|      1|  if (a != 1)
+   17|      0|    __builtin_abort();
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  foo(1, 1);
+   22|      1|  return 0;
+   23|      1|}
+

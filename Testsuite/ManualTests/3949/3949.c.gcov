@@ -1,0 +1,37 @@
+        -:    0:Source:3949.c
+        -:    0:Graph:3949.gcno
+        -:    0:Data:3949.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78675 */
+        -:    2:
+        -:    3:long int a;
+        -:    4:
+        6:    5:__attribute__((noinline, noclone)) long int foo(long int x) {
+        -:    6:  long int b;
+      204:    7:  while (a < 1) {
+      198:    8:    b = a && x;
+      198:    9:    ++a;
+        -:   10:  }
+        6:   11:  return b;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (foo(0) != 0)
+    #####:   16:    __builtin_abort();
+        1:   17:  a = 0;
+        1:   18:  if (foo(1) != 0)
+    #####:   19:    __builtin_abort();
+        1:   20:  a = 0;
+        1:   21:  if (foo(25) != 0)
+    #####:   22:    __builtin_abort();
+        1:   23:  a = -64;
+        1:   24:  if (foo(0) != 0)
+    #####:   25:    __builtin_abort();
+        1:   26:  a = -64;
+        1:   27:  if (foo(1) != 0)
+    #####:   28:    __builtin_abort();
+        1:   29:  a = -64;
+        1:   30:  if (foo(25) != 0)
+    #####:   31:    __builtin_abort();
+        1:   32:  return 0;
+        -:   33:}

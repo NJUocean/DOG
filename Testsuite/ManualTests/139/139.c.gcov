@@ -1,0 +1,41 @@
+        -:    0:Source:139.c
+        -:    0:Graph:139.gcno
+        -:    0:Data:139.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_flag routines for existence and execution.  */
+        -:    2:/* The test needs a lockless atomic implementation.  */
+        -:    3:/* { dg-do run { xfail hppa*-*-hpux* } } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    5:
+        -:    6:#include <stdatomic.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:atomic_flag a = ATOMIC_FLAG_INIT;
+        -:   10:
+        1:   11:int main() {
+        -:   12:  int b;
+        -:   13:
+        -:   14:  if (!atomic_is_lock_free(&a))
+        -:   15:    abort();
+        -:   16:
+        1:   17:  if (atomic_flag_test_and_set(&a))
+    #####:   18:    abort();
+        1:   19:  atomic_flag_clear_explicit(&a, memory_order_relaxed);
+        1:   20:  if (atomic_flag_test_and_set(&a))
+    #####:   21:    abort();
+        1:   22:  atomic_flag_clear(&a);
+        -:   23:
+        1:   24:  b = atomic_flag_test_and_set_explicit(&a, memory_order_seq_cst);
+        1:   25:  if (!atomic_flag_test_and_set(&a) || b != 0)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  b = atomic_flag_test_and_set_explicit(&a, memory_order_acq_rel);
+        1:   29:  if (!atomic_flag_test_and_set(&a) || b != 1)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  atomic_flag_clear_explicit(&a, memory_order_seq_cst);
+        1:   33:  if (atomic_flag_test_and_set(&a))
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

@@ -1,0 +1,57 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |/* { dg-require-effective-target run_expensive_tests }  PR testsuite/48283 */
+    3|       |/* { dg-timeout-factor 4.0 } */
+    4|       |
+    5|       |#define DEBUG 0
+    6|       |#if DEBUG
+    7|       |#include <stdio.h>
+    8|       |#endif
+    9|       |
+   10|       |#define N 24
+   11|  1.03M|#define M 100
+   12|       |
+   13|       |int A[M][M][M], B[M][M], C[M][M];
+   14|       |
+   15|      1|static int __attribute__((noinline)) foo(void) {
+   16|      1|  int i, j, k;
+   17|      1|
+   18|      1|  /* These loops contain too few iterations to be blocked.  */
+   19|     25|  for (i = 0; i < 24; i++)
+   20|    600|    for (j = 0; j < 24; j++)
+   21|  14.4k|      for (k = 0; k < 24; k++)
+   22|  13.8k|        A[i][j][k] = B[i][k] * C[k][j];
+   23|      1|
+   24|      1|  /* These loops should still be loop blocked.  */
+   25|    101|  for (i = 0; i < M; i++)
+   26|  10.1k|    for (j = 0; j < M; j++)
+   27|  1.01M|      for (k = 0; k < M; k++)
+   28|  1.00M|        A[i][j][k] = B[i][k] * C[k][j];
+   29|      1|
+   30|      1|  return A[0][0][0] + A[M - 1][M - 1][M - 1];
+   31|      1|}
+   32|       |
+   33|       |extern void abort();
+   34|       |
+   35|      1|int main(void) {
+   36|      1|  int i, j, res;
+   37|      1|
+   38|    101|  for (i = 0; i < M; i++)
+   39|  10.1k|    for (j = 0; j < M; j++) {
+   40|  10.0k|      B[i][j] = i;
+   41|  10.0k|      C[i][j] = j;
+   42|  10.0k|    }
+   43|      1|
+   44|      1|  res = foo();
+   45|      1|
+   46|       |#if DEBUG
+   47|       |  fprintf(stderr, "res = %d \n", res);
+   48|       |#endif
+   49|      1|
+   50|      1|  if (res != 9801)
+   51|      0|    abort();
+   52|      1|
+   53|      1|  return 0;
+   54|      1|}
+   55|       |
+   56|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

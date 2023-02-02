@@ -1,0 +1,14 @@
+        -:    0:Source:3705.c
+        -:    0:Graph:3705.gcno
+        -:    0:Data:3705.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        -:    4:int i;
+        -:    5:static int f(int) __attribute((noinline));
+        1:    6:static int f(int x) { return i; }
+        -:    7:
+        1:    8:int main() { return f(42); }
+        -:    9:
+        -:   10:/* { dg-final { gdb-test 8 "sizeof (x)" "sizeof (int)" } } */

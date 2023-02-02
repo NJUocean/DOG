@@ -1,0 +1,18 @@
+        -:    0:Source:4046.c
+        -:    0:Graph:4046.gcno
+        -:    0:Data:4046.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/94130 */
+        -:    2:
+        1:    3:int main() {
+        -:    4:  int a[8];
+        1:    5:  char *b = __builtin_memset(a, 0, sizeof(a));
+        1:    6:  a[0] = 1;
+        1:    7:  a[1] = 2;
+        1:    8:  a[2] = 3;
+        1:    9:  if (b != (char *)a)
+    #####:   10:    __builtin_abort();
+        -:   11:  else
+        1:   12:    asm volatile("" : : "g"(a) : "memory");
+        1:   13:  return 0;
+        -:   14:}

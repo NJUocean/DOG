@@ -1,0 +1,35 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |static max;
+    4|       |
+    5|     11|static void __attribute__((noinline)) storemax(int i) {
+    6|     11|  if (i > max)
+    7|     10|    max = i;
+    8|     11|}
+    9|       |
+   10|     10|static int CallFunctionRec(int (*fun)(int depth), int depth) {
+   11|     10|  if (!fun(depth)) {
+   12|      0|    return 0;
+   13|      0|  }
+   14|     10|  if (depth < 10) {
+   15|      9|    CallFunctionRec(fun, depth + 1);
+   16|      9|  }
+   17|     10|  return 1;
+   18|     10|}
+   19|       |
+   20|      1|static int CallFunction(int (*fun)(int depth)) {
+   21|      1|  return CallFunctionRec(fun, 1) && !fun(0);
+   22|      1|}
+   23|       |
+   24|     11|static int callback(int depth) {
+   25|     11|  storemax(depth);
+   26|     11|  return depth != 0;
+   27|     11|}
+   28|       |
+   29|      1|int main() {
+   30|      1|  CallFunction(callback);
+   31|      1|  if (max != 10)
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

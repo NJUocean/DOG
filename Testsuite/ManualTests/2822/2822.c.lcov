@@ -1,0 +1,21 @@
+    1|       |extern void abort();
+    2|       |extern void exit(int);
+    3|       |
+    4|       |struct s {
+    5|       |  int value;
+    6|       |  char *string;
+    7|       |};
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int i;
+   11|      5|  for (i = 0; i < 4; i++) {
+   12|      4|    struct s *t = &(struct s){3, "hey there"};
+   13|      4|    if (t->value != 3)
+   14|      0|      abort();
+   15|      4|    t->value = 4;
+   16|      4|    if (t->value != 4)
+   17|      0|      abort();
+   18|      4|  }
+   19|      1|  exit(0);
+   20|      1|}
+

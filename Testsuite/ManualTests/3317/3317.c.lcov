@@ -1,0 +1,33 @@
+    1|       |/* "i" overflows in f().  Check that x[i] is not treated as a giv.  */
+    2|       |#include <limits.h>
+    3|       |
+    4|       |#if CHAR_BIT == 8
+    5|       |
+    6|      1|void f(unsigned int *x) {
+    7|      1|  unsigned char i;
+    8|      1|  int j;
+    9|      1|
+   10|      1|  i = 0x10;
+   11|     17|  for (j = 0; j < 0x10; j++) {
+   12|     16|    i += 0xe8;
+   13|     16|    x[i] = 0;
+   14|     16|    i -= 0xe7;
+   15|     16|  }
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  unsigned int x[256];
+   20|      1|  int i;
+   21|      1|
+   22|    257|  for (i = 0; i < 256; i++)
+   23|    256|    x[i] = 1;
+   24|      1|  f(x);
+   25|    257|  for (i = 0; i < 256; i++)
+   26|    256|    if (x[i] != (i >= 0x08 && i < 0xf8))
+   27|      0|      abort();
+   28|      1|  exit(0);
+   29|      1|}
+   30|       |#else
+   31|       |int main() { exit(0); }
+   32|       |#endif
+

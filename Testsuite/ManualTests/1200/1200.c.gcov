@@ -1,0 +1,17 @@
+        -:    0:Source:1200.c
+        -:    0:Graph:1200.gcno
+        -:    0:Data:1200.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-require-effective-target tls } */
+        -:    4:
+        -:    5:__thread struct {
+        -:    6:  int a;
+        -:    7:  char b[32];
+        -:    8:} thr;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  __builtin_strcpy(thr.b, "abcd");
+        1:   12:  return 0;
+        -:   13:}

@@ -1,0 +1,26 @@
+        -:    0:Source:2497.c
+        -:    0:Graph:2497.gcno
+        -:    0:Data:2497.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:
+        -:    4:unsigned short v = 0x5678;
+        -:    5:int i;
+        -:    6:int j = 0;
+        -:    7:int *ptr = &j;
+        -:    8:
+        1:    9:int func(void) {
+        2:   10:  for (i = 0; i < 1; ++i) {
+        1:   11:    *ptr = -1;
+        1:   12:    v = 0x1234;
+        -:   13:  }
+        1:   14:  return v;
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  func();
+        1:   19:  if (v != 0x1234)
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

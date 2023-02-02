@@ -1,0 +1,29 @@
+        -:    0:Source:2368.c
+        -:    0:Graph:2368.gcno
+        -:    0:Data:2368.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target lp64 } */
+        -:    3:/* { dg-require-effective-target aarch64_bti_hw } */
+        -:    4:/* If configured with --enable-standard-branch-protection, don't use
+        -:    5:   command line option.  */
+        -:    6:/* { dg-additional-options "-mbranch-protection=standard" { target { !
+        -:    7: * default_branch_protection } } } */
+        -:    8:
+        -:    9:#include <stdio.h>
+        -:   10:
+        -:   11:typedef int FP(int);
+        -:   12:
+        1:   13:int f1(FP fp, int n) { return (fp)(n); }
+        -:   14:
+        1:   15:int f2(int n, FP fp) { return (fp)(n); }
+        -:   16:
+        2:   17:int __attribute__((noinline)) func(int x) { return x + 1; }
+        -:   18:
+        1:   19:int main() {
+        1:   20:  int s = 0;
+        1:   21:  s += f1(func, 10);
+        1:   22:  s += f2(s, func);
+        1:   23:  printf("S: %d\n", s);
+        1:   24:  return !(s == 23);
+        -:   25:}

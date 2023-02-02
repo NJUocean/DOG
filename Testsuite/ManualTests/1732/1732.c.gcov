@@ -1,0 +1,32 @@
+        -:    0:Source:1732.c
+        -:    0:Graph:1732.gcno
+        -:    0:Data:1732.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fgcse-after-reload" } */
+        -:    3:
+        -:    4:int a, b, c, d, e;
+        -:    5:
+        1:    6:static __attribute__((__noipa__)) int foo(int i) {
+        -:    7:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:    8:  __builtin_memmove(&i, &e, 1);
+        -:    9:#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   10:  __builtin_memmove((char *)&i + sizeof(i) - 1, (char *)&e + sizeof(e) - 1, 1);
+        -:   11:#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+        -:   12:  __builtin_memmove((char *)&i + sizeof(i) - 2, (char *)&e + sizeof(e) - 2, 1);
+        -:   13:#else
+        -:   14:#error "endian unknown?"
+        -:   15:#endif
+        1:   16:  if (a > 0)
+    #####:   17:    i /= e;
+        1:   18:  e /= 5;
+        1:   19:  b = 0;
+        1:   20:  return i + c + d + 5;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  int x = foo(4);
+        1:   25:  if (x != 5)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

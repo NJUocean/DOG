@@ -1,0 +1,38 @@
+        -:    0:Source:2999.c
+        -:    0:Graph:2999.gcno
+        -:    0:Data:2999.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -mabi=ms -std=gnu99 -fno-builtin" } */
+        -:    3:
+        -:    4:#include <stdarg.h>
+        -:    5:
+        -:    6:extern void __attribute__((sysv_abi)) abort(void);
+        -:    7:
+        -:    8:char *a = "1";
+        -:    9:char *b = "2";
+        -:   10:
+        1:   11:static void __attribute__((noinline, noclone)) do_cpy2(va_list argp) {
+        -:   12:  char *e;
+        -:   13:
+        1:   14:  e = va_arg(argp, char *);
+        1:   15:  e = va_arg(argp, char *);
+        1:   16:  if (e != b)
+    #####:   17:    abort();
+        1:   18:}
+        -:   19:
+        1:   20:void __attribute__((noinline, noclone)) do_cpy(int dummy, ...) {
+        -:   21:  va_list argp;
+        -:   22:
+        1:   23:  va_start(argp, dummy);
+        -:   24:
+        1:   25:  do_cpy2(argp);
+        -:   26:
+        1:   27:  va_end(argp);
+        1:   28:}
+        -:   29:
+        1:   30:int __attribute__((sysv_abi)) main() {
+        1:   31:  do_cpy(0, a, b);
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

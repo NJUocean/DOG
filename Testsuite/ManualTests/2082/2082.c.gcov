@@ -1,0 +1,27 @@
+        -:    0:Source:2082.c
+        -:    0:Graph:2082.gcno
+        -:    0:Data:2082.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fdump-tree-fre1-details" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  _Bool x;
+        -:    6:};
+        -:    7:
+        1:    8:void foo(struct S *s) {
+        1:    9:  __builtin_memset(s, 1, sizeof(struct S));
+        1:   10:  s->x = 1;
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  struct S s;
+        1:   15:  foo(&s);
+        -:   16:  char c;
+        1:   17:  __builtin_memcpy(&c, &s.x, 1);
+        1:   18:  if (c != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        -:   23:/* { dg-final { scan-tree-dump "Deleted redundant store" "fre1" } } */

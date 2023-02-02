@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |void __attribute__((noinline, noclone))
+    5|      1|clear_board(unsigned char *board, int board_size) {
+    6|      1|  int k;
+    7|    422|  for (k = 0; k < 421; k++)
+    8|    421|    if (k < board_size)
+    9|    420|      board[k] = 3;
+   10|      1|}
+   11|      1|int main() {
+   12|      1|  unsigned char board[421];
+   13|      1|  board[420] = 1;
+   14|      1|  clear_board(board, 420);
+   15|      1|  if (board[420] != 1)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

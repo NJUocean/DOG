@@ -1,0 +1,37 @@
+        -:    0:Source:1231.c
+        -:    0:Graph:1231.gcno
+        -:    0:Data:1231.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:
+        -:    3:extern void link_error(void);
+        -:    4:
+        1:    5:int main() {
+        -:    6:  if (!__builtin_constant_p(1.0))
+        -:    7:    link_error();
+        -:    8:  if (!__builtin_constant_p(__builtin_fma(1.0, 1.0, 1.0)))
+        -:    9:    link_error();
+        -:   10:
+        -:   11:  if (__builtin_constant_p(__builtin_fmaf(__FLT_MAX__, __FLT_MAX__, 0.0F)))
+        -:   12:    link_error();
+        -:   13:  if (__builtin_constant_p(__builtin_fmaf(__FLT_MAX__, 1.0F, __FLT_MAX__)))
+        -:   14:    link_error();
+        -:   15:  if (__builtin_constant_p(__builtin_fmaf(__FLT_MIN__, __FLT_MIN__, 0.0F)))
+        -:   16:    link_error();
+        -:   17:
+        -:   18:  if (__builtin_constant_p(__builtin_fma(__DBL_MAX__, __DBL_MAX__, 0.0)))
+        -:   19:    link_error();
+        -:   20:  if (__builtin_constant_p(__builtin_fma(__DBL_MAX__, 1.0, __DBL_MAX__)))
+        -:   21:    link_error();
+        -:   22:  if (__builtin_constant_p(__builtin_fma(__DBL_MIN__, __DBL_MIN__, 0.0)))
+        -:   23:    link_error();
+        -:   24:
+        -:   25:  if (__builtin_constant_p(__builtin_fmal(__LDBL_MAX__, __LDBL_MAX__, 0.0L)))
+        -:   26:    link_error();
+        -:   27:  if (__builtin_constant_p(__builtin_fmal(__LDBL_MAX__, 1.0L, __LDBL_MAX__)))
+        -:   28:    link_error();
+        -:   29:  if (__builtin_constant_p(__builtin_fmal(__LDBL_MIN__, __LDBL_MIN__, 0.0L)))
+        -:   30:    link_error();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

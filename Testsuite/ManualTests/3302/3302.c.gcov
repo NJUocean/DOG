@@ -1,0 +1,16 @@
+        -:    0:Source:3302.c
+        -:    0:Graph:3302.gcno
+        -:    0:Data:3302.gcda
+        -:    0:Runs:1
+        -:    1:char buf[40];
+        -:    2:
+        -:    3:extern int sprintf(char *, const char *, ...);
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int i = 0;
+       1*:    8:  int l = sprintf(buf, "%s", i++ ? "string" : "other string");
+        1:    9:  if (l != sizeof("other string") - 1 || i != 1)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

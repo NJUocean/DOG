@@ -1,0 +1,16 @@
+    1|       |/* PR 19515 */
+    2|       |
+    3|       |typedef union {
+    4|       |  char a2[8];
+    5|       |} aun;
+    6|       |
+    7|       |void abort(void);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  aun a = {{0}};
+   11|      1|
+   12|      1|  if (a.a2[2] != 0)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

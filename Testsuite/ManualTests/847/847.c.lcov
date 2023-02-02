@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1" } */
+    3|       |
+    4|       |extern void *memcpy(void *, const void *, __SIZE_TYPE__);
+    5|       |extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+    6|       |extern void abort(void);
+    7|       |
+    8|       |char str[9] = "1234";
+    9|       |
+   10|      1|void bar(void) {
+   11|      1|#if __SIZEOF_INT__ >= 4
+   12|      1|  unsigned int temp;
+   13|       |#else
+   14|       |  __UINT32_TYPE__ temp;
+   15|       |#endif
+   16|      1|  char *p = &str[2];
+   17|      1|
+   18|      1|  memcpy(&temp, &str[1], 4);
+   19|      1|  memcpy(p, &temp, 4);
+   20|      1|  str[1] = '.';
+   21|      1|}
+   22|       |
+   23|      1|int main() {
+   24|      1|  bar();
+   25|      1|  if (memcmp(str, "1.234", 5) != 0)
+   26|      0|    abort();
+   27|      1|
+   28|      1|  return 0;
+   29|      1|}
+

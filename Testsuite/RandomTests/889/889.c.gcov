@@ -1,0 +1,33 @@
+        -:    0:Source:889.c
+        -:    0:Graph:889.gcno
+        -:    0:Data:889.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static volatile int64_t g_2 = 1L;
+        -:    7:static int32_t g_4 = (-1L);
+        -:    8:
+        -:    9:static uint32_t func_1(void);
+        -:   10:
+        1:   11:static uint32_t func_1(void) {
+        1:   12:  int32_t *l_3 = &g_4;
+        1:   13:  (*l_3) ^= g_2;
+        1:   14:  g_4 = 8L;
+        1:   15:  return g_4;
+        -:   16:}
+        -:   17:
+        1:   18:int main(int argc, char *argv[]) {
+        1:   19:  int print_hash_value = 0;
+       1*:   20:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   21:    print_hash_value = 1;
+        1:   22:  platform_main_begin();
+        1:   23:  crc32_gentab();
+        1:   24:  func_1();
+        1:   25:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   26:  transparent_crc(g_4, "g_4", print_hash_value);
+        1:   27:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   28:  return 0;
+        -:   29:}

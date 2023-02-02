@@ -1,0 +1,11 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fstack-clash-protection --param
+    3|       | * stack-clash-protection-probe-interval=10 --param
+    4|       | * stack-clash-protection-guard-size=12" } */
+    5|       |/* { dg-require-effective-target supports_stack_clash_protection } */
+    6|       |/* { dg-skip-if "AArch64 does not support this interval." { aarch64*-*-* } } */
+    7|      1|int main() {
+    8|      1|  int a[1442];
+    9|      1|  return 0;
+   10|      1|}
+

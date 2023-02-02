@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run }  */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |/* { dg-options "" } */
+    4|       |
+    5|       |#include <stdio.h>
+    6|       |
+    7|      1|static int implementation(void) {
+    8|      1|  printf("'ere I am JH\n");
+    9|      1|  return 0;
+   10|      1|}
+   11|       |
+   12|      1|static __typeof__(implementation) *resolver(void) {
+   13|      1|  return (void *)implementation;
+   14|      1|}
+   15|       |
+   16|       |extern int magic(void) __attribute__((ifunc("resolver"), visibility("hidden")));
+   17|       |
+   18|      1|int main() { return magic() != 0; }
+

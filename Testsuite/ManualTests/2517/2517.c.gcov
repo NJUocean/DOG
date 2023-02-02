@@ -1,0 +1,98 @@
+        -:    0:Source:2517.c
+        -:    0:Graph:2517.gcno
+        -:    0:Data:2517.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Test memset with various combinations of pointer alignments and lengths to
+        -:    4:   make sure any optimizations in the library are correct.
+        -:    5:
+        -:    6:   Written by Michael Meissner, March 9, 2002.  */
+        -:    7:
+        -:    8:#include <string.h>
+        -:    9:
+        -:   10:#ifndef MAX_OFFSET
+        -:   11:#define MAX_OFFSET (sizeof(long long))
+        -:   12:#endif
+        -:   13:
+        -:   14:#ifndef MAX_COPY
+        -:   15:#define MAX_COPY (10 * sizeof(long long))
+        -:   16:#endif
+        -:   17:
+        -:   18:#ifndef MAX_EXTRA
+        -:   19:#define MAX_EXTRA (sizeof(long long))
+        -:   20:#endif
+        -:   21:
+        -:   22:#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + MAX_EXTRA)
+        -:   23:
+        -:   24:static union {
+        -:   25:  char buf[MAX_LENGTH];
+        -:   26:  long long align_int;
+        -:   27:  long double align_fp;
+        -:   28:} u;
+        -:   29:
+        -:   30:char A = 'A';
+        -:   31:
+        1:   32:main() {
+        -:   33:  int off, len, i;
+        -:   34:  char *p, *q;
+        -:   35:
+        9:   36:  for (off = 0; off < MAX_OFFSET; off++)
+      640:   37:    for (len = 1; len < MAX_COPY; len++) {
+    61304:   38:      for (i = 0; i < MAX_LENGTH; i++)
+    60672:   39:        u.buf[i] = 'a';
+        -:   40:
+      632:   41:      p = memset(u.buf + off, '\0', len);
+      632:   42:      if (p != u.buf + off)
+    #####:   43:        abort();
+        -:   44:
+      632:   45:      q = u.buf;
+     2844:   46:      for (i = 0; i < off; i++, q++)
+     2212:   47:        if (*q != 'a')
+    #####:   48:          abort();
+        -:   49:
+    25912:   50:      for (i = 0; i < len; i++, q++)
+    25280:   51:        if (*q != '\0')
+    #####:   52:          abort();
+        -:   53:
+     5688:   54:      for (i = 0; i < MAX_EXTRA; i++, q++)
+     5056:   55:        if (*q != 'a')
+    #####:   56:          abort();
+        -:   57:
+      632:   58:      p = memset(u.buf + off, A, len);
+      632:   59:      if (p != u.buf + off)
+    #####:   60:        abort();
+        -:   61:
+      632:   62:      q = u.buf;
+     2844:   63:      for (i = 0; i < off; i++, q++)
+     2212:   64:        if (*q != 'a')
+    #####:   65:          abort();
+        -:   66:
+    25912:   67:      for (i = 0; i < len; i++, q++)
+    25280:   68:        if (*q != 'A')
+    #####:   69:          abort();
+        -:   70:
+     5688:   71:      for (i = 0; i < MAX_EXTRA; i++, q++)
+     5056:   72:        if (*q != 'a')
+    #####:   73:          abort();
+        -:   74:
+      632:   75:      p = memset(u.buf + off, 'B', len);
+      632:   76:      if (p != u.buf + off)
+    #####:   77:        abort();
+        -:   78:
+      632:   79:      q = u.buf;
+     2844:   80:      for (i = 0; i < off; i++, q++)
+     2212:   81:        if (*q != 'a')
+    #####:   82:          abort();
+        -:   83:
+    25912:   84:      for (i = 0; i < len; i++, q++)
+    25280:   85:        if (*q != 'B')
+    #####:   86:          abort();
+        -:   87:
+     5688:   88:      for (i = 0; i < MAX_EXTRA; i++, q++)
+     5056:   89:        if (*q != 'a')
+    #####:   90:          abort();
+        -:   91:    }
+        -:   92:
+        1:   93:  exit(0);
+        -:   94:}

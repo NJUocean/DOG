@@ -1,0 +1,10 @@
+    1|       |unsigned char x = 50;
+    2|       |volatile short y = -5;
+    3|       |
+    4|      1|int main() {
+    5|      1|  x /= y;
+    6|      1|  if (x != (unsigned char)-10)
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

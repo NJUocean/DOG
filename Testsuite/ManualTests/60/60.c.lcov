@@ -1,0 +1,10 @@
+    1|       |/* Test for cases that should not get the unconditional warning about
+    2|       |   missing return.  */
+    3|       |/* { dg-do compile } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      0|f() {}               /* { dg-bogus "" "no return warning" } */
+    8|      0|int g() { abort(); } /* { dg-bogus "" "no return warning" } */
+    9|      1|int main() {}        /* { dg-bogus "" "no return warning" } */
+

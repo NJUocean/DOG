@@ -1,0 +1,32 @@
+        -:    0:Source:2087.c
+        -:    0:Graph:2087.gcno
+        -:    0:Data:2087.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -foptimize-sibling-calls -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        7:    7:int foo(int n) { return n == 0 ? 1 : n * (n - foo(n - 1)); }
+        -:    8:
+        8:    9:int bar(int n) { return n == 0 ? 1 : n * (-bar(n - 1)); }
+        -:   10:
+       11:   11:int baz(int n, int m) { return n == 0 ? 100 : (baz(n - 1, m) - m); }
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  if (foo(6) != 726)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  if (bar(7) != -5040)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  if (baz(10, 5) != 50)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  exit(0);
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final { scan-tree-dump-times "\\mfoo\\M" 4 "optimized"} } */
+        -:   27:/* { dg-final { scan-tree-dump-times "\\mbar\\M" 4 "optimized"} } */
+        -:   28:/* { dg-final { scan-tree-dump-times "\\mbaz\\M" 4 "optimized"} } */

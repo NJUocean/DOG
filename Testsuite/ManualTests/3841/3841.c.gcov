@@ -1,0 +1,30 @@
+        -:    0:Source:3841.c
+        -:    0:Graph:3841.gcno
+        -:    0:Data:3841.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/60960 */
+        -:    2:
+        -:    3:typedef unsigned char v4qi __attribute__((vector_size(4)));
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) v4qi f1(v4qi v) { return v / 2; }
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) v4qi f2(v4qi v) {
+        1:    8:  return v / (v4qi){2, 2, 2, 2};
+        -:    9:}
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) v4qi f3(v4qi x, v4qi y) { return x / y; }
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v4qi x = {5, 5, 5, 5};
+        1:   15:  v4qi y = {2, 2, 2, 2};
+        1:   16:  v4qi z = f1(x);
+        1:   17:  if (__builtin_memcmp(&y, &z, sizeof(y)) != 0)
+    #####:   18:    __builtin_abort();
+        1:   19:  z = f2(x);
+        1:   20:  if (__builtin_memcmp(&y, &z, sizeof(y)) != 0)
+    #####:   21:    __builtin_abort();
+        1:   22:  z = f3(x, y);
+        1:   23:  if (__builtin_memcmp(&y, &z, sizeof(y)) != 0)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

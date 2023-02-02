@@ -1,0 +1,46 @@
+    1|       |/* PR 15262.
+    2|       |   The alias analyzer only considers relations between pointers and
+    3|       |   symbols.  If two pointers P and Q point to the same symbol S, then
+    4|       |   their respective memory tags will either be the same or they will
+    5|       |   have S in their alias set.
+    6|       |
+    7|       |   However, if there are no common symbols between P and Q, TBAA will
+    8|       |   currently miss their alias relationship altogether.  */
+    9|       |struct A {
+   10|       |  int t;
+   11|       |  int i;
+   12|       |};
+   13|       |
+   14|      1|int foo() { return 3; }
+   15|       |
+   16|      1|main() {
+   17|      1|  struct A loc, *locp;
+   18|      1|  float f, g, *p;
+   19|      1|  int T355, *T356;
+   20|      1|
+   21|      1|  /* Avoid the partial hack in TBAA that would consider memory tags if
+   22|      1|     the program had no addressable symbols.  */
+   23|      1|  f = 3;
+   24|      1|  g = 2;
+   25|      1|  p = foo() ? &g : &f;
+   26|      1|  if (*p > 0.0)
+   27|      1|    g = 1;
+   28|      1|
+   29|      1|  /* Store into *locp and cache its current value.  */
+   30|      1|  locp = malloc(sizeof(*locp));
+   31|      1|  locp->i = 10;
+   32|      1|  T355 = locp->i;
+   33|      1|
+   34|      1|  /* Take the address of one of locp's fields and write to it.  */
+   35|      1|  T356 = &locp->i;
+   36|      1|  *T356 = 1;
+   37|      1|
+   38|      1|  /* Read the recently stored value.  If TBAA fails, this will appear
+   39|      1|     as a redundant load that will be replaced with '10'.  */
+   40|      1|  T355 = locp->i;
+   41|      1|  if (T355 != 1)
+   42|      0|    abort();
+   43|      1|
+   44|      1|  return 0;
+   45|      1|}
+

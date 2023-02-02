@@ -1,0 +1,6 @@
+    1|       |extern void abort(void);
+    2|       |typedef void (*frob)();
+    3|       |frob f[] = {abort};
+    4|       |
+    5|      1|int main(void) { exit(0); }
+

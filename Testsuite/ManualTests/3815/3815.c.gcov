@@ -1,0 +1,20 @@
+        -:    0:Source:3815.c
+        -:    0:Graph:3815.gcno
+        -:    0:Data:3815.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:int a, c, d;
+        -:    4:volatile int b;
+        -:    5:
+        1:    6:static int foo(int p1, short p2) { return p1 / p2; }
+        -:    7:
+        1:    8:int main() {
+        -:    9:  char e;
+        1:   10:  d = foo(a == 0, (0, 35536));
+        1:   11:  e = d % 14;
+       1*:   12:  b = e && c;
+        1:   13:  if (b != 0)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

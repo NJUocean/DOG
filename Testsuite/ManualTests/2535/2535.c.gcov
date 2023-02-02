@@ -1,0 +1,31 @@
+        -:    0:Source:2535.c
+        -:    0:Graph:2535.gcno
+        -:    0:Data:2535.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "FDPIC does not support sibcall optimization" {
+        -:    3: * arm*-*-uclinuxfdpiceabi } "*" "" } */
+        -:    4:/* { dg-options "-mapcs-frame -O -foptimize-sibling-calls -ffunction-sections" }
+        -:    5: */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:static __attribute__((noclone, noinline, long_call)) int
+        1:   10:foo(int a, int b, int c, int d, double i) {
+        1:   11:  return a;
+        -:   12:}
+        -:   13:
+        1:   14:static __attribute__((noclone, noinline)) double baz(double i) { return i; }
+        -:   15:
+        1:   16:static __attribute__((noclone, noinline)) int bar(int a, int b, int c, int d,
+        -:   17:                                                  double i, double j) {
+        1:   18:  double l = baz(i) * j;
+        1:   19:  return foo(a, b, c, d, l);
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  if (bar(0, 0, 0, 0, 0.0, 0.0) != 0)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

@@ -1,0 +1,16 @@
+        -:    0:Source:1088.c
+        -:    0:Graph:1088.gcno
+        -:    0:Data:1088.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/90892 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:const char *a = "A\0b";
+        -:    6:
+        1:    7:int main() {
+        1:    8:  if (__builtin_strncmp(a, "A\0", 2) != 0)
+    #####:    9:    __builtin_abort();
+        -:   10:
+        1:   11:  return 0;
+        -:   12:}

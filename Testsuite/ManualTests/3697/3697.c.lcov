@@ -1,0 +1,49 @@
+    1|       |/* PR45070 */
+    2|       |extern void abort(void);
+    3|       |
+    4|       |struct packed_ushort {
+    5|       |  unsigned short ucs;
+    6|       |} __attribute__((packed));
+    7|       |
+    8|       |struct source {
+    9|       |  int pos, length;
+   10|       |  int flag;
+   11|       |};
+   12|       |
+   13|      1|static void __attribute__((noinline)) fetch(struct source *p) {
+   14|      1|  p->length = 128;
+   15|      1|}
+   16|       |
+   17|     17|static struct packed_ushort __attribute__((noinline)) next(struct source *p) {
+   18|     17|  struct packed_ushort rv;
+   19|     17|
+   20|     17|  if (p->pos >= p->length) {
+   21|      2|    if (p->flag) {
+   22|      1|      p->flag = 0;
+   23|      1|      fetch(p);
+   24|      1|      return next(p);
+   25|      1|    }
+   26|      1|    p->flag = 1;
+   27|      1|    rv.ucs = 0xffff;
+   28|      1|    return rv;
+   29|      1|  }
+   30|     15|  rv.ucs = 0;
+   31|     15|  return rv;
+   32|     15|}
+   33|       |
+   34|      1|int main(void) {
+   35|      1|  struct source s;
+   36|      1|  int i;
+   37|      1|
+   38|      1|  s.pos = 0;
+   39|      1|  s.length = 0;
+   40|      1|  s.flag = 0;
+   41|      1|
+   42|     17|  for (i = 0; i < 16; i++) {
+   43|     16|    struct packed_ushort rv = next(&s);
+   44|     16|    if ((i == 0 && rv.ucs != 0xffff) || (i > 0 && rv.ucs != 0))
+   45|      0|      abort();
+   46|     16|  }
+   47|      1|  return 0;
+   48|      1|}
+

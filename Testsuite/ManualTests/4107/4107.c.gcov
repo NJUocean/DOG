@@ -1,0 +1,47 @@
+        -:    0:Source:4107.c
+        -:    0:Graph:4107.gcno
+        -:    0:Data:4107.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:va_list global;
+        -:    4:
+        1:    5:void vat(va_list param, ...) {
+        -:    6:  va_list local;
+        -:    7:
+        1:    8:  va_start(local, param);
+        1:    9:  va_copy(global, local);
+        1:   10:  va_copy(param, local);
+        1:   11:  if (va_arg(local, int) != 1)
+    #####:   12:    abort();
+        1:   13:  va_end(local);
+        1:   14:  if (va_arg(global, int) != 1)
+    #####:   15:    abort();
+        1:   16:  va_end(global);
+        1:   17:  if (va_arg(param, int) != 1)
+    #####:   18:    abort();
+        1:   19:  va_end(param);
+        -:   20:
+        1:   21:  va_start(param, param);
+        1:   22:  va_start(global, param);
+        1:   23:  va_copy(local, param);
+        1:   24:  if (va_arg(local, int) != 1)
+    #####:   25:    abort();
+        1:   26:  va_end(local);
+        1:   27:  va_copy(local, global);
+        1:   28:  if (va_arg(local, int) != 1)
+    #####:   29:    abort();
+        1:   30:  va_end(local);
+        1:   31:  if (va_arg(global, int) != 1)
+    #####:   32:    abort();
+        1:   33:  va_end(global);
+        1:   34:  if (va_arg(param, int) != 1)
+    #####:   35:    abort();
+        1:   36:  va_end(param);
+        1:   37:}
+        -:   38:
+        1:   39:int main(void) {
+        -:   40:  va_list t;
+        1:   41:  vat(t, 1);
+        1:   42:  exit(0);
+        -:   43:}

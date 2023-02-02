@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int A, B;
+    7|       |
+    8|      1|void foo() {
+    9|      1|  long x = 3;
+   10|      1|  (void)({
+   11|      1|    A = B + x + ((1) - 1);
+   12|      1|    return; /* { dg-warning "statement-expressions should end with a non-void
+   13|      1|               expression" "" { xfail *-*-* } } */
+   14|      1|  });
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  B = 5;
+   19|      1|  foo();
+   20|      1|  if (A != 8)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

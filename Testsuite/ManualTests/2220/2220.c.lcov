@@ -1,0 +1,17 @@
+    1|       |/* { dg-additional-options "-msse4.1" { target { sse4_runtime } } } */
+    2|       |
+    3|       |long long a;
+    4|       |unsigned b, c;
+    5|       |int d = 62;
+    6|      1|void e(long long *f, int p2) { *f = p2; }
+    7|      1|int main() {
+    8|     62|  for (int g = 2; g <= d; g++) {
+    9|     61|    b += g + 4;
+   10|     61|    c += 5 - g;
+   11|     61|  }
+   12|      1|  e(&a, b);
+   13|      1|  if (a != 2196)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

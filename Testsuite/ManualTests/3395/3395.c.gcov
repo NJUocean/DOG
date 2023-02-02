@@ -1,0 +1,18 @@
+        -:    0:Source:3395.c
+        -:    0:Graph:3395.gcno
+        -:    0:Data:3395.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/23567 */
+        -:    2:
+        -:    3:struct {
+        -:    4:  int len;
+        -:    5:  char *name;
+        -:    6:} s;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  s.len = 0;
+        1:   10:  s.name = "";
+        1:   11:  if (s.name[s.len] != 0)
+    #####:   12:    s.name[s.len] = 0;
+        1:   13:  return 0;
+        -:   14:}

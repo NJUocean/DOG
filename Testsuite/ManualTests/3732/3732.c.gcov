@@ -1,0 +1,20 @@
+        -:    0:Source:3732.c
+        -:    0:Graph:3732.gcno
+        -:    0:Data:3732.gcda
+        -:    0:Runs:1
+        -:    1:#ifdef __SIZEOF_INT128__
+        -:    2:typedef __int128 L;
+        -:    3:#else
+        -:    4:typedef long long L;
+        -:    5:#endif
+        -:    6:float f;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  L i = f;
+        1:   10:  if (i <= 10)
+        -:   11:    do {
+       11:   12:      ++i;
+       11:   13:      asm("");
+       11:   14:    } while (i != 11);
+        1:   15:  return 0;
+        -:   16:}

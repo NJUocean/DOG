@@ -1,0 +1,44 @@
+        -:    0:Source:3171.c
+        -:    0:Graph:3171.gcno
+        -:    0:Data:3171.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target trampolines } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        4:    5:int x(int a, int b) {
+        -:    6:  __label__ xlab;
+        -:    7:  __label__ xlab2;
+        -:    8:
+        4:    9:  void y(int b) {
+        4:   10:    switch (b) {
+        2:   11:    case 1:
+        2:   12:      goto xlab;
+        2:   13:    case 2:
+        2:   14:      goto xlab;
+        -:   15:    }
+    #####:   16:  }
+        -:   17:
+        4:   18:  a = a + 2;
+        4:   19:  y(b);
+        -:   20:
+        4:   21:xlab:
+        4:   22:  return a;
+        -:   23:
+        -:   24:xlab2:
+        -:   25:  a++;
+        -:   26:  return a;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  int i, j;
+        -:   31:
+        3:   32:  for (j = 1; j <= 2; ++j)
+        6:   33:    for (i = 1; i <= 2; ++i) {
+        4:   34:      int a = x(j, i);
+        4:   35:      if (a != 2 + j)
+    #####:   36:        abort();
+        -:   37:    }
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}

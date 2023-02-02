@@ -1,0 +1,57 @@
+        -:    0:Source:3675.c
+        -:    0:Graph:3675.gcno
+        -:    0:Data:3675.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/43385 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int e;
+        -:    6:
+        6:    7:__attribute__((noinline)) void foo(int x, int y) {
+        6:    8:  if (__builtin_expect(x, 0) && y != 0)
+        2:    9:    e++;
+        6:   10:}
+        -:   11:
+        6:   12:__attribute__((noinline)) int bar(int x, int y) {
+        6:   13:  if (__builtin_expect(x, 0) && y != 0)
+        2:   14:    return 1;
+        -:   15:  else
+        4:   16:    return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  int z = 0;
+        1:   21:  asm("" : "+r"(z));
+        1:   22:  foo(z + 2, z + 1);
+        1:   23:  if (e != 1)
+    #####:   24:    abort();
+        1:   25:  foo(z + 2, z);
+        1:   26:  if (e != 1)
+    #####:   27:    abort();
+        1:   28:  foo(z + 1, z + 1);
+        1:   29:  if (e != 2)
+    #####:   30:    abort();
+        1:   31:  foo(z + 1, z);
+        1:   32:  if (e != 2)
+    #####:   33:    abort();
+        1:   34:  foo(z, z + 1);
+        1:   35:  if (e != 2)
+    #####:   36:    abort();
+        1:   37:  foo(z, z);
+        1:   38:  if (e != 2)
+    #####:   39:    abort();
+        1:   40:  if (bar(z + 2, z + 1) != 1)
+    #####:   41:    abort();
+        1:   42:  if (bar(z + 2, z) != 0)
+    #####:   43:    abort();
+        1:   44:  if (bar(z + 1, z + 1) != 1)
+    #####:   45:    abort();
+        1:   46:  if (bar(z + 1, z) != 0)
+    #####:   47:    abort();
+        1:   48:  if (bar(z, z + 1) != 0)
+    #####:   49:    abort();
+        1:   50:  if (bar(z, z) != 0)
+    #####:   51:    abort();
+        1:   52:  return 0;
+        -:   53:}

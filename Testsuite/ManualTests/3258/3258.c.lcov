@@ -1,0 +1,27 @@
+    1|       |/* PR opt/7409.  */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |char g_list[] = {'1'};
+    6|       |
+    7|      1|void g(void *p, char *list, int length, char **elementPtr, char **nextPtr) {
+    8|      1|  if (*nextPtr != g_list)
+    9|      0|    abort();
+   10|      1|
+   11|      1|  **nextPtr = 0;
+   12|      1|}
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  char *list = g_list;
+   16|      1|  char *element;
+   17|      1|  int i, length = 100;
+   18|      1|
+   19|      2|  for (i = 0; *list != 0; i++) {
+   20|      1|    char *prevList = list;
+   21|      1|    g(0, list, length, &element, &list);
+   22|      1|    length -= (list - prevList);
+   23|      1|  }
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

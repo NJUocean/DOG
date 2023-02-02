@@ -1,0 +1,10 @@
+        -:    0:Source:2711.c
+        -:    0:Graph:2711.gcno
+        -:    0:Data:2711.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3" } */
+        1:    3:static inline __attribute__((__always_inline__)) int fn1() { return 0; }
+        1:    4:static __attribute__((target("inline-all-stringops"))) int fn2() { fn1(); }
+        -:    5:
+        1:    6:int main() { fn2(); }

@@ -1,0 +1,19 @@
+        -:    0:Source:883.c
+        -:    0:Graph:883.gcno
+        -:    0:Data:883.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-O1 -fdelete-null-pointer-checks -fdump-tree-ccp1" } */
+        -:    3:/* { dg-skip-if "" keeps_null_pointer_checks } */
+        -:    4:
+        -:    5:void foo();
+        -:    6:void link_error(void);
+        -:    7:
+        1:    8:int main() {
+        -:    9:  if (foo == (void *)0)
+        -:   10:    link_error();
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:
+        -:   14:/* { dg-final { scan-tree-dump-not "if \\(foo" "ccp1" { target { ! avr*-*-* } }
+        -:   15: * } } */

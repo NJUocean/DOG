@@ -1,0 +1,11 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options {{-O -flto -funsigned-char} {-O -flto -fsigned-char}} } */
+    3|       |
+    4|       |char p[32] = "";
+    5|      1|int main() {
+    6|      1|  if (__builtin___strcpy_chk(p + 1, "vwxyz", __builtin_object_size(p + 1, 0)) !=
+    7|      1|      p + 1)
+    8|      0|    __builtin_abort();
+    9|      1|  return 0;
+   10|      1|}
+

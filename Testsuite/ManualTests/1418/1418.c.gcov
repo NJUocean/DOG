@@ -1,0 +1,15 @@
+        -:    0:Source:1418.c
+        -:    0:Graph:1418.gcno
+        -:    0:Data:1418.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    3:
+        -:    4:unsigned int a = 3309568;
+        -:    5:unsigned int b = -1204857327;
+        -:    6:short c = -10871;
+        -:    7:short x;
+        1:    8:int main() {
+        1:    9:  x = ((short)(~a) | ~c) + ((short)(~b) | ~c);
+        1:   10:  return 0;
+        -:   11:}

@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -floop-unroll-and-jam --param unroll-jam-min-percent=0" }
+    3|       | */
+    4|       |int x[1024], y[1024];
+    5|       |
+    6|      1|void __attribute__((noipa)) foo() {
+    7|  1.02k|  for (int i = 0; i < 1024; ++i) {
+    8|  1.02k|    x[i] = 0;
+    9|  1.04M|    for (int j = 0; j < 1024; ++j)
+   10|  1.04M|      if (!y[j])
+   11|  1.04M|        x[i] = 1;
+   12|  1.02k|  }
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  y[1023] = 1;
+   17|      1|  foo();
+   18|      1|  if (x[1] != 1)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

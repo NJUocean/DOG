@@ -1,0 +1,19 @@
+    1|       |/* PR rtl-optimization/89195 */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |struct S {
+    5|       |  unsigned i : 24;
+    6|       |};
+    7|       |
+    8|       |volatile unsigned char x;
+    9|       |
+   10|      1|__attribute__((noipa)) int foo(struct S d) { return d.i & x; }
+   11|       |
+   12|      1|int main() {
+   13|      1|  struct S d = {0x123456};
+   14|      1|  x = 0x75;
+   15|      1|  if (foo(d) != (0x56 & 0x75))
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

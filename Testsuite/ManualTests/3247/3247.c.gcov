@@ -1,0 +1,31 @@
+        -:    0:Source:3247.c
+        -:    0:Graph:3247.gcno
+        -:    0:Data:3247.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Ensure that fabs(x) < 0.0 optimization is working.
+        -:    4:
+        -:    5:   Written by Roger Sayle, 20th July 2002.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern double fabs(double);
+        -:    9:extern void link_error(void);
+        -:   10:
+        1:   11:void foo(double x) {
+        -:   12:  double p, q;
+        -:   13:
+        1:   14:  p = fabs(x);
+        1:   15:  q = 0.0;
+        1:   16:  if (p < q)
+    #####:   17:    link_error();
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  foo(1.0);
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:#ifndef __OPTIMIZE__
+    #####:   26:void link_error() { abort(); }
+        -:   27:#endif

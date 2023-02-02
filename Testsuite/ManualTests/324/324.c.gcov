@@ -1,0 +1,11 @@
+        -:    0:Source:324.c
+        -:    0:Graph:324.gcno
+        -:    0:Data:324.gcda
+        -:    0:Runs:1
+       1*:    1:int f(int a) { return ((a >= 0 && a <= 10) && !(a >= 0)); }
+        -:    2:
+        1:    3:main() {
+        1:    4:  if (f(0))
+    #####:    5:    abort();
+        1:    6:  exit(0);
+        -:    7:}

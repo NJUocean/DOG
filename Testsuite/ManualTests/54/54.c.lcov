@@ -1,0 +1,27 @@
+    1|       |/* Test for -Wdeclaration-after-statement emitting warnings when no
+    2|       |   standard-specifying option is given.  See also c9?-mixdecl-*.  */
+    3|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-Wdeclaration-after-statement" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  int i = 0;
+   12|      1|  if (i != 0)
+   13|      0|    abort();
+   14|      1|  i++;
+   15|      1|  if (i != 1)
+   16|      0|    abort();
+   17|      1|  int j = i; /* { dg-warning "" "declaration after statement" } */
+   18|      1|  if (j != 1)
+   19|      0|    abort();
+   20|      1|  struct foo {
+   21|      1|    int i0;
+   22|      1|  } k = {4}; /* { dg-warning "" "declaration after statement" } */
+   23|      1|  if (k.i0 != 4)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

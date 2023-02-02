@@ -1,0 +1,22 @@
+    1|       |/* Verify straight-line strength reduction for array
+    2|       |   subscripting.
+    3|       |
+    4|       |   elems[n-1] is reduced to elems + n * 4 + 0xffffffff * 4, only when
+    5|       |   pointers are of the same size as that of int (assuming 4 bytes).  */
+    6|       |
+    7|       |/* { dg-do run } */
+    8|       |/* { dg-options "-O2" } */
+    9|       |
+   10|       |struct data {
+   11|       |  unsigned long elms[1];
+   12|       |} gData;
+   13|       |
+   14|      1|void __attribute__((noinline)) foo(struct data *dst, unsigned int n) {
+   15|      1|  dst->elms[n - 1] &= 1;
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  foo(&gData, 1);
+   20|      1|  return 0;
+   21|      1|}
+

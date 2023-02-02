@@ -1,0 +1,36 @@
+    1|       |/* Source: PR 321 modified for test suite by Neil Booth 14 Jan 2001.  */
+    2|       |
+    3|       |typedef unsigned long long uint64;
+    4|       |unsigned long pars;
+    5|       |
+    6|       |uint64 b[32];
+    7|       |uint64 *r = b;
+    8|       |
+    9|      1|void alpha_ep_extbl_i_eq_0() {
+   10|      1|  unsigned int rb, ra, rc;
+   11|      1|
+   12|      1|  rb = (((unsigned long)(pars) >> 27)) & 0x1fUL;
+   13|      1|  ra = (((unsigned int)(pars) >> 5)) & 0x1fUL;
+   14|      1|  rc = (((unsigned int)(pars) >> 0)) & 0x1fUL;
+   15|      1|  {
+   16|      1|    uint64 temp = ((r[ra] >> ((r[rb] & 0x7) << 3)) & 0x00000000000000FFLL);
+   17|      1|    if (rc != 31)
+   18|      1|      r[rc] = temp;
+   19|      1|  }
+   20|      1|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  if (sizeof(uint64) == 8) {
+   24|      1|    b[17] = 0x0000000000303882ULL; /* rb */
+   25|      1|    b[2] = 0x534f4f4c494d000aULL;  /* ra & rc */
+   26|      1|
+   27|      1|    pars = 0x88000042; /* 17, 2, 2 coded */
+   28|      1|    alpha_ep_extbl_i_eq_0();
+   29|      1|
+   30|      1|    if (b[2] != 0x4d)
+   31|      0|      abort();
+   32|      1|  }
+   33|      1|
+   34|      1|  exit(0);
+   35|      1|}
+

@@ -1,0 +1,70 @@
+        -:    0:Source:689.c
+        -:    0:Graph:689.gcno
+        -:    0:Data:689.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options { { -O3 -flto } } } */
+        -:    3:
+        -:    4:typedef unsigned int UINT32;
+        -:    5:typedef unsigned long long UINT64;
+        -:    6:typedef struct {
+        -:    7:  UINT64 w[2];
+        -:    8:} UINT128;
+        -:    9:void _bid_to_dpd128(UINT128 *, UINT128 *);
+        -:   10:static const int short_recip_scale[] = {
+        -:   11:    1,        65 - 64,  69 - 64,  71 - 64,  75 - 64,  78 - 64,
+        -:   12:    81 - 64,  85 - 64,  88 - 64,  91 - 64,  95 - 64,  98 - 64,
+        -:   13:    101 - 64, 105 - 64, 108 - 64, 111 - 64, 115 - 64, 118 - 64};
+        -:   14:
+        -:   15:void _bid_to_dpd128(UINT128 *, UINT128 *);
+        -:   16:
+    #####:   17:void _bid_to_dpd128(UINT128 *pres, UINT128 *px) {
+        -:   18:  UINT128 res;
+        -:   19:  unsigned int comb;
+        -:   20:  UINT128 bcoeff;
+        -:   21:  UINT128 BH;
+        -:   22:  UINT64 BL, d109;
+        -:   23:  unsigned int amount;
+    #####:   24:  UINT128 x = *px;
+        -:   25:
+    #####:   26:  comb = (x.w[1]) >> 46;
+    #####:   27:  if ((comb & 0x1e000) == 0x1e000) {
+    #####:   28:    res = x;
+        -:   29:  } else {
+    #####:   30:    bcoeff.w[1] = (x.w[1] & 0x0001ffffffffffffull);
+    #####:   31:    bcoeff.w[0] = x.w[0];
+    #####:   32:    amount = 9;
+    #####:   33:    BH.w[0] = (BH.w[0] >> amount) | (BH.w[1] << (64 - amount));
+    #####:   34:    BL = bcoeff.w[0] - BH.w[0] * 1000000000000000000ull;
+    #####:   35:    d109 = 0x3333333333333334ull;
+        -:   36:    {
+        -:   37:      UINT64 CXH, CXL, CYH, CYL, PL, PH, PM, PM2;
+    #####:   38:      CXH = (BH.w[0]) >> 32;
+    #####:   39:      CXL = (UINT32)(BH.w[0]);
+    #####:   40:      CYH = (d109) >> 32;
+    #####:   41:      CYL = (UINT32)(d109);
+    #####:   42:      PM = CXH * CYL;
+    #####:   43:      PH = CXH * CYH;
+    #####:   44:      PL = CXL * CYL;
+    #####:   45:      PM2 = CXL * CYH;
+    #####:   46:      PH += (PM >> 32);
+    #####:   47:      PM = (UINT64)((UINT32)PM) + PM2 + (PL >> 32);
+        -:   48:    };
+        -:   49:    {
+        -:   50:      UINT64 CXH, CXL, CYH, CYL, PL, PH, PM, PM2;
+    #####:   51:      CXH = (BL) >> 32;
+    #####:   52:      CXL = (UINT32)(BL);
+    #####:   53:      CYH = (d109) >> 32;
+    #####:   54:      CYL = (UINT32)(d109);
+    #####:   55:      PM = CXH * CYL;
+    #####:   56:      PH = CXH * CYH;
+    #####:   57:      PL = CXL * CYL;
+    #####:   58:      PM2 = CXL * CYH;
+    #####:   59:      PH += (PM >> 32);
+    #####:   60:      PM = (UINT64)((UINT32)PM) + PM2 + (PL >> 32);
+        -:   61:    };
+        -:   62:  }
+    #####:   63:  *pres = res;
+    #####:   64:}
+        -:   65:
+        1:   66:int main() { return 0; }

@@ -1,0 +1,18 @@
+    1|       |/* Source: Neil Booth, from PR # 115.  */
+    2|       |
+    3|      1|int false() { return 0; }
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int main(int argc, char *argv[]) {
+    8|      1|  int count = 0;
+    9|      1|
+   10|      1|  while (false() || count < -123)
+   11|      0|    ++count;
+   12|      1|
+   13|      1|  if (count)
+   14|      0|    abort();
+   15|      1|
+   16|      1|  return 0;
+   17|      1|}
+

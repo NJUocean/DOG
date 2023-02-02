@@ -1,0 +1,21 @@
+        -:    0:Source:3877.c
+        -:    0:Graph:3877.gcno
+        -:    0:Data:3877.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65216 */
+        -:    2:
+        -:    3:int a, b = 62, e;
+        -:    4:volatile int c, d;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int f = 0;
+        3:    8:  for (a = 0; a < 2; a++) {
+        2:    9:    b &= (8 ^ f) & 1;
+       14:   10:    for (e = 0; e < 6; e++)
+       12:   11:      if (c)
+    #####:   12:        f = d;
+        -:   13:  }
+        1:   14:  if (b != 0)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

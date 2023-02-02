@@ -1,0 +1,22 @@
+    1|       |/* PR rtl-optimization/23241 */
+    2|       |/* Origin: Josh Conner <jconner@apple.com> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O2" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |struct fbs {
+   10|       |  unsigned char uc;
+   11|       |} fbs1 = {255};
+   12|       |
+   13|      1|void fn(struct fbs *fbs_ptr) {
+   14|      1|  if ((fbs_ptr->uc != 255) && (fbs_ptr->uc != 0))
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  fn(&fbs1);
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,24 @@
+    1|       |// { dg-do run }
+    2|       |// { dg-additional-options "-fdump-tree-asan0" }
+    3|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O0" } } */
+    4|       |
+    5|      1|int main(int argc, char **argv) {
+    6|      1|  int a = 123;
+    7|      1|
+    8|      1|  if (argc == 0) {
+    9|      0|    int *ptr;
+   10|      0|  /* The label is not used in &label or goto label.  Thus '&a' should be
+   11|      0|     marked just once.  */
+   12|      0|  label : {
+   13|      0|    ptr = &a;
+   14|      0|    *ptr = 1;
+   15|      0|    return 0;
+   16|      1|  }
+   17|      1|  }
+   18|      1|
+   19|      1|  return 0;
+   20|      1|}
+   21|       |
+   22|       |/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &a, 4\\);" 1
+   23|       | * "asan0" } }  */
+

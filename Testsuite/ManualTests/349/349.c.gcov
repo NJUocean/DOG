@@ -1,0 +1,18 @@
+        -:    0:Source:349.c
+        -:    0:Graph:349.gcno
+        -:    0:Data:349.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-fdump-tree-cfg" } */
+        -:    3:/* { dg-require-effective-target alloca } */
+        -:    4:
+        -:    5:void *alloca(__SIZE_TYPE__);
+        -:    6:void link_error();
+        -:    7:
+        1:    8:int main(int argc, char *argv[]) {
+        -:    9:  char *foo;
+        1:   10:  if ((foo = alloca(argc)) == 0)
+        -:   11:    link_error();
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:/* { dg-final { scan-tree-dump-times "link_error" 0 "cfg" } } */

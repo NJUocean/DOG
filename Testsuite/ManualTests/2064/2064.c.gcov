@@ -1,0 +1,26 @@
+        -:    0:Source:2064.c
+        -:    0:Graph:2064.gcno
+        -:    0:Data:2064.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { aarch64*-*-* alpha*-*-* arm*-*-* hppa*-*-*
+        -:    2: * powerpc*-*-* s390*-*-* } } } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-esra --param
+        -:    4: * sra-max-scalarization-size-Ospeed=32" } */
+        -:    5:/* { dg-additional-options "-mcpu=ev4" { target alpha*-*-* } } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int main(int argc, char **argv) {
+        1:   10:  long a[4] = {7, 19, 11, 255};
+        1:   11:  int tot = 0;
+        5:   12:  for (int i = 0; i < 4; i++)
+        4:   13:    tot = (tot * 256) + a[i];
+        1:   14:  if (tot == 0x07130bff)
+        1:   15:    return 0;
+    #####:   16:  abort();
+        -:   17:}
+        -:   18:
+        -:   19:/* { dg-final { scan-tree-dump-times "Removing load: a = \\\*.?L.?C.?.?.?0;" 1
+        -:   20: * "esra" } } */
+        -:   21:/* { dg-final { scan-tree-dump-times "SR\[.$\]\[0-9_\]+ = \\\*.?L.?C.?.?.?0\\\["
+        -:   22: * 4 "esra" } } */

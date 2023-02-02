@@ -1,0 +1,11 @@
+    1|       |/* Check for "noreturn" warning in main. */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O2 -Wmissing-noreturn -ffreestanding" } */
+    4|       |extern void exit(int) __attribute__((__noreturn__));
+    5|       |
+    6|       |int main(void) /* { dg-warning "function might be candidate for attribute
+    7|       |                  'noreturn'" "warn for main" } */
+    8|      1|{
+    9|      1|  exit(0);
+   10|      1|}
+

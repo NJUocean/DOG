@@ -1,0 +1,16 @@
+        -:    0:Source:1138.c
+        -:    0:Graph:1138.gcno
+        -:    0:Data:1138.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-alias "" } */
+        -:    2:/* { dg-skip-if "" { powerpc-ibm-aix* } } */
+        -:    3:static int a = 0;
+        -:    4:extern int b __attribute__((alias("a")));
+        1:    5:__attribute__((noinline)) static inc() { b++; }
+        1:    6:int main() {
+        1:    7:  a = 0;
+        1:    8:  inc();
+        1:    9:  if (a != 1)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

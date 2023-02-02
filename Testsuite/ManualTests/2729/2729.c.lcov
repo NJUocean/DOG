@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run { target int128 } } */
+    2|       |/* { dg-options "-O2 -fno-tree-dce -mno-push-args" } */
+    3|       |
+    4|       |typedef unsigned long long u64;
+    5|       |typedef unsigned __int128 u128;
+    6|       |
+    7|       |u64 v;
+    8|       |u64 g;
+    9|       |
+   10|       |u64 __attribute__((noinline, noclone))
+   11|      1|bar(u128 d, u64 e, u64 f, u64 g, u128 h) {
+   12|      1|  (void)d, (void)e, (void)f, (void)g, (void)h;
+   13|      1|  return 0;
+   14|      1|}
+   15|       |
+   16|      1|static u64 __attribute__((noipa)) foo(void) {
+   17|      1|  (void)(v - bar(0, 0, 0, 0, 0));
+   18|      1|  return g;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  (void)foo();
+   23|      1|  return 0;
+   24|      1|}
+

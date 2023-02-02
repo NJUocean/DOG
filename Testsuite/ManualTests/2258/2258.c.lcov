@@ -1,0 +1,5 @@
+    1|       |long long foo(a) int a;
+    2|      1|{ return a; }
+    3|       |
+    4|      1|main() { printf("%d\n", (int)(foo(-1) >> 32)); }
+

@@ -1,0 +1,21 @@
+    1|       |/* PR rtl-optimization/57281 */
+    2|       |
+    3|       |int a = 1, b, d, *e = &d;
+    4|       |long long c, *g = &c;
+    5|       |volatile long long f;
+    6|       |
+    7|     20|int foo(int h) {
+    8|     20|  int j = *g = b;
+    9|     20|  return h == 0 ? j : 0;
+   10|     20|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int h = a;
+   14|     21|  for (; b != -20; b--) {
+   15|     20|    (int)f;
+   16|     20|    *e = 0;
+   17|     20|    *e = foo(h);
+   18|     20|  }
+   19|      1|  return 0;
+   20|      1|}
+

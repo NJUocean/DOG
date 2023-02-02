@@ -1,0 +1,11 @@
+    1|       |/* Origin: PR target/7434 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> */
+    2|       |
+    3|      1|int main(void) {
+    4|      1|  static const int align_g[] = {1, 2, 4, 8, 16};
+    5|      1|  char *buf;
+    6|      1|  int i = 0;
+    7|      1|  volatile long double val = 0;
+    8|      1|  val = *((long double *)(buf + align_g[i]));
+    9|      1|  return 0;
+   10|      1|}
+

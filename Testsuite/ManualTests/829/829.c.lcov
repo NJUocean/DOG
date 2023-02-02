@@ -1,0 +1,26 @@
+    1|       |char a[] = "12345";
+    2|       |char b[] = "12345";
+    3|       |
+    4|      1|void loop(char *pz, char *pzDta) {
+    5|      6|  for (;;) {
+    6|      6|    switch (*(pz++) = *(pzDta++)) {
+    7|      1|    case 0:
+    8|      1|      goto loopDone2;
+    9|      0|
+   10|      0|    case '"':
+   11|      0|    case '\\':
+   12|      0|      pz[-1] = '\\';
+   13|      0|      *(pz++) = pzDta[-1];
+   14|      6|    }
+   15|      6|  }
+   16|      1|loopDone2:;
+   17|      1|
+   18|      1|  if (a - pz != b - pzDta)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|main() {
+   23|      1|  loop(a, b);
+   24|      1|  exit(0);
+   25|      1|}
+

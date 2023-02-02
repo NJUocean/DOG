@@ -1,0 +1,20 @@
+    1|       |/* Signed left-shift is implementation-defined in C89 (and see
+    2|       |   DR#081), not undefined.  Bug 7284 from Al Grant (AlGrant at
+    3|       |   myrealbox.com).  */
+    4|       |
+    5|       |/* { dg-require-effective-target int32plus } */
+    6|       |/* { dg-options "-std=c89" } */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |extern void exit(int);
+   10|       |
+   11|      1|int f(int n) { return (n << 24) / (1 << 23); }
+   12|       |
+   13|       |volatile int x = 128;
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  if (f(x) != -256)
+   17|      0|    abort();
+   18|      1|  exit(0);
+   19|      1|}
+

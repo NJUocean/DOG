@@ -1,0 +1,11 @@
+        -:    0:Source:267.c
+        -:    0:Graph:267.gcno
+        -:    0:Data:267.gcda
+        -:    0:Runs:1
+        -:    1:/* Test Darwin linker option -bind_at_load.  */
+        -:    2:/* Developed by Devang Patel <dpatel@apple.com>.  */
+        -:    3:
+        -:    4:/* { dg-options "-bind_at_load" } */
+        -:    5:/* { dg-do link { target *-*-darwin* } } */
+        -:    6:
+        1:    7:int main() { return 0; }

@@ -1,0 +1,18 @@
+        -:    0:Source:3281.c
+        -:    0:Graph:3281.gcno
+        -:    0:Data:3281.gcda
+        -:    0:Runs:1
+        -:    1:/* This test requires constant propagation of loads and stores to be
+        -:    2:   enabled.  This is only guaranteed at -O2 and higher.  Do not run
+        -:    3:   at -O1.  */
+        -:    4:/* { dg-skip-if "requires higher optimization" { *-*-* } "-O1" "" } */
+        -:    5:
+        -:    6:void link_error(void);
+        -:    7:const double one = 1.0;
+        1:    8:main() {
+        -:    9:#ifdef __OPTIMIZE__
+        -:   10:  if ((int)one != 1)
+        -:   11:    link_error();
+        -:   12:#endif
+        1:   13:  return 0;
+        -:   14:}

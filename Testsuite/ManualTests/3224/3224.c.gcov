@@ -1,0 +1,31 @@
+        -:    0:Source:3224.c
+        -:    0:Graph:3224.gcno
+        -:    0:Data:3224.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase failed on mmix-knuth-mmixware.  Problem was with storing
+        -:    2:   to an unaligned mem:SC, gcc tried doing it by parts from a (concat:SC
+        -:    3:   (reg:SF 293) (reg:SF 294)).  */
+        -:    4:
+        -:    5:typedef __complex__ float cf;
+        -:    6:struct x {
+        -:    7:  char c;
+        -:    8:  cf f;
+        -:    9:} __attribute__((__packed__));
+        -:   10:extern void f2(struct x *);
+        -:   11:extern void f1(void);
+        1:   12:int main(void) {
+        1:   13:  f1();
+        1:   14:  exit(0);
+        -:   15:}
+        -:   16:
+        1:   17:void f1(void) {
+        -:   18:  struct x s;
+        1:   19:  s.f = 1;
+        1:   20:  s.c = 42;
+        1:   21:  f2(&s);
+        1:   22:}
+        -:   23:
+        1:   24:void f2(struct x *y) {
+        1:   25:  if (y->f != 1 || y->c != 42)
+    #####:   26:    abort();
+        1:   27:}

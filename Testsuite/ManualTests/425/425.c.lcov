@@ -1,0 +1,25 @@
+    1|      1|static int __attribute__((noinline)) foo(int k, int n1, int n2, int n3) {
+    2|      1|  int j, res = 0;
+    3|      5|  for (j = 0; j < k; j++) {
+    4|      4|    int i;
+    5|    204|    for (i = 0; i < n1; i++)
+    6|    200|      res += i;
+    7|    204|    for (i = 0; i < n2; i++)
+    8|    200|      res += i;
+    9|    204|    for (i = 0; i < n3; i++)
+   10|    200|      res += i;
+   11|      4|  }
+   12|      1|
+   13|      1|  return res;
+   14|      1|}
+   15|       |
+   16|       |extern void abort();
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  int res = foo(4, 50, 50, 50);
+   20|      1|  if (res != 14700)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

@@ -1,0 +1,31 @@
+        -:    0:Source:1876.c
+        -:    0:Graph:1876.gcno
+        -:    0:Data:1876.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct X {
+        -:    6:  int a;
+        -:    7:  struct Y {
+        -:    8:    int b[4];
+        -:    9:  } b;
+        -:   10:  struct Y c;
+        -:   11:} m;
+        -:   12:
+        -:   13:struct X n;
+        -:   14:
+        1:   15:foo(int i) {
+       1*:   16:  struct Y *p = (i > 10) ? &m.b : &n.c;
+        1:   17:  p->b[2] = 10;
+        1:   18:  m.b.b[3] = 6;
+        1:   19:  n.c.b[2] = 3;
+        1:   20:  return p->b[2] + n.c.b[2] + m.b.b[3];
+        -:   21:}
+        -:   22:
+        1:   23:main() {
+        1:   24:  if (foo(3) != 12)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

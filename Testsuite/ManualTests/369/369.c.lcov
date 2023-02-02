@@ -1,0 +1,29 @@
+    1|       |/* PR middle-end/87248 */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|      4|void foo(signed char *p, int q) {
+    5|      4|  *p = q & (-__SCHAR_MAX__ - 1) ? (-__SCHAR_MAX__ - 1) : 0;
+    6|      4|}
+    7|       |
+    8|      4|int bar(long long x) { return x & (-__INT_MAX__ - 1) ? (-__INT_MAX__ - 1) : 0; }
+    9|       |
+   10|      1|int main() {
+   11|      1|#if __INT_MAX__ > 4 * __SCHAR_MAX__
+   12|      1|  signed char a[4];
+   13|      1|  foo(a, __SCHAR_MAX__ + 1U);
+   14|      1|  foo(a + 1, 2 * (__SCHAR_MAX__ + 1U));
+   15|      1|  foo(a + 2, -__INT_MAX__ - 1);
+   16|      1|  foo(a + 3, (__SCHAR_MAX__ + 1U) / 2);
+   17|      1|  if (a[0] != (-__SCHAR_MAX__ - 1) || a[1] != a[0] || a[2] != a[0] || a[3] != 0)
+   18|      0|    __builtin_abort();
+   19|      1|#endif
+   20|      1|#if __LONG_LONG_MAX__ > 4 * __INT_MAX__
+   21|      1|  if (bar(__INT_MAX__ + 1LL) != (-__INT_MAX__ - 1) ||
+   22|      1|      bar(2 * (__INT_MAX__ + 1LL)) != (-__INT_MAX__ - 1) ||
+   23|      1|      bar(-__LONG_LONG_MAX__ - 1) != (-__INT_MAX__ - 1) ||
+   24|      1|      bar((__INT_MAX__ + 1LL) / 2) != 0)
+   25|      0|    __builtin_abort();
+   26|      1|#endif
+   27|      1|  return 0;
+   28|      1|}
+

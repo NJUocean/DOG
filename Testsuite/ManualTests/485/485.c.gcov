@@ -1,0 +1,28 @@
+        -:    0:Source:485.c
+        -:    0:Graph:485.gcno
+        -:    0:Data:485.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g -fno-tree-sra" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        -:    6:struct A {
+        -:    7:  int i[100];
+        -:    8:};
+        -:    9:
+        -:   10:struct A a1 __attribute__((used)), a3;
+        -:   11:
+        1:   12:__attribute__((noinline)) struct A f() {
+        -:   13:  struct A a2;
+        1:   14:  a2.i[0] = 42;
+        1:   15:  if (a3.i[0] != 0)
+    #####:   16:    abort();
+        1:   17:  a2.i[4] = 7; /* { dg-final { gdb-test . "a2.i\[0\]" "42" } } */
+        1:   18:  return a2;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  a1 = f();
+        1:   23:  return 0;
+        -:   24:}

@@ -1,0 +1,23 @@
+        -:    0:Source:2138.c
+        -:    0:Graph:2138.gcno
+        -:    0:Data:2138.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "No dollar in identfiers" { avr-*-* powerpc-ibm-aix* } } */
+        -:    3:/* { dg-skip-if "" { ! ucn } } */
+        -:    4:/* { dg-options "-std=c99 -fdollars-in-identifiers -g" } */
+        -:    5:void abort(void);
+        -:    6:
+        1:    7:int a$b(void) { return 1; }
+        1:    8:int a$b😀(void) { return 2; }
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:
+        1:   12:  if (a$b() != 1)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  if (a$b😀() != 2)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

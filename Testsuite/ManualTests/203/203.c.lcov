@@ -1,0 +1,11 @@
+    1|       |/* Test C11 _Noreturn.  Test _Noreturn on main, hosted.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-std=c11 -pedantic-errors -fhosted" } */
+    4|       |
+    5|       |_Noreturn void exit(int);
+    6|       |
+    7|       |_Noreturn int main(void) /* { dg-error "'main' declared '_Noreturn'" } */
+    8|      1|{
+    9|      1|  exit(0);
+   10|      1|}
+

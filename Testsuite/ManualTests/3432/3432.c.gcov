@@ -1,0 +1,32 @@
+        -:    0:Source:3432.c
+        -:    0:Graph:3432.gcno
+        -:    0:Data:3432.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct foo {
+        -:    4:  int rank;
+        -:    5:  char *name;
+        -:    6:};
+        -:    7:
+        -:    8:struct mem {
+        -:    9:  struct foo *x[4];
+        -:   10:};
+        -:   11:
+        1:   12:void __attribute__((noinline)) bar(struct foo **f) {
+        1:   13:  *f = __builtin_malloc(sizeof(struct foo));
+        1:   14:}
+        1:   15:struct foo *__attribute__((noinline, noclone)) foo(int rank) {
+        1:   16:  void *x = __builtin_malloc(sizeof(struct mem));
+        1:   17:  struct mem *as = x;
+        1:   18:  struct foo **upper = &as->x[rank * 8 - 5];
+        1:   19:  *upper = 0;
+        1:   20:  bar(upper);
+        1:   21:  return *upper;
+        -:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  if (foo(1) == 0)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

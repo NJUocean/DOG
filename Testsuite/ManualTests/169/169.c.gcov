@@ -1,0 +1,47 @@
+        -:    0:Source:169.c
+        -:    0:Graph:169.gcno
+        -:    0:Data:169.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -ftree-parallelize-loops=4 -fdump-tree-parloops2-details
+        -:    3: * -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:unsigned int x[500][500];
+        -:    8:unsigned int y[500];
+        -:    9:unsigned int g_sum = 0;
+        -:   10:
+   250000:   11:void __attribute__((noinline)) init(int i, int j) { x[i][j] = 1; }
+        -:   12:
+        1:   13:void __attribute__((noinline)) parloop(int N) {
+        -:   14:  int i, j;
+        -:   15:  unsigned int sum;
+        -:   16:
+        -:   17:  /* Outer loop reduction, outerloop is parallelized.  */
+        1:   18:  sum = 0;
+      501:   19:  for (i = 0; i < N; i++) {
+   250500:   20:    for (j = 0; j < N; j++)
+   250000:   21:      y[i] += x[i][j];
+      500:   22:    sum += y[i];
+        -:   23:  }
+        1:   24:  g_sum = sum;
+        1:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        -:   28:  int i, j;
+      501:   29:  for (i = 0; i < 500; i++)
+   250500:   30:    for (j = 0; j < 500; j++)
+   250000:   31:      init(i, j);
+        -:   32:
+        1:   33:  parloop(500);
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}
+        -:   37:
+        -:   38:/* Check that outer loop is parallelized.  */
+        -:   39:/* { dg-final { scan-tree-dump-times "parallelizing outer loop" 1 "parloops2" }
+        -:   40: * } */
+        -:   41:/* { dg-final { scan-tree-dump-times "parallelizing inner loop" 0 "parloops2" }
+        -:   42: * } */
+        -:   43:/* { dg-final { scan-tree-dump-times "loopfn" 4 "optimized" } } */

@@ -1,0 +1,38 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-Os -fno-inline-functions" } */
+    3|       |
+    4|       |void abort(void);
+    5|       |
+    6|       |typedef struct {
+    7|       |  int x[7];
+    8|       |} agg7;
+    9|       |
+   10|       |typedef struct {
+   11|       |  int mbr1;
+   12|       |  int mbr2;
+   13|       |} agg2;
+   14|       |
+   15|       |int expected = 31415;
+   16|       |agg7 filler;
+   17|       |
+   18|      1|int GetConst(agg7 filler, agg2 split) { return expected; }
+   19|       |
+   20|       |void VerifyValues(agg7 filler, int last_reg, int first_stack,
+   21|      1|                  int second_stack) {
+   22|      1|  if (first_stack != 123 || second_stack != expected)
+   23|      0|    abort();
+   24|      1|}
+   25|       |
+   26|      1|void RunTest(agg2 a) {
+   27|      1|  int result;
+   28|      1|
+   29|      1|  result = GetConst(filler, a);
+   30|      1|  VerifyValues(filler, 0, a.mbr1, result);
+   31|      1|}
+   32|       |
+   33|      1|int main(void) {
+   34|      1|  agg2 result = {123, 456};
+   35|      1|  RunTest(result);
+   36|      1|  return 0;
+   37|      1|}
+

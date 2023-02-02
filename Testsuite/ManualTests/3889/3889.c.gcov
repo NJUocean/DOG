@@ -1,0 +1,20 @@
+        -:    0:Source:3889.c
+        -:    0:Graph:3889.gcno
+        -:    0:Data:3889.gcda
+        -:    0:Runs:1
+        2:    1:long long __attribute__((noinline, noclone)) foo(long long ival) {
+        2:    2:  if (ival <= 0)
+        1:    3:    return -0x7fffffffffffffffL - 1;
+        -:    4:
+        1:    5:  return 0x7fffffffffffffffL;
+        -:    6:}
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  if (foo(-1) != (-0x7fffffffffffffffL - 1))
+    #####:   10:    __builtin_abort();
+        -:   11:
+        1:   12:  if (foo(1) != 0x7fffffffffffffffL)
+    #####:   13:    __builtin_abort();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

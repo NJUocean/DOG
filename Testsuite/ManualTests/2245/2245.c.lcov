@@ -1,0 +1,21 @@
+    1|       |
+    2|       |int a, c, f;
+    3|       |short b, d, e;
+    4|       |
+    5|      1|int fn1(int h) { return a > 2 || h > a ? h : h << a; }
+    6|       |
+    7|      1|void fn2() {
+    8|      1|  int j, k;
+    9|      1|  while (1) {
+   10|      1|    k = c && b;
+   11|      1|    f &= e > (fn1(k) && j);
+   12|      1|    if (!d)
+   13|      1|      break;
+   14|      1|  }
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  fn2();
+   19|      1|  return 0;
+   20|      1|}
+

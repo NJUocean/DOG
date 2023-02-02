@@ -1,0 +1,25 @@
+        -:    0:Source:3257.c
+        -:    0:Graph:3257.gcno
+        -:    0:Data:3257.gcda
+        -:    0:Runs:1
+        1:    1:void __attribute__((noinline)) foo(int *p, int d1, int d2, int d3, short count,
+        -:    2:                                   int s1, int s2, int s3, int s4, int s5) {
+        1:    3:  int n = count;
+        3:    4:  while (n--) {
+        2:    5:    *p++ = s1;
+        2:    6:    *p++ = s2;
+        2:    7:    *p++ = s3;
+        2:    8:    *p++ = s4;
+        2:    9:    *p++ = s5;
+        -:   10:  }
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  int x[10], i;
+        -:   15:
+        1:   16:  foo(x, 0, 0, 0, 2, 100, 200, 300, 400, 500);
+       11:   17:  for (i = 0; i < 10; i++)
+       10:   18:    if (x[i] != (i % 5 + 1) * 100)
+    #####:   19:      abort();
+        1:   20:  exit(0);
+        -:   21:}

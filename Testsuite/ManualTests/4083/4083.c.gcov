@@ -1,0 +1,15 @@
+        -:    0:Source:4083.c
+        -:    0:Graph:4083.gcno
+        -:    0:Data:4083.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  short a __attribute__((aligned(2), packed));
+        -:    3:  short *ap[2] __attribute__((aligned(2), packed));
+        -:    4:} A;
+        -:    5:
+        1:    6:main() {
+        1:    7:  short i, j = 1;
+        1:    8:  A a, *ap = &a;
+        1:    9:  ap->ap[j] = &i;
+        1:   10:  exit(0);
+        -:   11:}

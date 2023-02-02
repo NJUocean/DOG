@@ -1,0 +1,27 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|       |struct baz {
+    5|       |  int a, b, c, d, e;
+    6|       |};
+    7|       |
+    8|      1|void bar(struct baz *x, int f, int g, int h, int i, int j) {
+    9|      1|  if (x->a != 1 || x->b != 2 || x->c != 3 || x->d != 4 || x->e != 5 || f != 6 ||
+   10|      1|      g != 7 || h != 8 || i != 9 || j != 10)
+   11|      0|    abort();
+   12|      1|}
+   13|       |
+   14|      1|void foo(struct baz x, char **y) { bar(&x, 6, 7, 8, 9, 10); }
+   15|       |
+   16|      1|int main() {
+   17|      1|  struct baz x;
+   18|      1|
+   19|      1|  x.a = 1;
+   20|      1|  x.b = 2;
+   21|      1|  x.c = 3;
+   22|      1|  x.d = 4;
+   23|      1|  x.e = 5;
+   24|      1|  foo(x, (char **)0);
+   25|      1|  exit(0);
+   26|      1|}
+

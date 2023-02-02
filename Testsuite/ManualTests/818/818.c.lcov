@@ -1,0 +1,24 @@
+    1|       |#include <string.h>
+    2|       |
+    3|      1|void foo(int *BM_tab, int j) {
+    4|      1|  int *BM_tab_base;
+    5|      1|
+    6|      1|  BM_tab_base = BM_tab;
+    7|      1|  BM_tab += 0400;
+    8|     65|  while (BM_tab_base != BM_tab) {
+    9|     64|    *--BM_tab = j;
+   10|     64|    *--BM_tab = j;
+   11|     64|    *--BM_tab = j;
+   12|     64|    *--BM_tab = j;
+   13|     64|  }
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  int BM_tab[0400];
+   18|      1|  memset(BM_tab, 0, sizeof(BM_tab));
+   19|      1|  foo(BM_tab, 6);
+   20|      1|  if (BM_tab[0] != 6)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

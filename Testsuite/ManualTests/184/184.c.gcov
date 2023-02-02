@@ -1,0 +1,37 @@
+        -:    0:Source:184.c
+        -:    0:Graph:184.gcno
+        -:    0:Data:184.gcda
+        -:    0:Runs:1
+        -:    1:/* Accesses to complex numbers were sometimes marked as scalar and
+        -:    2:   sometimes as struct accesses.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c99" { target c } } */
+        -:    5:
+        -:    6:#ifdef __cplusplus
+        -:    7:extern "C" {
+        -:    8:#endif
+        -:    9:extern void abort(void);
+        -:   10:#ifdef __cplusplus
+        -:   11:}
+        -:   12:#endif
+        2:   13:static double _Complex *fp_cxd(double _Complex *cx) { return cx; }
+        -:   14:
+        1:   15:int main() {
+        1:   16:  double _Complex cx = 4.0 + 3.0 * (__extension__ 1.0iF);
+        1:   17:  double _Complex cx43 = 4.0 + 3.0 * (__extension__ 1.0iF);
+        1:   18:  double _Complex cx11 = 1.0 + 1.0 * (__extension__ 1.0iF);
+        -:   19:
+        1:   20:  *fp_cxd(&cx) *= cx11;
+        1:   21:  *fp_cxd(&cx) /= cx11;
+        -:   22:
+        1:   23:  double r_cx = __real__(cx);
+        1:   24:  double i_cx = __imag__(cx);
+        1:   25:  double r_cx43 = __real__(cx43);
+        1:   26:  double i_cx43 = __imag__(cx43);
+        -:   27:
+        1:   28:  if ((r_cx == r_cx43) && (i_cx == i_cx43)) {
+        1:   29:    return 0;
+        -:   30:  } else {
+    #####:   31:    abort();
+        -:   32:  }
+        -:   33:}

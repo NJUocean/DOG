@@ -1,0 +1,20 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|      1|void foo(va_list v) {
+    4|      1|  unsigned long long x = va_arg(v, unsigned long long);
+    5|      1|  if (x != 16LL)
+    6|      0|    abort();
+    7|      1|}
+    8|       |
+    9|      1|void bar(char c, char d, ...) {
+   10|      1|  va_list v;
+   11|      1|  va_start(v, d);
+   12|      1|  foo(v);
+   13|      1|  va_end(v);
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  bar(0, 0, 16LL);
+   18|      1|  exit(0);
+   19|      1|}
+

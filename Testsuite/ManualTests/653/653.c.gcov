@@ -1,0 +1,21 @@
+        -:    0:Source:653.c
+        -:    0:Graph:653.gcno
+        -:    0:Data:653.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/27724 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "" } */
+        -:    4:
+        -:    5:extern void abort();
+        -:    6:
+        -:    7:struct st {
+        -:    8:  int _mark;
+        -:    9:};
+        -:   10:unsigned long long t =
+        -:   11:    ((int)(__UINTPTR_TYPE__) & (((struct st *)16)->_mark) - 32);
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (t != (unsigned long long)(int)-16)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

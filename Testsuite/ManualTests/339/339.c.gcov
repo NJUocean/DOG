@@ -1,0 +1,55 @@
+        -:    0:Source:339.c
+        -:    0:Graph:339.gcno
+        -:    0:Data:339.gcda
+        -:    0:Runs:1
+        -:    1:/* Duff's device is legal C; test to make sure the compiler
+        -:    2:   doesn't complain about it.
+        -:    3:
+        -:    4:   Jason Thorpe <thorpej@wasabisystems.com>
+        -:    5:   Derived from Tom Duff's original usenet message about the device.  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:/* { dg-options "-O2" } */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        -:   13:typedef __SIZE_TYPE__ size_t;
+        -:   14:extern int memcmp(const void *, const void *, size_t);
+        -:   15:
+        1:   16:void duffcpy(char *dst, const char *src, unsigned long size) {
+        1:   17:  unsigned long n = (size + 7) / 8;
+        -:   18:
+        1:   19:  switch (size % 8) {
+        5:   20:  case 0:
+        -:   21:    do {
+        5:   22:      *dst++ = *src++;
+        5:   23:    case 7:
+        5:   24:      *dst++ = *src++;
+        6:   25:    case 6:
+        6:   26:      *dst++ = *src++;
+        6:   27:    case 5:
+        6:   28:      *dst++ = *src++;
+        6:   29:    case 4:
+        6:   30:      *dst++ = *src++;
+        6:   31:    case 3:
+        6:   32:      *dst++ = *src++;
+        6:   33:    case 2:
+        6:   34:      *dst++ = *src++;
+        6:   35:    case 1:
+        6:   36:      *dst++ = *src++;
+        6:   37:    } while (--n > 0);
+        -:   38:  }
+        1:   39:}
+        -:   40:
+        -:   41:const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+        -:   42:
+        1:   43:int main() {
+        -:   44:  char buf[64];
+        -:   45:
+        1:   46:  duffcpy(buf, testpat, sizeof(testpat));
+        1:   47:  if (memcmp(buf, testpat, sizeof(testpat)) != 0)
+    #####:   48:    abort();
+        -:   49:
+        1:   50:  exit(0);
+        -:   51:}

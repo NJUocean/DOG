@@ -1,0 +1,25 @@
+        -:    0:Source:1834.c
+        -:    0:Graph:1834.gcno
+        -:    0:Data:1834.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-optimized -fdump-ipa-profile-optimized" } */
+        -:    2:int a[1000];
+        -:    3:int b[1000];
+        -:    4:int size = 1;
+        -:    5:int max = 10000;
+        1:    6:int main() {
+        -:    7:  int i;
+    10001:    8:  for (i = 0; i < max; i++) {
+    10000:    9:    __builtin_memcpy(a, b, size * sizeof(a[0]));
+    10000:   10:    asm("");
+        -:   11:  }
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:/* autofdo doesn't support value profiling for now: */
+        -:   15:/* { dg-final-use-not-autofdo { scan-ipa-dump "Transformation done: single value
+        -:   16: * 4 stringop" "profile"} } */
+        -:   17:/* Really this ought to simplify into assignment, but we are not there yet.  */
+        -:   18:/* a[0] = b[0] is what we fold the resulting memcpy into.  */
+        -:   19:/* { dg-final-use-not-autofdo { scan-tree-dump " = MEM.*&b" "optimized"} } */
+        -:   20:/* { dg-final-use-not-autofdo { scan-tree-dump "MEM.*&a\\\] = " "optimized"} }
+        -:   21: */

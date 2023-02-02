@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target section_anchors } */
+    3|       |/* { dg-options "-O2 -fsection-anchors -ftree-loop-vectorize" } */
+    4|       |
+    5|       |#pragma pack(1)
+    6|       |struct S0 {
+    7|       |  volatile int f0 : 12;
+    8|       |} static a[] = {{15}}, c[] = {{15}};
+    9|       |
+   10|       |struct S0 b[] = {{7}};
+   11|       |
+   12|      1|int __attribute__((noinline, noclone)) ok(int a, int b, int c) {
+   13|      1|  return a == 15 && b == 7 && c == 15 ? 0 : 1;
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  struct S0 *f[] = {c, b};
+   18|      1|
+   19|      1|  return ok(a[0].f0, b[0].f0, f[0]->f0);
+   20|      1|}
+

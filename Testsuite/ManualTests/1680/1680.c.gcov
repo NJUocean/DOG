@@ -1,0 +1,18 @@
+        -:    0:Source:1680.c
+        -:    0:Graph:1680.gcno
+        -:    0:Data:1680.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a[2] = {0, 1};
+        -:    4:int x = 129;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  volatile int v = 0;
+        1:    8:  int t = x, i;
+        2:    9:  for (i = 0; i < 1 + v + v + v + v + v + v + v + v + a[a[0]]; i++)
+        1:   10:    t = a[(signed char)(130 - x)];
+        1:   11:  if (t != 1)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

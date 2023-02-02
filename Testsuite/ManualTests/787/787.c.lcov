@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |int func_pure(void);
+    5|       |void func_other(int);
+    6|       |int global_int;
+    7|      2|int func_pure(void) { return global_int; }
+    8|      1|void func_other(int a) { global_int = a + 1; }
+    9|      1|int f(void) {
+   10|      1|  int a;
+   11|      1|  a = func_pure();
+   12|      1|  func_other(a);
+   13|      1|  a = func_pure(); // We were removing this function call
+   14|      1|  return a;
+   15|      1|}
+   16|       |void abort(void);
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  global_int = 10;
+   20|      1|  if (f() != 11)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

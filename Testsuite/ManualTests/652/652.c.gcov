@@ -1,0 +1,11 @@
+        -:    0:Source:652.c
+        -:    0:Graph:652.gcno
+        -:    0:Data:652.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -flive-patching -fwhole-program" } */
+        -:    3:
+        1:    4:int main() { return 0; }
+        -:    5:
+        -:    6:/* { dg-message "'-fwhole-program' is incompatible with
+        -:    7: * '-flive-patching=inline-only-static|inline-clone’" "" {target "*-*-*"} 0 } */

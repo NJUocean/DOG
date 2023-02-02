@@ -1,0 +1,43 @@
+    1|       |/* { dg-options "-Wno-psabi" } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |void abort(void);
+    4|       |
+    5|       |struct S2848 {
+    6|       |  unsigned int a;
+    7|       |  _Complex int b;
+    8|       |  struct {
+    9|       |  } __attribute__((aligned)) c;
+   10|       |};
+   11|       |
+   12|       |struct S2848 s2848;
+   13|       |
+   14|       |int fails;
+   15|       |
+   16|      1|void __attribute__((noinline)) check2848va(int z, ...) {
+   17|      1|  struct S2848 arg;
+   18|      1|  __builtin_va_list ap;
+   19|      1|
+   20|      1|  __builtin_va_start(ap, z);
+   21|      1|
+   22|      1|  arg = __builtin_va_arg(ap, struct S2848);
+   23|      1|
+   24|      1|  if (s2848.a != arg.a)
+   25|      0|    ++fails;
+   26|      1|  if (s2848.b != arg.b)
+   27|      0|    ++fails;
+   28|      1|
+   29|      1|  __builtin_va_end(ap);
+   30|      1|}
+   31|       |
+   32|      1|int main(void) {
+   33|      1|  s2848.a = 4027477739U;
+   34|      1|  s2848.b = (723419448 + -218144346 * __extension__ 1i);
+   35|      1|
+   36|      1|  check2848va(1, s2848);
+   37|      1|
+   38|      1|  if (fails)
+   39|      0|    abort();
+   40|      1|
+   41|      1|  return 0;
+   42|      1|}
+

@@ -1,0 +1,27 @@
+        -:    0:Source:235.c
+        -:    0:Graph:235.gcno
+        -:    0:Data:235.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Wwrite-strings" } */
+        -:    3:/* The purpose of this test is to ensure that line numbers in diagnostics
+        -:    4:   are accurate after macros whose arguments contain newlines and are
+        -:    5:   substituted multiple times.  The semicolons are on separate lines because
+        -:    6:   #line can only correct numbering on line boundaries.  */
+        -:    7:#define one(x) x
+        -:    8:#define two(x) x x
+        -:    9:#define four(x) two(x) two(x)
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  char *A;
+        -:   13:
+        1:   14:  A = "text";    /* { dg-warning "discards 'const' qualifier" "case zero" } */
+        1:   15:  A = one("text" /* { dg-warning "discards 'const' qualifier" "case one" } */
+        -:   16:          "text");
+        1:   17:  A = two("text" /* { dg-warning "discards 'const' qualifier" "case two" } */
+        -:   18:          "text");
+        1:   19:  A = four("text" /* { dg-warning "discards 'const' qualifier" "case four" } */
+        -:   20:           "text");
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}

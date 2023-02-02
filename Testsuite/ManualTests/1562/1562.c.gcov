@@ -1,0 +1,43 @@
+        -:    0:Source:1562.c
+        -:    0:Graph:1562.gcno
+        -:    0:Data:1562.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:int printf(const char *, ...);
+        -:    5:
+        -:    6:unsigned a, c, *d, f;
+        -:    7:char b, e;
+        -:    8:short g;
+        -:    9:
+        1:   10:void fn1() {
+        1:   11:  unsigned h = 4294967290;
+        1:   12:  if (b >= 0) {
+        1:   13:    h = b;
+        1:   14:    c = b / 290;
+        1:   15:    f = ~(c - (8 || h));
+        1:   16:    if (f)
+    #####:   17:      printf("%d\n", 1);
+        1:   18:    if (f)
+    #####:   19:      printf("%d\n", f);
+        1:   20:    g = ~f;
+        1:   21:    if (c < 3) {
+        1:   22:      int i = -h < ~c;
+        -:   23:      unsigned j;
+        1:   24:      if (i)
+        1:   25:        j = h;
+        1:   26:      h = -j * g;
+        -:   27:    }
+        1:   28:    c = h;
+        -:   29:  }
+        1:   30:  unsigned k = ~h;
+       1*:   31:  char l = e || g;
+        1:   32:  if (l < 1 || k < 7)
+    #####:   33:    *d = a;
+        1:   34:}
+        -:   35:
+        1:   36:int main() {
+        1:   37:  fn1();
+        1:   38:  return 0;
+        -:   39:}

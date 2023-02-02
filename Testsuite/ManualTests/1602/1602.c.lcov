@@ -1,0 +1,58 @@
+    1|       |/* PR rtl-optimization/71532 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-additional-options "-mtune=slm" { target i?86-*-* x86_64-*-* } } */
+    4|       |
+    5|       |__attribute__((noinline, noclone, pure)) int foo(int a, int b, int c, int d,
+    6|       |                                                 int e, int f, int g, int h,
+    7|      1|                                                 int i, int j, int k, int l) {
+    8|      1|  a++;
+    9|      1|  b++;
+   10|      1|  c++;
+   11|      1|  d++;
+   12|      1|  e++;
+   13|      1|  f++;
+   14|      1|  g++;
+   15|      1|  h++;
+   16|      1|  i++;
+   17|      1|  j++;
+   18|      1|  k++;
+   19|      1|  l++;
+   20|      1|  asm volatile("" : : "g"(&a), "g"(&b), "g"(&c), "g"(&d) : "memory");
+   21|      1|  asm volatile("" : : "g"(&e), "g"(&f), "g"(&g), "g"(&h) : "memory");
+   22|      1|  asm volatile("" : : "g"(&i), "g"(&j), "g"(&k), "g"(&l) : "memory");
+   23|      1|  return a + b + c + d + e + f + g + h + i + j + k + l;
+   24|      1|}
+   25|       |
+   26|       |__attribute__((noinline, noclone, pure)) int bar(int a, int b, int c, int d,
+   27|       |                                                 int e, int f, int g, int h,
+   28|      1|                                                 int i, int j, int k, int l) {
+   29|      1|  a++;
+   30|      1|  b++;
+   31|      1|  c++;
+   32|      1|  d++;
+   33|      1|  e++;
+   34|      1|  f++;
+   35|      1|  g++;
+   36|      1|  h++;
+   37|      1|  i++;
+   38|      1|  j++;
+   39|      1|  k++;
+   40|      1|  l++;
+   41|      1|  asm volatile("" : : "g"(&a), "g"(&b), "g"(&c), "g"(&d) : "memory");
+   42|      1|  asm volatile("" : : "g"(&e), "g"(&f), "g"(&g), "g"(&h) : "memory");
+   43|      1|  asm volatile("" : : "g"(&i), "g"(&j), "g"(&k), "g"(&l) : "memory");
+   44|      1|  return 2 * a + b + c + d + e + f + g + h + i + j + k + l;
+   45|      1|}
+   46|       |
+   47|      1|__attribute__((noinline, noclone)) int test() {
+   48|      1|  int a = foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+   49|      1|  a += bar(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+   50|      1|  return a;
+   51|      1|}
+   52|       |
+   53|      1|int main() {
+   54|      1|  if (test() != 182)
+   55|      0|    __builtin_abort();
+   56|      1|  return 0;
+   57|      1|}
+

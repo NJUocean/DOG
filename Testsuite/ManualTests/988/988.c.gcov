@@ -1,0 +1,33 @@
+        -:    0:Source:988.c
+        -:    0:Graph:988.gcno
+        -:    0:Data:988.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=bool,enum" } */
+        -:    3:
+        -:    4:#ifndef __cplusplus
+        -:    5:#define bool _Bool
+        -:    6:#endif
+        -:    7:enum A { B = -3, C = 2 } a;
+        -:    8:bool b;
+        -:    9:
+        1:   10:__attribute__((noinline, noclone)) enum A foo(bool *p) {
+        1:   11:  *p = b;   /* { dg-output "load-bool-enum.c:13:\[^\n\r]*runtime error:
+        -:   12:               \[^\n\r]*load of value 4, which is not a valid value for type
+        -:   13:               '(_B|b)ool'\[^\n\r]*(\n|\r\n|\r)*" } */
+        1:   14:  return a; /* { dg-output "\[^\n\r]*load-bool-enum.c:14:\[^\n\r]*runtime error:
+        -:   15:               \[^\n\r]*load of value 9, which is not a valid value for type
+        -:   16:               'A'" { target c++ } } */
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  char c = 4;
+        1:   21:  int d = 9;
+        -:   22:  if (sizeof(int) != sizeof(a) || sizeof(b) != 1)
+        -:   23:    return 0;
+        1:   24:  __builtin_memcpy(&a, &d, sizeof(int));
+        1:   25:  __builtin_memcpy(&b, &c, 1);
+        -:   26:  bool e;
+        1:   27:  foo(&e);
+        1:   28:  return 0;
+        -:   29:}

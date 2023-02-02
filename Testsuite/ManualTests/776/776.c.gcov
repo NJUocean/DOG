@@ -1,0 +1,28 @@
+        -:    0:Source:776.c
+        -:    0:Graph:776.gcno
+        -:    0:Data:776.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/17112 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:typedef struct {
+        -:    9:  int int24 : 24 __attribute__((packed));
+        -:   10:} myint24;
+        -:   11:
+        -:   12:myint24 x[3] = {0x123456, 0x789abc, 0xdef012};
+        -:   13:
+        -:   14:myint24 y[3]; // starts out as zeros
+        -:   15:
+        1:   16:void foo() { y[1] = x[1]; }
+        -:   17:
+        1:   18:int main() {
+        1:   19:  foo();
+        -:   20:
+        1:   21:  if (y[0].int24 != 0 || y[2].int24 != 0)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

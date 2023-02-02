@@ -1,0 +1,57 @@
+        -:    0:Source:1483.c
+        -:    0:Graph:1483.gcno
+        -:    0:Data:1483.gcda
+        -:    0:Runs:1
+        -:    1:/* Test argument passing of complex values.  The MIPS64 compiler had a
+        -:    2:   bug when they were split between registers and the stack.  */
+        -:    3:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    4:
+        -:    5:volatile _Complex float f1 = 1.1f + 2.2if;
+        -:    6:volatile _Complex float f2 = 3.3f + 4.4if;
+        -:    7:volatile _Complex float f3 = 5.5f + 6.6if;
+        -:    8:volatile _Complex float f4 = 7.7f + 8.8if;
+        -:    9:volatile _Complex float f5 = 9.9f + 10.1if;
+        -:   10:volatile _Complex double d1 = 1.1 + 2.2i;
+        -:   11:volatile _Complex double d2 = 3.3 + 4.4i;
+        -:   12:volatile _Complex double d3 = 5.5 + 6.6i;
+        -:   13:volatile _Complex double d4 = 7.7 + 8.8i;
+        -:   14:volatile _Complex double d5 = 9.9 + 10.1i;
+        -:   15:volatile _Complex long double ld1 = 1.1L + 2.2iL;
+        -:   16:volatile _Complex long double ld2 = 3.3L + 4.4iL;
+        -:   17:volatile _Complex long double ld3 = 5.5L + 6.6iL;
+        -:   18:volatile _Complex long double ld4 = 7.7L + 8.8iL;
+        -:   19:volatile _Complex long double ld5 = 9.9L + 10.1iL;
+        -:   20:
+        -:   21:extern void abort(void);
+        -:   22:extern void exit(int);
+        -:   23:
+        1:   24:__attribute__((noinline)) void check_float(int a, _Complex float a1,
+        -:   25:                                           _Complex float a2, _Complex float a3,
+        -:   26:                                           _Complex float a4,
+        -:   27:                                           _Complex float a5) {
+        1:   28:  if (a1 != f1 || a2 != f2 || a3 != f3 || a4 != f4 || a5 != f5)
+    #####:   29:    abort();
+        1:   30:}
+        -:   31:
+        -:   32:__attribute__((noinline)) void
+        1:   33:check_double(int a, _Complex double a1, _Complex double a2, _Complex double a3,
+        -:   34:             _Complex double a4, _Complex double a5) {
+        1:   35:  if (a1 != d1 || a2 != d2 || a3 != d3 || a4 != d4 || a5 != d5)
+    #####:   36:    abort();
+        1:   37:}
+        -:   38:
+        1:   39:__attribute__((noinline)) void check_long_double(int a, _Complex long double a1,
+        -:   40:                                                 _Complex long double a2,
+        -:   41:                                                 _Complex long double a3,
+        -:   42:                                                 _Complex long double a4,
+        -:   43:                                                 _Complex long double a5) {
+        1:   44:  if (a1 != ld1 || a2 != ld2 || a3 != ld3 || a4 != ld4 || a5 != ld5)
+    #####:   45:    abort();
+        1:   46:}
+        -:   47:
+        1:   48:int main(void) {
+        1:   49:  check_float(0, f1, f2, f3, f4, f5);
+        1:   50:  check_double(0, d1, d2, d3, d4, d5);
+        1:   51:  check_long_double(0, ld1, ld2, ld3, ld4, ld5);
+        1:   52:  exit(0);
+        -:   53:}

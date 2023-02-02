@@ -1,0 +1,16 @@
+        -:    0:Source:1080.c
+        -:    0:Graph:1080.gcno
+        -:    0:Data:1080.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fdiagnostics-show-caret" } */
+        -:    2:
+        1:    3:int main(void) {
+        -:    4:  /* This is 0x7fffffffffffffff, which truncates to 0xffffffff.  */
+        -:    5:#line 9223372036854775807 /* { dg-warning "line number out of range" } */
+        -:    6:#warning msg
+        -:    7:  /* { dg-begin-multiline-output "" }
+        -:    8: #line 9223372036854775807
+        -:    9:       ^~~~~~~~~~~~~~~~~~~
+        -:   10:     { dg-end-multiline-output "" } */
+        -:   11:  /* { dg-warning "msg" "" { target *-*-* } -1 } */
+        -:   12:}

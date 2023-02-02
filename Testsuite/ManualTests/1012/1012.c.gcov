@@ -1,0 +1,21 @@
+        -:    0:Source:1012.c
+        -:    0:Graph:1012.gcno
+        -:    0:Data:1012.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-finstrument-functions" } */
+        -:    3:
+        -:    4:/* Add empty implementations of __cyg_profile_func_enter() and
+        -:    5:   __cyg_profile_func_exit() to avoid problems on non-glibc
+        -:    6:   systems.  */
+        -:    7:void __attribute__((no_instrument_function))
+    #####:    8:__cyg_profile_func_enter(void *this_fn, void *call_site) {}
+        -:    9:
+        -:   10:void __attribute__((no_instrument_function))
+    #####:   11:__cyg_profile_func_exit(void *this_fn, void *call_site) {}
+        -:   12:
+        1:   13:extern inline __attribute__((gnu_inline, always_inline)) int foo() {}
+        1:   14:int main() {
+        -:   15:  foo();
+        1:   16:  return 0;
+        -:   17:}

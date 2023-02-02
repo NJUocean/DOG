@@ -1,0 +1,32 @@
+        -:    0:Source:3607.c
+        -:    0:Graph:3607.gcno
+        -:    0:Data:3607.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:typedef unsigned long my_uintptr_t;
+        -:    4:
+        -:    5:int check_a(my_uintptr_t tagged_ptr);
+        -:    6:
+        1:    7:int __attribute__((noinline)) try_a(my_uintptr_t x) {
+        -:    8:  my_uintptr_t heap[2];
+        1:    9:  my_uintptr_t *hp = heap;
+        -:   10:
+        1:   11:  hp[0] = x;
+        1:   12:  hp[1] = 0;
+        1:   13:  return check_a((my_uintptr_t)(void *)((char *)hp + 1));
+        -:   14:}
+        -:   15:
+        1:   16:int __attribute__((noinline)) check_a(my_uintptr_t tagged_ptr) {
+        1:   17:  my_uintptr_t *hp = (my_uintptr_t *)(void *)((char *)tagged_ptr - 1);
+        -:   18:
+        1:   19:  if (hp[0] == 42 && hp[1] == 0)
+        1:   20:    return 0;
+    #####:   21:  return -1;
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  if (try_a(42) < 0)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

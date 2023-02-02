@@ -1,0 +1,33 @@
+        -:    0:Source:1541.c
+        -:    0:Graph:1541.gcno
+        -:    0:Data:1541.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-common" { target hppa*-*-hpux* } } */
+        -:    3:
+        -:    4:typedef union {
+        -:    5:  double v[2];
+        -:    6:  double s __attribute__((vector_size(16)));
+        -:    7:} data;
+        -:    8:
+        -:    9:data reg;
+        -:   10:
+        1:   11:void __attribute__((noinline)) set_lower(double b) {
+        -:   12:  data stack_var;
+        1:   13:  double __attribute__((vector_size(16))) one = {1.0, 1.0};
+        1:   14:  stack_var.s = reg.s;
+        1:   15:  stack_var.s += one;
+        1:   16:  stack_var.v[0] += b;
+        1:   17:  reg.s = stack_var.s;
+        1:   18:}
+        -:   19:
+        1:   20:int main(int argc, char **argv) {
+        1:   21:  reg.v[0] = 1.0;
+        1:   22:  reg.v[1] = 1.0;
+        -:   23:  /* reg should contain { 1.0, 1.0 }.  */
+        1:   24:  set_lower(2.0);
+        -:   25:  /* reg should contain { 4.0, 2.0 }.  */
+        1:   26:  if ((int)reg.v[0] != 4 || (int)reg.v[1] != 2)
+    #####:   27:    __builtin_abort();
+        1:   28:  return 0;
+        -:   29:}

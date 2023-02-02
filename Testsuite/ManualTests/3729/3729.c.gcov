@@ -1,0 +1,47 @@
+        -:    0:Source:3729.c
+        -:    0:Graph:3729.gcno
+        -:    0:Data:3729.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49161 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int c;
+        -:    6:
+        3:    7:__attribute__((noinline, noclone)) void bar(int x) {
+        3:    8:  if (x != c++)
+    #####:    9:    abort();
+        3:   10:}
+        -:   11:
+        1:   12:__attribute__((noinline, noclone)) void foo(int x) {
+        1:   13:  switch (x) {
+        1:   14:  case 3:
+        1:   15:    goto l1;
+    #####:   16:  case 4:
+    #####:   17:    goto l2;
+    #####:   18:  case 6:
+    #####:   19:    goto l3;
+    #####:   20:  default:
+    #####:   21:    return;
+        -:   22:  }
+        1:   23:l1:
+        1:   24:  goto l4;
+    #####:   25:l2:
+    #####:   26:  goto l4;
+    #####:   27:l3:
+    #####:   28:  bar(-1);
+        1:   29:l4:
+        1:   30:  bar(0);
+        1:   31:  if (x != 4)
+        1:   32:    bar(1);
+        1:   33:  if (x != 3)
+    #####:   34:    bar(-1);
+        1:   35:  bar(2);
+        -:   36:}
+        -:   37:
+        1:   38:int main() {
+        1:   39:  foo(3);
+        1:   40:  if (c != 3)
+    #####:   41:    abort();
+        1:   42:  return 0;
+        -:   43:}

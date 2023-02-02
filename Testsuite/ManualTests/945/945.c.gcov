@@ -1,0 +1,40 @@
+        -:    0:Source:945.c
+        -:    0:Graph:945.gcno
+        -:    0:Data:945.gcda
+        -:    0:Runs:1
+        -:    1:/* Test volatile access to unaligned field.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target size32plus } */
+        -:    4:/* { dg-options "-fstrict-volatile-bitfields" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:#define test_type unsigned int
+        -:    9:#define MAGIC 0x1020304u
+        -:   10:
+        -:   11:typedef struct s {
+        -:   12:  unsigned char Prefix;
+        -:   13:  test_type Type;
+        -:   14:} __attribute((__packed__)) ss;
+        -:   15:
+        -:   16:volatile ss v;
+        -:   17:ss g;
+        -:   18:
+        1:   19:void __attribute__((noinline)) foo(test_type u) { v.Type = u; }
+        -:   20:
+        1:   21:test_type __attribute__((noinline)) bar(void) { return v.Type; }
+        -:   22:
+        1:   23:int main() {
+        -:   24:  test_type temp;
+        1:   25:  foo(MAGIC);
+        1:   26:  __builtin_memcpy(&g, (void *)&v, sizeof(g));
+        1:   27:  if (g.Type != MAGIC)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  g.Type = MAGIC;
+        1:   31:  __builtin_memcpy((void *)&v, &g, sizeof(v));
+        1:   32:  temp = bar();
+        1:   33:  if (temp != MAGIC)
+    #####:   34:    abort();
+        1:   35:  return 0;
+        -:   36:}

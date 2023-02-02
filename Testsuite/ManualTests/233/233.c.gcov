@@ -1,0 +1,53 @@
+        -:    0:Source:233.c
+        -:    0:Graph:233.gcno
+        -:    0:Data:233.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2001 Free Software Foundation, Inc.  */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options -Wno-multichar } */
+        -:    5:
+        -:    6:/* This tests values and signedness of multichar charconsts.
+        -:    7:
+        -:    8:   Neil Booth, 5 May 2002.  */
+        -:    9:
+        -:   10:#include <limits.h>
+        -:   11:
+        -:   12:extern void abort(void);
+        -:   13:
+        1:   14:int main() {
+        -:   15:  /* These tests require at least 2-byte ints.  8-)  */
+        -:   16:#if INT_MAX > 127
+        1:   17:  int scale = (int)(unsigned char)-1 + 1;
+        -:   18:
+        1:   19:  if ('ab' != (int)((unsigned char)'a' * scale + (unsigned char)'b'))
+    #####:   20:    abort();
+        -:   21:
+        1:   22:  if ('\234b' != (int)((unsigned char)'\234' * scale + (unsigned char)'b'))
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  if ('b\234' != (int)((unsigned char)'b' * scale + (unsigned char)'\234'))
+    #####:   26:    abort();
+        -:   27:    /* Multichar charconsts have type int and should be signed.  */
+        -:   28:#if INT_MAX == 32767
+        -:   29:#if '\234a' > 0
+        -:   30:#error Preprocessor charconsts 1
+        -:   31:#endif
+        -:   32:  if ('\234a' > 0)
+        -:   33:    abort();
+        -:   34:#elif INT_MAX == 2147483647
+        -:   35:#if '\234aaa' > 0
+        -:   36:#error Preprocessor charconsts 2
+        -:   37:#endif
+        -:   38:  if ('\234aaa' > 0)
+        -:   39:    abort();
+        -:   40:#elif INT_MAX == 9223372036854775807
+        -:   41:#if '\234aaaaaaa' > 0
+        -:   42:#error Preprocessor charconsts 3
+        -:   43:#endif
+        -:   44:  if ('\234aaaaaaa' > 0)
+        -:   45:    abort();
+        -:   46:#endif
+        -:   47:#endif
+        1:   48:  return 0;
+        -:   49:}

@@ -1,0 +1,17 @@
+        -:    0:Source:1393.c
+        -:    0:Graph:1393.gcno
+        -:    0:Data:1393.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    3:
+        -:    4:unsigned char x = 154;
+        1:    5:int foo() {
+        -:    6:  // 8575 * (254408 - 9057) = 8575 * 245351 = 2103884825 = 0x7d66bc19
+        1:    7:  return 8575 * (1652 * x - 9057);
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo();
+        1:   12:  return 0;
+        -:   13:}

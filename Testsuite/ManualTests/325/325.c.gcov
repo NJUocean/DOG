@@ -1,0 +1,30 @@
+        -:    0:Source:325.c
+        -:    0:Graph:325.gcno
+        -:    0:Data:325.gcda
+        -:    0:Runs:1
+        -:    1:/* Test non-canonical BID significands: _Decimal128.  Bug 91226.  */
+        -:    2:/* { dg-do run { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
+        -:    3:/* { dg-options "-std=gnu2x -O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        -:    8:union u {
+        -:    9:  _Decimal128 d128;
+        -:   10:  unsigned __int128 u128;
+        -:   11:};
+        -:   12:
+        -:   13:#define U128(hi, lo) (((unsigned __int128)lo) | (((unsigned __int128)hi) << 64))
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  unsigned __int128 i = U128(0x3041ed09bead87c0ULL, 0x378d8e6400000001ULL);
+        -:   17:  union u x;
+        -:   18:  _Decimal128 d128;
+        1:   19:  x.u128 = i;
+        1:   20:  d128 = x.d128;
+        1:   21:  volatile double d = d128;
+        1:   22:  if (d == 0)
+        1:   23:    exit(0);
+        -:   24:  else
+    #####:   25:    abort();
+        -:   26:}

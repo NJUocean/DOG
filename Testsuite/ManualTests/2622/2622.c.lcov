@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run { target *-*-linux* *-*-gnu* } } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|int __attribute__((__noinline__)) test_lt(__float128 x, __float128 y) {
+    7|      1|  return x < y;
+    8|      1|}
+    9|       |
+   10|      1|int __attribute__((__noinline__)) test_gt(__float128 x, __float128 y) {
+   11|      1|  return x > y;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  __float128 a = 0.0;
+   16|      1|  __float128 b = 1.0;
+   17|      1|
+   18|      1|  int r;
+   19|      1|
+   20|      1|  r = test_lt(a, b);
+   21|      1|  if (r != ((double)a < (double)b))
+   22|      0|    abort();
+   23|      1|
+   24|      1|  r = test_gt(a, b);
+   25|      1|  if (r != ((double)a > (double)b))
+   26|      0|    abort();
+   27|      1|
+   28|      1|  return 0;
+   29|      1|}
+

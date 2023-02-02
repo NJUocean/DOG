@@ -1,0 +1,35 @@
+    1|       |/* Test to make sure that stabs for C symbols that go into .comm have the
+    2|       |   proper structure.  These should be lettered G for the struct that gives
+    3|       |   the name to the .comm, and should be V or S for .lcomm symbols.  */
+    4|       |
+    5|       |__attribute__((used)) static char i_outer;
+    6|       |struct {
+    7|       |  char f1;
+    8|       |  char f2;
+    9|       |} opta;
+   10|       |struct {
+   11|       |  char f1;
+   12|       |  char f2;
+   13|       |} optb;
+   14|       |
+   15|      1|int main() {
+   16|      1|  static char i_inner[2] __attribute__((used));
+   17|      1|  i_inner[0] = 'a';
+   18|      1|  i_inner[1] = 'b';
+   19|      1|  opta.f1 = 'c';
+   20|      1|  opta.f2 = 'd';
+   21|      1|  optb.f1 = 'C';
+   22|      1|  optb.f2 = 'D';
+   23|      1|  i_outer = 'e';
+   24|      1|  /* { dg-do compile } */
+   25|      1|  /* { dg-skip-if "No stabs" { mmix-*-* alpha*-*-* hppa*64*-*-* ia64-*-*
+   26|      1|   * *-*-vxworks* } } */
+   27|      1|  /* { dg-skip-if "stabs only" { *-*-* } { "*" } { "-gstabs" } } */
+   28|      1|  return 0;
+   29|      1|}
+   30|       |
+   31|       |/* { dg-final { scan-assembler ".stabs.*i_inner:V" } } */
+   32|       |/* { dg-final { scan-assembler ".stabs.*i_outer:S" } } */
+   33|       |/* { dg-final { scan-assembler ".stabs.*opta:G" } } */
+   34|       |/* { dg-final { scan-assembler ".stabs.*optb:G" } } */
+

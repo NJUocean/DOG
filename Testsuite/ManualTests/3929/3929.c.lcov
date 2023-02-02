@@ -1,0 +1,20 @@
+    1|       |/* PR target/71554 */
+    2|       |
+    3|       |int v;
+    4|       |
+    5|      0|__attribute__((noinline, noclone)) void bar(void) { v++; }
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) void foo(unsigned int x) {
+    8|      1|  signed int y = ((-__INT_MAX__ - 1) / 2);
+    9|      1|  signed int r;
+   10|      1|  if (__builtin_mul_overflow(x, y, &r))
+   11|      0|    bar();
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  foo(2);
+   16|      1|  if (v)
+   17|      0|    __builtin_abort();
+   18|      1|  return 0;
+   19|      1|}
+

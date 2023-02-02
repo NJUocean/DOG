@@ -1,0 +1,38 @@
+        -:    0:Source:515.c
+        -:    0:Graph:515.gcno
+        -:    0:Data:515.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/54519 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+       10:    5:__attribute__((noinline, noclone)) void fn1(int x) {
+       10:    6:  __asm volatile("" : "+r"(x) : : "memory");
+       10:    7:}
+        -:    8:
+        2:    9:static int fn2(int x, int y) {
+        2:   10:  if (y) {
+        2:   11:    fn1(x); /* { dg-final { gdb-test .+1 "x" "6" } } */
+        2:   12:    fn1(x); /* { dg-final { gdb-test . "y" "25" } } */
+        2:   13:    fn1(x);
+        2:   14:    fn1(x);
+        2:   15:    y = -2 + x;
+        2:   16:    y = y * y * y + y;
+        2:   17:    fn1(x + y); /* { dg-final { gdb-test . "y" "68" } } */
+        -:   18:  }
+        2:   19:  return x;
+        -:   20:}
+        -:   21:
+        1:   22:__attribute__((noinline, noclone)) int fn3(int x, int y) {
+        1:   23:  return fn2(x, y) + y;
+        -:   24:}
+        -:   25:
+        1:   26:__attribute__((noinline, noclone)) int fn4(int x, int y) {
+        1:   27:  return fn2(x, y) + y;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  fn3(6, 25);
+        1:   32:  fn4(4, 117);
+        1:   33:  return 0;
+        -:   34:}

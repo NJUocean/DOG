@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/94524 */
+    2|       |
+    3|       |typedef signed char __attribute__((__vector_size__(16))) V;
+    4|       |
+    5|      3|static __attribute__((__noinline__, __noclone__)) V foo(V c) {
+    6|      3|  c %= (signed char)-128;
+    7|      3|  return (V)c;
+    8|      3|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  V x = foo((V){-128});
+   12|      1|  if (x[0] != 0)
+   13|      0|    __builtin_abort();
+   14|      1|  x = foo((V){-127});
+   15|      1|  if (x[0] != -127)
+   16|      0|    __builtin_abort();
+   17|      1|  x = foo((V){127});
+   18|      1|  if (x[0] != 127)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target size32plus } */
+    3|       |
+    4|       |/* Large so an out-of-bound read will crash.  */
+    5|       |unsigned char c[0x30001] = {1};
+    6|       |int j = 2;
+    7|       |
+    8|      1|static void foo(unsigned long *x, unsigned char *y) {
+    9|      1|  int i;
+   10|      1|  unsigned long w = x[0];
+   11|      3|  for (i = 0; i < j; i++) {
+   12|      2|    w += *y;
+   13|      2|    y += 0x10000;
+   14|      2|    w += *y;
+   15|      2|    y += 0x10000;
+   16|      2|  }
+   17|      1|  x[1] = w;
+   18|      1|}
+   19|       |
+   20|      1|__attribute__((noinline, noclone)) void bar(unsigned long *x) { foo(x, c); }
+   21|       |
+   22|      1|int main() {
+   23|      1|  unsigned long a[2] = {0, -1UL};
+   24|      1|  asm volatile("" ::"r"(c) : "memory");
+   25|      1|  c[0] = 0;
+   26|      1|  bar(a);
+   27|      1|  if (a[1] != 0)
+   28|      0|    __builtin_abort();
+   29|      1|  return 0;
+   30|      1|}
+

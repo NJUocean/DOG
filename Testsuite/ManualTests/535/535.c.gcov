@@ -1,0 +1,26 @@
+        -:    0:Source:535.c
+        -:    0:Graph:535.gcno
+        -:    0:Data:535.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        1:    4:void __attribute__((noinline)) optimize_me_not() {
+        1:    5:  __asm__ volatile("" : : : "memory");
+        1:    6:}
+        -:    7:int a[7][8];
+        1:    8:int main() {
+        -:    9:  int b, j;
+        1:   10:  b = 0;
+        8:   11:  for (; b < 7; b++) {
+        7:   12:    j = 0;
+       63:   13:    for (; j < 8; j++)
+       56:   14:      a[b][j] = 0;
+        -:   15:  }
+        -:   16:  /* j may very well be optimized out, so we cannot test for j == 8.
+        -:   17:     Instead test j + 1 which will make the test UNSUPPORTED if i
+        -:   18:     is optimized out.  Since the test previously had wrong debug
+        -:   19:     with j == 0 this is acceptable.  */
+        1:   20:  optimize_me_not(); /* { dg-final { gdb-test . "j + 1" "9" } } */
+        1:   21:  return 0;
+        -:   22:}

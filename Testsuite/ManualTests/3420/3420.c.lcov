@@ -1,0 +1,17 @@
+    1|       |/* PR middle-end/30473 */
+    2|       |
+    3|       |extern int sprintf(char *, const char *, ...);
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|char *foo(char *buf, char *p) {
+    7|      1|  sprintf(buf, "abcde", p++);
+    8|      1|  return p;
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  char buf[6];
+   13|      1|  if (foo(buf, &buf[2]) != &buf[3])
+   14|      0|    abort();
+   15|      1|  return 0;
+   16|      1|}
+

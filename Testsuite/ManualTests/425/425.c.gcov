@@ -1,0 +1,28 @@
+        -:    0:Source:425.c
+        -:    0:Graph:425.gcno
+        -:    0:Data:425.gcda
+        -:    0:Runs:1
+        1:    1:static int __attribute__((noinline)) foo(int k, int n1, int n2, int n3) {
+        1:    2:  int j, res = 0;
+        5:    3:  for (j = 0; j < k; j++) {
+        -:    4:    int i;
+      204:    5:    for (i = 0; i < n1; i++)
+      200:    6:      res += i;
+      204:    7:    for (i = 0; i < n2; i++)
+      200:    8:      res += i;
+      204:    9:    for (i = 0; i < n3; i++)
+      200:   10:      res += i;
+        -:   11:  }
+        -:   12:
+        1:   13:  return res;
+        -:   14:}
+        -:   15:
+        -:   16:extern void abort();
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  int res = foo(4, 50, 50, 50);
+        1:   20:  if (res != 14700)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

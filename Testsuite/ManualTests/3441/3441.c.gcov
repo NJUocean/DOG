@@ -1,0 +1,16 @@
+        -:    0:Source:3441.c
+        -:    0:Graph:3441.gcno
+        -:    0:Data:3441.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:unsigned long bar(void) { return 32768; }
+        -:    4:
+        1:    5:int main() {
+        1:    6:  unsigned long nStyle = bar();
+        1:    7:  if (nStyle & 32768)
+        1:    8:    nStyle |= 65536;
+        1:    9:  if (nStyle != (32768 | 65536))
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

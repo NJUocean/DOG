@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target arm_arch_v7a_ok } */
+    3|       |/* { dg-options "-Os -w -fno-expensive-optimizations -fschedule-insns
+    4|       | * -mtpcs-leaf-frame -fira-algorithm=priority" } */
+    5|       |
+    6|       |typedef unsigned short u16;
+    7|       |typedef unsigned short v16u16 __attribute__((vector_size(16)));
+    8|       |typedef unsigned int u32;
+    9|       |typedef unsigned int v16u32 __attribute__((vector_size(16)));
+   10|       |typedef unsigned long long u64;
+   11|       |typedef unsigned long long v16u64 __attribute__((vector_size(16)));
+   12|       |
+   13|       |u64 __attribute__((noinline, noclone))
+   14|       |foo(u16 u16_0, u32 u32_0, u64 u64_0, u16 u16_1, u32 u32_1, u64 u64_1,
+   15|       |    v16u16 v16u16_0, v16u32 v16u32_0, v16u64 v16u64_0, v16u16 v16u16_1,
+   16|      1|    v16u32 v16u32_1, v16u64 v16u64_1) {
+   17|      1|  v16u64_0 %= (v16u64){(u16)v16u16_0[5], ~v16u64_1[1]};
+   18|      1|  v16u64_0[1] = 1;
+   19|      1|  v16u32_1[3] >>= 31;
+   20|      1|  v16u64_1 ^= (v16u64){v16u16_1[4], u64_1};
+   21|      1|  v16u64_1[0] = (v16u64_1[0] >> 63) | (v16u64_1[0] << 1);
+   22|      1|  u16_0 -= 1;
+   23|      1|  v16u32_1 %= (v16u32)-v16u64_0 | 1;
+   24|      1|  v16u16_0 /= (v16u16){-u64_1} | 1;
+   25|      1|  v16u32_0[2] |= (u16)~u16_1;
+   26|      1|  return u16_0 + u64_0 + u32_1 + u64_1 + v16u16_0[0] + v16u16_0[1] +
+   27|      1|         v16u16_0[2] + v16u16_0[3] + v16u16_0[4] + v16u16_0[5] + v16u16_0[6] +
+   28|      1|         v16u32_0[2] + v16u32_0[3] + v16u64_0[0] + v16u16_1[2] + v16u16_1[4] +
+   29|      1|         v16u32_1[0] + v16u32_1[1] + v16u32_1[2] + v16u32_1[3] + v16u64_1[0] +
+   30|      1|         v16u64_1[1];
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  u64 x = foo(0, 0, 1, 0, 0, 1, (v16u16){-1, 0, 0, 0, 0, 1}, (v16u32){0},
+   35|      1|              (v16u64){0}, (v16u16){0}, (v16u32){0}, (v16u64){0x67784fdb22, 1});
+   36|      1|  __builtin_printf("%016llx\n", (unsigned long long)(x >> 0));
+   37|      1|  if (x != 0x000000cef0a1b646)
+   38|      0|    __builtin_abort();
+   39|      1|  return 0;
+   40|      1|}
+

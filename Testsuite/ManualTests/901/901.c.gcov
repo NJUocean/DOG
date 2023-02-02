@@ -1,0 +1,42 @@
+        -:    0:Source:901.c
+        -:    0:Graph:901.gcno
+        -:    0:Data:901.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  long a;
+        -:    3:  int b;
+        -:    4:};
+        -:    5:
+        3:    6:int foo(int x, void *y) {
+        3:    7:  switch (x) {
+        1:    8:  case 0:
+        1:    9:    return ((struct s *)y)->a;
+        1:   10:  case 1:
+        1:   11:    return *(signed char *)y;
+        1:   12:  case 2:
+        1:   13:    return *(short *)y;
+        -:   14:  }
+    #####:   15:  abort();
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  struct s s;
+        -:   20:  short sh[10];
+        -:   21:  signed char c[10];
+        -:   22:  int i;
+        -:   23:
+        1:   24:  s.a = 1;
+        1:   25:  s.b = 2;
+       11:   26:  for (i = 0; i < 10; i++) {
+       10:   27:    sh[i] = i;
+       10:   28:    c[i] = i;
+        -:   29:  }
+        -:   30:
+        1:   31:  if (foo(0, &s) != 1)
+    #####:   32:    abort();
+        1:   33:  if (foo(1, c + 3) != 3)
+    #####:   34:    abort();
+        1:   35:  if (foo(2, sh + 3) != 3)
+    #####:   36:    abort();
+        1:   37:  exit(0);
+        -:   38:}

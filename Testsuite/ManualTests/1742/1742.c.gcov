@@ -1,0 +1,31 @@
+        -:    0:Source:1742.c
+        -:    0:Graph:1742.gcno
+        -:    0:Data:1742.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-ftree-vectorize" } */
+        -:    3:
+        -:    4:unsigned a[1024];
+        -:    5:unsigned b[1024];
+        -:    6:
+        1:    7:void __attribute__((noipa)) foo(unsigned *q, unsigned *r) {
+        1:    8:  unsigned sum1 = 0, sum2 = 0;
+      513:    9:  for (int i = 0; i < 512; ++i) {
+      512:   10:    sum1 += a[2 * i];
+      512:   11:    sum2 += a[2 * i + 1];
+      512:   12:    b[2 * i] = a[2 * i + 1];
+      512:   13:    b[2 * i + 1] = a[2 * i];
+        -:   14:  }
+        1:   15:  *q = sum1;
+        1:   16:  *r = sum2;
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        -:   20:  unsigned sum1, sum2;
+        1:   21:  a[0] = 0;
+        1:   22:  a[1] = 1;
+        1:   23:  foo(&sum1, &sum2);
+        1:   24:  if (b[0] != 1 || b[1] != 0)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

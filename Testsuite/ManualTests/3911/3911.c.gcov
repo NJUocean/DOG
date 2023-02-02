@@ -1,0 +1,28 @@
+        -:    0:Source:3911.c
+        -:    0:Graph:3911.gcno
+        -:    0:Data:3911.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:char a;
+        -:    4:int b, c;
+        -:    5:short d;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  unsigned e = 2;
+        1:    9:  unsigned timeout = 0;
+        -:   10:
+        3:   11:  for (; c < 2; c++) {
+        2:   12:    int f = ~e / 7;
+        2:   13:    if (f)
+       1*:   14:      a = e = ~(b && d);
+        2:   15:    while (e < 94) {
+    #####:   16:      e++;
+    #####:   17:      if (++timeout > 100)
+    #####:   18:        goto die;
+        -:   19:    }
+        -:   20:  }
+        1:   21:  return 0;
+    #####:   22:die:
+    #####:   23:  abort();
+        -:   24:}

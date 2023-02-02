@@ -1,0 +1,37 @@
+        -:    0:Source:600.c
+        -:    0:Graph:600.gcno
+        -:    0:Data:600.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fipa-sra -fdump-ipa-sra-details"  } */
+        -:    3:
+        -:    4:struct bovid {
+        -:    5:  float red;
+        -:    6:  int green;
+        -:    7:  void *blue;
+        -:    8:};
+        -:    9:
+        -:   10:extern int printf(const char *, ...);
+        -:   11:extern void abort(void);
+        -:   12:
+        1:   13:static int __attribute__((noipa)) ox(struct bovid cow) {
+        1:   14:  if (cow.green != 6)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  printf("green: %f\nblue: %p\nblue again: %p\n", cow.green, cow.blue,
+        -:   18:         cow.blue);
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        1:   22:int main(int argc, char *argv[]) {
+        -:   23:  struct bovid cow;
+        -:   24:
+        1:   25:  cow.red = 7.4;
+        1:   26:  cow.green = 6;
+        1:   27:  cow.blue = &cow;
+        -:   28:
+        1:   29:  ox(cow);
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-final { scan-ipa-dump-not "Will split parameter" "sra" } } */

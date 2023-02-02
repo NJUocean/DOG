@@ -1,0 +1,44 @@
+        -:    0:Source:976.c
+        -:    0:Graph:976.gcno
+        -:    0:Data:976.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/66299 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fdump-tree-original" } */
+        -:    4:
+        1:    5:void __attribute__((noinline, noclone)) test1(int x) {
+        -:    6:  if ((2 << x) == 1 || (8 << x) == 1 || (8 << x) == 2 || (3072 << x) == 3 ||
+        -:    7:      (294912 << x) == 9 || (45056 << x) == 11 || (2176 << x) == 17)
+        -:    8:    __builtin_abort();
+        1:    9:}
+        -:   10:
+        1:   11:void __attribute__((noinline, noclone)) test2(int x) {
+        -:   12:  if ((2 << x) != 1 && (8 << x) != 1 && (8 << x) != 2 && (3072 << x) != 3 &&
+        -:   13:      (294912 << x) != 9 && (45056 << x) != 11 && (2176 << x) != 17)
+        -:   14:    ;
+        -:   15:  else
+        -:   16:    __builtin_abort();
+        1:   17:}
+        -:   18:
+        1:   19:void __attribute__((noinline, noclone)) test3(int x) {
+        -:   20:  if ((3 << x) == 4 || (1 << x) == 12 || (40 << x) == 1024 || (2 << x) == 84 ||
+        -:   21:      (3 << x) == 16384 || (10 << x) == 6144)
+        -:   22:    __builtin_abort();
+        1:   23:}
+        -:   24:
+        1:   25:void __attribute__((noinline, noclone)) test4(int x) {
+        -:   26:  if ((3 << x) != 4 && (1 << x) != 12 && (40 << x) != 1024 && (2 << x) != 84 &&
+        -:   27:      (3 << x) != 16384 && (10 << x) != 6144)
+        -:   28:    ;
+        -:   29:  else
+        -:   30:    __builtin_abort();
+        1:   31:}
+        -:   32:
+        1:   33:int main(void) {
+        1:   34:  test1(0);
+        1:   35:  test2(1);
+        1:   36:  test3(1);
+        1:   37:  test4(2);
+        -:   38:}
+        -:   39:
+        -:   40:/* { dg-final { scan-tree-dump-not "(<<|==|!=)" "original" } } */

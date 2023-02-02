@@ -1,0 +1,20 @@
+        -:    0:Source:4132.c
+        -:    0:Graph:4132.gcno
+        -:    0:Data:4132.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-finput-charset=utf-8" } */
+        -:    2:typedef __WCHAR_TYPE__ wchar_t;
+        -:    3:wchar_t x[] = L"Ä";
+        -:    4:wchar_t y = L'Ä';
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:int main(void) {
+        -:    9:  if (sizeof(x) / sizeof(wchar_t) != 2)
+        -:   10:    abort();
+        1:   11:  if (x[0] != L'Ä' || x[1] != L'\0')
+    #####:   12:    abort();
+        1:   13:  if (y != L'Ä')
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

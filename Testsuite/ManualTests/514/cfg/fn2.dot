@@ -1,0 +1,31 @@
+digraph "" {
+  graph [bgcolor="white", fillcolor="#FFFFCC", pack="true", packmode="clust", fontname="Arial", label="", fontsize="12", compound="true", style="rounded,filled"];
+  node [node_initialized="no", fillcolor="white", fontname="Arial", label="", color="grey", fontsize="12", fixedsize="false", compound="true", shape="rectangle", style="filled"];
+  edge [arrowtail="none", lhead="", fontcolor="black", fontname="Arial", label="", color="black", fontsize="12", arrowhead="normal", arrowsize="0.5", compound="true", ltail="", dir="forward"];
+  __N1 [fillcolor="#ffffff", label="2 - passive 35,10,2,10,10,,3", color="#0000ff", shape="box", style="filled"];
+  __N2 [fillcolor="#ffffff", label="1 - passive-implicit 36,,,,,,2\n\nstart", color="#006400", shape="box", style="filled"];
+  __N3 [fillcolor="#ffffff", label="3 - if 5,11,6,11,11,15,4,15", color="#0000ff", shape="diamond", style="filled"];
+  __N4 [fillcolor="#ffffff", label="4 - passive 35,12,4,12,9,,55 - passive 35,13,4,13,9,,6", color="#0000ff", shape="box", style="filled"];
+  __N5 [fillcolor="#ffffff", label="16 - return 30,22,2,22,9,,17", color="#0000ff", shape="box", style="filled"];
+  __N6 [fillcolor="#ffffff", label="6 - if 5,14,8,14,13,8,7,8", color="#0000ff", shape="diamond", style="filled"];
+  __N7 [fillcolor="#ffffff", label="7 - passive 35,15,6,15,11,,8", color="#0000ff", shape="box", style="filled"];
+  __N8 [fillcolor="#ffffff", label="9 - passive 35,16,4,16,9,,10", color="#0000ff", shape="box", style="filled"];
+  __N9 [fillcolor="#ffffff", label="10 - if 5,17,8,17,13,12,11,12", color="#0000ff", shape="diamond", style="filled"];
+  __N10 [fillcolor="#ffffff", label="11 - passive 35,18,6,18,11,,12", color="#0000ff", shape="box", style="filled"];
+  __N11 [fillcolor="#ffffff", label="13 - passive 35,19,4,19,9,,1414 - passive 35,20,4,20,13,,15", color="#0000ff", shape="box", style="filled"];
+  __N12 [fillcolor="#ffffff", label="17 - passive-implicit 36,,,,,,\n\nend", color="#a52a2a", shape="box", style="filled"];
+  __N2 -> __N1 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N1 -> __N3 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N3 -> __N4 [arrowtail="none", color="#00ff00", label="yes", arrowhead="normal", dir="forward"];
+  __N3 -> __N5 [arrowtail="none", color="#ff0000", label="no", arrowhead="normal", dir="forward"];
+  __N4 -> __N6 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N6 -> __N7 [arrowtail="none", color="#00ff00", label="yes", arrowhead="normal", dir="forward"];
+  __N6 -> __N8 [arrowtail="none", color="#ff0000", label="no", arrowhead="normal", dir="forward"];
+  __N7 -> __N8 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N8 -> __N9 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N9 -> __N10 [arrowtail="none", color="#00ff00", label="yes", arrowhead="normal", dir="forward"];
+  __N9 -> __N11 [arrowtail="none", color="#ff0000", label="no", arrowhead="normal", dir="forward"];
+  __N10 -> __N11 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N11 -> __N5 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+  __N5 -> __N12 [arrowtail="none", color="#000000", label="", arrowhead="normal", dir="forward"];
+}

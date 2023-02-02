@@ -1,0 +1,88 @@
+        -:    0:Source:131.c
+        -:    0:Graph:131.gcno
+        -:    0:Data:131.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_compare_exchange routines for existence and proper
+        -:    2:   execution on 2-byte values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    5:
+        -:    6:#include <stdatomic.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:_Atomic int v = ATOMIC_VAR_INIT(0);
+        -:   11:int expected = 0;
+        -:   12:int max = ~0;
+        -:   13:int desired = ~0;
+        -:   14:int zero = 0;
+        -:   15:
+        1:   16:int main() {
+        -:   17:
+        1:   18:  if (!atomic_compare_exchange_strong_explicit(
+        -:   19:          &v, &expected, max, memory_order_relaxed, memory_order_relaxed))
+    #####:   20:    abort();
+        1:   21:  if (expected != 0)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  if (atomic_compare_exchange_strong_explicit(
+        -:   25:          &v, &expected, 0, memory_order_acquire, memory_order_relaxed))
+    #####:   26:    abort();
+        1:   27:  if (expected != max)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  if (!atomic_compare_exchange_strong_explicit(
+        -:   31:          &v, &expected, 0, memory_order_release, memory_order_acquire))
+    #####:   32:    abort();
+        1:   33:  if (expected != max)
+    #####:   34:    abort();
+        1:   35:  if (v != 0)
+    #####:   36:    abort();
+        -:   37:
+        1:   38:  if (atomic_compare_exchange_weak_explicit(
+        -:   39:          &v, &expected, desired, memory_order_acq_rel, memory_order_acquire))
+    #####:   40:    abort();
+        1:   41:  if (expected != 0)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  if (!atomic_compare_exchange_strong_explicit(
+        -:   45:          &v, &expected, desired, memory_order_seq_cst, memory_order_seq_cst))
+    #####:   46:    abort();
+        1:   47:  if (expected != 0)
+    #####:   48:    abort();
+        1:   49:  if (v != max)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  v = 0;
+        -:   53:
+        1:   54:  if (!atomic_compare_exchange_strong(&v, &expected, max))
+    #####:   55:    abort();
+        1:   56:  if (expected != 0)
+    #####:   57:    abort();
+        -:   58:
+        1:   59:  if (atomic_compare_exchange_strong(&v, &expected, zero))
+    #####:   60:    abort();
+        1:   61:  if (expected != max)
+    #####:   62:    abort();
+        -:   63:
+        1:   64:  if (!atomic_compare_exchange_strong(&v, &expected, zero))
+    #####:   65:    abort();
+        1:   66:  if (expected != max)
+    #####:   67:    abort();
+        1:   68:  if (v != 0)
+    #####:   69:    abort();
+        -:   70:
+        1:   71:  if (atomic_compare_exchange_weak(&v, &expected, desired))
+    #####:   72:    abort();
+        1:   73:  if (expected != 0)
+    #####:   74:    abort();
+        -:   75:
+        1:   76:  if (!atomic_compare_exchange_strong(&v, &expected, desired))
+    #####:   77:    abort();
+        1:   78:  if (expected != 0)
+    #####:   79:    abort();
+        1:   80:  if (v != max)
+    #####:   81:    abort();
+        -:   82:
+        1:   83:  return 0;
+        -:   84:}

@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |/* This is a simplified version of what Emacs does internally,
+    4|       |   when marking its stack.  */
+    5|       |
+    6|       |static unsigned long sum;
+    7|       |static void *stack_base;
+    8|       |
+    9|       |/* A simple substitute for what Emacs actually does.  */
+   10|      5|static void mark_maybe_pointer(void *p) { sum ^= (unsigned long)p; }
+   11|       |
+   12|       |static inline void __attribute__((no_sanitize_address))
+   13|      1|mark_memory(void **start, void **end) {
+   14|      1|  void **pp;
+   15|      1|
+   16|      1|  if (end < start) {
+   17|      1|    void **tem = start;
+   18|      1|    start = end;
+   19|      1|    end = tem;
+   20|      1|  }
+   21|      1|
+   22|      6|  for (pp = start; pp < end; pp++) {
+   23|      5|    /* This is the dereference that we don't want sanitized.  */
+   24|      5|    void *p = *pp;
+   25|      5|
+   26|      5|    mark_maybe_pointer(p);
+   27|      5|  }
+   28|      1|}
+   29|       |
+   30|      1|static void mark_stack(void) {
+   31|      1|  void *end;
+   32|      1|  mark_memory(stack_base, &end);
+   33|      1|}
+   34|       |
+   35|      1|void garbage_collect(void) { mark_stack(); }
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  void *dummy;
+   39|      1|  stack_base = &dummy;
+   40|      1|  garbage_collect();
+   41|      1|  return 0;
+   42|      1|}
+

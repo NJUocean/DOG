@@ -1,0 +1,31 @@
+        -:    0:Source:1204.c
+        -:    0:Graph:1204.gcno
+        -:    0:Data:1204.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/58595 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:/* { dg-additional-options "-fpic" { target fpic } } */
+        -:    5:/* { dg-add-options tls } */
+        -:    6:/* { dg-require-effective-target tls_runtime } */
+        -:    7:/* { dg-require-effective-target sync_int_long } */
+        -:    8:
+        -:    9:struct S {
+        -:   10:  unsigned long a, b;
+        -:   11:};
+        -:   12:__thread struct S s;
+        -:   13:void bar(unsigned long *);
+        -:   14:
+        1:   15:__attribute__((noinline)) void foo(void) {
+        -:   16:  int i;
+       11:   17:  for (i = 0; i < 10; i++)
+       10:   18:    __sync_fetch_and_add(&s.b, 1L);
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  s.b = 12;
+        1:   23:  foo();
+        1:   24:  if (s.b != 22)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

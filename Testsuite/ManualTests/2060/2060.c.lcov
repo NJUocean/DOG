@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  int i;
+    6|      1|  signed char result = 0;
+    7|  8.00k|  for (i = 0; i != 8000; ++i) {
+    8|  8.00k|    int tem = result;
+    9|  8.00k|    tem = tem + 2;
+   10|  8.00k|    result = tem;
+   11|  8.00k|  }
+   12|      1|  if (__builtin_abs((int)(signed char)((unsigned char)result + 128)) != 0)
+   13|      0|    __builtin_abort();
+   14|      1|  return 0;
+   15|      1|}
+   16|       |
+   17|       |/* SCEV constant propagation should be able to compute the overall effect
+   18|       |   of the loop.  */
+   19|       |
+   20|       |/* { dg-final { scan-tree-dump-not "abort" "optimized" } } */
+

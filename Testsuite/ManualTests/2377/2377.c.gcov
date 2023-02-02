@@ -1,0 +1,24 @@
+        -:    0:Source:2377.c
+        -:    0:Graph:2377.gcno
+        -:    0:Data:2377.gcda
+        -:    0:Runs:1
+        1:    1:int main(void) {
+        -:    2:  long long x;
+        -:    3:  int n;
+        -:    4:
+        -:    5:  if (sizeof(long long) < 8)
+        -:    6:    exit(0);
+        -:    7:
+        1:    8:  n = 9;
+        1:    9:  x = (((long long)n) << 55) / 0xff;
+        -:   10:
+        1:   11:  if (x == 0)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  x = (((long long)9) << 55) / 0xff;
+        -:   15:
+        1:   16:  if (x == 0)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  exit(0);
+        -:   20:}

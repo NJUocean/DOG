@@ -1,0 +1,31 @@
+    1|       |/* PR tree-optimization/54471 */
+    2|       |
+    3|       |#ifdef __SIZEOF_INT128__
+    4|      1|#define T __int128
+    5|       |#else
+    6|       |#define T long long
+    7|       |#endif
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|__attribute__((noinline)) unsigned T foo(T ixi, unsigned ctr) {
+   12|      1|  unsigned T irslt = 1;
+   13|      1|  T ix = ixi;
+   14|      1|
+   15|      5|  for (; ctr; ctr--) {
+   16|      4|    irslt *= ix;
+   17|      4|    ix *= ix;
+   18|      4|  }
+   19|      1|
+   20|      1|  if (irslt != 14348907)
+   21|      0|    abort();
+   22|      1|  return irslt;
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  unsigned T res;
+   27|      1|
+   28|      1|  res = foo(3, 4);
+   29|      1|  return 0;
+   30|      1|}
+

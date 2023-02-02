@@ -1,0 +1,13 @@
+        -:    0:Source:323.c
+        -:    0:Graph:323.gcno
+        -:    0:Data:323.gcda
+        -:    0:Runs:1
+        -:    1:int merror = 0;
+        -:    2:extern int merror;
+        -:    3:
+        1:    4:void mtherr(int code) { merror = code + 1; }
+        -:    5:
+        1:    6:int main() {
+        1:    7:  mtherr(7);
+        1:    8:  return 0;
+        -:    9:}

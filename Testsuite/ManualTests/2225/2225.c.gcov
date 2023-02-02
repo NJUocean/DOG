@@ -1,0 +1,23 @@
+        -:    0:Source:2225.c
+        -:    0:Graph:2225.gcno
+        -:    0:Data:2225.gcda
+        -:    0:Runs:1
+        -:    1:char a;
+        -:    2:struct S {
+        -:    3:  short b, c;
+        -:    4:} d;
+        -:    5:
+        2:    6:__attribute__((noipa)) void foo(int x) {
+        2:    7:  if (x != 4)
+    #####:    8:    __builtin_abort();
+        2:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  short *g = &d.c, *h = &d.b;
+        1:   13:  char e = 4 - a;
+        -:   14:  int f;
+        1:   15:  *h = *g = e;
+        3:   16:  for (f = 0; f < 2; f++)
+        2:   17:    foo(d.c);
+        1:   18:  return 0;
+        -:   19:}

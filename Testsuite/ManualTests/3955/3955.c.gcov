@@ -1,0 +1,31 @@
+        -:    0:Source:3955.c
+        -:    0:Graph:3955.gcno
+        -:    0:Data:3955.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  char hours, day, month;
+        -:    3:  short year;
+        -:    4:} T;
+        -:    5:
+        4:    6:T g(void) {
+        -:    7:  T now;
+        -:    8:
+        4:    9:  now.hours = 1;
+        4:   10:  now.day = 2;
+        4:   11:  now.month = 3;
+        4:   12:  now.year = 4;
+        4:   13:  return now;
+        -:   14:}
+        -:   15:
+        4:   16:T f(void) {
+        -:   17:  T virk;
+        -:   18:
+        4:   19:  virk = g();
+        4:   20:  return virk;
+        -:   21:}
+        -:   22:
+        1:   23:main() {
+        1:   24:  if (f().hours != 1 || f().day != 2 || f().month != 3 || f().year != 4)
+    #####:   25:    abort();
+        1:   26:  exit(0);
+        -:   27:}

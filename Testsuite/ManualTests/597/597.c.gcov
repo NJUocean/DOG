@@ -1,0 +1,28 @@
+        -:    0:Source:597.c
+        -:    0:Graph:597.gcno
+        -:    0:Data:597.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-early-inlining -fipa-pta" } */
+        -:    3:
+        1:    4:static int *__attribute__((noinline, noclone)) pass_me(int *p) { return p; }
+        -:    5:
+        -:    6:/* When foo is inlined into main we have to make sure to adjust
+        -:    7:   main()s IPA CLOBBERED set according to the decl remappings
+        -:    8:   inlining does.  */
+        -:    9:
+        1:   10:static int foo(void) {
+        1:   11:  int a = 0;
+        1:   12:  int *p = pass_me(&a);
+        1:   13:  *p = 1;
+        1:   14:  return a;
+        -:   15:}
+        -:   16:
+        -:   17:extern void abort(void);
+        -:   18:
+        1:   19:int main() {
+        1:   20:  if (foo() != 1)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

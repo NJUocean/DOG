@@ -1,0 +1,52 @@
+    1|       |/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-skip-if "PR81210 sp not aligned to 16 bytes" { *-*-darwin* } } */
+    3|       |/* { dg-options "-mgeneral-regs-only" } */
+    4|       |
+    5|       |extern void exit(int);
+    6|       |
+    7|       |typedef unsigned int uword_t __attribute__((mode(__word__)));
+    8|       |
+    9|      1|#define IP 0x12345671
+   10|      1|#define CS 0x12345672
+   11|      1|#define FLAGS 0x12345673
+   12|      1|#define SP 0x12345674
+   13|      1|#define SS 0x12345675
+   14|       |
+   15|       |#define STRING(x) XSTRING(x)
+   16|       |#define XSTRING(x) #x
+   17|       |#define ASMNAME(cname) ASMNAME2(__USER_LABEL_PREFIX__, cname)
+   18|       |#define ASMNAME2(prefix, cname) XSTRING(prefix) cname
+   19|       |
+   20|       |struct interrupt_frame {
+   21|       |  uword_t ip;
+   22|       |  uword_t cs;
+   23|       |  uword_t flags;
+   24|       |  uword_t sp;
+   25|       |  uword_t ss;
+   26|       |};
+   27|       |
+   28|      1|__attribute__((interrupt, used)) void fn(struct interrupt_frame *frame) {
+   29|      1|  if (IP != frame->ip)
+   30|      0|    __builtin_abort();
+   31|      1|  if (CS != frame->cs)
+   32|      0|    __builtin_abort();
+   33|      1|  if (FLAGS != frame->flags)
+   34|      0|    __builtin_abort();
+   35|      1|  if (SP != frame->sp)
+   36|      0|    __builtin_abort();
+   37|      1|  if (SS != frame->ss)
+   38|      0|    __builtin_abort();
+   39|      1|
+   40|      1|  exit(0);
+   41|      1|}
+   42|       |
+   43|      1|int main() {
+   44|      1|  asm("push	$" STRING(SS) ";		\
+   45|      1|	push	$" STRING(SP) ";		\
+   46|      1|	push	$" STRING(FLAGS) ";		\
+   47|      1|	push	$" STRING(CS) ";		\
+   48|      1|	push	$" STRING(IP) ";		\
+   49|      1|	jmp	 " ASMNAME("fn"));
+   50|      1|  return 0;
+   51|      1|}
+

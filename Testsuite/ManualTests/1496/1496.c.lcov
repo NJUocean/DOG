@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-weak "" } */
+    3|       |/* { dg-skip-if "No undefined weak" { hppa*-*-hpux* && { ! lp64 } } } */
+    4|       |/* { dg-skip-if "No undefined weak" { nvptx-*-* } } */
+    5|       |/* { dg-additional-options "-Wl,-undefined,dynamic_lookup" { target *-*-darwin*
+    6|       | * } } */
+    7|       |/* { dg-additional-options "-Wl,-flat_namespace" { target *-*-darwin[89]* } } */
+    8|       |
+    9|       |typedef __SIZE_TYPE__ size_t;
+   10|       |extern int posix_memalign(void **memptr, size_t alignment, size_t size)
+   11|       |    __attribute__((weak));
+   12|       |extern void abort(void);
+   13|      1|int main(void) {
+   14|      1|  void *p;
+   15|      1|  int ret;
+   16|      1|
+   17|      1|  if (!posix_memalign)
+   18|      0|    return 0;
+   19|      1|
+   20|      1|  p = (void *)&ret;
+   21|      1|  ret = posix_memalign(&p, sizeof(void *), -1);
+   22|      1|  if (p != (void *)&ret)
+   23|      0|    abort();
+   24|      1|  return 0;
+   25|      1|}
+

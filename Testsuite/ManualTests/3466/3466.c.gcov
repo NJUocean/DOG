@@ -1,0 +1,27 @@
+        -:    0:Source:3466.c
+        -:    0:Graph:3466.gcno
+        -:    0:Data:3466.gcda
+        -:    0:Runs:1
+        -:    1:/* On ARM, BAR used to get a bogus number in E due to stack
+        -:    2:   misalignment.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:void foo(void) {
+        1:    8:  int f = 0;
+        -:    9:
+        1:   10:  void bar(int a, int b, int c, int d, int e) {
+        1:   11:    if (e != 0) {
+    #####:   12:      f = 1;
+    #####:   13:      abort();
+        -:   14:    }
+        1:   15:  }
+        -:   16:
+        1:   17:  bar(0, 0, 0, 0, 0);
+        1:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  foo();
+        1:   22:  exit(0);
+        -:   23:}

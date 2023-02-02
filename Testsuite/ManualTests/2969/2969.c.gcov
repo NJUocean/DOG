@@ -1,0 +1,82 @@
+        -:    0:Source:2969.c
+        -:    0:Graph:2969.gcno
+        -:    0:Data:2969.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase to check generation of a SH2A specific instruction for
+        -:    2:   "BAND.B #imm3, @(disp12, Rn)".  */
+        -:    3:/* { dg-do compile { target { sh2a } } }  */
+        -:    4:/* { dg-options "-O1 -mbitops" }  */
+        -:    5:/* { dg-final { scan-assembler "band.b"} }  */
+        -:    6:
+        -:    7:volatile struct {
+        -:    8:  union {
+        -:    9:    unsigned char BYTE;
+        -:   10:    struct {
+        -:   11:      unsigned char BIT7 : 1;
+        -:   12:      unsigned char BIT6 : 1;
+        -:   13:      unsigned char BIT5 : 1;
+        -:   14:      unsigned char BIT4 : 1;
+        -:   15:      unsigned char BIT3 : 1;
+        -:   16:      unsigned char BIT2 : 1;
+        -:   17:      unsigned char BIT1 : 1;
+        -:   18:      unsigned char BIT0 : 1;
+        -:   19:    } BIT;
+        -:   20:  } ICR0;
+        -:   21:} USRSTR;
+        -:   22:
+        -:   23:volatile union t_IOR {
+        -:   24:  unsigned short WORD;
+        -:   25:  struct {
+        -:   26:    unsigned char IOR15 : 1;
+        -:   27:    unsigned char IOR14 : 1;
+        -:   28:    unsigned char IOR13 : 1;
+        -:   29:    unsigned char IOR12 : 1;
+        -:   30:    unsigned char IOR11 : 1;
+        -:   31:    unsigned char IOR10 : 1;
+        -:   32:    unsigned char IOR9 : 1;
+        -:   33:    unsigned char IOR8 : 1;
+        -:   34:    unsigned char IOR7 : 1;
+        -:   35:    unsigned char IOR6 : 1;
+        -:   36:    unsigned char IOR5 : 1;
+        -:   37:    unsigned char IOR4 : 1;
+        -:   38:    unsigned char IOR3 : 1;
+        -:   39:    unsigned char IOR2 : 1;
+        -:   40:    unsigned char IOR1 : 1;
+        -:   41:    unsigned char IOR0 : 1;
+        -:   42:  } BIT;
+        -:   43:} PORT;
+        -:   44:
+        1:   45:int main() {
+        -:   46:  volatile unsigned char a;
+        -:   47:
+        -:   48:  /* Instruction generated is BAND.B #imm3, @(disp12, Rn)  */
+        1:   49:  USRSTR.ICR0.BIT.BIT3 = USRSTR.ICR0.BIT.BIT4 & USRSTR.ICR0.BIT.BIT1;
+        1:   50:  USRSTR.ICR0.BIT.BIT2 = USRSTR.ICR0.BIT.BIT6 & USRSTR.ICR0.BIT.BIT6;
+        1:   51:  USRSTR.ICR0.BIT.BIT4 = USRSTR.ICR0.BIT.BIT2 & USRSTR.ICR0.BIT.BIT4;
+        1:   52:  USRSTR.ICR0.BIT.BIT6 = USRSTR.ICR0.BIT.BIT1 & USRSTR.ICR0.BIT.BIT3;
+        -:   53:
+        1:   54:  a = USRSTR.ICR0.BIT.BIT0 & USRSTR.ICR0.BIT.BIT1;
+        1:   55:  a = USRSTR.ICR0.BIT.BIT5 & USRSTR.ICR0.BIT.BIT7;
+        1:   56:  a = USRSTR.ICR0.BIT.BIT2 & USRSTR.ICR0.BIT.BIT6;
+        -:   57:
+        1:   58:  PORT.BIT.IOR13 = PORT.BIT.IOR0 & USRSTR.ICR0.BIT.BIT7;
+        1:   59:  PORT.BIT.IOR15 = PORT.BIT.IOR6 & USRSTR.ICR0.BIT.BIT2;
+        1:   60:  PORT.BIT.IOR3 = PORT.BIT.IOR2 & USRSTR.ICR0.BIT.BIT5;
+        1:   61:  PORT.BIT.IOR1 = PORT.BIT.IOR13 & USRSTR.ICR0.BIT.BIT1;
+        -:   62:
+        1:   63:  PORT.BIT.IOR1 = PORT.BIT.IOR2 & USRSTR.ICR0.BIT.BIT1;
+        1:   64:  PORT.BIT.IOR11 = PORT.BIT.IOR9 & USRSTR.ICR0.BIT.BIT2;
+        1:   65:  PORT.BIT.IOR8 = PORT.BIT.IOR14 & USRSTR.ICR0.BIT.BIT5;
+        -:   66:
+        1:   67:  PORT.BIT.IOR10 &= USRSTR.ICR0.BIT.BIT1;
+        1:   68:  PORT.BIT.IOR1 &= USRSTR.ICR0.BIT.BIT2;
+        1:   69:  PORT.BIT.IOR5 &= USRSTR.ICR0.BIT.BIT5;
+        1:   70:  PORT.BIT.IOR14 &= USRSTR.ICR0.BIT.BIT4;
+        -:   71:
+        -:   72:  /* Instruction generated on using size optimization option "-Os".  */
+        1:   73:  a = a & USRSTR.ICR0.BIT.BIT1;
+        1:   74:  a = a & USRSTR.ICR0.BIT.BIT4;
+        1:   75:  a = a & USRSTR.ICR0.BIT.BIT0;
+        -:   76:
+        1:   77:  return 0;
+        -:   78:}

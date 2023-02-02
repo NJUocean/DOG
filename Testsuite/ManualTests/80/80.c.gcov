@@ -1,0 +1,51 @@
+        -:    0:Source:80.c
+        -:    0:Graph:80.gcno
+        -:    0:Data:80.gcda
+        -:    0:Runs:1
+        -:    1:/* Test array initializion by store_by_pieces.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:struct A {
+        -:    6:  char c[10];
+        -:    7:};
+        -:    8:extern void abort(void);
+        -:    9:
+        5:   10:void __attribute__((noinline)) check(struct A *a, int b) {
+        -:   11:  const char *p;
+        5:   12:  switch (b) {
+        1:   13:  case 0:
+        1:   14:    p = "abcdefghi";
+        1:   15:    break;
+        1:   16:  case 1:
+        1:   17:    p = "j\0\0\0\0\0\0\0\0";
+        1:   18:    break;
+        1:   19:  case 2:
+        1:   20:    p = "kl\0\0\0\0\0\0\0";
+        1:   21:    break;
+        1:   22:  case 3:
+        1:   23:    p = "mnop\0\0\0\0\0";
+        1:   24:    break;
+        1:   25:  case 4:
+        1:   26:    p = "qrstuvwx\0";
+        1:   27:    break;
+    #####:   28:  default:
+    #####:   29:    abort();
+        -:   30:  }
+        5:   31:  if (__builtin_memcmp(a->c, p, 10) != 0)
+    #####:   32:    abort();
+        5:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        1:   36:  struct A a = {"abcdefghi"};
+        1:   37:  check(&a, 0);
+        1:   38:  struct A b = {"j"};
+        1:   39:  check(&b, 1);
+        1:   40:  struct A c = {"kl"};
+        1:   41:  check(&c, 2);
+        1:   42:  struct A d = {"mnop"};
+        1:   43:  check(&d, 3);
+        1:   44:  struct A e = {"qrstuvwx"};
+        1:   45:  check(&e, 4);
+        1:   46:  return 0;
+        -:   47:}

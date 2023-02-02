@@ -1,0 +1,37 @@
+        -:    0:Source:2287.c
+        -:    0:Graph:2287.gcno
+        -:    0:Data:2287.gcda
+        -:    0:Runs:1
+        -:    1:#include <limits.h>
+        -:    2:
+        -:    3:#if ULONG_LONG_MAX != 18446744073709551615ull &&                               \
+        -:    4:    ULONG_MAX != 18446744073709551615ull
+        -:    5:int main(void) { exit(0); }
+        -:    6:#else
+        -:    7:#if ULONG_MAX != 18446744073709551615ull
+        -:    8:typedef unsigned long long ull;
+        -:    9:#else
+        -:   10:typedef unsigned long ull;
+        -:   11:#endif
+        -:   12:
+        -:   13:#include <stdio.h>
+        -:   14:
+        -:   15:void checkit(int);
+        -:   16:
+        1:   17:main() {
+        1:   18:  const ull a = 0x1400000000ULL;
+        1:   19:  const ull b = 0x80000000ULL;
+        1:   20:  const ull c = a / b;
+        1:   21:  const ull d = 0x1400000000ULL / 0x80000000ULL;
+        -:   22:
+        1:   23:  checkit((int)c);
+        1:   24:  checkit((int)d);
+        -:   25:
+        1:   26:  exit(0);
+        -:   27:}
+        -:   28:
+        2:   29:void checkit(int a) {
+        2:   30:  if (a != 40)
+    #####:   31:    abort();
+        2:   32:}
+        -:   33:#endif

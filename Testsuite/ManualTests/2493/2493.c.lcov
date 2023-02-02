@@ -1,0 +1,40 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "--save-temps -mcmse
+    3|       | * -Wl,--section-start,.gnu.sgstubs=0x00400000" } */
+    4|       |
+    5|       |typedef struct {
+    6|       |  short a;
+    7|       |  signed char b : 2;
+    8|       |  short : 1;
+    9|       |  signed char c : 3;
+   10|       |} test_st;
+   11|       |
+   12|      1|test_st __attribute__((cmse_nonsecure_entry)) foo(void) {
+   13|      1|  test_st t;
+   14|      1|  t.a = -32768;
+   15|      1|  t.b = -2;
+   16|      1|  t.c = -4;
+   17|      1|  return t;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  test_st t;
+   22|      1|  t = foo();
+   23|      1|  if (t.a != -32768 || t.b != -2 || t.c != -4)
+   24|      0|    __builtin_abort();
+   25|      1|  return 0;
+   26|      1|}
+   27|       |
+   28|       |/* { dg-final { scan-assembler "vstr\tFPCXTNS, \\\[sp, #-4\\\]!" { target
+   29|       | * arm_cmse_clear_ok } } } */
+   30|       |/* { dg-final { scan-assembler "movw\tr1, #65535" } } */
+   31|       |/* { dg-final { scan-assembler "movt\tr1, 63" } } */
+   32|       |/* { dg-final { scan-assembler "ands\tr0(, r0)?, r1" } } */
+   33|       |/* { dg-final { scan-assembler "vscclrm\t\{s0-s15, VPR\}" { target
+   34|       | * arm_cmse_clear_ok } } } */
+   35|       |/* { dg-final { scan-assembler "clrm\t\{r1, r2, r3, ip, APSR\}" { target
+   36|       | * arm_cmse_clear_ok } } } */
+   37|       |/* { dg-final { scan-assembler "vldr\tFPCXTNS, \\\[sp\\\], #4" { target
+   38|       | * arm_cmse_clear_ok } } } */
+   39|       |/* { dg-final { scan-assembler "bxns" } } */
+

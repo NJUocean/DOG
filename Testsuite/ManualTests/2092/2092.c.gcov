@@ -1,0 +1,26 @@
+        -:    0:Source:2092.c
+        -:    0:Graph:2092.gcno
+        -:    0:Data:2092.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:  unsigned short a;
+        -:    6:} A;
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+        2:   11:void foo(unsigned int x) {
+        2:   12:  if (x != 0x800 && x != 0x810)
+    #####:   13:    abort();
+        2:   14:}
+        -:   15:
+        1:   16:int main(int argc, char **argv) {
+        -:   17:  int i;
+        3:   18:  for (i = 0; i < 2; ++i)
+       2*:   19:    foo(((A){((!(i >> 4) ? 8 : 64 + (i >> 4)) << 8) + (i << 4)}).a);
+        1:   20:  exit(0);
+        -:   21:}
+        -:   22:/* { dg-final { scan-tree-dump-times "Invalid sum" 0 "optimized" } } */

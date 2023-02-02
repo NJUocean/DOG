@@ -1,0 +1,25 @@
+        -:    0:Source:993.c
+        -:    0:Graph:993.gcno
+        -:    0:Data:993.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-dce -fno-forward-propagate -fno-rerun-cse-after-loop
+        -:    3: * -funroll-loops" } */
+        -:    4:
+        -:    5:#define N 32
+        -:    6:
+        -:    7:short sa[N];
+        -:    8:short sb[N];
+        -:    9:int ia[N];
+        -:   10:int ib[N];
+        -:   11:
+        1:   12:int __attribute__((noinline, noclone)) main1(int n) {
+        -:   13:  int i;
+       26:   14:  for (i = 0; i < n; i++) {
+       25:   15:    sa[i + 7] = sb[i];
+       25:   16:    ia[i + 3] = ib[i + 1];
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) { return main1(N - 7); }

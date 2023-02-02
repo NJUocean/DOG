@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fipa-pta" } */
+    3|       |
+    4|      2|static long bug(long depth, long *v) {
+    5|      2|  if (depth == 0) {
+    6|      1|    *v = 0;
+    7|      1|    return 1;
+    8|      1|  }
+    9|      1|
+   10|      1|  long r = 1;
+   11|      1|  long val = bug(depth - 1, &r);
+   12|      1|  return 2 * r + val;
+   13|      1|}
+   14|       |
+   15|      1|static long ff(long depth) { return bug(depth, (long *)0); }
+   16|       |
+   17|      1|int main() {
+   18|      1|  if (ff(1) != 1)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

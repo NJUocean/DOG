@@ -1,0 +1,98 @@
+        -:    0:Source:365.c
+        -:    0:Graph:365.gcno
+        -:    0:Data:365.gcda
+        -:    0:Runs:1
+        -:    1:/* Exercise nested function decomposition, gcc/tree-nested.c.  */
+        -:    2:/* See gcc/testsuite/gfortran.dg/goacc/nested-function-1.f90 for the Fortran
+        -:    3:   version.  */
+        -:    4:
+        1:    5:int main() {
+        -:    6:#define N 100
+        -:    7:  int nonlocal_arg;
+        -:    8:  int nonlocal_a[N];
+        -:    9:  int nonlocal_i;
+        -:   10:  int nonlocal_j;
+        -:   11:
+      101:   12:  for (int i = 0; i < N; ++i)
+      100:   13:    nonlocal_a[i] = 5;
+        1:   14:  nonlocal_arg = 5;
+        -:   15:
+        1:   16:  void local() {
+        -:   17:    int local_i;
+        -:   18:    int local_arg;
+        -:   19:    int local_a[N];
+        -:   20:    int local_j;
+        -:   21:
+      101:   22:    for (int i = 0; i < N; ++i)
+      100:   23:      local_a[i] = 5;
+        1:   24:    local_arg = 5;
+        -:   25:
+        -:   26:#pragma acc kernels loop gang(num                                              \
+        -:   27:                              : local_arg) worker(local_arg) vector(local_arg) \
+        -:   28:    wait async(local_arg)
+      101:   29:    for (local_i = 0; local_i < N; ++local_i) {
+        -:   30:#pragma acc cache(local_a [local_i:5])
+      100:   31:      local_a[local_i] = 100;
+        -:   32:#pragma acc loop seq tile(*)
+    10100:   33:      for (local_j = 0; local_j < N; ++local_j)
+        -:   34:        ;
+        -:   35:#pragma acc loop auto independent tile(1)
+    10100:   36:      for (local_j = 0; local_j < N; ++local_j)
+        -:   37:        ;
+        -:   38:    }
+        -:   39:
+        -:   40:#pragma acc kernels loop gang(static                                           \
+        -:   41:                              : local_arg) worker(local_arg) vector(local_arg) \
+        -:   42:    wait(local_arg, local_arg + 1, local_arg + 2) async
+      101:   43:    for (local_i = 0; local_i < N; ++local_i) {
+        -:   44:#pragma acc cache(local_a [local_i:4])
+      100:   45:      local_a[local_i] = 100;
+        -:   46:#pragma acc loop seq tile(1)
+    10100:   47:      for (local_j = 0; local_j < N; ++local_j)
+        -:   48:        ;
+        -:   49:#pragma acc loop auto independent tile(*)
+    10100:   50:      for (local_j = 0; local_j < N; ++local_j)
+        -:   51:        ;
+        -:   52:    }
+        1:   53:  }
+        -:   54:
+        1:   55:  void nonlocal() {
+      101:   56:    for (int i = 0; i < N; ++i)
+      100:   57:      nonlocal_a[i] = 5;
+        1:   58:    nonlocal_arg = 5;
+        -:   59:
+        -:   60:#pragma acc kernels loop gang(num                                              \
+        -:   61:                              : nonlocal_arg) worker(nonlocal_arg)             \
+        -:   62:    vector(nonlocal_arg) wait async(nonlocal_arg)
+      101:   63:    for (nonlocal_i = 0; nonlocal_i < N; ++nonlocal_i) {
+        -:   64:#pragma acc cache(nonlocal_a [nonlocal_i:3])
+      100:   65:      nonlocal_a[nonlocal_i] = 100;
+        -:   66:#pragma acc loop seq tile(2)
+    10100:   67:      for (nonlocal_j = 0; nonlocal_j < N; ++nonlocal_j)
+        -:   68:        ;
+        -:   69:#pragma acc loop auto independent tile(3)
+    10100:   70:      for (nonlocal_j = 0; nonlocal_j < N; ++nonlocal_j)
+        -:   71:        ;
+        -:   72:    }
+        -:   73:
+        -:   74:#pragma acc kernels loop gang(static                                           \
+        -:   75:                              : nonlocal_arg) worker(nonlocal_arg)             \
+        -:   76:    vector(nonlocal_arg)                                                       \
+        -:   77:        wait(nonlocal_arg, nonlocal_arg + 1, nonlocal_arg + 2) async
+      101:   78:    for (nonlocal_i = 0; nonlocal_i < N; ++nonlocal_i) {
+        -:   79:#pragma acc cache(nonlocal_a [nonlocal_i:2])
+      100:   80:      nonlocal_a[nonlocal_i] = 100;
+        -:   81:#pragma acc loop seq tile(*)
+    10100:   82:      for (nonlocal_j = 0; nonlocal_j < N; ++nonlocal_j)
+        -:   83:        ;
+        -:   84:#pragma acc loop auto independent tile(*)
+    10100:   85:      for (nonlocal_j = 0; nonlocal_j < N; ++nonlocal_j)
+        -:   86:        ;
+        -:   87:    }
+        1:   88:  }
+        -:   89:
+        1:   90:  local();
+        1:   91:  nonlocal();
+        -:   92:
+        1:   93:  return 0;
+        -:   94:}

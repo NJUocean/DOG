@@ -1,0 +1,28 @@
+        -:    0:Source:3235.c
+        -:    0:Graph:3235.gcno
+        -:    0:Data:3235.gcda
+        -:    0:Runs:1
+        -:    1:/* ifcvt accidentally deletes a referenced label while generating
+        -:    2:   conditional traps on machines having such patterns */
+        -:    3:
+        -:    4:struct foo {
+        -:    5:  int a;
+        -:    6:};
+        -:    7:
+        1:    8:void gcc_crash(struct foo *p) {
+        1:    9:  if (__builtin_expect(p->a < 52, 0))
+    #####:   10:    __builtin_trap();
+        1:   11:top:
+        1:   12:  p->a++;
+        1:   13:  if (p->a >= 62)
+    #####:   14:    goto top;
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  struct foo x;
+        -:   19:
+        1:   20:  x.a = 53;
+        1:   21:  gcc_crash(&x);
+        -:   22:
+        1:   23:  exit(0);
+        -:   24:}

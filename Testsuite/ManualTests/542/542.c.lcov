@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* ICE for signed/unsigned long and signed char comparison */
+    3|      1|int main() {
+    4|      1|  unsigned long ul = 4;
+    5|      1|  long sl = 2;
+    6|      1|  signed char sch = -1;
+    7|      1|  if (ul <= sch)
+    8|      1|    ;
+    9|      1|  return 0;
+   10|      1|  if (sl <= sch)
+   11|      0|    return 1;
+   12|      0|}
+

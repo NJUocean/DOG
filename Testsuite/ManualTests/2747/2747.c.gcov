@@ -1,0 +1,23 @@
+        -:    0:Source:2747.c
+        -:    0:Graph:2747.gcno
+        -:    0:Data:2747.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/88906 */
+        -:    2:/* { dg-do run { target ia32 } } */
+        -:    3:/* { dg-options "-O -march=i386 -mtune=k6 -minline-all-stringops
+        -:    4: * -minline-stringops-dynamically -mmemcpy-strategy=libcall:-1:align -Wno-psabi"
+        -:    5: * } */
+        -:    6:
+        -:    7:typedef unsigned V __attribute__((vector_size(16)));
+        -:    8:
+        1:    9:static inline V foo(V v) {
+        1:   10:  __builtin_sub_overflow(0, 0, &v[0]);
+        1:   11:  return v;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  V v = foo((V){~0});
+        1:   16:  if (v[0] || v[1] || v[2] || v[3])
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

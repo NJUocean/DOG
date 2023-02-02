@@ -1,0 +1,53 @@
+        -:    0:Source:2891.c
+        -:    0:Graph:2891.gcno
+        -:    0:Data:2891.gcda
+        -:    0:Runs:1
+        -:    1:/* PR preprocessor/65238 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:#define A unused
+        -:    5:#define B A
+        -:    6:#define C B
+        -:    7:#define D __has_attribute(unused)
+        -:    8:#define E __has_attribute(C)
+        -:    9:#define F(X) __has_attribute(X)
+        -:   10:#if !__has_attribute(unused)
+        -:   11:#error unused attribute not supported - 1
+        -:   12:#endif
+        -:   13:#if !__has_attribute(C)
+        -:   14:#error unused attribute not supported - 2
+        -:   15:#endif
+        -:   16:#if !D
+        -:   17:#error unused attribute not supported - 3
+        -:   18:#endif
+        -:   19:#if !E
+        -:   20:#error unused attribute not supported - 4
+        -:   21:#endif
+        -:   22:#if !F(unused)
+        -:   23:#error unused attribute not supported - 5
+        -:   24:#endif
+        -:   25:#if !F(C)
+        -:   26:#error unused attribute not supported - 6
+        -:   27:#endif
+        -:   28:int a = __has_attribute(unused) + __has_attribute(C) + D + E + F(unused) + F(C);
+        -:   29:int b = __has_attribute(unused);
+        -:   30:int c = __has_attribute(C);
+        -:   31:int d = D;
+        -:   32:int e = E;
+        -:   33:int f = F(unused);
+        -:   34:int g = F(C);
+        -:   35:int h = __has_attribute(unused) +
+        -:   36:        __has_attribute(
+        -:   37:
+        -:   38:            C) +
+        -:   39:        F(unused
+        -:   40:
+        -:   41:          ) +
+        -:   42:        F(C);
+        -:   43:
+        1:   44:int main() {
+        1:   45:  if (a != 6 || b != 1 || c != 1 || d != 1 || e != 1 || f != 1 || g != 1 ||
+        1:   46:      h != 4)
+    #####:   47:    __builtin_abort();
+        1:   48:  return 0;
+        -:   49:}

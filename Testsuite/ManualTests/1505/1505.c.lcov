@@ -1,0 +1,18 @@
+    1|      2|static inline long g1(double x) { return (double)(long)x; }
+    2|       |
+    3|      5|long g2(double f) { return f; }
+    4|       |
+    5|      2|double f(long i) {
+    6|      2|  if (g1(i) != g2(i))
+    7|      0|    abort();
+    8|      2|  return g2(i);
+    9|      2|}
+   10|       |
+   11|      1|main() {
+   12|      1|  if (f(123456789L) != 123456789L)
+   13|      0|    abort();
+   14|      1|  if (f(123456789L) != g2(123456789L))
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

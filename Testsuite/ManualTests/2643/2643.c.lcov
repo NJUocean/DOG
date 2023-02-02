@@ -1,0 +1,19 @@
+    1|       |/* PR tree-optimization/46491 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|__attribute__((noinline)) int foo(int *p) {
+    8|      1|  int r;
+    9|      1|  asm("movl $6, (%1)\n\txorl %0, %0" : "=r"(r) : "r"(p) : "memory");
+   10|      1|  return r;
+   11|      1|}
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  int p = 8;
+   15|      1|  if ((foo(&p) ?: p) != 6)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

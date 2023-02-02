@@ -1,0 +1,29 @@
+        -:    0:Source:1034.c
+        -:    0:Graph:1034.gcno
+        -:    0:Data:1034.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/82703 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-tree-sra -ftree-vectorize" } */
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) void compare(const double *p,
+        -:    6:                                                const double *q) {
+        4:    7:  for (int i = 0; i < 3; ++i)
+        3:    8:    if (p[i] != q[i])
+    #####:    9:      __builtin_abort();
+        1:   10:}
+        -:   11:
+        -:   12:double vr[3] = {4, 4, 4};
+        -:   13:
+        1:   14:int main() {
+        1:   15:  double v1[3] = {1, 2, 3};
+        1:   16:  double v2[3] = {3, 2, 1};
+        -:   17:  double v3[3];
+        1:   18:  __builtin_memcpy(v3, v1, sizeof(v1));
+        4:   19:  for (int i = 0; i < 3; ++i)
+        3:   20:    v3[i] += v2[i];
+        4:   21:  for (int i = 0; i < 3; ++i)
+        3:   22:    v1[i] += v2[i];
+        1:   23:  compare(v3, vr);
+        1:   24:  return 0;
+        -:   25:}

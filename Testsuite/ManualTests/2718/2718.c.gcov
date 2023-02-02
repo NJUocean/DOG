@@ -1,0 +1,28 @@
+        -:    0:Source:2718.c
+        -:    0:Graph:2718.gcno
+        -:    0:Data:2718.gcda
+        -:    0:Runs:1
+        -:    1:static int which_alternative = 3;
+        -:    2:
+        -:    3:static const char *i960_output_ldconst(void);
+        -:    4:
+        1:    5:static const char *output_25(void) {
+        1:    6:  switch (which_alternative) {
+    #####:    7:  case 0:
+    #####:    8:    return "mov	%1,%0";
+    #####:    9:  case 1:
+    #####:   10:    return i960_output_ldconst();
+    #####:   11:  case 2:
+    #####:   12:    return "ld	%1,%0";
+        1:   13:  case 3:
+        1:   14:    return "st	%1,%0";
+        -:   15:  }
+    #####:   16:}
+        -:   17:
+    #####:   18:static const char *i960_output_ldconst(void) { return "foo"; }
+        1:   19:int main(void) {
+        1:   20:  const char *s = output_25();
+        1:   21:  if (s[0] != 's')
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

@@ -1,0 +1,31 @@
+        -:    0:Source:254.c
+        -:    0:Graph:254.gcno
+        -:    0:Data:254.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that (what looks like) comments are not recognized in literals
+        -:    2:   and that quotes within quotes do not confused the preprocessor.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:int main() {
+        1:    9:  const char *str1 = "/*";
+        1:   10:  const char *str2 = "'";
+        -:   11:
+        1:   12:  if (str1[0] != '/' || str1[1] != '*' || str1[2] != '\0')
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  if (str2[0] != '\'' || str2[1] != '\0')
+    #####:   16:    abort();
+        -:   17:
+        -:   18:#if '"' != '\"'
+        -:   19:#error /* { dg-bogus "error" "double quote in charconst" } */
+        -:   20:#endif
+        -:   21:
+        -:   22:#if !'\''
+        -:   23:#error quote /* { dg-bogus "quote" "quote in charconst" } */
+        -:   24:#endif
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

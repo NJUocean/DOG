@@ -1,0 +1,13 @@
+        -:    0:Source:2055.c
+        -:    0:Graph:2055.gcno
+        -:    0:Data:2055.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/36332 */
+        -:    2:
+        1:    3:int foo(long double ld) { return ld == __builtin_infl(); }
+        -:    4:
+        1:    5:int main() {
+        1:    6:  if (foo(__LDBL_MAX__))
+    #####:    7:    __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}

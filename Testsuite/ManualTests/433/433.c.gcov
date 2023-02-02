@@ -1,0 +1,21 @@
+        -:    0:Source:433.c
+        -:    0:Graph:433.gcno
+        -:    0:Data:433.gcda
+        -:    0:Runs:1
+        -:    1:static const int N = 12;
+        -:    2:int nSlip;
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int i, j, k, fdot = 0;
+        1:    6:  int a[N][N];
+        -:    7:
+       1*:    8:  for (i = 1; i < nSlip; i++) {
+    #####:    9:    for (j = i + 1; j < nSlip; j++) {
+    #####:   10:      for (k = 0; k < i; k++)
+    #####:   11:        fdot += a[i][k] * a[k][j];
+    #####:   12:      a[i][j] = a[i][j] - fdot;
+        -:   13:    }
+        -:   14:  }
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

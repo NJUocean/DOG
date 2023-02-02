@@ -1,0 +1,80 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |typedef union i386_operand_type {
+    4|       |  struct {
+    5|       |    unsigned int reg8 : 1;
+    6|       |    unsigned int reg16 : 1;
+    7|       |    unsigned int reg32 : 1;
+    8|       |    unsigned int reg64 : 1;
+    9|       |    unsigned int floatreg : 1;
+   10|       |    unsigned int regmmx : 1;
+   11|       |    unsigned int regxmm : 1;
+   12|       |    unsigned int regymm : 1;
+   13|       |    unsigned int control : 1;
+   14|       |    unsigned int debug : 1;
+   15|       |    unsigned int test : 1;
+   16|       |    unsigned int sreg2 : 1;
+   17|       |    unsigned int sreg3 : 1;
+   18|       |    unsigned int imm1 : 1;
+   19|       |    unsigned int imm8 : 1;
+   20|       |    unsigned int imm8s : 1;
+   21|       |    unsigned int imm16 : 1;
+   22|       |    unsigned int imm32 : 1;
+   23|       |    unsigned int imm32s : 1;
+   24|       |    unsigned int imm64 : 1;
+   25|       |    unsigned int disp8 : 1;
+   26|       |    unsigned int disp16 : 1;
+   27|       |    unsigned int disp32 : 1;
+   28|       |    unsigned int disp32s : 1;
+   29|       |    unsigned int disp64 : 1;
+   30|       |    unsigned int acc : 1;
+   31|       |    unsigned int floatacc : 1;
+   32|       |    unsigned int baseindex : 1;
+   33|       |    unsigned int inoutportreg : 1;
+   34|       |    unsigned int shiftcount : 1;
+   35|       |    unsigned int jumpabsolute : 1;
+   36|       |    unsigned int esseg : 1;
+   37|       |    unsigned int regmem : 1;
+   38|       |    unsigned int mem : 1;
+   39|       |    unsigned int byte : 1;
+   40|       |    unsigned int word : 1;
+   41|       |    unsigned int dword : 1;
+   42|       |    unsigned int fword : 1;
+   43|       |    unsigned int qword : 1;
+   44|       |    unsigned int tbyte : 1;
+   45|       |    unsigned int xmmword : 1;
+   46|       |    unsigned int ymmword : 1;
+   47|       |    unsigned int unspecified : 1;
+   48|       |    unsigned int anysize : 1;
+   49|       |  } bitfield;
+   50|       |  unsigned int array[2];
+   51|       |} i386_operand_type;
+   52|       |
+   53|       |unsigned int x00, x01, y00, y01;
+   54|       |
+   55|      1|int main(int argc, char *argv[]) {
+   56|      1|  i386_operand_type a, b, c, d;
+   57|      1|
+   58|      1|  a.bitfield.reg16 = 1;
+   59|      1|  a.bitfield.imm16 = 0;
+   60|      1|  a.array[1] = 22;
+   61|      1|
+   62|      1|  b = a;
+   63|      1|  x00 = b.array[0];
+   64|      1|  x01 = b.array[1];
+   65|      1|
+   66|      1|  c = b;
+   67|      1|  y00 = c.array[0];
+   68|      1|  y01 = c.array[1];
+   69|      1|
+   70|      1|  d = c;
+   71|      1|  if (d.bitfield.reg16 != 1)
+   72|      0|    abort();
+   73|      1|  if (d.bitfield.imm16 != 0)
+   74|      0|    abort();
+   75|      1|  if (d.array[1] != 22)
+   76|      0|    abort();
+   77|      1|
+   78|      1|  return 0;
+   79|      1|}
+

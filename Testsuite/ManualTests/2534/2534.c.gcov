@@ -1,0 +1,23 @@
+        -:    0:Source:2534.c
+        -:    0:Graph:2534.gcno
+        -:    0:Data:2534.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target arm_neon_hw } */
+        -:    3:/* { dg-options "-O2 -fno-common -ftree-vectorize -mno-unaligned-access" }  */
+        -:    4:/* { dg-add-options arm_neon } */
+        -:    5:
+        -:    6:/* Test for-mno-unaligned-access and -ftree-vectorize  and results bus error. */
+        -:    7:#define N 128
+        -:    8:
+        -:    9:char ia[N];
+        -:   10:char ib[N + 1];
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int i;
+      129:   14:  for (i = 0; i < N; ++i) {
+      128:   15:    ia[i] = ib[i + 1];
+        -:   16:  }
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,38 @@
+    1|       |struct PMC {
+    2|       |  unsigned flags;
+    3|       |};
+    4|       |
+    5|       |typedef struct Pcc_cell {
+    6|       |  struct PMC *p;
+    7|       |  long bla;
+    8|       |  long type;
+    9|       |} Pcc_cell;
+   10|       |
+   11|       |extern void abort();
+   12|       |extern void Parrot_gc_mark_PMC_alive_fun(int *interp, struct PMC *pmc)
+   13|       |    __attribute__((noinline));
+   14|       |
+   15|      0|void Parrot_gc_mark_PMC_alive_fun(int *interp, struct PMC *pmc) { abort(); }
+   16|       |
+   17|       |static void mark_cell(int *interp, Pcc_cell *c) __attribute__((__nonnull__(1)))
+   18|       |__attribute__((__nonnull__(2))) __attribute__((noinline));
+   19|       |
+   20|      1|static void mark_cell(int *interp, Pcc_cell *c) {
+   21|      1|  if (c->type == 4 && c->p && !(c->p->flags & (1 << 18)))
+   22|      0|    Parrot_gc_mark_PMC_alive_fun(interp, c->p);
+   23|      1|}
+   24|       |
+   25|       |void foo(int *interp, Pcc_cell *c);
+   26|       |
+   27|      1|void foo(int *interp, Pcc_cell *c) { mark_cell(interp, c); }
+   28|       |
+   29|      1|int main() {
+   30|      1|  int i;
+   31|      1|  Pcc_cell c;
+   32|      1|  c.p = 0;
+   33|      1|  c.bla = 42;
+   34|      1|  c.type = 4;
+   35|      1|  foo(&i, &c);
+   36|      1|  return 0;
+   37|      1|}
+

@@ -1,0 +1,42 @@
+        -:    0:Source:3638.c
+        -:    0:Graph:3638.gcno
+        -:    0:Data:3638.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct A {
+        -:    4:  struct A *a;
+        -:    5:};
+        -:    6:
+        -:    7:struct B {
+        -:    8:  struct A *b;
+        -:    9:};
+        -:   10:
+        3:   11:__attribute__((noinline)) struct A *foo(struct A *x) {
+        3:   12:  asm volatile("" : : "g"(x) : "memory");
+        3:   13:  return x;
+        -:   14:}
+        -:   15:
+        1:   16:__attribute__((noinline)) void bar(struct B *w, struct A *x, struct A *y,
+        -:   17:                                   struct A *z) {
+        -:   18:  struct A **c;
+        1:   19:  c = &w->b;
+        1:   20:  *c = foo(x);
+        2:   21:  while (*c)
+        1:   22:    c = &(*c)->a;
+        1:   23:  *c = foo(y);
+        3:   24:  while (*c)
+        2:   25:    c = &(*c)->a;
+        1:   26:  *c = foo(z);
+        1:   27:}
+        -:   28:
+        -:   29:struct B d;
+        -:   30:struct A e, f, g;
+        -:   31:
+        1:   32:int main(void) {
+        1:   33:  f.a = &g;
+        1:   34:  bar(&d, &e, &f, 0);
+        1:   35:  if (d.b == 0 || d.b->a == 0 || d.b->a->a == 0 || d.b->a->a->a != 0)
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

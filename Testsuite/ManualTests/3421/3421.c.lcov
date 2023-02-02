@@ -1,0 +1,24 @@
+    1|       |struct f {
+    2|       |  int i;
+    3|       |};
+    4|       |
+    5|      1|int g(int i, int c, struct f *ff, int *p) {
+    6|      1|  int *t;
+    7|      1|  if (c)
+    8|      0|    t = &i;
+    9|      1|  else
+   10|      1|    t = &ff->i;
+   11|      1|  *p = 0;
+   12|      1|  return *t;
+   13|      1|}
+   14|       |
+   15|       |extern void abort(void);
+   16|       |
+   17|      1|int main() {
+   18|      1|  struct f f;
+   19|      1|  f.i = 1;
+   20|      1|  if (g(5, 0, &f, &f.i) != 0)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

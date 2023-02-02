@@ -1,0 +1,25 @@
+        -:    0:Source:2002.c
+        -:    0:Graph:2002.gcno
+        -:    0:Data:2002.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:int a[3][3][3], b, d;
+        -:    5:short c;
+        -:    6:unsigned char e;
+        -:    7:
+    #####:    8:static void f() {
+    #####:    9:  for (c = 0; c < 2; c++)
+    #####:   10:    for (e = 0; e < 3; e++)
+    #####:   11:      for (b = 0; b < 3; b++)
+    #####:   12:        a[b][e][b] = 0;
+    #####:   13:  while (1)
+        -:   14:    ;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  if (d)
+    #####:   19:    f();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,33 @@
+        -:    0:Source:593.c
+        -:    0:Graph:593.gcno
+        -:    0:Data:593.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-pta -fdump-ipa-pta2-details -fdump-tree-fre3-details"
+        -:    3: * } */
+        -:    4:
+        -:    5:int a, b;
+        -:    6:
+        1:    7:static int __attribute__((noinline, noclone)) foo(int *p, int *q) {
+        -:    8:  int res;
+        1:    9:  *p = 1;
+        1:   10:  *q = 0;
+        1:   11:  res = *p;
+        1:   12:  a = 1;
+        1:   13:  b = 1;
+        1:   14:  return res;
+        -:   15:}
+        -:   16:
+        -:   17:extern void abort(void);
+        -:   18:
+        1:   19:int main() {
+        1:   20:  if (foo(&a, &b) != 1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* Verify we can disambiguate *p and *q in foo.  */
+        -:   26:
+        -:   27:/* { dg-final { scan-ipa-dump "foo.arg0 = &a" "pta2" } } */
+        -:   28:/* { dg-final { scan-ipa-dump "foo.arg1 = &b" "pta2" } } */
+        -:   29:/* { dg-final { scan-tree-dump "Replaced \\\*p_2\\\(D\\\) with 1" "fre3" } } */

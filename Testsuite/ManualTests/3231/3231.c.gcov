@@ -1,0 +1,80 @@
+        -:    0:Source:3231.c
+        -:    0:Graph:3231.gcno
+        -:    0:Data:3231.gcda
+        -:    0:Runs:1
+        -:    1:/* extracted from gdb sources */
+        -:    2:
+        -:    3:typedef unsigned long long CORE_ADDR;
+        -:    4:
+        -:    5:struct blockvector;
+        -:    6:
+        -:    7:struct symtab {
+        -:    8:  struct blockvector *blockvector;
+        -:    9:};
+        -:   10:
+        -:   11:struct sec {
+        -:   12:  void *unused;
+        -:   13:};
+        -:   14:
+        -:   15:struct symbol {
+        -:   16:  int len;
+        -:   17:  char *name;
+        -:   18:};
+        -:   19:
+        -:   20:struct block {
+        -:   21:  CORE_ADDR startaddr, endaddr;
+        -:   22:  struct symbol *function;
+        -:   23:  struct block *superblock;
+        -:   24:  unsigned char gcc_compile_flag;
+        -:   25:  int nsyms;
+        -:   26:  struct symbol syms[1];
+        -:   27:};
+        -:   28:
+        -:   29:struct blockvector {
+        -:   30:  int nblocks;
+        -:   31:  struct block *block[2];
+        -:   32:};
+        -:   33:
+        1:   34:struct blockvector *blockvector_for_pc_sect(register CORE_ADDR pc,
+        -:   35:                                            struct symtab *symtab) {
+        -:   36:  register struct block *b;
+        -:   37:  register int bot, top, half;
+        -:   38:  struct blockvector *bl;
+        -:   39:
+        1:   40:  bl = symtab->blockvector;
+        1:   41:  b = bl->block[0];
+        -:   42:
+        1:   43:  bot = 0;
+        1:   44:  top = bl->nblocks;
+        -:   45:
+        2:   46:  while (top - bot > 1) {
+        1:   47:    half = (top - bot + 1) >> 1;
+        1:   48:    b = bl->block[bot + half];
+        1:   49:    if (b->startaddr <= pc)
+    #####:   50:      bot += half;
+        -:   51:    else
+        1:   52:      top = bot + half;
+        -:   53:  }
+        -:   54:
+        1:   55:  while (bot >= 0) {
+        1:   56:    b = bl->block[bot];
+        1:   57:    if (b->endaddr > pc) {
+        1:   58:      return bl;
+        -:   59:    }
+    #####:   60:    bot--;
+        -:   61:  }
+    #####:   62:  return 0;
+        -:   63:}
+        -:   64:
+        1:   65:int main(void) {
+        1:   66:  struct block a = {0, 0x10000, 0, 0, 1, 20};
+        1:   67:  struct block b = {0x10000, 0x20000, 0, 0, 1, 20};
+        1:   68:  struct blockvector bv = {2, {&a, &b}};
+        1:   69:  struct symtab s = {&bv};
+        -:   70:
+        -:   71:  struct blockvector *ret;
+        -:   72:
+        1:   73:  ret = blockvector_for_pc_sect(0x500, &s);
+        -:   74:
+        1:   75:  return 0;
+        -:   76:}

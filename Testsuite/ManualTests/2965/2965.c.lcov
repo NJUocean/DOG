@@ -1,0 +1,37 @@
+    1|       |struct tiny {
+    2|       |  short c;
+    3|       |  short d;
+    4|       |};
+    5|       |
+    6|      1|f(int n, struct tiny x, struct tiny y, struct tiny z, long l) {
+    7|      1|  if (x.c != 10)
+    8|      0|    abort();
+    9|      1|  if (x.d != 20)
+   10|      0|    abort();
+   11|      1|
+   12|      1|  if (y.c != 11)
+   13|      0|    abort();
+   14|      1|  if (y.d != 21)
+   15|      0|    abort();
+   16|      1|
+   17|      1|  if (z.c != 12)
+   18|      0|    abort();
+   19|      1|  if (z.d != 22)
+   20|      0|    abort();
+   21|      1|
+   22|      1|  if (l != 123)
+   23|      0|    abort();
+   24|      1|}
+   25|       |
+   26|      1|main() {
+   27|      1|  struct tiny x[3];
+   28|      1|  x[0].c = 10;
+   29|      1|  x[1].c = 11;
+   30|      1|  x[2].c = 12;
+   31|      1|  x[0].d = 20;
+   32|      1|  x[1].d = 21;
+   33|      1|  x[2].d = 22;
+   34|      1|  f(3, x[0], x[1], x[2], (long)123);
+   35|      1|  exit(0);
+   36|      1|}
+

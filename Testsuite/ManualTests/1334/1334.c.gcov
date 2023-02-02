@@ -1,0 +1,22 @@
+        -:    0:Source:1334.c
+        -:    0:Graph:1334.gcno
+        -:    0:Data:1334.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/39855 */
+        -:    2:/* { dg-do run { target { int32plus } } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int i, j, k;
+        -:    7:
+        2:    8:int foo(void) { return ++i; }
+        -:    9:
+        1:   10:int main() {
+        -:   11:  if (__CHAR_BIT__ != 8 || sizeof(int) != 4)
+        -:   12:    return 0;
+        1:   13:  j = foo() << 30 << 2;
+        1:   14:  k = (unsigned)foo() >> 16 >> 16;
+        1:   15:  if (i != 2 || j != 0 || k != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

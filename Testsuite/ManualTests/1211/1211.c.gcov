@@ -1,0 +1,71 @@
+        -:    0:Source:1211.c
+        -:    0:Graph:1211.gcno
+        -:    0:Data:1211.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target lp64 } */
+        -:    3:
+        -:    4:typedef unsigned long size_t;
+        -:    5:struct tree_base {
+        -:    6:  int code;
+        -:    7:};
+        -:    8:struct tree_decl_minimal {
+        -:    9:  struct tree_base base;
+        -:   10:  const char *name;
+        -:   11:};
+        -:   12:typedef union tree_node {
+        -:   13:  struct tree_base base;
+        -:   14:  struct tree_decl_minimal decl_minimal;
+        -:   15:} * tree;
+        -:   16:struct tree_overload {
+        -:   17:  struct tree_base common;
+        -:   18:  tree function;
+        -:   19:};
+        -:   20:typedef struct VEC_tree_base {
+        -:   21:  unsigned num;
+        -:   22:  unsigned alloc;
+        -:   23:  tree vec[1];
+        -:   24:} VEC_tree_base;
+        -:   25:typedef struct VEC_tree_gc {
+        -:   26:  VEC_tree_base base;
+        -:   27:} VEC_tree_gc;
+        1:   28:static __inline__ unsigned VEC_tree_base_length(const VEC_tree_base *vec_) {
+       1*:   29:  return vec_ ? vec_->num : 0;
+        -:   30:}
+        1:   31:static __inline__ int VEC_tree_base_iterate(const VEC_tree_base *vec_,
+        -:   32:                                            unsigned ix_, tree *ptr) {
+       1*:   33:  if (vec_ && ix_ < vec_->num) {
+    #####:   34:    *ptr = vec_->vec[ix_];
+    #####:   35:    return 1;
+        -:   36:  } else {
+        1:   37:    *ptr = 0;
+        1:   38:    return 0;
+        -:   39:  }
+        -:   40:}
+        -:   41:extern void abort(void);
+        1:   42:void __attribute__((noinline)) foo(size_t x) {
+        1:   43:  if (x != 18446744073709551614UL)
+    #####:   44:    abort();
+        1:   45:}
+        1:   46:void resort_type_method_vec(VEC_tree_gc *method_vec) {
+       1*:   47:  int len = (VEC_tree_base_length(((method_vec) ? &(method_vec)->base : 0)));
+        -:   48:  size_t slot;
+        -:   49:  tree fn;
+        -:   50:
+       1*:   51:  for (slot = 2; (VEC_tree_base_iterate(
+        -:   52:           ((method_vec) ? &(method_vec)->base : 0), slot, &(fn)));
+    #####:   53:       ++slot)
+    #####:   54:    if (!(((((((fn)->base.code) == 225)
+    #####:   55:                 ? (((struct tree_overload *)(fn))->function)
+    #####:   56:                 : (fn)))
+    #####:   57:               ->decl_minimal.name)))
+    #####:   58:      break;
+        -:   59:
+        1:   60:  if (len - slot > 1)
+        1:   61:    foo(len - slot);
+        1:   62:}
+        -:   63:
+        1:   64:int main() {
+        1:   65:  resort_type_method_vec((void *)0);
+        1:   66:  return 0;
+        -:   67:}

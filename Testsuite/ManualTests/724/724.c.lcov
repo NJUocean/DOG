@@ -1,0 +1,26 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |
+    6|       |extern void warn_memset_zero_len(void) __attribute__((
+    7|       |    __warning__("memset used with constant zero length parameter;"
+    8|       |                " this could be due to transposed parameters")));
+    9|       |
+   10|       |extern inline __attribute__((gnu_inline, always_inline, artificial)) void *
+   11|      0|memset(void *dest, int ch, size_t len) {
+   12|      0|  if (__builtin_constant_p(len) && len == 0) {
+   13|      0|    warn_memset_zero_len(); /* { dg-warning "memset used with constant zero" }
+   14|      0|                             */
+   15|      0|    return dest;
+   16|      0|  }
+   17|      0|  return __builtin_memset(dest, ch, len);
+   18|      0|}
+   19|       |
+   20|       |char buf[10];
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  memset(buf, sizeof(buf), 0);
+   24|      1|  return 0;
+   25|      1|}
+

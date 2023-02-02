@@ -1,0 +1,27 @@
+        -:    0:Source:3366.c
+        -:    0:Graph:3366.gcno
+        -:    0:Data:3366.gcda
+        -:    0:Runs:1
+        -:    1:struct A {
+        -:    2:  int a;
+        -:    3:  char b[];
+        -:    4:};
+        -:    5:union B {
+        -:    6:  struct A a;
+        -:    7:  char b[sizeof(struct A) + 31];
+        -:    8:};
+        -:    9:union B b = {{1, "123456789012345678901234567890"}};
+        -:   10:union B c = {{2, "123456789012345678901234567890"}};
+        -:   11:
+        1:   12:__attribute__((noinline, noclone)) void foo(int *x[2]) {
+        1:   13:  x[0] = &b.a.a;
+        1:   14:  x[1] = &c.a.a;
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  int *x[2];
+        1:   19:  foo(x);
+        1:   20:  if (*x[0] != 1 || *x[1] != 2)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

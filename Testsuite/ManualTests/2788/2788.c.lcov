@@ -1,0 +1,31 @@
+    1|       |/* Test that the compiler properly optimizes vector rotate instructions vector
+    2|       |   into prot on XOP systems.  */
+    3|       |
+    4|       |/* { dg-do compile { target { ! ia32 } } } */
+    5|       |/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize" } */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |
+    9|       |typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+   10|       |
+   11|  10.2k|#define SIZE 10240
+   12|       |
+   13|       |union {
+   14|       |  __m128i i_align;
+   15|       |  unsigned u32[SIZE];
+   16|       |} a, b, c;
+   17|       |
+   18|      1|void left_rotate32(void) {
+   19|      1|  int i;
+   20|      1|
+   21|  10.2k|  for (i = 0; i < SIZE; i++)
+   22|  10.2k|    a.u32[i] = (b.u32[i] << ((sizeof(int) * 8) - 4)) | (b.u32[i] >> 4);
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  left_rotate32();
+   27|      1|  exit(0);
+   28|      1|}
+   29|       |
+   30|       |/* { dg-final { scan-assembler "vprotd" } } */
+

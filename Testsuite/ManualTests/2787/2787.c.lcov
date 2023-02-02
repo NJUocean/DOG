@@ -1,0 +1,28 @@
+    1|       |/* Distilled from optimization/863.  */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |extern void ok(int);
+    6|       |
+    7|       |typedef struct {
+    8|       |  int x, y, z;
+    9|       |} Data;
+   10|       |
+   11|      1|void find(Data *first, Data *last) {
+   12|      1|  int i;
+   13|      2|  for (i = (last - first) >> 2; i > 0; --i)
+   14|      1|    ok(i);
+   15|      1|  abort();
+   16|      1|}
+   17|       |
+   18|      1|void ok(int i) {
+   19|      1|  if (i != 1)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+   23|       |
+   24|      1|int main() {
+   25|      1|  Data DataList[4];
+   26|      1|  find(DataList + 0, DataList + 4);
+   27|      1|}
+

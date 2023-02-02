@@ -1,0 +1,23 @@
+        -:    0:Source:640.c
+        -:    0:Graph:640.gcno
+        -:    0:Data:640.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-cp"  } */
+        -:    3:/* { dg-skip-if "No alignment restrictions" { { ! natural_alignment_32 } && { !
+        -:    4: * natural_alignment_64 } } } */
+        -:    5:
+        -:    6:int n;
+        -:    7:
+        2:    8:static void __attribute__((noinline)) test(void *a) {
+        2:    9:  __builtin_memset(a, 0, n);
+        2:   10:}
+        -:   11:
+        -:   12:static __attribute__((aligned(16))) int aa[10];
+        -:   13:
+        1:   14:int main() {
+        1:   15:  test(&aa[1]);
+        1:   16:  test(&aa[3]);
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:/* { dg-final { scan-ipa-dump "align: 8, misalign: 4"  "cp"  } } */

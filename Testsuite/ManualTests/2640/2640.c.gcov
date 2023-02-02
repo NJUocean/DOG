@@ -1,0 +1,22 @@
+        -:    0:Source:2640.c
+        -:    0:Graph:2640.gcno
+        -:    0:Data:2640.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fschedule-insns" } */
+        -:    3:
+        1:    4:int f4(int i, ...) {
+        1:    5:  int y = 0;
+        -:    6:  __builtin_va_list ap;
+        1:    7:  __builtin_va_start(ap, i);
+        1:    8:  if (i == 5)
+        1:    9:    y = __builtin_va_arg(ap, double);
+        1:   10:  __builtin_va_end(ap);
+        1:   11:  return y;
+        -:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  if (f4(5, 7.0) != 7)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

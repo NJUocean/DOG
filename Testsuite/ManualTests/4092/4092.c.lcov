@@ -1,0 +1,17 @@
+    1|       |struct S {
+    2|       |  float f;
+    3|       |};
+    4|      1|int __attribute__((noinline)) foo(int *r, struct S *p) {
+    5|      1|  int *q = (int *)&p->f;
+    6|      1|  int i = *q;
+    7|      1|  *r = 0;
+    8|      1|  return i + *q;
+    9|      1|}
+   10|       |extern void abort(void);
+   11|      1|int main() {
+   12|      1|  int i = 1;
+   13|      1|  if (foo(&i, (struct S *)&i) != 1)
+   14|      0|    abort();
+   15|      1|  return (0);
+   16|      1|}
+

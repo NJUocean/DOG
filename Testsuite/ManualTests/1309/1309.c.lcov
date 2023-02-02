@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run { target { stdint_types } } } */
+    2|       |
+    3|       |#include <stdint.h>
+    4|       |extern void abort(void);
+    5|      1|int main() {
+    6|      1|  int i = 1;
+    7|      1|  int *p = &i;
+    8|      1|  uintptr_t iptr;
+    9|      1|
+   10|      1|  iptr = (uintptr_t)p - (uintptr_t)&iptr;
+   11|      1|  p = (int *)((uintptr_t)&iptr + iptr);
+   12|      1|  if (*p != 1)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

@@ -1,0 +1,24 @@
+        -:    0:Source:205.c
+        -:    0:Graph:205.gcno
+        -:    0:Data:205.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c11" } */
+        -:    3:/* { dg-xfail-run-if "PR58757 -mieee is required to compare denormals" {
+        -:    4: * alpha*-*-* } } */
+        -:    5:/* { dg-skip-if "No subnormal support" { csky-*-* } { "-mhard-float" } } */
+        -:    6:
+        -:    7:/* Test that the smallest positive value is not 0. This needs to be true
+        -:    8:   even when denormals are not supported, so we do not pass any flag
+        -:    9:   like -mieee.  */
+        -:   10:
+        -:   11:#include <float.h>
+        -:   12:
+        1:   13:int main() {
+        1:   14:  volatile float f = FLT_TRUE_MIN;
+        1:   15:  volatile double d = DBL_TRUE_MIN;
+        1:   16:  volatile long double l = LDBL_TRUE_MIN;
+        1:   17:  if (f == 0 || d == 0 || l == 0)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

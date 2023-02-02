@@ -1,0 +1,54 @@
+        -:    0:Source:1900.c
+        -:    0:Graph:1900.gcno
+        -:    0:Data:1900.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fassociative-math -fno-signed-zeros
+        -:    3: * -fno-trapping-math -fdump-tree-linterchange-details" } */
+        -:    4:/* { dg-require-effective-target size32plus } */
+        -:    5:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    6:
+        -:    7:/* Copied from graphite/interchange-4.c */
+        -:    8:
+        -:    9:#define DEBUG 0
+        -:   10:#if DEBUG
+        -:   11:#include <stdio.h>
+        -:   12:#endif
+        -:   13:
+        -:   14:double u[1782225];
+        -:   15:
+        1:   16:static int __attribute__((noinline)) foo(int N, int *res) {
+        -:   17:  int i, j;
+        1:   18:  double sum = 0;
+     1336:   19:  for (i = 0; i < N; i++)
+  1783560:   20:    for (j = 0; j < N; j++)
+  1782225:   21:      sum = sum + u[i + 1335 * j];
+        -:   22:
+     1336:   23:  for (i = 0; i < N; i++)
+     1335:   24:    u[1336 * i] *= 2;
+        -:   25:
+        1:   26:  *res = sum + N + u[1336 * 2] + u[1336];
+        1:   27:}
+        -:   28:
+        -:   29:extern void abort();
+        -:   30:
+        1:   31:int main(void) {
+        -:   32:  int i, j, res;
+        -:   33:
+  1782226:   34:  for (i = 0; i < 1782225; i++)
+  1782225:   35:    u[i] = 2;
+        -:   36:
+        1:   37:  foo(1335, &res);
+        -:   38:
+        -:   39:#if DEBUG
+        -:   40:  fprintf(stderr, "res = %d \n", res);
+        -:   41:#endif
+        -:   42:
+        1:   43:  if (res != 3565793)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}
+        -:   48:
+        -:   49:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   50: * interchanged" 1 "linterchange"} } */

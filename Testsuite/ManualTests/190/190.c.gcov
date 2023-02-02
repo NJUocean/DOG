@@ -1,0 +1,36 @@
+        -:    0:Source:190.c
+        -:    0:Graph:190.gcno
+        -:    0:Data:190.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/11151 */
+        -:    2:/* Originator: Andrew Church <gcczilla@achurch.org> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-xfail-run-if "PR36571 untyped return is char register" { "avr-*-*" } }
+        -:    5: */
+        -:    6:/* { dg-require-effective-target untyped_assembly } */
+        -:    7:/* This used to fail on SPARC because the (undefined) return
+        -:    8:   value of 'bar' was overwriting that of 'foo'.  */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:
+        1:   12:int foo(int n) { return n + 1; }
+        -:   13:
+        1:   14:int bar(int n) {
+        1:   15:  __builtin_return(
+        -:   16:      __builtin_apply((void (*)(void))foo, __builtin_apply_args(), 64));
+        -:   17:}
+        -:   18:
+        -:   19:char *g;
+        -:   20:
+        1:   21:int main(void) {
+        -:   22:  /* Allocate 64 bytes on the stack to make sure that __builtin_apply
+        -:   23:     can read at least 64 bytes above the return address.  */
+        -:   24:  char dummy[64];
+        -:   25:
+        1:   26:  g = dummy;
+        -:   27:
+        1:   28:  if (bar(1) != 2)
+    #####:   29:    abort();
+        -:   30:
+        1:   31:  return 0;
+        -:   32:}

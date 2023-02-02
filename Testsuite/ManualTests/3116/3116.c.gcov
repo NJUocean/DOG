@@ -1,0 +1,25 @@
+        -:    0:Source:3116.c
+        -:    0:Graph:3116.gcno
+        -:    0:Data:3116.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:
+        -:    3:int j;
+        -:    4:
+        1:    5:void bla(int *r) {
+        -:    6:  int *p, *q;
+        -:    7:
+        1:    8:  p = q = r;
+        1:    9:  if (!p)
+        1:   10:    p = &j;
+        -:   11:
+        1:   12:  if (p != q)
+        1:   13:    j = 1;
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  bla(0);
+        1:   18:  if (!j)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,16 @@
+        -:    0:Source:837.c
+        -:    0:Graph:837.gcno
+        -:    0:Data:837.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33645 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-options "-O2 -fno-unit-at-a-time" } */
+        -:    4:
+        1:    5:__attribute__((noinline)) int bar(int *x) { return *x++; }
+        -:    6:
+        1:    7:int main() {
+        -:    8:  static int var1_s;
+        -:    9:  static int *var1_t = &var1_s;
+        -:   10:
+        1:   11:  return bar(var1_t) != 0;
+        -:   12:}

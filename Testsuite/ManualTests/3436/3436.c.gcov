@@ -1,0 +1,32 @@
+        -:    0:Source:3436.c
+        -:    0:Graph:3436.gcno
+        -:    0:Data:3436.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:struct T {
+        -:    3:  int t;
+        -:    4:  int r[8];
+        -:    5:};
+        -:    6:struct S {
+        -:    7:  int a;
+        -:    8:  int b;
+        -:    9:  int c[6];
+        -:   10:  struct T d;
+        -:   11:};
+        -:   12:
+        1:   13:__attribute__((noinline)) void foo(struct S *s) {
+        1:   14:  *s = (struct S){s->b, s->a, {0, 0, 0, 0, 0, 0}, s->d};
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  struct S s = {6, 12, {1, 2, 3, 4, 5, 6}, {7, {8, 9, 10, 11, 12, 13, 14, 15}}};
+        1:   19:  foo(&s);
+        1:   20:  if (s.a != 12 || s.b != 6 || s.c[0] || s.c[1] || s.c[2] || s.c[3] || s.c[4] ||
+        1:   21:      s.c[5])
+    #####:   22:    abort();
+        1:   23:  if (s.d.t != 7 || s.d.r[0] != 8 || s.d.r[1] != 9 || s.d.r[2] != 10 ||
+        1:   24:      s.d.r[3] != 11 || s.d.r[4] != 12 || s.d.r[5] != 13 || s.d.r[6] != 14 ||
+        1:   25:      s.d.r[7] != 15)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

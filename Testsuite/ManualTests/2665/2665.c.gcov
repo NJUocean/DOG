@@ -1,0 +1,73 @@
+        -:    0:Source:2665.c
+        -:    0:Graph:2665.gcno
+        -:    0:Data:2665.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target fpic } */
+        -:    3:/* { dg-options "-O2 -fPIC" } */
+        -:    4:
+        -:    5:void (*pfn)(void);
+        -:    6:
+        -:    7:struct s {
+        -:    8:  void **q;
+        -:    9:  int h;
+        -:   10:  int t;
+        -:   11:  int s;
+        -:   12:};
+        -:   13:
+        -:   14:void *f(struct s *, struct s *) __attribute__((noinline, regparm(1)));
+        -:   15:
+        1:   16:void *__attribute__((regparm(1))) f(struct s *p, struct s *p2) {
+        -:   17:  void *gp, *gp1;
+        -:   18:  int t, h, s, t2, h2, c, i;
+        -:   19:
+        1:   20:  if (p2->h == p2->t)
+    #####:   21:    return 0;
+        -:   22:
+        1:   23:  (*pfn)();
+        -:   24:
+        1:   25:  h = p->h;
+        1:   26:  t = p->t;
+        1:   27:  s = p->s;
+        -:   28:
+        1:   29:  h2 = p2->h;
+        1:   30:  t2 = p2->t;
+        -:   31:
+        1:   32:  gp = p2->q[h2++];
+        -:   33:
+        1:   34:  c = (t2 - h2) / 2;
+        2:   35:  for (i = 0; i != c; i++) {
+        1:   36:    if (t == h || (h == 0 && t == s - 1))
+        -:   37:      break;
+        1:   38:    gp1 = p2->q[h2++];
+        1:   39:    p->q[t++] = gp1;
+        1:   40:    if (t == s)
+    #####:   41:      t = 0;
+        -:   42:  }
+        -:   43:
+        1:   44:  p2->h = h2;
+        1:   45:  return gp;
+        -:   46:}
+        -:   47:
+        1:   48:static void gn() {}
+        -:   49:
+        1:   50:int main() {
+        -:   51:  struct s s1, s2;
+        -:   52:  void *q[10];
+        -:   53:
+        1:   54:  pfn = gn;
+        -:   55:
+        1:   56:  s1.q = q;
+        1:   57:  s1.h = 0;
+        1:   58:  s1.t = 2;
+        1:   59:  s1.s = 4;
+        -:   60:
+        1:   61:  s2.q = q;
+        1:   62:  s2.h = 0;
+        1:   63:  s2.t = 4;
+        1:   64:  s2.s = 2;
+        -:   65:
+        1:   66:  f(&s1, &s2);
+        -:   67:
+        1:   68:  return 0;
+        -:   69:}

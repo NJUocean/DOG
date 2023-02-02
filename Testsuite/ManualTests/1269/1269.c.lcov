@@ -1,0 +1,10 @@
+    1|      1|double f(double x) { return x * x; }
+    2|       |
+    3|      1|double Int(double (*f)(double), double a) { return (*f)(a); }
+    4|       |
+    5|      1|main() {
+    6|      1|  if (Int(&f, 2.0) != 4.0)
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

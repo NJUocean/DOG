@@ -1,0 +1,31 @@
+        -:    0:Source:227.c
+        -:    0:Graph:227.gcno
+        -:    0:Data:227.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:/* Verify that the 6th complex floating-point argument is
+        -:    5:   correctly passed as unnamed argument on SPARC64.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:void foo(long arg1, long arg2, long arg3, long arg4, long arg5, ...) {
+        -:   10:  __builtin_va_list ap;
+        -:   11:  _Complex float cf;
+        -:   12:
+        1:   13:  __builtin_va_start(ap, arg5);
+        1:   14:  cf = __builtin_va_arg(ap, _Complex float);
+        1:   15:  __builtin_va_end(ap);
+        -:   16:
+        1:   17:  if (__imag__ cf != 2.0f)
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        1:   21:int bar(long arg1, long arg2, long arg3, long arg4, long arg5,
+        -:   22:        _Complex float arg6) {
+        1:   23:  foo(arg1, arg2, arg3, arg4, arg5, arg6);
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        1:   27:int main(void) { return bar(0, 0, 0, 0, 0, 2.0fi); }

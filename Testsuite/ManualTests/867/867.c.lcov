@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "" } */
+    3|       |/* { dg-additional-options "-msse" { target i?86-*-* x86_64-*-* } } */
+    4|       |/* { dg-require-effective-target sse_runtime { target { i?86-*-* x86_64-*-* } }
+    5|       | * } */
+    6|       |
+    7|       |typedef float v2sf __attribute__((vector_size(2 * sizeof(float))));
+    8|       |
+    9|      1|static void test(void) {
+   10|      1|  v2sf a = {1.0, 0.0};
+   11|      1|  v2sf b = {0.0, 1.0};
+   12|      1|  v2sf d;
+   13|      1|  d = a + b;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  test();
+   18|      1|  return 0;
+   19|      1|}
+

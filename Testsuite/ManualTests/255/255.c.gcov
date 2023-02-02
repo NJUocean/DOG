@@ -1,0 +1,29 @@
+        -:    0:Source:255.c
+        -:    0:Graph:255.gcno
+        -:    0:Data:255.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99 -g3" } */
+        -:    3:void abort(void);
+        -:    4:
+        -:    5:#define À 1
+        -:    6:#define Á 2
+        -:    7:#define Â 3
+        -:    8:#define whÿ 4
+        -:    9:#define aÄbсδe 5
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:
+        -:   13:  if (À != 1)
+        -:   14:    abort();
+        -:   15:  if (Á != 2)
+        -:   16:    abort();
+        -:   17:  if (Â != 3)
+        -:   18:    abort();
+        -:   19:  if (whÿ != 4)
+        -:   20:    abort();
+        -:   21:  if (aÄbсδe != 5)
+        -:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

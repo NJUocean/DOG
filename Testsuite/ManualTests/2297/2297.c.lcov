@@ -1,0 +1,11 @@
+    1|      1|int main(void) {
+    2|      1|  struct {
+    3|      1|    int node;
+    4|      1|    int type;
+    5|      1|  } lastglob[1] = {{0, 1}};
+    6|      1|
+    7|      1|  if (lastglob[0].node != 0 || lastglob[0].type != 1)
+    8|      0|    abort();
+    9|      1|  exit(0);
+   10|      1|}
+

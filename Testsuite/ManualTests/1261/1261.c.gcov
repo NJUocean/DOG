@@ -1,0 +1,23 @@
+        -:    0:Source:1261.c
+        -:    0:Graph:1261.gcno
+        -:    0:Data:1261.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-mtune=pentiumpro" { target ia32 } } */
+        -:    3:/* { dg-additional-options "-minline-all-stringops" { target { i?86-*-*
+        -:    4: * x86_64-*-* } } } */
+        -:    5:
+        -:    6:static void __attribute__((noinline, noclone))
+        1:    7:my_memcpy(char *dest, const char *src, int n) {
+        1:    8:  __builtin_memcpy(dest, src, n);
+        1:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  char a1[4], a2[4];
+        1:   13:  __builtin_memset(a1, 'a', 4);
+        1:   14:  __builtin_memset(a2, 'b', 4);
+        1:   15:  my_memcpy(a2, a1, 4);
+        1:   16:  if (a2[0] != 'a')
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

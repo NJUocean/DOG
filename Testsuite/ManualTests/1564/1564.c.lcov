@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run { target int128 } } */
+    2|       |
+    3|       |typedef unsigned __int128 u128;
+    4|       |
+    5|      1|u128 __attribute__((noinline, noclone)) foo(void) {
+    6|      1|  u128 u = -2;
+    7|      1|  u %= 0xffffffffffffffffllu;
+    8|      1|  return u;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  u128 x = foo();
+   13|      1|  if (x != 0xfffffffffffffffellu)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

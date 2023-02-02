@@ -1,0 +1,84 @@
+        -:    0:Source:3533.c
+        -:    0:Graph:3533.gcno
+        -:    0:Data:3533.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        -:    2:
+        -:    3:/* Convert a decimal string to a long long unsigned.  No error check is
+        -:    4:   performed.  */
+        -:    5:
+        2:    6:long long unsigned str2llu(str) char *str;
+        -:    7:{
+        -:    8:  long long unsigned acc;
+        -:    9:  int d;
+        2:   10:  acc = *str++ - '0';
+        -:   11:  for (;;) {
+       20:   12:    d = *str++;
+       20:   13:    if (d == '\0')
+        2:   14:      break;
+       18:   15:    d -= '0';
+       18:   16:    acc = acc * 10 + d;
+        -:   17:  }
+        -:   18:
+        2:   19:  return acc;
+        -:   20:}
+        -:   21:
+        -:   22:/* isqrt(t) - computes the square root of t. (tege 86-10-27) */
+        -:   23:
+        9:   24:long unsigned sqrtllu(long long unsigned t) {
+        -:   25:  long long unsigned s;
+        -:   26:  long long unsigned b;
+        -:   27:
+      279:   28:  for (b = 0, s = t; b++, (s >>= 1) != 0;)
+        -:   29:    ;
+        -:   30:
+        9:   31:  s = 1LL << (b >> 1);
+        -:   32:
+        9:   33:  if (b & 1)
+        9:   34:    s += s >> 1;
+        -:   35:
+        -:   36:  do {
+       36:   37:    b = t / s;
+       36:   38:    s = (s + b) >> 1;
+       36:   39:  } while (b < s);
+        -:   40:
+        9:   41:  return s;
+        -:   42:}
+        -:   43:
+        1:   44:int plist(p0, p1, tab) long long unsigned p0, p1;
+        -:   45:long long unsigned *tab;
+        -:   46:{
+        -:   47:  long long unsigned p;
+        -:   48:  long unsigned d;
+        -:   49:  long unsigned s;
+        1:   50:  long long unsigned *xp = tab;
+        -:   51:
+       10:   52:  for (p = p0; p <= p1; p += 2) {
+        9:   53:    s = sqrtllu(p);
+        -:   54:
+    52723:   55:    for (d = 3; d <= s; d += 2) {
+    52720:   56:      long long unsigned q = p % d;
+    52720:   57:      if (q == 0)
+        6:   58:        goto not_prime;
+        -:   59:    }
+        -:   60:
+        3:   61:    *xp++ = p;
+        9:   62:  not_prime:;
+        -:   63:  }
+        1:   64:  *xp = 0;
+        1:   65:  return xp - tab;
+        -:   66:}
+        -:   67:
+        1:   68:main(argc, argv) int argc;
+        -:   69:char *argv[];
+        -:   70:{
+        -:   71:  long long tab[10];
+        -:   72:  int nprimes;
+        1:   73:  nprimes = plist(str2llu("1234111111"), str2llu("1234111127"), tab);
+        -:   74:
+        1:   75:  if (tab[0] != 1234111117LL || tab[1] != 1234111121LL ||
+        1:   76:      tab[2] != 1234111127LL || tab[3] != 0)
+    #####:   77:    abort();
+        -:   78:
+        1:   79:  exit(0);
+        -:   80:}

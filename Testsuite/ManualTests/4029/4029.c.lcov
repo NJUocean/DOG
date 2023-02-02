@@ -1,0 +1,32 @@
+    1|       |long long a;
+    2|       |unsigned b;
+    3|       |int c[70];
+    4|       |int d[70][70];
+    5|       |int e;
+    6|       |
+    7|      1|__attribute__((noinline)) void f(long long *g, int p2) { *g = p2; }
+    8|       |
+    9|      1|__attribute__((noinline)) void fn2() {
+   10|     71|  for (int j = 0; j < 70; j++) {
+   11|  4.97k|    for (int i = 0; i < 70; i++) {
+   12|  4.90k|      if (b)
+   13|  4.90k|        c[i] = 0;
+   14|   347k|      for (int l = 0; l < 70; l++)
+   15|   343k|        d[i][1] = d[l][i];
+   16|  4.90k|    }
+   17|  4.97k|    for (int k = 0; k < 70; k++)
+   18|  4.90k|      e = c[0];
+   19|     70|  }
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  b = 5;
+   24|     71|  for (int j = 0; j < 70; ++j)
+   25|     70|    c[j] = 2075593088;
+   26|      1|  fn2();
+   27|      1|  f(&a, e);
+   28|      1|  if (a)
+   29|      0|    __builtin_abort();
+   30|      1|  return 0;
+   31|      1|}
+

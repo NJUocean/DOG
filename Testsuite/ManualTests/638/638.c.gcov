@@ -1,0 +1,31 @@
+        -:    0:Source:638.c
+        -:    0:Graph:638.gcno
+        -:    0:Data:638.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fexceptions -fnon-call-exceptions" } */
+        -:    3:/* { dg-require-effective-target exceptions } */
+        -:    4:
+        -:    5:int a, b;
+        -:    6:
+        2:    7:static inline long int foo(long int x, int y) {
+        2:    8:  if (y == 0)
+    #####:    9:    return 0;
+        -:   10:
+       2*:   11:  if (x == -1 && y == -1)
+    #####:   12:    return 0;
+        -:   13:
+        2:   14:  return x / y;
+        -:   15:}
+        -:   16:
+        1:   17:static inline int bar(int *p) {
+        1:   18:  int c = foo(a, 1) + *p;
+        1:   19:  return b;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  int d = 0;
+        1:   24:  b = foo(1, 1);
+        1:   25:  bar(&d);
+        1:   26:  return 0;
+        -:   27:}

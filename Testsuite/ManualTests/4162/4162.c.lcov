@@ -1,0 +1,16 @@
+    1|       |/* { dg-options "-fdump-tree-asan0" } */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O0" } } */
+    4|       |
+    5|      1|void foo(int *a) { (*a)++; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  int a = 0;
+    9|      1|  foo(&a);
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|       |/* { dg-final { scan-tree-dump-times "ASAN_" 4 "asan0" } }  */
+   14|       |/* { dg-final { scan-tree-dump "ASAN_CHECK \\(.*, 4\\);" "asan0" } }  */
+   15|       |/* { dg-final { scan-tree-dump "ASAN_CHECK \\(.*, 8\\);" "asan0" } }  */
+

@@ -1,0 +1,29 @@
+        -:    0:Source:1750.c
+        -:    0:Graph:1750.gcno
+        -:    0:Data:1750.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fdump-tree-alias" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+        -:    4:
+        -:    5:volatile int i;
+        1:    6:int **__attribute__((noinline, pure)) foo(int **p) {
+        1:    7:  i;
+        1:    8:  return p;
+        -:    9:}
+        1:   10:int bar(void) {
+        1:   11:  int i = 0, j = 1;
+        -:   12:  int *p, **q;
+        1:   13:  p = &i;
+        1:   14:  q = foo(&p);
+        1:   15:  *q = &j;
+        1:   16:  return *p;
+        -:   17:}
+        -:   18:extern void abort(void);
+        1:   19:int main() {
+        1:   20:  if (bar() != 1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-tree-dump "p.._. = { i j }" "alias" } } */

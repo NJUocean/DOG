@@ -1,0 +1,25 @@
+        -:    0:Source:3727.c
+        -:    0:Graph:3727.gcno
+        -:    0:Data:3727.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49073 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a[] = {1, 2, 3, 4, 5, 6, 7}, c;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int d = 1, i = 1;
+        1:    8:  _Bool f = 0;
+        -:    9:  do {
+        3:   10:    d = a[i];
+        3:   11:    if (f && d == 4) {
+        1:   12:      ++c;
+        1:   13:      break;
+        -:   14:    }
+        2:   15:    i++;
+        2:   16:    f = (d == 3);
+        2:   17:  } while (d < 7);
+        1:   18:  if (c != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

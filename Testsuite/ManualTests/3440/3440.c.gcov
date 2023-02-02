@@ -1,0 +1,33 @@
+        -:    0:Source:3440.c
+        -:    0:Graph:3440.gcno
+        -:    0:Data:3440.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/34490 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:static int x;
+        -:    6:
+        3:    7:int __attribute__((noinline)) bar(void) { return x; }
+        -:    8:
+        3:    9:int foo(void) {
+        3:   10:  long int b = bar();
+        3:   11:  if ((unsigned long)b < -4095L)
+        1:   12:    return b;
+        2:   13:  if (-b != 38)
+        1:   14:    b = -2;
+        2:   15:  return b + 1;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  x = 26;
+        1:   20:  if (foo() != 26)
+    #####:   21:    abort();
+        1:   22:  x = -39;
+        1:   23:  if (foo() != -1)
+    #####:   24:    abort();
+        1:   25:  x = -38;
+        1:   26:  if (foo() != -37)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

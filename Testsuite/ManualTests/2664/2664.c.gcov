@@ -1,0 +1,35 @@
+        -:    0:Source:2664.c
+        -:    0:Graph:2664.gcno
+        -:    0:Data:2664.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:int a, b, c, d, e, f, h, l, m, n, k, o;
+        -:    5:long long g;
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int f1;
+        -:    9:  int f2;
+        -:   10:  int f3;
+        -:   11:  int f4;
+        -:   12:};
+        -:   13:
+        -:   14:static struct S i = {0, 0, 0, 0}, j;
+        -:   15:
+        1:   16:void foo() {
+        1:   17:  m = 1 & d;
+        1:   18:  n = b + c;
+        1:   19:  o = k >> 1;
+        1:   20:  f = 0 == e;
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        2:   24:  for (; h < 1; h++) {
+       1*:   25:    g = 1 | (0 > 1 - a ? 0 : a);
+        1:   26:    foo();
+        4:   27:    for (l = 0; l < 3; l++)
+        3:   28:      j = i;
+        -:   29:  }
+        1:   30:  return 0;
+        -:   31:}

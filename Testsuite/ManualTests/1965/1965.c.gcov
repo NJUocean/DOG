@@ -1,0 +1,42 @@
+        -:    0:Source:1965.c
+        -:    0:Graph:1965.gcno
+        -:    0:Data:1965.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:   by Hans-Peter Nilsson  <hp@bitrange.com>, derived from mzero2.c
+        -:    3:
+        -:    4:   In the MMIX port, negdf2 was bogusly expanding -x into 0 - x.  */
+        -:    5:
+        -:    6:double nzerod = -0.0;
+        -:    7:float nzerof = -0.0;
+        -:    8:double zerod = 0.0;
+        -:    9:float zerof = 0.0;
+        -:   10:
+        -:   11:void expectd(double, double);
+        -:   12:void expectf(float, float);
+        -:   13:double negd(double);
+        -:   14:float negf(float);
+        -:   15:
+        1:   16:main() {
+        1:   17:  expectd(negd(zerod), nzerod);
+        1:   18:  expectf(negf(zerof), nzerof);
+        1:   19:  expectd(negd(nzerod), zerod);
+        1:   20:  expectf(negf(nzerof), zerof);
+        1:   21:  exit(0);
+        -:   22:}
+        -:   23:
+        2:   24:void expectd(double value, double expected) {
+        2:   25:  if (value != expected ||
+        2:   26:      memcmp((void *)&value, (void *)&expected, sizeof(double)) != 0)
+    #####:   27:    abort();
+        2:   28:}
+        -:   29:
+        2:   30:void expectf(float value, float expected) {
+        2:   31:  if (value != expected ||
+        2:   32:      memcmp((void *)&value, (void *)&expected, sizeof(float)) != 0)
+    #####:   33:    abort();
+        2:   34:}
+        -:   35:
+        2:   36:double negd(double v) { return -v; }
+        -:   37:
+        2:   38:float negf(float v) { return -v; }

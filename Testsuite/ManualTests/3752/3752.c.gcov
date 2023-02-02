@@ -1,0 +1,22 @@
+        -:    0:Source:3752.c
+        -:    0:Graph:3752.gcno
+        -:    0:Data:3752.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/52286 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main() {
+        -:    6:#if __SIZEOF_INT__ > 2
+        -:    7:  int a, b;
+        1:    8:  asm("" : "=r"(a) : "0"(0));
+        1:    9:  b = (~a | 1) & -2038094497;
+        -:   10:#else
+        -:   11:  long a, b;
+        -:   12:  asm("" : "=r"(a) : "0"(0));
+        -:   13:  b = (~a | 1) & -2038094497L;
+        -:   14:#endif
+        1:   15:  if (b >= 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

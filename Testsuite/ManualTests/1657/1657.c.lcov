@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      4|int __attribute__((pure, noinline, noclone)) foo(int *p) { return *p * 2; }
+    4|       |
+    5|      1|int main() {
+    6|      1|  int k = 0;
+    7|      1|  int i;
+    8|      1|#pragma GCC ivdep
+    9|      2|  for (k = 0; k < 9;) {
+   10|      1|    i = 0;
+   11|      4|    while (1) {
+   12|      4|      k += foo(&i);
+   13|      4|      if (k > 7)
+   14|      1|        break;
+   15|      3|      i++;
+   16|      3|    }
+   17|      1|  }
+   18|      1|  if (k != 12)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

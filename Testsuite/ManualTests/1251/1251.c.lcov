@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* Check that find_scan_insn properly handles swapped FP comparisons.  */
+    3|       |static double x;
+    4|       |static int exit_code;
+    5|       |
+    6|      5|void __attribute__((noinline)) check_int(int a, int b) {
+    7|      5|  exit_code += (a != b);
+    8|      5|}
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  x = 0.0;
+   12|      1|  asm("" : "+m"(x));
+   13|      1|  check_int(__builtin_isgreater(x, 1.0), 0);
+   14|      1|  check_int(__builtin_isgreaterequal(x, 1.0), 0);
+   15|      1|  check_int(__builtin_isless(x, 1.0), 1);
+   16|      1|  check_int(__builtin_islessequal(x, 1.0), 1);
+   17|      1|  check_int(__builtin_islessgreater(x, 1.0), 1);
+   18|      1|  return exit_code;
+   19|      1|}
+

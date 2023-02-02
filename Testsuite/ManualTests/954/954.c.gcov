@@ -1,0 +1,17 @@
+        -:    0:Source:954.c
+        -:    0:Graph:954.gcno
+        -:    0:Data:954.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/61077 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=c11 -Wall" } */
+        -:    4:
+        1:    5:_Atomic int main(_Atomic int argc, _Atomic char **argv)
+        -:    6:/* { dg-warning "qualified return type" "return" { target *-*-* } .-1 } */
+        -:    7:/* { dg-warning "qualified parameter type\[^\n\]*int" "parameter" { target *-*-*
+        -:    8:   } .-2 } */
+        -:    9:/* { dg-warning "qualified parameter type\[^\n\]*char" "parameter" { target
+        -:   10:   *-*-* } .-3 } */
+        -:   11:{
+        1:   12:  return 0;
+        -:   13:}

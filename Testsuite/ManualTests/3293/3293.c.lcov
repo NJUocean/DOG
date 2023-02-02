@@ -1,0 +1,22 @@
+    1|       |/* Testcase for PR fortran/9974.  This was a miscompilation of the g77
+    2|       |   front-end caused by the jump bypassing optimizations not handling
+    3|       |   instructions inserted on CFG edges.  */
+    4|       |
+    5|       |extern void abort();
+    6|       |
+    7|      1|int bar() { return 1; }
+    8|       |
+    9|      1|void foo(int x) {
+   10|      1|  unsigned char error = 0;
+   11|      1|
+   12|      1|  if (!(error = ((x == 0) || bar())))
+   13|      0|    bar();
+   14|      1|  if (!error)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  foo(1);
+   20|      1|  return 0;
+   21|      1|}
+

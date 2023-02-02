@@ -1,0 +1,51 @@
+    1|       |typedef unsigned int dev_t;
+    2|       |typedef unsigned int kdev_t;
+    3|       |
+    4|      1|static inline kdev_t to_kdev_t(int dev) {
+    5|      1|  int major, minor;
+    6|      1|
+    7|      1|  if (sizeof(kdev_t) == 16)
+    8|      0|    return (kdev_t)dev;
+    9|      1|  major = (dev >> 8);
+   10|      1|  minor = (dev & 0xff);
+   11|      1|  return (((major) << 22) | (minor));
+   12|      1|}
+   13|       |
+   14|      1|void do_mknod(const char *filename, int mode, kdev_t dev) {
+   15|      1|  if (dev == 0x15800078)
+   16|      1|    exit(0);
+   17|      0|  else
+   18|      0|    abort();
+   19|      1|}
+   20|       |
+   21|      1|char *getname(const char *filename) {
+   22|      1|  register unsigned int a1, a2, a3, a4, a5, a6, a7, a8, a9;
+   23|      1|  a1 = (unsigned int)(filename)*5 + 1;
+   24|      1|  a2 = (unsigned int)(filename)*6 + 2;
+   25|      1|  a3 = (unsigned int)(filename)*7 + 3;
+   26|      1|  a4 = (unsigned int)(filename)*8 + 4;
+   27|      1|  a5 = (unsigned int)(filename)*9 + 5;
+   28|      1|  a6 = (unsigned int)(filename)*10 + 5;
+   29|      1|  a7 = (unsigned int)(filename)*11 + 5;
+   30|      1|  a8 = (unsigned int)(filename)*12 + 5;
+   31|      1|  a9 = (unsigned int)(filename)*13 + 5;
+   32|      1|  return (char *)(a1 * a2 + a3 * a4 + a5 * a6 + a7 * a8 + a9);
+   33|      1|}
+   34|       |
+   35|      1|int sys_mknod(const char *filename, int mode, dev_t dev) {
+   36|      1|  int error;
+   37|      1|  char *tmp;
+   38|      1|
+   39|      1|  tmp = getname(filename);
+   40|      1|  error = ((long)(tmp));
+   41|      1|  do_mknod(tmp, mode, to_kdev_t(dev));
+   42|      1|  return error;
+   43|      1|}
+   44|       |
+   45|      1|int main(void) {
+   46|      1|  if (sizeof(int) != 4)
+   47|      0|    exit(0);
+   48|      1|
+   49|      1|  return sys_mknod("test", 1, 0x12345678);
+   50|      1|}
+

@@ -1,0 +1,16 @@
+    1|       |/* PR target/9348 */
+    2|       |
+    3|       |#define u_l_l unsigned long long
+    4|       |#define l_l long long
+    5|       |
+    6|       |l_l mpy_res;
+    7|       |
+    8|      1|u_l_l mpy(long a, long b) { return (u_l_l)a * (u_l_l)b; }
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  mpy_res = mpy(1, -1);
+   12|      1|  if (mpy_res != -1LL)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

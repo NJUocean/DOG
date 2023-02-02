@@ -1,0 +1,13 @@
+    1|       |/* Test the tester; previously gcc.misc-tests/dg-6.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-do run { target *-*-* } } */
+    4|       |/* The \n is left out of the pattern because tcl's exec will remove it.  */
+    5|       |/* { dg-output {Hello world[.]} { xfail *-*-* } } */
+    6|       |
+    7|       |#include <stdio.h>
+    8|       |
+    9|      1|main() {
+   10|      1|  printf("Hello world (oops).\n");
+   11|      1|  return 0;
+   12|      1|}
+

@@ -1,0 +1,24 @@
+    1|       |/* submitted by kenneth zadeck */
+    2|       |
+    3|       |static int test_var;
+    4|       |
+    5|       |/* the idea here is that not only is inlinable, inlinable but since it
+    6|       |   is static, the cgraph node will not be marked as output.  The
+    7|       |   current version of the code ignores these cgraph nodes.  */
+    8|       |
+    9|       |void not_inlinable() __attribute__((noinline));
+   10|       |
+   11|      1|static void inlinable() { test_var = -10; }
+   12|       |
+   13|      1|void not_inlinable() { inlinable(); }
+   14|       |
+   15|      1|main() {
+   16|      1|  test_var = 10;
+   17|      1|  /* Variable test_var should be considered call-clobbered by the call
+   18|      1|     to not_inlinable().  */
+   19|      1|  not_inlinable();
+   20|      1|  if (test_var == 10)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

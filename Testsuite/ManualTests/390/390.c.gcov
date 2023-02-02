@@ -1,0 +1,24 @@
+        -:    0:Source:390.c
+        -:    0:Graph:390.gcno
+        -:    0:Data:390.gcda
+        -:    0:Runs:1
+        -:    1:int a[128][40];
+        -:    2:
+        1:    3:void __attribute__((noinline, noclone)) foo(void) {
+        -:    4:  int i, j;
+       41:    5:  for (i = 0; i < 40; i++)
+     5160:    6:    for (j = 0; j < 128; j++)
+     5120:    7:      a[j][i] = 4;
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i, j;
+        1:   12:  foo();
+       41:   13:  for (i = 0; i < 40; i++)
+     5160:   14:    for (j = 0; j < 128; j++)
+     5120:   15:      if (a[j][i] != 4)
+    #####:   16:        __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

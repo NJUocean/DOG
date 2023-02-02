@@ -1,0 +1,14 @@
+        -:    0:Source:2182.c
+        -:    0:Graph:2182.gcno
+        -:    0:Data:2182.gcda
+        -:    0:Runs:1
+        1:    1:foo(a) {
+        1:    2:  int bar = 0;
+        -:    3:
+        1:    4:  return (unsigned)(a - 1) <= (unsigned)bar;
+        -:    5:}
+        -:    6:
+        1:    7:main() {
+        1:    8:  if (foo(-1))
+    #####:    9:    puts("The largest possible unsigned <= 0 on this machine...");
+        -:   10:}

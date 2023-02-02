@@ -1,0 +1,16 @@
+        -:    0:Source:250.c
+        -:    0:Graph:250.gcno
+        -:    0:Data:250.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-set-compiler-env-var SOURCE_DATE_EPOCH "AAA" } */
+        -:    3:
+        -:    4:/* Make sure that SOURCE_DATE_EPOCH is only parsed once */
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  __builtin_printf("%s %s\n", __DATE__,
+        -:    8:                   __TIME__); /* { dg-error "environment variable
+        -:    9:                                 'SOURCE_DATE_EPOCH' must expand" } */
+        1:   10:  __builtin_printf("%s %s\n", __DATE__, __TIME__);
+        1:   11:  return 0;
+        -:   12:}

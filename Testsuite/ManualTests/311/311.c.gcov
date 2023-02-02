@@ -1,0 +1,23 @@
+        -:    0:Source:311.c
+        -:    0:Graph:311.gcno
+        -:    0:Data:311.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/36690 */
+        -:    2:/* Verify that break func is hit.
+        -:    3:   This version of the test just checks that it can be compiled, linked
+        -:    4:   and executed, further testing is done in corresponding gcc.dg/dwarf2/
+        -:    5:   test and hopefully in gdb testsuite.  */
+        -:    6:/* { dg-do run } */
+        -:    7:/* { dg-options "-O0 -g -dA" } */
+        -:    8:
+        -:    9:int i;
+        -:   10:
+        1:   11:void func(void) {
+        1:   12:  while (i == 1)
+    #####:   13:    i = 0;
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  func();
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,32 @@
+        -:    0:Source:49.c
+        -:    0:Graph:49.gcno
+        -:    0:Data:49.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -Wall" } */
+        -:    3:/* based on PR 37861 */
+        -:    4:
+        -:    5:extern int printf(__const char *__restrict __format, ...);
+        -:    6:
+        4:    7:static int f3(int v) {
+        4:    8:  int i, j = 0;
+       14:    9:  for (i = 0; i <= v; i++)
+       10:   10:    j++;
+        4:   11:  return j;
+        -:   12:}
+        -:   13:
+        1:   14:static int f2(char formatstr[10][100]) {
+        1:   15:  printf("%d %s\n", 0, formatstr[f3(0)]);
+        1:   16:  printf("%d %s\n", 1, formatstr[f3(1)]);
+        1:   17:  printf("%d %s\n", 2, formatstr[f3(2)]);
+        1:   18:  printf("%d %s\n", 3, formatstr[f3(3)]);
+        1:   19:  return 3;
+        -:   20:}
+        -:   21:
+        -:   22:static char formatstr[10][100];
+        1:   23:int main(void) {
+        -:   24:  int anz;
+        1:   25:  anz = f2(formatstr);
+        1:   26:  printf("   %d\n", anz);
+        1:   27:  return 0;
+        -:   28:}

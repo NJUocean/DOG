@@ -1,0 +1,20 @@
+    1|      1|long long signed_poly(long long sum, long x) {
+    2|      1|  sum += (long long)(long)sum * (long long)x;
+    3|      1|  return sum;
+    4|      1|}
+    5|       |
+    6|      1|unsigned long long unsigned_poly(unsigned long long sum, unsigned long x) {
+    7|      1|  sum += (unsigned long long)(unsigned long)sum * (unsigned long long)x;
+    8|      1|  return sum;
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  if (signed_poly(2LL, -3) != -4LL)
+   13|      0|    abort();
+   14|      1|
+   15|      1|  if (unsigned_poly(2ULL, 3) != 8ULL)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+

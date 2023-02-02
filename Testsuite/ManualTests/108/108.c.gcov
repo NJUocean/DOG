@@ -1,0 +1,98 @@
+        -:    0:Source:108.c
+        -:    0:Graph:108.gcno
+        -:    0:Data:108.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and proper execution on 2 byte
+        -:    2:   values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target sync_char_short } */
+        -:    5:
+        -:    6:/* Test the execution of the __atomic_compare_exchange_n builtin for a short. */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:short v = 0;
+        -:   11:short expected = 0;
+        -:   12:short max = ~0;
+        -:   13:short desired = ~0;
+        -:   14:short zero = 0;
+        -:   15:
+        -:   16:#define STRONG 0
+        -:   17:#define WEAK 1
+        -:   18:
+        1:   19:int main() {
+        -:   20:
+        1:   21:  if (!__atomic_compare_exchange_n(&v, &expected, max, STRONG, __ATOMIC_RELAXED,
+        -:   22:                                   __ATOMIC_RELAXED))
+    #####:   23:    abort();
+        1:   24:  if (expected != 0)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  if (__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_ACQUIRE,
+        -:   28:                                  __ATOMIC_RELAXED))
+    #####:   29:    abort();
+        1:   30:  if (expected != max)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  if (!__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_RELEASE,
+        -:   34:                                   __ATOMIC_ACQUIRE))
+    #####:   35:    abort();
+        1:   36:  if (expected != max)
+    #####:   37:    abort();
+        1:   38:  if (v != 0)
+    #####:   39:    abort();
+        -:   40:
+        1:   41:  if (__atomic_compare_exchange_n(&v, &expected, desired, WEAK,
+        -:   42:                                  __ATOMIC_ACQ_REL, __ATOMIC_ACQUIRE))
+    #####:   43:    abort();
+        1:   44:  if (expected != 0)
+    #####:   45:    abort();
+        -:   46:
+        1:   47:  if (!__atomic_compare_exchange_n(&v, &expected, desired, STRONG,
+        -:   48:                                   __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+    #####:   49:    abort();
+        1:   50:  if (expected != 0)
+    #####:   51:    abort();
+        1:   52:  if (v != max)
+    #####:   53:    abort();
+        -:   54:
+        -:   55:  /* Now test the generic version.  */
+        -:   56:
+        1:   57:  v = 0;
+        -:   58:
+        1:   59:  if (!__atomic_compare_exchange(&v, &expected, &max, STRONG, __ATOMIC_RELAXED,
+        -:   60:                                 __ATOMIC_RELAXED))
+    #####:   61:    abort();
+        1:   62:  if (expected != 0)
+    #####:   63:    abort();
+        -:   64:
+        1:   65:  if (__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_ACQUIRE,
+        -:   66:                                __ATOMIC_RELAXED))
+    #####:   67:    abort();
+        1:   68:  if (expected != max)
+    #####:   69:    abort();
+        -:   70:
+        1:   71:  if (!__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_RELEASE,
+        -:   72:                                 __ATOMIC_ACQUIRE))
+    #####:   73:    abort();
+        1:   74:  if (expected != max)
+    #####:   75:    abort();
+        1:   76:  if (v != 0)
+    #####:   77:    abort();
+        -:   78:
+        1:   79:  if (__atomic_compare_exchange(&v, &expected, &desired, WEAK, __ATOMIC_ACQ_REL,
+        -:   80:                                __ATOMIC_ACQUIRE))
+    #####:   81:    abort();
+        1:   82:  if (expected != 0)
+    #####:   83:    abort();
+        -:   84:
+        1:   85:  if (!__atomic_compare_exchange(&v, &expected, &desired, STRONG,
+        -:   86:                                 __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+    #####:   87:    abort();
+        1:   88:  if (expected != 0)
+    #####:   89:    abort();
+        1:   90:  if (v != max)
+    #####:   91:    abort();
+        -:   92:
+        1:   93:  return 0;
+        -:   94:}

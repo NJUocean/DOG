@@ -1,0 +1,92 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target stdint_types } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |
+    5|       |#include <stdint.h>
+    6|       |
+    7|       |#define MAKE_FUN(suffix, type)                                                 \
+    8|      9|  type my_bswap##suffix(type x) {                                              \
+    9|      9|    type result = 0;                                                           \
+   10|      9|    int shift;                                                                 \
+   11|     51|    for (shift = 0; shift < 8 * sizeof(type); shift += 8) {                    \
+   12|     42|      result <<= 8;                                                            \
+   13|     42|      result |= (x >> shift) & 0xff;                                           \
+   14|     42|    }                                                                          \
+   15|      9|    return result;                                                             \
+   16|      9|  }
+  ------------------
+  | my_bswap16:
+  |    8|      3|  type my_bswap##suffix(type x) {                                              \
+  |    9|      3|    type result = 0;                                                           \
+  |   10|      3|    int shift;                                                                 \
+  |   11|      9|    for (shift = 0; shift < 8 * sizeof(type); shift += 8) {                    \
+  |   12|      6|      result <<= 8;                                                            \
+  |   13|      6|      result |= (x >> shift) & 0xff;                                           \
+  |   14|      6|    }                                                                          \
+  |   15|      3|    return result;                                                             \
+  |   16|      3|  }
+  ------------------
+  | my_bswap32:
+  |    8|      3|  type my_bswap##suffix(type x) {                                              \
+  |    9|      3|    type result = 0;                                                           \
+  |   10|      3|    int shift;                                                                 \
+  |   11|     15|    for (shift = 0; shift < 8 * sizeof(type); shift += 8) {                    \
+  |   12|     12|      result <<= 8;                                                            \
+  |   13|     12|      result |= (x >> shift) & 0xff;                                           \
+  |   14|     12|    }                                                                          \
+  |   15|      3|    return result;                                                             \
+  |   16|      3|  }
+  ------------------
+  | my_bswap64:
+  |    8|      3|  type my_bswap##suffix(type x) {                                              \
+  |    9|      3|    type result = 0;                                                           \
+  |   10|      3|    int shift;                                                                 \
+  |   11|     27|    for (shift = 0; shift < 8 * sizeof(type); shift += 8) {                    \
+  |   12|     24|      result <<= 8;                                                            \
+  |   13|     24|      result |= (x >> shift) & 0xff;                                           \
+  |   14|     24|    }                                                                          \
+  |   15|      3|    return result;                                                             \
+  |   16|      3|  }
+  ------------------
+   17|       |
+   18|       |MAKE_FUN(16, uint16_t);
+   19|       |MAKE_FUN(32, uint32_t);
+   20|       |MAKE_FUN(64, uint64_t);
+   21|       |
+   22|       |extern void abort(void);
+   23|       |
+   24|       |#define NUMS16                                                                 \
+   25|       |  { 0x0000, 0x1122, 0xffff, }
+   26|       |
+   27|       |#define NUMS32                                                                 \
+   28|       |  { 0x00000000UL, 0x11223344UL, 0xffffffffUL, }
+   29|       |
+   30|       |#define NUMS64                                                                 \
+   31|       |  { 0x0000000000000000ULL, 0x1122334455667788ULL, 0xffffffffffffffffULL, }
+   32|       |
+   33|       |uint16_t uint16_ts[] = NUMS16;
+   34|       |
+   35|       |uint32_t uint32_ts[] = NUMS32;
+   36|       |
+   37|       |uint64_t uint64_ts[] = NUMS64;
+   38|       |
+   39|     12|#define N(table) (sizeof(table) / sizeof(table[0]))
+   40|       |
+   41|      1|int main(void) {
+   42|      1|  int i;
+   43|      1|
+   44|      4|  for (i = 0; i < N(uint16_ts); i++)
+   45|      3|    if (__builtin_bswap16(uint16_ts[i]) != my_bswap16(uint16_ts[i]))
+   46|      0|      abort();
+   47|      1|
+   48|      4|  for (i = 0; i < N(uint32_ts); i++)
+   49|      3|    if (__builtin_bswap32(uint32_ts[i]) != my_bswap32(uint32_ts[i]))
+   50|      0|      abort();
+   51|      1|
+   52|      4|  for (i = 0; i < N(uint64_ts); i++)
+   53|      3|    if (__builtin_bswap64(uint64_ts[i]) != my_bswap64(uint64_ts[i]))
+   54|      0|      abort();
+   55|      1|
+   56|      1|  return 0;
+   57|      1|}
+

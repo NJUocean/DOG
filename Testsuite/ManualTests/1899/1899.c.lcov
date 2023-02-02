@@ -1,0 +1,75 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|void test(double f, double i) {
+    4|      1|  if (f == __builtin_inf())
+    5|      0|    abort();
+    6|      1|  if (f == -__builtin_inf())
+    7|      0|    abort();
+    8|      1|  if (i == -__builtin_inf())
+    9|      0|    abort();
+   10|      1|  if (i != __builtin_inf())
+   11|      0|    abort();
+   12|      1|
+   13|      1|  if (f >= __builtin_inf())
+   14|      0|    abort();
+   15|      1|  if (f > __builtin_inf())
+   16|      0|    abort();
+   17|      1|  if (i > __builtin_inf())
+   18|      0|    abort();
+   19|      1|  if (f <= -__builtin_inf())
+   20|      0|    abort();
+   21|      1|  if (f < -__builtin_inf())
+   22|      0|    abort();
+   23|      1|}
+   24|       |
+   25|      1|void testf(float f, float i) {
+   26|      1|  if (f == __builtin_inff())
+   27|      0|    abort();
+   28|      1|  if (f == -__builtin_inff())
+   29|      0|    abort();
+   30|      1|  if (i == -__builtin_inff())
+   31|      0|    abort();
+   32|      1|  if (i != __builtin_inff())
+   33|      0|    abort();
+   34|      1|
+   35|      1|  if (f >= __builtin_inff())
+   36|      0|    abort();
+   37|      1|  if (f > __builtin_inff())
+   38|      0|    abort();
+   39|      1|  if (i > __builtin_inff())
+   40|      0|    abort();
+   41|      1|  if (f <= -__builtin_inff())
+   42|      0|    abort();
+   43|      1|  if (f < -__builtin_inff())
+   44|      0|    abort();
+   45|      1|}
+   46|       |
+   47|      1|void testl(long double f, long double i) {
+   48|      1|  if (f == __builtin_infl())
+   49|      0|    abort();
+   50|      1|  if (f == -__builtin_infl())
+   51|      0|    abort();
+   52|      1|  if (i == -__builtin_infl())
+   53|      0|    abort();
+   54|      1|  if (i != __builtin_infl())
+   55|      0|    abort();
+   56|      1|
+   57|      1|  if (f >= __builtin_infl())
+   58|      0|    abort();
+   59|      1|  if (f > __builtin_infl())
+   60|      0|    abort();
+   61|      1|  if (i > __builtin_infl())
+   62|      0|    abort();
+   63|      1|  if (f <= -__builtin_infl())
+   64|      0|    abort();
+   65|      1|  if (f < -__builtin_infl())
+   66|      0|    abort();
+   67|      1|}
+   68|       |
+   69|      1|int main() {
+   70|      1|  test(34.0, __builtin_inf());
+   71|      1|  testf(34.0f, __builtin_inff());
+   72|      1|  testl(34.0l, __builtin_infl());
+   73|      1|  return 0;
+   74|      1|}
+

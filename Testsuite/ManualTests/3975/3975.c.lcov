@@ -1,0 +1,20 @@
+    1|       |/* PR tree-optimization/81556 */
+    2|       |
+    3|       |unsigned long long int b = 0xb82ff73c5c020599ULL;
+    4|       |unsigned long long int c = 0xd4e8188733a29d8eULL;
+    5|       |unsigned long long int d = 2, f = 1, g = 0, h = 0;
+    6|       |unsigned long long int e = 0xf27771784749f32bULL;
+    7|       |
+    8|      1|__attribute__((noinline, noclone)) void foo(void) {
+    9|      1|  _Bool a = d > 1;
+   10|      1|  g = f % ((d > 1) << 9);
+   11|      1|  h = a & (e & (a & b & c));
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  foo();
+   16|      1|  if (g != 1 || h != 0)
+   17|      0|    __builtin_abort();
+   18|      1|  return 0;
+   19|      1|}
+

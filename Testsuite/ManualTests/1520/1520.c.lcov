@@ -1,0 +1,35 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct S {
+    4|       |  int f1;
+    5|       |};
+    6|       |
+    7|       |static struct S a = {1};
+    8|       |char b;
+    9|       |static unsigned char *c = &b;
+   10|       |int d, e, f;
+   11|       |
+   12|      4|int fn1(int p) { return 0 ? 0 : p - 1; }
+   13|       |
+   14|      1|static int fn2(struct S p) {
+   15|      1|  int g = 200;
+   16|      5|  for (e = 4; e; e = fn1(e)) {
+   17|      4|    for (; d; d++)
+   18|      0|      ;
+   19|      4|    *c &= p.f1 & g;
+   20|      4|    g = --*c;
+   21|      4|    if (f)
+   22|      0|      return 0;
+   23|      4|  }
+   24|      1|  return 0;
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  fn2(a);
+   29|      1|
+   30|      1|  if (b != 0)
+   31|      0|    __builtin_abort();
+   32|      1|
+   33|      1|  return 0;
+   34|      1|}
+

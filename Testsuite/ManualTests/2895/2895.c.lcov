@@ -1,0 +1,37 @@
+    1|       |/* Test LOOP recognition */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O1 -mloop" } */
+    5|       |
+    6|       |/* -O1 in the options is significant.  Without it do-loop will not be
+    7|       |   run.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |volatile unsigned int int_12345 = 12345;
+   12|       |volatile unsigned int int_0 = 0;
+   13|       |volatile unsigned int int_1 = 1;
+   14|       |
+   15|      3|unsigned int test_loop(unsigned int n) {
+   16|      3|  unsigned int i;
+   17|      3|  volatile unsigned int s = 0;
+   18|      3|
+   19|      3|  if (n >= 0x10000)
+   20|      0|    return 0;
+   21|      3|
+   22|  12.3k|  for (i = 0; i < n; i++)
+   23|  12.3k|    s++;
+   24|      3|  return s;
+   25|      3|}
+   26|       |
+   27|      1|int main(int argc, char **argv) {
+   28|      1|  if (test_loop(int_0) != 0)
+   29|      0|    abort();
+   30|      1|  if (test_loop(int_1) != 1)
+   31|      0|    abort();
+   32|      1|  if (test_loop(int_12345) != 12345)
+   33|      0|    abort();
+   34|      1|
+   35|      1|  return 0;
+   36|      1|}
+

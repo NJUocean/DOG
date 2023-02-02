@@ -1,0 +1,23 @@
+        -:    0:Source:2548.c
+        -:    0:Graph:2548.gcno
+        -:    0:Data:2548.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O1 -ffast-math -march=i686" } */
+        -:    4:
+        -:    5:/* Sanity check for fp_jcc_* with TARGET_CMOVE.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:static int test(double a) {
+        1:   10:  if (a)
+    #####:   11:    return 0;
+        1:   12:}
+        -:   13:
+        -:   14:static double zero = 0.0;
+        -:   15:
+        1:   16:int main() {
+        1:   17:  test(zero);
+        1:   18:  return 0;
+        -:   19:}

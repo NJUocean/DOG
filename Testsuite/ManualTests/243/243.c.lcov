@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |#define D_2 1, 2
+    4|      1|#define C_2(X, I0, I1) X##_a = I0, X##_b = I1
+    5|      1|#define B_2(X, I) C_2(X, I)
+    6|      1|#define A(N, X) B_##N(X, D_##N)
+    7|       |
+    8|       |extern void abort(void);
+    9|       |extern void exit(int);
+   10|       |
+   11|       |int x_a, x_b;
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  A(2, x);
+   15|      1|  if (x_a != 1 || x_b != 2)
+   16|      0|    abort();
+   17|      1|  exit(0);
+   18|      1|}
+

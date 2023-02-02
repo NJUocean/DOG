@@ -1,0 +1,47 @@
+        -:    0:Source:534.c
+        -:    0:Graph:534.gcno
+        -:    0:Data:534.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_4[3] = {0L, 0L, 0L};
+        -:    7:static uint16_t g_5[3][4] = {{0x22E6L, 0x22E6L, 0x22E6L, 0x22E6L}, {0x22E6L, 0x22E6L, 0x22E6L, 0x22E6L}, {0x22E6L, 0x22E6L, 0x22E6L, 0x22E6L}};
+        -:    8:
+        -:    9:static int8_t func_1(void);
+        -:   10:
+        1:   11:static int8_t func_1(void) {
+        1:   12:  uint64_t l_2 = 1UL;
+        -:   13:  int32_t *l_3[2];
+        -:   14:  int i;
+        3:   15:  for (i = 0; i < 2; i++)
+        2:   16:    l_3[i] = &g_4[1];
+        1:   17:  g_5[2][3] = (g_4[1] = l_2);
+        1:   18:  return g_5[2][3];
+        -:   19:}
+        -:   20:
+        1:   21:int main(int argc, char *argv[]) {
+        -:   22:  int i, j;
+        1:   23:  int print_hash_value = 0;
+       1*:   24:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   25:    print_hash_value = 1;
+        1:   26:  platform_main_begin();
+        1:   27:  crc32_gentab();
+        1:   28:  func_1();
+        4:   29:  for (i = 0; i < 3; i++) {
+        3:   30:    transparent_crc(g_4[i], "g_4[i]", print_hash_value);
+        3:   31:    if (print_hash_value)
+    #####:   32:      printf("index = [%d]\n", i);
+        -:   33:  }
+        4:   34:  for (i = 0; i < 3; i++) {
+       15:   35:    for (j = 0; j < 4; j++) {
+       12:   36:      transparent_crc(g_5[i][j], "g_5[i][j]", print_hash_value);
+       12:   37:      if (print_hash_value)
+    #####:   38:        printf("index = [%d][%d]\n", i, j);
+        -:   39:    }
+        -:   40:  }
+        1:   41:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   42:  return 0;
+        -:   43:}

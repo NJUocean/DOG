@@ -1,0 +1,26 @@
+        -:    0:Source:513.c
+        -:    0:Graph:513.gcno
+        -:    0:Data:513.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/54200 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g -fno-var-tracking-assignments -fno-tree-coalesce-vars" } */
+        -:    4:
+        -:    5:int o __attribute__((used));
+        -:    6:
+    #####:    7:void bar(void) { o = 2; }
+        -:    8:
+        1:    9:int __attribute__((noinline, noclone)) foo(int z, int x, int b) {
+        1:   10:  if (x == 1) {
+    #####:   11:    bar();
+    #####:   12:    return z;
+        -:   13:  } else {
+        1:   14:    int a = (x + z) + b;
+        1:   15:    return a; /* { dg-final { gdb-test . "z" "3" } } */
+        -:   16:  }
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  foo(3, 2, 1);
+        1:   21:  return 0;
+        -:   22:}

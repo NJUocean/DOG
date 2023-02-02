@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |/* Test derived from PR 14643.  When a function has no addressable
+    5|       |   variables but 2 or more pointers have conflicting memory tags, they
+    6|       |   were not being processed by the type based alias analyzer,
+    7|       |   resulting in optimizations removing a non-redundant load.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |struct bar {
+   12|       |  int count;
+   13|       |  int *arr;
+   14|       |};
+   15|       |
+   16|      1|void foo(struct bar *b) {
+   17|      1|  b->count = 0;
+   18|      1|  *(b->arr) = 2;
+   19|      1|  if (b->count == 0) /* b->count can't be assumed to be 0 here.  */
+   20|      0|    abort();
+   21|      1|}
+   22|       |
+   23|      1|int main() {
+   24|      1|  struct bar x;
+   25|      1|  x.arr = &x.count;
+   26|      1|  foo(&x);
+   27|      1|  return 0;
+   28|      1|}
+

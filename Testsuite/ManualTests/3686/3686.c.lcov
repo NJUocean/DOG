@@ -1,0 +1,25 @@
+    1|       |extern __attribute__((__noreturn__)) void exit(int);
+    2|       |extern __attribute__((__noreturn__)) void abort(void);
+    3|      1|__attribute__((__noinline__)) int add512(int a, int *b) {
+    4|      1|  int c = a + 512;
+    5|      1|  if (c != 0)
+    6|      0|    *b = a;
+    7|      1|  return c;
+    8|      1|}
+    9|       |
+   10|      1|__attribute__((__noinline__)) int add513(int a, int *b) {
+   11|      1|  int c = a + 513;
+   12|      1|  if (c == 0)
+   13|      1|    *b = a;
+   14|      1|  return c;
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  int b0 = -1;
+   19|      1|  int b1 = -1;
+   20|      1|  if (add512(-512, &b0) != 0 || b0 != -1 || add513(-513, &b1) != 0 ||
+   21|      1|      b1 != -513)
+   22|      0|    abort();
+   23|      1|  exit(0);
+   24|      1|}
+

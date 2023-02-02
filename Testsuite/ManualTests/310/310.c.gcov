@@ -1,0 +1,38 @@
+        -:    0:Source:310.c
+        -:    0:Graph:310.gcno
+        -:    0:Data:310.gcda
+        -:    0:Runs:1
+        -:    1:/* Test to make sure that stabs for C symbols that go into .comm have the
+        -:    2:   proper structure.  These should be lettered G for the struct that gives
+        -:    3:   the name to the .comm, and should be V or S for .lcomm symbols.  */
+        -:    4:
+        -:    5:__attribute__((used)) static char i_outer;
+        -:    6:struct {
+        -:    7:  char f1;
+        -:    8:  char f2;
+        -:    9:} opta;
+        -:   10:struct {
+        -:   11:  char f1;
+        -:   12:  char f2;
+        -:   13:} optb;
+        -:   14:
+        1:   15:int main() {
+        -:   16:  static char i_inner[2] __attribute__((used));
+        1:   17:  i_inner[0] = 'a';
+        1:   18:  i_inner[1] = 'b';
+        1:   19:  opta.f1 = 'c';
+        1:   20:  opta.f2 = 'd';
+        1:   21:  optb.f1 = 'C';
+        1:   22:  optb.f2 = 'D';
+        1:   23:  i_outer = 'e';
+        -:   24:  /* { dg-do compile } */
+        -:   25:  /* { dg-skip-if "No stabs" { mmix-*-* alpha*-*-* hppa*64*-*-* ia64-*-*
+        -:   26:   * *-*-vxworks* } } */
+        -:   27:  /* { dg-skip-if "stabs only" { *-*-* } { "*" } { "-gstabs" } } */
+        1:   28:  return 0;
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final { scan-assembler ".stabs.*i_inner:V" } } */
+        -:   32:/* { dg-final { scan-assembler ".stabs.*i_outer:S" } } */
+        -:   33:/* { dg-final { scan-assembler ".stabs.*opta:G" } } */
+        -:   34:/* { dg-final { scan-assembler ".stabs.*optb:G" } } */

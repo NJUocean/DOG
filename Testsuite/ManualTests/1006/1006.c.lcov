@@ -1,0 +1,21 @@
+    1|       |/* Test that stack protection is done on chosen functions. */
+    2|       |
+    3|       |/* { dg-do compile { target i?86-*-* x86_64-*-* rs6000-*-* s390x-*-* } } */
+    4|       |/* { dg-options "-O2 -fstack-protector-all" } */
+    5|       |
+    6|       |/* This test checks the presence of __stack_chk_fail function in assembler.
+    7|       | * Compiler generates _stack_chk_fail_local (wrapper) calls instead for PIC.
+    8|       | */
+    9|       |/* { dg-require-effective-target nonpic } */
+   10|       |
+   11|       |#pragma GCC push_options
+   12|       |
+   13|       |#pragma GCC optimize("-fno-stack-protector")
+   14|      1|__attribute__((constructor)) void foo() { asm(""); }
+   15|       |
+   16|       |#pragma GCC pop_options
+   17|       |
+   18|      1|int main() { return 0; }
+   19|       |
+   20|       |/* { dg-final { scan-assembler-times "stack_chk_fail" 1 } } */
+

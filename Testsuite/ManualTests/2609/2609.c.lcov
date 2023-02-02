@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |
+    4|      2|__attribute__((target_clones("default", "avx"))) int foo() { return -2; }
+    5|       |
+    6|      3|int bar() { return 2; }
+    7|       |
+    8|      1|int main() {
+    9|      1|  int r = 0;
+   10|      1|  r += bar();
+   11|      1|  r += foo();
+   12|      1|  r += bar();
+   13|      1|  r += foo();
+   14|      1|  r += bar();
+   15|      1|  return r - 2;
+   16|      1|}
+

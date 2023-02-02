@@ -1,0 +1,45 @@
+        -:    0:Source:2003.c
+        -:    0:Graph:2003.gcno
+        -:    0:Data:2003.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/84436 */
+        -:    2:/* { dg-options "-O2 -fdump-tree-switchconv -fdump-tree-optimized" } */
+        -:    3:/* { dg-do run } */
+        -:    4:
+        3:    5:int __attribute__((noipa)) foo(int how) {
+        3:    6:  switch (how) {
+        1:    7:  case 2:
+        1:    8:    how = 205;
+        1:    9:    break; /* how = 100 * index + 5 */
+    #####:   10:  case 3:
+    #####:   11:    how = 305;
+    #####:   12:    break;
+    #####:   13:  case 4:
+    #####:   14:    how = 405;
+    #####:   15:    break;
+    #####:   16:  case 5:
+    #####:   17:    how = 505;
+    #####:   18:    break;
+        1:   19:  case 6:
+        1:   20:    how = 605;
+        1:   21:    break;
+        -:   22:  }
+        3:   23:  return how;
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  if (foo(2) != 205)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  if (foo(6) != 605)
+    #####:   31:    __builtin_abort();
+        -:   32:
+        1:   33:  if (foo(123) != 123)
+    #####:   34:    __builtin_abort();
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}
+        -:   38:
+        -:   39:/* { dg-final { scan-tree-dump-times "100 \\*" 1 "switchconv" } } */
+        -:   40:/* { dg-final { scan-tree-dump-times ".* \\+ 5" 1 "switchconv" } } */
+        -:   41:/* { dg-final { scan-tree-dump-not "switch" "optimized" } } */

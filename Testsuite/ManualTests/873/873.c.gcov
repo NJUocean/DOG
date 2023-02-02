@@ -1,0 +1,26 @@
+        -:    0:Source:873.c
+        -:    0:Graph:873.gcno
+        -:    0:Data:873.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/41935 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:struct A {
+        -:    7:  int a;
+        -:    8:  int b[10];
+        -:    9:};
+        -:   10:
+        2:   11:int foo(struct A *p) { return __builtin_offsetof(struct A, b[p->a]); }
+        -:   12:
+        1:   13:int main() {
+        -:   14:  struct A a;
+        1:   15:  a.a = 7;
+        1:   16:  if (foo(&a) != 7 * sizeof(int) + __builtin_offsetof(struct A, b))
+    #####:   17:    abort();
+        1:   18:  a.a = 2;
+        1:   19:  if (foo(&a) != 2 * sizeof(int) + __builtin_offsetof(struct A, b))
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

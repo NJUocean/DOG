@@ -1,0 +1,19 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O1 -fno-tree-vrp -fno-tree-copy-prop -fno-tree-ccp
+    3|       | * -fdump-tree-optimized" } */
+    4|       |
+    5|       |volatile int x;
+    6|       |
+    7|      1|int main() {
+    8|      1|  volatile int *vip;
+    9|      1|  vip = &x;
+   10|      1|  volatile int *cvip;
+   11|      1|  cvip = vip;
+   12|      1|
+   13|      1|  if (vip != cvip)
+   14|      0|    return -1;
+   15|      1|  return 0;
+   16|      1|}
+   17|       |
+   18|       |/* { dg-final { scan-tree-dump-times "return 0" 1 "optimized" } } */
+

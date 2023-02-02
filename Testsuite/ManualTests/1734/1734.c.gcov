@@ -1,0 +1,35 @@
+        -:    0:Source:1734.c
+        -:    0:Graph:1734.gcno
+        -:    0:Data:1734.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:/* { dg-additional-options "-fgcse-after-reload" } */
+        -:    3:
+        -:    4:typedef unsigned char u8;
+        -:    5:typedef unsigned short u16;
+        -:    6:typedef unsigned int u32;
+        -:    7:typedef unsigned long long u64;
+        -:    8:int a, b, c;
+        -:    9:__int128 e;
+        1:   10:int d(u16 g) {
+        1:   11:  u64 f = __builtin_bswap64(c);
+        1:   12:  f = g == a;
+        -:   13:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   14:  __builtin_memmove(&f, &e, 1);
+        -:   15:#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   16:  __builtin_memmove((char *)&f + sizeof(f) - 1, (char *)&e + sizeof(e) - 1, 1);
+        -:   17:#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+        -:   18:  __builtin_memmove((char *)&f + sizeof(f) - 2, (char *)&e + sizeof(e) - 2, 1);
+        -:   19:#else
+        -:   20:#error "endian unknown?"
+        -:   21:#endif
+        1:   22:  e >>= b;
+        1:   23:  return a + f;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  __int128 x = d(0);
+        1:   28:  if (x != 0)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

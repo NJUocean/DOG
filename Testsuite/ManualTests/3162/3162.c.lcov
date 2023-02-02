@@ -1,0 +1,8 @@
+    1|       |/* Test the tester; previously part of gcc.misc-tests/dg-9.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |
+    5|      1|int main(int argc, char *argv[]) {
+    6|      1|  return 0; /* { dg-bogus "foobar" "bogus fail test" } */
+    7|      1|}
+

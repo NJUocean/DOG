@@ -1,0 +1,59 @@
+        -:    0:Source:1916.c
+        -:    0:Graph:1916.gcno
+        -:    0:Data:1916.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-effective-target size20plus } */
+        -:    4:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    5:
+        -:    6:#define M 256
+        -:    7:int a[M][M], b[M][M], c[M], d[M];
+        1:    8:void __attribute__((noinline)) simple_reduc_1(int n) {
+      257:    9:  for (int j = 0; j < n; j++) {
+      256:   10:    int sum = c[j];
+    65792:   11:    for (int i = 0; i < n; i++)
+    65536:   12:      sum = sum + a[i][j] * b[i][j];
+        -:   13:
+      256:   14:    c[j] = sum;
+        -:   15:  }
+        1:   16:}
+        -:   17:
+        1:   18:void __attribute__((noinline)) simple_reduc_2(int n) {
+      257:   19:  for (int j = 0; j < n; j++) {
+      256:   20:    int sum = d[j];
+    65792:   21:    for (int i = 0; i < n; i++)
+    65536:   22:      sum = sum + a[i][j] * b[i][j];
+        -:   23:
+      256:   24:    asm volatile("" ::: "memory");
+      256:   25:    d[j] = sum;
+        -:   26:  }
+        1:   27:}
+        -:   28:
+        -:   29:extern void abort();
+        -:   30:
+      256:   31:static void __attribute__((noinline)) init(int i) {
+      256:   32:  c[i] = 0;
+      256:   33:  d[i] = 0;
+    65792:   34:  for (int j = 0; j < M; j++) {
+    65536:   35:    a[i][j] = i;
+    65536:   36:    b[i][j] = j;
+        -:   37:  }
+      256:   38:}
+        -:   39:
+        1:   40:int main(void) {
+      257:   41:  for (int i = 0; i < M; ++i)
+      256:   42:    init(i);
+        -:   43:
+        1:   44:  simple_reduc_1(M);
+        1:   45:  simple_reduc_2(M);
+        -:   46:
+      257:   47:  for (int i = 0; i < M; ++i)
+      256:   48:    if (c[i] != d[i])
+    #####:   49:      abort();
+        -:   50:
+        1:   51:  return 0;
+        -:   52:}
+        -:   53:
+        -:   54:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   55: * interchanged" 1 "linterchange" } } */

@@ -1,0 +1,20 @@
+    1|       |/* PR target/12654
+    2|       |   The Alpha backend tried to do a >= 1024 as (a - 1024) >= 0, which fails
+    3|       |   for very large negative values.  */
+    4|       |/* Origin: tg@swox.com  */
+    5|       |
+    6|       |#include <limits.h>
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|      2|void __attribute__((noinline)) foo(long x) {
+   11|      2|  if (x >= 1024)
+   12|      0|    abort();
+   13|      2|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  foo(LONG_MIN);
+   17|      1|  foo(LONG_MIN + 10000);
+   18|      1|  return 0;
+   19|      1|}
+

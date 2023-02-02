@@ -1,0 +1,57 @@
+        -:    0:Source:4146.c
+        -:    0:Graph:4146.gcno
+        -:    0:Data:4146.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fomit-frame-pointer" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:unsigned char a[256], b[256], c[256], d[256];
+        -:    8:
+        1:    9:void foo(unsigned char *x, int y, unsigned char *z) {}
+        -:   10:
+        2:   11:void bar(int x, ...) {}
+        -:   12:
+        1:   13:void baz(int y) {
+        1:   14:  if (y != 0x10)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:void test(int x, unsigned char *y) {
+        -:   19:  unsigned char g, h, j, k[5], l[5], m[30];
+        -:   20:  int i;
+        -:   21:
+        1:   22:  bar(x, y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8], y[9]);
+        6:   23:  for (i = 5; --i >= 0;)
+        5:   24:    k[i] = y[5 + i] ^ a[i] ^ c[i];
+        -:   25:
+        1:   26:  foo(&m[29], sizeof m, k);
+        1:   27:  g = d[x] ^ c[x];
+        1:   28:  bar(x, d[x], x, c[x]);
+        1:   29:  baz(g);
+        6:   30:  for (i = 5, h = 0; --i >= 0; h = y[i]) {
+        5:   31:    j = m[25 + i] ^ y[i];
+        5:   32:    j = b[j] ^ g;
+        5:   33:    k[i] = c[j] ^ h;
+        -:   34:  }
+        6:   35:  for (i = 5, h = 0; --i >= 0; h = k[i]) {
+        5:   36:    j = m[20 + i] ^ k[i];
+        5:   37:    j = b[j] ^ g;
+        5:   38:    l[i] = c[j] ^ h;
+        -:   39:  }
+        6:   40:  for (i = 5, h = 0; --i >= 0; h = l[i]) {
+        5:   41:    j = m[15 + i] ^ l[i];
+        5:   42:    j = b[j] ^ g;
+        5:   43:    j = c[j] ^ h;
+        5:   44:    k[i] = a[j] ^ c[j];
+        -:   45:  }
+        1:   46:}
+        -:   47:
+        1:   48:int main() {
+        1:   49:  c[4] = 0xdc;
+        1:   50:  d[4] = 0xcc;
+        1:   51:  test(4, a);
+        1:   52:  exit(0);
+        -:   53:}

@@ -1,0 +1,21 @@
+        -:    0:Source:559.c
+        -:    0:Graph:559.gcno
+        -:    0:Data:559.gcda
+        -:    0:Runs:1
+        -:    1:struct fd {
+        -:    2:  unsigned char a;
+        -:    3:  unsigned char b;
+        -:    4:} f = {5};
+        -:    5:
+        1:    6:struct fd *g() {
+        1:    7:  return &f;
+        -:    8:}
+        1:    9:int h() { return -1; }
+        -:   10:
+        1:   11:int main() {
+        1:   12:  struct fd *f = g();
+        1:   13:  f->b = h();
+        1:   14:  if (((f->a & 0x7f) & ~0x10) <= 2)
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

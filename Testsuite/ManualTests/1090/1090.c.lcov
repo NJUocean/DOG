@@ -1,0 +1,22 @@
+    1|       |/* PR rtl-optimization/91720 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Og -fno-forward-propagate -frerun-cse-after-loop
+    4|       | * -fno-tree-fre" } */
+    5|       |
+    6|       |unsigned a, b;
+    7|       |
+    8|      1|int main() {
+    9|      1|#if __CHAR_BIT__ == 8
+   10|      1|  unsigned c = 1;
+   11|      1|  unsigned long long d = 0;
+   12|      1|  unsigned char e = 0;
+   13|      1|  e = __builtin_sub_overflow(d, e, &a) ? 0 : 0x80;
+   14|      1|  e = e << 7 | e >> c;
+   15|      1|  __builtin_memmove(&d, &a, 2);
+   16|      1|  b = e;
+   17|      1|  if (b != 0x40)
+   18|      0|    __builtin_abort();
+   19|      1|#endif
+   20|      1|  return 0;
+   21|      1|}
+

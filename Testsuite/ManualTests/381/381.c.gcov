@@ -1,0 +1,45 @@
+        -:    0:Source:381.c
+        -:    0:Graph:381.gcno
+        -:    0:Data:381.gcda
+        -:    0:Runs:1
+        -:    1:#define DEBUG 0
+        -:    2:#if DEBUG
+        -:    3:#include <stdio.h>
+        -:    4:#endif
+        -:    5:
+        -:    6:#define N 1000
+        -:    7:int a[N];
+        -:    8:
+        1:    9:static int __attribute__((noinline)) foo(void) {
+        -:   10:  int j;
+        -:   11:  int i;
+        -:   12:
+        -:   13:  /* This is not blocked as it is not profitable.  */
+     1001:   14:  for (i = 0; i < N; i++)
+  1001000:   15:    for (j = 0; j < N; j++)
+  1000000:   16:      a[j] = a[i] + 1;
+        -:   17:
+        1:   18:  return a[0];
+        -:   19:}
+        -:   20:
+        -:   21:extern void abort();
+        -:   22:
+        1:   23:int main(void) {
+        -:   24:  int i, res;
+        -:   25:
+     1001:   26:  for (i = 0; i < N; i++)
+     1000:   27:    a[i] = i;
+        -:   28:
+        1:   29:  res = foo();
+        -:   30:
+        -:   31:#if DEBUG
+        -:   32:  fprintf(stderr, "res = %d \n", res);
+        -:   33:#endif
+        -:   34:
+        1:   35:  if (res != 1999)
+    #####:   36:    abort();
+        -:   37:
+        1:   38:  return 0;
+        -:   39:}
+        -:   40:
+        -:   41:/* { dg-final { scan-tree-dump "not tiled" "graphite" } } */

@@ -1,0 +1,57 @@
+        -:    0:Source:2684.c
+        -:    0:Graph:2684.gcno
+        -:    0:Data:2684.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/66691 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-require-effective-target ia32 } */
+        -:    4:/* { dg-options "-O3 -g -mtune=generic -march=i686" } */
+        -:    5:
+        -:    6:unsigned int a;
+        -:    7:int b[2], c, d, e, f, g, h, i, k[8], l, m, s, t, w;
+        -:    8:static int j;
+        -:    9:
+        4:   10:void fn1(long long p) {
+        4:   11:  int t = p;
+        4:   12:  c = c ^ b[c ^ (t & 1)];
+        4:   13:}
+        -:   14:
+        2:   15:static void fn2(long long p) {
+        2:   16:  c = c ^ b[1 ^ (d & 1)];
+        2:   17:  fn1(p >> 1 & 1);
+        2:   18:  fn1(p >> 2);
+        2:   19:}
+        -:   20:
+        1:   21:static void fn3() {
+        -:   22:  unsigned char p;
+        1:   23:  f = g = 0;
+        7:   24:  for (h = 0; h < 6; h++) {
+       48:   25:    for (s = 0; s < 7; s++)
+       42:   26:      if (k[s + 1])
+    #####:   27:        g = 0;
+        -:   28:      else
+      126:   29:        for (j = 0; j < 2; j++)
+        -:   30:          ;
+       6*:   31:    t = j > 2 ? 0 : 1 >> j;
+        -:   32:  }
+        1:   33:  if (l) {
+        -:   34:    short q[2];
+    #####:   35:    q[0] = q[1] = 0;
+    #####:   36:    if (m)
+    #####:   37:      for (i = 0; i < 2; i++) {
+    #####:   38:        unsigned char r = q[i];
+    #####:   39:        p = f ? r % f : r;
+    #####:   40:        e = ((p > 0) <= (q[i] ^ 1)) + a;
+    #####:   41:        if (k[1])
+    #####:   42:          for (e = 0; e != 18; ++e)
+    #####:   43:            k[0] = 0;
+        -:   44:      }
+        -:   45:  }
+        1:   46:}
+        -:   47:
+        1:   48:int main() {
+        1:   49:  fn3();
+        1:   50:  fn2(w);
+        1:   51:  fn2(j);
+        1:   52:  return 0;
+        -:   53:}

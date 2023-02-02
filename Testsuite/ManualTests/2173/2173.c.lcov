@@ -1,0 +1,49 @@
+    1|       |/* { dg-require-effective-target vect_int } */
+    2|       |
+    3|  6.99k|#define ARR_SIZE 1000
+    4|       |
+    5|      1|void __attribute__((optimize(0))) foo(int *a, int *b) {
+    6|      1|  int i;
+    7|    999|  for (i = 0; i < (ARR_SIZE - 2); ++i)
+    8|    998|    a[i] = b[0] + b[1] + b[i + 1] + b[i + 2];
+    9|      1|}
+   10|       |
+   11|      1|void bar(int *a, int *b) {
+   12|      1|  int i;
+   13|    999|  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+   14|    998|    a[i] = b[0];
+   15|    998|  }
+   16|    999|  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+   17|    998|    a[i] = a[i] + b[1];
+   18|    998|  }
+   19|    999|  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+   20|    998|    a[i] = a[i] + b[i + 1];
+   21|    998|  }
+   22|    999|  for (i = 0; i < (ARR_SIZE - 2); ++i) {
+   23|    998|    a[i] = a[i] + b[i + 2];
+   24|    998|  }
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  int a1[ARR_SIZE];
+   29|      1|  int a2[ARR_SIZE];
+   30|      1|  int b[ARR_SIZE];
+   31|      1|  int i;
+   32|      1|
+   33|  1.00k|  for (i = 0; i < ARR_SIZE; i++) {
+   34|  1.00k|    a1[i] = 0;
+   35|  1.00k|    a2[i] = 0;
+   36|  1.00k|    b[i] = i;
+   37|  1.00k|  }
+   38|      1|
+   39|      1|  foo(a1, b);
+   40|      1|  bar(a2, b);
+   41|      1|
+   42|  1.00k|  for (i = 0; i < ARR_SIZE; i++)
+   43|  1.00k|    if (a1[i] != a2[i])
+   44|      0|      return 1;
+   45|      1|
+   46|      1|  return 0;
+   47|      1|}
+   48|       |/* { dg-final { scan-tree-dump-not "vectorizing stmts using SLP" "slp1" } } */
+

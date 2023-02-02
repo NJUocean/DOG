@@ -1,0 +1,21 @@
+    1|       |/* PR rtl-optimization/93402 */
+    2|       |
+    3|       |struct S {
+    4|       |  unsigned int a;
+    5|       |  unsigned long long b;
+    6|       |};
+    7|       |
+    8|      1|__attribute__((noipa)) struct S foo(unsigned long long x) {
+    9|      1|  struct S ret;
+   10|      1|  ret.a = 0;
+   11|      1|  ret.b = x * 11111111111ULL + 111111111111ULL;
+   12|      1|  return ret;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  struct S a = foo(1);
+   17|      1|  if (a.a != 0 || a.b != 122222222222ULL)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

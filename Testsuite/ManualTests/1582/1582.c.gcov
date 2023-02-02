@@ -1,0 +1,20 @@
+        -:    0:Source:1582.c
+        -:    0:Graph:1582.gcno
+        -:    0:Data:1582.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef unsigned char v32u8 __attribute__((vector_size(32)));
+        -:    4:
+        1:    5:unsigned __attribute__((noinline, noclone)) foo(unsigned u) {
+        1:    6:  v32u8 v32u8_0 = (v32u8){} > (v32u8){-u};
+        1:    7:  return v32u8_0[31] + v32u8_0[0];
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  unsigned x = foo(0);
+        1:   12:  __builtin_printf("%08x\n", x);
+        1:   13:  if (x != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

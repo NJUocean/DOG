@@ -1,0 +1,37 @@
+        -:    0:Source:2313.c
+        -:    0:Graph:2313.gcno
+        -:    0:Data:2313.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -funroll-loops" } */
+        -:    3:typedef struct rowbox {
+        -:    4:  int startx;
+        -:    5:  int endx;
+        -:    6:  int endx1;
+        -:    7:  int startx2;
+        -:    8:  int ypos;
+        -:    9:  int desiredL;
+        -:   10:} ROWBOX;
+        -:   11:ROWBOX rowArray1[3];
+        -:   12:ROWBOX *rowArray = rowArray1;
+        -:   13:
+        -:   14:int numRows = 2;
+        -:   15:
+        -:   16:int row = 1;
+        -:   17:int block = 0;
+        -:   18:double ckt_size_factor;
+        -:   19:
+        1:   20:__attribute__((noinline)) int configure2() {
+        1:   21:  block = 0;
+        3:   22:  for (row = 1; row <= numRows; row++) {
+        2:   23:    block++;
+        2:   24:    if (rowArray[row].endx1 > 0) {
+    #####:   25:      block++;
+        -:   26:    }
+        -:   27:  }
+        1:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  configure2();
+        1:   32:  __builtin_exit(0);
+        -:   33:}

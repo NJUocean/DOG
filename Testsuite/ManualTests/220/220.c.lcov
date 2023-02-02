@@ -1,0 +1,8 @@
+    1|       |/* Test for attribute non-translation.  */
+    2|       |/* { dg-do compile }
+    3|       |   { dg-require-iconv "IBM1047" }
+    4|       |   { dg-final { scan-assembler "foo" } } */
+    5|       |int walrus __attribute__((section(".foo")));
+    6|       |
+    7|      1|int main(void) { return 0; }
+

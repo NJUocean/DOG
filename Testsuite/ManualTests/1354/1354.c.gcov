@@ -1,0 +1,20 @@
+        -:    0:Source:1354.c
+        -:    0:Graph:1354.gcno
+        -:    0:Data:1354.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-common" { target { { hppa*-*-hpux* } && { ! lp64 } } } }
+        -:    3: */
+        -:    4:
+        -:    5:typedef float V __attribute__((vector_size(16)));
+        -:    6:V g;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  float d[4] = {4, 3, 2, 1};
+        -:   10:  V e;
+        1:   11:  __builtin_memcpy(&e, &d, sizeof(d));
+        1:   12:  V f = {5, 15, 25, 35};
+        1:   13:  e = e * f;
+        1:   14:  g = e;
+        1:   15:  return 0;
+        -:   16:}

@@ -1,0 +1,26 @@
+        -:    0:Source:1296.c
+        -:    0:Graph:1296.gcno
+        -:    0:Data:1296.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/30665: bug in cris.md peephole2 condition.
+        -:    2:   Testcase for trunk.  */
+        -:    3:/* { dg-do run } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:int __attribute__((__noinline__)) f(unsigned *p, int *x) {
+        1:    9:  int y = *p++ & 0xfff;
+        1:   10:  *x++ = y;
+        1:   11:  *x = *p;
+        1:   12:  return y;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  unsigned u[2] = {0x3aad, 0x5ad1};
+        1:   17:  int x[2] = {17689, 23456};
+        -:   18:
+        1:   19:  if (f(u, x) != 0xaad || x[0] != 0xaad || x[1] != 0x5ad1)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

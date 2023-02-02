@@ -1,0 +1,27 @@
+        -:    0:Source:3797.c
+        -:    0:Graph:3797.gcno
+        -:    0:Data:3797.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57876 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a, b = 1, c, *d = &c, f, *g, h, j;
+        -:    5:static int e;
+        -:    6:
+        1:    7:int main() {
+        -:    8:  int i;
+        3:    9:  for (i = 0; i < 2; i++) {
+        2:   10:    long long k = b;
+        -:   11:    int l;
+       18:   12:    for (f = 0; f < 8; f++) {
+       16:   13:      int *m = &e;
+       16:   14:      j = *d;
+       16:   15:      h = a * j - 1;
+       16:   16:      *m = (h == 0) < k;
+       16:   17:      g = &l;
+        -:   18:    }
+        -:   19:  }
+        1:   20:  if (e != 1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,62 @@
+        -:    0:Source:2803.c
+        -:    0:Graph:2803.gcno
+        -:    0:Data:2803.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -ftree-vectorize" } */
+        -:    3:
+        -:    4:unsigned char v1[] __attribute__((aligned(16))) = {
+        -:    5:    0x80, 0xd0, 0x90, 0xa0, 1,    15,   10, 15, 0xa0, 0xc0, 0xb0,
+        -:    6:    0xf0, 2,    25,   20,   35,   3,    34, 30, 36,   0xd0, 0x80,
+        -:    7:    0xe0, 0xb0, 0xf0, 0xe0, 0xe0, 0x80, 25, 34, 30,   40};
+        -:    8:unsigned char v2[] __attribute__((aligned(16))) = {
+        -:    9:    4,  44,   40,   48,   0xb0, 0x80, 0x80, 0x90, 5,    55,  50,
+        -:   10:    51, 0xc0, 0xb0, 0xf0, 0xd0, 0xd0, 0x80, 0xa0, 0xf0, 6,   61,
+        -:   11:    65, 68,   7,    76,   75,   81,   0xe0, 0xf0, 0xc0, 0x90};
+        -:   12:
+        -:   13:unsigned char max[] = {0x80, 0xd0, 0x90, 0xa0, 0xb0, 0x80, 0x80, 0x90,
+        -:   14:                       0xa0, 0xc0, 0xb0, 0xf0, 0xc0, 0xb0, 0xf0, 0xd0,
+        -:   15:                       0xd0, 0x80, 0xa0, 0xf0, 0xd0, 0x80, 0xe0, 0xb0,
+        -:   16:                       0xf0, 0xe0, 0xe0, 0x80, 0xe0, 0xf0, 0xc0, 0x90};
+        -:   17:
+        -:   18:unsigned char min[] = {4,  44, 40, 48, 1,  15, 10, 15, 5,  55, 50,
+        -:   19:                       51, 2,  25, 20, 35, 3,  34, 30, 36, 6,  61,
+        -:   20:                       65, 68, 7,  76, 75, 81, 25, 34, 30, 40};
+        -:   21:
+        -:   22:unsigned char res[32] __attribute__((aligned(16)));
+        -:   23:
+        -:   24:extern void abort(void);
+        -:   25:
+        1:   26:void find_max(void) {
+        -:   27:  int i;
+        -:   28:
+       33:   29:  for (i = 0; i < 32; i++)
+       32:   30:    res[i] = v1[i] < v2[i] ? v2[i] : v1[i];
+        1:   31:}
+        -:   32:
+        1:   33:void find_min(void) {
+        -:   34:  int i;
+        -:   35:
+       33:   36:  for (i = 0; i < 32; i++)
+       32:   37:    res[i] = v1[i] > v2[i] ? v2[i] : v1[i];
+        1:   38:}
+        -:   39:
+        1:   40:int main(void) {
+        -:   41:  int i;
+        1:   42:  int err = 0;
+        -:   43:
+        1:   44:  find_max();
+       33:   45:  for (i = 0; i < 32; i++)
+       32:   46:    if (res[i] != max[i])
+    #####:   47:      err++;
+        -:   48:
+        1:   49:  find_min();
+       33:   50:  for (i = 0; i < 32; i++)
+       32:   51:    if (res[i] != min[i])
+    #####:   52:      err++;
+        -:   53:
+        1:   54:  if (err)
+    #####:   55:    abort();
+        -:   56:
+        1:   57:  return 0;
+        -:   58:}

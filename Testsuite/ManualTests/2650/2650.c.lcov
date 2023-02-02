@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run { target x32 } } */
+    2|       |/* { dg-require-effective-target maybe_x32 } */
+    3|       |/* { dg-options "-O2 -mx32 -maddress-mode=long" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |long long li;
+    8|       |
+    9|      1|long long __attribute__((noinline)) testfunc(void *addr) {
+   10|      1|  li = (long long)(int)addr;
+   11|      1|  li &= 0xffffffff;
+   12|      1|  return li;
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  volatile long long rv_test;
+   17|      1|  rv_test = testfunc((void *)0x87651234);
+   18|      1|  if (rv_test != 0x87651234ULL)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  return 0;
+   22|      1|}
+

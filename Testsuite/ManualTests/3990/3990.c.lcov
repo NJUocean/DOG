@@ -1,0 +1,17 @@
+    1|       |int yf = 0;
+    2|       |
+    3|      1|void pl(int q5, int nd) {
+    4|      1|  unsigned int hp = q5;
+    5|      1|  int zx = (q5 == 0) ? hp : (hp / q5);
+    6|      1|
+    7|      1|  yf = ((nd < 2) * zx != 0) ? nd : 0;
+    8|      1|}
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  pl(1, !yf);
+   12|      1|  if (yf != 1)
+   13|      0|    __builtin_abort();
+   14|      1|
+   15|      1|  return 0;
+   16|      1|}
+

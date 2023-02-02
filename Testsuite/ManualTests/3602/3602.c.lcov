@@ -1,0 +1,40 @@
+    1|       |/* PR tree-optimization/36038 */
+    2|       |
+    3|       |long long list[10];
+    4|       |long long expect[10] = {0, 1, 2, 3, 4, 4, 5, 6, 7, 9};
+    5|       |long long *stack_base;
+    6|       |int indices[10];
+    7|       |int *markstack_ptr;
+    8|       |
+    9|      1|void doit(void) {
+   10|      1|  long long *src;
+   11|      1|  long long *dst;
+   12|      1|  long long *sp = stack_base + 5;
+   13|      1|  int diff = 2;
+   14|      1|  int shift;
+   15|      1|  int count;
+   16|      1|
+   17|      1|  shift = diff - (markstack_ptr[-1] - markstack_ptr[-2]);
+   18|      1|  count = (sp - stack_base) - markstack_ptr[-1] + 2;
+   19|      1|  src = sp;
+   20|      1|  dst = (sp += shift);
+   21|      5|  while (--count)
+   22|      4|    *dst-- = *src--;
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  int i;
+   27|     11|  for (i = 0; i < 10; i++)
+   28|     10|    list[i] = i;
+   29|      1|
+   30|      1|  markstack_ptr = indices + 9;
+   31|      1|  markstack_ptr[-1] = 2;
+   32|      1|  markstack_ptr[-2] = 1;
+   33|      1|
+   34|      1|  stack_base = list + 2;
+   35|      1|  doit();
+   36|      1|  if (__builtin_memcmp(expect, list, sizeof(list)))
+   37|      0|    __builtin_abort();
+   38|      1|  return 0;
+   39|      1|}
+

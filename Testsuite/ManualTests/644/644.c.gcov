@@ -1,0 +1,28 @@
+        -:    0:Source:644.c
+        -:    0:Graph:644.gcno
+        -:    0:Data:644.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that indirect inlining can also remove references of the functions it
+        -:    2:   discovers calls for.  */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O3 -fno-early-inlining -fno-ipa-cp -fdump-ipa-inline
+        -:    5: * -fdump-tree-optimized"  } */
+        -:    6:
+        -:    7:int global;
+        -:    8:
+        2:    9:void __attribute__((noinline, noclone, used)) stuff(int i) { global = i; }
+        -:   10:
+        1:   11:static void hooray() { stuff(1); }
+        -:   12:
+        1:   13:static void hiphip(void (*f)()) {
+        1:   14:  stuff(2);
+        1:   15:  f();
+        1:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  hiphip(hooray);
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        -:   23:/* { dg-final { scan-ipa-dump "ipa-prop: Removed a reference"  "inline"  } } */
+        -:   24:/* { dg-final { scan-tree-dump-not "hooray"  "optimized"  } } */

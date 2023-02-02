@@ -1,0 +1,46 @@
+        -:    0:Source:1191.c
+        -:    0:Graph:1191.gcno
+        -:    0:Data:1191.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O0" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:/* Check that out-of-bounds case warnings work in the case that the
+        -:    8:   testing expression is promoted.  */
+        1:    9:int foo1(unsigned char i) {
+        1:   10:  switch (i) {
+        -:   11:  case -1: /* { dg-warning "case label value is less than minimum value for
+        -:   12:              type|statement will never be executed" } */
+        -:   13:    return 1;
+        -:   14:  case 256: /* { dg-warning "case label value exceeds maximum value for type" }
+        -:   15:             */
+        -:   16:    return 2;
+        -:   17:  default:
+        1:   18:    return 3;
+        -:   19:  }
+        -:   20:}
+        -:   21:
+        -:   22:/* Like above, but for case ranges that need to be satured.  */
+        1:   23:int foo2(unsigned char i) {
+        1:   24:  switch (i) {
+    #####:   25:  case -1 ... 1: /* { dg-warning "lower value in case label range less than
+        -:   26:                    minimum value for type" } */
+    #####:   27:    return 1;
+    #####:   28:  case 254 ... 256: /* { dg-warning "upper value in case label range exceeds
+        -:   29:                       maximum value for type" } */
+    #####:   30:    return 2;
+        1:   31:  default:
+        1:   32:    return 3;
+        -:   33:  }
+        -:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        1:   37:  if (foo1(10) != 3)
+    #####:   38:    abort();
+        1:   39:  if (foo2(10) != 3)
+    #####:   40:    abort();
+        1:   41:  exit(0);
+        -:   42:}

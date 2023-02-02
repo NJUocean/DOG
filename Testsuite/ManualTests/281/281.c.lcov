@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile { target *-*-darwin* } } */
+    2|       |/* { dg-require-weak "" } */
+    3|       |
+    4|       |/* { dg-final { scan-assembler "weak_reference _foo" } } */
+    5|       |
+    6|       |extern int foo __attribute__((weak_import));
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  if (&foo)
+   10|      0|    return foo;
+   11|      1|  return 0;
+   12|      1|}
+

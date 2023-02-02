@@ -1,0 +1,21 @@
+        -:    0:Source:2445.c
+        -:    0:Graph:2445.gcno
+        -:    0:Data:2445.gcda
+        -:    0:Runs:1
+        -:    1:/* Source: Neil Booth, from PR # 115.  */
+        -:    2:
+        1:    3:int false() { return 0; }
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int main(int argc, char *argv[]) {
+        1:    8:  int count = 0;
+        -:    9:
+        1:   10:  while (false() || count < -123)
+    #####:   11:    ++count;
+        -:   12:
+        1:   13:  if (count)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fwrapv" } */
+    3|       |
+    4|      1|static void __attribute__((noinline, noclone)) func(void) {
+    5|      1|  signed char c = 0;
+    6|      1|
+    7|    129|  for (; c >= 0; c++)
+    8|    128|    ;
+    9|      1|
+   10|      1|  if (c != -128)
+   11|      0|    __builtin_abort();
+   12|      1|}
+   13|       |
+   14|      1|int main(int argc, char *argv[]) {
+   15|      1|  func();
+   16|      1|  return 0;
+   17|      1|}
+

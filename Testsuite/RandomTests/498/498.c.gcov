@@ -1,0 +1,34 @@
+        -:    0:Source:498.c
+        -:    0:Graph:498.gcno
+        -:    0:Data:498.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static uint32_t g_2 = 0x7DFE4D9EL;
+        -:    7:static int32_t g_4 = 0L;
+        -:    8:static int32_t *volatile g_3[5][4] = {{&g_4, (void *)0, &g_4, &g_4}, {(void *)0, (void *)0, &g_4, (void *)0}, {(void *)0, &g_4, &g_4, (void *)0}, {&g_4, (void *)0, &g_4, &g_4}, {(void *)0, (void *)0, &g_4, (void *)0}};
+        -:    9:
+        -:   10:static const uint32_t func_1(void);
+        -:   11:
+        1:   12:static const uint32_t func_1(void) {
+        1:   13:  int32_t *l_5 = &g_4;
+        1:   14:  (*l_5) ^= g_2;
+        1:   15:  return (*l_5);
+        -:   16:}
+        -:   17:
+        1:   18:int main(int argc, char *argv[]) {
+        -:   19:  int i, j;
+        1:   20:  int print_hash_value = 0;
+       1*:   21:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   22:    print_hash_value = 1;
+        1:   23:  platform_main_begin();
+        1:   24:  crc32_gentab();
+        1:   25:  func_1();
+        1:   26:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   27:  transparent_crc(g_4, "g_4", print_hash_value);
+        1:   28:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   29:  return 0;
+        -:   30:}

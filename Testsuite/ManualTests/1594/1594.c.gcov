@@ -1,0 +1,21 @@
+        -:    0:Source:1594.c
+        -:    0:Graph:1594.gcno
+        -:    0:Data:1594.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:char bar;
+        -:    6:
+        1:    7:int __attribute__((noinline, noclone)) foo(char *__restrict p) {
+        1:    8:  if (p == &bar)
+        1:    9:    return 1;
+    #####:   10:  return 0;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (foo(&bar) != 1)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

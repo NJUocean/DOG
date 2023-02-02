@@ -1,0 +1,55 @@
+    1|       |/* PR debug/43983 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g -fno-ipa-icf" } */
+    4|       |
+    5|       |struct A {
+    6|       |  int i;
+    7|       |  int j;
+    8|       |};
+    9|       |struct B {
+   10|       |  int : 4;
+   11|       |  int i : 12;
+   12|       |  int j : 12;
+   13|       |  int : 4;
+   14|       |};
+   15|       |
+   16|      6|__attribute__((noinline)) void bar(int x) {
+   17|      6|  asm volatile("" : : "r"(x) : "memory");
+   18|      6|}
+   19|       |
+   20|      1|__attribute__((noinline)) int f1(int k) {
+   21|      1|  struct A a = {4, k + 6};
+   22|      1|  asm("" : "+r"(a.i));
+   23|      1|  a.j++;
+   24|      1|  bar(a.i); /* { dg-final { gdb-test .+1 "a.i" "4" } } */
+   25|      1|  bar(a.j); /* { dg-final { gdb-test . "a.j" "14" } } */
+   26|      1|  return a.i + a.j;
+   27|      1|}
+   28|       |
+   29|      1|__attribute__((noinline)) int f2(int k) {
+   30|      1|  int a[2] = {4, k + 6};
+   31|      1|  asm("" : "+r"(a[0]));
+   32|      1|  a[1]++;
+   33|      1|  bar(a[0]); /* { dg-final { gdb-test .+1 "a\[0\]" "4" } } */
+   34|      1|  bar(a[1]); /* { dg-final { gdb-test . "a\[1\]" "14" } } */
+   35|      1|  return a[0] + a[1];
+   36|      1|}
+   37|       |
+   38|      1|__attribute__((noinline)) int f3(int k) {
+   39|      1|  struct B a = {4, k + 6};
+   40|      1|  asm("" : "+r"(a.i));
+   41|      1|  a.j++;
+   42|      1|  bar(a.i); /* { dg-final { gdb-test .+1 "a.i" "4" } } */
+   43|      1|  bar(a.j); /* { dg-final { gdb-test . "a.j" "14" } } */
+   44|      1|  return a.i + a.j;
+   45|      1|}
+   46|       |
+   47|      1|int main(void) {
+   48|      1|  int k;
+   49|      1|  asm("" : "=r"(k) : "0"(7));
+   50|      1|  f1(k);
+   51|      1|  f2(k);
+   52|      1|  f3(k);
+   53|      1|  return 0;
+   54|      1|}
+

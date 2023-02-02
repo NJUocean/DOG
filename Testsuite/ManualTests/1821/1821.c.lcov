@@ -1,0 +1,18 @@
+    1|       |/* PR bootstrap/47187 */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |char buf[64];
+    5|       |char buf2[64];
+    6|       |
+    7|  65.5k|void *foo(char *p, long size) { return __builtin_memcpy(buf, p, size); }
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  long i;
+   11|  65.5k|  for (i = 0; i < 65536; i++)
+   12|  65.5k|    if (foo("abcdefghijkl", 12) != buf)
+   13|      0|      __builtin_abort();
+   14|      1|  if (foo(buf2, 64) != buf)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+

@@ -1,0 +1,99 @@
+        -:    0:Source:364.c
+        -:    0:Graph:364.gcno
+        -:    0:Data:364.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for GNU extensions to C99 designated initializers */
+        -:    2:/* Origin: Jakub Jelinek <jakub@redhat.com> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu99" } */
+        -:    5:
+        -:    6:typedef __SIZE_TYPE__ size_t;
+        -:    7:extern int memcmp(const void *, const void *, size_t);
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+        -:   11:int a[][2][4] = {[2 ... 4][0 ... 1][2 ... 3] = 1, [2] = 2, [2][0][2] = 3};
+        -:   12:struct E {};
+        -:   13:struct F {
+        -:   14:  struct E H;
+        -:   15:};
+        -:   16:struct G {
+        -:   17:  int I;
+        -:   18:  struct E J;
+        -:   19:  int K;
+        -:   20:};
+        -:   21:struct H {
+        -:   22:  int I;
+        -:   23:  struct F J;
+        -:   24:  int K;
+        -:   25:};
+        -:   26:struct G k = {.J = {}, 1};
+        -:   27:struct H l = {.J.H = {}, 2};
+        -:   28:struct H m = {.J = {}, 3};
+        -:   29:struct I {
+        -:   30:  int J;
+        -:   31:  int K[3];
+        -:   32:  int L;
+        -:   33:};
+        -:   34:struct M {
+        -:   35:  int N;
+        -:   36:  struct I O[3];
+        -:   37:  int P;
+        -:   38:};
+        -:   39:struct M n[] = {[0 ... 5].O[1 ... 2].K[0 ... 1] = 4, 5, 6, 7};
+        -:   40:struct M o[] = {
+        -:   41:    [0 ... 5].O = {[1 ... 2].K[0 ... 1] = 4}, [5].O[2].K[2] = 5, 6, 7};
+        -:   42:struct M p[] = {
+        -:   43:    [0 ... 5].O[1 ... 2].K = {[0 ... 1] = 4}, [5].O[2].K[2] = 5, 6, 7};
+        -:   44:int q[3][3] = {[0 ... 1] = {[1 ... 2] = 23}, [1][2] = 24};
+        -:   45:int r[1] = {[0 ... 1 - 1] = 27};
+        -:   46:
+        1:   47:int main(void) {
+        -:   48:  int x, y, z;
+        -:   49:
+        1:   50:  if (a[2][0][0] != 2 || a[2][0][2] != 3)
+    #####:   51:    abort();
+        1:   52:  a[2][0][0] = 0;
+        1:   53:  a[2][0][2] = 1;
+        6:   54:  for (x = 0; x <= 4; x++)
+       15:   55:    for (y = 0; y <= 1; y++)
+       50:   56:      for (z = 0; z <= 3; z++)
+       40:   57:        if (a[x][y][z] != (x >= 2 && z >= 2))
+    #####:   58:          abort();
+        1:   59:  if (k.I || l.I || m.I || k.K != 1 || l.K != 2 || m.K != 3)
+    #####:   60:    abort();
+        7:   61:  for (x = 0; x <= 5; x++) {
+        6:   62:    if (n[x].N || n[x].O[0].J || n[x].O[0].L)
+    #####:   63:      abort();
+       24:   64:    for (y = 0; y <= 2; y++)
+       18:   65:      if (n[x].O[0].K[y])
+    #####:   66:        abort();
+       18:   67:    for (y = 1; y <= 2; y++) {
+       12:   68:      if (n[x].O[y].J)
+    #####:   69:        abort();
+       12:   70:      if (n[x].O[y].K[0] != 4)
+    #####:   71:        abort();
+       12:   72:      if (n[x].O[y].K[1] != 4)
+    #####:   73:        abort();
+       12:   74:      if ((x < 5 || y < 2) && (n[x].O[y].K[2] || n[x].O[y].L))
+    #####:   75:        abort();
+        -:   76:    }
+        6:   77:    if (x < 5 && n[x].P)
+    #####:   78:      abort();
+        -:   79:  }
+        1:   80:  if (n[5].O[2].K[2] != 5 || n[5].O[2].L != 6 || n[5].P != 7)
+    #####:   81:    abort();
+        1:   82:  if (memcmp(n, o, sizeof(n)) || sizeof(n) != sizeof(o))
+    #####:   83:    abort();
+        1:   84:  if (memcmp(n, p, sizeof(n)) || sizeof(n) != sizeof(p))
+    #####:   85:    abort();
+        1:   86:  if (q[0][0] || q[0][1] != 23 || q[0][2] != 23)
+    #####:   87:    abort();
+        1:   88:  if (q[1][0] || q[1][1] != 23 || q[1][2] != 24)
+    #####:   89:    abort();
+        1:   90:  if (q[2][0] || q[2][1] || q[2][2])
+    #####:   91:    abort();
+        1:   92:  if (r[0] != 27)
+    #####:   93:    abort();
+        1:   94:  exit(0);
+        -:   95:}

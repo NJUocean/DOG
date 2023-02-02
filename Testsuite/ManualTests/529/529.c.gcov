@@ -1,0 +1,26 @@
+        -:    0:Source:529.c
+        -:    0:Graph:529.gcno
+        -:    0:Data:529.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        1:    4:void __attribute__((noinline)) optimize_me_not() {
+        1:    5:  __asm__ volatile("" : : : "memory");
+        1:    6:}
+        -:    7:int a;
+        1:    8:int main() {
+        -:    9:  int i;
+       11:   10:  for (; a < 10; a++)
+       10:   11:    i = 0;
+        7:   12:  for (; i < 6; i++)
+        -:   13:    ;
+        -:   14:  /* i may very well be optimized out, so we cannot test for i == 6.
+        -:   15:     Instead test i + 1 which will make the test UNSUPPORTED if i
+        -:   16:     is optimized out.  Since the test previously had wrong debug
+        -:   17:     with i == 0 this is acceptable.  Optimally we'd produce a
+        -:   18:     debug stmt for the final value of the loop which would fix
+        -:   19:     the UNSUPPORTED cases.  */
+        1:   20:  optimize_me_not(); /* { dg-final { gdb-test . "i + 1" "7" } } */
+        1:   21:  return 0;
+        -:   22:}

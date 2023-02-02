@@ -1,0 +1,49 @@
+        -:    0:Source:499.c
+        -:    0:Graph:499.gcno
+        -:    0:Data:499.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int16_t g_2 = 0x526DL;
+        -:    7:static int32_t g_4 = 9L;
+        -:    8:static int32_t *volatile g_3 = &g_4;
+        -:    9:static int32_t g_9 = 0L;
+        -:   10:static int8_t g_10 = 0x47L;
+        -:   11:static volatile uint64_t g_11[3] = {1UL, 1UL, 1UL};
+        -:   12:
+        -:   13:static const int16_t func_1(void);
+        -:   14:
+        1:   15:static const int16_t func_1(void) {
+        1:   16:  int32_t *l_5 = &g_4;
+        1:   17:  int32_t *l_6 = &g_4;
+        1:   18:  int32_t *l_7 = &g_4;
+        1:   19:  int32_t *l_8[4] = {&g_4, &g_4, &g_4, &g_4};
+        -:   20:  int i;
+        1:   21:  (*g_3) = g_2;
+        1:   22:  g_11[2]--;
+        1:   23:  return (*l_7);
+        -:   24:}
+        -:   25:
+        1:   26:int main(int argc, char *argv[]) {
+        -:   27:  int i;
+        1:   28:  int print_hash_value = 0;
+       1*:   29:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   30:    print_hash_value = 1;
+        1:   31:  platform_main_begin();
+        1:   32:  crc32_gentab();
+        1:   33:  func_1();
+        1:   34:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   35:  transparent_crc(g_4, "g_4", print_hash_value);
+        1:   36:  transparent_crc(g_9, "g_9", print_hash_value);
+        1:   37:  transparent_crc(g_10, "g_10", print_hash_value);
+        4:   38:  for (i = 0; i < 3; i++) {
+        3:   39:    transparent_crc(g_11[i], "g_11[i]", print_hash_value);
+        3:   40:    if (print_hash_value)
+    #####:   41:      printf("index = [%d]\n", i);
+        -:   42:  }
+        1:   43:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   44:  return 0;
+        -:   45:}

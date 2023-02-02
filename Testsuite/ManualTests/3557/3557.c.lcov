@@ -1,0 +1,31 @@
+    1|       |/* REPRODUCED:RUN:SIGNAL MACHINE:mips OPTIONS: */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |
+    5|       |typedef struct {
+    6|       |  int A;
+    7|       |} T;
+    8|       |
+    9|      1|T f(int x, ...) {
+   10|      1|  va_list ap;
+   11|      1|  T X;
+   12|      1|  va_start(ap, x);
+   13|      1|  X = va_arg(ap, T);
+   14|      1|  if (X.A != 10)
+   15|      0|    abort();
+   16|      1|  X = va_arg(ap, T);
+   17|      1|  if (X.A != 20)
+   18|      0|    abort();
+   19|      1|  va_end(ap);
+   20|      1|  return X;
+   21|      1|}
+   22|       |
+   23|      1|main() {
+   24|      1|  T X, Y;
+   25|      1|  int i;
+   26|      1|  X.A = 10;
+   27|      1|  Y.A = 20;
+   28|      1|  f(2, X, Y);
+   29|      1|  exit(0);
+   30|      1|}
+

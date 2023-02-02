@@ -1,0 +1,31 @@
+        -:    0:Source:589.c
+        -:    0:Graph:589.gcno
+        -:    0:Data:589.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-tree-sra -fipa-pta -fdump-ipa-pta2" } */
+        -:    3:
+        -:    4:struct X {
+        -:    5:  long l1;
+        -:    6:  struct Y {
+        -:    7:    long l2;
+        -:    8:    int *p;
+        -:    9:  } y;
+        -:   10:};
+        -:   11:int i;
+        1:   12:static int __attribute__((noinline)) foo(struct X *x) {
+        1:   13:  struct Y y = x->y;
+        1:   14:  *y.p = 0;
+        1:   15:  i = 1;
+        1:   16:  return *y.p;
+        -:   17:}
+        -:   18:extern void abort(void);
+        1:   19:int main() {
+        -:   20:  struct X x;
+        1:   21:  x.y.p = &i;
+        1:   22:  if (foo(&x) != 1)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* { dg-final { scan-ipa-dump "y.\[0-9\]*\\\+\[0-9\]* = { i }" "pta2" } } */

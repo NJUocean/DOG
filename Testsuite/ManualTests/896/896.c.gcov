@@ -1,0 +1,35 @@
+        -:    0:Source:896.c
+        -:    0:Graph:896.gcno
+        -:    0:Data:896.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target freorder } */
+        -:    3:/* { dg-require-effective-target fpic } */
+        -:    4:/* { dg-options "-O2 -freorder-blocks-and-partition -fpic" } */
+        -:    5:
+  1000000:    6:__attribute__((noinline, noclone)) void bar(void *x) {
+  1000000:    7:  asm volatile("" : : "r"(x) : "memory");
+  1000000:    8:}
+        -:    9:
+    #####:   10:__attribute__((noinline, noclone)) void baz(void) {
+    #####:   11:  asm volatile("" : : : "memory");
+    #####:   12:}
+        -:   13:
+  1000000:   14:__attribute__((noinline, noclone)) int foo(int x) {
+        -:   15:  __label__ lab;
+  1000000:   16:  if (__builtin_expect(x, 0)) {
+    #####:   17:  lab:
+    #####:   18:    baz();
+    #####:   19:    return 2;
+        -:   20:  }
+  1000000:   21:  bar(&&lab);
+  1000000:   22:  return 1;
+        -:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        -:   26:  int x, i;
+        1:   27:  asm volatile("" : "=r"(x) : "0"(0));
+  1000001:   28:  for (i = 0; i < 1000000; i++)
+  1000000:   29:    foo(x);
+        1:   30:  return 0;
+        -:   31:}

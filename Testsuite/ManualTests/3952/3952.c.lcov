@@ -1,0 +1,17 @@
+    1|       |/* PR target/78791 */
+    2|       |
+    3|       |__attribute__((used, noinline, noclone)) unsigned long long
+    4|      2|foo(unsigned long long x, unsigned long long y, unsigned long long z) {
+    5|      2|  unsigned long long a = x / y;
+    6|      2|  unsigned long long b = x % y;
+    7|      2|  a |= z;
+    8|      2|  b ^= z;
+    9|      2|  return a + b;
+   10|      2|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (foo(64, 7, 0) != 10 || foo(28, 3, 2) != 14)
+   14|      0|    __builtin_abort();
+   15|      1|  return 0;
+   16|      1|}
+

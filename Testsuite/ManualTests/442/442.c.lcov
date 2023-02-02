@@ -1,0 +1,48 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -ftree-loop-linear" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|  38.0k|#define K 32
+    7|       |
+    8|       |int cond_array[2 * K][K];
+    9|       |int a[K][K];
+   10|       |int out[K];
+   11|       |int check_result[K] = {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   12|       |                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+   13|       |
+   14|      1|__attribute__((noinline)) void foo(int c) {
+   15|      1|  int res, i, j, k, next;
+   16|      1|
+   17|     33|  for (k = 0; k < K; k++) {
+   18|     32|    res = 0;
+   19|  1.05k|    for (j = 0; j < K; j++)
+   20|  33.7k|      for (i = 0; i < K; i++) {
+   21|  32.7k|        next = a[i][j];
+   22|  32.7k|        res = c > cond_array[i + k][j] ? next : res;
+   23|  32.7k|      }
+   24|     32|
+   25|     32|    out[k] = res;
+   26|     32|  }
+   27|      1|}
+   28|       |
+   29|      1|int main() {
+   30|      1|  int i, j, k;
+   31|      1|
+   32|     33|  for (j = 0; j < K; j++) {
+   33|  2.08k|    for (i = 0; i < 2 * K; i++)
+   34|  2.04k|      cond_array[i][j] = i + j;
+   35|     32|
+   36|  1.05k|    for (i = 0; i < K; i++)
+   37|  1.02k|      a[i][j] = i + 2;
+   38|     32|  }
+   39|      1|
+   40|      1|  foo(5);
+   41|      1|
+   42|     33|  for (k = 0; k < K; k++)
+   43|     32|    if (out[k] != check_result[k])
+   44|      0|      abort();
+   45|      1|
+   46|      1|  return 0;
+   47|      1|}
+

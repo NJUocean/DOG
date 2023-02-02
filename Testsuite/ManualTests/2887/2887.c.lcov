@@ -1,0 +1,15 @@
+    1|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk>.
+    2|       |
+    3|       |   This tests for inconsistency in whether wide STRING_CSTs use the host
+    4|       |   or the target endianness.  */
+    5|       |
+    6|       |extern void exit(int);
+    7|       |extern void abort(void);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  if (L"a"
+   11|      1|      "b"[1] != L'b')
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+

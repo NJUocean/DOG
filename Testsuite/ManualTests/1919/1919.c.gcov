@@ -1,0 +1,23 @@
+        -:    0:Source:1919.c
+        -:    0:Graph:1919.gcno
+        -:    0:Data:1919.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fwrapv" } */
+        -:    3:
+        -:    4:#define DEF(num, T1, T2)                                                       \
+        -:    5:  T2 f##num(T1 x) {                                                            \
+        -:    6:    T1 y = -x;                                                                 \
+        -:    7:    T2 z = (T2)y;                                                              \
+        -:    8:    return -z;                                                                 \
+        -:    9:  }
+        1:   10:DEF(0, int, long long)
+        -:   11:
+        1:   12:int main() {
+        1:   13:  volatile int a = -1 - __INT_MAX__;
+        1:   14:  volatile long long b = f0(a);
+        1:   15:  volatile long long c = a;
+        1:   16:  volatile long long d = -c;
+        1:   17:  if (b != d)
+    #####:   18:    __builtin_abort();
+        -:   19:}

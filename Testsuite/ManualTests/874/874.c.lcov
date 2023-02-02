@@ -1,0 +1,10 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-overflow" } */
+    3|       |
+    4|      1|#define INT_MIN (-__INT_MAX__ - 1)
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  /* This should not fail.  */
+    8|      1|  return (unsigned int)INT_MIN / -1;
+    9|      1|}
+

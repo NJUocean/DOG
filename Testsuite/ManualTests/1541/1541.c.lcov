@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-common" { target hppa*-*-hpux* } } */
+    3|       |
+    4|       |typedef union {
+    5|       |  double v[2];
+    6|       |  double s __attribute__((vector_size(16)));
+    7|       |} data;
+    8|       |
+    9|       |data reg;
+   10|       |
+   11|      1|void __attribute__((noinline)) set_lower(double b) {
+   12|      1|  data stack_var;
+   13|      1|  double __attribute__((vector_size(16))) one = {1.0, 1.0};
+   14|      1|  stack_var.s = reg.s;
+   15|      1|  stack_var.s += one;
+   16|      1|  stack_var.v[0] += b;
+   17|      1|  reg.s = stack_var.s;
+   18|      1|}
+   19|       |
+   20|      1|int main(int argc, char **argv) {
+   21|      1|  reg.v[0] = 1.0;
+   22|      1|  reg.v[1] = 1.0;
+   23|      1|  /* reg should contain { 1.0, 1.0 }.  */
+   24|      1|  set_lower(2.0);
+   25|      1|  /* reg should contain { 4.0, 2.0 }.  */
+   26|      1|  if ((int)reg.v[0] != 4 || (int)reg.v[1] != 2)
+   27|      0|    __builtin_abort();
+   28|      1|  return 0;
+   29|      1|}
+

@@ -1,0 +1,48 @@
+        -:    0:Source:4034.c
+        -:    0:Graph:4034.gcno
+        -:    0:Data:4034.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93213 - wrong code on a multibyte store with
+        -:    2:   -Og -foptimize-strlen
+        -:    3:   { dg-require-effective-target int128 }
+        -:    4:   { dg-additional-options "-Og -foptimize-strlen" } */
+        -:    5:
+        -:    6:typedef unsigned __INT16_TYPE__ u16;
+        -:    7:typedef unsigned __INT32_TYPE__ u32;
+        -:    8:typedef unsigned __int128 u128;
+        -:    9:
+        1:   10:static inline u128 foo(u16 u16_1, u32 u32_1, u128 u128_1) {
+        -:   11:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   12:  u128 u128_0 = 0;
+        1:   13:  u128_1 -= __builtin_mul_overflow(u32_1, u16_1, &u32_1);
+        1:   14:  __builtin_memmove(&u16_1, &u128_0, 2);
+        1:   15:  __builtin_memmove(&u16_1, &u128_1, 1);
+        1:   16:  return u16_1;
+        -:   17:#else
+        -:   18:  return 0xff;
+        -:   19:#endif
+        -:   20:}
+        -:   21:
+        1:   22:__attribute__((noipa)) void bar(void) {
+        1:   23:  char a[] = {1, 2};
+        1:   24:  const char b[] = {0, 0};
+        1:   25:  const char c[] = {2};
+        1:   26:  __builtin_memcpy(a, b, 2);
+        -:   27:  // The above is transformed into
+        -:   28:  //   MEM <short unsigned int> [(char * {ref-all})&a] = 0;
+        -:   29:  // which was then dropped because of the non-nul store below.
+        1:   30:  __builtin_memcpy(a, c, 1);
+        -:   31:
+        1:   32:  volatile char *p = a;
+        1:   33:  if (p[0] != 2 || p[1] != 0)
+    #####:   34:    __builtin_abort();
+        1:   35:}
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  u16 x = foo(-1, -1, 0);
+        1:   39:  if (x != 0xff)
+    #####:   40:    __builtin_abort();
+        -:   41:
+        1:   42:  bar();
+        1:   43:  return 0;
+        -:   44:}

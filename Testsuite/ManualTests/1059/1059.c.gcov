@@ -1,0 +1,19 @@
+        -:    0:Source:1059.c
+        -:    0:Graph:1059.gcno
+        -:    0:Data:1059.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:  int i;
+        1:    6:  foobar(i, &i); /* { dg-warning "implicit declaration" } */
+        -:    7:}
+        -:    8:
+        1:    9:int foobar(int a, long long b) {
+        -:   10:  int c;
+        -:   11:
+        1:   12:  c = a % b;
+        1:   13:  a = a / b;
+        1:   14:  return a + b;
+        -:   15:}

@@ -1,0 +1,21 @@
+        -:    0:Source:1648.c
+        -:    0:Graph:1648.gcno
+        -:    0:Data:1648.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:int a;
+        -:    4:short b;
+    #####:    5:short fn1(unsigned short p1) { return p1 << a; }
+        -:    6:
+        1:    7:int main() {
+        -:    8:  short c;
+        1:    9:  int d = 4;
+        1:   10:  for (; b;) {
+    #####:   11:    c = d + 1;
+    #####:   12:    fn1(c);
+    #####:   13:    d = 0;
+        -:   14:  }
+        1:   15:  d++;
+        1:   16:  return 0;
+        -:   17:}

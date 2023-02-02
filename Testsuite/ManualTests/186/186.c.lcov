@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct S {
+    6|       |  int len;
+    7|       |  char s[0];
+    8|       |};
+    9|      1|int main() {
+   10|      1|  char buf[sizeof(struct S) + 32];
+   11|      1|  if (__builtin_object_size(((struct S *)&buf[0])->s, 1) != 32)
+   12|      0|    abort();
+   13|      1|  if (__builtin_object_size(((struct S *)&buf[1])->s, 1) != 31)
+   14|      0|    abort();
+   15|      1|  if (__builtin_object_size(((struct S *)&buf[64])->s, 0) != 0)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

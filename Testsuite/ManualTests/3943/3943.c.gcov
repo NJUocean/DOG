@@ -1,0 +1,14 @@
+        -:    0:Source:3943.c
+        -:    0:Graph:3943.gcno
+        -:    0:Data:3943.gcda
+        -:    0:Runs:1
+    #####:    1:double f(double a) {}
+        -:    2:double (*const a[])(double) = {&f};
+        -:    3:
+        1:    4:main() {
+        -:    5:  double (*p)();
+        1:    6:  p = &f;
+        1:    7:  if (p != a[0])
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

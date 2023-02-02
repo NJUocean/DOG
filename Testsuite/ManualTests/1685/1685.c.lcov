@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|     24|#define N 9
+    4|       |
+    5|      1|void __attribute__((noipa)) f(double x, double y, double *res) {
+    6|      1|  y = -y;
+    7|     10|  for (int i = 0; i < N; ++i) {
+    8|      9|    double tmp = y;
+    9|      9|    y = x;
+   10|      9|    x = tmp;
+   11|      9|    res[i] = i;
+   12|      9|  }
+   13|      1|  res[N] = y * y;
+   14|      1|  res[N + 1] = x;
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  double res[N + 2];
+   19|      1|  f(10, 20, res);
+   20|     10|  for (int i = 0; i < N; ++i)
+   21|      9|    if (res[i] != i)
+   22|      0|      __builtin_abort();
+   23|      1|  if (res[N] != 100 || res[N + 1] != -20)
+   24|      0|    __builtin_abort();
+   25|      1|  return 0;
+   26|      1|}
+

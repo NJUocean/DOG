@@ -1,0 +1,40 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target ia32 } */
+    3|       |/* { dg-options "-O2 -mpreferred-stack-boundary=2 -march=i686
+    4|       | * -frename-registers" } */
+    5|       |
+    6|       |extern void abort(void) __attribute__((noreturn));
+    7|       |
+    8|       |struct wrapper {
+    9|       |  union setconflict {
+   10|       |    short a[20];
+   11|       |    int b[10];
+   12|       |  } a;
+   13|       |};
+   14|       |
+   15|      1|int main() {
+   16|      1|  int sum = 0;
+   17|      1|  {
+   18|      1|    struct wrapper a;
+   19|      1|    short *c;
+   20|      1|    c = a.a.a;
+   21|      1|    asm("" : "=r"(c) : "0"(c));
+   22|      1|    *c = 0;
+   23|      1|    asm("" : "=r"(c) : "0"(c));
+   24|      1|    sum += *c;
+   25|      1|  }
+   26|      1|  {
+   27|      1|    struct wrapper a;
+   28|      1|    int *c;
+   29|      1|    c = a.a.b;
+   30|      1|    asm("" : "=r"(c) : "0"(c));
+   31|      1|    *c = 1;
+   32|      1|    asm("" : "=r"(c) : "0"(c));
+   33|      1|    sum += *c;
+   34|      1|  }
+   35|      1|
+   36|      1|  if (sum != 1)
+   37|      0|    abort();
+   38|      1|  return 0;
+   39|      1|}
+

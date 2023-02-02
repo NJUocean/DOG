@@ -1,0 +1,22 @@
+    1|       |/* PR sanitizer/65081 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+    4|       |/* { dg-options "-fsanitize=object-size -fno-sanitize-recover=object-size" } */
+    5|       |
+    6|       |struct S {
+    7|       |  int a;
+    8|       |  char p[1];
+    9|       |};
+   10|       |
+   11|       |struct S b;
+   12|       |
+   13|      1|struct S *foo() {
+   14|      1|  struct S *i = &b;
+   15|      1|  return i + 1;
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  struct S *i = foo() - 1;
+   20|      1|  i->a = 1;
+   21|      1|}
+

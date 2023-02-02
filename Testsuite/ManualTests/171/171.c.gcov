@@ -1,0 +1,48 @@
+        -:    0:Source:171.c
+        -:    0:Graph:171.gcno
+        -:    0:Data:171.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/52991 */
+        -:    2:/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int a : 2;
+        -:    6:  __attribute__((aligned(8))) int b : 2;
+        -:    7:  int c : 28;
+        -:    8:  __attribute__((aligned(16))) int d : 2;
+        -:    9:  int e : 30;
+        -:   10:} __attribute__((ms_struct));
+        -:   11:
+        -:   12:struct S s;
+        -:   13:
+        1:   14:int main() {
+        -:   15:  int i;
+        -:   16:  if (sizeof(s) != 32)
+        -:   17:    __builtin_abort();
+        1:   18:  s.a = -1;
+       33:   19:  for (i = 0; i < 32; ++i)
+       32:   20:    if (((char *)&s)[i] != (i ? 0 : 3))
+    #####:   21:      __builtin_abort();
+        1:   22:  s.a = 0;
+        1:   23:  s.b = -1;
+       33:   24:  for (i = 0; i < 32; ++i)
+       32:   25:    if (((char *)&s)[i] != (i ? 0 : 12))
+    #####:   26:      __builtin_abort();
+        1:   27:  s.b = 0;
+        1:   28:  s.c = -1;
+       33:   29:  for (i = 0; i < 32; ++i)
+       32:   30:    if (((signed char *)&s)[i] != (i > 3 ? 0 : (i ? -1 : -16)))
+    #####:   31:      __builtin_abort();
+        1:   32:  s.c = 0;
+        1:   33:  s.d = -1;
+       33:   34:  for (i = 0; i < 32; ++i)
+       32:   35:    if (((signed char *)&s)[i] != (i == 16 ? 3 : 0))
+    #####:   36:      __builtin_abort();
+        1:   37:  s.d = 0;
+        1:   38:  s.e = -1;
+       33:   39:  for (i = 0; i < 32; ++i)
+       32:   40:    if (((signed char *)&s)[i] !=
+       32:   41:        ((i < 16 || i > 19) ? 0 : (i == 16 ? -4 : -1)))
+    #####:   42:      __builtin_abort();
+        1:   43:  return 0;
+        -:   44:}

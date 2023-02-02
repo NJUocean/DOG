@@ -1,0 +1,16 @@
+        -:    0:Source:701.c
+        -:    0:Graph:701.gcno
+        -:    0:Data:701.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/50199 */
+        -:    2:/* { dg-lto-options {{-O2 -flto -fno-merge-constants
+        -:    3: * --param=lto-min-partition=1}} } */
+        -:    4:
+        1:    5:__attribute__((noinline)) const char *foo(const char *x) { return x; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  const char *a = "ab";
+        1:    9:  if (a != foo(a))
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

@@ -1,0 +1,29 @@
+    1|       |typedef struct {
+    2|       |  unsigned char a : 2;
+    3|       |  unsigned char b : 3;
+    4|       |  unsigned char c : 1;
+    5|       |  unsigned char d : 1;
+    6|       |  unsigned char e : 1;
+    7|       |} a_struct;
+    8|       |
+    9|       |foo(flags) a_struct *flags;
+   10|      1|{
+   11|      1|  return (flags->c != 0 || flags->d != 1 || flags->e != 1 || flags->a != 2 ||
+   12|      1|          flags->b != 3);
+   13|      1|}
+   14|       |
+   15|      1|main() {
+   16|      1|  a_struct flags;
+   17|      1|
+   18|      1|  flags.c = 0;
+   19|      1|  flags.d = 1;
+   20|      1|  flags.e = 1;
+   21|      1|  flags.a = 2;
+   22|      1|  flags.b = 3;
+   23|      1|
+   24|      1|  if (foo(&flags) != 0)
+   25|      0|    abort();
+   26|      1|  else
+   27|      1|    exit(0);
+   28|      1|}
+

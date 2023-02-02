@@ -1,0 +1,64 @@
+        -:    0:Source:619.c
+        -:    0:Graph:619.gcno
+        -:    0:Data:619.gcda
+        -:    0:Runs:1
+        -:    1:/* Limit this to known non-strict alignment targets.  */
+        -:    2:/* { dg-do run { target { i?86-*-linux* x86_64-*-linux* } } } */
+        -:    3:/* { dg-options "-O -fsanitize=alignment -fsanitize-recover=alignment
+        -:    4: * -Wno-address-of-packed-member" } */
+        -:    5:
+        -:    6:struct R {
+        -:    7:  int a;
+        -:    8:} r;
+        -:    9:struct S {
+        -:   10:  struct R a;
+        -:   11:  char b;
+        -:   12:  long long c;
+        -:   13:  short d[10];
+        -:   14:};
+        -:   15:struct T {
+        -:   16:  char a;
+        -:   17:  long long b;
+        -:   18:};
+        -:   19:struct U {
+        -:   20:  char a;
+        -:   21:  int b;
+        -:   22:  int c;
+        -:   23:  long long d;
+        -:   24:  struct S e;
+        -:   25:  struct T f;
+        -:   26:} __attribute__((packed));
+        -:   27:struct V {
+        -:   28:  long long a;
+        -:   29:  struct S b;
+        -:   30:  struct T c;
+        -:   31:  struct U u;
+        -:   32:} v;
+        -:   33:
+        3:   34:__attribute__((noinline, noclone)) int bar(int x, struct R y, struct R z) {
+        3:   35:  return x + y.a;
+        -:   36:}
+        -:   37:
+        1:   38:__attribute__((noinline, noclone)) int foo(struct S *p, struct S *q) {
+        1:   39:  int i = bar(0, r, r);
+        1:   40:  i += bar(1, p->a, r);
+        1:   41:  i += bar(2, r, q->a);
+        1:   42:  return i;
+        -:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  char *p = (char *)&v.u.e;
+        -:   47:  struct S *q, *r;
+        1:   48:  asm volatile("" : "=r"(q) : "0"(p));
+        1:   49:  asm volatile("" : "=r"(r) : "0"(p));
+        1:   50:  if (foo(q, r) != 3)
+    #####:   51:    __builtin_abort();
+        1:   52:  return 0;
+        -:   53:}
+        -:   54:
+        -:   55:/* { dg-output "\.c:21:\[0-9]*: \[^\n\r]*member access within misaligned address
+        -:   56: * 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte alignment.*" }
+        -:   57: */
+        -:   58:/* { dg-output "\.c:22:\[0-9]*: \[^\n\r]*member access within misaligned address
+        -:   59: * 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte alignment" }
+        -:   60: */

@@ -1,0 +1,23 @@
+        -:    0:Source:1603.c
+        -:    0:Graph:1603.gcno
+        -:    0:Data:1603.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-prune-output "use of enum values across objects may fail" } */
+        -:    3:/* { dg-additional-options "-fno-short-enums" } */
+        -:    4:
+        -:    5:enum e1 { c1 };
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) int f(enum e1 *p, unsigned *q) {
+        1:    8:  *p = c1;
+        1:    9:  *q = 2;
+        1:   10:  return *p;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  unsigned x;
+        -:   15:
+        1:   16:  if (f(&x, &x) != 2)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

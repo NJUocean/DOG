@@ -1,0 +1,23 @@
+        -:    0:Source:2210.c
+        -:    0:Graph:2210.gcno
+        -:    0:Data:2210.gcda
+        -:    0:Runs:1
+        1:    1:int __attribute__((noinline, noclone)) f(int *x, int n) {
+        1:    2:  int b = 13;
+       33:    3:  for (int i = 0; i < n; ++i) {
+       32:    4:    int next = x[i];
+       32:    5:    b = b < 100 ? next : 200;
+        -:    6:  }
+        1:    7:  return b;
+        -:    8:}
+        -:    9:
+        -:   10:static int res[32];
+        -:   11:
+        1:   12:int main(void) {
+       33:   13:  for (int i = 0; i < 32; ++i)
+       32:   14:    res[i] = i;
+        1:   15:  res[15] = 100;
+        1:   16:  if (f(res, 32) != 200)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

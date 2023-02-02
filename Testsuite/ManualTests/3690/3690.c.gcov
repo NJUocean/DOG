@@ -1,0 +1,18 @@
+        -:    0:Source:3690.c
+        -:    0:Graph:3690.gcno
+        -:    0:Data:3690.gcda
+        -:    0:Runs:1
+        1:    1:int __attribute__((noinline, noclone)) copysign_bug(double x) {
+       1*:    2:  if (x != 0.0 && (x * 0.5 == x))
+    #####:    3:    return 1;
+        1:    4:  if (__builtin_copysign(1.0, x) < 0.0)
+        1:    5:    return 2;
+        -:    6:  else
+    #####:    7:    return 3;
+        -:    8:}
+        1:    9:int main(void) {
+        1:   10:  double x = -0.0;
+        1:   11:  if (copysign_bug(x) != 2)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

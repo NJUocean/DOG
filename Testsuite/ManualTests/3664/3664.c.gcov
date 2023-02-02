@@ -1,0 +1,16 @@
+        -:    0:Source:3664.c
+        -:    0:Graph:3664.gcno
+        -:    0:Data:3664.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/42544 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main() {
+        1:    6:  signed short s = -1;
+        -:    7:  if (sizeof(long long) == sizeof(unsigned int))
+        -:    8:    return 0;
+        -:    9:  if ((unsigned int)s >= 0x100000000ULL)
+        -:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

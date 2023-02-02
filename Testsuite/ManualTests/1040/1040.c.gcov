@@ -1,0 +1,26 @@
+        -:    0:Source:1040.c
+        -:    0:Graph:1040.gcno
+        -:    0:Data:1040.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/83363 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-forward-propagate" } */
+        -:    4:
+        -:    5:unsigned char a;
+        -:    6:unsigned int b;
+        -:    7:
+        1:    8:static unsigned short __attribute__((noinline, noclone)) foo(unsigned short x) {
+        1:    9:  x -= b;
+        1:   10:  x <<= x == 0;
+        1:   11:  a = ~0;
+        1:   12:  a >>= (unsigned char)x == 0;
+        1:   13:  x *= a -= ~a;
+        1:   14:  return x;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  asm volatile("" : : : "memory");
+        1:   19:  if (foo(3) != (unsigned short)(3 * (unsigned char)~0))
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

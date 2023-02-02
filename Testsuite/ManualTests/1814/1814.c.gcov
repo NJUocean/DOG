@@ -1,0 +1,29 @@
+        -:    0:Source:1814.c
+        -:    0:Graph:1814.gcno
+        -:    0:Data:1814.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fno-early-inlining -fdump-ipa-profile-optimized
+        -:    2: * -fdump-ipa-afdo" } */
+        -:    3:volatile int one;
+   100000:    4:static int add1(int val) { return val += one; }
+        -:    5:
+   100000:    6:static int sub1(int val) { return val -= one; }
+        -:    7:
+   200000:    8:static int do_op(int val, int (*fnptr)(int)) { return fnptr(val); }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  int i, val = 0;
+   100001:   12:  for (i = 0; i < 100000; i++) {
+   100000:   13:    val = do_op(val, add1);
+   100000:   14:    val = do_op(val, sub1);
+        -:   15:  }
+        1:   16:  return val;
+        -:   17:}
+        -:   18:/* { dg-final-use-not-autofdo { scan-ipa-dump "Indirect call -> direct call.*
+        -:   19: * add1 .will resolve by ipa-profile" "profile"} } */
+        -:   20:/* { dg-final-use-not-autofdo { scan-ipa-dump "Indirect call -> direct call.*
+        -:   21: * sub1 .will resolve by ipa-profile" "profile"} } */
+        -:   22:/* { dg-final-use-autofdo { scan-ipa-dump "Indirect call -> direct call.* add1
+        -:   23: * .will resolve by ipa-profile" "afdo"} } */
+        -:   24:/* { dg-final-use-autofdo { scan-ipa-dump "Indirect call -> direct call.* sub1
+        -:   25: * .will resolve by ipa-profile" "afdo"} } */

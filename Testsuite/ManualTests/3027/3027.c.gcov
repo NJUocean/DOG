@@ -1,0 +1,23 @@
+        -:    0:Source:3027.c
+        -:    0:Graph:3027.gcno
+        -:    0:Data:3027.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+        1:    2:void bar(int N) {
+        2:    3:  void foo(int a[2][N++]) {}
+        1:    4:  int a[2][N];
+        1:    5:  foo(a);
+        1:    6:  int b[2][N];
+        1:    7:  foo(b);
+        1:    8:  if (sizeof(a) != sizeof(int) * 2 * 1)
+    #####:    9:    abort();
+        1:   10:  if (sizeof(b) != sizeof(int) * 2 * 2)
+    #####:   11:    abort();
+        1:   12:  if (N != 3)
+    #####:   13:    abort();
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  bar(1);
+        1:   18:  exit(0);
+        -:   19:}

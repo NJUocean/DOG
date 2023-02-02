@@ -1,0 +1,35 @@
+        -:    0:Source:1130.c
+        -:    0:Graph:1130.gcno
+        -:    0:Data:1130.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves
+        -:    3: * -fdump-rtl-sms" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:float out[4][4] = {6, 6, 7, 5, 6, 7, 5, 5, 6, 4, 4, 4, 6, 2, 3, 4};
+        -:    8:
+        1:    9:void invert(void) {
+        1:   10:  int i, j, k = 0, swap;
+        1:   11:  float tmp[4][4] = {5, 6, 7, 5, 6, 7, 5, 5, 4, 4, 4, 4, 3, 2, 3, 4};
+        -:   12:
+        5:   13:  for (i = 0; i < 4; i++) {
+       10:   14:    for (j = i + 1; j < 4; j++)
+        6:   15:      if (tmp[j][i] > tmp[i][i])
+        1:   16:        swap = j;
+        -:   17:
+        4:   18:    if (swap != i)
+        3:   19:      tmp[i][k] = tmp[swap][k];
+        -:   20:  }
+        -:   21:
+        5:   22:  for (i = 0; i < 4; i++)
+       20:   23:    for (j = 0; j < 4; j++)
+       16:   24:      if (tmp[i][j] != out[i][j])
+    #####:   25:        abort();
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  invert();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,19 @@
+        -:    0:Source:2100.c
+        -:    0:Graph:2100.gcno
+        -:    0:Data:2100.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/72824 */
+        -:    2:
+        1:    3:static inline void foo(float *x, float value) {
+        -:    4:  int i;
+       33:    5:  for (i = 0; i < 32; ++i)
+       32:    6:    x[i] = value;
+        1:    7:}
+        -:    8:
+        1:    9:int main() {
+        -:   10:  float x[32];
+        1:   11:  foo(x, -0.f);
+        1:   12:  if (__builtin_copysignf(1.0, x[3]) != -1.0f)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

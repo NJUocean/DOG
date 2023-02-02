@@ -1,0 +1,38 @@
+    1|       |/* { dg-do compile { target { powerpc64le-*-* } } } */
+    2|       |/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+    3|       |/* { dg-final { scan-assembler "lxvd2x" } } */
+    4|       |/* { dg-final { scan-assembler "stxvd2x" } } */
+    5|       |/* { dg-final { scan-assembler-not "xxpermdi" } } */
+    6|       |
+    7|       |void abort();
+    8|       |
+    9|    771|#define N 256
+   10|       |signed char ca[N] __attribute__((aligned(16)));
+   11|       |signed char cb[N] __attribute__((aligned(16)));
+   12|       |signed char cc[N] __attribute__((aligned(16)));
+   13|       |
+   14|      1|__attribute__((noinline)) void foo() {
+   15|      1|  int i;
+   16|    257|  for (i = 0; i < N; i++) {
+   17|    256|    ca[i] = cb[i] - cc[i];
+   18|    256|  }
+   19|      1|}
+   20|       |
+   21|      1|__attribute__((noinline)) void init() {
+   22|      1|  int i;
+   23|    257|  for (i = 0; i < N; ++i) {
+   24|    256|    cb[i] = i - 128;
+   25|    256|    cc[i] = i / 2 - 64;
+   26|    256|  }
+   27|      1|}
+   28|       |
+   29|      1|int main() {
+   30|      1|  int i;
+   31|      1|  init();
+   32|      1|  foo();
+   33|    257|  for (i = 0; i < N; ++i)
+   34|    256|    if (ca[i] != i - i / 2 - 64)
+   35|      0|      abort();
+   36|      1|  return 0;
+   37|      1|}
+

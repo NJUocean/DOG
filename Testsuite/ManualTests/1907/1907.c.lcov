@@ -1,0 +1,56 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+    3|       |/* { dg-require-effective-target size20plus } */
+    4|       |/* { dg-skip-if "too big data segment" { visium-*-* } } */
+    5|       |
+    6|       |/* Copied from graphite/interchange-5.c */
+    7|       |
+    8|       |#define DEBUG 0
+    9|       |#if DEBUG
+   10|       |#include <stdio.h>
+   11|       |#endif
+   12|       |
+   13|   112k|#define N 100
+   14|   112k|#define M 1111
+   15|       |int A[N][M];
+   16|       |
+   17|      1|static int __attribute__((noinline)) foo(void) {
+   18|      1|  int i, j;
+   19|      1|
+   20|  1.11k|  for (i = 0; i < M; i++)
+   21|   112k|    for (j = 0; j < N; j++)
+   22|   111k|      A[j][i] = 5 * A[j][i];
+   23|      1|
+   24|      1|  return A[0][0] + A[N - 1][M - 1];
+   25|      1|}
+   26|       |
+   27|       |extern void abort();
+   28|       |
+   29|    100|static void __attribute__((noinline)) init(int i) {
+   30|    100|  int j;
+   31|    100|
+   32|   111k|  for (j = 0; j < M; j++)
+   33|   111k|    A[i][j] = 2;
+   34|    100|}
+   35|       |
+   36|      1|int main(void) {
+   37|      1|  int i, j, res;
+   38|      1|
+   39|    101|  for (i = 0; i < N; i++)
+   40|    100|    init(i);
+   41|      1|
+   42|      1|  res = foo();
+   43|      1|
+   44|       |#if DEBUG
+   45|       |  fprintf(stderr, "res = %d \n", res);
+   46|       |#endif
+   47|      1|
+   48|      1|  if (res != 20)
+   49|      0|    abort();
+   50|      1|
+   51|      1|  return 0;
+   52|      1|}
+   53|       |
+   54|       |/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+   55|       | * interchanged" 1 "linterchange"} } */
+

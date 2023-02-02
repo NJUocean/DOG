@@ -1,0 +1,46 @@
+        -:    0:Source:1121.c
+        -:    0:Graph:1121.gcno
+        -:    0:Data:1121.gcda
+        -:    0:Runs:1
+        -:    1:/* Simple check that tail recursive call optimization is also
+        -:    2:   controlled by -foptimize-sibling-calls.
+        -:    3:
+        -:    4:   Copyright (C) 2006 Free Software Foundation Inc.
+        -:    5:   Original test by Hans-Peter Nilsson  <hp@bitrange.com>  */
+        -:    6:
+        -:    7:/* On IA64 the call frame is allocated on the register stack, not the
+        -:    8:   normal stack.  */
+        -:    9:
+        -:   10:/* { dg-do run { target { ! "ia64-*-*" } } } */
+        -:   11:/* { dg-options "-O2 -fno-optimize-sibling-calls" } */
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:
+        -:   15:extern void recurser_void(int);
+        -:   16:extern void track(int);
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  recurser_void(0);
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+       11:   23:void recurser_void(int n) {
+       11:   24:  if (n == 0 || n == 7)
+        2:   25:    track(n);
+        -:   26:
+       11:   27:  if (n == 10)
+        1:   28:    return;
+        -:   29:
+       10:   30:  recurser_void(n + 1);
+        -:   31:}
+        -:   32:
+        -:   33:void *trackpoint;
+        -:   34:
+        2:   35:void track(int n) {
+        -:   36:  char stackpos[1];
+        -:   37:
+        2:   38:  if (n == 0)
+        1:   39:    trackpoint = stackpos;
+        1:   40:  else if (n != 7 || trackpoint == stackpos)
+    #####:   41:    abort();
+        2:   42:}

@@ -1,0 +1,24 @@
+        -:    0:Source:1446.c
+        -:    0:Graph:1446.gcno
+        -:    0:Data:1446.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-msse" { target sse2_runtime } } */
+        -:    3:
+        -:    4:int a, d;
+        -:    5:int *b = &a, **c;
+        1:    6:int main() {
+        -:    7:  int e;
+        -:    8:  {
+        -:    9:    int f[4];
+        5:   10:    for (d = 0; d < 4; d++)
+        4:   11:      f[d] = 1;
+        1:   12:    e = f[1];
+        -:   13:  }
+        1:   14:  int *g[28] = {};
+        1:   15:  *b = e;
+        1:   16:  c = &g[0];
+        1:   17:  if (a != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,46 @@
+        -:    0:Source:4088.c
+        -:    0:Graph:4088.gcno
+        -:    0:Data:4088.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:struct s {
+        -:    4:  int x, y;
+        -:    5:};
+        -:    6:
+        1:    7:f(int attr, ...) {
+        -:    8:  struct s va_values;
+        -:    9:  va_list va;
+        -:   10:  int i;
+        -:   11:
+        1:   12:  va_start(va, attr);
+        -:   13:
+        1:   14:  if (attr != 2)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  va_values = va_arg(va, struct s);
+        1:   18:  if (va_values.x != 0xaaaa || va_values.y != 0x5555)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  attr = va_arg(va, int);
+        1:   22:  if (attr != 3)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  va_values = va_arg(va, struct s);
+        1:   26:  if (va_values.x != 0xffff || va_values.y != 0x1111)
+    #####:   27:    abort();
+        -:   28:
+        1:   29:  va_end(va);
+        1:   30:}
+        -:   31:
+        1:   32:main() {
+        -:   33:  struct s a, b;
+        -:   34:
+        1:   35:  a.x = 0xaaaa;
+        1:   36:  a.y = 0x5555;
+        1:   37:  b.x = 0xffff;
+        1:   38:  b.y = 0x1111;
+        -:   39:
+        1:   40:  f(2, a, 3, b);
+        1:   41:  exit(0);
+        -:   42:}

@@ -1,0 +1,30 @@
+        -:    0:Source:280.c
+        -:    0:Graph:280.gcno
+        -:    0:Data:280.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        1:    2:  int i = 0;
+        -:    3:
+        -:    4:  if (sizeof(unsigned long int) == 4) {
+        -:    5:    unsigned long int z = 0;
+        -:    6:
+        -:    7:    do {
+        -:    8:      z -= 0x00004000;
+        -:    9:      i++;
+        -:   10:      if (i > 0x00040000)
+        -:   11:        abort();
+        -:   12:    } while (z > 0);
+        -:   13:    exit(0);
+        -:   14:  } else if (sizeof(unsigned int) == 4) {
+        1:   15:    unsigned int z = 0;
+        -:   16:
+        -:   17:    do {
+   262144:   18:      z -= 0x00004000;
+   262144:   19:      i++;
+   262144:   20:      if (i > 0x00040000)
+    #####:   21:        abort();
+   262144:   22:    } while (z > 0);
+        1:   23:    exit(0);
+        -:   24:  } else
+        -:   25:    exit(0);
+        -:   26:}

@@ -1,0 +1,20 @@
+        -:    0:Source:3990.c
+        -:    0:Graph:3990.gcno
+        -:    0:Data:3990.gcda
+        -:    0:Runs:1
+        -:    1:int yf = 0;
+        -:    2:
+        1:    3:void pl(int q5, int nd) {
+        1:    4:  unsigned int hp = q5;
+       1*:    5:  int zx = (q5 == 0) ? hp : (hp / q5);
+        -:    6:
+       1*:    7:  yf = ((nd < 2) * zx != 0) ? nd : 0;
+        1:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  pl(1, !yf);
+        1:   12:  if (yf != 1)
+    #####:   13:    __builtin_abort();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

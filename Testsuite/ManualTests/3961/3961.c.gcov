@@ -1,0 +1,41 @@
+        -:    0:Source:3961.c
+        -:    0:Graph:3961.gcno
+        -:    0:Data:3961.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:/* Test that __builtin_speculation_safe_value returns the correct value.  */
+        -:    5:/* This test will cause an unfiltered warning to be emitted on targets
+        -:    6:   that have not implemented support for speculative execution
+        -:    7:   barriers.  They should fix that rather than disabling this
+        -:    8:   test.  */
+        -:    9:char a = 1;
+        -:   10:short b = 2;
+        -:   11:int c = 3;
+        -:   12:long d = 4;
+        -:   13:long long e = 5;
+        -:   14:int *f = (int *)&c;
+        -:   15:#ifdef __SIZEOF_INT128__
+        -:   16:__int128 g = 9;
+        -:   17:#endif
+        -:   18:
+        1:   19:int main() {
+        1:   20:  if (__builtin_speculation_safe_value(a) != 1)
+    #####:   21:    __builtin_abort();
+        1:   22:  if (__builtin_speculation_safe_value(b) != 2)
+    #####:   23:    __builtin_abort();
+        1:   24:  if (__builtin_speculation_safe_value(c) != 3)
+    #####:   25:    __builtin_abort();
+        1:   26:  if (__builtin_speculation_safe_value(d) != 4)
+    #####:   27:    __builtin_abort();
+        1:   28:  if (__builtin_speculation_safe_value(e) != 5)
+    #####:   29:    __builtin_abort();
+        1:   30:  if (__builtin_speculation_safe_value(f) != &c)
+    #####:   31:    __builtin_abort();
+        -:   32:#ifdef __SIZEOF_INT128__
+        1:   33:  if (__builtin_speculation_safe_value(g) != 9)
+    #####:   34:    __builtin_abort();
+        -:   35:#endif
+        1:   36:  return 0;
+        -:   37:}

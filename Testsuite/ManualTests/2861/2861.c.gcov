@@ -1,0 +1,52 @@
+        -:    0:Source:2861.c
+        -:    0:Graph:2861.gcno
+        -:    0:Data:2861.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/35907 */
+        -:    2:/* { dg-do run { target { powerpc*-*-* && vmx_hw } } } */
+        -:    3:/* { dg-do compile { target { powerpc*-*-* && { ! vmx_hw } } } } */
+        -:    4:/* { dg-require-effective-target powerpc_altivec_ok } */
+        -:    5:/* { dg-options "-O2 -maltivec" } */
+        -:    6:
+        -:    7:#define vector __attribute__((vector_size(16)))
+        -:    8:union {
+        -:    9:  vector int k;
+        -:   10:  int c[16];
+        -:   11:} u, v, w;
+        -:   12:vector int m;
+        -:   13:
+        4:   14:void __attribute__((noinline)) bar(void *i, vector int j) {
+        4:   15:  asm volatile("" : : "r"(i), "r"(&j) : "memory");
+        4:   16:}
+        -:   17:
+        2:   18:int __attribute__((noinline)) foo(int i, vector int j) {
+        2:   19:  char *p = __builtin_alloca(64 + i);
+        2:   20:  m += u.k;
+        2:   21:  v.k = m;
+        2:   22:  w.k = j;
+        2:   23:  if (__builtin_memcmp(&v.c, &w.c, 16) != 0)
+    #####:   24:    __builtin_abort();
+        2:   25:  j += u.k;
+        2:   26:  bar(p, j);
+        2:   27:  j += u.k;
+        2:   28:  bar(p, j);
+        2:   29:  return 0;
+        -:   30:}
+        -:   31:
+        1:   32:void test(void) {
+        -:   33:  vector int l;
+        -:   34:  int i;
+        5:   35:  for (i = 0; i < 4; i++)
+        4:   36:    u.c[i] = i;
+        1:   37:  l = u.k;
+        1:   38:  if (foo(64, l))
+    #####:   39:    __builtin_abort();
+        1:   40:  l += u.k;
+        1:   41:  if (foo(64, l))
+    #####:   42:    __builtin_abort();
+        1:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  test();
+        1:   47:  return 0;
+        -:   48:}

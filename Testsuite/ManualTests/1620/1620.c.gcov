@@ -1,0 +1,23 @@
+        -:    0:Source:1620.c
+        -:    0:Graph:1620.gcno
+        -:    0:Data:1620.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-ffast-math" } */
+        -:    3:
+        -:    4:static const float A[10] = {1};
+        -:    5:
+        2:    6:float foo(float *f, int n) {
+        -:    7:  int i, j;
+        2:    8:  float a = 0, b = 0;
+       22:    9:  for (i = n / 2; i < n; i++)
+       20:   10:    a += f[i] * .1f;
+       22:   11:  for (i = n / 2, j = 0; i < n; i++, j++)
+       20:   12:    b += f[i] * A[j] + a * A[j];
+        2:   13:  return b;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  float a[21] = {0};
+        1:   18:  return foo(a + 1, 20) + foo(a, 20);
+        -:   19:}

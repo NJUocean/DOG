@@ -1,0 +1,10 @@
+    1|       |/* PR c/48685 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  int v = 1;
+    7|      1|  (void)(1 == 2 ? (void)0 : (v = 0));
+    8|      1|  return v;
+    9|      1|}
+

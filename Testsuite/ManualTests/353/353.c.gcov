@@ -1,0 +1,21 @@
+        -:    0:Source:353.c
+        -:    0:Graph:353.gcno
+        -:    0:Data:353.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fpermitted-flt-eval-methods=c11" } */
+        -:    3:
+        -:    4:/* Test that we only see the C99/C11 values for __FLT_EVAL_METHOD__ if
+        -:    5:   we are compiling with -fpermitted-flt-eval-methods=c11.  */
+        -:    6:
+        1:    7:int main(int argc, char **argv) {
+        -:    8:  switch (__FLT_EVAL_METHOD__) {
+        -:    9:  case 0:
+        -:   10:  case 1:
+        -:   11:  case 2:
+        -:   12:  case -1:
+        1:   13:    return 0;
+        -:   14:  default:
+        -:   15:    return 1;
+        -:   16:  }
+        -:   17:}

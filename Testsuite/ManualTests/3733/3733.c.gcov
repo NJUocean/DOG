@@ -1,0 +1,35 @@
+        -:    0:Source:3733.c
+        -:    0:Graph:3733.gcno
+        -:    0:Data:3733.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49279 */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int a;
+        -:    6:  int *__restrict p;
+        -:    7:};
+        -:    8:
+        1:    9:__attribute__((noinline, noclone)) struct S *bar(struct S *p) {
+        -:   10:  struct S *r;
+        1:   11:  asm volatile("" : "=r"(r) : "0"(p) : "memory");
+        1:   12:  return r;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) int foo(int *p, int *q) {
+        -:   16:  struct S s, *t;
+        1:   17:  s.a = 1;
+        1:   18:  s.p = p;
+        1:   19:  t = bar(&s);
+        1:   20:  t->p = q;
+        1:   21:  s.p[0] = 0;
+        1:   22:  t->p[0] = 1;
+        1:   23:  return s.p[0];
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        -:   27:  int a, b;
+        1:   28:  if (foo(&a, &b) != 1)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

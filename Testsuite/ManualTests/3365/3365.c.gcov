@@ -1,0 +1,16 @@
+        -:    0:Source:3365.c
+        -:    0:Graph:3365.gcno
+        -:    0:Data:3365.gcda
+        -:    0:Runs:1
+        -:    1:/* The FR-V port used to fail this test because the andcc patterns
+        -:    2:   wrongly claimed to set the C and V flags.  */
+        -:    3:#include <limits.h>
+        -:    4:
+        -:    5:int x[4] = {INT_MIN / 2, INT_MAX, 2, 4};
+        -:    6:
+        1:    7:int main() {
+        1:    8:  if (x[0] < x[1])
+        1:    9:    if ((x[2] & x[3]) < 0)
+    #####:   10:      abort();
+        1:   11:  exit(0);
+        -:   12:}

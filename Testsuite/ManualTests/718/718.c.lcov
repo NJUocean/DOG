@@ -1,0 +1,6 @@
+    1|       |/* { dg-require-linker-plugin "" } */
+    2|       |/* { dg-extra-ld-options "-fuse-linker-plugin -O1" } */
+    3|       |
+    4|      0|void link_error() {}
+    5|      1|int main() { return 0; }
+

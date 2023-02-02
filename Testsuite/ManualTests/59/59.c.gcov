@@ -1,0 +1,15 @@
+        -:    0:Source:59.c
+        -:    0:Graph:59.gcno
+        -:    0:Data:59.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:#pragma GCC push_options
+        -:    4:#pragma GCC optimize("-fno-lto") /* { dg-warning "bad option" } */
+        1:    5:int main(void) { return 0; }
+        -:    6:#pragma GCC pop_options
+        -:    7:
+        -:    8:/* ???  The FEs still apply the pragma string as optimize attribute to
+        -:    9:   all functions thus the diagnostic will be repeated for each function
+        -:   10:   affected.  */
+        -:   11:/* { dg-message "bad option" "" { target *-*-* } 0 } */

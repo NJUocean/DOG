@@ -1,0 +1,18 @@
+        -:    0:Source:1534.c
+        -:    0:Graph:1534.gcno
+        -:    0:Data:1534.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:volatile int *volatile *a;
+        -:    4:static volatile int *volatile **b = &a;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  volatile int *volatile c;
+        1:    8:  *b = &c;
+        -:    9:
+        1:   10:  if (a != &c)
+    #####:   11:    __builtin_abort();
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

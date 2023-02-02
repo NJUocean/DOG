@@ -1,0 +1,27 @@
+    1|       |
+    2|       |void dummy(x, y) int *x;
+    3|       |int y;
+    4|      8|{}
+    5|       |
+    6|       |int main(argc, argv) int argc;
+    7|       |char **argv;
+    8|      1|{
+    9|      1|  int number_columns = 9;
+   10|      1|  int cnt0 = 0;
+   11|      1|  int cnt1 = 0;
+   12|      1|  int i, A1;
+   13|      1|
+   14|      9|  for (i = number_columns - 1; i != 0; i--) {
+   15|      8|    if (i == 1) {
+   16|      1|      dummy(&A1, i);
+   17|      1|      cnt0++;
+   18|      7|    } else {
+   19|      7|      dummy(&A1, i - 1);
+   20|      7|      cnt1++;
+   21|      7|    }
+   22|      8|  }
+   23|      1|  if (cnt0 != 1 || cnt1 != 7)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

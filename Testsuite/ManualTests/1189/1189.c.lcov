@@ -1,0 +1,39 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options { -O2 } } */
+    3|       |extern void abort(void);
+    4|       |extern void exit(int);
+    5|       |typedef struct {
+    6|       |  int x;
+    7|       |  int y;
+    8|       |} point_t;
+    9|       |
+   10|       |int main(int argc, char *argv[]);
+   11|       |int printPoints(point_t a, point_t b);
+   12|       |point_t toPoint(int x1, int y1);
+   13|       |
+   14|      1|int main(int argc, char *argv[]) {
+   15|      1|
+   16|      1|  if (printPoints(toPoint(0, 0), toPoint(1000, 1000)) != 1)
+   17|      0|    abort();
+   18|      1|  else
+   19|      1|    exit(0);
+   20|      0|
+   21|      0|  return 0;
+   22|      0|}
+   23|       |
+   24|      1|int printPoints(point_t a, point_t b) {
+   25|      1|  if (a.x != 0 || a.y != 0 || b.x != 1000 || b.y != 1000)
+   26|      0|    return 0;
+   27|      1|  else
+   28|      1|    return 1;
+   29|      1|}
+   30|       |
+   31|      2|point_t toPoint(int x1, int y1) {
+   32|      2|  point_t p;
+   33|      2|
+   34|      2|  p.x = x1;
+   35|      2|  p.y = y1;
+   36|      2|
+   37|      2|  return p;
+   38|      2|}
+

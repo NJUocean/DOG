@@ -1,0 +1,33 @@
+        -:    0:Source:705.c
+        -:    0:Graph:705.gcno
+        -:    0:Data:705.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options {{-Os -flto} } } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int f1;
+        -:    6:  int f2;
+        -:    7:} a[1] = {{0, 0}};
+        -:    8:
+        -:    9:int b, c;
+        -:   10:
+        -:   11:static unsigned short fn1(struct S);
+        -:   12:
+        1:   13:void fn2() {
+        1:   14:  for (; c;)
+        -:   15:    ;
+        1:   16:  b = 0;
+        1:   17:  fn1(a[0]);
+        1:   18:}
+        -:   19:
+        1:   20:unsigned short fn1(struct S p) {
+        1:   21:  if (p.f1)
+    #####:   22:    fn2();
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  fn2();
+        1:   28:  return 0;
+        -:   29:}

@@ -1,0 +1,36 @@
+        -:    0:Source:2037.c
+        -:    0:Graph:2037.gcno
+        -:    0:Data:2037.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fdump-tree-alias-details -fdelete-null-pointer-checks" } */
+        -:    3:
+        -:    4:int *i;
+        2:    5:void __attribute__((noinline)) foo(void) { *i = 1; }
+        2:    6:int __attribute__((noinline)) bar(int local_p) {
+        2:    7:  int x = 0;
+        -:    8:  int *j;
+        -:    9:  int **p;
+        2:   10:  if (local_p)
+        1:   11:    p = &j;
+        -:   12:  else
+        1:   13:    p = &i;
+        2:   14:  *p = &x; /* This makes x escape.  */
+        2:   15:  foo();
+        2:   16:  return x;
+        -:   17:}
+        -:   18:extern void abort(void);
+        1:   19:int main() {
+        1:   20:  int k = 2;
+        1:   21:  i = &k;
+        1:   22:  if (bar(1) != 0 || k != 1)
+    #####:   23:    abort();
+        1:   24:  if (bar(0) != 1)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-tree-dump "ESCAPED = { NULL ESCAPED NONLOCAL x }" "alias" {
+        -:   30: * target { ! keeps_null_pointer_checks } } } } */
+        -:   31:/* { dg-final { scan-tree-dump "ESCAPED = { ESCAPED NONLOCAL x }" "alias" {
+        -:   32: * target { keeps_null_pointer_checks } } } } */

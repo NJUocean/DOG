@@ -1,0 +1,43 @@
+        -:    0:Source:2876.c
+        -:    0:Graph:2876.gcno
+        -:    0:Data:2876.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:typedef signed short int16_t;
+        -:    4:typedef unsigned short uint16_t;
+        -:    5:
+        -:    6:int16_t logadd(int16_t *a, int16_t *b);
+        -:    7:void ba_compute_psd(int16_t start);
+        -:    8:
+        -:    9:int16_t masktab[6] = {1, 2, 3, 4, 5};
+        -:   10:int16_t psd[6] = {50, 40, 30, 20, 10};
+        -:   11:int16_t bndpsd[6] = {1, 2, 3, 4, 5};
+        -:   12:
+        1:   13:void ba_compute_psd(int16_t start) {
+        -:   14:  int i, j, k;
+        1:   15:  int16_t lastbin = 4;
+        -:   16:
+        1:   17:  j = start;
+        1:   18:  k = masktab[start];
+        -:   19:
+        1:   20:  bndpsd[k] = psd[j];
+        1:   21:  j++;
+        -:   22:
+        4:   23:  for (i = j; i < lastbin; i++) {
+        3:   24:    bndpsd[k] = logadd(&bndpsd[k], &psd[j]);
+        3:   25:    j++;
+        -:   26:  }
+        1:   27:}
+        -:   28:
+        3:   29:int16_t logadd(int16_t *a, int16_t *b) { return *a + *b; }
+        -:   30:
+        1:   31:int main(void) {
+        -:   32:  int i;
+        -:   33:
+        1:   34:  ba_compute_psd(0);
+        -:   35:
+        1:   36:  if (bndpsd[1] != 140)
+    #####:   37:    abort();
+        1:   38:  return 0;
+        -:   39:}

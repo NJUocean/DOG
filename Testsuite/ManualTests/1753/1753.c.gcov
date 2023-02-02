@@ -1,0 +1,33 @@
+        -:    0:Source:1753.c
+        -:    0:Graph:1753.gcno
+        -:    0:Data:1753.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fdump-tree-alias" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+        -:    4:
+        -:    5:struct Foo {
+        -:    6:  int *p;
+        -:    7:};
+        -:    8:
+        1:    9:void __attribute__((noinline)) foo(void *p) {
+        1:   10:  struct Foo *f = (struct Foo *)p - 1;
+        1:   11:  *f->p = 0;
+        1:   12:}
+        -:   13:
+        1:   14:int bar(void) {
+        -:   15:  struct Foo f;
+        1:   16:  int i = 1;
+        1:   17:  f.p = &i;
+        1:   18:  foo(&f + 1);
+        1:   19:  return i;
+        -:   20:}
+        -:   21:extern void abort(void);
+        1:   22:int main() {
+        1:   23:  if (bar() != 0)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}
+        -:   27:
+        -:   28:/* { dg-final { scan-tree-dump "ESCAPED = {\[^\n\}\]* i f \[^\n\}\]*}" "alias" }
+        -:   29: * } */

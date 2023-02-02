@@ -1,0 +1,21 @@
+        -:    0:Source:335.c
+        -:    0:Graph:335.gcno
+        -:    0:Data:335.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:extern void abort(void);
+        -:    4:unsigned global_iters;
+        -:    5:
+        5:    6:void bi_reverse(int len) {
+        -:    7:  do {
+        5:    8:    global_iters++;
+        5:    9:  } while (--len > 0);
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  bi_reverse(5);
+        1:   14:  if (global_iters != 5)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

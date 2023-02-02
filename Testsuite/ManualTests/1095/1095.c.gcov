@@ -1,0 +1,18 @@
+        -:    0:Source:1095.c
+        -:    0:Graph:1095.gcno
+        -:    0:Data:1095.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/93399 */
+        -:    2:/* { dg-do assemble } */
+        -:    3:/* { dg-options "-fverbose-asm -dA -g -O3" } */
+        -:    4:
+        -:    5:extern inline __attribute__((__always_inline__, __gnu_inline__)) char *
+        -:    6:strstr(const char *haystack, const char *needle) {
+        2:    7:  return __builtin_strstr(haystack, needle);
+        -:    8:}
+        -:    9:
+        1:   10:int main(int argc, const char **argv) {
+        1:   11:  char *substr = strstr(argv[0], "\n");
+        1:   12:  char *another = strstr(argv[0], "\r\n");
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,35 @@
+        -:    0:Source:1168.c
+        -:    0:Graph:1168.gcno
+        -:    0:Data:1168.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/90271 */
+        -:    2:/* { dg-do run { target int32 } } */
+        -:    3:/* { dg-require-effective-target store_merge } */
+        -:    4:/* { dg-options "-O2 -fdump-tree-store-merging-details" } */
+        -:    5:/* { dg-final { scan-tree-dump "New sequence of 1 stores to replace old one of 2
+        -:    6: * stores" "store-merging" } } */
+        -:    7:
+        5:    8:__attribute__((noipa)) void foo(int *x) {
+        5:    9:  asm volatile("" : : "r"(x) : "memory");
+        5:   10:}
+        -:   11:
+        1:   12:__attribute__((noipa)) int bar() {
+        -:   13:  int x;
+        1:   14:  foo(&x);
+        1:   15:  x = 3;
+        1:   16:  ((char *)&x)[1] = 1;
+        1:   17:  foo(&x);
+        1:   18:  return x;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        -:   22:  int x;
+        1:   23:  foo(&x);
+        1:   24:  x = 3;
+        1:   25:  foo(&x);
+        1:   26:  ((char *)&x)[1] = 1;
+        1:   27:  foo(&x);
+        1:   28:  if (x != bar())
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

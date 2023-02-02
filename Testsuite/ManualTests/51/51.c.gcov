@@ -1,0 +1,9 @@
+        -:    0:Source:51.c
+        -:    0:Graph:51.gcno
+        -:    0:Data:51.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        1:    3:int __attribute__((optimize("no-lto"))) main(void) {
+        1:    4:  return 0;
+        -:    5:} /* { dg-warning "bad option" } */

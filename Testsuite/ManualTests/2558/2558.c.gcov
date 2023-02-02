@@ -1,0 +1,29 @@
+        -:    0:Source:2558.c
+        -:    0:Graph:2558.gcno
+        -:    0:Data:2558.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/25703 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target ia32 } */
+        -:    4:/* { dg-options "-O2 -mtune=i486" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:struct a {
+        -:    9:  int a;
+        -:   10:  char b, c, d, e;
+        -:   11:};
+        -:   12:
+        1:   13:__attribute__((noinline)) __attribute__((regparm(1))) void t(struct a a) {
+        1:   14:  if (a.a != 1 || a.b != 1 || a.c != 1)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  struct a a;
+        1:   20:  a.c = 1;
+        1:   21:  a.a = 1;
+        1:   22:  a.b = 1;
+        1:   23:  t(a);
+        1:   24:  return 0;
+        -:   25:}

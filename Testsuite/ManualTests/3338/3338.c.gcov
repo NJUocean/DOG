@@ -1,0 +1,24 @@
+        -:    0:Source:3338.c
+        -:    0:Graph:3338.gcno
+        -:    0:Data:3338.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target alloca } */
+        -:    2:/* This used to fail on SPARC with an unaligned memory access.  */
+        -:    3:
+        1:    4:void foo(int n) {
+        1:    5:  struct S {
+        1:    6:    int i[n];
+        -:    7:    unsigned int b : 1;
+        -:    8:    int i2;
+        -:    9:  } __attribute__((packed)) __attribute__((aligned(4)));
+        -:   10:
+        1:   11:  struct S s;
+        -:   12:
+        1:   13:  s.i2 = 0;
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  foo(4);
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

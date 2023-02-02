@@ -1,0 +1,40 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-omit-frame-pointer" } */
+    3|       |/* { dg-require-effective-target alloca } */
+    4|       |
+    5|      4|#define alloca __builtin_alloca
+    6|       |extern void abort(void);
+    7|       |
+    8|       |__attribute__((noinline)) static double bar(double a, double b, double c,
+    9|      4|                                            double d, char *h) {
+   10|      4|  *h = 0;
+   11|      4|  return a * b + b + c;
+   12|      4|}
+   13|       |
+   14|       |__attribute__((noinline)) static int boo(double a, double b, double c,
+   15|      2|                                         double d) {
+   16|      2|  return c * b + a + b;
+   17|      2|}
+   18|       |
+   19|       |__attribute__((noinline)) static double foo(double a, double b, double c,
+   20|      1|                                            double d) {
+   21|      1|  int aa = boo(b, c, d, a);
+   22|      1|  return bar(a, b, c, d, (char *)alloca(aa)) +
+   23|      1|         bar(d, c, b, a, (char *)alloca(aa));
+   24|      1|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  double a = 2.0, b = 3.0, c = 4.0, d = 5.0;
+   28|      1|  double r1, r2;
+   29|      1|  int aa;
+   30|      1|
+   31|      1|  aa = boo(b, c, d, a);
+   32|      1|  r1 =
+   33|      1|      bar(a, b, c, d, (char *)alloca(aa)) + bar(d, c, b, a, (char *)alloca(aa));
+   34|      1|  r2 = foo(a, b, c, d);
+   35|      1|
+   36|      1|  if (r1 != r2)
+   37|      0|    abort();
+   38|      1|  return 0;
+   39|      1|}
+

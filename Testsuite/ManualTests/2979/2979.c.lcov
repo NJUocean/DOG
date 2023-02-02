@@ -1,0 +1,15 @@
+    1|       |/* { dg-additional-options "-Wl,-u,_printf_float" { target newlib_nano_io } } */
+    2|       |
+    3|       |#include <stdio.h>
+    4|       |char buf[2];
+    5|       |
+    6|       |f(fp) int (*fp)(char *, const char *, ...);
+    7|      1|{ (*fp)(buf, "%.0f", 5.0); }
+    8|       |
+    9|      1|main() {
+   10|      1|  f(&sprintf);
+   11|      1|  if (buf[0] != '5' || buf[1] != 0)
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+

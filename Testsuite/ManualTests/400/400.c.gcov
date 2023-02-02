@@ -1,0 +1,49 @@
+        -:    0:Source:400.c
+        -:    0:Graph:400.gcno
+        -:    0:Data:400.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:/* Formerly known as ltrans-1.c */
+        -:    4:
+        -:    5:#define DEBUG 0
+        -:    6:#if DEBUG
+        -:    7:#include <stdio.h>
+        -:    8:#endif
+        -:    9:
+        -:   10:double u[1782225];
+        -:   11:
+        1:   12:static int __attribute__((noinline)) foo(int N) {
+        -:   13:  int i, j;
+        1:   14:  double sum = 0.0;
+        -:   15:
+        -:   16:  /* These two loops should be interchanged.  */
+     1336:   17:  for (i = 0; i < N; i++) {
+  1783560:   18:    for (j = 0; j < N; j++)
+  1782225:   19:      sum = sum + u[i + 1335 * j];
+        -:   20:
+     1335:   21:    u[1336 * i] *= 2;
+        -:   22:  }
+        -:   23:
+        1:   24:  return sum + N + u[1336 * 2] + u[1336];
+        -:   25:}
+        -:   26:
+        -:   27:extern void abort();
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  int i, j, res;
+        -:   31:
+  1782226:   32:  for (i = 0; i < 1782225; i++)
+  1782225:   33:    u[i] = 2;
+        -:   34:
+        1:   35:  res = foo(1335);
+        -:   36:
+        -:   37:#if DEBUG
+        -:   38:  fprintf(stderr, "res = %d \n", res);
+        -:   39:#endif
+        -:   40:
+        1:   41:  if (res != 3565793)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

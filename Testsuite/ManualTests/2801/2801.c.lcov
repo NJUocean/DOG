@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -ftree-vectorize" } */
+    3|       |
+    4|       |unsigned int v1[] __attribute__((aligned(16))) = {
+    5|       |    0x80000000, 1, 0xa0000000, 2, 3, 0xd0000000, 0xf0000000, 0xe0000000};
+    6|       |unsigned int v2[] __attribute__((aligned(16))) = {
+    7|       |    4, 0xb0000000, 5, 0xc0000000, 0xd0000000, 6, 7, 8};
+    8|       |
+    9|       |unsigned int max[] = {0x80000000, 0xb0000000, 0xa0000000, 0xc0000000,
+   10|       |                      0xd0000000, 0xd0000000, 0xf0000000, 0xe0000000};
+   11|       |
+   12|       |unsigned int min[] = {4, 1, 5, 2, 3, 6, 7, 8};
+   13|       |
+   14|       |unsigned int res[8] __attribute__((aligned(16)));
+   15|       |
+   16|       |extern void abort(void);
+   17|       |
+   18|      1|void find_max(void) {
+   19|      1|  int i;
+   20|      1|
+   21|      9|  for (i = 0; i < 8; i++)
+   22|      8|    res[i] = v1[i] < v2[i] ? v2[i] : v1[i];
+   23|      1|}
+   24|       |
+   25|      1|void find_min(void) {
+   26|      1|  int i;
+   27|      1|
+   28|      9|  for (i = 0; i < 8; i++)
+   29|      8|    res[i] = v1[i] > v2[i] ? v2[i] : v1[i];
+   30|      1|}
+   31|       |
+   32|      1|int main(void) {
+   33|      1|  int i;
+   34|      1|  int err = 0;
+   35|      1|
+   36|      1|  find_max();
+   37|      9|  for (i = 0; i < 8; i++)
+   38|      8|    if (res[i] != max[i])
+   39|      0|      err++;
+   40|      1|
+   41|      1|  find_min();
+   42|      9|  for (i = 0; i < 8; i++)
+   43|      8|    if (res[i] != min[i])
+   44|      0|      err++;
+   45|      1|
+   46|      1|  if (err)
+   47|      0|    abort();
+   48|      1|
+   49|      1|  return 0;
+   50|      1|}
+

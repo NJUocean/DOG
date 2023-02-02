@@ -1,0 +1,34 @@
+        -:    0:Source:2856.c
+        -:    0:Graph:2856.gcno
+        -:    0:Data:2856.gcda
+        -:    0:Runs:1
+        -:    1:/* Integer reductions.  */
+        -:    2:
+        -:    3:#define n 1000
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:  int v1, v2;
+        -:    7:
+        -:    8:#pragma acc parallel reduction(+ : v1, v2)
+        -:    9:  ;
+        -:   10:#pragma acc parallel reduction(+ : v1, v2) copy(v1, v2)
+        -:   11:  ;
+        -:   12:#pragma acc parallel reduction(+ : v1, v2) pcopy(v1, v2)
+        -:   13:  ;
+        -:   14:#pragma acc parallel reduction(+ : v1, v2) present(v1, v2)
+        -:   15:  ;
+        -:   16:#pragma acc parallel reduction(+:v1,v2) copyin(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   17:  ;
+        -:   18:#pragma acc parallel reduction(+:v1,v2) pcopyin(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   19:  ;
+        -:   20:#pragma acc parallel reduction(+:v1,v2) copyout(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   21:  ;
+        -:   22:#pragma acc parallel reduction(+:v1,v2) pcopyout(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   23:  ;
+        -:   24:#pragma acc parallel reduction(+:v1,v2) create(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   25:  ;
+        -:   26:#pragma acc parallel reduction(+:v1,v2) pcreate(v1,v2) /* { dg-warning "incompatible data clause with reduction" } */
+        -:   27:  ;
+        -:   28:
+        1:   29:  return 0;
+        -:   30:}

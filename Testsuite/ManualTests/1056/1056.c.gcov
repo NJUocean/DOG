@@ -1,0 +1,27 @@
+        -:    0:Source:1056.c
+        -:    0:Graph:1056.gcno
+        -:    0:Data:1056.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/85529 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-ssa-phiopt" } */
+        -:    4:
+       63:    5:__attribute__((noinline, noclone)) int foo(int x) {
+       63:    6:  x &= 31;
+       63:    7:  x -= 25;
+       63:    8:  x *= 2;
+       63:    9:  if (x < 0)
+       50:   10:    return 1;
+       13:   11:  int y = x >> 2;
+       13:   12:  if (x >= y)
+       13:   13:    return 1;
+    #####:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  int i;
+       64:   19:  for (i = 0; i < 63; i++)
+       63:   20:    if (foo(i) != 1)
+    #####:   21:      __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

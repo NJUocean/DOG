@@ -1,0 +1,15 @@
+    1|       |/* PR middle-end/52209 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |struct S0 {
+    5|       |  int f2 : 1;
+    6|       |} c;
+    7|       |int b;
+    8|       |
+    9|      1|int main() {
+   10|      1|  b = -1 ^ c.f2;
+   11|      1|  if (b != -1)
+   12|      0|    abort();
+   13|      1|  return 0;
+   14|      1|}
+

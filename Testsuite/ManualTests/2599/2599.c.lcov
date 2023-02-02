@@ -1,0 +1,81 @@
+    1|       |/* PR optimization/9888 */
+    2|       |/* Originator: Jim Bray <jb@as220.org> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target ia32 } */
+    5|       |/* { dg-options "-mtune=k6 -Os" } */
+    6|       |
+    7|       |enum reload_type {
+    8|       |  RELOAD_FOR_INPUT,
+    9|       |  RELOAD_FOR_OUTPUT,
+   10|       |  RELOAD_FOR_INSN,
+   11|       |  RELOAD_FOR_INPUT_ADDRESS,
+   12|       |  RELOAD_FOR_INPADDR_ADDRESS,
+   13|       |  RELOAD_FOR_OUTPUT_ADDRESS,
+   14|       |  RELOAD_FOR_OUTADDR_ADDRESS,
+   15|       |  RELOAD_FOR_OPERAND_ADDRESS,
+   16|       |  RELOAD_FOR_OPADDR_ADDR,
+   17|       |  RELOAD_OTHER,
+   18|       |  RELOAD_FOR_OTHER_ADDRESS
+   19|       |};
+   20|       |
+   21|       |#define FOO_SIZE 3
+   22|       |
+   23|       |/* My results, varying with FOO_SIZE:
+   24|       |   30: asm error "value of ..fff77 too large:
+   25|       |   3 to 29: ....ff7d...
+   26|       |   1 to 2: no error.  */
+   27|       |
+   28|       |struct reload {
+   29|       |  int foo[FOO_SIZE];
+   30|       |  int opnum;
+   31|       |  enum reload_type when_needed;
+   32|       |  unsigned int optional : 1;
+   33|       |  unsigned int secondary_p : 1;
+   34|       |};
+   35|       |
+   36|       |#define N_RELOADS 2
+   37|       |
+   38|       |struct reload rld[N_RELOADS];
+   39|       |int n_reloads = N_RELOADS;
+   40|       |
+   41|      1|int main(void) {
+   42|      1|  int i;
+   43|      1|
+   44|      1|  enum reload_type operand_type[1];
+   45|      1|
+   46|      1|  enum reload_type address_type[1];
+   47|      1|
+   48|      1|  int operand_reloadnum[1];
+   49|      1|  int goal_alternative_matches[1];
+   50|      1|
+   51|      3|  for (i = 0; i < n_reloads; i++) {
+   52|      2|    if (rld[i].secondary_p && rld[i].when_needed == operand_type[rld[i].opnum])
+   53|      0|      rld[i].when_needed = address_type[rld[i].opnum];
+   54|      2|
+   55|      2|    if ((rld[i].when_needed == RELOAD_FOR_INPUT_ADDRESS ||
+   56|      2|         rld[i].when_needed == RELOAD_FOR_OUTPUT_ADDRESS ||
+   57|      2|         rld[i].when_needed == RELOAD_FOR_INPADDR_ADDRESS ||
+   58|      2|         rld[i].when_needed == RELOAD_FOR_OUTADDR_ADDRESS) &&
+   59|      2|        (operand_reloadnum[rld[i].opnum] < 0 ||
+   60|      0|         rld[operand_reloadnum[rld[i].opnum]].optional)) {
+   61|      0|
+   62|      0|      if (rld[i].when_needed == RELOAD_FOR_INPADDR_ADDRESS ||
+   63|      0|          rld[i].when_needed == RELOAD_FOR_OUTADDR_ADDRESS)
+   64|      0|        rld[i].when_needed = RELOAD_FOR_OPADDR_ADDR;
+   65|      0|      else
+   66|      0|        rld[i].when_needed = RELOAD_FOR_OPERAND_ADDRESS;
+   67|      0|    }
+   68|      2|
+   69|      2|    if ((rld[i].when_needed == RELOAD_FOR_INPUT_ADDRESS ||
+   70|      2|         rld[i].when_needed == RELOAD_FOR_INPADDR_ADDRESS) &&
+   71|      2|        operand_reloadnum[rld[i].opnum] >= 0 &&
+   72|      2|        (rld[operand_reloadnum[rld[i].opnum]].when_needed == RELOAD_OTHER))
+   73|      0|      rld[i].when_needed = RELOAD_FOR_OTHER_ADDRESS;
+   74|      2|
+   75|      2|    if (goal_alternative_matches[rld[i].opnum] >= 0)
+   76|      2|      rld[i].opnum = goal_alternative_matches[rld[i].opnum];
+   77|      2|  }
+   78|      1|
+   79|      1|  return 0;
+   80|      1|}
+

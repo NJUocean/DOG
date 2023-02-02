@@ -1,0 +1,9 @@
+    1|       |/* { dg-options "" } */
+    2|       |
+    3|      1|int main(void) {
+    4|      1|  /* This is 0xffffffff.  */
+    5|      1|#line 4294967295
+    6|      1|#warning msg
+    7|      1|  /* { dg-warning "msg" "" { target *-*-* } -1 } */
+    8|      1|}
+

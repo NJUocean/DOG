@@ -1,0 +1,95 @@
+    1|       |/* debuginfo tests for combinations of const and volatile type qualifiers. */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|       |int i __attribute__((used));
+    6|       |const int ci __attribute__((used));
+    7|       |volatile int vi;
+    8|       |const volatile int cvi;
+    9|       |
+   10|       |int *pi __attribute__((used));
+   11|       |const int *pci __attribute__((used));
+   12|       |volatile int *pvi __attribute__((used));
+   13|       |const volatile int *pcvi __attribute__((used));
+   14|       |
+   15|       |int *const cip __attribute__((used));
+   16|       |int *volatile vip;
+   17|       |int *const volatile cvip;
+   18|       |
+   19|       |volatile struct {
+   20|       |  const long cli;
+   21|       |  const signed char csc;
+   22|       |} vs;
+   23|       |
+   24|       |struct foo {
+   25|       |  const long cli;
+   26|       |  const signed char csc;
+   27|       |};
+   28|       |
+   29|       |struct bar {
+   30|       |  short s;
+   31|       |  const short cs;
+   32|       |  volatile short vs;
+   33|       |  const volatile short cvs;
+   34|       |  volatile long long vll;
+   35|       |};
+   36|       |
+   37|       |struct bar bar __attribute__((used));
+   38|       |struct foo foo __attribute__((used));
+   39|       |const struct foo cfoo __attribute__((used));
+   40|       |volatile struct foo vfoo;
+   41|       |const volatile struct foo cvfoo;
+   42|       |
+   43|       |typedef volatile signed char score;
+   44|       |
+   45|       |score s;
+   46|       |const score cs;
+   47|       |
+   48|       |static __attribute__((noclone, noinline)) int
+   49|      1|f(const char *progname, volatile struct foo *dummy, const score s) {
+   50|      1|  return progname == 0 || dummy == 0 || dummy->csc == s;
+   51|      1|}
+   52|       |
+   53|      1|int main(int argc, char **argv) {
+   54|      1|  score as = argc;
+   55|      1|  struct foo dummy = {1, 1};
+   56|      1|  return f(argv[0], &dummy, as) - 1;
+   57|      1|}
+   58|       |
+   59|       |/* { dg-final { gdb-test "@main" "type:main" "int (int, char **)" } } */
+   60|       |
+   61|       |/* { dg-final { gdb-test "@main" "type:i" "int" } } */
+   62|       |/* { dg-final { gdb-test "@main" "type:ci" "const int" } } */
+   63|       |/* { dg-final { gdb-test "@main" "type:vi" "volatile int" } } */
+   64|       |/* { dg-final { gdb-test "@main" "type:cvi" "const volatile int" } } */
+   65|       |
+   66|       |/* { dg-final { gdb-test "@main" "type:pi" "int *" } } */
+   67|       |/* { dg-final { gdb-test "@main" "type:pci" "const int *" } } */
+   68|       |/* { dg-final { gdb-test "@main" "type:pvi" "volatile int *" } } */
+   69|       |/* { dg-final { gdb-test "@main" "type:pcvi" "const volatile int *" } } */
+   70|       |
+   71|       |/* { dg-final { gdb-test "@main" "type:cip" "int * const" } } */
+   72|       |/* { dg-final { gdb-test "@main" "type:vip" "int * volatile" } } */
+   73|       |/* { dg-final { gdb-test "@main" "type:cvip" "int * const volatile" } } */
+   74|       |
+   75|       |/* { dg-final { gdb-test "@main" "type:vs" "volatile struct { const long cli;
+   76|       | * const signed char csc; }" } } */
+   77|       |
+   78|       |/* { dg-final { gdb-test "@main" "type:bar" "struct bar { short s; const short
+   79|       | * cs; volatile short vs; const volatile short cvs; volatile long long vll; }" }
+   80|       | * } */
+   81|       |/* { dg-final { gdb-test "@main" "type:foo" "struct foo { const long cli; const
+   82|       | * signed char csc; }" } } */
+   83|       |/* { dg-final { gdb-test "@main" "type:cfoo" "const struct foo { const long cli;
+   84|       | * const signed char csc; }" } } */
+   85|       |/* { dg-final { gdb-test "@main" "type:vfoo" "volatile struct foo { const long
+   86|       | * cli; const signed char csc; }" } } */
+   87|       |/* { dg-final { gdb-test "@main" "type:cvfoo" "const volatile struct foo { const
+   88|       | * long cli; const signed char csc; }" } } */
+   89|       |
+   90|       |/* { dg-final { gdb-test "@main" "type:s" "volatile signed char" } } */
+   91|       |/* { dg-final { gdb-test "@main" "type:cs" "const volatile signed char" } } */
+   92|       |
+   93|       |/* { dg-final { gdb-test "@main" "type:f" "int (const char *, volatile struct
+   94|       | * foo *, const score)" } } */
+

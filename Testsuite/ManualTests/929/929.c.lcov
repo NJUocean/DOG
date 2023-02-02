@@ -1,0 +1,22 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-Wmissing-braces -Wmissing-field-initializers" } */
+    3|       |
+    4|       |struct a {
+    5|       |  int x, y, z;
+    6|       |};
+    7|       |
+    8|       |struct b {
+    9|       |  struct a w, z;
+   10|       |};
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  struct a az = {0};
+   14|      1|  struct a anz = {1};    /* { dg-warning "missing initializer for" } */
+   15|      1|  struct a aez = {0, 0}; /* { dg-warning "missing initializer for" } */
+   16|      1|
+   17|      1|  struct b bz = {0};
+   18|      1|  struct b bnz = {0, 0, 0, 0, 0, 0}; /* { dg-warning "missing braces" }  */
+   19|      1|
+   20|      1|  return 0;
+   21|      1|}
+

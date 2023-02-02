@@ -1,0 +1,29 @@
+        -:    0:Source:796.c
+        -:    0:Graph:796.gcno
+        -:    0:Data:796.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:int x[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int niterations = 0, i;
+        -:    6:
+        9:    7:  for (;;) {
+        -:    8:    int i, mi, max;
+       10:    9:    max = 0;
+      110:   10:    for (i = 0; i < 10; i++) {
+      100:   11:      if (x[i] > max) {
+       45:   12:        max = x[i];
+       45:   13:        mi = i;
+        -:   14:      }
+        -:   15:    }
+       10:   16:    if (max == 0)
+        1:   17:      break;
+        9:   18:    x[mi] = 0;
+        9:   19:    niterations++;
+        9:   20:    if (niterations > 10)
+    #####:   21:      abort();
+        -:   22:  }
+        -:   23:
+        1:   24:  exit(0);
+        -:   25:}

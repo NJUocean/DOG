@@ -1,0 +1,78 @@
+        -:    0:Source:2149.c
+        -:    0:Graph:2149.gcno
+        -:    0:Data:2149.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-fno-finite-math-only" }  */
+        -:    3:
+        -:    4:void link_error();
+        -:    5:
+        1:    6:void test1() {
+        -:    7:  if (__builtin_isgreater(1.0, __builtin_nan("")) != 0)
+        -:    8:    link_error();
+        -:    9:  if (__builtin_isgreater(__builtin_nan(""), 1.0) != 0)
+        -:   10:    link_error();
+        -:   11:
+        -:   12:  if (__builtin_isgreaterequal(1.0, __builtin_nan("")) != 0)
+        -:   13:    link_error();
+        -:   14:  if (__builtin_isgreaterequal(__builtin_nan(""), 1.0) != 0)
+        -:   15:    link_error();
+        -:   16:
+        -:   17:  if (__builtin_isless(1.0, __builtin_nan("")) != 0)
+        -:   18:    link_error();
+        -:   19:  if (__builtin_isless(__builtin_nan(""), 1.0) != 0)
+        -:   20:    link_error();
+        -:   21:
+        -:   22:  if (__builtin_islessequal(1.0, __builtin_nan("")) != 0)
+        -:   23:    link_error();
+        -:   24:  if (__builtin_islessequal(__builtin_nan(""), 1.0) != 0)
+        -:   25:    link_error();
+        -:   26:
+        -:   27:  if (__builtin_islessgreater(1.0, __builtin_nan("")) != 0)
+        -:   28:    link_error();
+        -:   29:  if (__builtin_islessgreater(__builtin_nan(""), 1.0) != 0)
+        -:   30:    link_error();
+        -:   31:
+        -:   32:  if (__builtin_isunordered(1.0, __builtin_nan("")) == 0)
+        -:   33:    link_error();
+        -:   34:  if (__builtin_isunordered(__builtin_nan(""), 1.0) == 0)
+        -:   35:    link_error();
+        1:   36:}
+        -:   37:
+        1:   38:void test2(double x) {
+        -:   39:  if (__builtin_isgreater(x, __builtin_nan("")) != 0)
+        -:   40:    link_error();
+        -:   41:  if (__builtin_isgreater(__builtin_nan(""), x) != 0)
+        -:   42:    link_error();
+        -:   43:
+        -:   44:  if (__builtin_isgreaterequal(x, __builtin_nan("")) != 0)
+        -:   45:    link_error();
+        -:   46:  if (__builtin_isgreaterequal(__builtin_nan(""), x) != 0)
+        -:   47:    link_error();
+        -:   48:
+        -:   49:  if (__builtin_isless(x, __builtin_nan("")) != 0)
+        -:   50:    link_error();
+        -:   51:  if (__builtin_isless(__builtin_nan(""), x) != 0)
+        -:   52:    link_error();
+        -:   53:
+        -:   54:  if (__builtin_islessequal(x, __builtin_nan("")) != 0)
+        -:   55:    link_error();
+        -:   56:  if (__builtin_islessequal(__builtin_nan(""), x) != 0)
+        -:   57:    link_error();
+        -:   58:
+        -:   59:  if (__builtin_islessgreater(x, __builtin_nan("")) != 0)
+        -:   60:    link_error();
+        -:   61:  if (__builtin_islessgreater(__builtin_nan(""), x) != 0)
+        -:   62:    link_error();
+        -:   63:
+        -:   64:  if (__builtin_isunordered(x, __builtin_nan("")) == 0)
+        -:   65:    link_error();
+        -:   66:  if (__builtin_isunordered(__builtin_nan(""), x) == 0)
+        -:   67:    link_error();
+        1:   68:}
+        -:   69:
+        1:   70:int main() {
+        1:   71:  test1();
+        1:   72:  test2(1.0);
+        1:   73:  return 0;
+        -:   74:}

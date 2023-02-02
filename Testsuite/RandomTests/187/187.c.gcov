@@ -1,0 +1,103 @@
+        -:    0:Source:187.c
+        -:    0:Graph:187.gcno
+        -:    0:Data:187.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:union U0 {
+        -:    7:  const int64_t f0;
+        -:    8:  int64_t f1;
+        -:    9:  const uint16_t f2;
+        -:   10:  const uint32_t f3;
+        -:   11:};
+        -:   12:
+        -:   13:static volatile int16_t g_10 = 9L;
+        -:   14:static int16_t g_11[5] = {0L, 0L, 0L, 0L, 0L};
+        -:   15:static uint8_t g_19[2][4][2] = {{{0x89L, 255UL}, {0x89L, 0x24L}, {0x9AL, 0x9AL}, {0x24L, 0x89L}}, {{255UL, 0x89L}, {0x24L, 0x9AL}, {0x9AL, 0x24L}, {0x89L, 255UL}}};
+        -:   16:static int64_t g_21[3][4][3] = {{{0xAD8BE776E9F81A77LL, 0L, 0xF57A55752783DE76LL}, {0xAD8BE776E9F81A77LL, 0xA4716037280DDA25LL, (-1L)}, {0xE1D67A3D58E56A96LL, 0x3DEE6EE3E4F6F484LL, 0L}, {(-1L), 0xAD8BE776E9F81A77LL, (-1L)}}, {{(-2L), (-1L), 0xF57A55752783DE76LL}, {(-6L), (-1L), (-1L)}, {0x3DEE6EE3E4F6F484LL, 0xAD8BE776E9F81A77LL, 0L}, {0xFEAC8E4C12F69A01LL, 0x3DEE6EE3E4F6F484LL, 0x3DEE6EE3E4F6F484LL}}, {{0x3DEE6EE3E4F6F484LL, 0xF57A55752783DE76LL, (-1L)}, {(-1L), 0x3DEE6EE3E4F6F484LL, (-1L)}, {(-1L), (-1L), 0xFEAC8E4C12F69A01LL}, {0L, 0xAD8BE776E9F81A77LL, (-6L)}}};
+        -:   17:static int32_t g_23 = 1L;
+        -:   18:static int32_t g_37 = 6L;
+        -:   19:static int32_t *volatile g_42[4] = {&g_23, &g_23, &g_23, &g_23};
+        -:   20:static int32_t *volatile g_43 = (void *)0;
+        -:   21:
+        -:   22:static int16_t func_1(void);
+        -:   23:static int32_t func_2(union U0 p_3, int64_t p_4);
+        -:   24:
+        1:   25:static int16_t func_1(void) {
+        1:   26:  union U0 l_5 = {0x5B3B9DA4D073FF82LL};
+        -:   27:  uint8_t *l_18[2];
+        1:   28:  int64_t *l_20 = &g_21[1][0][0];
+        1:   29:  int32_t *l_41 = (void *)0;
+        1:   30:  int32_t *l_44 = &g_23;
+        -:   31:  int i;
+        3:   32:  for (i = 0; i < 2; i++)
+        2:   33:    l_18[i] = &g_19[1][2][1];
+       1*:   34:  (*l_44) = func_2(l_5, ((*l_20) = ((((safe_div_func_uint8_t_u_u(l_5.f0, ((g_19[1][0][1] = (((l_5.f0 >= ((safe_add_func_int32_t_s_s(g_10, g_11[2])) >= (((0x80L <= (0L < (+((((((!(safe_lshift_func_int16_t_s_u(l_5.f0, (safe_mod_func_uint64_t_u_u(18446744073709551615UL, g_11[2]))))) && 1UL), l_5.f0) < g_11[4]), 0L) > l_5.f0)))) < l_5.f0) <= 0UL))) == 0x4E7F13BCF59F89F2LL) & g_11[2])) || g_10))) & g_11[0]) <= l_5.f0) <= g_11[0])));
+        1:   35:  return (*l_44);
+        -:   36:}
+        -:   37:
+        1:   38:static int32_t func_2(union U0 p_3, int64_t p_4) {
+        1:   39:  int32_t *l_22 = &g_23;
+        1:   40:  int32_t *l_24 = &g_23;
+        1:   41:  int32_t *l_25 = &g_23;
+        1:   42:  int32_t *l_26 = (void *)0;
+        1:   43:  int32_t l_27 = 0x65C8BB6AL;
+        1:   44:  int32_t *l_28 = &g_23;
+        1:   45:  int32_t *l_29 = &l_27;
+        1:   46:  int32_t *l_30 = (void *)0;
+        1:   47:  int32_t *l_31 = &g_23;
+        1:   48:  int32_t *l_32 = (void *)0;
+        1:   49:  int32_t l_33 = 0x3DB47DC4L;
+        -:   50:  int32_t *l_34[3];
+        -:   51:  int16_t l_35[2];
+        1:   52:  int16_t l_36 = 0xBC12L;
+        1:   53:  uint16_t l_38 = 0UL;
+        -:   54:  int i;
+        4:   55:  for (i = 0; i < 3; i++)
+        3:   56:    l_34[i] = &l_33;
+        3:   57:  for (i = 0; i < 2; i++)
+        2:   58:    l_35[i] = 0x6722L;
+        1:   59:  --l_38;
+        1:   60:  return (*l_28);
+        -:   61:}
+        -:   62:
+        1:   63:int main(int argc, char *argv[]) {
+        -:   64:  int i, j, k;
+        1:   65:  int print_hash_value = 0;
+       1*:   66:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   67:    print_hash_value = 1;
+        1:   68:  platform_main_begin();
+        1:   69:  crc32_gentab();
+        1:   70:  func_1();
+        1:   71:  transparent_crc(g_10, "g_10", print_hash_value);
+        6:   72:  for (i = 0; i < 5; i++) {
+        5:   73:    transparent_crc(g_11[i], "g_11[i]", print_hash_value);
+        5:   74:    if (print_hash_value)
+    #####:   75:      printf("index = [%d]\n", i);
+        -:   76:  }
+        3:   77:  for (i = 0; i < 2; i++) {
+       10:   78:    for (j = 0; j < 4; j++) {
+       24:   79:      for (k = 0; k < 2; k++) {
+       16:   80:        transparent_crc(g_19[i][j][k], "g_19[i][j][k]", print_hash_value);
+       16:   81:        if (print_hash_value)
+    #####:   82:          printf("index = [%d][%d][%d]\n", i, j, k);
+        -:   83:      }
+        -:   84:    }
+        -:   85:  }
+        4:   86:  for (i = 0; i < 3; i++) {
+       15:   87:    for (j = 0; j < 4; j++) {
+       48:   88:      for (k = 0; k < 3; k++) {
+       36:   89:        transparent_crc(g_21[i][j][k], "g_21[i][j][k]", print_hash_value);
+       36:   90:        if (print_hash_value)
+    #####:   91:          printf("index = [%d][%d][%d]\n", i, j, k);
+        -:   92:      }
+        -:   93:    }
+        -:   94:  }
+        1:   95:  transparent_crc(g_23, "g_23", print_hash_value);
+        1:   96:  transparent_crc(g_37, "g_37", print_hash_value);
+        1:   97:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   98:  return 0;
+        -:   99:}

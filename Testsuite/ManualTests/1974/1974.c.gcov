@@ -1,0 +1,30 @@
+        -:    0:Source:1974.c
+        -:    0:Graph:1974.gcno
+        -:    0:Data:1974.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fdisable-tree-ethread" } */
+        -:    3:
+        -:    4:extern void exit(int);
+        -:    5:
+        -:    6:int a, b;
+        -:    7:
+        1:    8:void fn1() {
+        1:    9:  unsigned c = 0;
+        -:   10:  int d;
+        1:   11:  b = a;
+        1:   12:  if (a < 0)
+    #####:   13:    goto L1;
+        2:   14:  for (; a < 1; a++)
+        1:   15:    d = 0;
+        3:   16:  for (; d < 2; d++) {
+        8:   17:    for (c = 0; c < 3; c++)
+        6:   18:    L1:
+        6:   19:      a = 2;
+        -:   20:  }
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  fn1();
+        1:   25:  exit(0);
+        -:   26:}

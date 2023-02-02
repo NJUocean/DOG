@@ -1,0 +1,16 @@
+    1|       |/* PR tree-optimization/72824 */
+    2|       |
+    3|      1|static inline void foo(float *x, float value) {
+    4|      1|  int i;
+    5|     33|  for (i = 0; i < 32; ++i)
+    6|     32|    x[i] = value;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  float x[32];
+   11|      1|  foo(x, -0.f);
+   12|      1|  if (__builtin_copysignf(1.0, x[3]) != -1.0f)
+   13|      0|    __builtin_abort();
+   14|      1|  return 0;
+   15|      1|}
+

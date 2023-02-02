@@ -1,0 +1,32 @@
+        -:    0:Source:3417.c
+        -:    0:Graph:3417.gcno
+        -:    0:Data:3417.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/28970 */
+        -:    2:/* Origin: Peter Bergner <bergner@vnet.ibm.com> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int tar(long i) {
+        1:    7:  if (i != 36863)
+    #####:    8:    abort();
+        -:    9:
+        1:   10:  return -1;
+        -:   11:}
+        -:   12:
+        1:   13:void bug(int q, long bcount) {
+        1:   14:  int j = 0;
+        1:   15:  int outgo = 0;
+        -:   16:
+        2:   17:  while (j != -1) {
+        1:   18:    outgo++;
+        1:   19:    if (outgo > q - 1)
+    #####:   20:      outgo = q - 1;
+        1:   21:    j = tar(outgo * bcount);
+        -:   22:  }
+        1:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        1:   26:  bug(5, 36863);
+        1:   27:  return 0;
+        -:   28:}

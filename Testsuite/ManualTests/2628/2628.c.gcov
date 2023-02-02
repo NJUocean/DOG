@@ -1,0 +1,29 @@
+        -:    0:Source:2628.c
+        -:    0:Graph:2628.gcno
+        -:    0:Data:2628.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:#if defined __i386__
+        -:    5:#define REG "edi"
+        -:    6:#else
+        -:    7:#define REG "r14"
+        -:    8:#endif
+        -:    9:
+        -:   10:register unsigned long *ds asm(REG);
+        -:   11:
+        -:   12:extern void abort(void);
+        -:   13:
+        1:   14:__attribute__((noinline)) void test(void) { *++ds = 31337; }
+        -:   15:
+        1:   16:int main() {
+        -:   17:  unsigned long stack[2];
+        1:   18:  stack[0] = 0;
+        1:   19:  stack[1] = 0;
+        1:   20:  ds = stack;
+        1:   21:  test();
+        1:   22:  if (ds != stack + 1 || *ds != 31337)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

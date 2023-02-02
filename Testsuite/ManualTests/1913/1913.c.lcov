@@ -1,0 +1,62 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+    3|       |/* { dg-require-effective-target size20plus } */
+    4|       |/* { dg-skip-if "too big data segment" { visium-*-* } } */
+    5|       |
+    6|   132k|#define M 256
+    7|       |int a[M][M], b[M][M], c[M][M], d[M][M];
+    8|      1|void __attribute__((noinline)) matrix_mul_1(int n) {
+    9|    257|  for (int j = 0; j < n; j++)
+   10|  65.7k|    for (int k = 0; k < n; k++)
+   11|  16.8M|      for (int i = 0; i < n; i++)
+   12|  16.7M|        c[i][j] = c[i][j] + a[i][k] * b[k][j];
+   13|      1|}
+   14|       |
+   15|      1|void __attribute__((noinline)) matrix_mul_2(int n) {
+   16|    257|  for (int i = 0; i < n; i++) {
+   17|  65.7k|    for (int j = 0; j < n; j++) {
+   18|  16.8M|      for (int k = 0; k < n; k++)
+   19|  16.7M|        d[i][j] = d[i][j] + a[i][k] * b[k][j];
+   20|  65.5k|
+   21|  65.5k|      asm volatile("" ::: "memory");
+   22|  65.5k|    }
+   23|    256|    asm volatile("" ::: "memory");
+   24|    256|  }
+   25|      1|}
+   26|       |
+   27|       |extern void abort();
+   28|       |
+   29|    256|static void __attribute__((noinline)) init(int i) {
+   30|  65.7k|  for (int j = 0; j < M; j++) {
+   31|  65.5k|    a[i][j] = i;
+   32|  65.5k|    b[i][j] = j;
+   33|  65.5k|    c[i][j] = 0;
+   34|  65.5k|    d[i][j] = 0;
+   35|  65.5k|  }
+   36|    256|}
+   37|       |
+   38|    256|static int __attribute__((noinline)) check(int i) {
+   39|  65.7k|  for (int j = 0; j < M; j++)
+   40|  65.5k|    if (c[i][j] != d[i][j])
+   41|      0|      return 0;
+   42|    256|
+   43|    256|  return 1;
+   44|    256|}
+   45|       |
+   46|      1|int main(void) {
+   47|    257|  for (int i = 0; i < M; ++i)
+   48|    256|    init(i);
+   49|      1|
+   50|      1|  matrix_mul_1(M);
+   51|      1|  matrix_mul_2(M);
+   52|      1|
+   53|    257|  for (int i = 0; i < M; ++i)
+   54|    256|    if (!check(i))
+   55|      0|      abort();
+   56|      1|
+   57|      1|  return 0;
+   58|      1|}
+   59|       |
+   60|       |/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+   61|       | * interchanged" 2 "linterchange" } } */
+

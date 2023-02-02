@@ -1,0 +1,33 @@
+    1|       |/* PR debug/54519 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|     10|__attribute__((noinline, noclone)) void fn1(int x) {
+    6|     10|  __asm volatile("" : "+r"(x) : : "memory");
+    7|     10|}
+    8|       |
+    9|      3|static int fn2(int x, int y) {
+   10|      3|  if (y) {
+   11|      2|    fn1(x); /* { dg-final { gdb-test .+1 "x" "6" } } */
+   12|      2|    fn1(x); /* { dg-final { gdb-test . "y" "25" } } */
+   13|      2|    fn1(x);
+   14|      2|    fn1(x);
+   15|      2|    y = -2 + x;
+   16|      2|    y = y * y * y + y;
+   17|      2|    fn1(x + y); /* { dg-final { gdb-test . "y" "68" } } */
+   18|      2|  }
+   19|      3|  return x;
+   20|      3|}
+   21|       |
+   22|       |int (*p)(int, int) = fn2;
+   23|       |
+   24|      1|int main() {
+   25|      1|  __asm volatile("" : : : "memory");
+   26|      1|  int (*q)(int, int) = p;
+   27|      1|  __asm volatile("" : : : "memory");
+   28|      1|  q(6, 25);
+   29|      1|  q(4, 117);
+   30|      1|  q(0, 0);
+   31|      1|  return 0;
+   32|      1|}
+

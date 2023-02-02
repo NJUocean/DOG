@@ -1,0 +1,40 @@
+    1|       |/* PR debug/36977 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+    5|       |
+    6|      1|void foo() {}
+    7|       |
+    8|      1|int main() {
+    9|      1|  struct {
+   10|      1|    char c[100];
+   11|      1|  } cbig;
+   12|      1|  struct {
+   13|      1|    int i[800];
+   14|      1|  } ibig;
+   15|      1|  struct {
+   16|      1|    long l[900];
+   17|      1|  } lbig;
+   18|      1|  struct {
+   19|      1|    float f[200];
+   20|      1|  } fbig;
+   21|      1|  struct {
+   22|      1|    double d[300];
+   23|      1|  } dbig;
+   24|      1|  struct {
+   25|      1|    short s[400];
+   26|      1|  } sbig;
+   27|      1|
+   28|      1|  ibig.i[0] = 55;     /* { dg-final { gdb-test 30 "ibig.i\[0\]" "55" } } */
+   29|      1|  ibig.i[100] = 5;    /* { dg-final { gdb-test 30 "ibig.i\[100\]" "5" } } */
+   30|      1|  cbig.c[0] = '\0';   /* { dg-final { gdb-test 30 "cbig.c\[0\]" "'\\0'" } } */
+   31|      1|  cbig.c[99] = 'A';   /* { dg-final { gdb-test 30 "cbig.c\[99\]" "'A'" } } */
+   32|      1|  fbig.f[100] = 11.0; /* { dg-final { gdb-test 30 "fbig.f\[100\]" "11" } } */
+   33|      1|  dbig.d[202] = 9.0;  /* { dg-final { gdb-test 30 "dbig.d\[202\]" "9" } } */
+   34|      1|  sbig.s[90] = 255;   /* { dg-final { gdb-test 30 "sbig.s\[90\]" "255" } } */
+   35|      1|  lbig.l[333] = 999;  /* { dg-final { gdb-test 30 "lbig.l\[333\]" "999" } } */
+   36|      1|
+   37|      1|  foo();
+   38|      1|  return 0;
+   39|      1|}
+

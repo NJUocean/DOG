@@ -1,0 +1,16 @@
+        -:    0:Source:802.c
+        -:    0:Graph:802.gcno
+        -:    0:Data:802.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -std=c99" } */
+        -:    3:#if (__SIZEOF_INT__ >= 4)
+        -:    4:char heap[50000];
+        -:    5:#else
+        -:    6:char heap[32000];
+        -:    7:#endif
+        1:    8:int main() {
+    50001:    9:  for (unsigned ix = sizeof(heap); ix--;)
+    50000:   10:    heap[ix] = ix;
+        1:   11:  return 0;
+        -:   12:}

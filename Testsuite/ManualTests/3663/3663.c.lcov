@@ -1,0 +1,13 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |short g_3;
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int l_2;
+    7|    256|  for (l_2 = -1; l_2 != 0; l_2 = (unsigned char)(l_2 - 1))
+    8|    255|    g_3 |= l_2;
+    9|      1|  if (g_3 != -1)
+   10|      0|    abort();
+   11|      1|  return 0;
+   12|      1|}
+

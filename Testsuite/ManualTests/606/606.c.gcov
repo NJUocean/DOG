@@ -1,0 +1,53 @@
+        -:    0:Source:606.c
+        -:    0:Graph:606.gcno
+        -:    0:Data:606.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-sra -fdump-ipa-sra"  } */
+        -:    3:
+        -:    4:/* Check of a recursive by-reference structure split.  The recursive functions
+        -:    5:   have to be pure right from the start, otherwise the current AA would detect
+        -:    6:   possible modification of data.  */
+        -:    7:
+        -:    8:struct S {
+        -:    9:  float red;
+        -:   10:  void *blue;
+        -:   11:  int green;
+        -:   12:};
+        -:   13:
+        2:   14:void __attribute__((noipa)) check(float r, int g, int g2) {
+        2:   15:  if (r < 7.39 || r > 7.41 || g != 6 || g2 != 6)
+    #####:   16:    __builtin_abort();
+        2:   17:  return;
+        -:   18:}
+        -:   19:
+        -:   20:static int __attribute__((noinline, pure)) bar(struct S *s, int rec);
+        -:   21:
+        2:   22:static int __attribute__((noinline, pure)) foo(struct S *s, int rec) {
+        2:   23:  int t = 0;
+        2:   24:  if (rec)
+        1:   25:    t = bar(s, 0);
+        2:   26:  check(s->red, s->green, s->green);
+        2:   27:  return t;
+        -:   28:}
+        -:   29:
+        2:   30:static int __attribute__((noinline, pure)) bar(struct S *s, int rec) {
+        2:   31:  int t = foo(s, rec);
+        2:   32:  return t + t;
+        -:   33:}
+        -:   34:
+        -:   35:volatile int g;
+        -:   36:
+        1:   37:int main(int argc, char *argv[]) {
+        -:   38:  struct S s;
+        -:   39:
+        1:   40:  s.red = 7.4;
+        1:   41:  s.green = 6;
+        1:   42:  s.blue = &s;
+        -:   43:
+        1:   44:  g = bar(&s, 1);
+        1:   45:  return 0;
+        -:   46:}
+        -:   47:
+        -:   48:/* { dg-final { scan-ipa-dump-times "Will split parameter" 2 "sra" } } */
+        -:   49:/* { dg-final { scan-ipa-dump-times "component at byte offset" 4 "sra" } } */

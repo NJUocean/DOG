@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target ia32 } */
+    3|       |/* { dg-options "-O -ffast-math -mtune=i486" } */
+    4|       |
+    5|       |/* Test that floating point greater-than tests are compiled correctly with
+    6|       |   -ffast-math.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|      1|static int gt(double a, double b) {
+   11|      1|  if (a > b)
+   12|      0|    return 4;
+   13|      1|  return 0;
+   14|      1|}
+   15|       |
+   16|       |static double zero = 0.0;
+   17|       |
+   18|      1|int main() {
+   19|      1|  if (gt(zero, zero))
+   20|      0|    abort();
+   21|      1|  return 0;
+   22|      1|}
+

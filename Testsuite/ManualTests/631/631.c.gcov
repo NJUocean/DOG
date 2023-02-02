@@ -1,0 +1,75 @@
+        -:    0:Source:631.c
+        -:    0:Graph:631.gcno
+        -:    0:Data:631.gcda
+        -:    0:Runs:1
+        -:    1:/* Limit this to known non-strict alignment targets.  */
+        -:    2:/* { dg-do run { target { i?86-*-linux* x86_64-*-linux* } } } */
+        -:    3:/* { dg-options "-fsanitize=alignment -Wno-address-of-packed-member" } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int a;
+        -:    7:  char b;
+        -:    8:  long long c;
+        -:    9:  short d[10];
+        -:   10:};
+        -:   11:struct T {
+        -:   12:  char a;
+        -:   13:  long long b;
+        -:   14:};
+        -:   15:struct U {
+        -:   16:  char a;
+        -:   17:  int b;
+        -:   18:  int c;
+        -:   19:  long long d;
+        -:   20:  struct S e;
+        -:   21:  struct T f;
+        -:   22:} __attribute__((packed));
+        -:   23:struct V {
+        -:   24:  long long a;
+        -:   25:  struct S b;
+        -:   26:  struct T c;
+        -:   27:  struct U u;
+        -:   28:} v;
+        -:   29:
+        1:   30:__attribute__((noinline, noclone)) void f1(int *p, int *q, char *r,
+        -:   31:                                           long long *s) {
+        1:   32:  *p = *q + *r + *s;
+        1:   33:}
+        -:   34:
+        1:   35:__attribute__((noinline, noclone)) int f2(struct S *p) { return p->a; }
+        -:   36:
+        1:   37:__attribute__((noinline, noclone)) long long f3(struct S *p, int i) {
+        1:   38:  return p->c + p->d[1] + p->d[i];
+        -:   39:}
+        -:   40:
+        1:   41:__attribute__((noinline, noclone)) long long f4(long long *p) { return *p; }
+        -:   42:
+        1:   43:int main() {
+        1:   44:  f1(&v.u.b, &v.u.c, &v.u.a, &v.u.d);
+        1:   45:  if (f2(&v.u.e) + f3(&v.u.e, 4) + f4(&v.u.f.b) != 0)
+    #####:   46:    __builtin_abort();
+        1:   47:  return 0;
+        -:   48:}
+        -:   49:
+        -:   50:/* { dg-output "\.c:(14|15):\[0-9]*: \[^\n\r]*load of misaligned address
+        -:   51: * 0x\[0-9a-fA-F]* for type 'int', which requires 4 byte alignment.*" } */
+        -:   52:/* { dg-output "\.c:16:\[0-9]*: \[^\n\r]*load of misaligned address
+        -:   53: * 0x\[0-9a-fA-F]* for type 'long long int', which requires \[48] byte
+        -:   54: * alignment.*" } */
+        -:   55:/* { dg-output "\.c:(13|16):\[0-9]*: \[^\n\r]*store to misaligned address
+        -:   56: * 0x\[0-9a-fA-F]* for type 'int', which requires 4 byte alignment.*" } */
+        -:   57:/* { dg-output "\.c:23:\[0-9]*: \[^\n\r]*member access within misaligned address
+        -:   58: * 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte alignment.*" }
+        -:   59: */
+        -:   60:/* { dg-output "\.c:(29|30):\[0-9]*: \[^\n\r]*member access within misaligned
+        -:   61: * address 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte
+        -:   62: * alignment.*" } */
+        -:   63:/* { dg-output "\.c:30:\[0-9]*: \[^\n\r]*member access within misaligned address
+        -:   64: * 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte alignment.*" }
+        -:   65: */
+        -:   66:/* { dg-output "\.c:31:\[0-9]*: \[^\n\r]*member access within misaligned address
+        -:   67: * 0x\[0-9a-fA-F]* for type 'struct S', which requires \[48] byte alignment.*" }
+        -:   68: */
+        -:   69:/* { dg-output "\.c:37:\[0-9]*: \[^\n\r]*load of misaligned address
+        -:   70: * 0x\[0-9a-fA-F]* for type 'long long int', which requires \[48] byte
+        -:   71: * alignment" } */

@@ -1,0 +1,33 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |#if __SIZEOF_INT__ > 2
+    6|       |struct foo {
+    7|       |  int *f;
+    8|       |  int i;
+    9|       |};
+   10|       |
+   11|       |int baz;
+   12|       |#else
+   13|       |struct foo {
+   14|       |  long *f;
+   15|       |  long i;
+   16|       |};
+   17|       |
+   18|       |long baz;
+   19|       |#endif
+   20|       |
+   21|      1|void __attribute__((noinline)) bar(struct foo x) { *(x.f) = x.i; }
+   22|       |
+   23|      1|int main() {
+   24|      1|  struct foo x = {&baz, 0xdeadbeef};
+   25|      1|
+   26|      1|  bar(x);
+   27|      1|
+   28|      1|  if (baz != 0xdeadbeef)
+   29|      0|    abort();
+   30|      1|
+   31|      1|  return 0;
+   32|      1|}
+

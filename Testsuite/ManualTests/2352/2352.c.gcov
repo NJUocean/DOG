@@ -1,0 +1,59 @@
+        -:    0:Source:2352.c
+        -:    0:Graph:2352.gcno
+        -:    0:Data:2352.gcda
+        -:    0:Runs:1
+        -:    1:/* Simple test program:   bubble sort of a fixed table. 	*/
+        -:    2:/* This demonstrates some of the compiler's common-subexpression*/
+        -:    3:/* elimination capabilities.  For example, inspect the code	*/
+        -:    4:/* generated for procedure Sort_array.	See the Programmer's    */
+        -:    5:/* Guide for how to request an assembly listing on your host.	*/
+        -:    6:
+        -:    7:typedef unsigned char boolean;
+        -:    8:
+        -:    9:void Sort_array();
+        -:   10:int Tab[100];
+        -:   11:
+        1:   12:main() {
+        -:   13:  int I, J, K, L;
+        -:   14:
+     1001:   15:  for (L = 0; L < 1000; L++) {
+        -:   16:    /* Initialize the table that will be sorted. */
+     1000:   17:    K = 0;
+    11000:   18:    for (I = 9; I >= 0; I--)
+   110000:   19:      for (J = I * 10; J < (I + 1) * 10; J++)
+   100000:   20:        Tab[K++] = J & 1 ? J + 1 : J - 1;
+        -:   21:
+        -:   22:    /*   Print_array(); */
+     1000:   23:    Sort_array(Tab, 99); /* Sort it. */
+        -:   24:    /*   Print_array(); */
+        -:   25:  }
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+    92000:   29:void Sort_array(Tab, Last) int Tab[];
+        -:   30:int Last;
+        -:   31:{
+        -:   32:  boolean Swap;
+        -:   33:  int Temp, I;
+        -:   34:  do {
+    92000:   35:    Swap = 0;
+  9200000:   36:    for (I = 0; I < Last; I++)
+  9108000:   37:      if (Tab[I] > Tab[I + 1]) {
+  4531000:   38:        Temp = Tab[I];
+  4531000:   39:        Tab[I] = Tab[I + 1];
+  4531000:   40:        Tab[I + 1] = Temp;
+  4531000:   41:        Swap = 1;
+        -:   42:      }
+    92000:   43:  } while (Swap);
+     1000:   44:}
+        -:   45:
+    #####:   46:void Print_array() {
+        -:   47:  int I, J;
+        -:   48:  /*printf("\nArray Contents:\n");*/
+    #####:   49:  for (I = 0; I <= 9; I++) {
+        -:   50:    /*printf("%5d:",10*I); */
+    #####:   51:    for (J = 0; J <= 9; J++)
+        -:   52:      ; /*printf("%5d",Tab[10*I+J]); */
+        -:   53:    /* printf("\n");*/
+        -:   54:  }
+    #####:   55:}

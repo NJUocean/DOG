@@ -1,0 +1,29 @@
+        -:    0:Source:1523.c
+        -:    0:Graph:1523.gcno
+        -:    0:Data:1523.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-common" { target hppa*-*-hpux* } } */
+        -:    3:
+        -:    4:struct a {
+        -:    5:  int a[100];
+        -:    6:};
+        -:    7:typedef struct a misaligned_t __attribute__((aligned(8)));
+        -:    8:typedef struct a aligned_t __attribute__((aligned(32)));
+        -:    9:
+        1:   10:__attribute__((used)) __attribute__((noinline)) void t(void *a, int misaligned,
+        -:   11:                                                       aligned_t *d) {
+        -:   12:  int i, v;
+      101:   13:  for (i = 0; i < 100; i++)
+     100*:   14:    d->a[i] += !misaligned ? ((aligned_t *)a)->a[i] : ((misaligned_t *)a)->a[i];
+        1:   15:}
+        -:   16:struct b {
+        -:   17:  int v;
+        -:   18:  misaligned_t m;
+        -:   19:  aligned_t aa;
+        -:   20:} b;
+        -:   21:aligned_t d;
+        1:   22:int main() {
+        1:   23:  t(&b.m, 1, &d);
+        1:   24:  return 0;
+        -:   25:}

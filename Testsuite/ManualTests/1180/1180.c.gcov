@@ -1,0 +1,59 @@
+        -:    0:Source:1180.c
+        -:    0:Graph:1180.gcno
+        -:    0:Data:1180.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable" } */
+        -:    3:
+        -:    4:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    5:#define LONG_MIN (-__LONG_MAX__ - 1L)
+        -:    6:#define LLONG_MIN (-__LONG_LONG_MAX__ - 1LL)
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  int e = 1, f = -1;
+        1:   10:  volatile int i = INT_MIN;
+        1:   11:  volatile int i2 = i & (((((((-i) + 1) - 1) + 1) - 1) + 1) - 1);
+        1:   12:  i2 = -(i + e + f);
+        1:   13:  i = -i;
+        -:   14:
+        1:   15:  volatile long int li = LONG_MIN;
+        1:   16:  volatile long int li2 = li & (((((((-li) + 1) - 1) + 1) - 1) + 1) - 1);
+        1:   17:  li2 = -(li + e + f);
+        1:   18:  li = -li;
+        -:   19:
+        1:   20:  volatile long long int lli = LLONG_MIN;
+        1:   21:  volatile long long int lli2 =
+        1:   22:      lli & (((((((-lli) + 1) - 1) + 1) - 1) + 1) - 1);
+        1:   23:  lli2 = -(lli + e + f);
+        1:   24:  lli = -lli;
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-output "negation of -2147483648 cannot be represented in type
+        -:   30: * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   31: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   32:/* { dg-output "\[^\n\r]*negation of -2147483648 cannot be represented in type
+        -:   33: * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   34: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   35:/* { dg-output "\[^\n\r]*negation of -2147483648 cannot be represented in type
+        -:   36: * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   37: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   38:/* { dg-output "\[^\n\r]*negation of -\[^\n\r]* cannot be represented in type
+        -:   39: * 'long int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   40: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   41:/* { dg-output "\[^\n\r]*negation of -\[^\n\r]* cannot be represented in type
+        -:   42: * 'long int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   43: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   44:/* { dg-output "\[^\n\r]*negation of -\[^\n\r]* cannot be represented in type
+        -:   45: * 'long int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   46: * itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   47:/* { dg-output "\[^\n\r]*negation of -9223372036854775808 cannot be represented
+        -:   48: * in type 'long long int'\[^\n\r]*; cast to an unsigned type to negate this
+        -:   49: * value to itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   50:/* { dg-output "\[^\n\r]*negation of -9223372036854775808 cannot be represented
+        -:   51: * in type 'long long int'\[^\n\r]*; cast to an unsigned type to negate this
+        -:   52: * value to itself\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   53:/* { dg-output "\[^\n\r]*negation of -9223372036854775808 cannot be represented
+        -:   54: * in type 'long long int'\[^\n\r]*; cast to an unsigned type to negate this
+        -:   55: * value to itself" } */

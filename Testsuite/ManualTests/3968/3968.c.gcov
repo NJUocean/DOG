@@ -1,0 +1,19 @@
+        -:    0:Source:3968.c
+        -:    0:Graph:3968.gcno
+        -:    0:Data:3968.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/80501 */
+        -:    2:
+        -:    3:signed char v = 0;
+        -:    4:
+        1:    5:static signed char foo(int x, int y) { return x << y; }
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) int bar(void) {
+        1:    8:  return foo(v >= 0, __CHAR_BIT__ - 1) >= 1;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (sizeof(int) > sizeof(char) && bar() != 0)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

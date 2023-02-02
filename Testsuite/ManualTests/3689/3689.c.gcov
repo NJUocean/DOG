@@ -1,0 +1,49 @@
+        -:    0:Source:3689.c
+        -:    0:Graph:3689.gcno
+        -:    0:Data:3689.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/44575 */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        -:    5:int fails = 0;
+        -:    6:struct S {
+        -:    7:  float a[3];
+        -:    8:};
+        -:    9:struct S a[5];
+        -:   10:
+        1:   11:void check(int z, ...) {
+        -:   12:  struct S arg, *p;
+        -:   13:  va_list ap;
+        1:   14:  int j = 0, k = 0;
+        -:   15:  int i;
+        1:   16:  va_start(ap, z);
+        3:   17:  for (i = 2; i < 4; ++i) {
+        2:   18:    p = 0;
+        2:   19:    j++;
+        2:   20:    k += 2;
+        2:   21:    switch ((z << 4) | i) {
+        2:   22:    case 0x12:
+        -:   23:    case 0x13:
+        2:   24:      p = &a[2];
+        2:   25:      arg = va_arg(ap, struct S);
+        2:   26:      break;
+    #####:   27:    default:
+    #####:   28:      ++fails;
+    #####:   29:      break;
+        -:   30:    }
+        2:   31:    if (p && p->a[2] != arg.a[2])
+    #####:   32:      ++fails;
+        2:   33:    if (fails)
+    #####:   34:      break;
+        -:   35:  }
+        1:   36:  va_end(ap);
+        1:   37:}
+        -:   38:
+        1:   39:int main() {
+        1:   40:  a[2].a[2] = -49026;
+        1:   41:  check(1, a[2], a[2]);
+        1:   42:  if (fails)
+    #####:   43:    abort();
+        1:   44:  return 0;
+        -:   45:}

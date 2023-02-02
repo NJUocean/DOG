@@ -1,0 +1,29 @@
+        -:    0:Source:1212.c
+        -:    0:Graph:1212.gcno
+        -:    0:Data:1212.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { *-*-* } { "-O0" } { "" } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct X {
+        -:    7:  int *p;
+        -:    8:  int *q;
+        -:    9:};
+        -:   10:
+        1:   11:int foo(void) {
+        1:   12:  int i = 0, j = 1;
+        -:   13:  struct X x, y;
+        -:   14:  int **p;
+        1:   15:  y.p = &i;
+        1:   16:  x.q = &j;
+        1:   17:  p = __builtin_mempcpy(&x, &y, sizeof(int *));
+        1:   18:  return **p;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  if (foo() != 1)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

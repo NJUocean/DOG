@@ -1,0 +1,25 @@
+    1|       |/* Test that undefined names evaluate to zero, that macros after a
+    2|       |   funlike macro are expanded, and that if it is a '(' the funlike
+    3|       |   macro is not treated as such.  */
+    4|       |
+    5|       |/* { dg-do run } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|      2|#define f(x) x
+   10|       |
+   11|      1|int main() {
+   12|      1|#if f(1) == f /**/ (/**/ 1 /**/)
+   13|      1|  int x;
+   14|      1|#endif
+   15|      1|
+   16|      1|  x = 0;
+   17|      1|  if (f
+   18|      1|      /**/ (
+   19|      1|          /**/ 0 /**/
+   20|      1|          /**/))
+   21|      1|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

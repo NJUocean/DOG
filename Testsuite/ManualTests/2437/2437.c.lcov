@@ -1,0 +1,38 @@
+    1|       |void abort(void);
+    2|       |void exit(int);
+    3|       |struct baz {
+    4|       |  char a[17];
+    5|       |  char b[3];
+    6|       |  unsigned int c;
+    7|       |  unsigned int d;
+    8|       |};
+    9|       |
+   10|      1|void foo(struct baz *p, unsigned int c, unsigned int d) {
+   11|      1|  __builtin_memcpy(p->b, "abc", 3);
+   12|      1|  p->c = c;
+   13|      1|  p->d = d;
+   14|      1|}
+   15|       |
+   16|      1|void bar(struct baz *p, unsigned int c, unsigned int d) {
+   17|      1|  ({
+   18|      1|    void *s = (p);
+   19|      1|    __builtin_memset(s, '\0', sizeof(struct baz));
+   20|      1|    s;
+   21|      1|  });
+   22|      1|  __builtin_memcpy(p->a, "01234567890123456", 17);
+   23|      1|  __builtin_memcpy(p->b, "abc", 3);
+   24|      1|  p->c = c;
+   25|      1|  p->d = d;
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  struct baz p;
+   30|      1|  foo(&p, 71, 18);
+   31|      1|  if (p.c != 71 || p.d != 18)
+   32|      0|    abort();
+   33|      1|  bar(&p, 59, 26);
+   34|      1|  if (p.c != 59 || p.d != 26)
+   35|      0|    abort();
+   36|      1|  exit(0);
+   37|      1|}
+

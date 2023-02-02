@@ -1,0 +1,44 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |struct tree_decl {
+    6|       |  union tree_decl_u1 {
+    7|       |    int f;
+    8|       |    long i;
+    9|       |    struct tree_decl_u1_a {
+   10|       |      unsigned int align : 24;
+   11|       |      unsigned int off_align : 8;
+   12|       |    } a;
+   13|       |  } u1;
+   14|       |};
+   15|       |
+   16|       |extern void abort(void);
+   17|       |
+   18|      1|unsigned int assemble_variable(struct tree_decl decl) {
+   19|      1|  unsigned int align;
+   20|      1|
+   21|      1|  align = decl.u1.a.align;
+   22|      1|
+   23|      1|  if (align > (1 << ((8 * 4) < 64 ? (8 * 4) - 2 : 62)))
+   24|      0|    align = (1 << ((8 * 4) < 64 ? (8 * 4) - 2 : 62));
+   25|      1|
+   26|      1|  /* VRP should not be propagating 0 to the RHS of this assignment.
+   27|      1|     But it was erroneously applying a cast operation between types of
+   28|      1|     different precision.  align is an unsigned int with range [0,
+   29|      1|     0x4000000] but the .align field holds only 24 bits.  So the cast
+   30|      1|     was returning a [0, 0] range.  */
+   31|      1|  decl.u1.a.align = align;
+   32|      1|
+   33|      1|  return decl.u1.a.align;
+   34|      1|}
+   35|       |
+   36|      1|int main() {
+   37|      1|  struct tree_decl decl;
+   38|      1|  decl.u1.a.align = 13;
+   39|      1|  unsigned int x = assemble_variable(decl);
+   40|      1|  if (x == 0)
+   41|      0|    abort();
+   42|      1|  return 0;
+   43|      1|}
+

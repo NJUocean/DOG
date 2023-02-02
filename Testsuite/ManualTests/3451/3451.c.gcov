@@ -1,0 +1,21 @@
+        -:    0:Source:3451.c
+        -:    0:Graph:3451.gcno
+        -:    0:Data:3451.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/36013 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:void __attribute__((noinline)) foo(int **__restrict p, int **__restrict q) {
+        1:    6:  *p[0] = 1;
+        1:    7:  *q[0] = 2;
+        1:    8:  if (*p[0] != 2)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int a;
+        1:   14:  int *p1 = &a, *p2 = &a;
+        1:   15:  foo(&p1, &p2);
+        1:   16:  return 0;
+        -:   17:}

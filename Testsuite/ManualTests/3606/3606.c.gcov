@@ -1,0 +1,27 @@
+        -:    0:Source:3606.c
+        -:    0:Graph:3606.gcno
+        -:    0:Data:3606.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:extern __SIZE_TYPE__ strlen(const char *);
+        1:    5:void foo(char *str) {
+        1:    6:  int len2 = strlen(str);
+        1:    7:  char *a = (char *)__builtin_alloca(0);
+        1:    8:  char *b = (char *)__builtin_alloca(len2 * 3);
+        -:    9:
+        1:   10:  if ((int)(a - b) < (len2 * 3)) {
+        -:   11:#ifdef _WIN32
+        -:   12:    abort();
+        -:   13:#endif
+    #####:   14:    return;
+        -:   15:  }
+        -:   16:}
+        -:   17:
+        -:   18:static char *volatile argp = "pr36321.x";
+        -:   19:
+        1:   20:int main(int argc, char **argv) {
+        1:   21:  foo(argp);
+        1:   22:  return 0;
+        -:   23:}

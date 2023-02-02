@@ -1,0 +1,45 @@
+    1|       |/* PR target/34281 */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      2|void h(int x, va_list ap) {
+    8|      2|  switch (x) {
+    9|      1|  case 1:
+   10|      1|    if (va_arg(ap, int) != 3 || va_arg(ap, int) != 4)
+   11|      0|      abort();
+   12|      1|    return;
+   13|      1|  case 5:
+   14|      1|    if (va_arg(ap, int) != 9 || va_arg(ap, int) != 10)
+   15|      0|      abort();
+   16|      1|    return;
+   17|      1|  default:
+   18|      0|    abort();
+   19|      2|  }
+   20|      2|}
+   21|       |
+   22|      1|void f1(int i, long long int j, ...) {
+   23|      1|  va_list ap;
+   24|      1|  va_start(ap, j);
+   25|      1|  h(i, ap);
+   26|      1|  if (i != 1 || j != 2)
+   27|      0|    abort();
+   28|      1|  va_end(ap);
+   29|      1|}
+   30|       |
+   31|      1|void f2(int i, int j, int k, long long int l, ...) {
+   32|      1|  va_list ap;
+   33|      1|  va_start(ap, l);
+   34|      1|  h(i, ap);
+   35|      1|  if (i != 5 || j != 6 || k != 7 || l != 8)
+   36|      0|    abort();
+   37|      1|  va_end(ap);
+   38|      1|}
+   39|       |
+   40|      1|int main() {
+   41|      1|  f1(1, 2, 3, 4);
+   42|      1|  f2(5, 6, 7, 8, 9, 10);
+   43|      1|  return 0;
+   44|      1|}
+

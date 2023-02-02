@@ -1,0 +1,25 @@
+        -:    0:Source:2441.c
+        -:    0:Graph:2441.gcno
+        -:    0:Data:2441.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:int c;
+        -:    5:
+        1:    6:void baz(int *p) { c = *p; }
+        -:    7:
+        1:    8:void bar(int b) {
+        1:    9:  if (c != 1 || b != 2)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:void foo(int a, int b) {
+        1:   14:  baz(&a);
+        1:   15:  bar(b);
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  foo(1, 2);
+        1:   20:  exit(0);
+        -:   21:}

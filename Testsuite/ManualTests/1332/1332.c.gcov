@@ -1,0 +1,33 @@
+        -:    0:Source:1332.c
+        -:    0:Graph:1332.gcno
+        -:    0:Data:1332.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-ftree-loop-distribution" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct epic_private {
+        -:    7:  unsigned int *rx_ring;
+        -:    8:  unsigned int rx_skbuff[5];
+        -:    9:};
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  struct epic_private ep;
+        -:   13:  unsigned int rx_ring[5];
+        -:   14:  int i;
+        -:   15:
+        1:   16:  ep.rx_skbuff[0] = 5;
+        -:   17:
+        1:   18:  ep.rx_ring = rx_ring;
+        -:   19:
+        6:   20:  for (i = 0; i < 5; i++) {
+        5:   21:    ep.rx_ring[i] = i;
+        5:   22:    ep.rx_skbuff[i] = 0;
+        -:   23:  }
+        -:   24:
+        1:   25:  if (ep.rx_skbuff[0] != 0)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

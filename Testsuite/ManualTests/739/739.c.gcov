@@ -1,0 +1,23 @@
+        -:    0:Source:739.c
+        -:    0:Graph:739.gcno
+        -:    0:Data:739.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=bounds" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  unsigned long a[1];
+        -:    6:  int l;
+        -:    7:};
+        -:    8:
+        1:    9:static inline unsigned long fn(const struct S *s, int i) {
+        1:   10:  return s->a[i] << i;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  struct S s;
+        1:   15:  fn(&s, 1);
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-output "index 1 out of bounds for type 'long unsigned int \\\[1\\\]'" }
+        -:   19: */

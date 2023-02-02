@@ -1,0 +1,28 @@
+        -:    0:Source:2994.c
+        -:    0:Graph:2994.gcno
+        -:    0:Data:2994.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/11965 */
+        -:    2:/* Originator: <jk@tools.de> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-require-effective-target ultrasparc_hw } */
+        -:    6:/* { dg-options "-O -mcpu=ultrasparc" } */
+        -:    7:
+        -:    8:/* This used to fail on 32-bit Ultrasparc because GCC emitted
+        -:    9:   an invalid shift instruction.  */
+        -:   10:
+        4:   11:static inline unsigned int shift(int n, unsigned int value) {
+        4:   12:  return value << n;
+        -:   13:}
+        -:   14:
+        -:   15:unsigned int val = 1;
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  int i;
+        -:   19:
+        5:   20:  for (i = 0; i < 4; i++)
+        4:   21:    val = shift(32, val);
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

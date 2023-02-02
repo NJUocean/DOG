@@ -1,0 +1,17 @@
+    1|       |int a, b, d;
+    2|       |short c[] = {4073709551611, 1, 4, 4};
+    3|       |
+    4|      0|void fn1() {
+    5|      0|  if (a)
+    6|      0|    goto LABEL_vhvhP;
+    7|      0|  for (;;) {
+    8|      0|    for (; b; b++)
+    9|      0|      d = c[b + 3] | c[b];
+   10|      0|  LABEL_vhvhP:
+   11|      0|    if (d)
+   12|      0|      break;
+   13|      0|  }
+   14|      0|}
+   15|       |
+   16|      1|int main() { return 0; }
+

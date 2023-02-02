@@ -1,0 +1,33 @@
+        -:    0:Source:1437.c
+        -:    0:Graph:1437.gcno
+        -:    0:Data:1437.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { size32plus } } } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:int a, c, d = 1;
+        -:    5:struct S {
+        -:    6:  int s;
+        -:    7:} b, f;
+        -:    8:short e;
+        -:    9:
+        1:   10:static void foo(int x) {
+        1:   11:  int g[] = {};
+    52430:   12:  for (e = 0; e != 1; e = e + 5) {
+    52429:   13:    int *h[1] = {&g[0]};
+    52429:   14:    if (!x)
+    #####:   15:      return;
+    52429:   16:    f = b;
+        -:   17:  }
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  int i, j;
+        7:   22:  for (i = 0; i < 6; i++)
+       54:   23:    for (j = 8; j; j--)
+       48:   24:      a = 0;
+        1:   25:  foo(d);
+        1:   26:  while (c)
+        -:   27:    ;
+        1:   28:  return 0;
+        -:   29:}

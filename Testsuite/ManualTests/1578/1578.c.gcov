@@ -1,0 +1,92 @@
+        -:    0:Source:1578.c
+        -:    0:Graph:1578.gcno
+        -:    0:Data:1578.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/70025 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-additional-options "-mtune=z10" { target s390*-*-* } } */
+        -:    4:/* { dg-require-effective-target int32plus } */
+        -:    5:
+        -:    6:typedef char (*F)(unsigned long, void *);
+        -:    7:typedef union {
+        -:    8:  struct A {
+        -:    9:    char a1, a2, a3, a4;
+        -:   10:    unsigned long a5;
+        -:   11:    F a6;
+        -:   12:    void *a7;
+        -:   13:  } b;
+        -:   14:  char c[1];
+        -:   15:} B;
+        -:   16:struct C {
+        -:   17:  const char *c1;
+        -:   18:  unsigned long c2;
+        -:   19:};
+        -:   20:typedef struct D {
+        -:   21:  unsigned long d1;
+        -:   22:  int d2;
+        -:   23:  const char *d3;
+        -:   24:  unsigned long d4, d5;
+        -:   25:  struct C d6[49];
+        -:   26:  char d7[8];
+        -:   27:} E[1];
+        -:   28:
+    #####:   29:__attribute__((noinline, noclone)) void foo(register E p) {
+    #####:   30:  asm volatile("" : : "r"(p) : "memory");
+    #####:   31:}
+        -:   32:
+        1:   33:__attribute__((noinline, noclone)) void bar(register E p) {
+        1:   34:  register unsigned long k = p[0].d1 + 1;
+        1:   35:  register struct C *l = &p[0].d6[p[0].d2];
+        1:   36:  register const char *m = l->c1;
+        1:   37:  p[0].d1 = k;
+        1:   38:  if (*m == '\0') {
+        1:   39:    register struct A *f = &((B *)m)->b;
+        1:   40:    register unsigned long n = l->c2;
+        1:   41:    register unsigned long o = n + f->a5;
+        1:   42:    if (k < o) {
+        -:   43:      register unsigned long i;
+        1:   44:      register unsigned long q = k + 8;
+        1:   45:      register F a6 = f->a6;
+        1:   46:      register void *a7 = f->a7;
+        1:   47:      if (q > o)
+    #####:   48:        q = o;
+        9:   49:      for (i = k; i < q; i++)
+        8:   50:        p[0].d7[i - k] = (*a6)(i - n, a7);
+        1:   51:      p[0].d4 = k;
+        1:   52:      p[0].d3 = p[0].d7;
+        1:   53:      p[0].d5 = q;
+        1:   54:      return;
+        -:   55:    }
+        -:   56:  }
+    #####:   57:  while (p[0].d2 > 0 && l[0].c2 != l[-1].c2) {
+    #####:   58:    p[0].d2--;
+    #####:   59:    l--;
+        -:   60:  }
+    #####:   61:  if (p[0].d2 == 0) {
+    #####:   62:    p[0].d2 = 0x55555555;
+    #####:   63:    return;
+        -:   64:  }
+    #####:   65:  p[0].d2--;
+    #####:   66:  foo(p);
+        -:   67:}
+        -:   68:
+        8:   69:char baz(unsigned long i, void *j) {
+        8:   70:  if (j != 0)
+    #####:   71:    __builtin_abort();
+        8:   72:  return (char)i;
+        -:   73:}
+        -:   74:
+        1:   75:int main() {
+        -:   76:  struct D p;
+        -:   77:  struct A f;
+        1:   78:  __builtin_memset(&f, 0, sizeof(f));
+        1:   79:  f.a2 = 4;
+        1:   80:  f.a5 = 13;
+        1:   81:  f.a6 = baz;
+        1:   82:  __builtin_memset(&p, 0, sizeof(p));
+        1:   83:  p.d6[0].c1 = (const char *)&f;
+        1:   84:  bar(&p);
+        1:   85:  if (p.d4 != 1 || p.d5 != 9 || p.d3 != p.d7)
+    #####:   86:    __builtin_abort();
+        1:   87:  return 0;
+        -:   88:}

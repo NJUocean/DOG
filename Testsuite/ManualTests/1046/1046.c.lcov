@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-shouldfail "ubsan" } */
+    3|       |/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+    4|       |
+    5|       |int q, r;
+    6|       |void *a, *b, *c = (void *)&q, *d, *e, *f = (void *)&q, *g, *h;
+    7|       |
+    8|       |__attribute__((returns_nonnull, nonnull(1, 3))) void *foo(void *p, void *q,
+    9|      3|                                                          void *r) {
+   10|      3|  a = p;
+   11|      3|  b = r;
+   12|      3|  return q;
+   13|      3|}
+   14|       |
+   15|      0|int bar(const void *a, const void *b) {
+   16|      0|  int c = *(const int *)a;
+   17|      0|  int d = *(const int *)b;
+   18|      0|  return c - d;
+   19|      0|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  asm volatile("" : : : "memory");
+   23|      1|  d = foo(c, (void *)&r, c);
+   24|      1|  e = foo(e, c, f);
+   25|      1|  g = foo(c, f, g);
+   26|      1|  __builtin_memset(d, '\0', q);
+   27|      1|  return 0;
+   28|      1|}
+

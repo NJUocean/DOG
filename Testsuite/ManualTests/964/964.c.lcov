@@ -1,0 +1,16 @@
+    1|      1|f() {
+    2|      1|  long l2;
+    3|      1|  unsigned short us;
+    4|      1|  unsigned long ul;
+    5|      1|  short s2;
+    6|      1|
+    7|      1|  ul = us = l2 = s2 = -1;
+    8|      1|  return ul;
+    9|      1|}
+   10|       |
+   11|      1|main() {
+   12|      1|  if (f() != (unsigned short)-1)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

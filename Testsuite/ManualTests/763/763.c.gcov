@@ -1,0 +1,63 @@
+        -:    0:Source:763.c
+        -:    0:Graph:763.gcno
+        -:    0:Data:763.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 1999 Free Software Foundation, Inc.
+        -:    2:  Contributed by Nathan Sidwell 20 Jan 1999 <nathan@acm.org> */
+        -:    3:
+        -:    4:/* check range combining boolean operations work */
+        -:    5:
+        -:    6:extern void abort();
+        -:    7:
+        -:    8:#define N 77
+        -:    9:
+        2:   10:void func(int i) {
+        -:   11:  /* fold-const does some clever things with range tests. Make sure
+        -:   12:     we get (some of) them right */
+        -:   13:
+        -:   14:  /* these must fail, regardless of the value of i */
+       2*:   15:  if ((i < 0) && (i >= 0))
+    #####:   16:    abort();
+        2:   17:  if ((i > 0) && (i <= 0))
+    #####:   18:    abort();
+        2:   19:  if ((i >= 0) && (i < 0))
+    #####:   20:    abort();
+        2:   21:  if ((i <= 0) && (i > 0))
+    #####:   22:    abort();
+        -:   23:
+        2:   24:  if ((i < N) && (i >= N))
+    #####:   25:    abort();
+       2*:   26:  if ((i > N) && (i <= N))
+    #####:   27:    abort();
+       2*:   28:  if ((i >= N) && (i < N))
+    #####:   29:    abort();
+        2:   30:  if ((i <= N) && (i > N))
+    #####:   31:    abort();
+        -:   32:
+        -:   33:  /* these must pass, regardless of the value of i */
+        2:   34:  if (!((i < 0) || (i >= 0)))
+    #####:   35:    abort();
+        2:   36:  if (!((i > 0) || (i <= 0)))
+    #####:   37:    abort();
+       2*:   38:  if (!((i >= 0) || (i < 0)))
+    #####:   39:    abort();
+        2:   40:  if (!((i <= 0) || (i > 0)))
+    #####:   41:    abort();
+        -:   42:
+       2*:   43:  if (!((i < N) || (i >= N)))
+    #####:   44:    abort();
+        2:   45:  if (!((i > N) || (i <= N)))
+    #####:   46:    abort();
+        2:   47:  if (!((i >= N) || (i < N)))
+    #####:   48:    abort();
+       2*:   49:  if (!((i <= N) || (i > N)))
+    #####:   50:    abort();
+        -:   51:
+        2:   52:  return;
+        -:   53:}
+        -:   54:
+        1:   55:int main() {
+        1:   56:  func(0);
+        1:   57:  func(1);
+        1:   58:  return 0;
+        -:   59:}

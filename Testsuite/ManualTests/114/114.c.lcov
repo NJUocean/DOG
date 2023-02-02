@@ -1,0 +1,67 @@
+    1|       |/* Test __atomic routines for existence and proper execution on 2 byte
+    2|       |   values with each valid memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target sync_char_short } */
+    5|       |
+    6|       |/* Test the execution of the __atomic_X builtin for a short.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |short v, count, ret;
+   11|       |
+   12|      1|int main() {
+   13|      1|  v = 0;
+   14|      1|  count = 0;
+   15|      1|
+   16|      1|  if (__atomic_exchange_n(&v, count + 1, __ATOMIC_RELAXED) != count)
+   17|      0|    abort();
+   18|      1|  count++;
+   19|      1|
+   20|      1|  if (__atomic_exchange_n(&v, count + 1, __ATOMIC_ACQUIRE) != count)
+   21|      0|    abort();
+   22|      1|  count++;
+   23|      1|
+   24|      1|  if (__atomic_exchange_n(&v, count + 1, __ATOMIC_RELEASE) != count)
+   25|      0|    abort();
+   26|      1|  count++;
+   27|      1|
+   28|      1|  if (__atomic_exchange_n(&v, count + 1, __ATOMIC_ACQ_REL) != count)
+   29|      0|    abort();
+   30|      1|  count++;
+   31|      1|
+   32|      1|  if (__atomic_exchange_n(&v, count + 1, __ATOMIC_SEQ_CST) != count)
+   33|      0|    abort();
+   34|      1|  count++;
+   35|      1|
+   36|      1|  /* Now test the generic version.  */
+   37|      1|
+   38|      1|  count++;
+   39|      1|
+   40|      1|  __atomic_exchange(&v, &count, &ret, __ATOMIC_RELAXED);
+   41|      1|  if (ret != count - 1 || v != count)
+   42|      0|    abort();
+   43|      1|  count++;
+   44|      1|
+   45|      1|  __atomic_exchange(&v, &count, &ret, __ATOMIC_ACQUIRE);
+   46|      1|  if (ret != count - 1 || v != count)
+   47|      0|    abort();
+   48|      1|  count++;
+   49|      1|
+   50|      1|  __atomic_exchange(&v, &count, &ret, __ATOMIC_RELEASE);
+   51|      1|  if (ret != count - 1 || v != count)
+   52|      0|    abort();
+   53|      1|  count++;
+   54|      1|
+   55|      1|  __atomic_exchange(&v, &count, &ret, __ATOMIC_ACQ_REL);
+   56|      1|  if (ret != count - 1 || v != count)
+   57|      0|    abort();
+   58|      1|  count++;
+   59|      1|
+   60|      1|  __atomic_exchange(&v, &count, &ret, __ATOMIC_SEQ_CST);
+   61|      1|  if (ret != count - 1 || v != count)
+   62|      0|    abort();
+   63|      1|  count++;
+   64|      1|
+   65|      1|  return 0;
+   66|      1|}
+

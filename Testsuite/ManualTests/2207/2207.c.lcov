@@ -1,0 +1,7 @@
+    1|       |typedef int xtype;
+    2|       |
+    3|       |xtype foo(a) xtype a;
+    4|      1|{ return a | 0x7f; }
+    5|       |
+    6|      1|main() { printf("%08x\n", foo(-1)); }
+

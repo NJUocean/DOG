@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |void abort(void);
+    4|       |void exit(int);
+    5|       |
+    6|  1.00k|void foo(int i) {
+    7|  1.00k|  static int n;
+    8|  1.00k|  if (i < -128 || i > 127)
+    9|      0|    abort();
+   10|  1.00k|  if (++n > 1000)
+   11|      1|    exit(0);
+   12|  1.00k|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  signed char c;
+   16|  1.00k|  for (c = 0;; c++)
+   17|  1.00k|    foo(c);
+   18|      1|}
+

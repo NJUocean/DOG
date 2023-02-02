@@ -1,0 +1,16 @@
+        -:    0:Source:1369.c
+        -:    0:Graph:1369.gcno
+        -:    0:Data:1369.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/47473 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c99" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  long double _Complex w = 0.2L - 0.3iL;
+        1:    7:  w = w * (0.3L - (0.0F + 1.0iF) * 0.9L);
+        1:    8:  if (__builtin_fabsl(__real__ w + 0.21L) > 0.001L ||
+        1:    9:      __builtin_fabsl(__imag__ w + 0.27L) > 0.001L)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

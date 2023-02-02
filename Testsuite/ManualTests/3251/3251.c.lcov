@@ -1,0 +1,18 @@
+    1|       |/* PR c/7102 */
+    2|       |
+    3|       |/* Verify that GCC zero-extends integer constants
+    4|       |   in unsigned binary operations. */
+    5|       |
+    6|       |typedef unsigned char u8;
+    7|       |
+    8|      1|u8 fun(u8 y) {
+    9|      1|  u8 x = ((u8)255) / y;
+   10|      1|  return x;
+   11|      1|}
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  if (fun((u8)2) != 127)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

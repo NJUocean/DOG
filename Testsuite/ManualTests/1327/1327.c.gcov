@@ -1,0 +1,23 @@
+        -:    0:Source:1327.c
+        -:    0:Graph:1327.gcno
+        -:    0:Data:1327.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/8423.  */
+        -:    2:
+        -:    3:#define btest(x) __builtin_constant_p(x) ? "1" : "0"
+        -:    4:
+        -:    5:#ifdef __OPTIMIZE__
+        -:    6:void foo(char *i) {
+        -:    7:  if (*i == '0')
+        -:    8:    abort();
+        -:    9:}
+        -:   10:#else
+        2:   11:void foo(char *i) {}
+        -:   12:#endif
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  int size = sizeof(int);
+        1:   16:  foo(btest(size));
+        1:   17:  foo(btest(size));
+        1:   18:  exit(0);
+        -:   19:}

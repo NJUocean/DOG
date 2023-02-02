@@ -1,0 +1,72 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |struct emac {
+    5|       |  unsigned reg[23];
+    6|       |};
+    7|       |
+    8|       |struct mop {
+    9|       |  unsigned long long addr;
+   10|       |  unsigned int size;
+   11|       |};
+   12|       |
+   13|      0|unsigned int __attribute__((__noinline__)) level(const struct emac *obj) {
+   14|      0|  return 0;
+   15|      0|}
+   16|       |
+   17|       |void __attribute__((__noinline__))
+   18|      1|info(struct emac *dev, unsigned long long addr) {
+   19|      1|  asm("" : : : "memory");
+   20|      1|}
+   21|       |
+   22|       |unsigned long long __attribute__((__noinline__))
+   23|      1|get_value(const struct mop *mop) {
+   24|      1|  return 0x1234567890abcdefull;
+   25|      1|}
+   26|       |
+   27|       |int __attribute__((__noinline__))
+   28|      1|emac_operation(struct emac *obj, struct mop *mop) {
+   29|      1|  unsigned long long addr = mop->addr;
+   30|      1|  int index = addr >> 2;
+   31|      1|  unsigned int value, old_value;
+   32|      1|
+   33|      1|  if (mop->size != 4)
+   34|      0|    return 0;
+   35|      1|
+   36|      1|  if (index >= 23) {
+   37|      0|    if (level(obj) >= 1)
+   38|      0|      info(obj, addr);
+   39|      0|    return 0;
+   40|      0|  }
+   41|      1|
+   42|      1|  value = get_value(mop);
+   43|      1|  old_value = obj->reg[index];
+   44|      1|
+   45|      1|  info(obj, 0);
+   46|      1|
+   47|      1|  switch (index) {
+   48|      0|  case 0:
+   49|      0|    obj->reg[0] = old_value;
+   50|      0|    break;
+   51|      1|  case 7:
+   52|      1|  case 8:
+   53|      1|    obj->reg[index] = value;
+   54|      1|    break;
+   55|      1|  }
+   56|      1|
+   57|      1|  return 0;
+   58|      1|}
+   59|       |
+   60|      1|int main(void) {
+   61|      1|  struct emac e = {{0}};
+   62|      1|  struct mop mop = {32, 4};
+   63|      1|
+   64|      1|  e.reg[8] = 0xdeadbeef;
+   65|      1|  emac_operation(&e, &mop);
+   66|      1|
+   67|      1|  if (e.reg[8] != 0x90abcdef)
+   68|      0|    __builtin_abort();
+   69|      1|
+   70|      1|  return 0;
+   71|      1|}
+

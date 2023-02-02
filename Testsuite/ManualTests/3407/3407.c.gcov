@@ -1,0 +1,33 @@
+        -:    0:Source:3407.c
+        -:    0:Graph:3407.gcno
+        -:    0:Data:3407.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:struct S {
+        -:    4:  long o;
+        -:    5:};
+        -:    6:
+        -:    7:struct T {
+        -:    8:  long o;
+        -:    9:  struct S m[82];
+        -:   10:};
+        -:   11:
+        -:   12:struct T t;
+        -:   13:
+        1:   14:int main() {
+        -:   15:  struct S *p, *q;
+        -:   16:
+        1:   17:  p = (struct S *)&t;
+        1:   18:  p = &((struct T *)p)->m[0];
+        1:   19:  q = p + 82;
+       82:   20:  while (--q > p)
+       81:   21:    q->o = -1;
+        1:   22:  q->o = 0;
+        -:   23:
+        1:   24:  if (q > p)
+    #####:   25:    abort();
+        1:   26:  if (q - p > 0)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

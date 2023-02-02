@@ -1,0 +1,41 @@
+        -:    0:Source:3683.c
+        -:    0:Graph:3683.gcno
+        -:    0:Data:3683.gcda
+        -:    0:Runs:1
+        -:    1:struct PMC {
+        -:    2:  unsigned flags;
+        -:    3:};
+        -:    4:
+        -:    5:typedef struct Pcc_cell {
+        -:    6:  struct PMC *p;
+        -:    7:  long bla;
+        -:    8:  long type;
+        -:    9:} Pcc_cell;
+        -:   10:
+        -:   11:extern void abort();
+        -:   12:extern void Parrot_gc_mark_PMC_alive_fun(int *interp, struct PMC *pmc)
+        -:   13:    __attribute__((noinline));
+        -:   14:
+    #####:   15:void Parrot_gc_mark_PMC_alive_fun(int *interp, struct PMC *pmc) { abort(); }
+        -:   16:
+        -:   17:static void mark_cell(int *interp, Pcc_cell *c) __attribute__((__nonnull__(1)))
+        -:   18:__attribute__((__nonnull__(2))) __attribute__((noinline));
+        -:   19:
+        1:   20:static void mark_cell(int *interp, Pcc_cell *c) {
+       1*:   21:  if (c->type == 4 && c->p && !(c->p->flags & (1 << 18)))
+    #####:   22:    Parrot_gc_mark_PMC_alive_fun(interp, c->p);
+        1:   23:}
+        -:   24:
+        -:   25:void foo(int *interp, Pcc_cell *c);
+        -:   26:
+        1:   27:void foo(int *interp, Pcc_cell *c) { mark_cell(interp, c); }
+        -:   28:
+        1:   29:int main() {
+        -:   30:  int i;
+        -:   31:  Pcc_cell c;
+        1:   32:  c.p = 0;
+        1:   33:  c.bla = 42;
+        1:   34:  c.type = 4;
+        1:   35:  foo(&i, &c);
+        1:   36:  return 0;
+        -:   37:}

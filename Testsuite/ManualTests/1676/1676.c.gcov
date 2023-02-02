@@ -1,0 +1,18 @@
+        -:    0:Source:1676.c
+        -:    0:Graph:1676.gcno
+        -:    0:Data:1676.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:enum tst { first = 0, second = 1 };
+        -:    4:
+        1:    5:int main() {
+        -:    6:  enum tst data[16];
+        -:    7:
+       17:    8:  for (unsigned i = 0; i < 16; i++)
+       16:    9:    data[i] = (i < 5 ? second : first);
+        -:   10:
+        1:   11:  if (data[2] != second)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

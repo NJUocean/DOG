@@ -1,0 +1,20 @@
+        -:    0:Source:3274.c
+        -:    0:Graph:3274.gcno
+        -:    0:Data:3274.gcda
+        -:    0:Runs:1
+        -:    1:int foo(int, int, int);
+        -:    2:int bar(int, int, int);
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  if (foo(5, 10, 21) != 12)
+    #####:    6:    abort();
+        -:    7:
+        1:    8:  if (bar(9, 12, 15) != 150)
+    #####:    9:    abort();
+        -:   10:
+        1:   11:  exit(0);
+        -:   12:}
+        -:   13:
+        2:   14:int foo(int x, int y, int z) { return (x + y + z) / 3; }
+        -:   15:
+        1:   16:int bar(int x, int y, int z) { return foo(x * x, y * y, z * z); }

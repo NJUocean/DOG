@@ -1,0 +1,14 @@
+        -:    0:Source:3838.c
+        -:    0:Graph:3838.gcno
+        -:    0:Data:3838.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/60072 */
+        -:    2:
+        -:    3:int c = 1;
+        -:    4:
+        1:    5:__attribute__((optimize(1))) static int *foo(int *p) { return p; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  *foo(&c) = 2;
+        1:    9:  return c - 2;
+        -:   10:}

@@ -1,0 +1,42 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|       |typedef struct {
+    4|       |  double x, y;
+    5|       |} point;
+    6|       |point pts[] = {{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}};
+    7|      1|static int va1(int nargs, ...) {
+    8|      1|  va_list args;
+    9|      1|  int i;
+   10|      1|  point pi;
+   11|      1|  va_start(args, nargs);
+   12|      5|  for (i = 0; i < nargs; i++) {
+   13|      4|    pi = va_arg(args, point);
+   14|      4|    if (pts[i].x != pi.x || pts[i].y != pi.y)
+   15|      0|      abort();
+   16|      4|  }
+   17|      1|  va_end(args);
+   18|      1|}
+   19|       |
+   20|       |typedef struct {
+   21|       |  int x, y;
+   22|       |} ipoint;
+   23|       |ipoint ipts[] = {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
+   24|      1|static int va2(int nargs, ...) {
+   25|      1|  va_list args;
+   26|      1|  int i;
+   27|      1|  ipoint pi;
+   28|      1|  va_start(args, nargs);
+   29|      5|  for (i = 0; i < nargs; i++) {
+   30|      4|    pi = va_arg(args, ipoint);
+   31|      4|    if (ipts[i].x != pi.x || ipts[i].y != pi.y)
+   32|      0|      abort();
+   33|      4|  }
+   34|      1|  va_end(args);
+   35|      1|}
+   36|       |
+   37|      1|main() {
+   38|      1|  va1(4, pts[0], pts[1], pts[2], pts[3]);
+   39|      1|  va2(4, ipts[0], ipts[1], ipts[2], ipts[3]);
+   40|      1|  exit(0);
+   41|      1|}
+

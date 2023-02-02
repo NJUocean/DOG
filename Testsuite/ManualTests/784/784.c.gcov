@@ -1,0 +1,49 @@
+        -:    0:Source:784.c
+        -:    0:Graph:784.gcno
+        -:    0:Data:784.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=bounds -Wall -Wextra -Wno-array-bounds" } */
+        -:    3:
+        -:    4:/* Test off-by-one.  */
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int a;
+        -:    8:  int b;
+        -:    9:} s[4], *t;
+        -:   10:struct U {
+        -:   11:  int a[10];
+        -:   12:} u[4], *v;
+        -:   13:volatile int *a, *b, *c;
+        -:   14:volatile void *d;
+        -:   15:volatile int e[4][4];
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  t = &s[4];    // OK
+        1:   19:  a = &s[4].a;  // Error
+        1:   20:  b = &s[4].b;  // Error
+        1:   21:  d = &e[4];    // OK
+        1:   22:  c = &e[4][0]; // Error
+        1:   23:  c = &e[3][4]; // OK
+        1:   24:  c = &e[3][3]; // OK
+        -:   25:
+        1:   26:  a = &u[4].a[9];  // Error
+        1:   27:  a = &u[4].a[10]; // Error
+        1:   28:  a = &u[3].a[9];  // OK
+        1:   29:  a = &u[3].a[10]; // OK
+        1:   30:  a = &u[3].a[11]; // Error, warns with -Warray-bounds, but only if VRP runs
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}
+        -:   34:
+        -:   35:/* { dg-output "index 4 out of bounds for type 'S
+        -:   36: * \\\[4\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   37:/* { dg-output "\[^\n\r]*index 4 out of bounds for type 'S
+        -:   38: * \\\[4\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   39:/* { dg-output "\[^\n\r]*index 4 out of bounds for type 'int
+        -:   40: * \\\[4\\\]\\\[4\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   41:/* { dg-output "\[^\n\r]*index 4 out of bounds for type 'U
+        -:   42: * \\\[4\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   43:/* { dg-output "\[^\n\r]*index 4 out of bounds for type 'U
+        -:   44: * \\\[4\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   45:/* { dg-output "\[^\n\r]*index 11 out of bounds for type 'int \\\[10\\\]'" } */

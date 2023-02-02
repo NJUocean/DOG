@@ -1,0 +1,33 @@
+        -:    0:Source:2304.c
+        -:    0:Graph:2304.gcno
+        -:    0:Data:2304.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/65958 */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu99" } */
+        -:    5:/* { dg-require-effective-target alloca } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int foo(int n) {
+        -:   10:  char *p, *q;
+        -:   11:
+        -:   12:  if (1) {
+        1:   13:    char i[n];
+        1:   14:    p = __builtin_alloca(8);
+        1:   15:    p[0] = 1;
+        -:   16:  }
+        -:   17:
+        1:   18:  q = __builtin_alloca(64);
+        1:   19:  __builtin_memset(q, 0, 64);
+        -:   20:
+        1:   21:  return !p[0];
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  if (foo(48) != 0)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

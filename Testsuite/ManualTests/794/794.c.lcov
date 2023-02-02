@@ -1,0 +1,24 @@
+    1|       |/* { dg-warning "this target does not support" "" {target *86*-*-darwin* } 0 }
+    2|       | */
+    3|       |/* { dg-do run { target { *-*-darwin* } } } */
+    4|       |/* { dg-options { -fsection-anchors -O } } */
+    5|       |/* PR target/26427 */
+    6|       |
+    7|       |struct a {};
+    8|       |static const int d = 1;
+    9|       |static const struct a b = {};
+   10|       |static const int c = 1;
+   11|       |int f(const int *, const struct a *, const int *, const int *);
+   12|       |
+   13|      1|int g(void) { return f(&c, &b, &d, &c); }
+   14|       |
+   15|      1|int f(const int *b, const struct a *c, const int *d, const int *e) {
+   16|      1|  return *b == *d;
+   17|      1|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  if (!g())
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+

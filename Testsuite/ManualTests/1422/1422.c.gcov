@@ -1,0 +1,20 @@
+        -:    0:Source:1422.c
+        -:    0:Graph:1422.gcno
+        -:    0:Data:1422.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        1:    4:void foo(char *p, int n) {
+        -:    5:  int i;
+     1024:    6:  for (i = 1; i < n; i++)
+     1023:    7:    p[i] = p[i - 1];
+        1:    8:}
+        1:    9:int main() {
+        -:   10:  char a[1024];
+        1:   11:  a[0] = 1;
+        1:   12:  foo(a, 1024);
+        1:   13:  if (a[1023] != 1)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

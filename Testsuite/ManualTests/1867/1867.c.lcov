@@ -1,0 +1,7 @@
+    1|       |#if defined(__ia64__) && defined(__hpux__)
+    2|       |#define FLOAT __float80
+    3|       |#include "fp-cmp-8.c"
+    4|       |#else
+    5|      1|int main() { return 0; }
+    6|       |#endif
+

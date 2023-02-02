@@ -1,0 +1,26 @@
+        -:    0:Source:2123.c
+        -:    0:Graph:2123.gcno
+        -:    0:Data:2123.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    3:/* { dg-options "-fsanitize=undefined" } */
+        -:    4:
+        -:    5:struct T {
+        -:    6:  int c;
+        -:    7:  char d[];
+        -:    8:};
+        -:    9:struct T t __attribute__((aligned(4096))) = {1, "a"};
+        -:   10:
+        1:   11:int baz(int i) { return t.d[i]; }
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  baz(2);
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+        -:   19: * of type 'char'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   20:/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   21:/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   22:/* { dg-output "\[^\n\r]*\\^" } */

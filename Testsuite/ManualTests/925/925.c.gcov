@@ -1,0 +1,35 @@
+        -:    0:Source:925.c
+        -:    0:Graph:925.gcno
+        -:    0:Data:925.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:int bbb = 0;
+        -:    5:
+        2:    6:int __attribute__((noinline, noclone)) aaa(void) {
+        2:    7:  ++bbb;
+        2:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int __attribute__((noinline, noclone)) ccc(void) {
+        -:   12:  int ddd;
+        -:   13:  /* bbb == 0 */
+        1:   14:  if (aaa())
+    #####:   15:    return bbb;
+        -:   16:
+        -:   17:  /* bbb == 1 */
+        1:   18:  ddd = bbb;
+        -:   19:  /* bbb == ddd == 1 */
+        1:   20:  if (aaa())
+    #####:   21:    return 0;
+        -:   22:  /* bbb == 2, ddd == 1 */
+        -:   23:
+        1:   24:  return ddd;
+        -:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  if (ccc() != 1)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,13 @@
+    1|       |/* { dg-options "-mxl-gp-opt -fno-pic" } */
+    2|       |
+    3|       |/* { dg-final { scan-assembler "\.sbss\[^2]+" } } */
+    4|       |typedef int Boolean;
+    5|       |volatile Boolean global = 0;
+    6|      0|int testfunc() {
+    7|      0|  /* { dg-final { scan-assembler "\lwi\tr(\[0-9]\|\[1-2]\[0-9]\|3\[0-1]),r13" }
+    8|      0|   * } */
+    9|      0|  return global;
+   10|      0|}
+   11|       |
+   12|      1|int main() {}
+

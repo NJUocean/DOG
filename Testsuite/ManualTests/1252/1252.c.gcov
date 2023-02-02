@@ -1,0 +1,31 @@
+        -:    0:Source:1252.c
+        -:    0:Graph:1252.gcno
+        -:    0:Data:1252.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/60613 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+        -:    4:
+        -:    5:long long y;
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) long long foo(long long x) {
+        1:    8:  asm("");
+        1:    9:  if (x >= 0 || x < -2040)
+    #####:   10:    return 23;
+        1:   11:  x += 2040;
+        1:   12:  return x - y;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) long long bar(long long x) {
+        1:   16:  asm("");
+        1:   17:  return 8LL - x;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  y = 1;
+        1:   22:  if (foo(8 - 2040) != 8 - 1)
+    #####:   23:    __builtin_abort();
+        1:   24:  if (bar(1) != 8 - 1)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

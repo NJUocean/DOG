@@ -1,0 +1,28 @@
+        -:    0:Source:2795.c
+        -:    0:Graph:2795.gcno
+        -:    0:Data:2795.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:int foo = 0;
+        -:    4:void *bar = 0;
+        -:    5:unsigned int baz = 100;
+        -:    6:
+        1:    7:void *pure_alloc() {
+        -:    8:  void *res;
+        -:    9:
+        -:   10:  while (1) {
+        1:   11:    res = (void *)((((unsigned int)(foo + bar))) & ~1);
+        1:   12:    foo += 2;
+        1:   13:    if (foo < baz)
+        1:   14:      return res;
+    #####:   15:    foo = 0;
+        -:   16:  }
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  pure_alloc();
+        1:   21:  if (!foo)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

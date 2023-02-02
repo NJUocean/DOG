@@ -1,0 +1,34 @@
+        -:    0:Source:2509.c
+        -:    0:Graph:2509.gcno
+        -:    0:Data:2509.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-omit-frame-pointer -mapcs-frame -O" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct x {
+        -:    7:  int y;
+        -:    8:  int z;
+        -:    9:};
+        -:   10:
+        1:   11:int __attribute__((noinline)) f(int c, int d, int e, int h, int i) {
+        -:   12:  int a;
+        -:   13:  struct x b;
+        -:   14:
+        1:   15:  int __attribute__((noinline)) g(int p, int q, int r, struct x s) {
+        1:   16:    return a + p + q + r + s.y + s.z;
+        -:   17:  }
+        -:   18:
+        1:   19:  a = 5;
+        1:   20:  b.y = h;
+        1:   21:  b.z = i;
+        -:   22:
+        1:   23:  return g(c, d, e, b);
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  if (f(1, 2, 3, 4, 5) != 20)
+    #####:   28:    abort();
+        1:   29:  return 0;
+        -:   30:}

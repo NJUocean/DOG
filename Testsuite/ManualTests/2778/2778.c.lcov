@@ -1,0 +1,14 @@
+    1|       |/* Origin: PR c/1540 from Mattias Lampe <lampe@tu-harburg.de>,
+    2|       |   adapted to a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+    3|       |   GCC 2.95.2 fails, CVS GCC of 2001-01-13 passes.  */
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int array1[1] = {1};
+    9|      1|  int array2[2][1] = {{1}, {0}};
+   10|      1|  if (array1[0] != 1)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

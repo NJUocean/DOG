@@ -1,0 +1,58 @@
+    1|       |typedef unsigned long int st;
+    2|       |typedef unsigned long long dt;
+    3|       |typedef union {
+    4|       |  dt d;
+    5|       |  struct {
+    6|       |    st h, l;
+    7|       |  } s;
+    8|       |} t_be;
+    9|       |
+   10|       |typedef union {
+   11|       |  dt d;
+   12|       |  struct {
+   13|       |    st l, h;
+   14|       |  } s;
+   15|       |} t_le;
+   16|       |
+   17|       |#define df(f, t)                                                               \
+   18|      0|  int f(t afh, t bfh) {                                                        \
+   19|      0|    t hh;                                                                      \
+   20|      0|    t hp, lp, dp, m;                                                           \
+   21|      0|    st ad, bd;                                                                 \
+   22|      0|    int s;                                                                     \
+   23|      0|    s = 0;                                                                     \
+   24|      0|    ad = afh.s.h - afh.s.l;                                                    \
+   25|      0|    bd = bfh.s.l - bfh.s.h;                                                    \
+   26|      0|    if (bd > bfh.s.l) {                                                        \
+   27|      0|      bd = -bd;                                                                \
+   28|      0|      s = ~s;                                                                  \
+   29|      0|    }                                                                          \
+   30|      0|    lp.d = (dt)afh.s.l * bfh.s.l;                                              \
+   31|      0|    hp.d = (dt)afh.s.h * bfh.s.h;                                              \
+   32|      0|    dp.d = (dt)ad * bd;                                                        \
+   33|      0|    dp.d ^= s;                                                                 \
+   34|      0|    hh.d = hp.d + hp.s.h + lp.s.h + dp.s.h;                                    \
+   35|      0|    m.d = (dt)lp.s.h + hp.s.l + lp.s.l + dp.s.l;                               \
+   36|      0|    return hh.s.l + m.s.l;                                                     \
+   37|      0|  }
+  ------------------
+  | Unexecuted instantiation: f_le
+  ------------------
+  | Unexecuted instantiation: f_be
+  ------------------
+   38|       |
+   39|       |df(f_le, t_le) df(f_be, t_be)
+   40|       |
+   41|      1|    main() {
+   42|      1|  t_be x;
+   43|      1|  x.s.h = 0x10000000U;
+   44|      1|  x.s.l = 0xe0000000U;
+   45|      1|  if (x.d == 0x10000000e0000000ULL &&
+   46|      1|      f_be((t_be)0x100000000ULL, (t_be)0x100000000ULL) != -1)
+   47|      0|    abort();
+   48|      1|  if (x.d == 0xe000000010000000ULL &&
+   49|      1|      f_le((t_le)0x100000000ULL, (t_le)0x100000000ULL) != -1)
+   50|      0|    abort();
+   51|      1|  exit(0);
+   52|      1|}
+

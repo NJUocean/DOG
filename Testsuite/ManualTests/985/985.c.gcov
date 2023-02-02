@@ -1,0 +1,24 @@
+        -:    0:Source:985.c
+        -:    0:Graph:985.gcno
+        -:    0:Data:985.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/67830 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:int a, b, *g, h;
+        -:    6:unsigned char c, d;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  int f, e = -2;
+        1:   10:  b = e;
+        1:   11:  g = &b;
+        1:   12:  h = c = a + 1;
+        1:   13:  f = d - h;
+        1:   14:  *g &= f;
+        -:   15:
+        1:   16:  if (b != -2)
+    #####:   17:    __builtin_abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

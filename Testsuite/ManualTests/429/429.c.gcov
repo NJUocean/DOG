@@ -1,0 +1,23 @@
+        -:    0:Source:429.c
+        -:    0:Graph:429.gcno
+        -:    0:Data:429.gcda
+        -:    0:Runs:1
+        1:    1:int foo() {
+        -:    2:  int i, res;
+        -:    3:
+       51:    4:  for (i = 0, res = 0; i < 50; i++)
+       50:    5:    res += i;
+        -:    6:
+        1:    7:  return res;
+        -:    8:}
+        -:    9:
+        -:   10:extern void abort();
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  int res = foo();
+        -:   14:
+        1:   15:  if (res != 1225)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

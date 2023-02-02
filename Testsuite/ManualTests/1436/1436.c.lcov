@@ -1,0 +1,27 @@
+    1|       |/* PR tree-optimization/56443 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-ftree-vectorize" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |typedef int myint __attribute__((__aligned__(16)));
+    7|       |
+    8|       |int a1[1024] __attribute__((__aligned__(16)));
+    9|       |int a2[1024] __attribute__((__aligned__(16)));
+   10|       |
+   11|       |__attribute__((noinline, noclone)) void test(int n, myint *__restrict__ p1,
+   12|      1|                                             myint *__restrict__ p2) {
+   13|  1.02k|  while (n--)
+   14|  1.02k|    *p1++ = *p2++ + 1;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  int n;
+   19|  1.02k|  for (n = 0; n < 1024; n++)
+   20|  1.02k|    a2[n] = n;
+   21|      1|  test(1024, a1, a2);
+   22|  1.02k|  for (n = 0; n < 1024; n++)
+   23|  1.02k|    if (a1[n] != a2[n] + 1)
+   24|      0|      abort();
+   25|      1|  return 0;
+   26|      1|}
+

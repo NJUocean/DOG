@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -msse -fipa-ra" } */
+    3|       |
+    4|       |typedef double v2df __attribute__((vector_size(16)));
+    5|       |
+    6|      1|static v2df __attribute__((noinline)) bar(v2df a) {
+    7|      1|  return a + (v2df){3.0, 3.0};
+    8|      1|}
+    9|       |
+   10|      1|v2df __attribute__((noinline)) foo(v2df y) { return y + bar(y); }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  int success;
+   14|      1|  union {
+   15|      1|    v2df v;
+   16|      1|    double d[2];
+   17|      1|  } u;
+   18|      1|
+   19|      1|  u.v = foo((v2df){5.0, 5.0});
+   20|      1|  success = (u.d[0] == 13.0 && u.d[1] == 13.0);
+   21|      1|
+   22|      1|  return !success;
+   23|      1|}
+

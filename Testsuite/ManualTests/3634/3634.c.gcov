@@ -1,0 +1,18 @@
+        -:    0:Source:3634.c
+        -:    0:Graph:3634.gcno
+        -:    0:Data:3634.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        7:    3:__attribute__((noinline)) void foo(void *p) {
+        7:    4:  long l = (long)p;
+        7:    5:  if (l < 0 || l > 6)
+    #####:    6:    abort();
+        7:    7:}
+        -:    8:
+        1:    9:int main() {
+        -:   10:  short i;
+        8:   11:  for (i = 6; i >= 0; i--)
+        7:   12:    foo((void *)(long)i);
+        1:   13:  return 0;
+        -:   14:}

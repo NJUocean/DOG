@@ -1,0 +1,73 @@
+    1|       |/* On IA64 This test resulted in a missing jumptable and an undefined
+    2|       |   reference    to a label.  Make sure we can compile and link it with
+    3|       |   no undefs at -O2.  */
+    4|       |
+    5|       |/* { dg-do link } */
+    6|       |/* { dg-options "-O2" } */
+    7|       |
+    8|       |typedef enum yasm_module_type {
+    9|       |  YASM_MODULE_ARCH = 0,
+   10|       |  YASM_MODULE_DBGFMT,
+   11|       |  YASM_MODULE_OBJFMT,
+   12|       |  YASM_MODULE_LISTFMT,
+   13|       |  YASM_MODULE_OPTIMIZER
+   14|       |} yasm_module_type;
+   15|       |
+   16|       |struct yasm_module {
+   17|       |  const char *name;
+   18|       |};
+   19|       |
+   20|       |typedef struct yasm_module yasm_arch_module;
+   21|       |typedef struct yasm_module yasm_dbgfmt_module;
+   22|       |typedef struct yasm_module yasm_objfmt_module;
+   23|       |typedef struct yasm_module yasm_listfmt_module;
+   24|       |typedef struct yasm_module yasm_optimizer_module;
+   25|       |
+   26|       |typedef struct module {
+   27|       |  void *data;
+   28|       |} module;
+   29|       |
+   30|       |static struct {
+   31|       |  module *m;
+   32|       |  int n;
+   33|       |} module_types[] = {
+   34|       |    {},
+   35|       |};
+   36|       |
+   37|       |void yasm_list_modules(yasm_module_type type,
+   38|      0|                       void (*printfunc)(const char *name)) {
+   39|      0|  int i;
+   40|      0|  module *modules = module_types[type].m;
+   41|      0|  yasm_arch_module *arch;
+   42|      0|  yasm_dbgfmt_module *dbgfmt;
+   43|      0|  yasm_objfmt_module *objfmt;
+   44|      0|  yasm_listfmt_module *listfmt;
+   45|      0|  yasm_optimizer_module *optimizer;
+   46|      0|
+   47|      0|  for (i = 0; i < 2; i++) {
+   48|      0|    switch (type) {
+   49|      0|    case YASM_MODULE_ARCH:
+   50|      0|      arch = modules[i].data;
+   51|      0|      printfunc(arch->name);
+   52|      0|      break;
+   53|      0|    case YASM_MODULE_DBGFMT:
+   54|      0|      dbgfmt = modules[i].data;
+   55|      0|      printfunc(dbgfmt->name);
+   56|      0|      break;
+   57|      0|    case YASM_MODULE_OBJFMT:
+   58|      0|      objfmt = modules[i].data;
+   59|      0|      printfunc(objfmt->name);
+   60|      0|      break;
+   61|      0|    case YASM_MODULE_LISTFMT:
+   62|      0|      listfmt = modules[i].data;
+   63|      0|      printfunc(listfmt->name);
+   64|      0|      break;
+   65|      0|    case YASM_MODULE_OPTIMIZER:
+   66|      0|      optimizer = modules[i].data;
+   67|      0|      printfunc(optimizer->name);
+   68|      0|    }
+   69|      0|  }
+   70|      0|}
+   71|       |
+   72|      1|int main() {}
+

@@ -1,0 +1,35 @@
+        -:    0:Source:499.c
+        -:    0:Graph:499.gcno
+        -:    0:Data:499.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/41404 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        1:    5:__attribute__((noinline)) int bar1(int i) {
+        1:    6:  const char *foo = "foo";
+        1:    7:  asm volatile("" : "+r"(i) : : "memory");
+        1:    8:  i++; /* { dg-final { gdb-test . "*foo" "'f'" } } */
+        1:    9:  asm volatile("" : "+r"(i) : : "memory");
+        1:   10:  foo = "bar";
+        1:   11:  asm volatile("" : "+r"(i) : : "memory");
+        1:   12:  i++; /* { dg-final { gdb-test . "*foo" "'b'" } } */
+        1:   13:  asm volatile("" : "+r"(i) : : "memory");
+        1:   14:  return i;
+        -:   15:}
+        -:   16:
+        1:   17:__attribute__((noinline)) int bar2(int i) {
+        1:   18:  const char *foo = "foo";
+        1:   19:  asm volatile("" : "+r"(i) : : "memory");
+        1:   20:  i++; /* { dg-final { gdb-test . "*foo" "'f'" } } */
+        1:   21:  asm volatile("" : "+r"(i) : : "memory");
+        1:   22:  return i;
+        -:   23:}
+        -:   24:
+    #####:   25:__attribute__((noinline)) const char *baz(int i) { return i ? "foo" : "bar"; }
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  bar1(6);
+        1:   29:  bar2(6);
+        1:   30:  return 0;
+        -:   31:}

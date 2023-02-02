@@ -1,0 +1,30 @@
+        -:    0:Source:2426.c
+        -:    0:Graph:2426.gcno
+        -:    0:Data:2426.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 --save-temps" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int test_si(int a) {
+        -:    7:  /* { dg-final { scan-assembler "ror\tw\[0-9\]+, w\[0-9\]+, 27\n" } } */
+        1:    8:  return (a << 5) | ((unsigned int)a >> 27);
+        -:    9:}
+        -:   10:
+        1:   11:long long test_di(long long a) {
+        -:   12:  /* { dg-final { scan-assembler "ror\tx\[0-9\]+, x\[0-9\]+, 45\n" } } */
+        1:   13:  return (a << 19) | ((unsigned long long)a >> 45);
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        -:   17:  int v;
+        -:   18:  long long w;
+        1:   19:  v = test_si(0x0203050);
+        1:   20:  if (v != 0x4060a00)
+    #####:   21:    abort();
+        1:   22:  w = test_di(0x0000020506010304ll);
+        1:   23:  if (w != 0x1028300818200000ll)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

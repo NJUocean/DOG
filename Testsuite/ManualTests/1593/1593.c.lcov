@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |union U {
+    5|       |  int i;
+    6|       |  _Bool b;
+    7|       |  char c;
+    8|       |};
+    9|      1|void __attribute__((noinline, noclone)) foo(union U *u) {
+   10|      1|  if (u->c != 0)
+   11|      0|    abort();
+   12|      1|}
+   13|      1|int main() {
+   14|      1|  union U u;
+   15|      1|  u.i = 10;
+   16|      1|  u.b = 0;
+   17|      1|  foo(&u);
+   18|      1|  return 0;
+   19|      1|}
+

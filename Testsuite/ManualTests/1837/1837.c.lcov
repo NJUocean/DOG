@@ -1,0 +1,50 @@
+    1|       |/* { dg-options "-O2 -fdump-ipa-profile-all" } */
+    2|       |int g;
+    3|       |
+    4|  10.0k|__attribute__((noinline)) void foo(int n) {
+    5|  10.0k|  switch (n) {
+    6|      0|  case 99:
+    7|      0|    g += 2;
+    8|      0|    break;
+    9|  4.00k|  case 1:
+   10|  4.00k|    g++;
+   11|  4.00k|    break;
+   12|      0|  case 100:
+   13|      0|    g += 1;
+   14|      0|    break;
+   15|  4.00k|  case 4:
+   16|  4.00k|    g += 3;
+   17|  4.00k|    break;
+   18|      0|  case 5:
+   19|      0|    g += 4;
+   20|      0|    break;
+   21|      0|  case 6:
+   22|      0|    g += 5;
+   23|      0|    break;
+   24|      0|  case 7:
+   25|      0|    g += 6;
+   26|      0|    break;
+   27|      0|  case 8:
+   28|      0|    g += 7;
+   29|      0|    break;
+   30|      0|  case 9:
+   31|      0|    g += 8;
+   32|      0|    break;
+   33|  2.00k|  default:
+   34|  2.00k|    g += 8;
+   35|  2.00k|    break;
+   36|  10.0k|  }
+   37|  10.0k|}
+   38|       |
+   39|      1|int main() {
+   40|      1|  int i;
+   41|  10.0k|  for (i = 0; i < 10000; i++)
+   42|  10.0k|    foo((i * i) % 5);
+   43|      1|  return 0;
+   44|      1|}
+   45|       |/* autofdo cannot do that precise execution numbers: */
+   46|       |/* { dg-final-use-not-autofdo { scan-ipa-dump-times ";;   basic
+   47|       | * block\[^\\n\]*count 4000" 2 "profile"} } */
+   48|       |/* { dg-final-use-not-autofdo { scan-ipa-dump-times ";;   basic
+   49|       | * block\[^\\n\]*count 2000" 1 "profile"} } */
+

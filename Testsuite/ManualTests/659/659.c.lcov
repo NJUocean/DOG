@@ -1,0 +1,23 @@
+    1|       |/* { dg-lto-do run } */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |#include <stdio.h>
+    5|       |#include <string.h>
+    6|       |
+    7|      1|char *myprintf(const char *fmt, ...) {
+    8|      1|  va_list args;
+    9|      1|  static char buf[80];
+   10|      1|
+   11|      1|  va_start(args, fmt);
+   12|      1|  (void)vsnprintf(buf, sizeof(buf), fmt, args);
+   13|      1|  va_end(args);
+   14|      1|  return buf;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  char *s;
+   19|      1|
+   20|      1|  s = myprintf("%s: %d\n", "foo", 1);
+   21|      1|  return strcmp(s, "foo: 1\n") != 0;
+   22|      1|}
+

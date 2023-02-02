@@ -1,0 +1,40 @@
+        -:    0:Source:3359.c
+        -:    0:Graph:3359.gcno
+        -:    0:Data:3359.gcda
+        -:    0:Runs:1
+        -:    1:/* This was failing on Alpha because the comparison (p != -1) was rewritten
+        -:    2:   as (p+1 != 0) and p+1 isn't allowed to wrap for pointers.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef __SIZE_TYPE__ size_t;
+        -:    7:
+        -:    8:int global;
+        -:    9:
+        1:   10:static void *foo(int p) {
+        1:   11:  if (p == 0) {
+    #####:   12:    global++;
+    #####:   13:    return &global;
+        -:   14:  }
+        -:   15:
+        1:   16:  return (void *)(size_t)-1;
+        -:   17:}
+        -:   18:
+        1:   19:int bar(void) {
+        -:   20:  void *p;
+        -:   21:
+        1:   22:  p = foo(global);
+        1:   23:  if (p != (void *)(size_t)-1)
+    #####:   24:    return 1;
+        -:   25:
+        1:   26:  global++;
+        1:   27:  return 0;
+        -:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  global = 1;
+        1:   32:  if (bar() != 0)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

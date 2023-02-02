@@ -1,0 +1,25 @@
+        -:    0:Source:3122.c
+        -:    0:Graph:3122.gcno
+        -:    0:Data:3122.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "b\[np\] B100A\\+1,#0," } } */
+        -:    3:/* { dg-final { scan-assembler "b\[np\] B100B\\+1,#0," } } */
+        -:    4:
+        -:    5:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:    6:unsigned short B100A __attribute__((__BELOW100__)) = 0x1234;
+        -:    7:unsigned short *pA = &B100A;
+        -:    8:unsigned short B100B __attribute__((__BELOW100__)) = 0xedcb;
+        -:    9:unsigned short *pB = &B100B;
+        -:   10:
+        1:   11:char *Do(void) {
+        1:   12:  if (!(B100A & 0x0100)) {
+        1:   13:    if (!(B100B & 0x0100))
+    #####:   14:      return "Fail";
+        -:   15:    else
+        1:   16:      return "Success";
+        -:   17:  } else
+    #####:   18:    return "Fail";
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) { return Do()[0] == 'F'; }

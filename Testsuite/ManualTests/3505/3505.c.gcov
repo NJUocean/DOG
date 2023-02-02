@@ -1,0 +1,28 @@
+        -:    0:Source:3505.c
+        -:    0:Graph:3505.gcno
+        -:    0:Data:3505.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:char *pa;
+        -:    4:char *pb;
+        -:    5:char *pc;
+        -:    6:
+        3:    7:void access(volatile char *ptr) { *ptr = 'x'; }
+        -:    8:
+        1:    9:int main(int argc, char **argv) {
+        -:   10:  char a;
+        -:   11:  char b;
+        -:   12:  char c;
+        -:   13:
+        1:   14:  pa = &a;
+        1:   15:  pb = &b;
+        1:   16:  pc = &c;
+        -:   17:
+        1:   18:  access(pb);
+        1:   19:  access(pc);
+        -:   20:  // access 'b' here
+        1:   21:  access(pa + 32);
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

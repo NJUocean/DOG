@@ -1,0 +1,16 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |
+    3|       |int f(unsigned int a) __attribute__((noipa));
+    4|     16|int f(unsigned int a) { return ((__builtin_bswap32(a)) >> 24) & 0x3; }
+    5|       |
+    6|       |int g(unsigned int a) __attribute__((noipa));
+    7|     16|int g(unsigned int a) { return a & 0x3; }
+    8|       |
+    9|      1|int main(void) {
+   10|     17|  for (int b = 0; b <= 0xF; b++) {
+   11|     16|    if (f(b) != g(b))
+   12|      0|      __builtin_abort();
+   13|     16|  }
+   14|      1|  return 0;
+   15|      1|}
+

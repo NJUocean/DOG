@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -floop-unroll-and-jam --param unroll-jam-min-percent=0" }
+    3|       | */
+    4|       |long b;
+    5|       |unsigned c[5];
+    6|       |unsigned long long d = 3;
+    7|       |int e, f, g;
+    8|       |
+    9|      1|void h() {
+   10|     12|  for (; f < 11; f++) {
+   11|     11|    b = g;
+   12|     66|    for (e = 0; e < 5; e++) {
+   13|     55|      c[e] = e - b - (c[e] >> 5);
+   14|     55|      g = c[e];
+   15|     55|    }
+   16|     11|  }
+   17|      1|  if (c[0])
+   18|      1|    d = 0;
+   19|      1|}
+   20|       |
+   21|       |extern void abort(void);
+   22|      1|int main() {
+   23|      1|  h();
+   24|      1|  if (d != 0)
+   25|      0|    abort();
+   26|      1|}
+

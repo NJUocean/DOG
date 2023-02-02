@@ -1,0 +1,29 @@
+        -:    0:Source:1622.c
+        -:    0:Graph:1622.gcno
+        -:    0:Data:1622.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int *p;
+        -:    5:  int *q;
+        -:    6:};
+        -:    7:
+        1:    8:int **__attribute__((noinline, noclone, pure)) foo(struct S *s) {
+        -:    9:  int tem;
+        1:   10:  __asm__("" : "=g"(tem) : "g"(s->p));
+        1:   11:  return &s->q;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  struct S s;
+        1:   16:  int i = 1, j = 2;
+        -:   17:  int **x;
+        1:   18:  s.p = &i;
+        1:   19:  s.q = &j;
+        1:   20:  x = foo(&s);
+        1:   21:  **x = 7;
+        1:   22:  if (j != 7)
+    #####:   23:    __builtin_abort();
+        1:   24:  return 0;
+        -:   25:}

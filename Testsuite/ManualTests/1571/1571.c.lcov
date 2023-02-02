@@ -1,0 +1,11 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-fsanitize=shift -Wall -Werror -O -fno-sanitize-recover=shift"
+    3|       | * } */
+    4|       |
+    5|       |static int x;
+    6|      1|int main(void) {
+    7|      1|  int o = 1;
+    8|      1|  int y = x << o;
+    9|      1|  return y;
+   10|      1|}
+

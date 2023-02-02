@@ -1,0 +1,29 @@
+        -:    0:Source:92.c
+        -:    0:Graph:92.gcno
+        -:    0:Data:92.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-do run }
+        -:    2:
+        -:    3:#include <string.h>
+        -:    4:
+        -:    5:char cc;
+        -:    6:char ptr[] = "sparta2";
+        -:    7:
+        1:    8:void get(char **x) { *x = ptr; }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  char *here = &cc;
+        -:   12:
+        -:   13:  for (;;) {
+        1:   14:  next_line:
+        1:   15:    if (here == NULL)
+    #####:   16:      __builtin_abort();
+        1:   17:    get(&here);
+        1:   18:    if (strcmp(here, "sparta") == 0)
+    #####:   19:      goto next_line;
+        1:   20:    else if (strcmp(here, "sparta2") == 0)
+        1:   21:      break;
+        -:   22:  }
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

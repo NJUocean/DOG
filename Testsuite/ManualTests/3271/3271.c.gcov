@@ -1,0 +1,20 @@
+        -:    0:Source:3271.c
+        -:    0:Graph:3271.gcno
+        -:    0:Data:3271.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/8988 */
+        -:    2:/* Contributed by Kevin Easton */
+        -:    3:
+        1:    4:void foo(char *p1, char **p2) {}
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  char str[] = "foo { xx }";
+        1:    8:  char *ptr = str + 5;
+        -:    9:
+        1:   10:  foo(ptr, &ptr);
+        -:   11:
+        2:   12:  while (*ptr && (*ptr == 13 || *ptr == 32))
+        1:   13:    ptr++;
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

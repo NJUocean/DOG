@@ -1,0 +1,20 @@
+    1|       |/* Check that Asan correctly instruments bitfields with round offset.  */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-shouldfail "asan" } */
+    5|       |
+    6|       |struct A {
+    7|       |  char base;
+    8|       |  int : 0;
+    9|       |  int x : 8;
+   10|       |};
+   11|       |
+   12|      1|int __attribute__((noinline, noclone)) f(void *p) { return ((struct A *)p)->x; }
+   13|       |
+   14|      1|int main() {
+   15|      1|  char a = 0;
+   16|      1|  return f(&a);
+   17|      1|}
+   18|       |
+   19|       |/* { dg-output "ERROR: AddressSanitizer: stack-buffer-overflow" } */
+

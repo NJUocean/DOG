@@ -1,0 +1,26 @@
+        -:    0:Source:3853.c
+        -:    0:Graph:3853.gcno
+        -:    0:Data:3853.gcda
+        -:    0:Runs:1
+        2:    1:static int Sub(int a, int b) { return b - a; }
+        -:    2:
+        1:    3:static unsigned Select(unsigned a, unsigned b, unsigned c) {
+        1:    4:  const int pa_minus_pb = Sub((a >> 8) & 0xff, (b >> 8) & 0xff) +
+        1:    5:                          Sub((a >> 0) & 0xff, (b >> 0) & 0xff);
+       1*:    6:  return (pa_minus_pb <= 0) ? a : b;
+        -:    7:}
+        -:    8:
+        1:    9:__attribute__((noinline)) unsigned Predictor(unsigned left,
+        -:   10:                                             const unsigned *const top) {
+        1:   11:  const unsigned pred = Select(top[1], left, top[0]);
+        1:   12:  return pred;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  const unsigned top[2] = {0xff7a7a7a, 0xff7a7a7a};
+        1:   17:  const unsigned left = 0xff7b7b7b;
+        1:   18:  const unsigned pred = Predictor(left, top /*+ 1*/);
+        1:   19:  if (pred == left)
+        1:   20:    return 0;
+    #####:   21:  return 1;
+        -:   22:}

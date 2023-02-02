@@ -1,0 +1,32 @@
+        -:    0:Source:950.c
+        -:    0:Graph:950.gcno
+        -:    0:Data:950.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct S {
+        -:    6:  int *i[4];
+        -:    7:  int *p1;
+        -:    8:  int *p2;
+        -:    9:  int *p3;
+        -:   10:  int *p4;
+        -:   11:};
+        -:   12:int **b;
+        1:   13:int main() {
+        1:   14:  int i = 1;
+        -:   15:  struct S s;
+        1:   16:  s.p3 = &i;
+        -:   17:  int **p;
+        1:   18:  if (b)
+    #####:   19:    p = b;
+        -:   20:  else
+        1:   21:    p = &s.i[2];
+        1:   22:  p += 4;
+        1:   23:  if (!b)
+        1:   24:    **p = 0;
+        1:   25:  if (i != 0)
+    #####:   26:    abort();
+        1:   27:  return i;
+        -:   28:}

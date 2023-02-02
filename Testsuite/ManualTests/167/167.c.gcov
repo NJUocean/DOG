@@ -1,0 +1,35 @@
+        -:    0:Source:167.c
+        -:    0:Graph:167.gcno
+        -:    0:Data:167.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do "compile" } */
+        -:    2:/* { dg-options "-O -ftree-parallelize-loops=2 -ftree-vectorize -fno-tree-ch
+        -:    3: * -fno-tree-dominator-opts" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:int d[1024], e[1024];
+        -:    8:
+        1:    9:int foo(void) {
+        1:   10:  int s = 0;
+        -:   11:  int i;
+        -:   12:
+     1025:   13:  for (i = 0; i < 1024; i++)
+     1024:   14:    s += d[i] - e[i];
+        -:   15:
+        1:   16:  return s;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        -:   20:  int i;
+        -:   21:
+     1025:   22:  for (i = 0; i < 1024; i++) {
+     1024:   23:    d[i] = i * 2;
+     1024:   24:    e[i] = i;
+        -:   25:  }
+        -:   26:
+        1:   27:  if (foo() != 1023 * 1024 / 2)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |/* { dg-options "-std=gnu99" } */
+    4|       |
+    5|      1|__attribute__((noipa)) int baz(int (*fn)(void)) {
+    6|      1|  asm volatile("" : "+g"(fn) : : "memory");
+    7|      1|  return fn();
+    8|      1|}
+    9|       |
+   10|       |__attribute__((target_clones("arch=sandybridge", "default"))) static int
+   11|      1|bar(void) {
+   12|      1|  return 1;
+   13|      1|}
+   14|       |
+   15|      1|__attribute__((target_clones("arch=sandybridge", "default"))) int foo(void) {
+   16|      1|  baz(bar) - 1;
+   17|      1|}
+   18|       |
+   19|      1|int main() { foo(); }
+

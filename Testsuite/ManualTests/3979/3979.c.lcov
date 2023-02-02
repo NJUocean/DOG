@@ -1,0 +1,21 @@
+    1|       |/* PR rtl-optimization/82192 */
+    2|       |
+    3|       |unsigned long long int a = 0x95dd3d896f7422e2ULL;
+    4|       |struct S {
+    5|       |  unsigned int m : 13;
+    6|       |} b;
+    7|       |
+    8|      1|__attribute__((noinline, noclone)) void foo(void) {
+    9|      1|  b.m = ((unsigned)a) >>
+   10|      1|        (0x644eee9667723bf7LL | a & ~0xdee27af8U) - 0x644eee9667763bd8LL;
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  if (__INT_MAX__ != 0x7fffffffULL)
+   15|      0|    return 0;
+   16|      1|  foo();
+   17|      1|  if (b.m != 0)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

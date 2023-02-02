@@ -1,0 +1,31 @@
+        -:    0:Source:1815.c
+        -:    0:Graph:1815.gcno
+        -:    0:Data:1815.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-profiling "-fprofile-generate" } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-profile_estimate" } */
+        -:    3:
+        -:    4:#include <stdio.h>
+        -:    5:
+        -:    6:typedef int (*fptr)(int);
+175000001:    7:int one(int a) { return 1; }
+        -:    8:
+175000000:    9:int two(int a) { return 0; }
+        -:   10:
+        -:   11:fptr table[] = {&one, &two};
+        -:   12:
+        1:   13:int main() {
+        -:   14:  int i, x;
+        1:   15:  fptr p = &one;
+        -:   16:
+        1:   17:  one(3);
+        -:   18:
+350000001:   19:  for (i = 0; i < 350000000; i++) {
+350000000:   20:    x = (*p)(3);
+350000000:   21:    p = table[x];
+        -:   22:  }
+        1:   23:  printf("done:%d\n", x);
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final-use-not-autofdo { scan-ipa-dump "2 \\(200.00%\\) speculations
+        -:   27: * produced." "profile_estimate" } } */

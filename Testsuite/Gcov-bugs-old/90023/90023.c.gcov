@@ -1,0 +1,26 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:
+        1:    3:int foo(int a)
+        -:    4:{
+        1:    5:  void *l = &&error;
+        -:    6:
+        -:    7:  if(a == 4)
+        -:    8:    ; //goto *l;
+        -:    9:
+        2:   10:  return 150;
+        -:   11:
+        1:   12:error:
+        -:   13:;//  return a;
+        -:   14:}
+        -:   15:
+        1:   16:int main(int argc, char **argv)
+        -:   17:{
+        1:   18:  printf("value: %d\n", foo(argc));
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

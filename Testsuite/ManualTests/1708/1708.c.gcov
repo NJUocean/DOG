@@ -1,0 +1,18 @@
+        -:    0:Source:1708.c
+        -:    0:Graph:1708.gcno
+        -:    0:Data:1708.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void *memmove(void *, const void *, __SIZE_TYPE__);
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:extern int main(void) {
+        1:    7:  char s[] = "12345";
+        1:    8:  memmove(s + 1, s, 4);
+        1:    9:  memmove(s + 1, s, 4);
+        1:   10:  memmove(s + 1, s, 4);
+        1:   11:  if (s[0] != '1' || s[1] != '1' || s[2] != '1' || s[3] != '1' || s[4] != '2')
+    #####:   12:    abort();
+        1:   13:  return (0);
+        -:   14:}

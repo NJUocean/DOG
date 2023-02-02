@@ -1,0 +1,24 @@
+    1|       |/* PR rtl-optimization/78477 */
+    2|       |
+    3|       |unsigned a;
+    4|       |unsigned short b;
+    5|       |
+    6|      1|unsigned foo(unsigned x) {
+    7|      1|  b = x;
+    8|      1|  a >>= (b & 1);
+    9|      1|  b = 1 | (b << 5);
+   10|      1|  b >>= 15;
+   11|      1|  x = (unsigned char)b > ((2 - (unsigned char)b) & 1);
+   12|      1|  b = 0;
+   13|      1|  return x;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  if (__CHAR_BIT__ != 8 || sizeof(short) != 2 || sizeof(int) < 4)
+   18|      0|    return 0;
+   19|      1|  unsigned x = foo(12345);
+   20|      1|  if (x != 0)
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+

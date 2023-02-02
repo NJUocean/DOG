@@ -1,0 +1,13 @@
+        -:    0:Source:3603.c
+        -:    0:Graph:3603.gcno
+        -:    0:Data:3603.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:unsigned int test(unsigned int x) { return x / 0x80000001U / 0x00000002U; }
+        -:    4:
+        1:    5:int main() {
+        1:    6:  if (test(2) != 0)
+    #####:    7:    abort();
+        1:    8:  return 0;
+        -:    9:}

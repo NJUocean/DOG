@@ -1,0 +1,30 @@
+        -:    0:Source:1489.c
+        -:    0:Graph:1489.gcno
+        -:    0:Data:1489.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-ftree-slp-vectorize" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:static struct X {
+        -:    7:  void *a;
+        -:    8:  void *b;
+        -:    9:} a, b;
+        -:   10:static struct X *p;
+        -:   11:
+        1:   12:void __attribute__((noinline)) foo(void) {
+        1:   13:  void *tem = a.b;
+        1:   14:  p->b = (void *)0;
+        1:   15:  b.b = tem;
+        1:   16:  b.a = a.a;
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  p = &a;
+        1:   21:  a.b = &a;
+        1:   22:  foo();
+        1:   23:  if (b.b != &a)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

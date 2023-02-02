@@ -1,0 +1,26 @@
+        -:    0:Source:1513.c
+        -:    0:Graph:1513.gcno
+        -:    0:Data:1513.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:unsigned int a = 1;
+        -:    4:
+        1:    5:int fn1() {
+        -:    6:  char b;
+        -:    7:  for (;;) {
+        2:    8:    for (b = 0; b < 5; b++)
+        2:    9:      if (!a - (unsigned int)b)
+        1:   10:        return 0;
+    #####:   11:    a = 0;
+        -:   12:  }
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  fn1();
+        -:   17:
+        1:   18:  if (a != 1)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

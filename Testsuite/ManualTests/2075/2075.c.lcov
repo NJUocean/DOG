@@ -1,0 +1,33 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-alias "" } */
+    3|       |/* { dg-options "-O -fdump-tree-fre1" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct X {
+    8|       |  int a[128];
+    9|       |};
+   10|       |static const struct X a = {0, 1, 2, 3};
+   11|       |/* Prevent gimplify_modify_expr_rhs / gimplify_init_constructor from
+   12|       |   expanding the aggregate copy below inline.  */
+   13|       |static const struct X A __attribute__((alias("a")));
+   14|       |struct X *q;
+   15|      1|int __attribute__((noinline)) foo() {
+   16|      1|  struct X b = A;
+   17|      1|  int *p = &b.a[2];
+   18|      1|  /* Prevent SRA from decomposing b.  */
+   19|      1|  q = &b;
+   20|      1|  return *p;
+   21|      1|}
+   22|       |
+   23|      1|int main() {
+   24|      1|  if (foo() != 2)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+   28|       |
+   29|       |/* Verify the aggregate copy we want to look through is still in place.  */
+   30|       |/* { dg-final { scan-tree-dump "b = A;" "fre1" } } */
+   31|       |/* Verify we have propagated the element read all the way to the return.  */
+   32|       |/* { dg-final { scan-tree-dump "return 2" "fre1" } } */
+

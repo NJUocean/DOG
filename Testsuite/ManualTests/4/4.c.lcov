@@ -1,0 +1,63 @@
+    1|       |/* Copyright (C) 2002 Free Software Foundation.
+    2|       |
+    3|       |   Test for correctness of floating point comparisons.
+    4|       |
+    5|       |   Written by Roger Sayle, 3rd June 2002.  */
+    6|       |
+    7|       |/* { dg-do run } */
+    8|       |/* { dg-options "-O2 -ffast-math" } */
+    9|       |
+   10|       |extern void abort(void);
+   11|       |
+   12|      3|int test1(double x, int ok) {
+   13|      3|  if ((x - 1.0) > 0.0) {
+   14|      1|    if (!ok)
+   15|      0|      abort();
+   16|      2|  } else if (ok)
+   17|      0|    abort();
+   18|      3|}
+   19|       |
+   20|      3|int test1f(float x, int ok) {
+   21|      3|  if ((x - 1.0f) > 0.0f) {
+   22|      1|    if (!ok)
+   23|      0|      abort();
+   24|      2|  } else if (ok)
+   25|      0|    abort();
+   26|      3|}
+   27|       |
+   28|      3|int test2(double x, int ok) {
+   29|      3|  if ((x + 1.0) < 0.0) {
+   30|      1|    if (!ok)
+   31|      0|      abort();
+   32|      2|  } else if (ok)
+   33|      0|    abort();
+   34|      3|}
+   35|       |
+   36|      3|int test2f(float x, int ok) {
+   37|      3|  if ((x + 1.0f) < 0.0f) {
+   38|      1|    if (!ok)
+   39|      0|      abort();
+   40|      2|  } else if (ok)
+   41|      0|    abort();
+   42|      3|}
+   43|       |
+   44|      1|int main() {
+   45|      1|  test1(-2.0, 0);
+   46|      1|  test1(0.0, 0);
+   47|      1|  test1(2.0, 1);
+   48|      1|
+   49|      1|  test1f(-2.0f, 0);
+   50|      1|  test1f(0.0f, 0);
+   51|      1|  test1f(2.0f, 1);
+   52|      1|
+   53|      1|  test2(-2.0, 1);
+   54|      1|  test2(0.0, 0);
+   55|      1|  test2(2.0, 0);
+   56|      1|
+   57|      1|  test2f(-2.0f, 1);
+   58|      1|  test2f(0.0f, 0);
+   59|      1|  test2f(2.0f, 0);
+   60|      1|
+   61|      1|  return 0;
+   62|      1|}
+

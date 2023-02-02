@@ -1,0 +1,22 @@
+        -:    0:Source:3615.c
+        -:    0:Graph:3615.gcno
+        -:    0:Data:3615.gcda
+        -:    0:Runs:1
+        1:    1:float fx(x) float x;
+        1:    2:{ return 1.0 + 3.0 / (2.302585093 * x); }
+        -:    3:
+        1:    4:main() {
+        -:    5:  float fx(), inita(), initc(), a, b, c;
+        1:    6:  a = inita();
+        1:    7:  c = initc();
+        1:    8:  f();
+        1:    9:  b = fx(c) + a;
+        1:   10:  f();
+        1:   11:  if (a != 3.0 || b < 4.3257 || b > 4.3258 || c != 4.0)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}
+        -:   15:
+        1:   16:float inita() { return 3.0; }
+        1:   17:float initc() { return 4.0; }
+        2:   18:f() {}

@@ -1,0 +1,10 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-require-effective-target gas } */
+    3|       |/* { dg-lto-options { { -O0 -fipa-vrp -flto -Wa,--noexecstack -Wa,--noexecstack
+    4|       | * -Wa,--execstack  -Wa,--execstack -Wa,--execstack -Wa,--execstack
+    5|       | * -Wa,--execstack -Wa,--execstack -Wa,--execstack -Wa,--execstack
+    6|       | * -Wa,--execstack -Wa,--execstack -Wa,--execstack -Wa,--execstack
+    7|       | * -Wa,--execstack -Wa,--execstack } } } */
+    8|       |
+    9|      1|int main() {}
+

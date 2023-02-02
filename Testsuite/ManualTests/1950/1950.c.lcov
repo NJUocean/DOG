@@ -1,0 +1,48 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -ftree-loop-distribution" } */
+    3|       |
+    4|       |/* Checks if loop distribution works correctly if the subscript used
+    5|       |   is assigned to a loop invariant value.  */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |struct S {
+    9|       |  int a;
+   10|       |  int b;
+   11|       |  int c;
+   12|       |};
+   13|       |
+   14|      4|int get_rr_node_index(int i) { return i; }
+   15|       |
+   16|       |struct S nodes[8];
+   17|       |struct S *rr_node = nodes;
+   18|       |volatile int io_rat = 2;
+   19|      1|void doit(int i, int j) {
+   20|      1|  int s_node, p_node, inode, ipad, iloop;
+   21|      1|
+   22|      3|  for (ipad = 0; ipad < io_rat; ipad++) {
+   23|      2|    p_node = get_rr_node_index(ipad + 2);
+   24|      2|    inode = get_rr_node_index(ipad);
+   25|      2|
+   26|      6|    for (iloop = 1; iloop <= 2; iloop++) {
+   27|      4|      rr_node[inode].a = i;
+   28|      4|      rr_node[inode].b = j;
+   29|      4|      rr_node[inode].c = ipad;
+   30|      4|      inode = p_node;
+   31|      4|    }
+   32|      2|  }
+   33|      1|}
+   34|       |
+   35|      1|int main() {
+   36|      1|  int i;
+   37|      1|
+   38|      1|  doit(1, 2);
+   39|      1|
+   40|      1|  if (rr_node[0].a != rr_node[1].a || rr_node[2].a != rr_node[3].a ||
+   41|      1|      rr_node[1].a != 1 || rr_node[0].b != rr_node[1].b ||
+   42|      1|      rr_node[2].b != rr_node[3].b || rr_node[1].b != 2 || rr_node[0].c != 0 ||
+   43|      1|      rr_node[1].c != 1 || rr_node[2].c != 0 || rr_node[3].c != 1)
+   44|      0|    abort();
+   45|      1|
+   46|      1|  return 0;
+   47|      1|}
+

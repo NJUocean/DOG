@@ -1,0 +1,24 @@
+        -:    0:Source:495.c
+        -:    0:Graph:495.gcno
+        -:    0:Data:495.gcda
+        -:    0:Runs:1
+        -:    1:unsigned char lookup_table[257];
+        -:    2:
+        1:    3:static int build_lookup(pattern) unsigned char *pattern;
+        -:    4:{
+        -:    5:  int m;
+        -:    6:
+        1:    7:  m = strlen(pattern) - 1;
+        -:    8:
+        1:    9:  memset(lookup_table, ++m, 257);
+        1:   10:  return m;
+        -:   11:}
+        -:   12:
+        1:   13:int main(argc, argv) int argc;
+        -:   14:char **argv;
+        -:   15:{
+        1:   16:  if (build_lookup("bind") != 4)
+    #####:   17:    abort();
+        -:   18:  else
+        1:   19:    exit(0);
+        -:   20:}

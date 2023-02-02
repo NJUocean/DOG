@@ -1,0 +1,26 @@
+// control flow context
+digraph {
+	subgraph cluster_bh {
+		color=red label=SFF
+		__N6 [label="2-switch-case-17, 17"]
+		__N8 [label="0-passive-18, 18"]
+	}
+	__N0 [label="1-func-entry--1, -1"]
+	EXIT
+	__N11 [label="1-exit-24, 24"]
+	__N0 -> __N11 [label=FEL color=red]
+	__N11 -> EXIT [label="=1"]
+	__N5 [label="1-exit-29, 29"]
+	__N0 -> __N5 [label=FEL color=red]
+	__N5 -> EXIT [label="=1"]
+	__N3 [label="1-while-for-15, 15"]
+	__N3__N4 [label=2 style=dotted]
+	__N3 -> __N3__N4 [label=ON color=red]
+	__N4 [label="2-switch-16, 16"]
+	__N3__N4 -> __N4 [label=agent color=lightblue]
+	__N3__N5 [label=1 style=dotted]
+	__N3 -> __N3__N5 [label=ON color=red]
+	__N5 [label="1-exit-29, 29"]
+	__N3__N5 -> __N5 [label=agent color=lightblue]
+	__N5 [color=yellow style=filled]
+}

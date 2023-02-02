@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run { target { { powerpc*-*-darwin* powerpc*-*-aix* rs6000-*-* } || {
+    2|       | * powerpc*-*-linux* && lp64 } } } } */
+    3|       |/* { dg-options "-mlong-double-128" } */
+    4|       |
+    5|       |/* Check that long double values are rounded correctly when being converted
+    6|       |   to 32-bit integers.  All these values are of the form +/- 2 +/- 2^-60.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |extern void exit(int);
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  long double l1 = 1.9999999999999999991326382620115964527941L;
+   13|      1|  long double l2 = 2.0000000000000000008673617379884035472059L;
+   14|      1|  long double l3 = -2.0000000000000000008673617379884035472059L;
+   15|      1|  long double l4 = -1.9999999999999999991326382620115964527941L;
+   16|      1|
+   17|      1|  if ((int)l1 != 1)
+   18|      0|    abort();
+   19|      1|  if ((int)l2 != 2)
+   20|      0|    abort();
+   21|      1|  if ((int)l3 != -2)
+   22|      0|    abort();
+   23|      1|  if ((int)l4 != -1)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

@@ -1,0 +1,25 @@
+        -:    0:Source:1450.c
+        -:    0:Graph:1450.gcno
+        -:    0:Data:1450.gcda
+        -:    0:Runs:1
+        -:    1:struct complex {
+        -:    2:  float r;
+        -:    3:  float i;
+        -:    4:};
+        -:    5:
+        -:    6:struct complex cmplx(float, float);
+        -:    7:
+        1:    8:struct complex f(float a, float b) {
+        -:    9:  struct complex c;
+        1:   10:  c.r = a;
+        1:   11:  c.i = b;
+        1:   12:  return c;
+        -:   13:}
+        -:   14:
+        1:   15:main() {
+        1:   16:  struct complex z = f(1.0, 0.0);
+        -:   17:
+        1:   18:  if (z.r != 1.0 || z.i != 0.0)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

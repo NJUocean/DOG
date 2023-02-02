@@ -1,0 +1,28 @@
+    1|       |/* Test AAPCS layout (alignment) for callee.  */
+    2|       |
+    3|       |/* { dg-do run { target arm_eabi } } */
+    4|       |/* { dg-require-effective-target arm32 } */
+    5|       |/* { dg-options "-O2 -fno-inline" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |typedef __attribute__((aligned(8))) int alignedint;
+   10|       |
+   11|       |alignedint a = 11;
+   12|       |alignedint b = 13;
+   13|       |alignedint c = 17;
+   14|       |alignedint d = 19;
+   15|       |alignedint e = 23;
+   16|       |alignedint f = 29;
+   17|       |
+   18|       |void foo(alignedint r0, alignedint r1, alignedint r2, alignedint r3,
+   19|      1|         alignedint stack, alignedint stack4) {
+   20|      1|  if (r0 != a || r1 != b || r2 != c || r3 != d || stack != e || stack4 != f)
+   21|      0|    abort();
+   22|      1|}
+   23|       |
+   24|      1|int main(int argc, char **argv) {
+   25|      1|  foo(a, b, c, d, e, f);
+   26|      1|  return 0;
+   27|      1|}
+

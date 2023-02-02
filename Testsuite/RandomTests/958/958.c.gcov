@@ -1,0 +1,86 @@
+        -:    0:Source:958.c
+        -:    0:Graph:958.gcno
+        -:    0:Data:958.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  volatile unsigned f0 : 20;
+        -:   10:  unsigned f1 : 25;
+        -:   11:  signed f2 : 23;
+        -:   12:};
+        -:   13:#pragma pack(pop)
+        -:   14:
+        -:   15:struct S2 {
+        -:   16:  volatile struct S0 f0;
+        -:   17:  signed f1 : 10;
+        -:   18:  volatile unsigned : 0;
+        -:   19:};
+        -:   20:
+        -:   21:static int32_t g_2 = 0xF07B4BC6L;
+        -:   22:static volatile int32_t g_5 = 5L;
+        -:   23:static int32_t g_6 = (-10L);
+        -:   24:static int32_t *volatile g_10[5][2] = {{(void *)0, &g_6}, {&g_6, (void *)0}, {&g_6, &g_6}, {&g_6, (void *)0}, {&g_6, &g_6}};
+        -:   25:static int32_t g_12[3] = {0x6E229EDCL, 0x6E229EDCL, 0x6E229EDCL};
+        -:   26:static int32_t *const volatile g_11 = &g_12[2];
+        -:   27:static struct S2 g_13 = {{532, 230, -1414}, 28};
+        -:   28:static struct S0 g_18 = {214, 1618, 423};
+        -:   29:static struct S2 g_20 = {{278, 3354, 1305}, 9};
+        -:   30:
+        -:   31:static struct S2 func_1(void);
+        -:   32:
+        1:   33:static struct S2 func_1(void) {
+        1:   34:  int32_t *l_19 = &g_12[2];
+       13:   35:  for (g_2 = 0; (g_2 < 12); ++g_2) {
+      12*:   36:    for (g_6 = 0; (g_6 == 11); ++g_6) {
+    #####:   37:      int8_t l_9 = (-8L);
+    #####:   38:      (*g_11) = l_9;
+    #####:   39:      for (l_9 = 2; (l_9 >= 0); l_9 -= 1) {
+    #####:   40:        return g_13;
+        -:   41:      }
+        -:   42:    }
+      12*:   43:    for (g_6 = 28; (g_6 <= (-7)); --g_6) {
+    #####:   44:      struct S0 *l_17 = &g_18;
+    #####:   45:      struct S0 **l_16 = &l_17;
+    #####:   46:      (*l_16) = (void *)0;
+        -:   47:    }
+        -:   48:  }
+        1:   49:  (*l_19) = 0x4EDC0223L;
+        1:   50:  return g_20;
+        -:   51:}
+        -:   52:
+        1:   53:int main(int argc, char *argv[]) {
+        -:   54:  int i, j;
+        1:   55:  int print_hash_value = 0;
+       1*:   56:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   57:    print_hash_value = 1;
+        1:   58:  platform_main_begin();
+        1:   59:  crc32_gentab();
+        1:   60:  func_1();
+        1:   61:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   62:  transparent_crc(g_5, "g_5", print_hash_value);
+        1:   63:  transparent_crc(g_6, "g_6", print_hash_value);
+        4:   64:  for (i = 0; i < 3; i++) {
+        3:   65:    transparent_crc(g_12[i], "g_12[i]", print_hash_value);
+        3:   66:    if (print_hash_value)
+    #####:   67:      printf("index = [%d]\n", i);
+        -:   68:  }
+        1:   69:  transparent_crc(g_13.f0.f0, "g_13.f0.f0", print_hash_value);
+        1:   70:  transparent_crc(g_13.f0.f1, "g_13.f0.f1", print_hash_value);
+        1:   71:  transparent_crc(g_13.f0.f2, "g_13.f0.f2", print_hash_value);
+        1:   72:  transparent_crc(g_13.f1, "g_13.f1", print_hash_value);
+        1:   73:  transparent_crc(g_18.f0, "g_18.f0", print_hash_value);
+        1:   74:  transparent_crc(g_18.f1, "g_18.f1", print_hash_value);
+        1:   75:  transparent_crc(g_18.f2, "g_18.f2", print_hash_value);
+        1:   76:  transparent_crc(g_20.f0.f0, "g_20.f0.f0", print_hash_value);
+        1:   77:  transparent_crc(g_20.f0.f1, "g_20.f0.f1", print_hash_value);
+        1:   78:  transparent_crc(g_20.f0.f2, "g_20.f0.f2", print_hash_value);
+        1:   79:  transparent_crc(g_20.f1, "g_20.f1", print_hash_value);
+        1:   80:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   81:  return 0;
+        -:   82:}

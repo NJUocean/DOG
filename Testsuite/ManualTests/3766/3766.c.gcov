@@ -1,0 +1,20 @@
+        -:    0:Source:3766.c
+        -:    0:Graph:3766.gcno
+        -:    0:Data:3766.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c++/55137 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:int foo(unsigned int x) { return ((int)(x + 1U) + 1) < (int)x; }
+        -:    6:
+        1:    7:int bar(unsigned int x) { return (int)(x + 1U) + 1; }
+        -:    8:
+        1:    9:int baz(unsigned int x) { return x + 1U; }
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (foo(__INT_MAX__) != (bar(__INT_MAX__) < __INT_MAX__) ||
+        1:   13:      foo(__INT_MAX__) != ((int)baz(__INT_MAX__) + 1 < __INT_MAX__))
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

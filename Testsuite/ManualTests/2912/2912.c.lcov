@@ -1,0 +1,38 @@
+    1|       |typedef __SIZE_TYPE__ size_t;
+    2|       |extern size_t strlen(const char *s);
+    3|       |
+    4|       |typedef struct A {
+    5|       |  int a, b;
+    6|       |} A;
+    7|       |
+    8|       |typedef struct B {
+    9|       |  struct A **a;
+   10|       |  int b;
+   11|       |} B;
+   12|       |
+   13|       |A *a;
+   14|       |int b = 1, c;
+   15|       |B d[1];
+   16|       |
+   17|      1|void foo(A *x, const char *y, int z) { c = y[4] + z * 25; }
+   18|       |
+   19|      1|A *bar(const char *v, int w, int x, const char *y, int z) {
+   20|      1|  if (w)
+   21|      0|    abort();
+   22|      1|  exit(0);
+   23|      1|}
+   24|       |
+   25|      1|void test(const char *x, int *y) {
+   26|      1|  foo(d->a[d->b], "test", 200);
+   27|      1|  d->a[d->b] = bar(x, b ? 0 : 65536, strlen(x), "test", 201);
+   28|      1|  d->a[d->b]->a++;
+   29|      1|  if (y)
+   30|      0|    d->a[d->b]->b = *y;
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  d->b = 0;
+   35|      1|  d->a = &a;
+   36|      1|  test("", 0);
+   37|      1|}
+

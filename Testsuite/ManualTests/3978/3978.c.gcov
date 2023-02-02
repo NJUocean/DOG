@@ -1,0 +1,24 @@
+        -:    0:Source:3978.c
+        -:    0:Graph:3978.gcno
+        -:    0:Data:3978.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/81913 */
+        -:    2:
+        -:    3:typedef __UINT8_TYPE__ u8;
+        -:    4:typedef __UINT32_TYPE__ u32;
+        -:    5:
+       53:    6:static u32 b(u8 d, u32 e, u32 g) {
+        -:    7:  do {
+       53:    8:    e += g + 1;
+       53:    9:    d--;
+       53:   10:  } while (d >= (u8)e);
+        -:   11:
+        1:   12:  return e;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  u32 x = b(1, -0x378704, ~0xba64fc);
+        1:   17:  if (x != 0xd93190d0)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,56 @@
+    1|       |/* PR tree-optimization/92618 */
+    2|       |
+    3|       |typedef long long __m128i
+    4|       |    __attribute__((__may_alias__, __vector_size__(2 * sizeof(long long))));
+    5|       |
+    6|       |double a[4];
+    7|       |unsigned long long b[4];
+    8|       |
+    9|      2|__attribute__((noipa)) __m128i bar(void) {
+   10|      2|  static int cnt;
+   11|      2|  cnt += 2;
+   12|      2|  return (__m128i){cnt, cnt + 1};
+   13|      2|}
+   14|       |
+   15|       |#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+   16|       |typedef double __m128d
+   17|       |    __attribute__((__may_alias__, __vector_size__(2 * sizeof(double))));
+   18|       |
+   19|      2|__attribute__((noipa)) __m128i qux(void) {
+   20|      2|  static double cnt;
+   21|      2|  cnt += 2.0;
+   22|      2|  return (__m128i)(__m128d){cnt, cnt + 1.0};
+   23|      2|}
+   24|       |#endif
+   25|       |
+   26|      1|void foo(unsigned long long *x) {
+   27|      1|  __m128i c = bar();
+   28|      1|  __m128i d = bar();
+   29|      1|  *(__m128i *)&b[0] = c;
+   30|      1|  *(__m128i *)&b[2] = d;
+   31|      1|  *x = b[0] + b[1] + b[2] + b[3];
+   32|      1|}
+   33|       |
+   34|      1|void baz(double *x) {
+   35|      1|#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+   36|      1|  __m128i c = qux();
+   37|      1|  __m128i d = qux();
+   38|      1|  *(__m128i *)&a[0] = c;
+   39|      1|  *(__m128i *)&a[2] = d;
+   40|      1|  *x = a[0] + a[1] + a[2] + a[3];
+   41|      1|#endif
+   42|      1|}
+   43|       |
+   44|      1|int main() {
+   45|      1|  unsigned long long c = 0;
+   46|      1|  foo(&c);
+   47|      1|  if (c != 2 + 3 + 4 + 5)
+   48|      0|    __builtin_abort();
+   49|      1|#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+   50|      1|  double d = 0.0;
+   51|      1|  baz(&d);
+   52|      1|  if (d != 2.0 + 3.0 + 4.0 + 5.0)
+   53|      0|    __builtin_abort();
+   54|      1|#endif
+   55|      1|}
+

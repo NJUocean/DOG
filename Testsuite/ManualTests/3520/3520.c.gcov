@@ -1,0 +1,31 @@
+        -:    0:Source:3520.c
+        -:    0:Graph:3520.gcno
+        -:    0:Data:3520.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/85925 */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:/* Testcase by <sudi@gcc.gnu.org> */
+        -:    4:
+        -:    5:int a, c, d;
+        -:    6:volatile int b;
+        -:    7:int *e = &d;
+        -:    8:
+        -:    9:union U1 {
+        -:   10:  unsigned f0;
+        -:   11:  unsigned f1 : 15;
+        -:   12:};
+        -:   13:volatile union U1 u = {0x4030201};
+        -:   14:
+        1:   15:int main(void) {
+        3:   16:  for (c = 0; c <= 1; c++) {
+        2:   17:    union U1 f = {0x4030201};
+        2:   18:    if (c == 1)
+        1:   19:      b;
+        2:   20:    *e = f.f1;
+        -:   21:  }
+        -:   22:
+        1:   23:  if (d != u.f1)
+    #####:   24:    __builtin_abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

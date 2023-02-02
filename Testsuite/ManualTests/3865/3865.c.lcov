@@ -1,0 +1,26 @@
+    1|       |/* PR rtl-optimization/64756 */
+    2|       |
+    3|       |int a, *tmp, **c = &tmp;
+    4|       |volatile int d;
+    5|       |static int *volatile *e = &tmp;
+    6|       |unsigned int f;
+    7|       |
+    8|      1|static void fn1(int *p) {
+    9|      1|  int g;
+   10|      2|  for (; f < 1; f++)
+   11|      3|    for (g = 1; g >= 0; g--) {
+   12|      2|      d || d;
+   13|      2|      *c = p;
+   14|      2|
+   15|      2|      if (tmp != &a)
+   16|      0|        __builtin_abort();
+   17|      2|
+   18|      2|      *e = 0;
+   19|      2|    }
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  fn1(&a);
+   24|      1|  return 0;
+   25|      1|}
+

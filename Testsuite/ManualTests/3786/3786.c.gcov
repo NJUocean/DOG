@@ -1,0 +1,31 @@
+        -:    0:Source:3786.c
+        -:    0:Graph:3786.gcno
+        -:    0:Data:3786.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/57344 */
+        -:    2:
+        -:    3:struct __attribute__((packed)) S {
+        -:    4:  int a : 11;
+        -:    5:#if __SIZEOF_INT__ * __CHAR_BIT__ >= 32
+        -:    6:  int b : 22;
+        -:    7:#else
+        -:    8:  int b : 13;
+        -:    9:#endif
+        -:   10:  char c;
+        -:   11:  int : 0;
+        -:   12:} s[2];
+        -:   13:int i;
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) void foo(int x) {
+        1:   16:  if (x != -3161)
+    #####:   17:    __builtin_abort();
+        1:   18:  asm volatile("" : : : "memory");
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  struct S t = {0, -3161L};
+        1:   23:  s[1] = t;
+        2:   24:  for (; i < 1; i++)
+        1:   25:    foo(s[1].b);
+        1:   26:  return 0;
+        -:   27:}

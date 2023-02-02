@@ -1,0 +1,19 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |
+    4|       |int spinlock[2];
+    5|      1|int main() {
+    6|      1|  volatile int *spinlock0;
+    7|      1|  volatile int *spinlock1;
+    8|      1|  spinlock0 = &spinlock[0];
+    9|      1|  spinlock1 = &spinlock[1];
+   10|      1|
+   11|      1|  *spinlock0 = 0;
+   12|      1|  *spinlock1 = 0;
+   13|      1|  while (*spinlock0)
+   14|      0|    ;
+   15|      1|}
+   16|       |
+   17|       |/* { dg-final { scan-tree-dump "={v} .*spinlock" "optimized" } } */
+   18|       |/* { dg-final { scan-tree-dump "spinlock.* ={v}" "optimized" } } */
+

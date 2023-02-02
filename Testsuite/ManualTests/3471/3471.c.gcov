@@ -1,0 +1,10 @@
+        -:    0:Source:3471.c
+        -:    0:Graph:3471.gcno
+        -:    0:Data:3471.gcda
+        -:    0:Runs:1
+        1:    1:long long foo(long long v) { return v / -0x080000000LL; }
+        1:    2:int main(int argc, char **argv) {
+        1:    3:  if (foo(0x080000000LL) != -1)
+    #####:    4:    abort();
+        1:    5:  exit(0);
+        -:    6:}

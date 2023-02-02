@@ -1,0 +1,57 @@
+        -:    0:Source:3464.c
+        -:    0:Graph:3464.gcno
+        -:    0:Data:3464.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct descriptor_dimension {
+        -:    2:  int stride;
+        -:    3:  int lbound;
+        -:    4:  int ubound;
+        -:    5:} descriptor_dimension;
+        -:    6:typedef struct {
+        -:    7:  int *data;
+        -:    8:  int dtype;
+        -:    9:  descriptor_dimension dim[7];
+        -:   10:} gfc_array_i4;
+        -:   11:
+        1:   12:void msum_i4(gfc_array_i4 *const retarray, gfc_array_i4 *const array,
+        -:   13:             const int *const pdim) {
+        -:   14:  int count[7];
+        -:   15:  int extent[7];
+        -:   16:  int *dest;
+        -:   17:  const int *base;
+        -:   18:  int dim;
+        -:   19:  int n;
+        -:   20:  int len;
+        -:   21:
+        1:   22:  dim = (*pdim) - 1;
+        1:   23:  len = array->dim[dim].ubound + 1 - array->dim[dim].lbound;
+        -:   24:
+        2:   25:  for (n = 0; n < dim; n++) {
+        1:   26:    extent[n] = array->dim[n].ubound + 1 - array->dim[n].lbound;
+        1:   27:    count[n] = 0;
+        -:   28:  }
+        -:   29:
+        1:   30:  dest = retarray->data;
+        1:   31:  base = array->data;
+        -:   32:
+        -:   33:  do {
+        3:   34:    int result = 0;
+        -:   35:
+       12:   36:    for (n = 0; n < len; n++, base++)
+        9:   37:      result += *base;
+        3:   38:    *dest = result;
+        -:   39:
+        3:   40:    count[0]++;
+        3:   41:    dest += 1;
+        3:   42:  } while (count[0] != extent[0]);
+        1:   43:}
+        -:   44:
+        1:   45:int main() {
+        -:   46:  int rdata[3];
+        -:   47:  int adata[9];
+        1:   48:  gfc_array_i4 retarray = {rdata, 265, {{1, 1, 3}}};
+        1:   49:  gfc_array_i4 array = {adata, 266, {{1, 1, 3}, {3, 1, 3}}};
+        1:   50:  int dim = 2;
+        1:   51:  msum_i4(&retarray, &array, &dim);
+        1:   52:  return 0;
+        -:   53:}

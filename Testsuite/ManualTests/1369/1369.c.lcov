@@ -1,0 +1,13 @@
+    1|       |/* PR c/47473 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-std=c99" } */
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  long double _Complex w = 0.2L - 0.3iL;
+    7|      1|  w = w * (0.3L - (0.0F + 1.0iF) * 0.9L);
+    8|      1|  if (__builtin_fabsl(__real__ w + 0.21L) > 0.001L ||
+    9|      1|      __builtin_fabsl(__imag__ w + 0.27L) > 0.001L)
+   10|      0|    __builtin_abort();
+   11|      1|  return 0;
+   12|      1|}
+

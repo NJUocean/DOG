@@ -1,0 +1,35 @@
+        -:    0:Source:314.c
+        -:    0:Graph:314.gcno
+        -:    0:Data:314.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/36690 */
+        -:    2:/* Verify that breakpoint can be put on goto f1, it is hit and
+        -:    3:   varz at that spot is defined and contains 5.  Nowhere else
+        -:    4:   in the function should be varz in the scope.
+        -:    5:   This version of the test just checks that it can be compiled, linked
+        -:    6:   and executed, further testing is done in corresponding gcc.dg/dwarf2/
+        -:    7:   test and hopefully in gdb testsuite.  */
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-O0 -g -dA" } */
+        -:   10:
+        -:   11:int cnt;
+        -:   12:
+        4:   13:void bar(int i) { cnt += i; }
+        -:   14:
+        2:   15:void foo(int i) {
+        2:   16:  if (!i)
+        1:   17:    bar(0);
+        -:   18:  else {
+        -:   19:    static int varz = 5;
+        1:   20:    goto f1;
+        -:   21:  }
+        1:   22:  bar(1);
+        2:   23:f1:
+        2:   24:  bar(2);
+        2:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  foo(0);
+        1:   29:  foo(1);
+        1:   30:  return 0;
+        -:   31:}

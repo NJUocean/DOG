@@ -1,0 +1,18 @@
+        -:    0:Source:1277.c
+        -:    0:Graph:1277.gcno
+        -:    0:Data:1277.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-fstrict-overflow" } */
+        -:    3:
+        -:    4:#include <limits.h>
+        -:    5:
+        -:    6:extern void link_error(void);
+        1:    7:int main() {
+        -:    8:  int i0, i1;
+        -:    9:  if (!(i0 + 1 < i1 + 1 == i0 < i1))
+        -:   10:    link_error();
+        -:   11:  if (!(i0 + INT_MIN < i1 - INT_MAX == i0 < i1 - -1))
+        -:   12:    link_error();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,19 @@
+        -:    0:Source:770.c
+        -:    0:Graph:770.gcno
+        -:    0:Data:770.gcda
+        -:    0:Runs:1
+        -:    1:/* PR11492 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-Wsign-compare" } */
+        1:    4:int main(void) {
+        -:    5:  unsigned int a;
+        -:    6:  unsigned char b;
+        1:    7:  for (a = 0, b = 2; a > b * 100;
+    #####:    8:       a++) /* { dg-bogus "comparison of integer expressions of different
+        -:    9:               signedness" } */
+        -:   10:  {
+        -:   11:    ;
+        -:   12:  }
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}

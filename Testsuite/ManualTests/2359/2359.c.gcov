@@ -1,0 +1,28 @@
+        -:    0:Source:2359.c
+        -:    0:Graph:2359.gcno
+        -:    0:Data:2359.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        1:    3:int bar(int a, va_list ap) {
+        -:    4:  int b;
+        -:    5:
+        -:    6:  do
+        1:    7:    b = va_arg(ap, int);
+        1:    8:  while (b > 10);
+        -:    9:
+        1:   10:  return a + b;
+        -:   11:}
+        -:   12:
+        1:   13:int foo(int a, ...) {
+        -:   14:  va_list ap;
+        -:   15:
+        1:   16:  va_start(ap, a);
+        1:   17:  return bar(a, ap);
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  if (foo(1, 2, 3) != 3)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

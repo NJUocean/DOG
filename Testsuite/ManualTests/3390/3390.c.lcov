@@ -1,0 +1,38 @@
+    1|       |/* PR rtl-optimization/23561 */
+    2|       |
+    3|       |struct A {
+    4|       |  char a1[1];
+    5|       |  char a2[5];
+    6|       |  char a3[1];
+    7|       |  char a4[2048 - 7];
+    8|       |} a;
+    9|       |
+   10|       |typedef __SIZE_TYPE__ size_t;
+   11|       |extern void *memset(void *, int, size_t);
+   12|       |extern void *memcpy(void *, const void *, size_t);
+   13|       |extern int memcmp(const void *, const void *, size_t);
+   14|       |extern void abort(void);
+   15|       |
+   16|      1|void bar(struct A *x) {
+   17|      1|  size_t i;
+   18|      1|  if (memcmp(x, "\1HELLO\1", sizeof "\1HELLO\1"))
+   19|      0|    abort();
+   20|  2.04k|  for (i = 0; i < sizeof(x->a4); i++)
+   21|  2.04k|    if (x->a4[i])
+   22|      0|      abort();
+   23|      1|}
+   24|       |
+   25|      1|int foo(void) {
+   26|      1|  memset(&a, 0, sizeof(a));
+   27|      1|  a.a1[0] = 1;
+   28|      1|  memcpy(a.a2, "HELLO", sizeof "HELLO");
+   29|      1|  a.a3[0] = 1;
+   30|      1|  bar(&a);
+   31|      1|  return 0;
+   32|      1|}
+   33|       |
+   34|      1|int main(void) {
+   35|      1|  foo();
+   36|      1|  return 0;
+   37|      1|}
+

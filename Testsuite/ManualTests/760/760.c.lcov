@@ -1,0 +1,12 @@
+    1|       |/* Test the ggcplug plugin.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  int i = 0, j = 0;
+    7|  1.00k|  for (i = 0; i < 1000; i++)
+    8|  1.00k|    if (i % 8 == 0)
+    9|    125|      j++;
+   10|      1|  return 0;
+   11|      1|}
+

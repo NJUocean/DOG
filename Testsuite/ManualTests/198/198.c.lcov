@@ -1,0 +1,23 @@
+    1|       |long double f(d, i) long double d;
+    2|       |int i;
+    3|      1|{
+    4|      1|  long double e;
+    5|      1|
+    6|      1|  d = -d;
+    7|      1|  e = d;
+    8|      1|  if (i == 1)
+    9|      1|    d *= 2;
+   10|      1|  d -= e * d;
+   11|      1|  d -= e * d;
+   12|      1|  d -= e * d;
+   13|      1|  d -= e * d;
+   14|      1|  d -= e * d;
+   15|      1|  return d;
+   16|      1|}
+   17|       |
+   18|      1|main() {
+   19|      1|  if (!(int)(f(2.0L, 1)))
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

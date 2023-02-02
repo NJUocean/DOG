@@ -1,0 +1,9 @@
+    1|       |/* PR c/14492 */
+    2|       |/* { dg-options "" } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  double d = 1.0;
+    6|      1|  char x[(int)d];
+    7|      1|  return 0;
+    8|      1|}
+

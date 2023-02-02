@@ -1,0 +1,50 @@
+        -:    0:Source:839.c
+        -:    0:Graph:839.gcno
+        -:    0:Data:839.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:/* { dg-options "-O0 -mtune=i386 -fomit-frame-pointer" { target { { i?86-*-*
+        -:    4: * x86_64-*-* } && ia32 } } } */
+        -:    5:
+    #####:    6:__attribute__((noreturn, noinline)) void abrt(const char *fi, const char *fu) {
+    #####:    7:  __builtin_abort();
+        -:    8:}
+        -:    9:
+        1:   10:__attribute__((noinline)) int f(int k) { return k; }
+        -:   11:
+        1:   12:__attribute__((noinline)) int g(int t, int k) {
+        -:   13:  int b;
+        -:   14:
+        1:   15:  switch (t) {
+    #####:   16:  case 0:
+    #####:   17:    abrt(__FILE__, __FUNCTION__);
+        -:   18:
+    #####:   19:  case 1:
+    #####:   20:    b = f(k);
+    #####:   21:    break;
+        -:   22:
+    #####:   23:  case 2:
+    #####:   24:    b = f(k);
+    #####:   25:    break;
+        -:   26:
+        1:   27:  case 3:
+        1:   28:    b = f(k);
+        1:   29:    break;
+        -:   30:
+    #####:   31:  case 4:
+    #####:   32:    b = f(k);
+    #####:   33:    break;
+        -:   34:
+    #####:   35:  default:
+    #####:   36:    abrt(__FILE__, __FUNCTION__);
+        -:   37:  }
+        -:   38:
+        1:   39:  return b;
+        -:   40:}
+        -:   41:
+        1:   42:int main(void) {
+        1:   43:  if (g(3, 1337) != 1337)
+    #####:   44:    abrt(__FILE__, __FUNCTION__);
+        1:   45:  return 0;
+        -:   46:}

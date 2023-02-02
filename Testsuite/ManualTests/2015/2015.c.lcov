@@ -1,0 +1,27 @@
+    1|       |/* PR tree-optimization/52267 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O3 -fdump-tree-ldist-details" } */
+    4|       |
+    5|       |int a = 0, b = 0, c = 0;
+    6|       |struct S {
+    7|       |  signed m : 7;
+    8|       |  signed e : 2;
+    9|       |};
+   10|       |struct S f[2] = {{0, 0}, {0, 0}};
+   11|       |struct S g = {0, 0};
+   12|       |
+   13|      1|void __attribute__((noinline)) k() {
+   14|      3|  for (; c <= 1; c++) {
+   15|      2|    f[b] = g;
+   16|      2|    f[b].e ^= 1;
+   17|      2|  }
+   18|      1|}
+   19|      1|int main() {
+   20|      1|  k();
+   21|      1|  if (f[b].e != 1)
+   22|      0|    __builtin_abort();
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final { scan-tree-dump-not "Loop 1 distributed: split to 3 loops"
+   26|       | * "ldist" } } */
+

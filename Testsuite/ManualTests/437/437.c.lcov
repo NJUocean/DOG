@@ -1,0 +1,44 @@
+    1|       |/* PR tree-optimization/29581 */
+    2|       |/* Origin: gcc.dg/vect/vect-88.c */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2 -ftree-loop-linear" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|      2|#define N 16
+    9|       |
+   10|      5|int main1(int n, int *a) {
+   11|      5|  int i, j, k;
+   12|      5|  int b[N];
+   13|      5|
+   14|     39|  for (i = 0; i < n; i++) {
+   15|    520|    for (j = 0; j < n; j++) {
+   16|    486|      k = i + n;
+   17|    486|      a[j] = k;
+   18|    486|    }
+   19|     34|    b[i] = k;
+   20|     34|  }
+   21|      5|
+   22|     39|  for (j = 0; j < n; j++)
+   23|     34|    if (a[j] != i + n - 1)
+   24|      0|      abort();
+   25|      5|
+   26|     39|  for (j = 0; j < n; j++)
+   27|     34|    if (b[j] != j + n)
+   28|      0|      abort();
+   29|      5|
+   30|      5|  return 0;
+   31|      5|}
+   32|       |
+   33|      1|int main(void) {
+   34|      1|  int a[N + 1] __attribute__((__aligned__(16)));
+   35|      1|
+   36|      1|  main1(N, a + 1);
+   37|      1|  main1(0, a + 1);
+   38|      1|  main1(1, a + 1);
+   39|      1|  main1(2, a + 1);
+   40|      1|  main1(N - 1, a + 1);
+   41|      1|
+   42|      1|  return 0;
+   43|      1|}
+

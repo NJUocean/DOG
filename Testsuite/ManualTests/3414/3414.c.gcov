@@ -1,0 +1,32 @@
+        -:    0:Source:3414.c
+        -:    0:Graph:3414.gcno
+        -:    0:Data:3414.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/29272 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  struct S *s;
+        -:    7:} s;
+        -:    8:struct T {
+        -:    9:  struct T *t;
+        -:   10:} t;
+        -:   11:
+        1:   12:static inline void foo(void *s) {
+        1:   13:  struct T *p = s;
+        1:   14:  __builtin_memcpy(&p->t, &t.t, sizeof(t.t));
+        1:   15:}
+        -:   16:
+        1:   17:void *__attribute__((noinline)) bar(void *p, struct S *q) {
+        1:   18:  q->s = &s;
+        1:   19:  foo(p);
+        1:   20:  return q->s;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  t.t = &t;
+        1:   25:  if (bar(&s, &s) != (void *)&t)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

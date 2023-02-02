@@ -1,0 +1,48 @@
+        -:    0:Source:3381.c
+        -:    0:Graph:3381.gcno
+        -:    0:Data:3381.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase generates MMX instructions together with x87 instructions.
+        -:    2:   Currently, there is no "emms" generated to switch between register sets,
+        -:    3:   so the testcase fails for targets where MMX insns are enabled.  */
+        -:    4:/* { dg-options "-mno-mmx -Wno-psabi" { target { x86_64-*-* i?86-*-* } } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:typedef int V2SI __attribute__((vector_size(8)));
+        -:    9:typedef unsigned int V2USI __attribute__((vector_size(8)));
+        -:   10:typedef float V2SF __attribute__((vector_size(8)));
+        -:   11:typedef short V2HI __attribute__((vector_size(4)));
+        -:   12:typedef unsigned int V2UHI __attribute__((vector_size(4)));
+        -:   13:
+        1:   14:long long test1(V2SF x) { return (long long)(V2SI)x; }
+        -:   15:
+        1:   16:long long test2(V2SF x) { return (long long)x; }
+        -:   17:
+        1:   18:long long test3(V2SI x) { return (long long)(V2SF)x; }
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  if (sizeof(short) != 2 || sizeof(int) != 4 || sizeof(long long) != 8)
+        -:   22:    return 0;
+        -:   23:
+        1:   24:  V2SF x = {2.0, 2.0};
+        -:   25:  union {
+        -:   26:    long long l;
+        -:   27:    float f[2];
+        -:   28:    int i[2];
+        -:   29:  } u;
+        1:   30:  u.l = test1(x);
+        1:   31:  if (u.f[0] != 2.0 || u.f[1] != 2.0)
+    #####:   32:    abort();
+        -:   33:
+        1:   34:  V2SF y = {6.0, 6.0};
+        1:   35:  u.l = test2(y);
+        1:   36:  if (u.f[0] != 6.0 || u.f[1] != 6.0)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  V2SI z = {4, 4};
+        1:   40:  u.l = test3(z);
+        1:   41:  if (u.i[0] != 4 || u.i[1] != 4)
+    #####:   42:    abort();
+        1:   43:  return 0;
+        -:   44:}

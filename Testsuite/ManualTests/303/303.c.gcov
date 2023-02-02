@@ -1,0 +1,17 @@
+        -:    0:Source:303.c
+        -:    0:Graph:303.gcno
+        -:    0:Data:303.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -gdwarf -feliminate-unused-debug-symbols -dA" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int i;
+        -:    6:};
+        -:    7:extern struct S x;
+        -:    8:int y;
+        1:    9:int main() { return y; }
+        -:   10:
+        -:   11:/* We should elide the DIEs for x and S but not y.  */
+        -:   12:/* { dg-final { scan-assembler-times "DW_TAG_variable" 2 } } */
+        -:   13:/* { dg-final { scan-assembler-not "DW_TAG_structure_type" } } */

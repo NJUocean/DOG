@@ -1,0 +1,30 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |/* { dg-require-effective-target alloca } */
+    3|       |
+    4|       |void *volatile p;
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  int n = 0;
+    8|   500k|lab:;
+    9|   500k|  {
+   10|   500k|    int x[n % 1000 + 1];
+   11|   500k|    x[0] = 1;
+   12|   500k|    x[n % 1000] = 2;
+   13|   500k|    p = x;
+   14|   500k|    n++;
+   15|   500k|  }
+   16|   500k|
+   17|   500k|  {
+   18|   500k|    int x[n % 1000 + 1];
+   19|   500k|    x[0] = 1;
+   20|   500k|    x[n % 1000] = 2;
+   21|   500k|    p = x;
+   22|   500k|    n++;
+   23|   500k|  }
+   24|   500k|
+   25|   500k|  if (n < 1000000)
+   26|   499k|    goto lab;
+   27|      1|
+   28|      1|  return 0;
+   29|      1|}
+

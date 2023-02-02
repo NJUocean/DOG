@@ -1,0 +1,32 @@
+        -:    0:Source:4008.c
+        -:    0:Graph:4008.gcno
+        -:    0:Data:4008.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/86492 */
+        -:    2:
+        -:    3:union U {
+        -:    4:  unsigned int r;
+        -:    5:  struct S {
+        -:    6:    unsigned int a : 12;
+        -:    7:    unsigned int b : 4;
+        -:    8:    unsigned int c : 16;
+        -:    9:  } f;
+        -:   10:};
+        -:   11:
+        1:   12:__attribute__((noipa)) unsigned int foo(unsigned int x) {
+        -:   13:  union U u;
+        1:   14:  u.r = 0;
+        1:   15:  u.f.c = x;
+        1:   16:  u.f.b = 0xe;
+        1:   17:  return u.r;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  union U u;
+        -:   22:  if (__CHAR_BIT__ * __SIZEOF_INT__ != 32 || sizeof(u.r) != sizeof(u.f))
+        -:   23:    return 0;
+        1:   24:  u.r = foo(0x72);
+        1:   25:  if (u.f.a != 0 || u.f.b != 0xe || u.f.c != 0x72)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

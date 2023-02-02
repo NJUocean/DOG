@@ -1,0 +1,19 @@
+    1|       |// { dg-lto-do run }
+    2|       |// { dg-lto-options { { -O2 -flto -fipa-pta } } }
+    3|       |
+    4|      1|int __attribute__((__noinline__)) f(unsigned *p, int *x) {
+    5|      1|  int y = *p++ & 0xfff;
+    6|      1|  *x++ = y;
+    7|      1|  *x = *p;
+    8|      1|  return y;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  unsigned u[2] = {0x3aad, 0x5ad1};
+   13|      1|  int x[2] = {17689, 23456};
+   14|      1|
+   15|      1|  if (f(u, x) != 0xaad || x[0] != 0xaad || x[1] != 0x5ad1)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

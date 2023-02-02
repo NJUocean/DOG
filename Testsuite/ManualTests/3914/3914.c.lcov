@@ -1,0 +1,18 @@
+    1|       |/* PR tree-optimization/69097 */
+    2|       |
+    3|      1|__attribute__((noinline, noclone)) int f1(int x, int y) { return x % y; }
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) int f2(int x, int y) { return x % -y; }
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) int f3(int x, int y) {
+    8|      1|  int z = -y;
+    9|      1|  return x % z;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (f1(-__INT_MAX__ - 1, 1) != 0 || f2(-__INT_MAX__ - 1, -1) != 0 ||
+   14|      1|      f3(-__INT_MAX__ - 1, -1) != 0)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+

@@ -1,0 +1,49 @@
+        -:    0:Source:3327.c
+        -:    0:Graph:3327.gcno
+        -:    0:Data:3327.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/13260 */
+        -:    2:
+        -:    3:#include <string.h>
+        -:    4:
+        -:    5:typedef unsigned long u32;
+        -:    6:
+        1:    7:u32 in_aton(const char *x) { return 0x0a0b0c0d; }
+        -:    8:
+        1:    9:u32 root_nfs_parse_addr(char *name) {
+        -:   10:  u32 addr;
+        1:   11:  int octets = 0;
+        -:   12:  char *cp, *cq;
+        -:   13:
+        1:   14:  cp = cq = name;
+        5:   15:  while (octets < 4) {
+       12:   16:    while (*cp >= '0' && *cp <= '9')
+        8:   17:      cp++;
+        4:   18:    if (cp == cq || cp - cq > 3)
+        -:   19:      break;
+        4:   20:    if (*cp == '.' || octets == 3)
+        4:   21:      octets++;
+        4:   22:    if (octets < 4)
+        3:   23:      cp++;
+        4:   24:    cq = cp;
+        -:   25:  }
+        -:   26:
+       1*:   27:  if (octets == 4 && (*cp == ':' || *cp == '\0')) {
+        1:   28:    if (*cp == ':')
+        1:   29:      *cp++ = '\0';
+        1:   30:    addr = in_aton(name);
+        1:   31:    strcpy(name, cp);
+        -:   32:  } else
+    #####:   33:    addr = (-1);
+        -:   34:
+        1:   35:  return addr;
+        -:   36:}
+        -:   37:
+        1:   38:int main() {
+        -:   39:  static char addr[] = "10.11.12.13:/hello";
+        1:   40:  u32 result = root_nfs_parse_addr(addr);
+        1:   41:  if (result != 0x0a0b0c0d) {
+    #####:   42:    abort();
+        -:   43:  }
+        1:   44:  return 0;
+        -:   45:}

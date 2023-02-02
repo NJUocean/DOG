@@ -1,0 +1,45 @@
+        -:    0:Source:40.c
+        -:    0:Graph:40.gcno
+        -:    0:Data:40.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase derived from 20111227-1.c to ensure that REE is combining
+        -:    2:   redundant zero extends with zero extend to wider mode.  */
+        -:    3:/* { dg-do compile  { target i?86-*-* x86_64-*-* } } */
+        -:    4:/* { dg-options "-fdump-rtl-ree -O -free" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:unsigned short s;
+        -:    9:unsigned int i;
+        -:   10:unsigned long l;
+        -:   11:unsigned char v = -1;
+        -:   12:
+        3:   13:void __attribute__((noinline, noclone)) bar(int t) {
+        3:   14:  if (t == 2 && s != 0xff)
+    #####:   15:    abort();
+        3:   16:  if (t == 1 && i != 0xff)
+    #####:   17:    abort();
+        3:   18:  if (t == 0 && l != 0xff)
+    #####:   19:    abort();
+        3:   20:}
+        -:   21:
+        3:   22:void __attribute__((noinline, noclone)) foo(unsigned char *a, int t) {
+        3:   23:  unsigned char r = v;
+        -:   24:
+        3:   25:  if (t == 2)
+        1:   26:    s = (unsigned short)r;
+        2:   27:  else if (t == 1)
+        1:   28:    i = (unsigned int)r;
+        1:   29:  else if (t == 0)
+        1:   30:    l = (unsigned long)r;
+        3:   31:  bar(t);
+        3:   32:}
+        -:   33:
+        1:   34:int main(void) {
+        1:   35:  foo(&v, 0);
+        1:   36:  foo(&v, 1);
+        1:   37:  foo(&v, 2);
+        1:   38:  return 0;
+        -:   39:}
+        -:   40:/* { dg-final { scan-rtl-dump "Elimination opportunities = 3 realized = 3" "ree"
+        -:   41: * } }  */

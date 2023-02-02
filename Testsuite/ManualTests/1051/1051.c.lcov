@@ -1,0 +1,35 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |#include <inttypes.h>
+    5|       |
+    6|       |struct U {
+    7|       |  int M0;
+    8|       |  int M1;
+    9|       |} __attribute((aligned(16)));
+   10|       |
+   11|       |volatile struct U p0 = {1, 0};
+   12|       |
+   13|      1|void __attribute__((noinline)) foo(struct U p) {
+   14|      1|
+   15|      1|  volatile intptr_t mask = 0b1111;
+   16|      1|  volatile int dummy[2];
+   17|      1|  struct U p1 = p;
+   18|      1|  dummy[1] = p.M0;
+   19|      1|
+   20|      1|  if ((intptr_t)(&p1) & mask)
+   21|      0|    __builtin_abort();
+   22|      1|  if ((intptr_t)(&p) & mask)
+   23|      0|    __builtin_abort();
+   24|      1|
+   25|      1|  if (p1.M0 != dummy[1])
+   26|      0|    __builtin_abort();
+   27|      1|  if (p1.M1 != p.M1)
+   28|      0|    __builtin_abort();
+   29|      1|}
+   30|       |
+   31|      1|int main() {
+   32|      1|  foo(p0);
+   33|      1|  return 0;
+   34|      1|}
+

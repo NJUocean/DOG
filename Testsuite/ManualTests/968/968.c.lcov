@@ -1,0 +1,55 @@
+    1|       |/* PR rtl-optimization/64536 */
+    2|       |/* { dg-do link } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |/* { dg-additional-options "-fPIC" { target fpic } } */
+    5|       |/* { dg-require-effective-target ptr32plus } */
+    6|       |
+    7|       |struct S {
+    8|       |  long q;
+    9|       |} * h;
+   10|       |long a, b, g, j, k, *c, *d, *e, *f, *i;
+   11|      0|long *baz(void) {
+   12|      0|  asm volatile("" : : : "memory");
+   13|      0|  return e;
+   14|      0|}
+   15|       |
+   16|      0|void bar(int x) {
+   17|      0|  int y;
+   18|      0|  for (y = 0; y < x; y++) {
+   19|      0|    switch (b) {
+   20|      0|    case 0:
+   21|      0|    case 2:
+   22|      0|      a++;
+   23|      0|      break;
+   24|      0|    case 3:
+   25|      0|      a++;
+   26|      0|      break;
+   27|      0|    case 1:
+   28|      0|      a++;
+   29|      0|    }
+   30|      0|    if (d) {
+   31|      0|      f = baz();
+   32|      0|      g = k++;
+   33|      0|      if (&h->q) {
+   34|      0|        j = *f;
+   35|      0|        h->q = *f;
+   36|      0|      } else
+   37|      0|        i = (long *)(h->q = *f);
+   38|      0|      *c++ = (long)f;
+   39|      0|      e += 6;
+   40|      0|    } else {
+   41|      0|      f = baz();
+   42|      0|      g = k++;
+   43|      0|      if (&h->q) {
+   44|      0|        j = *f;
+   45|      0|        h->q = *f;
+   46|      0|      } else
+   47|      0|        i = (long *)(h->q = *f);
+   48|      0|      *c++ = (long)f;
+   49|      0|      e += 6;
+   50|      0|    }
+   51|      0|  }
+   52|      0|}
+   53|       |
+   54|      1|int main() { return 0; }
+

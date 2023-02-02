@@ -1,0 +1,26 @@
+        -:    0:Source:2650.c
+        -:    0:Graph:2650.gcno
+        -:    0:Data:2650.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target x32 } } */
+        -:    2:/* { dg-require-effective-target maybe_x32 } */
+        -:    3:/* { dg-options "-O2 -mx32 -maddress-mode=long" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:long long li;
+        -:    8:
+        1:    9:long long __attribute__((noinline)) testfunc(void *addr) {
+        1:   10:  li = (long long)(int)addr;
+        1:   11:  li &= 0xffffffff;
+        1:   12:  return li;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:  volatile long long rv_test;
+        1:   17:  rv_test = testfunc((void *)0x87651234);
+        1:   18:  if (rv_test != 0x87651234ULL)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

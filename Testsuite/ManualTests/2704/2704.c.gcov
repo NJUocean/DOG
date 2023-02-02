@@ -1,0 +1,23 @@
+        -:    0:Source:2704.c
+        -:    0:Graph:2704.gcno
+        -:    0:Data:2704.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -mgeneral-regs-only" } */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        1:    6:int cal(int a, int b) {
+        1:    7:  int sum = a + b;
+        1:    8:  int sum1 = a * b;
+        1:    9:  return (a + b + sum + sum1);
+        -:   10:}
+        -:   11:
+        1:   12:int main(int argc, char **argv) {
+        1:   13:  int ret = cal(1, 2);
+        -:   14:
+        1:   15:  if (ret != 8)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

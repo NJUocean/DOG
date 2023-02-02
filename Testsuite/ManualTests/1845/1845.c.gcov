@@ -1,0 +1,26 @@
+        -:    0:Source:1845.c
+        -:    0:Graph:1845.gcno
+        -:    0:Data:1845.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-ipa-profile-blocks-details
+        -:    2: * -fdump-tree-switchlower1-blocks-details" } */
+        -:    3:int max = 33333;
+        -:    4:int a[8];
+        1:    5:int main() {
+        -:    6:  int i;
+    33334:    7:  for (i = 0; i < max; i++) {
+    33333:    8:    a[i % 8]++;
+        -:    9:  }
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:/* Loop header copying will peel away the initial conditional, so the loop body
+        -:   13:   is once reached directly from entry point of function, rest via loopback
+        -:   14:   edge.  */
+        -:   15:/* autofdo cannot do that precise counts */
+        -:   16:/* { dg-final-use-not-autofdo { scan-ipa-dump "loop depth 1, count 33334"
+        -:   17: * "profile"} } */
+        -:   18:/* { dg-final-use-not-autofdo { scan-tree-dump "loop depth 1, count 33333"
+        -:   19: * "switchlower1"} } */
+        -:   20:/* { dg-final-use-not-autofdo { scan-tree-dump-not "loop depth 1, count 33332"
+        -:   21: * "switchlower1"} } */
+        -:   22:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "switchlower1"} } */

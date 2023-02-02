@@ -1,0 +1,21 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <string.h>
+        -:    2:
+        1:    3:static int special_format (const char *fmt)
+        -:    4:{
+        -:    5:  return (
+        2:    6:    strchr (fmt, '*') != 0 ||
+        1:    7:    strchr (fmt, 'V') != 0 ||
+        3:    8:    strchr (fmt, 'S') != 0 ||
+        1:    9:    strchr (fmt, 'n') != 0 );
+        -:   10:}
+        -:   11:
+        1:   12:int main()
+        -:   13:{
+        1:   14:  special_format ("ee");
+        1:   15:  return 0;
+        -:   16:}

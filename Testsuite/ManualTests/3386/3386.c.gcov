@@ -1,0 +1,54 @@
+        -:    0:Source:3386.c
+        -:    0:Graph:3386.gcno
+        -:    0:Data:3386.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-size "0x80100" } */
+        -:    2:
+        -:    3:/* Like pr28982a.c, but with the spill slots outside the range of
+        -:    4:   a single sp-based load on ARM.  This test tests for cases where
+        -:    5:   the addresses in the base and index reloads require further reloads.  */
+        -:    6:#define NITER 4
+        -:    7:#define NVARS 20
+        -:    8:#define MULTI(X)                                                               \
+        -:    9:  X(0), X(1), X(2), X(3), X(4), X(5), X(6), X(7), X(8), X(9), X(10), X(11),    \
+        -:   10:      X(12), X(13), X(14), X(15), X(16), X(17), X(18), X(19)
+        -:   11:
+        -:   12:#define DECLAREI(INDEX) inc##INDEX = incs[INDEX]
+        -:   13:#define DECLAREF(INDEX) *ptr##INDEX = ptrs[INDEX], result##INDEX = 0
+        -:   14:#define LOOP(INDEX) result##INDEX += *ptr##INDEX, ptr##INDEX += inc##INDEX
+        -:   15:#define COPYOUT(INDEX) results[INDEX] = result##INDEX
+        -:   16:
+        -:   17:float *ptrs[NVARS];
+        -:   18:float results[NVARS];
+        -:   19:int incs[NVARS];
+        -:   20:
+        -:   21:struct big {
+        -:   22:  int i[0x10000];
+        -:   23:};
+        1:   24:void __attribute__((noinline)) bar(struct big b) { incs[0] += b.i[0]; }
+        -:   25:
+        1:   26:void __attribute__((noinline)) foo(int n) {
+        1:   27:  struct big b = {};
+        1:   28:  int MULTI(DECLAREI);
+        1:   29:  float MULTI(DECLAREF);
+        5:   30:  while (n--)
+        4:   31:    MULTI(LOOP);
+        1:   32:  MULTI(COPYOUT);
+        1:   33:  bar(b);
+        1:   34:}
+        -:   35:
+        -:   36:float input[NITER * NVARS];
+        -:   37:
+        1:   38:int main(void) {
+        -:   39:  int i;
+        -:   40:
+       21:   41:  for (i = 0; i < NVARS; i++)
+       20:   42:    ptrs[i] = input + i, incs[i] = i;
+       81:   43:  for (i = 0; i < NITER * NVARS; i++)
+       80:   44:    input[i] = i;
+        1:   45:  foo(NITER);
+       21:   46:  for (i = 0; i < NVARS; i++)
+       20:   47:    if (results[i] != i * NITER * (NITER + 1) / 2)
+    #####:   48:      return 1;
+        1:   49:  return 0;
+        -:   50:}

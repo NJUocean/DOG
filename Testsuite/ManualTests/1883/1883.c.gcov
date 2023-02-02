@@ -1,0 +1,26 @@
+        -:    0:Source:1883.c
+        -:    0:Graph:1883.gcno
+        -:    0:Data:1883.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-gimple" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct S {
+        -:    6:  int i;
+        -:    7:};
+        -:    8:struct S arr[32];
+        -:    9:volatile int count = 0;
+        -:   10:
+        1:   11:struct S __attribute__((noinline)) incr() {
+        1:   12:  ++count;
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  arr[count++] = incr();
+        1:   17:  if (count != 2)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        -:   22:/* { dg-final { scan-tree-dump-times " = count;" 3 "gimple" } } */

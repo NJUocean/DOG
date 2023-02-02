@@ -1,0 +1,32 @@
+        -:    0:Source:1735.c
+        -:    0:Graph:1735.gcno
+        -:    0:Data:1735.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:/* { dg-additional-options "-fgcse-after-reload" } */
+        -:    3:
+        -:    4:typedef unsigned char u8;
+        -:    5:typedef unsigned short u16;
+        -:    6:typedef unsigned int u32;
+        -:    7:typedef unsigned long long u64;
+        -:    8:int a, b, c;
+        1:    9:int d(u16 e, u64 f) {
+        1:   10:  b |= e;
+        -:   11:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   12:  __builtin_memset(&f, e, 2);
+        -:   13:#elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ ||                               \
+        -:   14:       __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__)
+        -:   15:  __builtin_memset((char *)&f + sizeof(f) - 2, e, 2);
+        -:   16:#else
+        -:   17:#error "endian unknown?"
+        -:   18:#endif
+       1*:   19:  a = (u16)-e >= 2 ?: __builtin_popcountll(f);
+        1:   20:  return a + c;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  __int128 x = d(~0, 0);
+        1:   25:  if (x != 16)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

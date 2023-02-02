@@ -1,0 +1,29 @@
+        -:    0:Source:4104.c
+        -:    0:Graph:4104.gcno
+        -:    0:Data:4104.gcda
+        -:    0:Runs:1
+        -:    1:/* Test va_arg when the result is ignored and only the pointer increment
+        -:    2:   side effect is used.  */
+        -:    3:#include <stdarg.h>
+        -:    4:
+        1:    5:static int foo(int a, ...) {
+        -:    6:  va_list va;
+        -:    7:  int i, res;
+        -:    8:
+        1:    9:  va_start(va, a);
+        -:   10:
+        5:   11:  for (i = 0; i < 4; ++i)
+        4:   12:    (void)va_arg(va, int);
+        -:   13:
+        1:   14:  res = va_arg(va, int);
+        -:   15:
+        1:   16:  va_end(va);
+        -:   17:
+        1:   18:  return res;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  if (foo(5, 4, 3, 2, 1, 0))
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

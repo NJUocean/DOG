@@ -1,0 +1,42 @@
+        -:    0:Source:3912.c
+        -:    0:Graph:3912.gcno
+        -:    0:Data:3912.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  long int p_x, p_y;
+        -:    3:} Point;
+        -:    4:
+        1:    5:int f(Point basePt, Point pt1, Point pt2) {
+        -:    6:  long long vector;
+        -:    7:
+        1:    8:  vector =
+        1:    9:      (long long)(pt1.p_x - basePt.p_x) * (long long)(pt2.p_y - basePt.p_y) -
+        1:   10:      (long long)(pt1.p_y - basePt.p_y) * (long long)(pt2.p_x - basePt.p_x);
+        -:   11:
+        1:   12:  if (vector > (long long)0)
+    #####:   13:    return 0;
+        1:   14:  else if (vector < (long long)0)
+        1:   15:    return 1;
+        -:   16:  else
+    #####:   17:    return 2;
+        -:   18:}
+        -:   19:
+        1:   20:main() {
+        -:   21:  Point b, p1, p2;
+        -:   22:  int answer;
+        -:   23:
+        1:   24:  b.p_x = -23250;
+        1:   25:  b.p_y = 23250;
+        -:   26:
+        1:   27:  p1.p_x = 23250;
+        1:   28:  p1.p_y = -23250;
+        -:   29:
+        1:   30:  p2.p_x = -23250;
+        1:   31:  p2.p_y = -23250;
+        -:   32:
+        1:   33:  answer = f(b, p1, p2);
+        -:   34:
+        1:   35:  if (answer != 1)
+    #####:   36:    abort();
+        1:   37:  exit(0);
+        -:   38:}

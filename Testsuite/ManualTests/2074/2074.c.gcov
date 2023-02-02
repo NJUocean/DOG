@@ -1,0 +1,24 @@
+        -:    0:Source:2074.c
+        -:    0:Graph:2074.gcno
+        -:    0:Data:2074.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O -fdump-tree-fre1-details" } */
+        -:    3:/* { dg-additional-options "-fno-common" { target hppa*-*-hpux* } } */
+        -:    4:
+        -:    5:#define vector __attribute__((vector_size(16)))
+        -:    6:
+        -:    7:struct {
+        -:    8:  float i;
+        -:    9:  vector float global_res;
+        -:   10:} s;
+        -:   11:float x;
+        1:   12:int main(int argc) {
+        -:   13:  vector float res;
+        1:   14:  res = (vector float){1.0f, 2.0f, 3.0f, 5.0f};
+        1:   15:  s.global_res = res;
+        1:   16:  x = *((float *)&s.global_res + 1);
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump "Replaced BIT_FIELD_REF.*with 2" "fre1" } } */

@@ -1,0 +1,19 @@
+    1|       |/* Distilled from try_pre_increment in flow.c.  If-conversion inserted
+    2|       |   new instructions at the wrong place on ppc.  */
+    3|       |
+    4|      1|int foo(int a) {
+    5|      1|  int x;
+    6|      1|  x = 0;
+    7|      1|  if (a > 0)
+    8|      1|    x = 1;
+    9|      1|  if (a < 0)
+   10|      0|    x = 1;
+   11|      1|  return x;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  if (foo(1) != 1)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

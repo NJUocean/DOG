@@ -1,0 +1,30 @@
+        -:    0:Source:1207.c
+        -:    0:Graph:1207.gcno
+        -:    0:Data:1207.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase ICEd on IA-32 because the backend was inconsistent whether
+        -:    2:   to allow addends for @dtpoff relocs or not.  */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-require-effective-target fpic } */
+        -:    5:/* { dg-options "-O2 -fpic" } */
+        -:    6:/* { dg-require-effective-target tls } */
+        -:    7:
+        -:    8:struct S {
+        -:    9:  int s0, s1, s2, s3;
+        -:   10:};
+        -:   11:static __thread struct S x;
+        -:   12:extern void abort(void);
+        -:   13:extern void exit(int);
+        -:   14:
+        1:   15:void foo(struct S *s) { s->s2 = 231; }
+        -:   16:
+        1:   17:void bar(void) {
+        1:   18:  if (x.s0 == 231 || x.s2 != 231)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(&x);
+        1:   24:  bar();
+        1:   25:  exit(0);
+        -:   26:}

@@ -1,0 +1,29 @@
+        -:    0:Source:2040.c
+        -:    0:Graph:2040.gcno
+        -:    0:Data:2040.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:
+        -:    4:int a, b, c, d;
+        -:    5:extern int printf(const char *, ...);
+        1:    6:int main(void) {
+        -:    7:  int e;
+        -:    8:  int f;
+        -:    9:  /* We should be able to transform these into the same expression, and only
+        -:   10:   * have two additions.  */
+        1:   11:  e = a + b;
+        1:   12:  e = e + c;
+        1:   13:  f = c + a;
+        1:   14:  f = f + b;
+        1:   15:  printf("%d %d\n", e, f);
+        -:   16:}
+        -:   17:
+        -:   18:/* We cannot reassociate these expressions because of undefined signed
+        -:   19:   integer overflow.  Instead the value-numberer has to be extended
+        -:   20:   to canonicalize these expressions.  */
+        -:   21:
+        -:   22:/* { dg-final { scan-tree-dump-times "b.._. \\\+ a.._." 1 "optimized" { xfail
+        -:   23: * *-*-* } } } */
+        -:   24:/* { dg-final { scan-tree-dump-times " \\\+ " 2 "optimized" { xfail *-*-* } } }
+        -:   25: */

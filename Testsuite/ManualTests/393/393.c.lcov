@@ -1,0 +1,46 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|#define vector __attribute__((vector_size(sizeof(int) * 4)))
+    4|       |
+    5|       |static vector int allones = {1, 1, 1, 1};
+    6|       |static vector int allzeros = {0, 0, 0, 0};
+    7|       |static vector int numbers = {0, 1, 2, 3};
+    8|       |static vector int numbersleftshiftallones = {0, 2, 4, 6};
+    9|       |static vector int numbersrightshiftallones = {0, 0, 1, 1};
+   10|       |
+   11|       |static vector unsigned int uallones = {1, 1, 1, 1};
+   12|       |static vector unsigned int uallzeros = {0, 0, 0, 0};
+   13|       |static vector unsigned int unumbers = {0, 1, 2, 3};
+   14|       |static vector unsigned int unumbersleftshiftallones = {0, 2, 4, 6};
+   15|       |static vector unsigned int unumbersrightshiftallones = {0, 0, 1, 1};
+   16|       |
+   17|       |#define TEST(result, expected)                                                 \
+   18|     10|  do {                                                                         \
+   19|     10|    __typeof__(result) result1 = result;                                       \
+   20|     10|    if (sizeof(result1) != sizeof(expected))                                   \
+   21|     10|      __builtin_abort();                                                       \
+   22|     10|    if (__builtin_memcmp(&result1, &expected, sizeof(result1)) != 0)           \
+   23|     10|      __builtin_abort();                                                       \
+   24|     10|  } while (0);
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  vector int result;
+   28|      1|  TEST((numbers << allzeros), numbers);
+   29|      1|  TEST((numbers >> allzeros), numbers);
+   30|      1|  TEST((numbers << allones), numbersleftshiftallones);
+   31|      1|  TEST((numbers >> allones), numbersrightshiftallones);
+   32|      1|  /* Test left shift followed by a right shift, numbers should be back as
+   33|      1|     numbers are all small numbers and no lose of precision happens.   */
+   34|      1|  TEST((numbers << allones) >> allones, numbers);
+   35|      1|
+   36|      1|  TEST((unumbers << uallzeros), unumbers);
+   37|      1|  TEST((unumbers >> uallzeros), unumbers);
+   38|      1|  TEST((unumbers << uallones), unumbersleftshiftallones);
+   39|      1|  TEST((unumbers >> uallones), unumbersrightshiftallones);
+   40|      1|  /* Test left shift followed by a right shift, numbers should be back as
+   41|      1|     numbers are all small numbers and no lose of precision happens.   */
+   42|      1|  TEST((unumbers << uallones) >> uallones, unumbers);
+   43|      1|
+   44|      1|  return 0;
+   45|      1|}
+

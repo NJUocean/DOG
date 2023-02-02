@@ -1,0 +1,88 @@
+        -:    0:Source:1433.c
+        -:    0:Graph:1433.gcno
+        -:    0:Data:1433.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef enum {
+        -:    4:  PVT_A = 0,
+        -:    5:  PVT_B = 1,
+        -:    6:  PVT_CONFIG = 2,
+        -:    7:  PVT_RESERVED3 = 3,
+        -:    8:} T_CR_SELECT;
+        -:    9:
+        -:   10:typedef enum {
+        -:   11:  STD_ULOGIC_0 = 0,
+        -:   12:  STD_ULOGIC_1 = 1,
+        -:   13:} STD_ULOGIC;
+        -:   14:
+        -:   15:typedef struct {
+        -:   16:  unsigned char rtp : 3;
+        -:   17:  unsigned char rtn : 3;
+        -:   18:} C;
+        -:   19:
+        -:   20:typedef struct {
+        -:   21:  unsigned char nd;
+        -:   22:  unsigned char pd;
+        -:   23:  unsigned char rtn;
+        -:   24:  unsigned char rtp;
+        -:   25:} A;
+        -:   26:
+        -:   27:typedef struct {
+        -:   28:  unsigned short reserved : 14;
+        -:   29:  unsigned char Z_rx_enable : 2;
+        -:   30:  A pvt;
+        -:   31:} B;
+        -:   32:
+        -:   33:typedef struct {
+        -:   34:  B cr_dsclk_q3;
+        -:   35:  B cr_data_q3;
+        -:   36:  B cr_addr_q3;
+        -:   37:  B cr_cmd_q3;
+        -:   38:  B cr_pres_q3;
+        -:   39:  C cr_vref_q3[6];
+        -:   40:  unsigned char pres_disable;
+        -:   41:  unsigned char pres_drive_high;
+        -:   42:  unsigned char c_enab_120;
+        -:   43:  STD_ULOGIC clk_tximp;
+        -:   44:  STD_ULOGIC dqs_tximp;
+        -:   45:  STD_ULOGIC cmd_tximp;
+        -:   46:  STD_ULOGIC data_tximp;
+        -:   47:  STD_ULOGIC dqs_rxterm;
+        -:   48:  STD_ULOGIC data_rxterm;
+        -:   49:  T_CR_SELECT cr_clk_sel;
+        -:   50:  unsigned char cr_clk : 5;
+        -:   51:  T_CR_SELECT cr_dsclk_odd_sel;
+        -:   52:  unsigned char cr_dsclk_odd : 5;
+        -:   53:  T_CR_SELECT cr_dsclk_even_sel;
+        -:   54:  unsigned char cr_dsclk_even : 5;
+        -:   55:  T_CR_SELECT cr_data_sel;
+        -:   56:  unsigned char cr_data : 5;
+        -:   57:  T_CR_SELECT cr_vref_sel;
+        -:   58:  unsigned char cr_vref : 5;
+        -:   59:  T_CR_SELECT cr_others_sel;
+        -:   60:  unsigned char cr_others : 5;
+        -:   61:} CONFIG;
+        -:   62:
+        -:   63:typedef struct {
+        -:   64:  unsigned char enable_monitor;
+        -:   65:  unsigned short step_out_pointer : 12;
+        -:   66:  unsigned short hold_out_pointer : 12;
+        -:   67:  unsigned short enable_wr_dqs : 12;
+        -:   68:  unsigned short use_alt_rd_dqs : 12;
+        -:   69:  CONFIG io_buf;
+        -:   70:} mystruct;
+        -:   71:
+        1:   72:unsigned short __attribute__((noinline, noclone)) testfunction(unsigned i) {
+        -:   73:  mystruct dmfe[8];
+        1:   74:  dmfe[0].use_alt_rd_dqs = 1;
+        1:   75:  dmfe[i].use_alt_rd_dqs = 0;
+        1:   76:  return dmfe[0].use_alt_rd_dqs;
+        -:   77:}
+        -:   78:
+        -:   79:extern void abort(void);
+        1:   80:int main() {
+        1:   81:  if (testfunction(0) != 0)
+    #####:   82:    abort();
+        1:   83:  return 0;
+        -:   84:}

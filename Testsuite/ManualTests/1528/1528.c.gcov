@@ -1,0 +1,52 @@
+        -:    0:Source:1528.c
+        -:    0:Graph:1528.gcno
+        -:    0:Data:1528.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-g" } */
+        -:    3:
+        -:    4:int a, b, c, d, i, j, q, *e, *h, *k, *r, **p = &e;
+        -:    5:const int *f, **n = &f;
+        -:    6:static int g;
+        -:    7:
+        1:    8:void fn1(int p1) { c = p1; }
+        -:    9:
+        1:   10:static int *fn2(int *p1, const int *p2) {
+        1:   11:  if (g)
+    #####:   12:    n = &p2;
+        1:   13:  *n = p2;
+        -:   14:  int o[245];
+        1:   15:  fn1(o != p2);
+        1:   16:  return p1;
+        -:   17:}
+        -:   18:
+        1:   19:static int *fn3() {
+        1:   20:  int s[54], *t = &s[0], u = 0, v = 1;
+        1:   21:  h = &v;
+        1:   22:  q = 1;
+       1*:   23:  for (; q; q++) {
+        1:   24:    int *w[] = {&u};
+        1:   25:    for (; v;)
+        1:   26:      return *p;
+        -:   27:  }
+    #####:   28:  *r = *t + b >= 0;
+    #####:   29:  return *p;
+        -:   30:}
+        -:   31:
+        1:   32:static int fn4(int *p1) {
+        -:   33:  int *l[2], **m[7];
+        2:   34:  for (; i < 1; i++)
+        2:   35:    for (; j < 1; j++)
+        1:   36:      m[i * 70] = &l[0];
+        1:   37:  k = fn3();
+        1:   38:  fn2(0, p1);
+        1:   39:  if ((m[0] == 0) & a)
+    #####:   40:    for (;;)
+        -:   41:      ;
+        1:   42:  return 0;
+        -:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  fn4(&d);
+        1:   47:  return 0;
+        -:   48:}

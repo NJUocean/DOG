@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fno-strict-aliasing" } */
+    3|       |
+    4|       |extern void exit(int);
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct foos {
+    8|       |  int l;
+    9|       |};
+   10|       |int foo;
+   11|       |static struct foos *getfoo(void);
+   12|      1|int main(void) {
+   13|      1|  struct foos *f = getfoo();
+   14|      1|  f->l = 1;
+   15|      1|  foo = 2;
+   16|      1|  if (f->l == 1)
+   17|      0|    abort();
+   18|      1|  exit(0);
+   19|      1|}
+   20|      1|static struct foos *getfoo(void) { return (struct foos *)&foo; }
+

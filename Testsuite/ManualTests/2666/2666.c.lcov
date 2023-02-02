@@ -1,0 +1,24 @@
+    1|       |/* PR target/59363 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -mtune=amdfam10" } */
+    4|       |
+    5|       |typedef struct {
+    6|       |  int ctxlen;
+    7|       |  long interhunkctxlen;
+    8|       |  int flags;
+    9|       |  long find_func;
+   10|       |  void *find_func_priv;
+   11|       |  int hunk_func;
+   12|       |} xdemitconf_t;
+   13|       |
+   14|      1|__attribute__((noinline)) int xdi_diff(xdemitconf_t *xecfg) {
+   15|      1|  if (xecfg->hunk_func == 0)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+   19|      1|int main() {
+   20|      1|  xdemitconf_t xecfg = {0};
+   21|      1|  xecfg.hunk_func = 1;
+   22|      1|  return xdi_diff(&xecfg);
+   23|      1|}
+

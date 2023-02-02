@@ -1,0 +1,49 @@
+    1|       |/* PR tree-optimization/94734 */
+    2|       |
+    3|      1|__attribute__((noipa)) int foo(int n) {
+    4|      1|  int arr[16], s = 0;
+    5|  10.3k|  for (int i = 0; i < n; i++) {
+    6|  10.3k|    if (i < 16)
+    7|     16|      arr[i] = i;
+    8|  10.3k|  }
+    9|     17|  for (int i = 0; i < 16; i++)
+   10|     16|    s += arr[i];
+   11|      1|  return s;
+   12|      1|}
+   13|       |
+   14|      2|__attribute__((noipa)) int bar(int n, int x, unsigned long y, unsigned long z) {
+   15|      2|  int arr[16], s = 0;
+   16|      2|  arr[4] = 42;
+   17|     52|  for (int i = 0; i < n; i++) {
+   18|     50|    if (x == (i & 0x25))
+   19|      6|      arr[y] = i;
+   20|     50|  }
+   21|      2|  return arr[z];
+   22|      2|}
+   23|       |
+   24|      3|__attribute__((noipa)) int baz(int n, int x, unsigned long z) {
+   25|      3|  int arr[16], s = 0;
+   26|      3|  arr[12] = 42;
+   27|     78|  for (int i = 0; i < n; i++) {
+   28|     75|    if (x == (i & 0x25))
+   29|     12|      arr[7] = i;
+   30|     75|  }
+   31|      3|  return arr[z];
+   32|      3|}
+   33|       |
+   34|      1|int main() {
+   35|      1|  if (foo(10374) != 15 * 16 / 2)
+   36|      0|    __builtin_abort();
+   37|      1|  if (bar(25, 0x25, (unsigned long)0xdeadbeefbeefdeadULL, 4) != 42)
+   38|      0|    __builtin_abort();
+   39|      1|  if (bar(25, 4, 15, 15) != 22)
+   40|      0|    __builtin_abort();
+   41|      1|  if (baz(25, 0x25, 12) != 42)
+   42|      0|    __builtin_abort();
+   43|      1|  if (baz(25, 4, 7) != 22)
+   44|      0|    __builtin_abort();
+   45|      1|  if (baz(25, 4, 12) != 42)
+   46|      0|    __builtin_abort();
+   47|      1|  return 0;
+   48|      1|}
+

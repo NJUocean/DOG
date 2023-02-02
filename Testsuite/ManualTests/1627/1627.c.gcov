@@ -1,0 +1,44 @@
+        -:    0:Source:1627.c
+        -:    0:Graph:1627.gcno
+        -:    0:Data:1627.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, b = 1, c, e, f, g, k, m, n, o;
+        -:    4:char d, h, i, j, l;
+        -:    5:char res[2];
+        -:    6:
+        1:    7:void __attribute__((noinline, noclone)) fn2() { d = 2; }
+        -:    8:
+        1:    9:void fn3() {
+        -:   10:  for (;;) {
+        2:   11:    for (; b; b--) {
+        1:   12:      fn2();
+        1:   13:      if (e)
+    #####:   14:        j = 1;
+        1:   15:      if (f)
+    #####:   16:      L1:
+    #####:   17:        k = j | (a & l);
+        -:   18:      for (;;) {
+        1:   19:        __builtin_snprintf(res, 2, "%d\n", d);
+        1:   20:        if (d)
+        1:   21:          break;
+    #####:   22:        for (; o; o--)
+    #####:   23:          for (; n;)
+    #####:   24:            for (; m; m++)
+        -:   25:              ;
+    #####:   26:        goto L1;
+        -:   27:      }
+        -:   28:    }
+        1:   29:    g = h;
+        1:   30:    c = i;
+        1:   31:    break;
+        -:   32:  }
+        1:   33:}
+        -:   34:
+        1:   35:int main() {
+        1:   36:  fn3();
+        1:   37:  if (res[0] != '2')
+    #####:   38:    __builtin_abort();
+        1:   39:  return 0;
+        -:   40:}

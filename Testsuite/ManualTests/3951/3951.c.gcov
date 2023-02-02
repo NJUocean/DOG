@@ -1,0 +1,23 @@
+        -:    0:Source:3951.c
+        -:    0:Graph:3951.gcno
+        -:    0:Data:3951.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78726 */
+        -:    2:
+        -:    3:unsigned char b = 36, c = 173;
+        -:    4:unsigned int d;
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) void foo(void) {
+        1:    7:  unsigned a = ~b;
+        1:    8:  d = a * c * c + 1023094746U * a;
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  if (__SIZEOF_INT__ != 4 || __CHAR_BIT__ != 8)
+        -:   13:    return 0;
+        1:   14:  asm volatile("" : : "g"(&b), "g"(&c) : "memory");
+        1:   15:  foo();
+        1:   16:  if (d != 799092689U)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

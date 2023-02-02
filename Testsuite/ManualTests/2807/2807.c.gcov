@@ -1,0 +1,18 @@
+        -:    0:Source:2807.c
+        -:    0:Graph:2807.gcno
+        -:    0:Data:2807.gcda
+        -:    0:Runs:1
+        -:    1:int func() __attribute__((break_handler));
+        -:    2:volatile int intr_occurred;
+        -:    3:
+        1:    4:int func() {
+        -:    5:
+        -:    6:  /* { dg-final { scan-assembler "rtbd\tr(\[0-9]\|\[1-2]\[0-9]\|3\[0-1]),8" } }
+        -:    7:   */
+        1:    8:  intr_occurred += 1;
+        1:    9:}
+        1:   10:int main() {
+        -:   11:  /* { dg-final { scan-assembler "brki\tr16" } } */
+        1:   12:  func();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,8 @@
+// control flow context
+digraph {
+	__N3 [label="3-while-for-4, 4"]
+	__N3__N4 [label=4 style=dotted]
+	__N3 -> __N3__N4 [label=ON color=red]
+	__N4 [label="4-passive-5, 6"]
+	__N3__N4 -> __N4 [label=agent color=lightblue]
+}

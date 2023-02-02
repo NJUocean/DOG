@@ -1,0 +1,13 @@
+        -:    0:Source:3482.c
+        -:    0:Graph:3482.gcno
+        -:    0:Data:3482.gcda
+        -:    0:Runs:1
+        -:    1:extern volatile int ReadyFlag_NotProperlyInitialized;
+        -:    2:
+        -:    3:volatile int ReadyFlag_NotProperlyInitialized = 1;
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  if (ReadyFlag_NotProperlyInitialized != 1)
+    #####:    7:    __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}

@@ -1,0 +1,36 @@
+        -:    0:Source:1407.c
+        -:    0:Graph:1407.gcno
+        -:    0:Data:1407.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:#if __SIZEOF_INT__ > 2
+        -:    6:struct foo {
+        -:    7:  int *f;
+        -:    8:  int i;
+        -:    9:};
+        -:   10:
+        -:   11:int baz;
+        -:   12:#else
+        -:   13:struct foo {
+        -:   14:  long *f;
+        -:   15:  long i;
+        -:   16:};
+        -:   17:
+        -:   18:long baz;
+        -:   19:#endif
+        -:   20:
+        1:   21:void __attribute__((noinline)) bar(struct foo x) { *(x.f) = x.i; }
+        -:   22:
+        1:   23:int main() {
+        1:   24:  struct foo x = {&baz, 0xdeadbeef};
+        -:   25:
+        1:   26:  bar(x);
+        -:   27:
+        1:   28:  if (baz != 0xdeadbeef)
+    #####:   29:    abort();
+        -:   30:
+        1:   31:  return 0;
+        -:   32:}

@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |int a, c, e[5][2];
+    4|       |unsigned int d;
+    5|       |
+    6|      1|int main() {
+    7|      3|  for (d = 0; d < 2; d++)
+    8|      2|    if (a ? 0 : e[c + 3][d] & e[c + 4][d])
+    9|      0|      break;
+   10|      1|  return 0;
+   11|      1|}
+

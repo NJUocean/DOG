@@ -1,0 +1,17 @@
+        -:    0:Source:2778.c
+        -:    0:Graph:2778.gcno
+        -:    0:Data:2778.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/1540 from Mattias Lampe <lampe@tu-harburg.de>,
+        -:    2:   adapted to a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+        -:    3:   GCC 2.95.2 fails, CVS GCC of 2001-01-13 passes.  */
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int array1[1] = {1};
+        1:    9:  int array2[2][1] = {{1}, {0}};
+        1:   10:  if (array1[0] != 1)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

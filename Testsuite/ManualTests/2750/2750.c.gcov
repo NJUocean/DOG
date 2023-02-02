@@ -1,0 +1,26 @@
+        -:    0:Source:2750.c
+        -:    0:Graph:2750.gcno
+        -:    0:Data:2750.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/90867 */
+        -:    2:/* { dg-do run { target lp64 } } */
+        -:    3:/* { dg-options "-O2 -msse2" } */
+        -:    4:
+        -:    5:unsigned long long freq = 3600000000UL; /* 3.6 GHz = 3600.0 MHz */
+        -:    6:
+        4:    7:__attribute__((noipa)) void bar(double x) {
+        -:    8:  static double d = 3600000000.0;
+        4:    9:  if (x != d)
+    #####:   10:    __builtin_abort();
+        4:   11:  d /= 1000.0;
+        4:   12:}
+        -:   13:
+        1:   14:__attribute__((target("arch=x86-64"))) int foo() {
+        1:   15:  bar((double)freq);
+        1:   16:  bar(1e-3 * freq);
+        1:   17:  bar(1e-6 * freq);
+        1:   18:  bar(1e-9 * freq);
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        1:   22:int main() { return foo(); }

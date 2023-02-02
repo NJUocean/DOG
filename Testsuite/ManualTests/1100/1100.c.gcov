@@ -1,0 +1,54 @@
+        -:    0:Source:1100.c
+        -:    0:Graph:1100.gcno
+        -:    0:Data:1100.gcda
+        -:    0:Runs:1
+        -:    1:/* Prove that pragma alignment handling works somewhat. */
+        -:    2:
+        -:    3:/* { dg-do run { target { ! default_packed } } } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct {
+        -:    8:  char one;
+        -:    9:  long two;
+        -:   10:} defaultalign;
+        -:   11:
+        -:   12:#if defined(__LP64__)
+        -:   13:#pragma pack(8)
+        -:   14:#else
+        -:   15:#pragma pack(4)
+        -:   16:#endif
+        -:   17:struct {
+        -:   18:  char one;
+        -:   19:  long two;
+        -:   20:} sixteen;
+        -:   21:
+        -:   22:#pragma pack(1)
+        -:   23:struct {
+        -:   24:  char one;
+        -:   25:  long two;
+        -:   26:} two;
+        -:   27:
+        -:   28:#pragma pack(2)
+        -:   29:struct {
+        -:   30:  char one;
+        -:   31:  long two;
+        -:   32:} three;
+        -:   33:
+        -:   34:#pragma pack()
+        -:   35:struct {
+        -:   36:  char one;
+        -:   37:  long two;
+        -:   38:} resetalign;
+        -:   39:
+        1:   40:main() {
+        -:   41:  if (sizeof(sixteen) < sizeof(defaultalign))
+        -:   42:    abort();
+        -:   43:  if (sizeof(two) >= sizeof(defaultalign))
+        -:   44:    abort();
+        -:   45:  if (sizeof(three) <= sizeof(two))
+        -:   46:    abort();
+        -:   47:  if (sizeof(resetalign) != sizeof(defaultalign))
+        -:   48:    abort();
+        1:   49:  return 0;
+        -:   50:}

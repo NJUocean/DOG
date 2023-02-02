@@ -1,0 +1,23 @@
+    1|       |/* PR rtl-optimization/83363 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-forward-propagate" } */
+    4|       |
+    5|       |unsigned char a;
+    6|       |unsigned int b;
+    7|       |
+    8|      1|static unsigned short __attribute__((noinline, noclone)) foo(unsigned short x) {
+    9|      1|  x -= b;
+   10|      1|  x <<= x == 0;
+   11|      1|  a = ~0;
+   12|      1|  a >>= (unsigned char)x == 0;
+   13|      1|  x *= a -= ~a;
+   14|      1|  return x;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  asm volatile("" : : : "memory");
+   19|      1|  if (foo(3) != (unsigned short)(3 * (unsigned char)~0))
+   20|      0|    __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+

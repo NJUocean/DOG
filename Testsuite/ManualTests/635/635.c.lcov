@@ -1,0 +1,27 @@
+    1|       |/* Verify the accuracy of the line number associated with combined
+    2|       |   constructs.  */
+    3|       |/* See also "../../gfortran.dg/goacc/combined-directives-3.f90".  */
+    4|       |
+    5|      1|int main() {
+    6|      1|  int x, y, z;
+    7|      1|
+    8|      1|#pragma acc parallel loop seq auto /* { dg-error "'seq' overrides other        \
+    9|      1|                                      OpenACC loop specifiers" } */
+   10|     11|  for (x = 0; x < 10; x++)
+   11|     10|#pragma acc loop
+   12|    110|    for (y = 0; y < 10; y++)
+   13|    100|      ;
+   14|      1|
+   15|      1|#pragma acc parallel loop gang auto /* { dg-error "'auto' conflicts with other \
+   16|      1|                                       OpenACC loop specifiers" } */
+   17|     11|  for (x = 0; x < 10; x++)
+   18|     10|#pragma acc loop worker auto /* { dg-error "'auto' conflicts with other        \
+   19|     10|                                OpenACC loop specifiers" } */
+   20|    110|    for (y = 0; y < 10; y++)
+   21|    100|#pragma acc loop vector
+   22|  1.10k|      for (z = 0; z < 10; z++)
+   23|  1.00k|        ;
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

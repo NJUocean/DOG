@@ -1,0 +1,29 @@
+        -:    0:Source:633.c
+        -:    0:Graph:633.gcno
+        -:    0:Data:633.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-ipa-icf-details"  } */
+        -:    2:/* { dg-require-effective-target nonlocal_goto } */
+        -:    3:
+        1:    4:int main(int argc, char **argv) {
+        -:    5:  __label__ lab4, lab5, lab6;
+        -:    6:
+        1:    7:  void foo(void) { goto lab4; }
+    #####:    8:  void foo2(void) { goto lab4; }
+        1:    9:  void bar(void) { goto lab5; }
+        1:   10:  void baz(void) { goto lab6; }
+        -:   11:
+        1:   12:  if (argc)
+        1:   13:    foo();
+        -:   14:  else
+    #####:   15:    foo2();
+        -:   16:
+        1:   17:lab4:;
+        1:   18:  bar();
+        1:   19:lab5:;
+        1:   20:  baz();
+        1:   21:lab6:;
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

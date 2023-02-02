@@ -1,0 +1,28 @@
+        -:    0:Source:814.c
+        -:    0:Graph:814.gcno
+        -:    0:Data:814.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/30360 */
+        -:    2:/* { dg-do run { target i?86-*-linux* i?86-*-gnu* x86_64-*-linux* ia64-*-linux*
+        -:    3: * s390*-*-linux* } } */
+        -:    4:/* { dg-options "-O2 -std=gnu99" } */
+        -:    5:
+        -:    6:#define I (__extension__ 1.0iF)
+        -:    7:#define H(x) asm("" : "=m"(x) : "m"(x))
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  _Complex double a = 1.0 + 1.0 * I, b = 0.0, c;
+        1:   12:  H(a);
+        1:   13:  H(b);
+        1:   14:  c = a / b;
+       1*:   15:  if (!__builtin_isinf(__real__ c) && !__builtin_isinf(__imag__ c))
+    #####:   16:    abort();
+        1:   17:  a = 0.0;
+        1:   18:  H(a);
+        1:   19:  H(b);
+        1:   20:  c = a / b;
+        1:   21:  if (!__builtin_isnan(__real__ c) || !__builtin_isnan(__imag__ c))
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

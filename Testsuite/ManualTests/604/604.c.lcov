@@ -1,0 +1,36 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fipa-sra -fdump-ipa-sra"  } */
+    3|       |
+    4|       |/* Check of a by-reference structure split. */
+    5|       |
+    6|       |struct S {
+    7|       |  float red;
+    8|       |  void *blue;
+    9|       |  int green;
+   10|       |};
+   11|       |
+   12|      1|void __attribute__((noipa)) check(float r, int g, int g2) {
+   13|      1|  if (r < 7.39 || r > 7.41 || g != 6 || g2 != 6)
+   14|      0|    __builtin_abort();
+   15|      1|}
+   16|       |
+   17|      1|static void __attribute__((noinline)) foo(struct S *s) {
+   18|      1|  check(s->red, s->green, s->green);
+   19|      1|}
+   20|       |
+   21|      1|static void __attribute__((noinline)) bar(struct S *s) { foo(s); }
+   22|       |
+   23|      1|int main(int argc, char *argv[]) {
+   24|      1|  struct S s;
+   25|      1|
+   26|      1|  s.red = 7.4;
+   27|      1|  s.green = 6;
+   28|      1|  s.blue = &s;
+   29|      1|
+   30|      1|  bar(&s);
+   31|      1|  return 0;
+   32|      1|}
+   33|       |
+   34|       |/* { dg-final { scan-ipa-dump-times "Will split parameter" 2 "sra" } } */
+   35|       |/* { dg-final { scan-ipa-dump-times "component at byte offset" 4 "sra" } } */
+

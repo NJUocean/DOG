@@ -1,0 +1,26 @@
+    1|       |/* PR target/32338 */
+    2|       |/* { dg-do link } */
+    3|       |/* { dg-options "-O2 -fno-omit-frame-pointer" } */
+    4|       |
+    5|       |struct S {};
+    6|       |
+    7|      0|int __attribute__((noinline)) foo(struct S *d) { return 2; }
+    8|       |
+    9|      0|int __attribute__((noinline)) bar(struct S *d) { return 4; }
+   10|       |
+   11|      0|int __attribute__((noinline)) fnl(char const *q) { return __builtin_strlen(q); }
+   12|       |
+   13|      0|int __attribute__((noinline)) baz(struct S *d, char const *q) {
+   14|      0|  unsigned int len;
+   15|      0|  len = fnl(q);
+   16|      0|  if (len > 512)
+   17|      0|    return bar(d);
+   18|      0|  return foo(d);
+   19|      0|}
+   20|       |
+   21|      1|int main(int argc, char *argv[]) {
+   22|      1|  if (argc > 30)
+   23|      0|    return baz((void *)0, "abcde");
+   24|      1|  return 0;
+   25|      1|}
+

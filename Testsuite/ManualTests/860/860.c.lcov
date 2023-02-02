@@ -1,0 +1,27 @@
+    1|       |/* PR rtl-optimization/38245 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    4|       |
+    5|      1|static inline int f1(int si1, int si2) { return si2 == 0 ? si1 : si1 / si2; }
+    6|       |
+    7|       |static inline unsigned long long f2(unsigned long long ui1,
+    8|      1|                                    unsigned long long ui2) {
+    9|      1|  return ui1 % ui2;
+   10|      1|}
+   11|       |
+   12|       |unsigned char g;
+   13|       |volatile unsigned int h;
+   14|       |
+   15|      1|void f3(void) {
+   16|      1|  if (!((signed char)f1(0, f2(g, 2123)) - 1))
+   17|      0|    h;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  f3();
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final { scan-tree-dump-not "% 2123" "optimized" } } */
+   26|       |/* { dg-final { scan-tree-dump-not "0 / " "optimized" } } */
+

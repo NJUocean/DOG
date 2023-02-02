@@ -1,0 +1,22 @@
+        -:    0:Source:2760.c
+        -:    0:Graph:2760.gcno
+        -:    0:Data:2760.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:static int __attribute__((regparm(1))) bar(void *arg) { return arg != bar; }
+        -:    7:
+        -:    8:static int __attribute__((noinline, noclone, regparm(1)))
+        1:    9:foo(int(__attribute__((regparm(1))) * *bar)(void *)) {
+        1:   10:  return (*bar)(*bar);
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  int(__attribute__((regparm(1))) * p)(void *) = bar;
+        1:   15:  if (foo(&p))
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

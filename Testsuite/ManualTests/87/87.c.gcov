@@ -1,0 +1,19 @@
+        -:    0:Source:87.c
+        -:    0:Graph:87.gcno
+        -:    0:Data:87.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/81186 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:  __label__ l;
+        1:    6:  void f() {
+        -:    7:    int a[123];
+        -:    8:
+        1:    9:    goto l;
+        -:   10:  }
+        -:   11:
+        1:   12:  f();
+        1:   13:l:
+        1:   14:  return 0;
+        -:   15:}

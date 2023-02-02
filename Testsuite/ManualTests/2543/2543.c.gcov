@@ -1,0 +1,21 @@
+        -:    0:Source:2543.c
+        -:    0:Graph:2543.gcno
+        -:    0:Data:2543.gcda
+        -:    0:Runs:1
+        -:    1:int a[2] = {2, 0};
+        -:    2:
+        1:    3:void foo(int *sp, int cnt) {
+        -:    4:  int *p, *top;
+        -:    5:
+        1:    6:  top = sp;
+        1:    7:  sp -= cnt;
+        -:    8:
+        2:    9:  for (p = sp; p <= top; p++)
+        2:   10:    if (*p < 2)
+        1:   11:      exit(0);
+    #####:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  foo(a + 1, 1);
+    #####:   16:  abort();
+        -:   17:}

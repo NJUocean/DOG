@@ -1,0 +1,26 @@
+    1|       |typedef struct {
+    2|       |  int re;
+    3|       |  int im;
+    4|       |} T;
+    5|       |
+    6|       |T f(int, int);
+    7|       |
+    8|       |#if COMPILER != 1
+    9|      1|T f(int arg1, int arg2) {
+   10|      1|  T x;
+   11|      1|  x.re = arg1;
+   12|      1|  x.im = arg2;
+   13|      1|  return x;
+   14|      1|}
+   15|       |#endif
+   16|       |
+   17|       |#if COMPILER != 2
+   18|      1|main() {
+   19|      1|  T result;
+   20|      1|  result = f(3, 4);
+   21|      1|  if (result.re != 3 || result.im != 4)
+   22|      0|    abort();
+   23|      1|  exit(0);
+   24|      1|}
+   25|       |#endif
+

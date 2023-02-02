@@ -1,0 +1,21 @@
+    1|       |struct dm {
+    2|       |  unsigned q;
+    3|       |  unsigned r;
+    4|       |};
+    5|       |
+    6|       |struct dm dm(a, b) unsigned a, b;
+    7|      1|{
+    8|      1|  struct dm qr;
+    9|      1|
+   10|      1|  qr.q = a / b;
+   11|      1|  qr.r = a % b;
+   12|      1|  return qr;
+   13|      1|}
+   14|       |
+   15|      1|main() {
+   16|      1|  struct dm qr;
+   17|      1|
+   18|      1|  qr = dm(100, 30);
+   19|      1|  printf("%u, %u\n", qr.q, qr.r);
+   20|      1|}
+

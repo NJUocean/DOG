@@ -1,0 +1,63 @@
+        -:    0:Source:1802.c
+        -:    0:Graph:1802.gcno
+        -:    0:Data:1802.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define vector(elcount, type)                                                  \
+        -:    4:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    5:
+        -:    6:#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+        -:    7:#define schar signed char
+        -:    8:#define uchar unsigned char
+        -:    9:
+        -:   10:#define ch14 1, 2, 3, 4
+        -:   11:#define ch1 1, 1, 1, 1
+        -:   12:#define chm1 -1, -1, -1, -1
+        -:   13:
+        1:   14:int main(int argc, char *argv[]) {
+        1:   15:  vector(16, uchar) vuchar = {ch14, ch14, ch14, ch14};
+        1:   16:  vector(16, schar) vchar0 = {ch1, ch1, ch1, ch1};
+        1:   17:  vector(16, schar) vchar1 = {chm1, chm1, chm1, chm1};
+        -:   18:
+        -:   19:  vector(16, schar) i1, i2, i3;
+        -:   20:  vector(16, uchar) u1, u2, u3;
+        -:   21:
+        1:   22:  i1 = vchar1 << vchar0;
+        -:   23:
+        1:   24:  if (vidx(schar, i1, 0) != ((schar)-1 << (schar)1))
+    #####:   25:    __builtin_abort();
+        1:   26:  if (vidx(schar, i1, 1) != ((schar)-1 << (schar)1))
+    #####:   27:    __builtin_abort();
+        1:   28:  if (vidx(schar, i1, 2) != ((schar)-1 << (schar)1))
+    #####:   29:    __builtin_abort();
+        1:   30:  if (vidx(schar, i1, 3) != ((schar)-1 << (schar)1))
+    #####:   31:    __builtin_abort();
+        1:   32:  u1 = vuchar << vchar0;
+        -:   33:
+        1:   34:  if (vidx(uchar, u1, 0) != ((uchar)1 << (schar)1))
+    #####:   35:    __builtin_abort();
+        1:   36:  if (vidx(uchar, u1, 1) != ((uchar)2 << (schar)1))
+    #####:   37:    __builtin_abort();
+        1:   38:  if (vidx(uchar, u1, 2) != ((uchar)3 << (schar)1))
+    #####:   39:    __builtin_abort();
+        1:   40:  if (vidx(uchar, u1, 3) != ((uchar)4 << (schar)1))
+    #####:   41:    __builtin_abort();
+        -:   42:
+        1:   43:  i2 = vchar1 >> vuchar;
+        -:   44:
+        1:   45:  if (vidx(schar, i2, 0) != ((schar)-1 >> (uchar)1))
+    #####:   46:    __builtin_abort();
+        1:   47:  if (vidx(schar, i2, 1) != ((schar)-1 >> (uchar)2))
+    #####:   48:    __builtin_abort();
+        1:   49:  if (vidx(schar, i2, 2) != ((schar)-1 >> (uchar)3))
+    #####:   50:    __builtin_abort();
+        1:   51:  if (vidx(schar, i2, 3) != ((schar)-1 >> (uchar)4))
+    #####:   52:    __builtin_abort();
+        -:   53:
+        1:   54:  vchar1 >>= vuchar;
+        1:   55:  vuchar <<= vchar0;
+        1:   56:  vuchar <<= vchar1;
+        -:   57:
+        1:   58:  return 0;
+        -:   59:}

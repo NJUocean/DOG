@@ -1,0 +1,10 @@
+    1|       |extern void abort(void);
+    2|      1|int main() {
+    3|      1|  short ssi = 126;
+    4|      1|  unsigned short usi = 65280;
+    5|      1|  int fail = !(ssi < usi);
+    6|      1|  if (fail)
+    7|      0|    abort();
+    8|      1|  return 0;
+    9|      1|}
+

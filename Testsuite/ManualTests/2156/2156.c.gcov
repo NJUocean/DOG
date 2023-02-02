@@ -1,0 +1,48 @@
+        -:    0:Source:2156.c
+        -:    0:Graph:2156.gcno
+        -:    0:Data:2156.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+        -:    2:/* Test incremental initializers for char16_t/char32_t arrays. */
+        -:    3:/* { dg-do run { target int32plus } } */
+        -:    4:/* { dg-options "-std=gnu99" } */
+        -:    5:
+        -:    6:typedef __SIZE_TYPE__ size_t;
+        -:    7:typedef __CHAR16_TYPE__ char16_t;
+        -:    8:typedef __CHAR32_TYPE__ char32_t;
+        -:    9:
+        -:   10:extern int memcmp(const void *, const void *, size_t);
+        -:   11:extern void abort(void);
+        -:   12:extern void exit(int);
+        -:   13:
+        -:   14:struct A {
+        -:   15:  char16_t S[6];
+        -:   16:  int M;
+        -:   17:} a[] = {{{u"foo"}, 1}, [0].S[2] = u'x', [0].S[4] = u'y'};
+        -:   18:struct A b[] = {{{u"foo"}, 1}, [0] = {.S[0] = u'b'}};
+        -:   19:struct A c[] = {{{u"foo"}, 1}, [0].S = {u"a"}, [0].M = 2};
+        -:   20:
+        -:   21:struct B {
+        -:   22:  char32_t S[6];
+        -:   23:  int M;
+        -:   24:} d[] = {{{U"foo"}, 1}, [0].S[2] = U'x', [0].S[4] = U'y'};
+        -:   25:struct B e[] = {{{U"foo"}, 1}, [0] = {.S[0] = U'b'}};
+        -:   26:struct B f[] = {{{U"foo"}, 1}, [0].S = {U"a"}, [0].M = 2};
+        -:   27:
+        1:   28:int main(void) {
+        1:   29:  if (memcmp(a[0].S, u"fox\0y", 6 * sizeof(char16_t)) || a[0].M != 1)
+    #####:   30:    abort();
+        1:   31:  if (memcmp(b[0].S, u"b\0\0\0\0", 6) || b[0].M)
+    #####:   32:    abort();
+        1:   33:  if (memcmp(c[0].S, u"a\0\0\0\0", 6) || c[0].M != 2)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  if (memcmp(d[0].S, U"fox\0y", 6 * sizeof(char32_t)) || d[0].M != 1)
+    #####:   37:    abort();
+        1:   38:  if (memcmp(e[0].S, U"b\0\0\0\0", 6) || e[0].M)
+    #####:   39:    abort();
+        1:   40:  if (memcmp(f[0].S, U"a\0\0\0\0", 6) || f[0].M != 2)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  exit(0);
+        -:   44:}

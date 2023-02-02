@@ -1,0 +1,28 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation.
+    2|       |
+    3|       |   Ensure that fabs(x) < 0.0 optimization is working.
+    4|       |
+    5|       |   Written by Roger Sayle, 20th July 2002.  */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern double fabs(double);
+    9|       |extern void link_error(void);
+   10|       |
+   11|      1|void foo(double x) {
+   12|      1|  double p, q;
+   13|      1|
+   14|      1|  p = fabs(x);
+   15|      1|  q = 0.0;
+   16|      1|  if (p < q)
+   17|      0|    link_error();
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  foo(1.0);
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |#ifndef __OPTIMIZE__
+   26|      0|void link_error() { abort(); }
+   27|       |#endif
+

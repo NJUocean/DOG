@@ -1,0 +1,33 @@
+    1|      0|void __attribute__((noipa, noinline)) my_puts(const char *str) {}
+    2|       |
+    3|      1|void __attribute__((noipa, noinline)) my_free(void *p) {}
+    4|       |
+    5|       |struct Node {
+    6|       |  struct Node *child;
+    7|       |};
+    8|       |
+    9|       |struct Node space[2] = {};
+   10|       |
+   11|      1|struct Node *__attribute__((noipa, noinline)) my_malloc(int bytes) {
+   12|      1|  return &space[0];
+   13|      1|}
+   14|       |
+   15|      2|void walk(struct Node *module, int cleanup) {
+   16|      2|  if (module == 0) {
+   17|      1|    return;
+   18|      1|  }
+   19|      1|  if (!cleanup) {
+   20|      0|    my_puts("No cleanup");
+   21|      0|  }
+   22|      1|  walk(module->child, cleanup);
+   23|      1|  if (cleanup) {
+   24|      1|    my_free(module);
+   25|      1|  }
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  struct Node *node = my_malloc(sizeof(struct Node));
+   30|      1|  node->child = 0;
+   31|      1|  walk(node, 1);
+   32|      1|}
+

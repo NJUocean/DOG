@@ -1,0 +1,25 @@
+        -:    0:Source:1391.c
+        -:    0:Graph:1391.gcno
+        -:    0:Data:1391.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-add-options ieee } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:typedef float vf128 __attribute__((vector_size(16)));
+        -:    6:typedef float vf64 __attribute__((vector_size(8)));
+        1:    7:int main() {
+        -:    8:#if !__FINITE_MATH_ONLY__
+        -:    9:#if __FLT_HAS_QUIET_NAN__
+        1:   10:  vf128 v = (vf128){0.f, 0.f, 0.f, 0.f};
+        1:   11:  vf64 u = (vf64){0.f, 0.f};
+        1:   12:  v = v / (vf128){0.f, 0.f, 0.f, 0.f};
+        1:   13:  if (v[0] == v[0])
+    #####:   14:    abort();
+        1:   15:  u = u / (vf64){0.f, 0.f};
+        1:   16:  if (u[0] == u[0])
+    #####:   17:    abort();
+        -:   18:#endif
+        -:   19:#endif
+        1:   20:  return 0;
+        -:   21:}

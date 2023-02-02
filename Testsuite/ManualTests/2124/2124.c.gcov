@@ -1,0 +1,16 @@
+        -:    0:Source:2124.c
+        -:    0:Graph:2124.gcno
+        -:    0:Data:2124.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  int halfmaxval = __INT_MAX__ / 2 + 1;
+        1:    8:  int maxval = halfmaxval - 1 + halfmaxval;
+        1:    9:  if (maxval != __INT_MAX__)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

@@ -1,0 +1,26 @@
+        -:    0:Source:3859.c
+        -:    0:Graph:3859.gcno
+        -:    0:Data:3859.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/64006 */
+        -:    2:
+        -:    3:int v;
+        -:    4:
+        1:    5:long __attribute__((noinline, noclone)) test(long *x, int y) {
+        -:    6:  int i;
+        1:    7:  long s = 1;
+        8:    8:  for (i = 0; i < y; i++)
+        7:    9:    if (__builtin_mul_overflow(s, x[i], &s))
+        1:   10:      v++;
+        1:   11:  return s;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  long d[7] = {975, 975, 975, 975, 975, 975, 975};
+        1:   16:  long r = test(d, 7);
+        1:   17:  if (sizeof(long) * __CHAR_BIT__ == 64 && v != 1)
+    #####:   18:    __builtin_abort();
+        -:   19:  else if (sizeof(long) * __CHAR_BIT__ == 32 && v != 4)
+        -:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

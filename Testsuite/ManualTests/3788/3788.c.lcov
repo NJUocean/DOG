@@ -1,0 +1,29 @@
+    1|       |/* PR middle-end/57344 */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |struct __attribute__((packed)) S {
+    5|       |  int a : 27;
+    6|       |#if __SIZEOF_INT__ * __CHAR_BIT__ >= 32
+    7|       |  int b : 22;
+    8|       |#else
+    9|       |  int b : 13;
+   10|       |#endif
+   11|       |  char c;
+   12|       |  int : 0;
+   13|       |} s[2];
+   14|       |int i;
+   15|       |
+   16|      1|__attribute__((noinline, noclone)) void foo(int x) {
+   17|      1|  if (x != -3161)
+   18|      0|    __builtin_abort();
+   19|      1|  asm volatile("" : : : "memory");
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  struct S t = {0, -3161L};
+   24|      1|  s[1] = t;
+   25|      2|  for (; i < 1; i++)
+   26|      1|    foo(s[1].b);
+   27|      1|  return 0;
+   28|      1|}
+

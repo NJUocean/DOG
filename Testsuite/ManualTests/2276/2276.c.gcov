@@ -1,0 +1,18 @@
+        -:    0:Source:2276.c
+        -:    0:Graph:2276.gcno
+        -:    0:Data:2276.gcda
+        -:    0:Runs:1
+        1:    1:unsigned short int showbug(unsigned short int *a, unsigned short int *b) {
+        1:    2:  *a += *b - 8;
+        1:    3:  return (*a >= 8);
+        -:    4:}
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned short int x = 0;
+        1:    8:  unsigned short int y = 10;
+        -:    9:
+        1:   10:  if (showbug(&x, &y) != 0)
+    #####:   11:    abort();
+        -:   12:
+        1:   13:  exit(0);
+        -:   14:}

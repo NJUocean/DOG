@@ -1,0 +1,46 @@
+        -:    0:Source:1459.c
+        -:    0:Graph:1459.gcno
+        -:    0:Data:1459.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fstrict-overflow" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int a, b, c, d, e, f, g, h = 1, i;
+        -:    7:
+       2*:    8:int foo(int p) { return p < 0 && a < -__INT_MAX__ - 1 - p ? 0 : 1; }
+        -:    9:
+        2:   10:int *bar() {
+        -:   11:  int j;
+       2*:   12:  i = h ? 0 : 1 % h;
+        4:   13:  for (j = 0; j < 1; j++)
+       2*:   14:    for (d = 0; d; d++)
+    #####:   15:      for (e = 1; e;)
+    #####:   16:        return 0;
+        2:   17:  return 0;
+        -:   18:}
+        -:   19:
+        1:   20:int baz() {
+       1*:   21:  for (; b >= 0; b--)
+        2:   22:    for (c = 1; c >= 0; c--) {
+        2:   23:      int *k = &c;
+        -:   24:      for (;;) {
+        4:   25:        for (f = 0; f < 1; f++) {
+        2:   26:          g = foo(*k);
+        2:   27:          bar();
+        -:   28:        }
+        2:   29:        if (*k)
+        1:   30:          break;
+        1:   31:        return 0;
+        -:   32:      }
+        -:   33:    }
+    #####:   34:  return 0;
+        -:   35:}
+        -:   36:
+        1:   37:int main() {
+        1:   38:  baz();
+        1:   39:  if (b != 0)
+    #####:   40:    abort();
+        1:   41:  return 0;
+        -:   42:}

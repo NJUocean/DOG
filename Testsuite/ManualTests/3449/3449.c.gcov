@@ -1,0 +1,17 @@
+        -:    0:Source:3449.c
+        -:    0:Graph:3449.gcno
+        -:    0:Data:3449.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/36090 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:long double __attribute__((noinline)) foo(long double x) {
+       1*:    6:  return __builtin_signbit(x) ? 3.1415926535897932384626433832795029L : 0.0;
+        -:    7:}
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  if (foo(-1.0L) != 3.1415926535897932384626433832795029L)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

@@ -1,0 +1,30 @@
+        -:    0:Source:635.c
+        -:    0:Graph:635.gcno
+        -:    0:Data:635.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify the accuracy of the line number associated with combined
+        -:    2:   constructs.  */
+        -:    3:/* See also "../../gfortran.dg/goacc/combined-directives-3.f90".  */
+        -:    4:
+        1:    5:int main() {
+        -:    6:  int x, y, z;
+        -:    7:
+        -:    8:#pragma acc parallel loop seq auto /* { dg-error "'seq' overrides other        \
+        -:    9:                                      OpenACC loop specifiers" } */
+       11:   10:  for (x = 0; x < 10; x++)
+        -:   11:#pragma acc loop
+      110:   12:    for (y = 0; y < 10; y++)
+        -:   13:      ;
+        -:   14:
+        -:   15:#pragma acc parallel loop gang auto /* { dg-error "'auto' conflicts with other \
+        -:   16:                                       OpenACC loop specifiers" } */
+       11:   17:  for (x = 0; x < 10; x++)
+        -:   18:#pragma acc loop worker auto /* { dg-error "'auto' conflicts with other        \
+        -:   19:                                OpenACC loop specifiers" } */
+      110:   20:    for (y = 0; y < 10; y++)
+        -:   21:#pragma acc loop vector
+     1100:   22:      for (z = 0; z < 10; z++)
+        -:   23:        ;
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

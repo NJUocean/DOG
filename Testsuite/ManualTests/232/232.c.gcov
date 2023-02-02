@@ -1,0 +1,21 @@
+        -:    0:Source:232.c
+        -:    0:Graph:232.gcno
+        -:    0:Data:232.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2001 Free Software Foundation, Inc.  */
+        -:    2:
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-fsigned-char" } */
+        -:    5:
+        -:    6:/* Crosscompiling from i686-linux (32-bit) to x86_64-linux (64-bit)
+        -:    7:   gave extra warnings on the two assignments:
+        -:    8:   warning: large integer implicitly truncated to unsigned type
+        -:    9:   warning: overflow in implicit constant conversion
+        -:   10:   This test has been added as a regression test after fixing the bug
+        -:   11:   by Andreas Jaeger, 23 Nov 2001.  */
+        1:   12:int main(void) {
+        1:   13:  signed char c = '\xff';
+        1:   14:  unsigned char d = '\xff';
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

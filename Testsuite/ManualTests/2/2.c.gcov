@@ -1,0 +1,23 @@
+        -:    0:Source:2.c
+        -:    0:Graph:2.gcno
+        -:    0:Data:2.gcda
+        -:    0:Runs:1
+        -:    1:struct foo {
+        -:    2:  unsigned : 12;
+        -:    3:  unsigned field : 4;
+        -:    4:} foo;
+        -:    5:unsigned oldfoo;
+        -:    6:
+        1:    7:int bar(unsigned k) {
+        1:    8:  oldfoo = foo.field;
+        1:    9:  foo.field = k;
+        1:   10:  if (k)
+        1:   11:    return 1;
+    #####:   12:  return 2;
+        -:   13:}
+        -:   14:
+        1:   15:main() {
+        1:   16:  if (bar(1U) != 1)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

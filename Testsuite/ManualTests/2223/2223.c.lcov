@@ -1,0 +1,21 @@
+    1|       |/* { dg-additional-options "-mavx2" { target avx2_runtime } } */
+    2|       |
+    3|       |void __attribute__((noipa))
+    4|      1|foo(int *__restrict wsum, int *__restrict cff, int *__restrict weight) {
+    5|     17|  for (int i = 0; i < 16; ++i) {
+    6|     16|    *wsum += weight[2 * i + 0];
+    7|     16|    *cff += weight[2 * i + 1];
+    8|     16|  }
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  int weight[32];
+   13|     33|  for (int i = 0; i < 32; ++i)
+   14|     32|    weight[i] = i;
+   15|      1|  int wsum = 0, cff = 0;
+   16|      1|  foo(&wsum, &cff, weight);
+   17|      1|  if (wsum != 240 || cff != 256)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

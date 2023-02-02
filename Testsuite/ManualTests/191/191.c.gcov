@@ -1,0 +1,59 @@
+        -:    0:Source:191.c
+        -:    0:Graph:191.gcno
+        -:    0:Data:191.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2003  Free Software Foundation.
+        -:    2:
+        -:    3:   Verify that the malloc-like __builtin_ allocation functions are
+        -:    4:   correctly aliased by the compiler.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 12th April 2003.  */
+        -:    7:
+        -:    8:/* { dg-do link } */
+        -:    9:/* { dg-options "-ansi" } */
+        -:   10:
+        -:   11:typedef __SIZE_TYPE__ size_t;
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:extern void *malloc(size_t);
+        -:   15:extern void *calloc(size_t, size_t);
+        -:   16:
+        -:   17:extern void link_error(void);
+        -:   18:
+        -:   19:static int x;
+        -:   20:
+        1:   21:void test1(void) {
+        -:   22:  int *ptr1, *ptr2;
+        -:   23:
+        1:   24:  ptr1 = &x;
+        1:   25:  ptr2 = (int *)malloc(sizeof(int));
+        -:   26:
+        1:   27:  *ptr1 = 12;
+        1:   28:  *ptr2 = 8;
+        -:   29:
+        1:   30:  if (*ptr1 != 12)
+    #####:   31:    link_error();
+        1:   32:}
+        -:   33:
+        1:   34:void test2(void) {
+        -:   35:  int *ptr1, *ptr2;
+        -:   36:
+        1:   37:  ptr1 = &x;
+        1:   38:  ptr2 = (int *)calloc(1, sizeof(int));
+        -:   39:
+        1:   40:  *ptr1 = 12;
+        1:   41:  *ptr2 = 8;
+        -:   42:
+        1:   43:  if (*ptr1 != 12)
+    #####:   44:    link_error();
+        1:   45:}
+        -:   46:
+        1:   47:int main() {
+        1:   48:  test1();
+        1:   49:  test2();
+        1:   50:  return 0;
+        -:   51:}
+        -:   52:
+        -:   53:#ifndef __OPTIMIZE__
+    #####:   54:void link_error(void) { abort(); }
+        -:   55:#endif

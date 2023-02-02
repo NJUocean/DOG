@@ -1,0 +1,9 @@
+        -:    0:Source:703.c
+        -:    0:Graph:703.gcno
+        -:    0:Data:703.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do run } */
+        -:    2:
+        -:    3:double a(double) __attribute__((optimize(1), used));
+    #####:    4:double a(double r) { return r; }
+        1:    5:int main() { return 0; }

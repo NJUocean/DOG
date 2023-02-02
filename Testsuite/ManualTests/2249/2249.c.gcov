@@ -1,0 +1,13 @@
+        -:    0:Source:2249.c
+        -:    0:Graph:2249.gcno
+        -:    0:Data:2249.gcda
+        -:    0:Runs:1
+        4:    1:foo(a) double a;
+        4:    2:{ printf("%d\n", (int)a); }
+        -:    3:
+        1:    4:main() {
+        1:    5:  foo(1.6);
+        1:    6:  foo(1.4);
+        1:    7:  foo(-1.4);
+        1:    8:  foo(-1.6);
+        -:    9:}

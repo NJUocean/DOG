@@ -1,0 +1,33 @@
+        -:    0:Source:1235.c
+        -:    0:Graph:1235.gcno
+        -:    0:Data:1235.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/86274 - SEGFAULT when logging std::to_string(NAN)
+        -:    2:   { dg-do run }
+        -:    3:   { dg-options "-O2 -Wall" }
+        -:    4:   { dg-additional-options "-Wl,-u,_printf_float" { target newlib_nano_io } } */
+        -:    5:
+        -:    6:#define X "0xdeadbeef"
+        -:    7:#define nan(x) __builtin_nan(x)
+        -:    8:
+        -:    9:volatile double nan_0 = nan("0");
+        -:   10:volatile double nan_x = nan(X);
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  char buf[80];
+        -:   14:
+        -:   15:  /* Verify that folded results match those of the library calls.  */
+        1:   16:  int cst_n_0 = __builtin_sprintf(buf, "%g", nan("0"));
+        1:   17:  int cst_n_x = __builtin_sprintf(buf, "%g", nan(X));
+        -:   18:
+        1:   19:  int var_n_0 = __builtin_sprintf(buf, "%g", nan_0);
+        1:   20:  int var_n_x = __builtin_sprintf(buf, "%g", nan_x);
+        -:   21:
+        1:   22:  if (cst_n_0 != var_n_0)
+    #####:   23:    __builtin_abort();
+        -:   24:
+        1:   25:  if (cst_n_x != var_n_x)
+    #####:   26:    __builtin_abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

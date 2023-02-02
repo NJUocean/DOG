@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct S1 {
+    6|       |  unsigned f0, f1;
+    7|       |  unsigned short f2, f3;
+    8|       |  unsigned f4 : 16;
+    9|       |  unsigned f5, f6;
+   10|       |  volatile unsigned f7 : 28;
+   11|       |};
+   12|       |static struct S1 g_76;
+   13|       |static struct S1 g_245 = {0, 0, 0, 0, 0, 0, 0, 1};
+   14|       |static signed char g_323 = 0x80;
+   15|      1|static void func_1(void) {
+   16|      1|  g_245.f7 &= 1;
+   17|      1|  for (g_323 = 0; g_323 <= -1; g_323 -= 2) {
+   18|      0|    g_76 = g_76;
+   19|      0|    g_76.f4 ^= 11;
+   20|      0|  }
+   21|      1|}
+   22|      1|int main() {
+   23|      1|  func_1();
+   24|      1|  if (g_323 != 0 || g_245.f7 != 1)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

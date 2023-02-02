@@ -1,0 +1,22 @@
+        -:    0:Source:2685.c
+        -:    0:Graph:2685.gcno
+        -:    0:Data:2685.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target ia32 } } */
+        -:    2:/* { dg-options "-O2 -mno-sse -mno-mmx -miamcu" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        1:    5:int main(int argc, char **argv) {
+        1:    6:  int size = 10;
+        1:    7:  typedef struct {
+        1:    8:    char val[size];
+        -:    9:  } block;
+        1:   10:  block a, b;
+        1:   11:  block __attribute__((noinline)) retframe_block() { return *(block *)&b; }
+        1:   12:  b.val[0] = 1;
+        1:   13:  b.val[9] = 2;
+        1:   14:  a = retframe_block();
+        1:   15:  if (a.val[0] != 1 || a.val[9] != 2)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

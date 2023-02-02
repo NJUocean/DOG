@@ -1,0 +1,18 @@
+        -:    0:Source:1563.c
+        -:    0:Graph:1563.gcno
+        -:    0:Data:1563.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:
+        1:    3:static unsigned __attribute__((noinline, noclone)) foo(unsigned long long u) {
+        1:    4:  unsigned __int128 v = u | 0xffffff81U;
+        1:    5:  v >>= 64;
+        1:    6:  return v;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  unsigned x = foo(27);
+        1:   11:  if (x != 0)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,10 @@
+        -:    0:Source:1851.c
+        -:    0:Graph:1851.gcno
+        -:    0:Data:1851.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-size "1024" } */
+        -:    2:
+        1:    3:int main() {
+        1:    4:  char temp[1024] = "tempfile";
+        1:    5:  return temp[0] != 't';
+        -:    6:}

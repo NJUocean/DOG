@@ -1,0 +1,28 @@
+        -:    0:Source:85.c
+        -:    0:Graph:85.gcno
+        -:    0:Data:85.gcda
+        -:    0:Runs:1
+        -:    1:// PR sanitizer/78560
+        -:    2:// { dg-do run }
+        -:    3:// { dg-shouldfail "asan" }
+        -:    4:
+        1:    5:void foo(double a, double b) {
+        -:    6:  double *ptr;
+        -:    7:  {
+        1:    8:    double x = a + b;
+        1:    9:    ptr = &x;
+        -:   10:  }
+        1:   11:  double square() { __builtin_printf("", *ptr); }
+        -:   12:
+        1:   13:  square();
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  foo(1.2f, 2.3f);
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        -:   21:// { dg-output "ERROR: AddressSanitizer: stack-use-after-scope on
+        -:   22:// address.*(\n|\r\n|\r)" } { dg-output "READ of size.*" } { dg-output ".*'x'
+        -:   23:// \\(line 9\\) <== Memory access at offset \[0-9\]* is inside this variable.*"
+        -:   24:// }

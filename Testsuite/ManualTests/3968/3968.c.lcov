@@ -1,0 +1,16 @@
+    1|       |/* PR rtl-optimization/80501 */
+    2|       |
+    3|       |signed char v = 0;
+    4|       |
+    5|      1|static signed char foo(int x, int y) { return x << y; }
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) int bar(void) {
+    8|      1|  return foo(v >= 0, __CHAR_BIT__ - 1) >= 1;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  if (sizeof(int) > sizeof(char) && bar() != 0)
+   13|      0|    __builtin_abort();
+   14|      1|  return 0;
+   15|      1|}
+

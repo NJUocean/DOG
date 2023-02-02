@@ -1,0 +1,30 @@
+        -:    0:Source:55.c
+        -:    0:Graph:55.gcno
+        -:    0:Data:55.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for C99 mixed declarations and code giving warnings, not error with
+        -:    2:   -Wdeclaration-after-statement.  See also c9?-mixdecl-*.  */
+        -:    3:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-std=c99 -pedantic-errors -Wdeclaration-after-statement" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:extern void exit(int);
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  int i = 0;
+        1:   12:  if (i != 0)
+    #####:   13:    abort();
+        1:   14:  i++;
+        1:   15:  if (i != 1)
+    #####:   16:    abort();
+        1:   17:  int j = i; /* { dg-warning "" "declaration-after-statement" } */
+        1:   18:  if (j != 1)
+    #####:   19:    abort();
+        -:   20:  struct foo {
+        -:   21:    int i0;
+        1:   22:  } k = {4}; /* { dg-warning "" "declaration-after-statement" } */
+        1:   23:  if (k.i0 != 4)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

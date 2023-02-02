@@ -1,0 +1,34 @@
+    1|       |#include <limits.h>
+    2|       |
+    3|       |#if ULONG_LONG_MAX != 18446744073709551615ull &&                               \
+    4|       |    ULONG_MAX != 18446744073709551615ull
+    5|       |int main(void) { exit(0); }
+    6|       |#else
+    7|       |#if ULONG_MAX != 18446744073709551615ull
+    8|       |typedef unsigned long long ull;
+    9|       |#else
+   10|       |typedef unsigned long ull;
+   11|       |#endif
+   12|       |
+   13|       |#include <stdio.h>
+   14|       |
+   15|       |void checkit(int);
+   16|       |
+   17|      1|main() {
+   18|      1|  const ull a = 0x1400000000ULL;
+   19|      1|  const ull b = 0x80000000ULL;
+   20|      1|  const ull c = a / b;
+   21|      1|  const ull d = 0x1400000000ULL / 0x80000000ULL;
+   22|      1|
+   23|      1|  checkit((int)c);
+   24|      1|  checkit((int)d);
+   25|      1|
+   26|      1|  exit(0);
+   27|      1|}
+   28|       |
+   29|      2|void checkit(int a) {
+   30|      2|  if (a != 40)
+   31|      0|    abort();
+   32|      2|}
+   33|       |#endif
+

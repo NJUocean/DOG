@@ -1,0 +1,25 @@
+        -:    0:Source:480.c
+        -:    0:Graph:480.gcno
+        -:    0:Data:480.gcda
+        -:    0:Runs:1
+        -:    1:struct decision {
+        -:    2:  char enforce_mode;
+        -:    3:  struct decision *next;
+        -:    4:};
+        -:    5:
+        1:    6:static void clear_modes(p) register struct decision *p;
+        -:    7:{
+        1:    8:  goto blah;
+        -:    9:
+    #####:   10:foo:
+    #####:   11:  p->enforce_mode = 0;
+        1:   12:blah:
+        1:   13:  if (p)
+    #####:   14:    goto foo;
+        1:   15:}
+        -:   16:
+        1:   17:main() {
+        1:   18:  struct decision *p = 0;
+        1:   19:  clear_modes(p);
+        1:   20:  exit(0);
+        -:   21:}

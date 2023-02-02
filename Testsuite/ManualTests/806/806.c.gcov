@@ -1,0 +1,98 @@
+        -:    0:Source:806.c
+        -:    0:Graph:806.gcno
+        -:    0:Data:806.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-set-target-env-var ASAN_OPTIONS
+        -:    3: * "detect_invalid_pointer_pairs=2:halt_on_error=0" } */
+        -:    4:/* { dg-options "-fsanitize=address,pointer-compare" } */
+        -:    5:
+        -:    6:/* FIXME: remove me after PR sanitizer/82501 is resolved.  */
+        -:    7:/* { dg-additional-options "-fno-section-anchors" } */
+        -:    8:/* { dg-additional-options "-msdata=none" { target { powerpc*-*-* } } } */
+        -:    9:
+        -:   10:volatile int v;
+        -:   11:
+       22:   12:__attribute__((noipa)) void foo(char *p, char *q) { v = p > q; }
+        -:   13:
+        -:   14:char global1[100] = {}, global2[100] = {};
+        -:   15:char __attribute__((used)) smallest_global[5] = {};
+        -:   16:char small_global[7] = {};
+        -:   17:char __attribute__((used)) little_global[10] = {};
+        -:   18:char __attribute__((used)) medium_global[4000] = {};
+        -:   19:char large_global[5000] = {};
+        -:   20:char __attribute__((used)) largest_global[6000] = {};
+        -:   21:
+        1:   22:int main() {
+        -:   23:  /* Heap allocated memory.  */
+        1:   24:  char *heap1 = (char *)__builtin_malloc(42);
+        1:   25:  char *heap2 = (char *)__builtin_malloc(42);
+        -:   26:
+        -:   27:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   28:  foo(heap1, heap2);
+        1:   29:  __builtin_free(heap1);
+        1:   30:  __builtin_free(heap2);
+        -:   31:
+        1:   32:  heap1 = (char *)__builtin_malloc(1024);
+        1:   33:  __asm("" : "+g"(heap1));
+        -:   34:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   35:  foo(heap1, heap1 + 1025);
+        -:   36:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   37:  foo(heap1 + 1024, heap1 + 1025);
+        1:   38:  __builtin_free(heap1);
+        -:   39:
+        1:   40:  heap1 = (char *)__builtin_malloc(4096);
+        1:   41:  __asm("" : "+g"(heap1));
+        -:   42:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   43:  foo(heap1, heap1 + 4097);
+        -:   44:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   45:  foo(heap1, 0);
+        -:   46:
+        -:   47:  /* Global variables.  */
+        -:   48:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   49:  foo(&global1[0], &global2[10]);
+        -:   50:
+        1:   51:  char *p = &small_global[0];
+        1:   52:  __asm("" : "+g"(p));
+        1:   53:  foo(p, p);     /* OK */
+        1:   54:  foo(p, p + 7); /* OK */
+        -:   55:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   56:  foo(p, p + 8);
+        -:   57:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   58:  foo(p - 1, p);
+        -:   59:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   60:  foo(p, p - 1);
+        -:   61:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   62:  foo(p - 1, p + 8);
+        -:   63:
+        1:   64:  p = &large_global[0];
+        1:   65:  __asm("" : "+g"(p));
+        -:   66:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   67:  foo(p - 1, p);
+        -:   68:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   69:  foo(p, p - 1);
+        -:   70:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   71:  foo(p, &global1[0]);
+        -:   72:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   73:  foo(p, &small_global[0]);
+        -:   74:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   75:  foo(p, 0);
+        -:   76:
+        -:   77:  /* Stack variables.  */
+        -:   78:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        -:   79:  char stack1, stack2;
+        1:   80:  foo(&stack1, &stack2);
+        -:   81:
+        -:   82:  /* Mixtures.  */
+        -:   83:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   84:  foo(heap1, &stack1);
+        -:   85:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   86:  foo(heap1, &global1[0]);
+        -:   87:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair.*" } */
+        1:   88:  foo(&stack1, &global1[0]);
+        -:   89:  /* { dg-output "ERROR: AddressSanitizer: invalid-pointer-pair" } */
+        1:   90:  foo(&stack1, 0);
+        1:   91:  __builtin_free(heap1);
+        -:   92:
+        1:   93:  return 0;
+        -:   94:}

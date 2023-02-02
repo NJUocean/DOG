@@ -1,0 +1,61 @@
+        -:    0:Source:842.c
+        -:    0:Graph:842.gcno
+        -:    0:Data:842.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:/* Same test as 990128-1.c.  */
+        -:    4:
+        -:    5:extern int printf(const char *, ...);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:struct s {
+        -:    9:  struct s *n;
+        -:   10:} * p;
+        -:   11:struct s ss;
+        -:   12:#define MAX 10
+        -:   13:struct s sss[MAX];
+        -:   14:int count = 0;
+        -:   15:
+        -:   16:void sub(struct s *p, struct s **pp);
+        -:   17:int look(struct s *p, struct s **pp);
+        -:   18:
+        1:   19:int main() {
+        -:   20:  struct s *pp;
+        -:   21:  struct s *next;
+        -:   22:  int i;
+        -:   23:
+        1:   24:  p = &ss;
+        1:   25:  next = p;
+       11:   26:  for (i = 0; i < MAX; i++) {
+       10:   27:    next->n = &sss[i];
+       10:   28:    next = next->n;
+        -:   29:  }
+        1:   30:  next->n = 0;
+        -:   31:
+        1:   32:  sub(p, &pp);
+        1:   33:  if (count != MAX + 2)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  return (0);
+        -:   37:}
+        -:   38:
+        1:   39:void sub(struct s *p, struct s **pp) {
+       12:   40:  for (; look(p, pp);) {
+       12:   41:    if (p)
+       11:   42:      p = p->n;
+        -:   43:    else
+        1:   44:      break;
+        -:   45:  }
+        1:   46:}
+        -:   47:
+       12:   48:int look(struct s *p, struct s **pp) {
+       78:   49:  for (; p; p = p->n)
+        -:   50:    ;
+       12:   51:  *pp = p;
+       12:   52:  count++;
+       12:   53:  return (1);
+        -:   54:}
+        -:   55:
+        -:   56:/* { dg-final { scan-tree-dump "Cleaned-up latch block of loop with single BB"
+        -:   57: * "optimized" { xfail { *-*-* } } } } */

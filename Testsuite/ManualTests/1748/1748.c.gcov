@@ -1,0 +1,34 @@
+        -:    0:Source:1748.c
+        -:    0:Graph:1748.gcno
+        -:    0:Data:1748.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/94516 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-additional-options "-fpie" { target pie } } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  unsigned char *a;
+        -:    7:  unsigned int b;
+        -:    8:};
+        -:    9:typedef int V __attribute__((vector_size(sizeof(int) * 4)));
+        -:   10:
+        3:   11:__attribute__((noipa)) void foo(const char *a, const char *b, const char *c,
+        -:   12:                                const struct S *d, int e, int f, int g, int h,
+        -:   13:                                int i) {
+        3:   14:  V v = {1, 2, 3, 4};
+        3:   15:  asm volatile("" : : "g"(&v) : "memory");
+        3:   16:  v += (V){5, 6, 7, 8};
+        3:   17:  asm volatile("" : : "g"(&v) : "memory");
+        3:   18:}
+        -:   19:
+        1:   20:__attribute__((noipa)) void bar(void) {
+        1:   21:  const struct S s = {"foobarbaz", 9};
+        1:   22:  foo("foo", (const char *)0, "corge", &s, 0, 1, 0, -12, -31);
+        1:   23:  foo("bar", "quux", "qux", &s, 0, 0, 9, 0, 0);
+        1:   24:  foo("baz", (const char *)0, "qux", &s, 1, 0, 0, -12, -32);
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  bar();
+        1:   29:  return 0;
+        -:   30:}

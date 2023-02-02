@@ -1,0 +1,35 @@
+        -:    0:Source:1933.c
+        -:    0:Graph:1933.gcno
+        -:    0:Data:1933.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ftree-vectorize" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#define MIN2(a, b) (((a) < (b)) ? (a) : (b))
+        -:    7:#define MAX2(a, b) (((a) > (b)) ? (a) : (b))
+        -:    8:
+        -:    9:double p[2] = {4., 5.};
+        -:   10:
+        1:   11:int main() {
+        -:   12:  long j;
+        -:   13:  double R, n, x;
+        -:   14:#if __SIZEOF_DOUBLE__ >= 8
+        1:   15:  n = 1.e300;
+        1:   16:  x = -1.e300;
+        -:   17:#else
+        -:   18:  n = 1.e30;
+        -:   19:  x = -1.e30;
+        -:   20:#endif
+        3:   21:  for (j = 0; j < 2; j++) {
+       2*:   22:    x = MAX2(x, p[j]);
+        2:   23:    n = MIN2(n, p[j]);
+        -:   24:  }
+        1:   25:  R = x - n;
+        -:   26:
+        1:   27:  if (R < 0.1)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

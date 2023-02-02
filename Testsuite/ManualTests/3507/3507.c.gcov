@@ -1,0 +1,31 @@
+        -:    0:Source:3507.c
+        -:    0:Graph:3507.gcno
+        -:    0:Data:3507.gcda
+        -:    0:Runs:1
+        -:    1:#define ABORT()                                                                \
+        -:    2:  do {                                                                         \
+        -:    3:    __builtin_printf("assert.\n");                                             \
+        -:    4:    __builtin_abort();                                                         \
+        -:    5:  } while (0)
+        -:    6:int f(int a) __attribute__((noinline));
+        5:    7:int f(int a) {
+        -:    8:  int fem_key_src;
+        5:    9:  int D2930 = a & 4294967291;
+        5:   10:  fem_key_src = a == 6 ? 0 : 15;
+        5:   11:  fem_key_src = D2930 != 1 ? fem_key_src : 0;
+        5:   12:  return fem_key_src;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  if (f(0) != 15)
+    #####:   17:    ABORT();
+        1:   18:  if (f(1) != 0)
+    #####:   19:    ABORT();
+        1:   20:  if (f(6) != 0)
+    #####:   21:    ABORT();
+        1:   22:  if (f(5) != 0)
+    #####:   23:    ABORT();
+        1:   24:  if (f(15) != 15)
+    #####:   25:    ABORT();
+        1:   26:  return 0;
+        -:   27:}

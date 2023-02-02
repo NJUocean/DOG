@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target tls_runtime } */
+    3|       |/* { dg-add-options tls } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |__thread int tls_ld __attribute__((tls_model("local-dynamic"))) = 1;
+    8|       |__thread int tls_ld2 __attribute__((tls_model("local-dynamic"))) = 2;
+    9|       |
+   10|      1|int get_ld(void) { return tls_ld + tls_ld2; }
+   11|       |
+   12|      1|int *get_ldp(void) { return &tls_ld; }
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  int val;
+   16|      1|
+   17|      1|  val = get_ld();
+   18|      1|  if (val != 1 + 2)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  val = *get_ldp();
+   22|      1|  if (val != 1)
+   23|      0|    abort();
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

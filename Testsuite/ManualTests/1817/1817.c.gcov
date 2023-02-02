@@ -1,0 +1,23 @@
+        -:    0:Source:1817.c
+        -:    0:Graph:1817.gcno
+        -:    0:Data:1817.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* { dg-options "-O2 -fno-ipa-pure-const -fdump-tree-optimized-blocks-details
+        -:    3: * -fno-early-inlining" } */
+        -:    4:int a[8];
+  1000000:    5:int t() {
+        -:    6:  int i;
+  4000000:    7:  for (i = 0; i < 3; i++)
+  3000000:    8:    if (a[i])
+    #####:    9:      break;
+  1000000:   10:  return i;
+        -:   11:}
+        1:   12:int main() {
+        -:   13:  int i;
+        -:   14:  /* The loop will be optimized away after ipa-inline.  */
+  1000001:   15:  for (i = 0; i < 1000000; i++)
+  1000000:   16:    t();
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */

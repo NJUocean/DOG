@@ -1,0 +1,19 @@
+        -:    0:Source:396.c
+        -:    0:Graph:396.gcno
+        -:    0:Data:396.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fgraphite-identity -flto" { target lto } } */
+        -:    2:
+        -:    3:typedef long ll;
+    #####:    4:void foo(int n, ll *p) {
+    #####:    5:  while (n--)
+    #####:    6:    *p += *p;
+    #####:    7:}
+        -:    8:
+        -:    9:typedef long long lll;
+    #####:   10:void bar(int n, lll *p) {
+    #####:   11:  while (n--)
+    #####:   12:    *p += *p;
+    #####:   13:}
+        -:   14:
+        1:   15:int main() { return 0; }

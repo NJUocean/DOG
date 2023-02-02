@@ -1,0 +1,27 @@
+        -:    0:Source:447.c
+        -:    0:Graph:447.gcno
+        -:    0:Data:447.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fgraphite-identity" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:void __attribute__((noinline, noclone)) f(int *limit, int minLen, int maxLen) {
+        -:    7:  int i;
+        -:    8:
+      257:    9:  for (i = minLen; i <= maxLen; i++) {
+      256:   10:    limit[i] = i;
+        -:   11:  }
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  int limit[256], i;
+        1:   16:  f(limit, 0, 255);
+      257:   17:  for (i = 0; i < 256; ++i) {
+      256:   18:    if (limit[i] != i)
+    #####:   19:      abort();
+      256:   20:    __asm__ volatile("" : : : "memory");
+        -:   21:  }
+        1:   22:  return 0;
+        -:   23:}

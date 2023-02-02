@@ -1,0 +1,38 @@
+    1|       |/* PR debug/54519 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g -fno-ipa-vrp" } */
+    4|       |
+    5|     12|__attribute__((noinline, noclone)) void fn1(int x) {
+    6|     12|  __asm volatile("" : "+r"(x) : : "memory");
+    7|     12|}
+    8|       |
+    9|      2|static int fn2(int x, int y, int z) {
+   10|      2|  int a = 8;
+   11|      2|  if (x != z) {
+   12|      2|    fn1(x);
+   13|      2|    fn1(x);      /* { dg-final { gdb-test .+2 "x" "36" } } */
+   14|      2|    if (x == 36) /* { dg-final { gdb-test .+1 "y" "25" } } */
+   15|      1|      fn1(x);    /* { dg-final { gdb-test . "z" "6" } } */
+   16|      2|    fn1(x);      /* { dg-final { gdb-test .+2 "x" "98" } } */
+   17|      2|    if (x == 98) /* { dg-final { gdb-test .+1 "y" "117" } } */
+   18|      1|      fn1(x);    /* { dg-final { gdb-test . "z" "8" } } */
+   19|      2|    fn1(x);
+   20|      2|    fn1(x + a);
+   21|      2|  }
+   22|      2|  return y;
+   23|      2|}
+   24|       |
+   25|      1|__attribute__((noinline, noclone)) int fn3(int x, int y) {
+   26|      1|  return fn2(x, y, 6);
+   27|      1|}
+   28|       |
+   29|      1|__attribute__((noinline, noclone)) int fn4(int x, int y) {
+   30|      1|  return fn2(x, y, 8);
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  fn3(36, 25);
+   35|      1|  fn4(98, 117);
+   36|      1|  return 0;
+   37|      1|}
+

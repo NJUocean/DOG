@@ -1,0 +1,19 @@
+        -:    0:Source:2552.c
+        -:    0:Graph:2552.gcno
+        -:    0:Data:2552.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/9348 */
+        -:    2:
+        -:    3:#define u_l_l unsigned long long
+        -:    4:#define l_l long long
+        -:    5:
+        -:    6:l_l mpy_res;
+        -:    7:
+        1:    8:u_l_l mpy(long a, long b) { return (u_l_l)a * (u_l_l)b; }
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  mpy_res = mpy(1, -1);
+        1:   12:  if (mpy_res != -1LL)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,24 @@
+        -:    0:Source:2238.c
+        -:    0:Graph:2238.gcno
+        -:    0:Data:2238.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target vect_shift } */
+        -:    3:/* { dg-require-effective-target vect_int } */
+        -:    4:
+        -:    5:#define vidx(type, vec, idx) (*((type *)&(vec) + idx))
+        -:    6:#define vector(elcount, type)                                                  \
+        -:    7:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    8:
+        -:    9:short k;
+        -:   10:
+        1:   11:int main(int argc, char *argv[]) {
+        1:   12:  vector(8, short) v0 = {argc, 1, 2, 3, 4, 5, 6, 7};
+        -:   13:  vector(8, short) r1;
+        -:   14:
+        1:   15:  r1 = v0 >> (vector(8, short)){2, 2, 2, 2, 2, 2, 2, 2};
+        -:   16:
+        1:   17:  return vidx(short, r1, 0);
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump-times ">> 2" 1 "veclower21" } } */

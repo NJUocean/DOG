@@ -1,0 +1,15 @@
+        -:    0:Source:2021.c
+        -:    0:Graph:2021.gcno
+        -:    0:Data:2021.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, c, e[5][2];
+        -:    4:unsigned int d;
+        -:    5:
+        1:    6:int main() {
+        3:    7:  for (d = 0; d < 2; d++)
+        2:    8:    if (a ? 0 : e[c + 3][d] & e[c + 4][d])
+    #####:    9:      break;
+        1:   10:  return 0;
+        -:   11:}

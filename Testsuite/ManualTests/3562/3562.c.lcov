@@ -1,0 +1,13 @@
+    1|       |/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+    2|       |/* REPRODUCED:RUN:SIGNAL MACHINE:sparc OPTIONS: */
+    3|      1|f(int n) {
+    4|      1|  int i;
+    5|      1|  double v[n];
+    6|    101|  for (i = 0; i < n; i++)
+    7|    100|    v[i] = 0;
+    8|      1|}
+    9|      1|main() {
+   10|      1|  f(100);
+   11|      1|  exit(0);
+   12|      1|}
+

@@ -1,0 +1,39 @@
+        -:    0:Source:1816.c
+        -:    0:Graph:1816.gcno
+        -:    0:Data:1816.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-optimized -fdump-ipa-profile-optimized
+        -:    2: * -fdump-ipa-afdo" } */
+        -:    3:
+  9999999:    4:static int a1(void) { return 10; }
+        -:    5:
+        1:    6:static int a2(void) { return 0; }
+        -:    7:
+        -:    8:typedef int (*tp)(void);
+        -:    9:
+        -:   10:static tp aa[] = {a2, a1, a1, a1, a1};
+        -:   11:
+ 10000000:   12:void setp(int (**pp)(void), int i) {
+ 10000000:   13:  if (!i)
+        1:   14:    *pp = aa[i];
+        -:   15:  else
+  9999999:   16:    *pp = aa[(i & 2) + 1];
+ 10000000:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        -:   20:  int (*p)(void);
+        -:   21:  int i;
+        -:   22:
+ 10000001:   23:  for (i = 0; i < 10000000; i++) {
+ 10000000:   24:    setp(&p, i);
+ 10000000:   25:    p();
+        -:   26:  }
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final-use-not-autofdo { scan-ipa-dump "Indirect call -> direct call.* a1
+        -:   32: * .will resolve by ipa-profile" "profile"} } */
+        -:   33:/* { dg-final-use-autofdo { scan-ipa-dump "Indirect call -> direct call.* a1
+        -:   34: * .will resolve by ipa-profile" "afdo"} } */
+        -:   35:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */

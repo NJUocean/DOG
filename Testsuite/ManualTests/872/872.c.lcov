@@ -1,0 +1,17 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O3 -fdump-tree-pre -fno-tree-loop-im" } */
+    3|       |int db[100];
+    4|       |int a_global_var, fact;
+    5|      1|int main() {
+    6|      1|  int i, j = 0;
+    7|    101|  do {
+    8|  10.2k|    for (i = 0; i < 100; ++i)
+    9|  10.1k|      db[i] = i;
+   10|    101|    fact = a_global_var * i;
+   11|    101|  } while (j++ < 100);
+   12|      1|}
+   13|       |/* We want to have exactly one load (not two) from a_global_var,
+   14|       |   and we want that load to be into a PRE temporary.  */
+   15|       |/* { dg-final { scan-tree-dump-times "= a_global_var;" 1 "pre" } } */
+   16|       |/* { dg-final { scan-tree-dump "pretmp\[^\\n\]* = a_global_var;" "pre" } } */
+

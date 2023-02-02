@@ -1,0 +1,26 @@
+    1|       |/* Verify that we get the low part of the long long as an int.  We
+    2|       |   used to get it wrong on big-endian machines, if register allocation
+    3|       |   succeeded at all.  We use volatile to make sure the long long is
+    4|       |   actually truncated to int, in case a single register is wide enough
+    5|       |   for a long long.  */
+    6|       |/* { dg-skip-if "asm requires register allocation" { nvptx-*-* } } */
+    7|       |#include <limits.h>
+    8|       |
+    9|      1|void ll_to_int(long long x, volatile int *p) {
+   10|      1|  int i;
+   11|      1|  asm("" : "=r"(i) : "0"(x));
+   12|      1|  *p = i;
+   13|      1|}
+   14|       |
+   15|       |int val = INT_MIN + 1;
+   16|       |
+   17|      1|int main() {
+   18|      1|  volatile int i;
+   19|      1|
+   20|      1|  ll_to_int((long long)val, &i);
+   21|      1|  if (i != val)
+   22|      0|    abort();
+   23|      1|
+   24|      1|  exit(0);
+   25|      1|}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:67.c
+        -:    0:Graph:67.gcno
+        -:    0:Data:67.gcda
+        -:    0:Runs:1
+        1:    1:int f(unsigned bitcount, int mant) {
+        1:    2:  int mask = -1 << bitcount;
+        -:    3:  {
+        1:    4:    if (!(mant & -mask))
+    #####:    5:      goto ab;
+        1:    6:    if (mant & ~mask)
+    #####:    7:      goto auf;
+        -:    8:  }
+        1:    9:ab:
+        1:   10:  return 0;
+    #####:   11:auf:
+    #####:   12:  return 1;
+        -:   13:}
+        -:   14:
+        1:   15:main() {
+        1:   16:  if (f(0, -1))
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

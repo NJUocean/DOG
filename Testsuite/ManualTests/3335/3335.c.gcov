@@ -1,0 +1,35 @@
+        -:    0:Source:3335.c
+        -:    0:Graph:3335.gcno
+        -:    0:Data:3335.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/14209.  Bug in cris.md, shrinking access size of
+        -:    2:   postincrement.
+        -:    3:   Origin: <hp@axis.com>.  */
+        -:    4:
+        -:    5:long int xb(long int *y) __attribute__((__noinline__));
+        -:    6:long int xw(long int *y) __attribute__((__noinline__));
+        -:    7:short int yb(short int *y) __attribute__((__noinline__));
+        -:    8:
+        1:    9:long int xb(long int *y) {
+        1:   10:  long int xx = *y & 255;
+        1:   11:  return xx + y[1];
+        -:   12:}
+        -:   13:
+        1:   14:long int xw(long int *y) {
+        1:   15:  long int xx = *y & 65535;
+        1:   16:  return xx + y[1];
+        -:   17:}
+        -:   18:
+        1:   19:short int yb(short int *y) {
+        1:   20:  short int xx = *y & 255;
+        1:   21:  return xx + y[1];
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  long int y[] = {-1, 16000};
+        1:   26:  short int yw[] = {-1, 16000};
+        -:   27:
+        1:   28:  if (xb(y) != 16255 || xw(y) != 81535 || yb(yw) != 16255)
+    #####:   29:    abort();
+        1:   30:  exit(0);
+        -:   31:}

@@ -1,0 +1,17 @@
+        -:    0:Source:871.c
+        -:    0:Graph:871.gcno
+        -:    0:Data:871.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:/* Make sure we do not ICE.  */
+        -:    5:
+        -:    6:__extension__ typedef __UINTPTR_TYPE__ uintptr_t;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  int var, *p = &var;
+        1:   10:  return (double)(uintptr_t)(p);
+        -:   11:}
+        -:   12:
+        -:   13:/* { dg-prune-output "-Wreturn-local-addr" } */

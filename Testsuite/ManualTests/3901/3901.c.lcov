@@ -1,0 +1,11 @@
+    1|      1|main() {
+    2|      1|  struct {
+    3|      1|    long status;
+    4|      1|  } h;
+    5|      1|
+    6|      1|  h.status = 0;
+    7|      1|  if (((h.status & 128) == 1) && ((h.status & 32) == 0))
+    8|      0|    abort();
+    9|      1|  exit(0);
+   10|      1|}
+

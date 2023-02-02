@@ -1,0 +1,33 @@
+    1|       |/* PR rtl-optimization/59166 */
+    2|       |/* { dg-additional-options "-fcompare-debug" } */
+    3|       |/* { dg-xfail-if "AIX compare debug" { powerpc-ibm-aix* } } */
+    4|       |
+    5|       |int a, b, c, f, g;
+    6|       |
+    7|      0|void foo() {
+    8|      0|  for (; b; b++)
+    9|      0|    for (; f; f = g)
+   10|      0|      for (; a;)
+   11|      0|        ;
+   12|      0|}
+   13|       |
+   14|      2|static int bar(int p) {
+   15|      2|  short d;
+   16|      2|  if (c) {
+   17|      0|    for (; f; f = g)
+   18|      0|      ;
+   19|      0|    foo();
+   20|      0|    d = p;
+   21|      0|    char e = d;
+   22|      0|    if (p)
+   23|      0|      return 1;
+   24|      2|  }
+   25|      2|  return p;
+   26|      2|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  bar(0);
+   30|      1|  bar(g);
+   31|      1|  return 0;
+   32|      1|}
+

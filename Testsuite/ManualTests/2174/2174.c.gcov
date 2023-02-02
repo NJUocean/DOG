@@ -1,0 +1,66 @@
+        -:    0:Source:2174.c
+        -:    0:Graph:2174.gcno
+        -:    0:Data:2174.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:/* { dg-require-stack-size "[dg-effective-target-value stack_size]*2" } */
+        -:    3:
+    #####:    4:void bcopy1(s, d, c) long long *s;
+        -:    5:long long *d;
+        -:    6:int c;
+        -:    7:{
+        -:    8:  int i;
+    #####:    9:  c = c / 8;
+    #####:   10:  for (i = 0; i < c; i++)
+    #####:   11:    d[i] = s[i];
+    #####:   12:}
+        -:   13:
+    #####:   14:void bcopy2(s, d, c) long *s;
+        -:   15:long *d;
+        -:   16:int c;
+        -:   17:{
+        -:   18:  int i;
+    #####:   19:  c = c / 4;
+    #####:   20:  for (i = 0; i < c; i++)
+    #####:   21:    d[i] = s[i];
+    #####:   22:}
+        -:   23:
+    #####:   24:void bcopy3(s, d, c) char *s;
+        -:   25:char *d;
+        -:   26:int c;
+        -:   27:{
+        -:   28:  long long z0, z1;
+    #####:   29:  int r = d - s;
+        -:   30:
+        -:   31:  int i;
+        -:   32:
+    #####:   33:  c /= 16;
+        -:   34:
+    #####:   35:  z0 = *((long long *)s);
+    #####:   36:  s += 8;
+    #####:   37:  z1 = *((long long *)s);
+    #####:   38:  s += 8;
+    #####:   39:  for (i = 0; i < c; i++) {
+    #####:   40:    *(long long *)(s + r) = z0;
+    #####:   41:    z0 = *((long long *)s);
+    #####:   42:    s += 8;
+    #####:   43:    *(long long *)(s + r) = z1;
+    #####:   44:    z1 = *((long long *)s);
+    #####:   45:    s += 8;
+        -:   46:  }
+    #####:   47:}
+        -:   48:
+        -:   49:#if defined(STACK_SIZE) && STACK_SIZE < 16384
+        -:   50:#define BYTES STACK_SIZE
+        -:   51:#else
+        -:   52:#define BYTES 16384
+        -:   53:#endif
+        -:   54:
+        1:   55:main() {
+        -:   56:  long long s[BYTES / 8];
+        -:   57:  long long d[BYTES / 8];
+        -:   58:  int i;
+        -:   59:
+     4096:   60:  for (i = 1; i < 67108864 / BYTES; i++)
+     4095:   61:    bcopy(s, d, BYTES);
+        -:   62:}

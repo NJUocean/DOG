@@ -1,0 +1,86 @@
+        -:    0:Source:1166.c
+        -:    0:Graph:1166.gcno
+        -:    0:Data:1166.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/87859 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-store-merging-details" } */
+        -:    4:/* { dg-final { scan-tree-dump "New sequence of \[23] stores to replace old one
+        -:    5: * of 14 stores" "store-merging" { target i?86-*-* x86_64-*-* } } } */
+        -:    6:/* { dg-final { scan-tree-dump "New sequence of 1 stores to replace old one of 6
+        -:    7: * stores" "store-merging" { target i?86-*-* x86_64-*-* } } } */
+        -:    8:
+        -:    9:struct S {
+        -:   10:  union F {
+        -:   11:    struct T {
+        -:   12:#define A(n) unsigned n : 1;
+        -:   13:#define B(n)                                                                   \
+        -:   14:  A(n##0)                                                                      \
+        -:   15:  A(n##1) A(n##2) A(n##3) A(n##4) A(n##5) A(n##6) A(n##7) A(n##8) A(n##9)
+        -:   16:      B(f)
+        -:   17:      B(f1) B(f2) B(f3) B(f4) B(f5) A(f60) A(f61) A(f62) A(f63) A(f64) A(f65)
+        -:   18:          A(f66)
+        -:   19:    } q;
+        -:   20:    unsigned int i[3];
+        -:   21:  } f;
+        -:   22:};
+        -:   23:
+        -:   24:struct S s = {.f.q.f0 = 1,
+        -:   25:              .f.q.f1 = 1,
+        -:   26:              .f.q.f2 = 1,
+        -:   27:              .f.q.f5 = 1,
+        -:   28:              .f.q.f6 = 1,
+        -:   29:              .f.q.f7 = 1,
+        -:   30:              .f.q.f8 = 1,
+        -:   31:              .f.q.f9 = 1,
+        -:   32:              .f.q.f13 = 1,
+        -:   33:              .f.q.f14 = 1,
+        -:   34:              .f.q.f15 = 1,
+        -:   35:              .f.q.f16 = 1,
+        -:   36:              .f.q.f17 = 1,
+        -:   37:              .f.q.f19 = 1,
+        -:   38:              .f.q.f21 = 1,
+        -:   39:              .f.q.f66 = 1};
+        -:   40:
+        1:   41:__attribute__((noipa)) void bar(unsigned *x) {
+        1:   42:  if (x[0] != s.f.i[0] || x[1] != s.f.i[1] || x[2] != s.f.i[2])
+    #####:   43:    __builtin_abort();
+        1:   44:}
+        -:   45:
+        1:   46:__attribute__((noipa)) void foo(unsigned char *state, unsigned char c) {
+        -:   47:  struct S i;
+        1:   48:  i.f.i[0] = 0;
+        1:   49:  i.f.i[1] = 0;
+        1:   50:  i.f.i[2] = 0;
+        1:   51:  i.f.q.f7 = 1;
+        1:   52:  i.f.q.f2 = 1;
+        1:   53:  i.f.q.f21 = 1;
+        1:   54:  i.f.q.f19 = 1;
+        1:   55:  i.f.q.f14 = 1;
+        1:   56:  i.f.q.f5 = 1;
+        1:   57:  i.f.q.f0 = 1;
+        1:   58:  i.f.q.f15 = 1;
+        1:   59:  i.f.q.f16 = 1;
+        1:   60:  i.f.q.f6 = 1;
+        1:   61:  i.f.q.f9 = 1;
+        1:   62:  i.f.q.f17 = c;
+        1:   63:  i.f.q.f1 = 1;
+        1:   64:  i.f.q.f8 = 1;
+        1:   65:  i.f.q.f13 = 1;
+        1:   66:  i.f.q.f66 = 1;
+        1:   67:  if (*state) {
+    #####:   68:    i.f.q.f37 = 1;
+    #####:   69:    i.f.q.f38 = 1;
+    #####:   70:    i.f.q.f39 = 1;
+    #####:   71:    i.f.q.f40 = 1;
+    #####:   72:    i.f.q.f41 = 1;
+    #####:   73:    i.f.q.f36 = 1;
+        -:   74:  }
+        1:   75:  bar(i.f.i);
+        1:   76:}
+        -:   77:
+        1:   78:int main() {
+        1:   79:  unsigned char z = 0;
+        1:   80:  foo(&z, 1);
+        1:   81:  return 0;
+        -:   82:}

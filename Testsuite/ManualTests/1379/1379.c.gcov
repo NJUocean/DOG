@@ -1,0 +1,17 @@
+        -:    0:Source:1379.c
+        -:    0:Graph:1379.gcno
+        -:    0:Data:1379.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-tree-dce" } */
+        -:    3:/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+        -:    4:
+        1:    5:static inline int foo(int n, int k) {
+        1:    6:  struct S {
+        1:    7:    int i[n];
+        -:    8:    int value;
+        1:    9:  } s[2];
+        1:   10:  return s[k].value = 0;
+        -:   11:}
+        -:   12:
+        1:   13:int main() { return foo(2, 0); }

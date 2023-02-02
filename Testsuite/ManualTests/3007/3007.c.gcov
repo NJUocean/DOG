@@ -1,0 +1,16 @@
+        -:    0:Source:3007.c
+        -:    0:Graph:3007.gcno
+        -:    0:Data:3007.gcda
+        -:    0:Runs:1
+        1:    1:int test() {
+        -:    2:  int biv, giv;
+        3:    3:  for (biv = 0, giv = 0; giv != 8; biv++)
+        2:    4:    giv = biv * 8;
+        1:    5:  return giv;
+        -:    6:}
+        -:    7:
+        1:    8:main() {
+        1:    9:  if (test() != 8)
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

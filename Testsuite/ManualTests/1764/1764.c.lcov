@@ -1,0 +1,19 @@
+    1|       |/* Test that changes to a variable are reflected in a VLA later in the
+    2|       |   expression.  */
+    3|       |/* { dg-options "" } */
+    4|       |
+    5|       |#ifdef __cplusplus
+    6|       |extern "C"
+    7|       |#endif
+    8|       |    void
+    9|       |    abort();
+   10|       |
+   11|       |int i = 4;
+   12|      1|int f() { return i; }
+   13|       |
+   14|      1|int main() {
+   15|      1|  if (i += 2, sizeof(*(int(*)[f()])0) != 6 * sizeof(int))
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

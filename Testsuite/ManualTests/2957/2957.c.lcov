@@ -1,0 +1,14 @@
+    1|       |#include <stdbool.h>
+    2|       |
+    3|      1|int f(int a, int b, int c, _Bool d, _Bool e, _Bool f, char g) {
+    4|      1|  if (g != 1 || d != true || e != true || f != true)
+    5|      1|    abort();
+    6|      1|  return a + b + c;
+    7|      1|}
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  if (f(1, 2, -3, true, true, true, '\001'))
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

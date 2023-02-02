@@ -1,0 +1,15 @@
+        -:    0:Source:3803.c
+        -:    0:Graph:3803.gcno
+        -:    0:Data:3803.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/58364 */
+        -:    2:
+        -:    3:int a = 1, b, c;
+        -:    4:
+       1*:    5:int foo(int x) { return x < 0 ? 1 : x; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  if (foo(a > c == (b = 0)))
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

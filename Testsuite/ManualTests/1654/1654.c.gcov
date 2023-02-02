@@ -1,0 +1,40 @@
+        -:    0:Source:1654.c
+        -:    0:Graph:1654.gcno
+        -:    0:Data:1654.gcda
+        -:    0:Runs:1
+        -:    1:/* PR bootstrap/63888 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:__attribute__((noinline, noclone)) int foo(int x) {
+        1:    5:  int v = 0;
+        1:    6:  switch (x) {
+        1:    7:  case 11:
+        1:    8:    v = 67;
+        1:    9:    break;
+    #####:   10:  case 12:
+    #####:   11:    v = 68;
+    #####:   12:    break;
+    #####:   13:  case 13:
+    #####:   14:    v = 69;
+    #####:   15:    break;
+        -:   16:  }
+        1:   17:  return v;
+        -:   18:}
+        -:   19:
+        1:   20:__attribute__((noinline, noclone)) int bar(int x) {
+        1:   21:  int v = 0;
+        1:   22:  switch (x) {
+    #####:   23:  case 18:
+    #####:   24:    v = 67;
+    #####:   25:    break;
+        1:   26:  case 19:
+        1:   27:    v = 68;
+        1:   28:    break;
+    #####:   29:  case 20:
+    #####:   30:    v = 69;
+    #####:   31:    break;
+        -:   32:  }
+        1:   33:  return v;
+        -:   34:}
+        -:   35:
+        1:   36:int main() { return foo(11) - 67 + bar(19) - 68; }

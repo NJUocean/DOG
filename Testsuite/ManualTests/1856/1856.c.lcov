@@ -1,0 +1,18 @@
+    1|       |/* { dg-options "-O0 -fdump-ipa-profile" } */
+    2|       |
+    3|      1|int main(int argc, char **argv) {
+    4|      1|  unsigned u = (argc - 1);
+    5|      1|  int counter = 0;
+    6|      1|
+    7|    101|  for (unsigned i = 0; i < 100; i++) {
+    8|    100|    unsigned x = i < 10 ? 16 : 15;
+    9|    100|    counter += u % x;
+   10|    100|  }
+   11|      1|
+   12|      1|  return counter;
+   13|      1|}
+   14|       |
+   15|       |/* autofdo does not do value profiling so far */
+   16|       |/* { dg-final-use-not-autofdo { scan-ipa-dump "Pow2 counter pow2:10 nonpow2:90."
+   17|       | * "profile" } } */
+

@@ -1,0 +1,33 @@
+        -:    0:Source:928.c
+        -:    0:Graph:928.gcno
+        -:    0:Data:928.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:int f(void) { return 2; }
+    #####:    6:unsigned int g(void) { return 5; }
+        -:    7:unsigned int h = 1;
+        -:    8:
+        -:    9:typedef unsigned int vec __attribute__((vector_size(16)));
+        -:   10:
+        -:   11:vec i = {1, 2, 3, 4};
+        -:   12:
+       1*:   13:vec fv1(void) { return i + (h ? f() : g()); }
+       1*:   14:vec fv2(void) { return (h ? f() : g()) + i; }
+        -:   15:
+        1:   16:int main() {
+        -:   17:  vec i, j;
+        1:   18:  j = fv1();
+        1:   19:  if (j[0] != 3)
+    #####:   20:    abort();
+        1:   21:  i = fv2();
+        1:   22:  if (i[0] != 3)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* Ignore a warning that is irrelevant to the purpose of this test.  */
+        -:   28:/* { dg-prune-output ".*GCC vector returned by reference.*" } */
+        -:   29:/* { dg-prune-output "changes the ABI" } */

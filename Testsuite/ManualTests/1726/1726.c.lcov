@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|int main() {
+    4|      1|#if __SIZEOF_INT__ == 4
+    5|      1|  unsigned x = 0xffffffff;
+    6|      1|  __builtin_memset(1 + (char *)&x, 0, 2);
+    7|      1|  if (x != 0xff0000ff)
+    8|      0|    __builtin_abort();
+    9|      1|#endif
+   10|      1|  return 0;
+   11|      1|}
+

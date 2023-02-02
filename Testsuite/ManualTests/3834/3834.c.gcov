@@ -1,0 +1,32 @@
+        -:    0:Source:3834.c
+        -:    0:Graph:3834.gcno
+        -:    0:Data:3834.gcda
+        -:    0:Runs:1
+        1:    1:f(b, c) unsigned char *b;
+        -:    2:int c;
+        -:    3:{
+        1:    4:  unsigned long v = 0;
+        1:    5:  switch (c) {
+        1:    6:  case 'd':
+        1:    7:    v = ((unsigned long)b[0] << 8) + b[1];
+        1:    8:    v >>= 9;
+        1:    9:    break;
+        -:   10:
+    #####:   11:  case 'k':
+    #####:   12:    v = b[3] >> 4;
+    #####:   13:    break;
+        -:   14:
+    #####:   15:  default:
+    #####:   16:    abort();
+        -:   17:  }
+        -:   18:
+        1:   19:  return v;
+        -:   20:}
+        1:   21:main() {
+        -:   22:  char buf[4];
+        1:   23:  buf[0] = 170;
+        1:   24:  buf[1] = 5;
+        1:   25:  if (f(buf, 'd') != 85)
+    #####:   26:    abort();
+        1:   27:  exit(0);
+        -:   28:}

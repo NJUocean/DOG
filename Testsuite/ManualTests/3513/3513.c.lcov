@@ -1,0 +1,24 @@
+    1|       |void adjust_xy(short *, short *);
+    2|       |
+    3|       |struct adjust_template {
+    4|       |  short kx_x;
+    5|       |  short kx_y;
+    6|       |};
+    7|       |
+    8|       |static struct adjust_template adjust = {1, 1};
+    9|       |
+   10|      1|main() {
+   11|      1|  short x = 1, y = 1;
+   12|      1|
+   13|      1|  adjust_xy(&x, &y);
+   14|      1|
+   15|      1|  if (x != 2)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+   20|       |
+   21|       |void adjust_xy(x, y) short *x;
+   22|       |short *y;
+   23|      1|{ *x = adjust.kx_x * *x + adjust.kx_y * *y; }
+

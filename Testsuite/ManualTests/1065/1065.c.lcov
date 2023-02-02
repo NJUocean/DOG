@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |struct A {
+    5|       |  int b : 1;
+    6|       |};
+    7|       |
+    8|       |int d;
+    9|       |
+   10|      1|int main() {
+   11|      1|  struct A e = {0};
+   12|      1|  if (!d)
+   13|      1|    e.b = -1;
+   14|      1|  if (!e.b)
+   15|      0|    __builtin_abort();
+   16|      1|
+   17|      1|  return 0;
+   18|      1|}
+

@@ -1,0 +1,24 @@
+        -:    0:Source:1948.c
+        -:    0:Graph:1948.gcno
+        -:    0:Data:1948.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size20plus } */
+        -:    2:/* { dg-require-stack-size "32753*2" } */
+        -:    3:
+        -:    4:typedef __SIZE_TYPE__ size_t;
+        -:    5:
+        -:    6:int strcmp(const char *, const char *);
+        -:    7:void *memchr(const void *, int, size_t);
+        -:    8:char *strncpy(char *, const char *, size_t);
+        -:    9:
+        1:   10:int main(int argc, char **argv) {
+        1:   11:  char target[32753] = "A";
+        -:   12:  char buffer[32753];
+        -:   13:  char *x;
+        1:   14:  x = buffer;
+        -:   15:
+        1:   16:  if (strcmp(target, "A") || memchr(target, 'A', 0) != ((void *)0))
+    #####:   17:    if (strncpy(x, "", 4) != x)
+        -:   18:      ;
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,25 @@
+    1|       |// Test for bitfield alignment in structs on IA-32
+    2|       |// { dg-do run }
+    3|       |// { dg-options "-O2" }
+    4|       |// { dg-additional-options "-mno-ms-bitfields" { target *-*-mingw* } }
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|       |struct X {
+   10|       |  int : 32;
+   11|       |};
+   12|       |
+   13|       |struct Y {
+   14|       |  int i : 32;
+   15|       |};
+   16|       |
+   17|      1|int main() {
+   18|      1|  if (__alignof__(struct X) != 1)
+   19|      0|    abort();
+   20|      1|  if (__alignof__(struct Y) != 4)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  exit(0);
+   24|      1|}
+

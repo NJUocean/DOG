@@ -1,0 +1,26 @@
+        -:    0:Source:198.c
+        -:    0:Graph:198.gcno
+        -:    0:Data:198.gcda
+        -:    0:Runs:1
+        1:    1:long double f(d, i) long double d;
+        -:    2:int i;
+        -:    3:{
+        -:    4:  long double e;
+        -:    5:
+        1:    6:  d = -d;
+        1:    7:  e = d;
+        1:    8:  if (i == 1)
+        1:    9:    d *= 2;
+        1:   10:  d -= e * d;
+        1:   11:  d -= e * d;
+        1:   12:  d -= e * d;
+        1:   13:  d -= e * d;
+        1:   14:  d -= e * d;
+        1:   15:  return d;
+        -:   16:}
+        -:   17:
+        1:   18:main() {
+        1:   19:  if (!(int)(f(2.0L, 1)))
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

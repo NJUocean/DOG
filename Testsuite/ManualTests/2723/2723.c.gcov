@@ -1,0 +1,33 @@
+        -:    0:Source:2723.c
+        -:    0:Graph:2723.gcno
+        -:    0:Data:2723.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { ! x32 } && avx512f_runtime } } } */
+        -:    2:/* { dg-do compile { target { { ! x32 } && { ! avx512f_runtime } } } } */
+        -:    3:/* { dg-options "-Ofast -mabi=ms -mavx512f" } */
+        -:    4:/* { dg-require-effective-target avx512f } */
+        -:    5:/* { dg-require-effective-target alloca } */
+        -:    6:
+        -:    7:/* Test with alloca (and DRAP).  */
+        -:    8:
+        -:    9:int a[56];
+        -:   10:volatile int b = -12345;
+        -:   11:volatile const int d = 42;
+        -:   12:
+    12346:   13:void foo(int *x, int y, int z) {}
+        -:   14:
+        -:   15:void (*volatile const foo_noinfo)(int *, int, int) = foo;
+        -:   16:
+        1:   17:int main(int argc, char *argv[]) {
+        -:   18:  int c;
+        1:   19:  int *e = __builtin_alloca(d);
+        1:   20:  foo_noinfo(e, d, 0);
+    12346:   21:  for (; b; b++) {
+    12345:   22:    c = b;
+    12345:   23:    if (b & 1)
+     6173:   24:      c = 2;
+    12345:   25:    foo_noinfo(e, d, c);
+    12345:   26:    a[-(b % 56)] = c;
+        -:   27:  }
+        1:   28:  return 0;
+        -:   29:}

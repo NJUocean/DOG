@@ -1,0 +1,18 @@
+    1|       |/* PR tree-optimization/85156 */
+    2|       |
+    3|       |int x, y;
+    4|       |
+    5|      1|__attribute__((noipa)) int foo(int z) {
+    6|      1|  if (__builtin_expect(x ? y != 0 : 0, z++))
+    7|      0|    return 7;
+    8|      1|  return z;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  x = 1;
+   13|      1|  asm volatile("" : "+m"(x), "+m"(y));
+   14|      1|  if (foo(10) != 11)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+

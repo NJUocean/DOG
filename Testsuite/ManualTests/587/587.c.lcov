@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fipa-pta -fno-tree-fre -fno-tree-sra
+    3|       | * -fdump-ipa-pta2-details -fdelete-null-pointer-checks" } */
+    4|       |
+    5|       |struct X {
+    6|       |  int i;
+    7|       |  void *p;
+    8|       |};
+    9|       |
+   10|      1|static void *__attribute__((noinline, noclone)) foo(struct X *q, void *p) {
+   11|      1|  struct X b;
+   12|      1|  b.p = p;
+   13|      1|  *q = b;
+   14|      1|  return q->p;
+   15|      1|}
+   16|       |extern void abort(void);
+   17|      1|int main() {
+   18|      1|  struct X a, c;
+   19|      1|  void *p;
+   20|      1|  a.p = (void *)&c;
+   21|      1|  p = foo(&a, &a);
+   22|      1|  /* { dg-final { scan-ipa-dump "foo.result = { NULL a\[^ \]* c\[^ \]* }" "pta2"
+   23|      1|   * { target { ! keeps_null_pointer_checks } } } } */
+   24|      1|  /* { dg-final { scan-ipa-dump "foo.result = { NONLOCAL a\[^ \]* c\[^ \]* }"
+   25|      1|   * "pta2" { target { keeps_null_pointer_checks } } } } */
+   26|      1|  ((struct X *)p)->p = (void *)0;
+   27|      1|  if (a.p != (void *)0)
+   28|      0|    abort();
+   29|      1|  return 0;
+   30|      1|}
+

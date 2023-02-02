@@ -1,0 +1,27 @@
+    1|       |typedef unsigned long long uint64_t;
+    2|       |void f(uint64_t *a, uint64_t aa) __attribute__((noinline));
+    3|      1|void f(uint64_t *a, uint64_t aa) {
+    4|      1|  uint64_t new_value = aa;
+    5|      1|  uint64_t old_value = *a;
+    6|      1|  int bit_size = 32;
+    7|      1|  uint64_t mask = (uint64_t)(unsigned)(-1);
+    8|      1|  uint64_t tmp = old_value & mask;
+    9|      1|  new_value &= mask;
+   10|      1|  /* On overflow we need to add 1 in the upper bits */
+   11|      1|  if (tmp > new_value)
+   12|      0|    new_value += 1ull << bit_size;
+   13|      1|  /* Add in the upper bits from the old value */
+   14|      1|  new_value += old_value & ~mask;
+   15|      1|  *a = new_value;
+   16|      1|}
+   17|      1|int main(void) {
+   18|      1|  uint64_t value, new_value, old_value;
+   19|      1|  value = 0x100000001;
+   20|      1|  old_value = value;
+   21|      1|  new_value = (value + 1) & (uint64_t)(unsigned)(-1);
+   22|      1|  f(&value, new_value);
+   23|      1|  if (value != old_value + 1)
+   24|      0|    __builtin_abort();
+   25|      1|  return 0;
+   26|      1|}
+

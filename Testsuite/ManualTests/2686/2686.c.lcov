@@ -1,0 +1,32 @@
+    1|       |/* { dg-do run { target lp64 } } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |void abort(void);
+    5|       |
+    6|       |char global;
+    7|       |
+    8|       |__attribute__((sysv_abi, noinline, noclone)) void
+    9|      3|sysv_abi_func(char const *desc, void *local) {
+   10|      3|  register int esi asm("esi");
+   11|      3|  register int edi asm("edi");
+   12|      3|
+   13|      3|  if (local != &global)
+   14|      0|    abort();
+   15|      3|
+   16|      3|  /* Clobber some of the extra SYSV ABI registers.  */
+   17|      3|  asm volatile("movl\t%2, %0\n\tmovl\t%2, %1"
+   18|      3|               : "=r"(esi), "=r"(edi)
+   19|      3|               : "i"(0xdeadbeef));
+   20|      3|}
+   21|       |
+   22|      1|__attribute__((ms_abi, noinline, noclone)) void ms_abi_func() {
+   23|      1|  sysv_abi_func("1st call", &global);
+   24|      1|  sysv_abi_func("2nd call", &global);
+   25|      1|  sysv_abi_func("3rd call", &global);
+   26|      1|}
+   27|       |
+   28|      1|int main(void) {
+   29|      1|  ms_abi_func();
+   30|      1|  return 0;
+   31|      1|}
+

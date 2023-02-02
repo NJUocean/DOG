@@ -1,0 +1,48 @@
+        -:    0:Source:134.c
+        -:    0:Graph:134.gcno
+        -:    0:Data:134.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_exchange routines for existence and proper execution on
+        -:    2:   1-byte values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    5:
+        -:    6:#include <stdatomic.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:_Atomic char v;
+        -:   11:char count, ret;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v = 0;
+        1:   15:  count = 0;
+        -:   16:
+        1:   17:  if (atomic_exchange_explicit(&v, count + 1, memory_order_relaxed) != count)
+    #####:   18:    abort();
+        1:   19:  count++;
+        -:   20:
+        1:   21:  if (atomic_exchange_explicit(&v, count + 1, memory_order_acquire) != count)
+    #####:   22:    abort();
+        1:   23:  count++;
+        -:   24:
+        1:   25:  if (atomic_exchange_explicit(&v, count + 1, memory_order_release) != count)
+    #####:   26:    abort();
+        1:   27:  count++;
+        -:   28:
+        1:   29:  if (atomic_exchange_explicit(&v, count + 1, memory_order_acq_rel) != count)
+    #####:   30:    abort();
+        1:   31:  count++;
+        -:   32:
+        1:   33:  if (atomic_exchange_explicit(&v, count + 1, memory_order_seq_cst) != count)
+    #####:   34:    abort();
+        1:   35:  count++;
+        -:   36:
+        1:   37:  count++;
+        -:   38:
+        1:   39:  ret = atomic_exchange(&v, count);
+        1:   40:  if (ret != count - 1 || v != count)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  return 0;
+        -:   44:}

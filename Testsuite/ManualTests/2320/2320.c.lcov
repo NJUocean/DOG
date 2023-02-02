@@ -1,0 +1,21 @@
+    1|       |/* Test gcov block mode.  */
+    2|       |
+    3|       |/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+    4|       |/* { dg-do run { target native } } */
+    5|       |
+    6|       |int one = 1; /* subvert constant folder. */
+    7|       |int zero = 0;
+    8|       |
+    9|     10|int foo(int ix) { return ix & 1 ? one : zero; /* count(10) */ }
+   10|       |
+   11|      1|int main() {
+   12|      1|  unsigned ix, jx = 0;
+   13|      1|
+   14|     11|  for (ix = 10; ix--;)
+   15|     10|    jx += foo(ix); /* count(11) */
+   16|      1|
+   17|      1|  return jx != 5;
+   18|      1|}
+   19|       |
+   20|       |/* { dg-final { run-gcov { -a gcov-11.c } } } */
+

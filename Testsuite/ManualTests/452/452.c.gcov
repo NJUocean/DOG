@@ -1,0 +1,26 @@
+        -:    0:Source:452.c
+        -:    0:Graph:452.gcno
+        -:    0:Data:452.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-nest-optimize" } */
+        -:    3:
+        -:    4:int bf;
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  int dc[5];
+        -:    8:
+        3:    9:  for (bf = 0; bf < 2; ++bf) {
+        2:   10:    int l9, g5 = -1;
+        -:   11:
+       12:   12:    for (l9 = 0; l9 < 5; ++l9) {
+       10:   13:      dc[l9] = g5;
+       10:   14:      g5 = (dc[l9] > 0);
+        -:   15:    }
+        -:   16:  }
+        -:   17:
+        1:   18:  if (dc[0] != -1)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

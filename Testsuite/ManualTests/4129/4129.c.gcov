@@ -1,0 +1,32 @@
+        -:    0:Source:4129.c
+        -:    0:Graph:4129.gcno
+        -:    0:Data:4129.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:#include <limits.h>
+        -:    3:
+        -:    4:extern void exit(int);
+        -:    5:extern void abort();
+        -:    6:
+        1:    7:void test01(unsigned int a, unsigned int b) {
+        1:    8:  if (a < 5)
+    #####:    9:    abort();
+        1:   10:  if (b < 5)
+    #####:   11:    abort();
+        1:   12:  if (a - b != 5)
+    #####:   13:    abort();
+        1:   14:}
+        -:   15:
+        1:   16:void test02(unsigned int a, unsigned int b) {
+        1:   17:  if (a >= 12)
+        1:   18:    if (b > 15)
+        1:   19:      if (a - b < UINT_MAX - 15U)
+    #####:   20:        abort();
+        1:   21:}
+        -:   22:
+        1:   23:int main(int argc, char *argv[]) {
+        1:   24:  unsigned x = 0x80000000;
+        1:   25:  test01(x + 5, x);
+        1:   26:  test02(14, 16);
+        1:   27:  exit(0);
+        -:   28:}

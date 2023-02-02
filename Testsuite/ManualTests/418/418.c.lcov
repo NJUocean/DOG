@@ -1,0 +1,78 @@
+    1|       |#define DEBUG 0
+    2|       |#if DEBUG
+    3|       |#include <stdio.h>
+    4|       |#endif
+    5|       |
+    6|       |int B[4];
+    7|       |int A[4][4][4][4];
+    8|       |
+    9|      1|static int __attribute__((noinline)) foo(void) {
+   10|      1|  int i, j, k, l;
+   11|      1|
+   12|      1|  /* Loops (L, J) are interchanged, and then loops (J and K) are
+   13|      1|     interchanged.  The result is a nest starting with (K, J, L).  */
+   14|      5|  for (l = 0; l < 4; l++) {
+   15|     20|    for (k = 0; k < 4; k++) {
+   16|     80|      for (j = 0; j < 4; j++) {
+   17|    192|        for (i = 0; i < 2; i++) {
+   18|    128|          B[i] = A[i][k][j][l] + A[3 - i][k][j][l];
+   19|    128|          B[3 - i] = A[i][k][j][l] - A[3 - i][k][j][l];
+   20|    128|        }
+   21|     64|        A[0][k][j][l] = B[0] + B[1];
+   22|     64|        A[2][k][j][l] = B[0] - B[1];
+   23|     64|        A[1][k][j][l] = B[3] + B[2];
+   24|     64|        A[3][k][j][l] = B[3] - B[2];
+   25|     64|      }
+   26|     16|
+   27|     80|      for (i = 0; i < 4; i++) {
+   28|    192|        for (j = 0; j < 2; j++) {
+   29|    128|          B[j] = A[i][k][j][l] + A[i][k][3 - j][l];
+   30|    128|          B[3 - j] = A[i][k][j][l] - A[i][k][3 - j][l];
+   31|    128|        }
+   32|     64|        A[i][k][0][l] = B[0] + B[1];
+   33|     64|        A[i][k][2][l] = B[0] - B[1];
+   34|     64|        A[i][k][1][l] = B[3] + B[2];
+   35|     64|        A[i][k][3][l] = B[3] - B[2];
+   36|     64|      }
+   37|     16|    }
+   38|      4|  }
+   39|      1|
+   40|      1|  return A[0][1][0][2] + A[0][3][0][3] + A[0][2][0][2] + A[0][1][0][1] +
+   41|      1|         A[3][3][0][2];
+   42|      1|}
+   43|       |
+   44|       |extern void abort();
+   45|       |
+   46|      1|int main(void) {
+   47|      1|  int i, j, k, l, res;
+   48|      1|
+   49|      5|  for (i = 0; i < 4; i++)
+   50|      4|    B[i] = 2;
+   51|      1|
+   52|      5|  for (i = 0; i < 4; i++)
+   53|     20|    for (j = 0; j < 4; j++)
+   54|     80|      for (k = 0; k < 4; k++)
+   55|    320|        for (l = 0; l < 4; l++)
+   56|    256|          A[i][j][k][l] = i + j + k + l;
+   57|      1|
+   58|      1|  res = foo();
+   59|      1|
+   60|       |#if DEBUG
+   61|       |  for (i = 0; i < 4; i++)
+   62|       |    for (j = 0; j < 4; j++)
+   63|       |      for (k = 0; k < 4; k++)
+   64|       |        for (l = 0; l < 4; l++)
+   65|       |          fprintf(stderr, "A[%d][%d][%d][%d] = %d \n", i, j, k, l,
+   66|       |                  A[i][j][k][l]);
+   67|       |
+   68|       |  fprintf(stderr, "res = %d \n", res);
+   69|       |#endif
+   70|      1|
+   71|      1|  if (res != 424)
+   72|      0|    abort();
+   73|      1|
+   74|      1|  return 0;
+   75|      1|}
+   76|       |
+   77|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

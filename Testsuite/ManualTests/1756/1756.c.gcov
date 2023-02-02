@@ -1,0 +1,37 @@
+        -:    0:Source:1756.c
+        -:    0:Graph:1756.gcno
+        -:    0:Data:1756.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fdump-tree-alias" } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:struct X {
+        -:    7:  int *p;
+        -:    8:  int *q;
+        -:    9:  int *r;
+        -:   10:};
+        3:   11:int __attribute__((noinline)) foo(int i, int j, int k, __SIZE_TYPE__ off) {
+        -:   12:  struct X x;
+        -:   13:  int **p, *q;
+        3:   14:  x.p = &i;
+        3:   15:  x.q = &j;
+        3:   16:  x.r = &k;
+        3:   17:  p = &x.q;
+        3:   18:  p += off;
+        -:   19:  /* *p points to { i, j, k } */
+        3:   20:  q = *p;
+        3:   21:  return *q;
+        -:   22:}
+        1:   23:int main() {
+        1:   24:  if (foo(1, 2, 3, -1) != 1)
+    #####:   25:    abort();
+        1:   26:  if (foo(1, 2, 3, 0) != 2)
+    #####:   27:    abort();
+        1:   28:  if (foo(1, 2, 3, 1) != 3)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-final { scan-tree-dump "q_\[0-9\]* = { i j k }" "alias" } } */

@@ -1,0 +1,30 @@
+        -:    0:Source:3355.c
+        -:    0:Graph:3355.gcno
+        -:    0:Data:3355.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:typedef long GLint;
+        -:    3:void aglChoosePixelFormat(const GLint *);
+        -:    4:
+        1:    5:void find(const int *alistp) {
+        -:    6:  const int *blist;
+        -:    7:  int list[32];
+        1:    8:  if (alistp)
+    #####:    9:    blist = alistp;
+        -:   10:  else {
+        1:   11:    list[3] = 42;
+        1:   12:    blist = list;
+        -:   13:  }
+        1:   14:  aglChoosePixelFormat((GLint *)blist);
+        1:   15:}
+        -:   16:
+        1:   17:void aglChoosePixelFormat(const GLint *a) {
+        1:   18:  int *b = (int *)a;
+        1:   19:  if (b[3] != 42)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  find(0);
+        1:   25:  return 0;
+        -:   26:}

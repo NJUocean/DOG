@@ -1,0 +1,59 @@
+        -:    0:Source:196.c
+        -:    0:Graph:196.gcno
+        -:    0:Data:196.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2004 Free Software Foundation.
+        -:    2:
+        -:    3:   Check that constant folding of copysign, copysignf and copysignl math
+        -:    4:   functions doesn't break anything and produces the expected results.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 6th June 2004.  */
+        -:    7:
+        -:    8:/* { dg-do link } */
+        -:    9:/* { dg-options "-O2" } */
+        -:   10:
+        -:   11:extern void link_error(void);
+        -:   12:
+        -:   13:extern double copysign(double, double);
+        -:   14:extern float copysignf(float, float);
+        -:   15:extern long double copysignl(long double, long double);
+        -:   16:
+        1:   17:int main() {
+        -:   18:  if (copysign(2.0, 1.0) != 2.0)
+        -:   19:    link_error();
+        -:   20:  if (copysign(2.0, -1.0) != -2.0)
+        -:   21:    link_error();
+        -:   22:  if (copysign(-2.0, 1.0) != 2.0)
+        -:   23:    link_error();
+        -:   24:  if (copysign(-2.0, -1.0) != -2.0)
+        -:   25:    link_error();
+        -:   26:
+        -:   27:  if (copysign(2.0, 1.0) != 2.0)
+        -:   28:    link_error();
+        -:   29:  if (copysign(2.0, -1.0) != -2.0)
+        -:   30:    link_error();
+        -:   31:  if (copysign(-2.0, 1.0) != 2.0)
+        -:   32:    link_error();
+        -:   33:  if (copysign(-2.0, -1.0) != -2.0)
+        -:   34:    link_error();
+        -:   35:
+        -:   36:  if (copysignf(2.0f, 1.0f) != 2.0f)
+        -:   37:    link_error();
+        -:   38:  if (copysignf(2.0f, -1.0f) != -2.0f)
+        -:   39:    link_error();
+        -:   40:  if (copysignf(-2.0f, 1.0f) != 2.0f)
+        -:   41:    link_error();
+        -:   42:  if (copysignf(-2.0f, -1.0f) != -2.0f)
+        -:   43:    link_error();
+        -:   44:
+        -:   45:  if (copysignl(2.0l, 1.0l) != 2.0l)
+        -:   46:    link_error();
+        -:   47:  if (copysignl(2.0l, -1.0l) != -2.0l)
+        -:   48:    link_error();
+        -:   49:  if (copysignl(-2.0l, 1.0l) != 2.0l)
+        -:   50:    link_error();
+        -:   51:  if (copysignl(-2.0l, -1.0l) != -2.0l)
+        -:   52:    link_error();
+        -:   53:
+        1:   54:  return 0;
+        -:   55:}

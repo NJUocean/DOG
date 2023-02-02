@@ -1,0 +1,39 @@
+        -:    0:Source:2219.c
+        -:    0:Graph:2219.gcno
+        -:    0:Data:2219.gcda
+        -:    0:Runs:1
+        -:    1:/* Source: PR 321 modified for test suite by Neil Booth 14 Jan 2001.  */
+        -:    2:
+        -:    3:typedef unsigned long long uint64;
+        -:    4:unsigned long pars;
+        -:    5:
+        -:    6:uint64 b[32];
+        -:    7:uint64 *r = b;
+        -:    8:
+        1:    9:void alpha_ep_extbl_i_eq_0() {
+        -:   10:  unsigned int rb, ra, rc;
+        -:   11:
+        1:   12:  rb = (((unsigned long)(pars) >> 27)) & 0x1fUL;
+        1:   13:  ra = (((unsigned int)(pars) >> 5)) & 0x1fUL;
+        1:   14:  rc = (((unsigned int)(pars) >> 0)) & 0x1fUL;
+        -:   15:  {
+        1:   16:    uint64 temp = ((r[ra] >> ((r[rb] & 0x7) << 3)) & 0x00000000000000FFLL);
+        1:   17:    if (rc != 31)
+        1:   18:      r[rc] = temp;
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        -:   23:  if (sizeof(uint64) == 8) {
+        1:   24:    b[17] = 0x0000000000303882ULL; /* rb */
+        1:   25:    b[2] = 0x534f4f4c494d000aULL;  /* ra & rc */
+        -:   26:
+        1:   27:    pars = 0x88000042; /* 17, 2, 2 coded */
+        1:   28:    alpha_ep_extbl_i_eq_0();
+        -:   29:
+        1:   30:    if (b[2] != 0x4d)
+    #####:   31:      abort();
+        -:   32:  }
+        -:   33:
+        1:   34:  exit(0);
+        -:   35:}

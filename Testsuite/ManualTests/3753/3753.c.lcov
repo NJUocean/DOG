@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |float global;
+    4|      1|int main() {
+    5|      1|  unsigned long z = 1;
+    6|      1|  float x = -z;
+    7|      1|  global = x;
+    8|      1|  if (global < 0)
+    9|      0|    __builtin_abort();
+   10|      1|  return 0;
+   11|      1|}
+

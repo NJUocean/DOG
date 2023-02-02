@@ -1,0 +1,46 @@
+    1|       |/* PR target/50310 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O3" } */
+    4|       |/* { dg-options "-O3 -mavx" { target avx_runtime } } */
+    5|       |
+    6|       |double s1[4], s2[4], s3[64];
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  int i;
+   10|      1|  asm volatile("" : : : "memory");
+   11|      5|  for (i = 0; i < 4; i++)
+   12|      4|    s3[0 * 4 + i] = __builtin_isgreater(s1[i], s2[i]) ? -1.0 : 0.0;
+   13|      5|  for (i = 0; i < 4; i++)
+   14|      4|    s3[1 * 4 + i] = (!__builtin_isgreater(s1[i], s2[i])) ? -1.0 : 0.0;
+   15|      5|  for (i = 0; i < 4; i++)
+   16|      4|    s3[2 * 4 + i] = __builtin_isgreaterequal(s1[i], s2[i]) ? -1.0 : 0.0;
+   17|      5|  for (i = 0; i < 4; i++)
+   18|      4|    s3[3 * 4 + i] = (!__builtin_isgreaterequal(s1[i], s2[i])) ? -1.0 : 0.0;
+   19|      5|  for (i = 0; i < 4; i++)
+   20|      4|    s3[4 * 4 + i] = __builtin_isless(s1[i], s2[i]) ? -1.0 : 0.0;
+   21|      5|  for (i = 0; i < 4; i++)
+   22|      4|    s3[5 * 4 + i] = (!__builtin_isless(s1[i], s2[i])) ? -1.0 : 0.0;
+   23|      5|  for (i = 0; i < 4; i++)
+   24|      4|    s3[6 * 4 + i] = __builtin_islessequal(s1[i], s2[i]) ? -1.0 : 0.0;
+   25|      5|  for (i = 0; i < 4; i++)
+   26|      4|    s3[7 * 4 + i] = (!__builtin_islessequal(s1[i], s2[i])) ? -1.0 : 0.0;
+   27|      5|  for (i = 0; i < 4; i++)
+   28|      4|    s3[8 * 4 + i] = __builtin_islessgreater(s1[i], s2[i]) ? -1.0 : 0.0;
+   29|      5|  for (i = 0; i < 4; i++)
+   30|      4|    s3[9 * 4 + i] = (!__builtin_islessgreater(s1[i], s2[i])) ? -1.0 : 0.0;
+   31|      5|  for (i = 0; i < 4; i++)
+   32|      4|    s3[10 * 4 + i] = __builtin_isunordered(s1[i], s2[i]) ? -1.0 : 0.0;
+   33|      5|  for (i = 0; i < 4; i++)
+   34|      4|    s3[11 * 4 + i] = (!__builtin_isunordered(s1[i], s2[i])) ? -1.0 : 0.0;
+   35|      5|  for (i = 0; i < 4; i++)
+   36|      4|    s3[12 * 4 + i] = s1[i] > s2[i] ? -1.0 : 0.0;
+   37|      5|  for (i = 0; i < 4; i++)
+   38|      4|    s3[13 * 4 + i] = s1[i] >= s2[i] ? -1.0 : 0.0;
+   39|      5|  for (i = 0; i < 4; i++)
+   40|      4|    s3[14 * 4 + i] = s1[i] < s2[i] ? -1.0 : 0.0;
+   41|      5|  for (i = 0; i < 4; i++)
+   42|      4|    s3[15 * 4 + i] = s1[i] <= s2[i] ? -1.0 : 0.0;
+   43|      1|  asm volatile("" : : : "memory");
+   44|      1|  return 0;
+   45|      1|}
+

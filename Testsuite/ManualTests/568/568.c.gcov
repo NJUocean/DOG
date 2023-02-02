@@ -1,0 +1,23 @@
+        -:    0:Source:568.c
+        -:    0:Graph:568.gcno
+        -:    0:Data:568.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized"  } */
+        -:    3:
+        -:    4:#include <math.h>
+        -:    5:
+        1:    6:__attribute__((noinline)) float foo() { return sin(12.4f); }
+        -:    7:
+        1:    8:__attribute__((noinline)) float bar() { return sin(12.4f); }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo();
+        1:   12:  bar();
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-final { scan-ipa-dump "Semantic equality
+        -:   18: * hit:foo/\[0-9+\]+->bar/\[0-9+\]+" "icf"  } } */
+        -:   19:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

@@ -1,0 +1,23 @@
+    1|       |/* PR middle-end/18045 */
+    2|       |/* Contributed by Eric Botcazou <ebotcazou@libertysurf.fr> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=c99" } */
+    6|       |/* { dg-options "-std=c99 -mtune=i486" { target { { i?86-*-* x86_64-*-* } &&
+    7|       | * ia32 } } } */
+    8|       |
+    9|       |#include <limits.h>
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|      1|long long smod16(long long x) { return x % 16; }
+   14|       |
+   15|      1|int main(void) {
+   16|      1|#if LLONG_MAX > 2147483647L
+   17|      1|  if (smod16(0xFFFFFFFF) != 0xF)
+   18|      0|    abort();
+   19|      1|#endif
+   20|      1|
+   21|      1|  return 0;
+   22|      1|}
+

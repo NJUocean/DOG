@@ -1,0 +1,6 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |
+    3|      0|void baz(void) { __builtin_abort(); }
+    4|      0|void foo(void) { baz(); }
+    5|      1|int main() { return 0; }
+

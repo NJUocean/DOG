@@ -1,0 +1,13 @@
+    1|       |/* PR c/27898 */
+    2|       |/* { dg-lto-do link } */
+    3|       |
+    4|       |union u {
+    5|       |  struct {
+    6|       |    int i;
+    7|       |  };
+    8|       |};
+    9|       |
+   10|       |extern int foo(union u *);
+   11|       |
+   12|      1|int main() { return 0; }
+

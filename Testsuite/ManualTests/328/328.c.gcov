@@ -1,0 +1,27 @@
+        -:    0:Source:328.c
+        -:    0:Graph:328.gcno
+        -:    0:Data:328.gcda
+        -:    0:Runs:1
+        -:    1:/* Test non-canonical BID significands: _Decimal64.  Bug 91226.  */
+        -:    2:/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+        -:    3:/* { dg-options "-std=gnu2x -O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        -:    8:union u {
+        -:    9:  _Decimal64 d64;
+        -:   10:  unsigned long long int u64;
+        -:   11:};
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  union u x;
+        -:   15:  _Decimal64 d64;
+        1:   16:  x.u64 = 0x6c7386f26fc10001ULL;
+        1:   17:  d64 = x.d64;
+        1:   18:  volatile double d = d64;
+        1:   19:  if (d == 0)
+        1:   20:    exit(0);
+        -:   21:  else
+    #####:   22:    abort();
+        -:   23:}

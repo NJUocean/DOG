@@ -1,0 +1,72 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation.
+    2|       |
+    3|       |   Test strcpy with various combinations of pointer alignments and lengths to
+    4|       |   make sure any optimizations in the library are correct.  */
+    5|       |
+    6|       |#include <string.h>
+    7|       |
+    8|       |#ifndef MAX_OFFSET
+    9|   495k|#define MAX_OFFSET (sizeof(long long))
+   10|       |#endif
+   11|       |
+   12|       |#ifndef MAX_COPY
+   13|   500k|#define MAX_COPY (10 * sizeof(long long))
+   14|       |#endif
+   15|       |
+   16|       |#ifndef MAX_EXTRA
+   17|   540k|#define MAX_EXTRA (sizeof(long long))
+   18|       |#endif
+   19|       |
+   20|   495k|#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + 1 + MAX_EXTRA)
+   21|       |
+   22|       |/* Use a sequence length that is not divisible by two, to make it more
+   23|       |   likely to detect when words are mixed up.  */
+   24|   692k|#define SEQUENCE_LENGTH 31
+   25|       |
+   26|       |static union {
+   27|       |  char buf[MAX_LENGTH];
+   28|       |  long long align_int;
+   29|       |  long double align_fp;
+   30|       |} u1, u2;
+   31|       |
+   32|      1|main() {
+   33|      1|  int off1, off2, len, i;
+   34|      1|  char *p, *q, c;
+   35|      1|
+   36|      9|  for (off1 = 0; off1 < MAX_OFFSET; off1++)
+   37|     72|    for (off2 = 0; off2 < MAX_OFFSET; off2++)
+   38|  5.12k|      for (len = 1; len < MAX_COPY; len++) {
+   39|   495k|        for (i = 0, c = 'A'; i < MAX_LENGTH; i++, c++) {
+   40|   490k|          u1.buf[i] = 'a';
+   41|   490k|          if (c >= 'A' + SEQUENCE_LENGTH)
+   42|   490k|            c = 'A';
+   43|   490k|          u2.buf[i] = c;
+   44|   490k|        }
+   45|  5.05k|        u2.buf[off2 + len] = '\0';
+   46|  5.05k|
+   47|  5.05k|        p = strcpy(u1.buf + off1, u2.buf + off2);
+   48|  5.05k|        if (p != u1.buf + off1)
+   49|      0|          abort();
+   50|  5.05k|
+   51|  5.05k|        q = u1.buf;
+   52|  22.7k|        for (i = 0; i < off1; i++, q++)
+   53|  17.6k|          if (*q != 'a')
+   54|      0|            abort();
+   55|  5.05k|
+   56|   207k|        for (i = 0, c = 'A' + off2; i < len; i++, q++, c++) {
+   57|   202k|          if (c >= 'A' + SEQUENCE_LENGTH)
+   58|   202k|            c = 'A';
+   59|   202k|          if (*q != c)
+   60|      0|            abort();
+   61|   202k|        }
+   62|  5.05k|
+   63|  5.05k|        if (*q++ != '\0')
+   64|      0|          abort();
+   65|  45.5k|        for (i = 0; i < MAX_EXTRA; i++, q++)
+   66|  40.4k|          if (*q != 'a')
+   67|      0|            abort();
+   68|  5.05k|      }
+   69|      1|
+   70|      1|  exit(0);
+   71|      1|}
+

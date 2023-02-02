@@ -1,0 +1,26 @@
+        -:    0:Source:3945.c
+        -:    0:Graph:3945.gcno
+        -:    0:Data:3945.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/78559 */
+        -:    2:
+        -:    3:int g = 20;
+        -:    4:int d = 0;
+        -:    5:
+       3*:    6:short fn2(int p1, int p2) { return p2 >= 2 || 5 >> p2 ? p1 : p1 << p2; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  int result = 0;
+        1:   10:lbl_2582:
+        1:   11:  if (g) {
+        4:   12:    for (int c = -3; c; c++)
+        3:   13:      result = fn2(1, g);
+        -:   14:  } else {
+    #####:   15:    for (int i = 0; i < 2; i += 2)
+    #####:   16:      if (d)
+    #####:   17:        goto lbl_2582;
+        -:   18:  }
+        1:   19:  if (result != 1)
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

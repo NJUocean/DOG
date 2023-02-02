@@ -1,0 +1,12 @@
+        -:    0:Source:819.c
+        -:    0:Graph:819.gcno
+        -:    0:Data:819.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-require-effective-target lto } */
+        -:    3:/* { dg-options "-flto -fgnu89-inline" } */
+        -:    4:/* { dg-additional-sources "pr31529-2.c" } */
+        -:    5:
+    #####:    6:int getline() {}
+        -:    7:
+        1:    8:int main() { return 0; }

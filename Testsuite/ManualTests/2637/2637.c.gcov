@@ -1,0 +1,25 @@
+        -:    0:Source:2637.c
+        -:    0:Graph:2637.gcno
+        -:    0:Data:2637.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  unsigned short b0, b1, b2, b3;
+        -:    3:} four_quarters;
+        -:    4:
+        -:    5:four_quarters x;
+        -:    6:int a, b;
+        -:    7:
+        1:    8:void f(four_quarters j) {
+        1:    9:  b = j.b2;
+        1:   10:  a = j.b3;
+        1:   11:}
+        -:   12:
+        1:   13:main() {
+        -:   14:  four_quarters x;
+        1:   15:  x.b0 = x.b1 = x.b2 = 0;
+        1:   16:  x.b3 = 38;
+        1:   17:  f(x);
+        1:   18:  if (a != 38)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}

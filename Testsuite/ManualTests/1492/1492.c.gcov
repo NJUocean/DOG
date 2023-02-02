@@ -1,0 +1,22 @@
+        -:    0:Source:1492.c
+        -:    0:Graph:1492.gcno
+        -:    0:Data:1492.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int a = 2, b;
+        -:    6:
+        1:    7:int main() {
+        -:    8:  int c;
+        1:    9:  if (!b) {
+        1:   10:    b = a;
+       1*:   11:    c = a == 0 ? 1 : 1 % a;
+        1:   12:    if (c)
+        1:   13:      b = 0;
+        -:   14:  }
+        1:   15:  if (b != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

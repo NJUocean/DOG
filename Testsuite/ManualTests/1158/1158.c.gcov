@@ -1,0 +1,56 @@
+        -:    0:Source:1158.c
+        -:    0:Graph:1158.gcno
+        -:    0:Data:1158.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target store_merge } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-store-merging" } */
+        -:    4:
+        -:    5:struct S {
+        -:    6:  unsigned int b1 : 1;
+        -:    7:  unsigned int b2 : 1;
+        -:    8:  unsigned int b3 : 1;
+        -:    9:  unsigned int b4 : 1;
+        -:   10:  unsigned int b5 : 1;
+        -:   11:  unsigned int b6 : 27;
+        -:   12:};
+        -:   13:
+        -:   14:struct T {
+        -:   15:  unsigned int b1 : 1;
+        -:   16:  unsigned int b2 : 16;
+        -:   17:  unsigned int b3 : 14;
+        -:   18:  unsigned int b4 : 1;
+        -:   19:};
+        -:   20:
+        1:   21:__attribute__((noipa)) void foo(struct S *x) {
+        1:   22:  x->b1 = 1;
+        1:   23:  x->b2 = 0;
+        1:   24:  x->b3 = 1;
+        1:   25:  x->b4 = 1;
+        1:   26:  x->b5 = 0;
+        1:   27:}
+        -:   28:
+        1:   29:__attribute__((noipa)) void bar(struct T *x) {
+        1:   30:  x->b1 = 1;
+        1:   31:  x->b2 = 0;
+        1:   32:  x->b4 = 0;
+        1:   33:}
+        -:   34:
+        -:   35:struct S s = {0, 1, 0, 0, 1, 0x3a5f05a};
+        -:   36:struct T t = {0, 0xf5af, 0x3a5a, 1};
+        -:   37:
+        1:   38:int main() {
+        1:   39:  asm volatile("" : : : "memory");
+        1:   40:  foo(&s);
+        1:   41:  bar(&t);
+        1:   42:  asm volatile("" : : : "memory");
+        1:   43:  if (s.b1 != 1 || s.b2 != 0 || s.b3 != 1 || s.b4 != 1 || s.b5 != 0 ||
+        1:   44:      s.b6 != 0x3a5f05a)
+    #####:   45:    __builtin_abort();
+        1:   46:  if (t.b1 != 1 || t.b2 != 0 || t.b3 != 0x3a5a || t.b4 != 0)
+    #####:   47:    __builtin_abort();
+        1:   48:  return 0;
+        -:   49:}
+        -:   50:
+        -:   51:/* { dg-final { scan-tree-dump-times "Merging successful" 2 "store-merging" } }
+        -:   52: */

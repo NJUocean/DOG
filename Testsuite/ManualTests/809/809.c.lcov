@@ -1,0 +1,28 @@
+    1|       |/* PR rtl-optimization/28726 */
+    2|       |/* Origin: Sigurd Schneider <sg313d@gmail.com> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O2 -fsched2-use-superblocks" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |static double my_loop(void) __attribute__((noinline));
+   10|       |
+   11|      1|static double my_loop(void) {
+   12|      1|  double retval = 0.0;
+   13|      1|  const unsigned char *start = "\005\b\000";
+   14|      1|  const unsigned char *const end = start + 2;
+   15|      1|
+   16|      3|  while (start < end)
+   17|      2|    retval += *start++;
+   18|      1|
+   19|      1|  return retval;
+   20|      1|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  if (my_loop() != 13.0)
+   24|      0|    abort();
+   25|      1|
+   26|      1|  return 0;
+   27|      1|}
+

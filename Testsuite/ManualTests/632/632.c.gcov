@@ -1,0 +1,28 @@
+        -:    0:Source:632.c
+        -:    0:Graph:632.gcno
+        -:    0:Data:632.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-alias "" } */
+        -:    2:/* { dg-options "-O2 -fcommon -fdump-ipa-icf-details"  } */
+        -:    3:
+        -:    4:int a, b, c, d, e, h, i, j, k, l;
+        -:    5:const int f;
+        -:    6:static int g;
+        -:    7:
+        1:    8:void fn1(int p1) {
+       1*:    9:  k = d ? c % k : a * b;
+        1:   10:  h &= j ^ i ^ 1;
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  const int *m = &f, **n = &m;
+       1*:   15:  l && (*n = &e);
+        1:   16:  if (m != &f)
+    #####:   17:    __builtin_abort();
+        1:   18:  fn1(g);
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        -:   22:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */
+        -:   23:/* { dg-final { scan-ipa-dump "Not unifying; alias cannot be created; target is
+        -:   24: * discardable" "icf"  } } */

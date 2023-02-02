@@ -1,0 +1,49 @@
+        -:    0:Source:2453.c
+        -:    0:Graph:2453.gcno
+        -:    0:Data:2453.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/20290  */
+        -:    2:
+        -:    3:/* We used to mis-optimize the second loop in main on at least ppc and
+        -:    4:   arm, because tree loop would change the loop to something like:
+        -:    5:
+        -:    6:  ivtmp.65 = &l[i];
+        -:    7:  ivtmp.16 = 113;
+        -:    8:  goto <bb 4> (<L4>);
+        -:    9:
+        -:   10:<L3>:;
+        -:   11:  *(ivtmp.65 + 4294967292B) = 9;
+        -:   12:  i = i + 1;
+        -:   13:
+        -:   14:<L4>:;
+        -:   15:  ivtmp.16 = ivtmp.16 - 1;
+        -:   16:  ivtmp.65 = ivtmp.65 + 4B;
+        -:   17:  if (ivtmp.16 != 0) goto <L3>;
+        -:   18:
+        -:   19:  We used to consider the increment of i as executed in every
+        -:   20:  iteration, so we'd miscompute the final value.  */
+        -:   21:
+        -:   22:extern void abort(void);
+        -:   23:
+        1:   24:void check(unsigned int *l) {
+        -:   25:  int i;
+      289:   26:  for (i = 0; i < 288; i++)
+      288:   27:    if (l[i] != 7 + (i < 256 || i >= 280) + (i >= 144 && i < 256))
+    #####:   28:      abort();
+        1:   29:}
+        -:   30:
+        1:   31:int main(void) {
+        -:   32:  int i;
+        -:   33:  unsigned int l[288];
+        -:   34:
+      145:   35:  for (i = 0; i < 144; i++)
+      144:   36:    l[i] = 8;
+      113:   37:  for (; i < 256; i++)
+      112:   38:    l[i] = 9;
+       25:   39:  for (; i < 280; i++)
+       24:   40:    l[i] = 7;
+        9:   41:  for (; i < 288; i++)
+        8:   42:    l[i] = 8;
+        1:   43:  check(l);
+        1:   44:  return 0;
+        -:   45:}

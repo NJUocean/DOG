@@ -1,0 +1,30 @@
+        -:    0:Source:340.c
+        -:    0:Graph:340.gcno
+        -:    0:Data:340.gcda
+        -:    0:Runs:1
+        1:    1:static char *begfield(int tab, char *ptr, char *lim, int sword, int schar) {
+        1:    2:  if (tab) {
+        2:    3:    while (ptr < lim && sword--) {
+        1:    4:      while (ptr < lim && *ptr != tab)
+    #####:    5:        ++ptr;
+        1:    6:      if (ptr < lim)
+        1:    7:        ++ptr;
+        -:    8:    }
+        -:    9:  } else {
+    #####:   10:    while (1)
+        -:   11:      ;
+        -:   12:  }
+        -:   13:
+        1:   14:  if (ptr + schar <= lim)
+        1:   15:    ptr += schar;
+        -:   16:
+        1:   17:  return ptr;
+        -:   18:}
+        -:   19:
+        1:   20:main() {
+        1:   21:  char *s = ":ab";
+        1:   22:  char *lim = s + 3;
+        1:   23:  if (begfield(':', s, lim, 1, 1) != s + 2)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

@@ -1,0 +1,23 @@
+        -:    0:Source:947.c
+        -:    0:Graph:947.gcno
+        -:    0:Data:947.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57300 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:int a, b, d[10];
+        -:    8:long long c;
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int e;
+       11:   12:  for (e = 0; e < 10; e++)
+       10:   13:    d[e] = 1;
+        1:   14:  if (d[0])
+       1*:   15:    c = a = (b == 0 || 1 % b);
+        1:   16:  if (a != 1)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

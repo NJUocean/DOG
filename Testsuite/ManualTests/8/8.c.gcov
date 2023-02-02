@@ -1,0 +1,23 @@
+        -:    0:Source:8.c
+        -:    0:Graph:8.gcno
+        -:    0:Data:8.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:/* PR c/8224 */
+        -:    4:/* Contributed by Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz> */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:unsigned f(int x) { return (unsigned)(x / 2) / 2; }
+        -:    9:
+        1:   10:unsigned f1(int x) {
+        1:   11:  unsigned xx = x / 2;
+        1:   12:  return xx / 2;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (f1(-5) != f(-5))
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

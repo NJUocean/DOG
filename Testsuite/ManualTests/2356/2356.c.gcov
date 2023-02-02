@@ -1,0 +1,35 @@
+        -:    0:Source:2356.c
+        -:    0:Graph:2356.gcno
+        -:    0:Data:2356.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:/* The alignment also gives this size 32, so will be passed by reference.  */
+        -:    9:typedef struct __attribute__((__aligned__(32))) {
+        -:   10:  long x;
+        -:   11:  long y;
+        -:   12:} overaligned;
+        -:   13:
+        -:   14:overaligned a = {2, 3};
+        -:   15:
+        1:   16:void test_pass_by_ref(int x0, overaligned x1, int x2) {
+        1:   17:  if (x0 != 7 || x2 != 9)
+    #####:   18:    abort();
+        1:   19:  if (memcmp((void *)&x1, (void *)&a, sizeof(overaligned)))
+    #####:   20:    abort();
+        1:   21:  long addr = ((long)&x1) & 31;
+        1:   22:  if (addr != 0) {
+    #####:   23:    __builtin_printf("Alignment was %d\n", addr);
+    #####:   24:    abort();
+        -:   25:  }
+        1:   26:}
+        -:   27:
+        1:   28:int main(int argc, char **argv) {
+        1:   29:  test_pass_by_ref(7, a, 9);
+        1:   30:  return 0;
+        -:   31:}

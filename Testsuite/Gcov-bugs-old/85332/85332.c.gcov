@@ -1,0 +1,26 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        1:    1:int doit(int sel, int n, void *p)
+        -:    2:{
+        1:    3:  int * const p0 = p;
+        -:    4:
+        1:    5:  switch (sel)
+        -:    6:  {
+        2:    7:    case 0:
+        3:    8:      do {*p0 += *p0;} while (--n);
+        1:    9:      return *p0 == 0;
+        -:   10:
+    #####:   11:    default:
+    #####:   12:      abort ();
+        -:   13:  }
+        -:   14:}
+        -:   15:
+        1:   16:int main()
+        -:   17:{
+        -:   18:  int v0;
+        1:   19:  v0 = 1; doit(0, 3, &v0);
+        1:   20:  exit (0);
+        -:   21:}

@@ -1,0 +1,28 @@
+        -:    0:Source:1981.c
+        -:    0:Graph:1981.gcno
+        -:    0:Data:1981.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78428.  */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-do run { target int32plus } } */
+        -:    4:
+        -:    5:struct S0 {
+        -:    6:  int f2;
+        -:    7:  int f3 : 16;
+        -:    8:  int f4 : 18;
+        -:    9:};
+        -:   10:
+        -:   11:int a = 5;
+        -:   12:struct S0 b = {3, 0, 0};
+        -:   13:static struct S0 global[2] = {{77, 0, 78}, {77, 0, 78}};
+        -:   14:
+        1:   15:int main() {
+        -:   16:  volatile struct S0 *j;
+        6:   17:  for (; a;) {
+        5:   18:    __builtin_printf("", b.f2);
+        5:   19:    j = &b;
+        5:   20:    *j = global[1];
+        5:   21:    a--;
+        -:   22:  }
+        1:   23:  return 0;
+        -:   24:}

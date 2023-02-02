@@ -1,0 +1,54 @@
+        -:    0:Source:3771.c
+        -:    0:Graph:3771.gcno
+        -:    0:Data:3771.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56205 */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        -:    5:int a, b;
+        -:    6:char c[128];
+        -:    7:
+        1:    8:__attribute__((noinline, noclone)) static void f1(const char *fmt, ...) {
+        -:    9:  va_list ap;
+        1:   10:  asm volatile("" : : : "memory");
+        1:   11:  if (__builtin_strcmp(fmt, "%s %d %s") != 0)
+    #####:   12:    __builtin_abort();
+        1:   13:  va_start(ap, fmt);
+        2:   14:  if (__builtin_strcmp(va_arg(ap, const char *), "foo") != 0 ||
+        1:   15:      va_arg(ap, int) != 1 ||
+        1:   16:      __builtin_strcmp(va_arg(ap, const char *), "bar") != 0)
+    #####:   17:    __builtin_abort();
+        1:   18:  va_end(ap);
+        1:   19:}
+        -:   20:
+        1:   21:__attribute__((noinline, noclone)) static void f2(const char *fmt, va_list ap) {
+        1:   22:  asm volatile("" : : : "memory");
+        1:   23:  if (__builtin_strcmp(fmt, "baz") != 0 ||
+        2:   24:      __builtin_strcmp(va_arg(ap, const char *), "foo") != 0 ||
+        2:   25:      va_arg(ap, double) != 12.0 || va_arg(ap, int) != 26)
+    #####:   26:    __builtin_abort();
+        1:   27:}
+        -:   28:
+        1:   29:static void f3(int x, char const *y, va_list z) {
+       1*:   30:  f1("%s %d %s", x ? "" : "foo", ++a, (y && *y) ? "bar" : "");
+        1:   31:  if (y && *y)
+        1:   32:    f2(y, z);
+        1:   33:}
+        -:   34:
+        1:   35:__attribute__((noinline, noclone)) void f4(int x, char const *y, ...) {
+        -:   36:  va_list z;
+        1:   37:  va_start(z, y);
+        1:   38:  if (!x && *c == '\0')
+        1:   39:    ++b;
+        1:   40:  f3(x, y, z);
+        1:   41:  va_end(z);
+        1:   42:}
+        -:   43:
+        1:   44:int main() {
+        1:   45:  asm volatile("" : : : "memory");
+        1:   46:  f4(0, "baz", "foo", 12.0, 26);
+        1:   47:  if (a != 1 || b != 1)
+    #####:   48:    __builtin_abort();
+        1:   49:  return 0;
+        -:   50:}

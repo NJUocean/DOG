@@ -1,0 +1,16 @@
+        -:    0:Source:2835.c
+        -:    0:Graph:2835.gcno
+        -:    0:Data:2835.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-Wno-pedantic" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  goto L2;
+        1:    6:L1:
+        -:    7:  return 0;
+        1:    8:L2 : {
+        1:    9:  void *ptr = &&L1; /* { dg-message "sorry, unimplemented: target cannot support
+        -:   10:                       label values" "" } */
+        -:   11:}
+        -:   12:}

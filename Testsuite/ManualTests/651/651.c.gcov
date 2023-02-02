@@ -1,0 +1,12 @@
+        -:    0:Source:651.c
+        -:    0:Graph:651.gcno
+        -:    0:Data:651.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target lto } */
+        -:    3:/* { dg-options "-O2 -flive-patching -flto" } */
+        -:    4:
+        1:    5:int main() { return 0; }
+        -:    6:
+        -:    7:/* { dg-message "sorry, unimplemented: live patching is not supported with LTO"
+        -:    8: * "-flive-patching and -flto together" { target *-*-* } 0 } */

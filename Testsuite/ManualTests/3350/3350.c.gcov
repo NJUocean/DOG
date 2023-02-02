@@ -1,0 +1,12 @@
+        -:    0:Source:3350.c
+        -:    0:Graph:3350.gcno
+        -:    0:Data:3350.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        -:    2:  int i;
+       11:    3:  for (i = 0; i < 10; i++)
+       10:    4:    continue;
+        1:    5:  if (i < 10)
+    #####:    6:    abort();
+        1:    7:  exit(0);
+        -:    8:}

@@ -1,0 +1,18 @@
+        -:    0:Source:1630.c
+        -:    0:Graph:1630.gcno
+        -:    0:Data:1630.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int a = 2;
+        1:    6:  int b = 1;
+        -:    7:
+        1:    8:  int t = -1 * (-0x40000000 * a / (-0x20000000 + b)) / -1;
+        -:    9:
+        1:   10:  if (t != 4)
+    #####:   11:    __builtin_abort();
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

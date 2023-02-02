@@ -1,0 +1,34 @@
+    1|       |/* PR rtl-optimization/48156 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O -fcrossjumping --param min-crossjump-insns=1" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|static int __attribute__((noinline, noclone)) equals(int s1, int s2) {
+    8|      1|  return s1 == s2;
+    9|      1|}
+   10|       |
+   11|      1|static int __attribute__((noinline, noclone)) bar(void) { return 1; }
+   12|       |
+   13|      1|static void __attribute__((noinline, noclone)) baz(int f, int j) {
+   14|      1|  if (f != 4 || j != 2)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|void foo(int x) {
+   19|      1|  int i = 0, j = bar();
+   20|      1|
+   21|      1|  if (x == 1)
+   22|      1|    i = 2;
+   23|      1|
+   24|      1|  if (j && equals(i, j))
+   25|      0|    baz(8, i);
+   26|      1|  else
+   27|      1|    baz(4, i);
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  foo(1);
+   32|      1|  return 0;
+   33|      1|}
+

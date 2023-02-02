@@ -1,0 +1,27 @@
+    1|      1|static char *begfield(int tab, char *ptr, char *lim, int sword, int schar) {
+    2|      1|  if (tab) {
+    3|      2|    while (ptr < lim && sword--) {
+    4|      1|      while (ptr < lim && *ptr != tab)
+    5|      0|        ++ptr;
+    6|      1|      if (ptr < lim)
+    7|      1|        ++ptr;
+    8|      1|    }
+    9|      1|  } else {
+   10|      0|    while (1)
+   11|      0|      ;
+   12|      0|  }
+   13|      1|
+   14|      1|  if (ptr + schar <= lim)
+   15|      1|    ptr += schar;
+   16|      1|
+   17|      1|  return ptr;
+   18|      1|}
+   19|       |
+   20|      1|main() {
+   21|      1|  char *s = ":ab";
+   22|      1|  char *lim = s + 3;
+   23|      1|  if (begfield(':', s, lim, 1, 1) != s + 2)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

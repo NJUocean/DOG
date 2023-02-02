@@ -1,0 +1,12 @@
+    1|       |typedef struct {
+    2|       |  short a __attribute__((aligned(2), packed));
+    3|       |  short *ap[2] __attribute__((aligned(2), packed));
+    4|       |} A;
+    5|       |
+    6|      1|main() {
+    7|      1|  short i, j = 1;
+    8|      1|  A a, *ap = &a;
+    9|      1|  ap->ap[j] = &i;
+   10|      1|  exit(0);
+   11|      1|}
+

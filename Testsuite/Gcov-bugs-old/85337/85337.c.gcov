@@ -1,0 +1,36 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include <stdio.h>
+        -:    3:
+       10:    4:static int func(int i) {
+       10:    5:  int a = 0;
+       10:    6:  switch (i) {
+        1:    7:    case 8:
+        1:    8:      printf("8\n");
+        1:    9:      a = 6;
+        4:   10:    case 0:
+        -:   11:      ;
+        -:   12:    case 3:
+        -:   13:      ;
+        -:   14:    case 2:
+        4:   15:      printf("2\n"); break;
+        2:   16:    case 1:
+        -:   17:      ;
+        2:   18:    case 7: a = 7;
+        3:   19:    case 9: printf("9\n"); break;
+        3:   20:    default: printf("4 or 5 or 6\n"); a = 1;
+        -:   21:  }
+       10:   22:  return a;
+        -:   23:}
+        -:   24:
+        -:   25:
+        1:   26:int main() {
+        -:   27:  int i;
+       11:   28:  for (i = 0; i < 10; ++i)
+       10:   29:    func(i);
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,21 @@
+    1|       |typedef struct {
+    2|       |  _Complex double a;
+    3|       |  _Complex double b;
+    4|       |} Scf10;
+    5|       |
+    6|       |Scf10 g1s;
+    7|       |
+    8|      1|void check(Scf10 x, _Complex double y) {
+    9|      1|  if (x.a != y)
+   10|      0|    __builtin_abort();
+   11|      1|}
+   12|       |
+   13|      1|void init(Scf10 *p, _Complex double y) { p->a = y; }
+   14|       |
+   15|      1|int main() {
+   16|      1|  init(&g1s, (_Complex double)1);
+   17|      1|  check(g1s, (_Complex double)1);
+   18|      1|
+   19|      1|  return 0;
+   20|      1|}
+

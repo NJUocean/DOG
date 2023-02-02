@@ -1,0 +1,23 @@
+        -:    0:Source:1119.c
+        -:    0:Graph:1119.gcno
+        -:    0:Data:1119.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/19296 */
+        -:    2:/* Origin: Falk Hueffner <falk@debian.org> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O" } */
+        -:    6:/* { dg-options "-O -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    7: * } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        1:   11:void f(unsigned short ad) {
+        1:   12:  if (ad >= 0x4000 && ad < 0xc000)
+    #####:   13:    abort();
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  f(0xff00);
+        1:   18:  return 0;
+        -:   19:}

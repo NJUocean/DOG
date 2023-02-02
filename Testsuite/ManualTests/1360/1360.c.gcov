@@ -1,0 +1,19 @@
+        -:    0:Source:1360.c
+        -:    0:Graph:1360.gcno
+        -:    0:Data:1360.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/80310 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O0 -fsanitize=shift -fno-sanitize-recover=shift" } */
+        -:    4:
+        -:    5:unsigned int x = 1;
+        -:    6:unsigned int y = 0;
+        -:    7:
+        1:    8:void foo() { y = 1 >> (!x * 1111); }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo();
+        1:   12:  if (y != 1)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

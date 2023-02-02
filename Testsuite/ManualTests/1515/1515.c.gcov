@@ -1,0 +1,31 @@
+        -:    0:Source:1515.c
+        -:    0:Graph:1515.gcno
+        -:    0:Data:1515.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/26561 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int always_one_1(int a) {
+        -:    6:  if (a / 100 >= -999999999)
+        1:    7:    return 1;
+        -:    8:  else
+        -:    9:    return 0;
+        -:   10:}
+        -:   11:
+        1:   12:int always_one_2(int a) {
+        -:   13:  if (a / 100 < -999999999)
+        -:   14:    return 0;
+        -:   15:  else
+        1:   16:    return 1;
+        -:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  if (always_one_1(0) != 1)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  if (always_one_2(0) != 1)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

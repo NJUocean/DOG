@@ -1,0 +1,18 @@
+    1|       |/* { dg-options "-O2" } */
+    2|       |
+    3|       |void abort(void);
+    4|       |void exit(int);
+    5|       |
+    6|      1|__attribute__((noinline)) void f(unsigned long long i) {
+    7|      1|  if (i <= 0x1000000000000000ull) {
+    8|      1|    unsigned long long j = i | 0x1000000000000000ull;
+    9|      1|    if (j == 0x1100000000000000ull)
+   10|      1|      exit(0);
+   11|      1|  }
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  f(0x0100000000000000ull);
+   16|      1|  abort();
+   17|      1|}
+

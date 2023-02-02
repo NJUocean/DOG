@@ -1,0 +1,19 @@
+        -:    0:Source:1749.c
+        -:    0:Graph:1749.gcno
+        -:    0:Data:1749.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef int T;
+        -:    4:static const T a[2][3]
+        -:    5:    __attribute__((aligned(2 * sizeof(T)))) = {{1, 2, 3}, {4, 5, 6}};
+        -:    6:typedef T v2 __attribute__((vector_size(2 * sizeof(T))));
+        -:    7:
+        1:    8:int main() {
+        1:    9:  const T *p = &a[0][2];
+        1:   10:  v2 x = *(const v2 *)p;
+        1:   11:  T z = x[1];
+        1:   12:  if (z != 4)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

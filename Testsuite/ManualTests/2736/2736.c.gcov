@@ -1,0 +1,30 @@
+        -:    0:Source:2736.c
+        -:    0:Graph:2736.gcno
+        -:    0:Data:2736.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/85593 */
+        -:    2:/* { dg-do run { target { { i?86-*-linux* x86_64-*-linux* } && lp64 } } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:__attribute__((naked)) void bar(void) {
+        1:    6:  asm("xorl %eax, %eax\n\t"
+        -:    7:      "xorl %edx, %edx\n\t"
+        -:    8:      "xorl %ecx, %ecx\n\t"
+        -:    9:      "xorl %esi, %esi\n\t"
+        -:   10:      "xorl %edi, %edi\n\t"
+        -:   11:      "xorl %r8d, %r8d\n\t"
+        -:   12:      "xorl %r9d, %r9d\n\t"
+        -:   13:      "xorl %r10d, %r10d\n\t"
+        -:   14:      "xorl %r11d, %r11d\n\t"
+        -:   15:      "ret");
+    #####:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  int a = 42;
+        1:   20:  asm("" : "+r"(a));
+        1:   21:  bar();
+        1:   22:  asm("" : "+r"(a));
+        1:   23:  if (a != 42)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

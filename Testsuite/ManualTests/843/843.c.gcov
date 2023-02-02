@@ -1,0 +1,29 @@
+        -:    0:Source:843.c
+        -:    0:Graph:843.gcno
+        -:    0:Data:843.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/34457 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-require-effective-target trampolines } */
+        -:    4:/* { dg-require-effective-target lto } */
+        -:    5:/* { dg-options "-flto -O2" } */
+        -:    6:/* { dg-additional-sources "pr34457-2.c" } */
+        -:    7:
+        -:    8:typedef __SIZE_TYPE__ size_t;
+        -:    9:extern int printf(const char *, ...);
+        -:   10:extern void *memset(void *, int, size_t);
+        -:   11:
+        1:   12:int bar(int (*p)(), int q, void *r) {}
+        -:   13:
+        1:   14:int main(int argc, char **argv) {
+        1:   15:  struct s {
+        -:   16:    int a;
+        1:   17:    char b[argc];
+        -:   18:  };
+    #####:   19:  int nested(struct s x) { return x.a + sizeof(x); }
+        1:   20:  struct s t;
+        1:   21:  memset(&t, 0, sizeof(t));
+        1:   22:  t.a = 123;
+        1:   23:  printf("%d\n", bar(nested, argc, &t));
+        1:   24:  return 0;
+        -:   25:}

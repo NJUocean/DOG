@@ -1,0 +1,16 @@
+    1|       |/* PR target/49281 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      3|__attribute__((noinline, noclone)) int foo(int x) { return (x << 2) | 4; }
+    6|       |
+    7|      3|__attribute__((noinline, noclone)) int bar(int x) { return (x << 2) | 3; }
+    8|       |
+    9|      1|int main() {
+   10|      1|  if (foo(43) != 172 || foo(1) != 4 || foo(2) != 12)
+   11|      0|    abort();
+   12|      1|  if (bar(43) != 175 || bar(1) != 7 || bar(2) != 11)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

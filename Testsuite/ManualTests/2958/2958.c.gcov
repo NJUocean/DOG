@@ -1,0 +1,41 @@
+        -:    0:Source:2958.c
+        -:    0:Graph:2958.gcno
+        -:    0:Data:2958.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -mzarch -march=arch12 --save-temps" } */
+        -:    3:/* { dg-require-effective-target s390_vxe } */
+        -:    4:
+        -:    5:typedef unsigned int uv4si __attribute__((vector_size(16)));
+        -:    6:
+        1:    7:uv4si __attribute__((noinline)) not_xor(uv4si a, uv4si b) { return ~(a ^ b); }
+        -:    8:/* { dg-final { scan-assembler-times "vnx\t%v24,%v24,%v26" 1 } } */
+        -:    9:
+        1:   10:uv4si __attribute__((noinline)) not_and(uv4si a, uv4si b) { return ~(a & b); }
+        -:   11:/* { dg-final { scan-assembler-times "vnn\t%v24,%v24,%v26" 1 } } */
+        -:   12:
+        1:   13:uv4si __attribute__((noinline)) or_not(uv4si a, uv4si b) { return a | ~b; }
+        -:   14:/* { dg-final { scan-assembler-times "voc\t%v24,%v24,%v26" 1 } } */
+        -:   15:
+        1:   16:int main() {
+        1:   17:  uv4si a = (uv4si){42, 1, 0, 2};
+        1:   18:  uv4si b = (uv4si){42, 2, 0, 2};
+        -:   19:  uv4si c;
+        -:   20:
+        1:   21:  c = not_xor(a, b);
+        -:   22:
+        1:   23:  if (c[0] != ~0 || c[1] != ~3 || c[2] != ~0 || c[3] != ~0)
+    #####:   24:    __builtin_abort();
+        -:   25:
+        1:   26:  c = not_and(a, b);
+        -:   27:
+        1:   28:  if (c[0] != ~42 || c[1] != ~0 || c[2] != ~0 || c[3] != ~2)
+    #####:   29:    __builtin_abort();
+        -:   30:
+        1:   31:  c = or_not(a, b);
+        -:   32:
+        1:   33:  if (c[0] != ~0 || c[1] != ~2 || c[2] != ~0 || c[3] != ~0)
+    #####:   34:    __builtin_abort();
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

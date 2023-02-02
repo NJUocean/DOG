@@ -1,0 +1,24 @@
+        -:    0:Source:981.c
+        -:    0:Graph:981.gcno
+        -:    0:Data:981.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:
+        -:    3:int blah;
+        1:    4:foo() {
+        -:    5:  int i;
+        -:    6:
+        8:    7:  for (i = 0; i < 7; i++) {
+        7:    8:    if (i == 7 - 1)
+        1:    9:      blah = 0xfcc;
+        -:   10:    else
+        6:   11:      blah = 0xfee;
+        -:   12:  }
+        1:   13:  return blah;
+        -:   14:}
+        -:   15:
+        1:   16:main() {
+        1:   17:  if (foo() != 0xfcc)
+    #####:   18:    abort();
+        1:   19:  exit(0);
+        -:   20:}

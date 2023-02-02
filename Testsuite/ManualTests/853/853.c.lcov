@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |void abort(void);
+    5|       |
+    6|      1|__attribute__((noinline)) void f(int i) {
+    7|      1|#if (__SIZEOF_INT__ >= 4)
+    8|      1|  if (i != 0x87654321)
+    9|       |#else
+   10|       |  if (i != 0x4321)
+   11|       |#endif
+   12|      0|    abort();
+   13|      1|  asm("");
+   14|      1|}
+   15|       |
+   16|      1|__attribute__((noinline)) void g(long long a) {
+   17|      1|  f(a);
+   18|      1|  asm("");
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  g(0x1234567887654321ll);
+   23|      1|  return 0;
+   24|      1|}
+

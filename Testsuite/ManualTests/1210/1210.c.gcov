@@ -1,0 +1,16 @@
+        -:    0:Source:1210.c
+        -:    0:Graph:1210.gcno
+        -:    0:Data:1210.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-fgnu-tm -Wall" } */
+        -:    3:
+        -:    4:__attribute__((transaction_safe)) static int
+    #####:    5:unused_func() /* { dg-warning "defined but not used" } */
+        -:    6:{
+    #####:    7:  return 12345;
+        -:    8:}
+        -:    9:
+        1:   10:int main() { return 0; }
+        -:   11:
+        -:   12:/* { dg-final { scan-assembler "_ZGTt11unused_func:" } } */

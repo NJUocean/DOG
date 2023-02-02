@@ -1,0 +1,65 @@
+    1|       |/* Test that tablejump insns are correctly handled.  If the compiler
+    2|       |   loses track of the jump targets, it will report that x and y can be
+    3|       |   used uninitialized.
+    4|       |
+    5|       |   This is broken in egcs 1998/10/06 for mips in pic mode.  */
+    6|       |/* { dg-do assemble } */
+    7|       |/* For MIPS at least, pic is needed to trigger the problem. */
+    8|       |/* { dg-options "-w -Wuninitialized -Werror -fpic" } */
+    9|       |/* { dg-options "-w -Wuninitialized -Werror" { target { { rs6000-*-aix*
+   10|       | * powerpc*-*-aix* arm*-*-* fr30-*-* sh-*-hms h8300*-*-* cris-*-elf* mmix-*-* }
+   11|       | * || { ! fpic } } } } */
+   12|       |/* { dg-require-effective-target label_values } */
+   13|       |
+   14|      1|int foo(int a, int b) {
+   15|      1|  __label__ z;
+   16|      1|  int x; /* { dg-bogus "warning: `.' might be used uninitialized in this
+   17|      1|            function" } */
+   18|      1|  int y; /* { dg-bogus "warning: `.' might be used uninitialized in this
+   19|      1|            function" } */
+   20|      1|  static void *p;
+   21|      1|
+   22|      1|  switch (a) {
+   23|      0|  case 2:
+   24|      0|    x = 4;
+   25|      0|    break;
+   26|      0|  case 4:
+   27|      0|    x = 6;
+   28|      0|    break;
+   29|      0|  case 8:
+   30|      0|  case 10:
+   31|      0|  case 13:
+   32|      0|  case 11:
+   33|      0|  case 17:
+   34|      0|  case 19:
+   35|      0|    x = 7;
+   36|      0|    break;
+   37|      1|  default:
+   38|      1|    x = -1;
+   39|      1|    break;
+   40|      1|  }
+   41|      1|  switch (b) {
+   42|      1|  case 2:
+   43|      1|    y = 4;
+   44|      1|    break;
+   45|      0|  case 4:
+   46|      0|    y = 6;
+   47|      0|    break;
+   48|      0|  case 8:
+   49|      0|  case 10:
+   50|      0|  case 13:
+   51|      0|  case 11:
+   52|      0|  case 17:
+   53|      0|  case 19:
+   54|      0|    y = 7;
+   55|      0|    break;
+   56|      0|  default:
+   57|      0|    y = -1;
+   58|      0|    break;
+   59|      1|  }
+   60|      1|z:
+   61|      1|  p = &&z;
+   62|      1|  return x * y;
+   63|      1|}
+   64|      1|int main(int argc, char *argv[]) { return 1 == foo(argc, argc + 1); }
+

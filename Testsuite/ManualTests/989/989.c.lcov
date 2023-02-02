@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/68835 */
+    2|       |/* { dg-do run { target int128 } } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) unsigned __int128 foo(void) {
+    6|      1|  unsigned __int128 x = (unsigned __int128)0xffffffffffffffffULL;
+    7|      1|  struct {
+    8|      1|    unsigned __int128 a : 65;
+    9|      1|  } w;
+   10|      1|  w.a = x;
+   11|      1|  w.a += x;
+   12|      1|  return w.a;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  unsigned __int128 x = foo();
+   17|      1|  if ((unsigned long long)x != 0xfffffffffffffffeULL ||
+   18|      1|      (unsigned long long)(x >> 64) != 1)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

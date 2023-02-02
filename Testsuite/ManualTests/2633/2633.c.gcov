@@ -1,0 +1,31 @@
+        -:    0:Source:2633.c
+        -:    0:Graph:2633.gcno
+        -:    0:Data:2633.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O1 -foptimize-sibling-calls" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:struct S {
+        -:    8:  void(__attribute__((__stdcall__)) * f)(struct S *);
+        -:    9:  int i;
+        -:   10:};
+        -:   11:
+        2:   12:void __attribute__((__stdcall__)) foo(struct S *s) { s->i++; }
+        -:   13:
+        1:   14:void __attribute__((__stdcall__)) bar(struct S *s) {
+        1:   15:  foo(s);
+        1:   16:  s->f(s);
+        1:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  struct S s = {foo, 0};
+        -:   21:
+        1:   22:  bar(&s);
+        1:   23:  if (s.i != 2)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

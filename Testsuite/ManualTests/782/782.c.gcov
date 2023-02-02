@@ -1,0 +1,21 @@
+        -:    0:Source:782.c
+        -:    0:Graph:782.gcno
+        -:    0:Data:782.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/18921 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int foo(int k) {
+        1:    8:  unsigned char j = 0;
+       1*:    9:  (k ? 0 : j++) == -1;
+        1:   10:  return j;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (!foo(0))
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

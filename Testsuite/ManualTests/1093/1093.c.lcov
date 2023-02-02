@@ -1,0 +1,8 @@
+    1|      1|char *doit(int flag) { return 1 + (flag ? "\0wrong\n" : "\0right\n"); }
+    2|      1|int main() {
+    3|      1|  char *result = doit(0);
+    4|      1|  if (*result == 'r' && result[1] == 'i')
+    5|      1|    exit(0);
+    6|      0|  abort();
+    7|      0|}
+

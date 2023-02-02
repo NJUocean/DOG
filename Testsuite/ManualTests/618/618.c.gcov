@@ -1,0 +1,31 @@
+        -:    0:Source:618.c
+        -:    0:Graph:618.gcno
+        -:    0:Data:618.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:struct S1 {
+        -:    5:  int f0;
+        -:    6:  int f1 : 10;
+        -:    7:  int f2 : 13;
+        -:    8:};
+        -:    9:int i;
+        -:   10:int *j = &i;
+        -:   11:
+        1:   12:static void foo(struct S1 s) {
+        -:   13:  int *p;
+        -:   14:  int l[88];
+        1:   15:  int **pp = &p;
+        1:   16:  *pp = &l[1];
+        1:   17:  l[0] = 1;
+        1:   18:  *j = 1 && s.f2;
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  struct S1 s = {0, 0, 1};
+        1:   23:  foo(s);
+        1:   24:  if (i != 1)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

@@ -1,0 +1,17 @@
+    1|       |/* Verify that indirect inlining machinery can remove references to functions
+    2|       |   passed as parameters that are never used.  */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-O3 -fno-early-inlining -fno-ipa-sra -fno-ipa-cp
+    5|       | * -fdump-ipa-inline -fdump-tree-optimized"  } */
+    6|       |
+    7|      1|extern int __attribute__((noinline, noclone, used)) stuff(int i) { return 0; }
+    8|       |
+    9|      0|static void hooray() { stuff(1); }
+   10|       |
+   11|      1|static int hiphip(void (*f)()) { return stuff(2); }
+   12|       |
+   13|      1|int main(void) { return hiphip(hooray); }
+   14|       |
+   15|       |/* { dg-final { scan-ipa-dump "ipa-prop: Removed a reference"  "inline"  } } */
+   16|       |/* { dg-final { scan-tree-dump-not "hooray"  "optimized"  } } */
+

@@ -1,0 +1,30 @@
+    1|       |/* { dg-do link { target arm_soft_ok } } */
+    2|       |/* { dg-skip-if "Feature is -mfloat-abi=soft only" { *-*-* } { "-mfloat-abi=*" }
+    3|       | * { "-mfloat-abi=soft" } } */
+    4|       |/* { dg-options "-mfloat-abi=soft" } */
+    5|       |
+    6|      1|int foo(void) {
+    7|      1|  volatile float a;
+    8|      1|  volatile float b;
+    9|      1|  volatile float c = a * b + a / b;
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|      1|int bar(void) {
+   14|      1|  volatile double a;
+   15|      1|  volatile double b;
+   16|      1|  volatile double c = a * b + a / b;
+   17|      1|  return 0;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  foo();
+   22|      1|  bar();
+   23|      1|  return 0;
+   24|      1|}
+   25|       |
+   26|       |/* { dg-final { scan-symbol "__aeabi_fmul" } } */
+   27|       |/* { dg-final { scan-symbol "__aeabi_dmul" } } */
+   28|       |/* { dg-final { scan-symbol "__aeabi_fdiv" } } */
+   29|       |/* { dg-final { scan-symbol "__aeabi_ddiv" } } */
+

@@ -1,0 +1,16 @@
+        -:    0:Source:502.c
+        -:    0:Graph:502.gcno
+        -:    0:Data:502.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "--param asan-instrument-reads=0" } */
+        -:    3:
+        -:    4:volatile int ten = 10;
+        -:    5:
+        1:    6:int main() {
+        -:    7:  volatile char x[10];
+        1:    8:  x[ten];
+        1:    9:  return 0;
+        -:   10:}
+        -:   11:
+        -:   12:/* { dg-final { scan-assembler-not "__asan_load" } } */

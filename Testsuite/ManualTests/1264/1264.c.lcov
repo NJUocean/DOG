@@ -1,0 +1,22 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |union U {
+    3|       |  const int a;
+    4|       |  unsigned b : 20;
+    5|       |};
+    6|       |
+    7|       |static union U u = {0x12345678};
+    8|       |
+    9|       |/* Constant folding used to fail to account for endianness when folding a
+   10|       |   union.  */
+   11|       |
+   12|      1|int main(void) {
+   13|      1|#ifdef __BYTE_ORDER__
+   14|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   15|      1|  return u.b - 0x45678;
+   16|       |#else
+   17|       |  return u.b - 0x12345;
+   18|       |#endif
+   19|      1|#endif
+   20|      1|  return 0;
+   21|      1|}
+

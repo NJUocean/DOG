@@ -1,0 +1,23 @@
+        -:    0:Source:2309.c
+        -:    0:Graph:2309.gcno
+        -:    0:Data:2309.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-maltivec" } */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:
+        -:    5:typedef union {
+        -:    6:  int i[4];
+        -:    7:  __attribute__((altivec(vector__))) int v;
+        -:    8:} vec_int4;
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  vec_int4 i1;
+        -:   12:
+        1:   13:  i1.v = (__attribute__((altivec(vector__))) int){31, 31, 31, 31};
+        -:   14:
+        1:   15:  if (i1.i[0] != 31)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

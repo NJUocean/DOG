@@ -1,0 +1,24 @@
+        -:    0:Source:2223.c
+        -:    0:Graph:2223.gcno
+        -:    0:Data:2223.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-mavx2" { target avx2_runtime } } */
+        -:    2:
+        -:    3:void __attribute__((noipa))
+        1:    4:foo(int *__restrict wsum, int *__restrict cff, int *__restrict weight) {
+       17:    5:  for (int i = 0; i < 16; ++i) {
+       16:    6:    *wsum += weight[2 * i + 0];
+       16:    7:    *cff += weight[2 * i + 1];
+        -:    8:  }
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  int weight[32];
+       33:   13:  for (int i = 0; i < 32; ++i)
+       32:   14:    weight[i] = i;
+        1:   15:  int wsum = 0, cff = 0;
+        1:   16:  foo(&wsum, &cff, weight);
+        1:   17:  if (wsum != 240 || cff != 256)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

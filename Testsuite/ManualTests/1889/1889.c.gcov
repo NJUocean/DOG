@@ -1,0 +1,38 @@
+        -:    0:Source:1889.c
+        -:    0:Graph:1889.gcno
+        -:    0:Data:1889.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:int main() {
+        1:    4:  float fi = __builtin_inff();
+        1:    5:  double di = __builtin_inf();
+        1:    6:  long double li = __builtin_infl();
+        -:    7:
+        1:    8:  float fh = __builtin_huge_valf();
+        1:    9:  double dh = __builtin_huge_val();
+        1:   10:  long double lh = __builtin_huge_vall();
+        -:   11:
+        1:   12:  if (fi + fi != fi)
+    #####:   13:    abort();
+        1:   14:  if (di + di != di)
+    #####:   15:    abort();
+        1:   16:  if (li + li != li)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  if (fi != fh)
+    #####:   20:    abort();
+        1:   21:  if (di != dh)
+    #####:   22:    abort();
+        1:   23:  if (li != lh)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  if (fi <= 0)
+    #####:   27:    abort();
+        1:   28:  if (di <= 0)
+    #####:   29:    abort();
+        1:   30:  if (li <= 0)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

@@ -1,0 +1,8 @@
+    1|       |/* PR sanitizer/79897 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-fsanitize=enum -O2" } */
+    4|       |
+    5|       |enum E { A = 0, B = ~0U + 1LL } x = A;
+    6|       |
+    7|      1|int main() { return x != A; }
+

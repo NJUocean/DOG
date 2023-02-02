@@ -1,0 +1,50 @@
+        -:    0:Source:97.c
+        -:    0:Graph:97.gcno
+        -:    0:Data:97.gcda
+        -:    0:Runs:1
+        -:    1:// { dg-do run }
+        -:    2:// { dg-additional-options "-fdump-tree-asan0" }
+        -:    3:/* { dg-skip-if "" { *-*-* } { "*" } { "-O0" } } */
+        -:    4:
+        1:    5:int main(int argc, char **argv) {
+        1:    6:  int a = 123;
+        1:    7:  int b = 123;
+        1:    8:  int c = 123;
+        1:    9:  int d = 123;
+        1:   10:  int e = 123;
+        1:   11:  int f = 123;
+        -:   12:
+        1:   13:  if (argc == 0) {
+        -:   14:    int *ptr;
+        -:   15:    int *ptr2;
+        -:   16:    int *ptr3;
+        -:   17:    int *ptr4;
+        -:   18:    int *ptr5;
+        -:   19:    int *ptr6;
+    #####:   20:  label : {
+        1:   21:    ptr = &a;
+        1:   22:    *ptr = 1;
+        1:   23:    ptr2 = &b;
+        1:   24:    *ptr2 = 1;
+        1:   25:    ptr3 = &c;
+        1:   26:    *ptr3 = 1;
+        1:   27:    ptr4 = &d;
+        1:   28:    *ptr4 = 1;
+        1:   29:    ptr5 = &e;
+        1:   30:    *ptr5 = 1;
+        1:   31:    ptr6 = &f;
+        1:   32:    *ptr6 = 1;
+        1:   33:    return 0;
+        -:   34:  }
+        -:   35:  } else
+        1:   36:    goto label;
+        -:   37:
+        -:   38:  return 0;
+        -:   39:}
+        -:   40:
+        -:   41:/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &a, 4\\);" 2
+        -:   42: * "asan0" } }  */
+        -:   43:/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &c, 4\\);" 2
+        -:   44: * "asan0" } }  */
+        -:   45:/* { dg-final { scan-tree-dump-times "ASAN_MARK \\(UNPOISON, &e, 4\\);" 2
+        -:   46: * "asan0" } }  */

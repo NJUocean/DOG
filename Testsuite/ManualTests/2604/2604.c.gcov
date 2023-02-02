@@ -1,0 +1,44 @@
+        -:    0:Source:2604.c
+        -:    0:Graph:2604.gcno
+        -:    0:Data:2604.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target trampolines } */
+        -:    2:
+        -:    3:extern long foo(long, long, long (*)(long, long));
+        -:    4:extern long use(long (*)(long, long), long, long);
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  long sum = 0;
+        -:    8:  long i;
+        -:    9:
+     1000:   10:  long nested_0(long a, long b) {
+     1000:   11:    if (a > 2 * b)
+      190:   12:      return a - b;
+        -:   13:    else
+      810:   14:      return b - a;
+        -:   15:  }
+        -:   16:
+     1000:   17:  long nested_1(long a, long b) { return use(nested_0, b, a) + sum; }
+        -:   18:
+     1000:   19:  long nested_2(long a, long b) { return nested_1(b, a); }
+        -:   20:
+       11:   21:  for (i = 0; i < 10; ++i) {
+        -:   22:    long j;
+        -:   23:
+      110:   24:    for (j = 0; j < 10; ++j) {
+        -:   25:      long k;
+        -:   26:
+     1100:   27:      for (k = 0; k < 10; ++k)
+     1000:   28:        sum += foo(i, j > k ? j - k : k - j, nested_2);
+        -:   29:    }
+        -:   30:  }
+        -:   31:
+        1:   32:  if ((sum & 0xffffffff) != 0xbecfcbf5)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  exit(0);
+        -:   36:}
+        -:   37:
+     1000:   38:long use(long (*func)(long, long), long a, long b) { return func(b, a); }
+        -:   39:
+     1000:   40:long foo(long a, long b, long (*func)(long, long)) { return func(a, b); }

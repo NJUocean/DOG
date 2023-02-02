@@ -1,0 +1,26 @@
+        -:    0:Source:3923.c
+        -:    0:Graph:3923.gcno
+        -:    0:Data:3923.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/70586 */
+        -:    2:
+        -:    3:int a, e, f;
+        -:    4:short b, c, d;
+        -:    5:
+       6*:    6:int foo(int x, int y) { return (y == 0 || (x && y == 1)) ? x : x % y; }
+        -:    7:
+        1:    8:static short bar(void) {
+        1:    9:  int i = foo(c, f);
+        1:   10:  f = foo(d, 2);
+        1:   11:  int g = foo(b, c);
+        1:   12:  int h = foo(g > 0, c);
+       1*:   13:  c = (3 >= h ^ 7) <= foo(i, c);
+        1:   14:  if (foo(e, 1))
+    #####:   15:    return a;
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  bar();
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,33 @@
+        -:    0:Source:3605.c
+        -:    0:Graph:3605.gcno
+        -:    0:Data:3605.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "small alignment" { pdp11-*-* } } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef struct Bar {
+        -:    6:  char c[129];
+        -:    7:} Bar __attribute__((__aligned__(128)));
+        -:    8:
+        -:    9:typedef struct Foo {
+        -:   10:  Bar bar[4];
+        -:   11:} Foo;
+        -:   12:
+        -:   13:Foo foo[4];
+        -:   14:
+        1:   15:int main() {
+        -:   16:  int i, j;
+        1:   17:  Foo *foop = &foo[0];
+        -:   18:
+        5:   19:  for (i = 0; i < 4; i++) {
+        4:   20:    Bar *bar = &foop->bar[i];
+      520:   21:    for (j = 0; j < 129; j++) {
+      516:   22:      bar->c[j] = 'a' + i;
+        -:   23:    }
+        -:   24:  }
+        -:   25:
+        1:   26:  if (foo[0].bar[3].c[128] != 'd')
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

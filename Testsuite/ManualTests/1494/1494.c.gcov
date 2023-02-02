@@ -1,0 +1,30 @@
+        -:    0:Source:1494.c
+        -:    0:Graph:1494.gcno
+        -:    0:Data:1494.gcda
+        -:    0:Runs:1
+        -:    1:/* The bit-field below would have a problem if __INT_MAX__ is too
+        -:    2:   small.  */
+        -:    3:#if __INT_MAX__ < 2147483647
+        -:    4:int main(void) { exit(0); }
+        -:    5:#else
+        -:    6:struct S {
+        -:    7:  int a : 3;
+        -:    8:  unsigned b : 1, c : 28;
+        -:    9:};
+        -:   10:
+        -:   11:struct S x = {1, 1, 1};
+        -:   12:
+        1:   13:main() {
+        1:   14:  x = (struct S){
+        -:   15:    b : 0,
+        -:   16:    a : 0,
+        1:   17:    c : ({
+        1:   18:      struct S o = x;
+       1*:   19:      o.a == 1 ? 10 : 20;
+        -:   20:    })
+        -:   21:  };
+        1:   22:  if (x.c != 10)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}
+        -:   26:#endif

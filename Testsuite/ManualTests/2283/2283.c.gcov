@@ -1,0 +1,17 @@
+        -:    0:Source:2283.c
+        -:    0:Graph:2283.gcno
+        -:    0:Data:2283.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        1:    2:  long winds = 0;
+        -:    3:
+        1:    4:  while (winds != 0) {
+    #####:    5:    if (*(char *)winds)
+    #####:    6:      break;
+        -:    7:  }
+        -:    8:
+       1*:    9:  if (winds == 0 || winds != 0 || *(char *)winds)
+        1:   10:    exit(0);
+        -:   11:
+    #####:   12:  abort();
+        -:   13:}

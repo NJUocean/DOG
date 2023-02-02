@@ -1,0 +1,35 @@
+    1|       |/* PR rtl-optimization/81423 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |unsigned long long int ll = 0;
+    6|       |unsigned long long int ull1 = 1ULL;
+    7|       |unsigned long long int ull2 = 12008284144813806346ULL;
+    8|       |unsigned long long int ull3;
+    9|       |
+   10|      1|unsigned long long int __attribute__((noinline)) foo(void) {
+   11|      1|  ll = -5597998501375493990LL;
+   12|      1|
+   13|      1|  ll = (unsigned int)(5677365550390624949LL - ll) - (ull1 > 0);
+   14|      1|  unsigned long long int ull3;
+   15|      1|  ull3 = (unsigned int)(2067854353LL
+   16|      1|                        << (((ll + -2129105131LL) ^ 10280750144413668236ULL) -
+   17|      1|                            10280750143997242009ULL)) >>
+   18|      1|         ((2873442921854271231ULL | ull2) - 12098357307243495419ULL);
+   19|      1|
+   20|      1|  return ull3;
+   21|      1|}
+   22|       |
+   23|      1|int main(void) {
+   24|      1|  /* We need a long long of exactly 64 bits and int of exactly 32 bits
+   25|      1|     for this test.  */
+   26|      1|  if (__SIZEOF_LONG_LONG__ * __CHAR_BIT__ != 64 ||
+   27|      1|      __SIZEOF_INT__ * __CHAR_BIT__ != 32)
+   28|      0|    return 0;
+   29|      1|
+   30|      1|  ull3 = foo();
+   31|      1|  if (ull3 != 3998784)
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

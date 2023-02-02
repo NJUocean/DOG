@@ -1,0 +1,15 @@
+    1|      1|int movegt(int y, long long a) {
+    2|      1|  int i;
+    3|      1|  int ret = 0;
+    4|      2|  for (i = 0; i < y; i++)
+    5|      1|    if (a == -1LL << 33)
+    6|      1|      ret = -1;
+    7|      1|  return ret;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  if (movegt(1, -1LL << 33) != -1)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

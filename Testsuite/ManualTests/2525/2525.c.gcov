@@ -1,0 +1,31 @@
+        -:    0:Source:2525.c
+        -:    0:Graph:2525.gcno
+        -:    0:Data:2525.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link { target arm_soft_ok } } */
+        -:    2:/* { dg-skip-if "Feature is -mfloat-abi=soft only" { *-*-* } { "-mfloat-abi=*" }
+        -:    3: * { "-mfloat-abi=soft" } } */
+        -:    4:/* { dg-options "-mfloat-abi=soft" } */
+        -:    5:
+        1:    6:int foo(void) {
+        -:    7:  volatile float a;
+        -:    8:  volatile float b;
+        1:    9:  volatile float c = a / b;
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        1:   13:int bar(void) {
+        -:   14:  volatile double a;
+        -:   15:  volatile double b;
+        1:   16:  volatile double c = a / b;
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  foo();
+        1:   22:  bar();
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final { scan-symbol "__aeabi_fdiv" } } */
+        -:   27:/* { dg-final { scan-symbol "__aeabi_ddiv" } } */

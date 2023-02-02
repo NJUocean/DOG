@@ -1,0 +1,22 @@
+        -:    0:Source:1299.c
+        -:    0:Graph:1299.gcno
+        -:    0:Data:1299.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void exit(int);
+        -:    4:extern void abort();
+        1:    5:void foo(int e1) {
+        1:    6:  if (e1 < 0) {
+        1:    7:    e1 = -e1;
+        1:    8:    if (e1 >>= 4) {
+        1:    9:      if (e1 >= 1 << 5)
+        1:   10:        exit(0);
+        -:   11:    }
+        -:   12:  }
+    #####:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  foo(-(1 << 9));
+    #####:   17:  abort();
+        -:   18:}

@@ -1,0 +1,13 @@
+    1|       |extern void abort();
+    2|       |
+    3|      2|int f(int x) { return (x >> (sizeof(x) * __CHAR_BIT__ - 1)) ? -1 : 1; }
+    4|       |
+    5|       |volatile int one = 1;
+    6|      1|int main(void) {
+    7|      1|  /* Test that the function above returns different values for
+    8|      1|     different signs.  */
+    9|      1|  if (f(one) == f(-one))
+   10|      0|    abort();
+   11|      1|  return 0;
+   12|      1|}
+

@@ -1,0 +1,30 @@
+        -:    0:Source:645.c
+        -:    0:Graph:645.gcno
+        -:    0:Data:645.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3 = (-1L);
+        -:    7:
+        -:    8:static uint32_t func_1(void);
+        -:    9:
+        1:   10:static uint32_t func_1(void) {
+        1:   11:  int32_t *l_2 = &g_3;
+        1:   12:  (*l_2) &= 0L;
+        1:   13:  return (*l_2);
+        -:   14:}
+        -:   15:
+        1:   16:int main(int argc, char *argv[]) {
+        1:   17:  int print_hash_value = 0;
+       1*:   18:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   19:    print_hash_value = 1;
+        1:   20:  platform_main_begin();
+        1:   21:  crc32_gentab();
+        1:   22:  func_1();
+        1:   23:  transparent_crc(g_3, "g_3", print_hash_value);
+        1:   24:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   25:  return 0;
+        -:   26:}

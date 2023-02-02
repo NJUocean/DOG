@@ -1,0 +1,15 @@
+        -:    0:Source:3494.c
+        -:    0:Graph:3494.gcno
+        -:    0:Data:3494.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned long long u64;
+        -:    2:unsigned long foo = 0;
+        -:    3:u64 f() __attribute__((noinline));
+        -:    4:
+        1:    5:u64 f() { return ((u64)40) + ((u64)24) * (int)(foo - 1); }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  if (f() != 16)
+    #####:    9:    abort();
+        1:   10:  exit(0);
+        -:   11:}

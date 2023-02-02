@@ -1,0 +1,40 @@
+        -:    0:Source:3983.c
+        -:    0:Graph:3983.gcno
+        -:    0:Data:3983.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/82524 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned char b, g, r, a;
+        -:    5:};
+        -:    6:union U {
+        -:    7:  struct S c;
+        -:    8:  unsigned v;
+        -:    9:};
+        -:   10:
+        7:   11:static inline unsigned char foo(unsigned char a, unsigned char b) {
+        7:   12:  return ((a + 1) * b) >> 8;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) unsigned bar(union U *x, union U *y) {
+        -:   16:  union U z;
+        1:   17:  unsigned char v = x->c.a;
+        1:   18:  unsigned char w = foo(y->c.a, 255 - v);
+        1:   19:  z.c.r = foo(x->c.r, v) + foo(y->c.r, w);
+        1:   20:  z.c.g = foo(x->c.g, v) + foo(y->c.g, w);
+        1:   21:  z.c.b = foo(x->c.b, v) + foo(y->c.b, w);
+        1:   22:  z.c.a = 0;
+        1:   23:  return z.v;
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        -:   27:  union U a, b, c;
+        -:   28:  if ((unsigned char)~0 != 255 || sizeof(unsigned) != 4)
+        -:   29:    return 0;
+        1:   30:  a.c = (struct S){255, 255, 255, 0};
+        1:   31:  b.c = (struct S){255, 255, 255, 255};
+        1:   32:  c.v = bar(&a, &b);
+        1:   33:  if (c.c.b != 255 || c.c.g != 255 || c.c.r != 255 || c.c.a != 0)
+    #####:   34:    __builtin_abort();
+        1:   35:  return 0;
+        -:   36:}

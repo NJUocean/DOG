@@ -1,0 +1,16 @@
+    1|       |/* { dg-require-effective-target alloca } */
+    2|       |
+    3|       |/* This program tests a data flow bug that would cause constant propagation
+    4|       |   to propagate constants through function calls.  */
+    5|       |
+    6|      1|foo(int *p) { *p = 10; }
+    7|       |
+    8|      1|main() {
+    9|      1|  int *ptr = alloca(sizeof(int));
+   10|      1|  *ptr = 5;
+   11|      1|  foo(ptr);
+   12|      1|  if (*ptr == 5)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

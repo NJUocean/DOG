@@ -1,0 +1,22 @@
+        -:    0:Source:2282.c
+        -:    0:Graph:2282.gcno
+        -:    0:Data:2282.gcda
+        -:    0:Runs:1
+        1:    1:unsigned int buggy(unsigned int *param) {
+        1:    2:  unsigned int accu, zero = 0, borrow;
+        1:    3:  accu = -*param;
+        1:    4:  borrow = -(accu > zero);
+        1:    5:  *param += accu;
+        1:    6:  return borrow;
+        -:    7:}
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  unsigned int param = 1;
+        1:   11:  unsigned int borrow = buggy(&param);
+        -:   12:
+        1:   13:  if (param != 0)
+    #####:   14:    abort();
+        1:   15:  if (borrow + 1 != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

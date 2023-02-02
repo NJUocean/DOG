@@ -1,0 +1,13 @@
+    1|       |/* { dg-require-alias "" } */
+    2|       |/* { dg-skip-if "" { powerpc-ibm-aix* } } */
+    3|       |static int a = 0;
+    4|       |extern int b __attribute__((alias("a")));
+    5|      1|__attribute__((noinline)) static inc() { b++; }
+    6|      1|int main() {
+    7|      1|  a = 0;
+    8|      1|  inc();
+    9|      1|  if (a != 1)
+   10|      0|    __builtin_abort();
+   11|      1|  return 0;
+   12|      1|}
+

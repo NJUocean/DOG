@@ -1,0 +1,30 @@
+        -:    0:Source:3655.c
+        -:    0:Graph:3655.gcno
+        -:    0:Data:3655.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        2:    3:static unsigned int my_add(unsigned int si1, unsigned int si2) {
+       2*:    4:  return (si1 > (50 - si2)) ? si1 : (si1 + si2);
+        -:    5:}
+        -:    6:
+        2:    7:static unsigned int my_shift(unsigned int left, unsigned int right) {
+       2*:    8:  return (right > 100) ? left : (left >> right);
+        -:    9:}
+        -:   10:
+        1:   11:static int func_4(unsigned int p_6) {
+        1:   12:  int count = 0;
+        3:   13:  for (p_6 = 1; p_6 < 3; p_6 = my_add(p_6, 1)) {
+        2:   14:    if (count++ > 1)
+    #####:   15:      abort();
+        -:   16:
+        2:   17:    if (my_shift(p_6, p_6))
+    #####:   18:      return 0;
+        -:   19:  }
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  func_4(0);
+        1:   25:  return 0;
+        -:   26:}

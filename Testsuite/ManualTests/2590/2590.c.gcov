@@ -1,0 +1,10 @@
+        -:    0:Source:2590.c
+        -:    0:Graph:2590.gcno
+        -:    0:Data:2590.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -msse2 -march=k8" } */
+        -:    3:/* { dg-final { scan-assembler-not "cvtss2sd" } } */
+        -:    4:extern double fabs(double);
+        -:    5:float a, b;
+        1:    6:int main() { a = fabs(b) + 1.0; }

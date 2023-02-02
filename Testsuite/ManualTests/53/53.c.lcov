@@ -1,0 +1,10 @@
+    1|       |/* PR c/21759  */
+    2|       |/* { dg-options "-Wc++-compat" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  void *p = 0;
+    6|      1|  int *q = p; /* { dg-warning "not permitted" } */
+    7|      1|  double *t = (void *)0;
+    8|      1|  return p != q;
+    9|      1|}
+

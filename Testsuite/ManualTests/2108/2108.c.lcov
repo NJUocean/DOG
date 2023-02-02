@@ -1,0 +1,13 @@
+    1|       |/* PR sanitizer/65280 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=bounds" } */
+    4|       |
+    5|      1|void foo(int n, int (*b)[n]) { (*b)[n] = 1; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  int a[20];
+    9|      1|  foo(3, (int(*)[3]) & a);
+   10|      1|}
+   11|       |
+   12|       |/* { dg-output "index 3 out of bounds for type 'int \\\[\\\*\\\]'" } */
+

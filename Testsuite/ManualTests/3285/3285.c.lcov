@@ -1,0 +1,28 @@
+    1|       |/* Make sure that we don't free any temp stack slots associated with
+    2|       |   initializing marker before we're finished with them.  */
+    3|       |
+    4|       |extern void abort();
+    5|       |
+    6|       |typedef struct {
+    7|       |  short v16;
+    8|       |} __attribute__((packed)) jint16_t;
+    9|       |
+   10|       |struct node {
+   11|       |  jint16_t magic;
+   12|       |  jint16_t nodetype;
+   13|       |  int totlen;
+   14|       |} __attribute__((packed));
+   15|       |
+   16|       |struct node node, *node_p = &node;
+   17|       |
+   18|      1|int main() {
+   19|      1|  struct node marker = {.magic = (jint16_t){0x1985},
+   20|      1|                        .nodetype = (jint16_t){0x2003},
+   21|      1|                        .totlen = node_p->totlen};
+   22|      1|  if (marker.magic.v16 != 0x1985)
+   23|      0|    abort();
+   24|      1|  if (marker.nodetype.v16 != 0x2003)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

@@ -1,0 +1,11 @@
+        -:    0:Source:1029.c
+        -:    0:Graph:1029.gcno
+        -:    0:Data:1029.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/81695 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "" } */
+        -:    4:
+        -:    5:int z[] = {};
+        -:    6:
+        1:    7:int main(void) { __builtin_printf("%d\n", *(z + 1)); }

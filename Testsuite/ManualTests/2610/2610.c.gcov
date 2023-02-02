@@ -1,0 +1,34 @@
+        -:    0:Source:2610.c
+        -:    0:Graph:2610.gcno
+        -:    0:Data:2610.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-ifunc "" } */
+        -:    3:/* { dg-options "-O3 -fno-inline" } */
+        -:    4:/* { dg-final { scan-assembler-not "constprop" } } */
+        -:    5:__attribute__((target_clones("arch=core-avx2", "arch=slm", "default"))) void
+    1024*:    6:foo(float *a, int b) {
+    1024*:    7:  *a = (float)b;
+    1024*:    8:}
+------------------
+foo.arch_slm.1:
+    #####:    6:foo(float *a, int b) {
+    #####:    7:  *a = (float)b;
+    #####:    8:}
+------------------
+foo.arch_core_avx2.0:
+    #####:    6:foo(float *a, int b) {
+    #####:    7:  *a = (float)b;
+    #####:    8:}
+------------------
+foo.default.2:
+     1024:    6:foo(float *a, int b) {
+     1024:    7:  *a = (float)b;
+     1024:    8:}
+------------------
+        -:    9:float a;
+        1:   10:int main() {
+        -:   11:  int i;
+     1025:   12:  for (i = 0; i < 1024; i++)
+     1024:   13:    foo(&a, 5);
+        -:   14:}

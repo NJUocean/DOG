@@ -1,0 +1,23 @@
+    1|       |/* PR rtl-optimization/64682 */
+    2|       |
+    3|       |int a, b = 1;
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) void foo(int x) {
+    6|      1|  if (x != 5)
+    7|      0|    __builtin_abort();
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  int i;
+   12|     57|  for (i = 0; i < 56; i++)
+   13|     56|    for (; a; a--)
+   14|      0|      ;
+   15|      1|  int *c = &b;
+   16|      1|  if (*c)
+   17|      1|    *c = 1 % (unsigned int)*c | 5;
+   18|      1|
+   19|      1|  foo(b);
+   20|      1|
+   21|      1|  return 0;
+   22|      1|}
+

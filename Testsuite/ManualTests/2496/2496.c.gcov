@@ -1,0 +1,39 @@
+        -:    0:Source:2496.c
+        -:    0:Graph:2496.gcno
+        -:    0:Data:2496.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target arm_thumb2_ok } */
+        -:    3:/* { dg-options "-mthumb -O2 -mrestrict-it" }  */
+        -:    4:
+    #####:    5:__attribute__((noinline, noclone)) void fn2() { __builtin_printf("4"); }
+        -:    6:
+        -:    7:enum { ONE = 1, TWO } a;
+        -:    8:
+        -:    9:int b;
+        -:   10:
+        2:   11:__attribute__((noinline, noclone)) int fn1() {
+        2:   12:  int c = b == 0;
+        2:   13:  if (a <= ONE)
+        1:   14:    if (b == 0)
+    #####:   15:      fn2();
+        2:   16:  if (a)
+        2:   17:    if (c)
+        1:   18:      a = 0;
+        -:   19:
+        2:   20:  return a;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  a = ONE;
+        1:   25:  b = 1;
+        1:   26:  if (fn1() != ONE)
+    #####:   27:    __builtin_abort();
+        -:   28:
+        1:   29:  a = TWO;
+        1:   30:  b = 0;
+        1:   31:  if (fn1() != 0)
+    #####:   32:    __builtin_abort();
+        -:   33:
+        1:   34:  return 0;
+        -:   35:}

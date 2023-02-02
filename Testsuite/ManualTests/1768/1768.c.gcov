@@ -1,0 +1,22 @@
+        -:    0:Source:1768.c
+        -:    0:Graph:1768.gcno
+        -:    0:Data:1768.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int x;
+        1:    4:int main() {
+        1:    5:  int i = 0;
+        1:    6:  x = 0;
+        1:    7:  if (x) {
+      10*:    8:    for (; i < 10; ++i) {
+        9:    9:    doit:
+       10:   10:      x = i;
+        -:   11:    }
+        -:   12:  }
+        2:   13:  if (!x)
+        1:   14:    goto doit;
+        1:   15:  if (x != 9)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

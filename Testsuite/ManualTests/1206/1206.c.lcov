@@ -1,0 +1,21 @@
+    1|       |struct foo {
+    2|       |  unsigned half : 16;
+    3|       |  unsigned long whole : 32 __attribute__((packed));
+    4|       |};
+    5|       |
+    6|      1|f(struct foo *q) {
+    7|      1|  if (q->half != 0x1234)
+    8|      0|    abort();
+    9|      1|  if (q->whole != 0x56789abcL)
+   10|      0|    abort();
+   11|      1|}
+   12|       |
+   13|      1|main() {
+   14|      1|  struct foo bar;
+   15|      1|
+   16|      1|  bar.half = 0x1234;
+   17|      1|  bar.whole = 0x56789abcL;
+   18|      1|  f(&bar);
+   19|      1|  exit(0);
+   20|      1|}
+

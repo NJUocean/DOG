@@ -1,0 +1,15 @@
+    1|       |/* This test checks that we are no instrumenting a memory access twice
+    2|       |   (before and after inlining) */
+    3|       |
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-options "-fno-sanitize-address-use-after-scope" } */
+    6|       |/* { dg-final { scan-assembler-not "__asan_report_load" } } */
+    7|       |
+    8|      1|__attribute__((always_inline)) inline void foo(int *x) { *x = 0; }
+    9|       |
+   10|      1|int main() {
+   11|      1|  int x;
+   12|      1|  foo(&x);
+   13|      1|  return x;
+   14|      1|}
+

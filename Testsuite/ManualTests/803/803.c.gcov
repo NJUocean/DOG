@@ -1,0 +1,25 @@
+        -:    0:Source:803.c
+        -:    0:Graph:803.gcno
+        -:    0:Data:803.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/27671.
+        -:    2:   The combiner used to simplify "a ^ b == a" to "a" via
+        -:    3:   simplify_relational_operation_1 in simplify-rtx.c.  */
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O1" } */
+        -:    6:/* { dg-options "-O1 -march=pentium4" { target { { i?86-*-* x86_64-*-* } && ia32
+        -:    7: * } } } */
+        -:    8:
+        -:    9:extern void abort(void) __attribute__((noreturn));
+        -:   10:extern void exit(int) __attribute__((noreturn));
+        -:   11:
+        1:   12:static void __attribute__((noinline)) bar(int k) {
+        1:   13:  int n = k % 2;
+        1:   14:  if (n == 0)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  bar(1);
+        1:   20:  exit(0);
+        -:   21:}

@@ -1,0 +1,26 @@
+        -:    0:Source:1533.c
+        -:    0:Graph:1533.gcno
+        -:    0:Data:1533.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a = 128, b;
+        -:    4:
+        1:    5:static int fn1(signed char p1, int p2) {
+       1*:    6:  return p1 < 0 || p1 > 1 >> p2 ? 0 : p1 << 1;
+        -:    7:}
+        -:    8:
+        1:    9:static int fn2() {
+        1:   10:  signed char c = a;
+        1:   11:  b = fn1(c, 1);
+        1:   12:  if ((128 | c) < 0 ? 1 : 0)
+        1:   13:    return 1;
+    #####:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  if (fn2() != 1)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,19 @@
+        -:    0:Source:3084.c
+        -:    0:Graph:3084.gcno
+        -:    0:Data:3084.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "mov.b B100,r" } } */
+        -:    3:
+        -:    4:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:    5:unsigned char B100 __attribute__((__BELOW100__)) = 0x34;
+        -:    6:unsigned char *p = &B100;
+        -:    7:
+        -:    8:unsigned char yData = 0x12;
+        -:    9:
+        1:   10:void Do(void) { B100 = yData; }
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  Do();
+        1:   14:  return (*p == 0x12) ? 0 : 1;
+        -:   15:}

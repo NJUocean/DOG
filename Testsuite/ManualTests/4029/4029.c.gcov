@@ -1,0 +1,35 @@
+        -:    0:Source:4029.c
+        -:    0:Graph:4029.gcno
+        -:    0:Data:4029.gcda
+        -:    0:Runs:1
+        -:    1:long long a;
+        -:    2:unsigned b;
+        -:    3:int c[70];
+        -:    4:int d[70][70];
+        -:    5:int e;
+        -:    6:
+        1:    7:__attribute__((noinline)) void f(long long *g, int p2) { *g = p2; }
+        -:    8:
+        1:    9:__attribute__((noinline)) void fn2() {
+       71:   10:  for (int j = 0; j < 70; j++) {
+     4970:   11:    for (int i = 0; i < 70; i++) {
+     4900:   12:      if (b)
+     4900:   13:        c[i] = 0;
+   347900:   14:      for (int l = 0; l < 70; l++)
+   343000:   15:        d[i][1] = d[l][i];
+        -:   16:    }
+     4970:   17:    for (int k = 0; k < 70; k++)
+     4900:   18:      e = c[0];
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  b = 5;
+       71:   24:  for (int j = 0; j < 70; ++j)
+       70:   25:    c[j] = 2075593088;
+        1:   26:  fn2();
+        1:   27:  f(&a, e);
+        1:   28:  if (a)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

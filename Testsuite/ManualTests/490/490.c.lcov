@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-g" } */
+    3|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+    4|       |
+    5|      1|void foo(int i) {
+    6|      1|  int j = 0;
+    7|      1|  i = 1;
+    8|      1|  j = j + 1; /* BREAK */
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  foo(0);
+   13|      1|  return 0;
+   14|      1|}
+   15|       |
+   16|       |/* { dg-final { gdb-test 10 "i" "1" } } */
+

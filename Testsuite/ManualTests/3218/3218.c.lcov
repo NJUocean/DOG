@@ -1,0 +1,30 @@
+    1|       |/* PR c/5681
+    2|       |   This testcase failed on IA-32 at -O0, because safe_from_p
+    3|       |   incorrectly assumed it is safe to first write into a.a2 b-1
+    4|       |   and then read the original value from it.  */
+    5|       |
+    6|       |int bar(float);
+    7|       |
+    8|       |struct A {
+    9|       |  float a1;
+   10|       |  int a2;
+   11|       |} a;
+   12|       |
+   13|       |int b;
+   14|       |
+   15|      1|void foo(void) {
+   16|      1|  a.a2 = bar(a.a1);
+   17|      1|  a.a2 = a.a2 < b - 1 ? a.a2 : b - 1;
+   18|      1|  if (a.a2 >= b - 1)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|int bar(float x) { return 2241; }
+   23|       |
+   24|      1|int main() {
+   25|      1|  a.a1 = 1.0f;
+   26|      1|  b = 3384;
+   27|      1|  foo();
+   28|      1|  return 0;
+   29|      1|}
+

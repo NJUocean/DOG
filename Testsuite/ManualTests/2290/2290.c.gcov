@@ -1,0 +1,18 @@
+        -:    0:Source:2290.c
+        -:    0:Graph:2290.gcno
+        -:    0:Data:2290.gcda
+        -:    0:Runs:1
+      101:    1:int f(int a, int *y) {
+      101:    2:  int x = a;
+        -:    3:
+      101:    4:  if (a == 0)
+        1:    5:    return *y;
+        -:    6:
+      100:    7:  return f(a - 1, &x);
+        -:    8:}
+        -:    9:
+        1:   10:int main(int argc, char **argv) {
+        1:   11:  if (f(100, (int *)0) != 1)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

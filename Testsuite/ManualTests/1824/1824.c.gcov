@@ -1,0 +1,25 @@
+        -:    0:Source:1824.c
+        -:    0:Graph:1824.gcno
+        -:    0:Data:1824.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2" } */
+        -:    2:
+        -:    3:void (*fn)(void);
+        -:    4:
+        -:    5:volatile int v;
+        -:    6:
+        1:    7:__attribute__((noreturn)) void fn0(void) { __builtin_exit(0); }
+        -:    8:
+    #####:    9:void fn1(void) {}
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void setfn(void (*x)(void)) { fn = x; }
+        -:   12:
+        1:   13:int main() {
+        -:   14:  int i;
+        1:   15:  if (v < 1)
+        1:   16:    setfn(fn0);
+        -:   17:  else
+    #####:   18:    setfn(fn1);
+        1:   19:  fn();
+    #####:   20:  return 0;
+        -:   21:}

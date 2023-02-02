@@ -1,0 +1,42 @@
+    1|       |/* PR tree-optimization/91914 - Invalid strlen folding for offset into struct
+    2|       |   { dg-do run }
+    3|       |   { dg-options "-O2 -Wall" } */
+    4|       |
+    5|       |#define assert(expr)                                                           \
+    6|     10|  ((expr) ? (void)0                                                            \
+    7|     10|          : (__builtin_printf("%s:%i: assertion failed: %s\n", __FILE__,       \
+    8|      0|                              __LINE__, #expr),                                \
+    9|      0|             __builtin_abort()))
+   10|       |
+   11|       |extern __SIZE_TYPE__ strlen(const char *);
+   12|       |
+   13|       |struct stringpool_t {
+   14|       |  char s1[sizeof("1")];
+   15|       |  char s2[sizeof("12")];
+   16|       |  char s3[sizeof("123")];
+   17|       |  char s4[sizeof("1234")];
+   18|       |  char s5[sizeof("12345")];
+   19|       |};
+   20|       |
+   21|       |static const struct stringpool_t stringpool_contents = {"1", "12", "123",
+   22|       |                                                        "1234", "12345"};
+   23|       |
+   24|       |#define stringpool ((const char *)&stringpool_contents)
+   25|       |
+   26|       |volatile int i0 = 0, i2 = 2, i5 = 5, i9 = 9, i14 = 14;
+   27|       |
+   28|      1|int main(void) {
+   29|      1|  /* These shouldn't trigger warnings.  */
+   30|      1|  assert(strlen(stringpool) == 1);
+   31|      1|  assert(strlen(stringpool + 2) == 2);
+   32|      1|  assert(strlen(stringpool + 5) == 3);
+   33|      1|  assert(strlen(stringpool + 9) == 4);
+   34|      1|  assert(strlen(stringpool + 14) == 5);
+   35|      1|
+   36|      1|  assert(strlen(stringpool + i0) == 1);
+   37|      1|  assert(strlen(stringpool + i2) == 2);
+   38|      1|  assert(strlen(stringpool + i5) == 3);
+   39|      1|  assert(strlen(stringpool + i9) == 4);
+   40|      1|  assert(strlen(stringpool + i14) == 5);
+   41|      1|}
+

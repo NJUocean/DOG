@@ -1,0 +1,23 @@
+        -:    0:Source:1593.c
+        -:    0:Graph:1593.gcno
+        -:    0:Data:1593.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:union U {
+        -:    5:  int i;
+        -:    6:  _Bool b;
+        -:    7:  char c;
+        -:    8:};
+        1:    9:void __attribute__((noinline, noclone)) foo(union U *u) {
+        1:   10:  if (u->c != 0)
+    #####:   11:    abort();
+        1:   12:}
+        1:   13:int main() {
+        -:   14:  union U u;
+        1:   15:  u.i = 10;
+        1:   16:  u.b = 0;
+        1:   17:  foo(&u);
+        1:   18:  return 0;
+        -:   19:}

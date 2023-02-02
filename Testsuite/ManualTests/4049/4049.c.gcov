@@ -1,0 +1,19 @@
+        -:    0:Source:4049.c
+        -:    0:Graph:4049.gcno
+        -:    0:Data:4049.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/94524 */
+        -:    2:
+        -:    3:typedef signed char __attribute__((__vector_size__(16))) V;
+        -:    4:
+        1:    5:static __attribute__((__noinline__, __noclone__)) V foo(V c) {
+        1:    6:  c %= (signed char)-19;
+        1:    7:  return (V)c;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  V x = foo((V){31});
+        1:   12:  if (x[0] != 12)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

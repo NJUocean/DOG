@@ -1,0 +1,21 @@
+        -:    0:Source:939.c
+        -:    0:Graph:939.gcno
+        -:    0:Data:939.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56125 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -ffast-math" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern double fabs(double);
+        -:    7:
+        1:    8:__attribute__((cold)) double foo(double x, double n) {
+        1:    9:  double u = x / (n * n);
+        1:   10:  return u;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (fabs(foo(29, 2) - 7.25) > 0.001)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

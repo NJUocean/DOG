@@ -1,0 +1,34 @@
+        -:    0:Source:2719.c
+        -:    0:Graph:2719.gcno
+        -:    0:Data:2719.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/80706 */
+        -:    2:/* { dg-do run { target sse2_runtime } } */
+        -:    3:/* { dg-options "-O2 -msse2" } */
+        -:    4:
+        -:    5:union U {
+        -:    6:  double value;
+        -:    7:  struct S {
+        -:    8:    int lsw;
+        -:    9:    int msw;
+        -:   10:  } parts;
+        -:   11:};
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) double foo(void) {
+        1:   14:  __asm volatile("" : : : "memory");
+        1:   15:  return 2.0;
+        -:   16:}
+        -:   17:
+        1:   18:__attribute__((noinline, noclone)) double bar(void) {
+        1:   19:  double s = foo();
+        -:   20:  union U z;
+        1:   21:  z.value = s;
+        1:   22:  z.parts.lsw = 0;
+        1:   23:  return z.value * z.value + s * s;
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  if (bar() != 8.0)
+    #####:   28:    __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

@@ -1,0 +1,33 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-g" } */
+    3|       |
+    4|      1|void __attribute__((noinline)) optimize_me_not() {
+    5|      1|  __asm__ volatile("" : : : "memory");
+    6|      1|}
+    7|       |volatile int a;
+    8|       |static short b[3][9][1] = {5};
+    9|       |int c;
+   10|      1|int main() {
+   11|      1|  int i, d;
+   12|      1|  i = 0;
+   13|      4|  for (; i < 3; i++) {
+   14|      3|    c = 0;
+   15|     30|    for (; c < 9; c++) {
+   16|     27|      d = 0;
+   17|     54|      for (; d < 1; d++)
+   18|     27|        a = b[i][c][d];
+   19|     27|    }
+   20|      3|  }
+   21|      1|  i = c = 0;
+   22|      8|  for (; c < 7; c++)
+   23|     12|    for (; d < 6; d++)
+   24|      5|      a;
+   25|      1|  /* i may very well be optimized out, so we cannot test for i == 0.
+   26|      1|     Instead test i + 1 which will make the test UNSUPPORTED if i
+   27|      1|     is optimized out.  Since the test previously had wrong debug
+   28|      1|     with i == 2 this is acceptable.  Optimally we'd produce a
+   29|      1|     debug stmt for the final value of the loop which would fix
+   30|      1|     the UNSUPPORTED cases.  */
+   31|      1|  optimize_me_not(); /* { dg-final { gdb-test . "i + 1" "1" } } */
+   32|      1|}
+

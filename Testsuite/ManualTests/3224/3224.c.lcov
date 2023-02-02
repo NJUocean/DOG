@@ -1,0 +1,28 @@
+    1|       |/* This testcase failed on mmix-knuth-mmixware.  Problem was with storing
+    2|       |   to an unaligned mem:SC, gcc tried doing it by parts from a (concat:SC
+    3|       |   (reg:SF 293) (reg:SF 294)).  */
+    4|       |
+    5|       |typedef __complex__ float cf;
+    6|       |struct x {
+    7|       |  char c;
+    8|       |  cf f;
+    9|       |} __attribute__((__packed__));
+   10|       |extern void f2(struct x *);
+   11|       |extern void f1(void);
+   12|      1|int main(void) {
+   13|      1|  f1();
+   14|      1|  exit(0);
+   15|      1|}
+   16|       |
+   17|      1|void f1(void) {
+   18|      1|  struct x s;
+   19|      1|  s.f = 1;
+   20|      1|  s.c = 42;
+   21|      1|  f2(&s);
+   22|      1|}
+   23|       |
+   24|      1|void f2(struct x *y) {
+   25|      1|  if (y->f != 1 || y->c != 42)
+   26|      0|    abort();
+   27|      1|}
+

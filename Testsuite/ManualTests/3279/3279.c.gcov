@@ -1,0 +1,44 @@
+        -:    0:Source:3279.c
+        -:    0:Graph:3279.gcno
+        -:    0:Data:3279.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/27285 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  unsigned char a, b, c, d[16];
+        -:    7:};
+        -:    8:
+        1:    9:void __attribute__((noinline)) foo(struct S *x, struct S *y) {
+        -:   10:  int a, b;
+        -:   11:  unsigned char c, *d, *e;
+        -:   12:
+        1:   13:  b = x->b;
+        1:   14:  d = x->d;
+        1:   15:  e = y->d;
+        1:   16:  a = 0;
+        5:   17:  while (b) {
+        4:   18:    if (b >= 8) {
+        3:   19:      c = 0xff;
+        3:   20:      b -= 8;
+        -:   21:    } else {
+        1:   22:      c = 0xff << (8 - b);
+        1:   23:      b = 0;
+        -:   24:    }
+        -:   25:
+        4:   26:    e[a] = d[a] & c;
+        4:   27:    a++;
+        -:   28:  }
+        1:   29:}
+        -:   30:
+        1:   31:int main(void) {
+        1:   32:  struct S x = {0, 25, 0, {0xaa, 0xbb, 0xcc, 0xdd}};
+        1:   33:  struct S y = {0, 0, 0, {0}};
+        -:   34:
+        1:   35:  foo(&x, &y);
+        1:   36:  if (x.d[0] != y.d[0] || x.d[1] != y.d[1] || x.d[2] != y.d[2] ||
+        1:   37:      (x.d[3] & 0x80) != y.d[3])
+    #####:   38:    abort();
+        1:   39:  return 0;
+        -:   40:}

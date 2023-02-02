@@ -1,0 +1,24 @@
+    1|       |typedef __UINT8_TYPE__ u8;
+    2|       |typedef __UINT32_TYPE__ u32;
+    3|       |
+    4|       |u32 a, b, d, e;
+    5|       |u8 c;
+    6|       |
+    7|      1|static u32 __attribute__((noinline, noclone)) foo(u32 p) {
+    8|      3|  do {
+    9|      3|    e /= 0xfff;
+   10|      3|    if (p > c)
+   11|      3|      d = 0;
+   12|      3|    e -= 3;
+   13|      3|    e *= b <= a;
+   14|      3|  } while (e >= 88030);
+   15|      1|  return e;
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  u32 x = foo(1164);
+   20|      1|  if (x != 0xfd)
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+

@@ -1,0 +1,35 @@
+        -:    0:Source:3644.c
+        -:    0:Graph:3644.gcno
+        -:    0:Data:3644.gcda
+        -:    0:Runs:1
+        -:    1:#if (__SIZEOF_INT__ == 2)
+        -:    2:#define TESTVALUE 0x1234
+        -:    3:#else
+        -:    4:#define TESTVALUE 0x12345678
+        -:    5:#endif
+        1:    6:static void foo(unsigned int x, void *p) { __builtin_memcpy(p, &x, sizeof x); }
+        -:    7:
+        1:    8:void bar(int type, void *number) {
+        1:    9:  switch (type) {
+        1:   10:  case 1:
+        1:   11:    foo(TESTVALUE, number);
+        1:   12:    break;
+    #####:   13:  case 7:
+    #####:   14:    foo(0, number);
+    #####:   15:    break;
+    #####:   16:  case 8:
+    #####:   17:    foo(0, number);
+    #####:   18:    break;
+    #####:   19:  case 9:
+    #####:   20:    foo(0, number);
+    #####:   21:    break;
+        -:   22:  }
+        1:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        -:   26:  unsigned int x;
+        1:   27:  bar(1, &x);
+        1:   28:  if (x != TESTVALUE)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

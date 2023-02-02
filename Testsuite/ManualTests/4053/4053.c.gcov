@@ -1,0 +1,19 @@
+        -:    0:Source:4053.c
+        -:    0:Graph:4053.gcno
+        -:    0:Data:4053.gcda
+        -:    0:Runs:1
+        1:    1:f(double *ty) { *ty = -1.0; }
+        -:    2:
+        1:    3:main() {
+        -:    4:  double foo[6];
+        1:    5:  double tx = 0.0, ty, d;
+        -:    6:
+        1:    7:  f(&ty);
+        -:    8:
+        1:    9:  if (ty < 0)
+        1:   10:    ty = -ty;
+       1*:   11:  d = (tx > ty) ? tx : ty;
+        1:   12:  if (ty != d)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

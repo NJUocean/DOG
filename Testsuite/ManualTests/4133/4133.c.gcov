@@ -1,0 +1,17 @@
+        -:    0:Source:4133.c
+        -:    0:Graph:4133.gcno
+        -:    0:Data:4133.gcda
+        -:    0:Runs:1
+        -:    1:#define C L'\400'
+        -:    2:
+        -:    3:#if C
+        -:    4:#define zero (!C)
+        -:    5:#else
+        -:    6:#define zero C
+        -:    7:#endif
+        -:    8:
+        1:    9:main() {
+        -:   10:  if (zero != 0)
+        -:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

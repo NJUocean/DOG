@@ -1,0 +1,27 @@
+        -:    0:Source:1085.c
+        -:    0:Graph:1085.gcno
+        -:    0:Data:1085.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/89795 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-dce -fno-forward-propagate -fno-sched-pressure" } */
+        -:    4:
+        -:    5:unsigned char a;
+        -:    6:unsigned b, c, d;
+        -:    7:
+        1:    8:int main() {
+        -:    9:#if __CHAR_BIT__ == 8
+        -:   10:  unsigned x;
+        -:   11:  int e, f;
+        -:   12:  unsigned char g;
+        1:   13:  e = __builtin_bswap32(a);
+        1:   14:  f = __builtin_ffs(~(unsigned short)e);
+        1:   15:  a = __builtin_mul_overflow((unsigned char)0xf7, f, &g);
+        1:   16:  a |= __builtin_sub_overflow_p(c, 0, (unsigned char)0);
+        1:   17:  d = g + b;
+        1:   18:  x = d;
+        1:   19:  if (x != 0xf7)
+    #####:   20:    __builtin_abort();
+        -:   21:#endif
+        1:   22:  return 0;
+        -:   23:}

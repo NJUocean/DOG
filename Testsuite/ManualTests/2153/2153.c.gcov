@@ -1,0 +1,22 @@
+        -:    0:Source:2153.c
+        -:    0:Graph:2153.gcno
+        -:    0:Data:2153.gcda
+        -:    0:Runs:1
+        -:    1:/* {  dg-additional-options "-O2" } */
+        -:    2:
+        -:    3:/* PR 69916, an loop determined to be empty sometime after omp-lower
+        -:    4:   and before oacc-device-lower can evaporate leading to no GOACC_LOOP
+        -:    5:   internal functions existing.  */
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:
+        -:    9:#pragma acc parallel
+        -:   10:  {
+        1:   11:    int j = 0;
+        -:   12:#pragma acc loop private(j)
+       11:   13:    for (int i = 0; i < 10; i++)
+       10:   14:      j++;
+        -:   15:  }
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

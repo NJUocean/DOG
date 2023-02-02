@@ -1,0 +1,26 @@
+    1|       |/* PR 35058: -Werror= works only with some warnings. */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-std=c99 -pedantic -Werror=declaration-after-statement" } */
+    4|       |/* { dg-message "some warnings being treated as errors" "" {target "*-*-*"} 0 }
+    5|       | */
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int i = 0;
+   11|      1|  if (i != 0)
+   12|      0|    abort();
+   13|      1|  i++;
+   14|      1|  if (i != 1)
+   15|      0|    abort();
+   16|      1|  int j = i; /* { dg-error "" "declaration-after-statement" } */
+   17|      1|  if (j != 1)
+   18|      0|    abort();
+   19|      1|  struct foo {
+   20|      1|    int i0;
+   21|      1|  } k = {4}; /* { dg-error "" "declaration-after-statement" } */
+   22|      1|  if (k.i0 != 4)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

@@ -1,0 +1,24 @@
+        -:    0:Source:1538.c
+        -:    0:Graph:1538.gcno
+        -:    0:Data:1538.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/63316 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O2" } } */
+        -:    4:
+        -:    5:#ifdef __cplusplus
+        -:    6:extern "C" {
+        -:    7:#endif
+        -:    8:extern void *malloc(__SIZE_TYPE__);
+        -:    9:extern void free(void *);
+        -:   10:#ifdef __cplusplus
+        -:   11:}
+        -:   12:#endif
+        -:   13:
+        1:   14:int main() {
+        1:   15:  int *p = (int *)malloc(sizeof(int));
+        1:   16:  *p = 3;
+        1:   17:  asm volatile("" : : "r"(p) : "memory");
+        1:   18:  free(p);
+        1:   19:  return 0;
+        -:   20:}

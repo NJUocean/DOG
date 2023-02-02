@@ -1,0 +1,15 @@
+        -:    0:Source:3269.c
+        -:    0:Graph:3269.gcno
+        -:    0:Data:3269.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-std=c99" } */
+        -:    2:
+        -:    3:long long a = -1;
+        -:    4:long long llabs(long long);
+        -:    5:void abort(void);
+        1:    6:int main() {
+        1:    7:  if (llabs(a) != 1)
+    #####:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}
+    #####:   11:long long llabs(long long b) { abort(); }

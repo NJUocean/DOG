@@ -1,0 +1,24 @@
+        -:    0:Source:2794.c
+        -:    0:Graph:2794.gcno
+        -:    0:Data:2794.gcda
+        -:    0:Runs:1
+        -:    1:/* Test floating point division on ia64.  There was a bug in the
+        -:    2:   max-throughput version of the inline division code.  Expecting an
+        -:    3:   exact value from a floating point expression is unwise but GCC
+        -:    4:   depends on it in allocno_compare.  */
+        -:    5:
+        -:    6:/* { dg-do run } */
+        -:    7:/* { dg-options "-minline-float-divide-max-throughput" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:volatile int i = 24;
+        -:   12:volatile int j = 30;
+        -:   13:volatile int k = 1;
+        -:   14:
+        1:   15:int main() {
+        1:   16:  int pri2 = (((double)i / j) * (10000 / 1000) * k);
+        1:   17:  if (pri2 != 8)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,30 @@
+        -:    0:Source:4123.c
+        -:    0:Graph:4123.gcno
+        -:    0:Data:4123.gcda
+        -:    0:Runs:1
+        -:    1:/* VLAs should be deallocated on a jump to before their definition,
+        -:    2:   including a jump to a label in an inner scope.  PR 19771.  */
+        -:    3:/* { dg-require-effective-target alloca } */
+        -:    4:
+        -:    5:#if (__SIZEOF_INT__ <= 2)
+        -:    6:#define LIMIT 10000
+        -:    7:#else
+        -:    8:#define LIMIT 1000000
+        -:    9:#endif
+        -:   10:
+        -:   11:void *volatile p;
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  int n = 0;
+        -:   15:  if (0) {
+   999999:   16:  lab:;
+        -:   17:  }
+  1000000:   18:  int x[n % 1000 + 1];
+  1000000:   19:  x[0] = 1;
+  1000000:   20:  x[n % 1000] = 2;
+  1000000:   21:  p = x;
+  1000000:   22:  n++;
+  1000000:   23:  if (n < LIMIT)
+   999999:   24:    goto lab;
+        1:   25:  return 0;
+        -:   26:}

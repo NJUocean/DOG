@@ -1,0 +1,36 @@
+        -:    0:Source:2461.c
+        -:    0:Graph:2461.gcno
+        -:    0:Data:2461.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fomit-frame-pointer --save-temps -fno-inline" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef float float16x4_t __attribute__((vector_size((16))));
+        -:    7:
+        -:    8:float a;
+        -:    9:float b;
+        -:   10:
+        1:   11:float16x4_t make_vector() { return (float16x4_t){0, 0, a, b}; }
+        -:   12:
+        1:   13:int main(int argc, char **argv) {
+        1:   14:  a = 4.0;
+        1:   15:  b = 3.0;
+        1:   16:  float16x4_t vec = make_vector();
+        1:   17:  if (vec[0] != 0 || vec[1] != 0 || vec[2] != a || vec[3] != b)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        -:   22:/* For memory models that don't have an addend on the lane value
+        -:   23:   load we can merge the load and lane insert into an LD1.
+        -:   24:   For others we expect LDR + INS sequences.  */
+        -:   25:/* { dg-final { scan-assembler-times "ld1\\t" 2 { target { aarch64_tiny ||
+        -:   26: * aarch64_large } } } } */
+        -:   27:/* { dg-final { scan-assembler-times "ins\\t" 2 { target aarch64_small } } } */
+        -:   28:/* What we want to check, is that make_vector does not stp the whole vector
+        -:   29:   to the stack.  Unfortunately here we scan the body of main() too, which may
+        -:   30:   be a bit fragile - the test is currently passing only because of the option
+        -:   31:   -fomit-frame-pointer which avoids use of stp in the prologue to main().  */
+        -:   32:/* { dg-final { scan-assembler-not "stp\\t" } } */

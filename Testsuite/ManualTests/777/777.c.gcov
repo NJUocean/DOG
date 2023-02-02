@@ -1,0 +1,31 @@
+        -:    0:Source:777.c
+        -:    0:Graph:777.gcno
+        -:    0:Data:777.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/17581 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        1:    7:int foo(int x) {
+        1:    8:  unsigned long long tmp = 0;
+        -:    9:
+        1:   10:  switch (x) {
+        1:   11:  case 21:
+        1:   12:    tmp |= 1;
+        1:   13:    tmp |= 2;
+        1:   14:    tmp |= 8;
+        1:   15:    break;
+    #####:   16:  default:
+    #####:   17:    break;
+        -:   18:  }
+        -:   19:
+        1:   20:  return (int)tmp;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  if (foo(21) != 11)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

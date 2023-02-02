@@ -1,0 +1,26 @@
+        -:    0:Source:866.c
+        -:    0:Graph:866.gcno
+        -:    0:Data:866.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-overflow" } */
+        -:    3:
+        -:    4:#include <limits.h>
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  volatile int min = INT_MIN;
+        1:    8:  volatile int zero = 0;
+        -:    9:
+        -:   10:  INT_MIN / -1;
+        1:   11:  min / -1;
+        1:   12:  min / (10 * zero - (2 - 1));
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-output "division of -2147483648 by -1 cannot be represented in type
+        -:   18: * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   19:/* { dg-output "\[^\n\r]*division of -2147483648 by -1 cannot be represented in
+        -:   20: * type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   21:/* { dg-output "\[^\n\r]*division of -2147483648 by -1 cannot be represented in
+        -:   22: * type 'int'\[^\n\r]*" } */

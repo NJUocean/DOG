@@ -1,0 +1,30 @@
+        -:    0:Source:478.c
+        -:    0:Graph:478.gcno
+        -:    0:Data:478.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        -:    4:volatile int vv;
+        -:    5:
+        1:    6:__attribute__((noclone, noinline)) long foo(long x) {
+        1:    7:  long f = __builtin_bswap64(x);
+        1:    8:  long g = f;
+        1:    9:  asm volatile("" : "+r"(f));
+        1:   10:  vv++; /* { dg-final { gdb-test . "g" "f" } } */
+        1:   11:  return f;
+        -:   12:}
+        -:   13:
+        1:   14:__attribute__((noclone, noinline)) int bar(int x) {
+        1:   15:  int f = __builtin_bswap32(x);
+        1:   16:  int g = f;
+        1:   17:  asm volatile("" : "+r"(f));
+        1:   18:  vv++; /* { dg-final { gdb-test . "g" "f" } } */
+        1:   19:  return f;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(0x123456789abcde0fUL);
+        1:   24:  bar(0x12345678);
+        1:   25:  return 0;
+        -:   26:}

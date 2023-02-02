@@ -1,0 +1,15 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |typedef __UINTPTR_TYPE__ uintptr_t;
+    4|       |int n = 0;
+    5|      1|int f(void) { return ++n; }
+    6|      1|int main(void) {
+    7|      1|  int a = 0;
+    8|      1|  int *p;
+    9|      1|  uintptr_t b;
+   10|      1|  b = (uintptr_t)(p = &(int[]){0, f(), 2}[1]);
+   11|      1|  if (*p != 1 || *(int *)b != 1 || n != 1)
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+

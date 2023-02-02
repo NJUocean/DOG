@@ -1,0 +1,21 @@
+        -:    0:Source:719.c
+        -:    0:Graph:719.gcno
+        -:    0:Data:719.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=bounds-strict" } */
+        -:    3:
+        -:    4:struct V {
+        -:    5:  int l;
+        -:    6:  int a[1];
+        -:    7:};
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  /* For strict, do instrument last array in a struct.  */
+        1:   11:  struct V *v = (struct V *)__builtin_malloc(sizeof(struct V) + 10);
+        1:   12:  v->a[1] = 1;
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-output "index 1 out of bounds for type 'int \\\[1\\\]'" } */

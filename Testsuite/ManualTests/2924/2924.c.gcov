@@ -1,0 +1,17 @@
+        -:    0:Source:2924.c
+        -:    0:Graph:2924.gcno
+        -:    0:Data:2924.gcda
+        -:    0:Runs:1
+        1:    1:unsigned int foo(unsigned int x) {
+        1:    2:  if (x < 5)
+    #####:    3:    x = 4;
+        -:    4:  else
+        1:    5:    x = 8;
+        1:    6:  return x;
+        -:    7:}
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  if (foo(8) != 8)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

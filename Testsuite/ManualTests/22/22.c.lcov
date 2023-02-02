@@ -1,0 +1,97 @@
+    1|       |/* Testing save/restore of floating point caller-save registers, on ia64
+    2|       |   this resulted in bad code.  Not all targets will use caller-save regs.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O2" } */
+    6|       |/* { dg-options "-O2 -minline-float-divide-max-throughput" { target ia64-*-* } }
+    7|       | */
+    8|       |
+    9|       |/* Testing save/restore of floating point caller-save registers on ia64.  */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|      4|double foo(double a, double b, double c) { return (a + b + c); }
+   14|       |
+   15|      1|int main() {
+   16|      1|  double f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
+   17|      1|  double f11, f12, f13, f14, f15, f16, f17, f18, f19, f20;
+   18|      1|  double f21, f22, f23, f24, f25, f26, f27, f28, f29, f30;
+   19|      1|  double x;
+   20|      1|  int i, j, k;
+   21|      1|
+   22|      1|  f1 = 0.1;
+   23|      1|  f2 = 0.2;
+   24|      1|  f3 = 0.3;
+   25|      1|  f4 = 0.4;
+   26|      1|  f5 = 0.5;
+   27|      1|  f6 = 0.6;
+   28|      1|  f7 = 0.7;
+   29|      1|  f8 = 0.8;
+   30|      1|  f9 = 0.9;
+   31|      1|  f10 = 1.0;
+   32|      1|  f11 = 1.1;
+   33|      1|  f12 = 1.2;
+   34|      1|  f13 = 1.3;
+   35|      1|  f14 = 1.4;
+   36|      1|  f15 = 1.5;
+   37|      1|  f16 = 1.6;
+   38|      1|  f17 = 1.7;
+   39|      1|  f18 = 1.8;
+   40|      1|  f19 = 1.9;
+   41|      1|  f20 = 2.0;
+   42|      1|  f21 = 2.1;
+   43|      1|  f22 = 2.2;
+   44|      1|  f23 = 2.3;
+   45|      1|  f24 = 2.4;
+   46|      1|  f25 = 2.5;
+   47|      1|  f26 = 2.6;
+   48|      1|  f27 = 2.7;
+   49|      1|  f28 = 2.8;
+   50|      1|  f29 = 2.9;
+   51|      1|  f30 = 3.0;
+   52|      1|
+   53|      1|  i = (int)foo(1.0, 1.0, 1.0);
+   54|      4|  while (i > 0) {
+   55|      3|    f1 = f2 / f3 * f30;
+   56|      3|    f2 = f3 / f4 * f30;
+   57|      3|    f3 = f4 / f5 * f30;
+   58|      3|    f4 = f5 / f6 * f30;
+   59|      3|    f5 = f6 / f7 * f30;
+   60|      3|    f6 = f7 / f8 * f30;
+   61|      3|    f7 = f8 / f9 * f30;
+   62|      3|    f8 = f9 / f10 * f30;
+   63|      3|    f9 = f10 / f11 * f30;
+   64|      3|    f10 = f11 / f12 * f30;
+   65|      3|    f11 = f12 / f13 * f30;
+   66|      3|    f12 = f13 / f14 * f25;
+   67|      3|    f13 = f14 / f15 * f30;
+   68|      3|    f14 = f15 / f16 * f30;
+   69|      3|    f15 = f16 / f17 * f30;
+   70|      3|    f16 = f17 / f18 * f30;
+   71|      3|    f17 = f18 / f19 * f30;
+   72|      3|    f18 = f19 / f20 * f30;
+   73|      3|    f19 = f20 / f21 * f30;
+   74|      3|    f20 = f21 / f22 * f20;
+   75|      3|    f21 = f22 / f23 * f30;
+   76|      3|    f22 = f23 / f24 * f30;
+   77|      3|    f23 = f24 / f25 * f30;
+   78|      3|    f24 = f25 / f26 * f30;
+   79|      3|    f25 = f26 / f27 * f30;
+   80|      3|    f26 = f27 / f28 * f30;
+   81|      3|    f27 = f28 / f29 * f30;
+   82|      3|    f28 = f29 / f30 * f30;
+   83|      3|    f29 = f30 / f1 * f30;
+   84|      3|    f30 = f1 / f2 * f30;
+   85|      3|    x = foo(f1, f2, f3);
+   86|      3|    i = i - 1;
+   87|      3|  }
+   88|      1|  x = (f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8 + f9 + f10) *
+   89|      1|      (f11 + f12 + f13 + f14 + f15 + f16 + f17 + f18 + f19 + f20) *
+   90|      1|      (f21 + f22 + f23 + f24 + f25 + f26 + f27 + f28 + f29 + f30);
+   91|      1|
+   92|      1|  /* Exact value is not needed, on IA64 it is massively off. */
+   93|      1|  if (x < 19503.0 || x > 19504.0)
+   94|      0|    abort();
+   95|      1|  return 0;
+   96|      1|}
+

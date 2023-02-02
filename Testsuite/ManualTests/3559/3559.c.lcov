@@ -1,0 +1,28 @@
+    1|       |/* The bit-field below would have a problem if __INT_MAX__ is too
+    2|       |   small.  */
+    3|       |#if __INT_MAX__ < 2147483647
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|       |/*
+    7|       |CONF:m68k-sun-sunos4.1.1
+    8|       |OPTIONS:-O
+    9|       |*/
+   10|       |struct T {
+   11|       |  unsigned i : 8;
+   12|       |  unsigned c : 24;
+   13|       |};
+   14|      1|f(struct T t) {
+   15|      1|  struct T s[1];
+   16|      1|  s[0] = t;
+   17|      1|  return (char)s->c;
+   18|      1|}
+   19|      1|main() {
+   20|      1|  struct T t;
+   21|      1|  t.i = 0xff;
+   22|      1|  t.c = 0xffff11;
+   23|      1|  if (f(t) != 0x11)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+   27|       |#endif
+

@@ -1,0 +1,16 @@
+        -:    0:Source:1203.c
+        -:    0:Graph:1203.gcno
+        -:    0:Data:1203.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-require-effective-target tls_runtime } */
+        -:    4:/* { dg-add-options tls } */
+        -:    5:
+        -:    6:__thread double thrtest[81];
+        1:    7:int main() {
+        -:    8:  int i;
+       82:    9:  for (i = 0; i < 81; i++)
+       81:   10:    thrtest[i] = 1.0;
+        1:   11:  return 0;
+        -:   12:}

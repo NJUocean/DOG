@@ -1,0 +1,37 @@
+        -:    0:Source:4152.c
+        -:    0:Graph:4152.gcno
+        -:    0:Data:4152.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O0" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:struct {
+        -:    8:  union {
+        -:    9:    int x;
+        -:   10:    int y;
+        -:   11:  };
+        -:   12:  int q;
+        -:   13:} b;
+        -:   14:union {
+        -:   15:  struct {
+        -:   16:    int x;
+        -:   17:  };
+        -:   18:  int q;
+        -:   19:} e;
+        -:   20:
+        1:   21:int main() {
+        1:   22:  b.y = 10;
+        1:   23:  b.x = 15;
+        1:   24:  if (b.y != 15)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  e.x = 10;
+        1:   28:  e.q = 15;
+        1:   29:  if (e.x != 15)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  exit(0);
+        -:   33:}

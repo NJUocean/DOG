@@ -1,0 +1,55 @@
+        -:    0:Source:2572.c
+        -:    0:Graph:2572.gcno
+        -:    0:Data:2572.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:/* Check that "m" array references are effective in preventing the
+        -:    5:   array initialization from wandering past a use in the asm, and
+        -:    6:   that the casts remain supported.  */
+        -:    7:
+        1:    8:static int f1(const char *p) {
+        -:    9:  int count;
+        -:   10:
+        1:   11:  __asm__("repne scasb"
+        -:   12:          : "=c"(count), "+D"(p)
+        -:   13:          : "m"(*(const char(*)[])p), "0"(-1), "a"(0));
+        1:   14:  return -2 - count;
+        -:   15:}
+        -:   16:
+        1:   17:static int f2(const char *p) {
+        -:   18:  int count;
+        -:   19:
+        1:   20:  __asm__("repne scasb"
+        -:   21:          : "=c"(count), "+D"(p)
+        -:   22:          : "m"(*(const char(*)[48])p), "0"(-1), "a"(0));
+        1:   23:  return -2 - count;
+        -:   24:}
+        -:   25:
+        1:   26:static int f3(int n, const char *p) {
+        -:   27:  int count;
+        -:   28:
+        1:   29:  __asm__("repne scasb"
+        -:   30:          : "=c"(count), "+D"(p)
+        1:   31:          : "m"(*(const char(*)[n])p), "0"(-1), "a"(0));
+        1:   32:  return -2 - count;
+        -:   33:}
+        -:   34:
+        1:   35:int main() {
+        -:   36:  int a;
+        1:   37:  char buff[48] = "hello world";
+        1:   38:  buff[4] = 0;
+        1:   39:  a = f1(buff);
+        1:   40:  if (a != 4)
+    #####:   41:    __builtin_abort();
+        1:   42:  buff[4] = 'o';
+        1:   43:  a = f2(buff);
+        1:   44:  if (a != 11)
+    #####:   45:    __builtin_abort();
+        1:   46:  buff[4] = 0;
+        1:   47:  a = f3(48, buff);
+        1:   48:  if (a != 4)
+    #####:   49:    __builtin_abort();
+        1:   50:  return 0;
+        -:   51:}

@@ -1,0 +1,23 @@
+        -:    0:Source:768.c
+        -:    0:Graph:768.gcno
+        -:    0:Data:768.gcda
+        -:    0:Runs:1
+        -:    1:/* Simple test for proper postincrement semantics.  */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int i;
+        -:    7:int c;
+        1:    8:int *f() {
+        1:    9:  ++c;
+        1:   10:  return &i;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  int r;
+        1:   15:  r = (*f())++;
+        1:   16:  if (!(r == 0 && i == 1 && c == 1))
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

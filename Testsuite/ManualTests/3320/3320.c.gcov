@@ -1,0 +1,23 @@
+        -:    0:Source:3320.c
+        -:    0:Graph:3320.gcno
+        -:    0:Data:3320.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/9325  */
+        -:    2:
+        -:    3:#include <limits.h>
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int f1() { return (int)2147483648.0f; }
+        -:    8:
+        1:    9:int f2() { return (int)(float)(2147483647); }
+        -:   10:
+        1:   11:int main() {
+        -:   12:#if INT_MAX == 2147483647
+        1:   13:  if (f1() != 2147483647)
+    #####:   14:    abort();
+        1:   15:  if (f2() != 2147483647)
+    #####:   16:    abort();
+        -:   17:#endif
+        1:   18:  return 0;
+        -:   19:}

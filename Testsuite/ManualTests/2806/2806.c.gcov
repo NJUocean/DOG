@@ -1,0 +1,24 @@
+        -:    0:Source:2806.c
+        -:    0:Graph:2806.gcno
+        -:    0:Data:2806.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 17252.  When a char * pointer P takes its own address, storing
+        -:    2:   into *P changes P itself.  */
+        -:    3:
+        -:    4:char *a;
+        -:    5:
+        1:    6:main() {
+        -:    7:  /* Make 'a' point to itself.  */
+        1:    8:  a = (char *)&a;
+        -:    9:
+        -:   10:  /* Change what 'a' is pointing to.  */
+        1:   11:  a[0]++;
+        -:   12:
+        -:   13:  /* If a's memory tag does not contain 'a' in its alias set, we will
+        -:   14:     think that this predicate is superfluous and change it to
+        -:   15:     'if (1)'.  */
+        1:   16:  if (a == (char *)&a)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

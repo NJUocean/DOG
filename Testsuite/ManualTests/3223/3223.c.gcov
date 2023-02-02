@@ -1,0 +1,19 @@
+        -:    0:Source:3223.c
+        -:    0:Graph:3223.gcno
+        -:    0:Data:3223.gcda
+        -:    0:Runs:1
+        1:    1:static int test(int x) {
+        -:    2:  union {
+        -:    3:    int i;
+        -:    4:    double d;
+        -:    5:  } a;
+        1:    6:  a.d = 0;
+        1:    7:  a.i = 1;
+        1:    8:  return x >> a.i;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (test(5) != 2)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

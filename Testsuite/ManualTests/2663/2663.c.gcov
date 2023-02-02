@@ -1,0 +1,28 @@
+        -:    0:Source:2663.c
+        -:    0:Graph:2663.gcno
+        -:    0:Data:2663.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:int a, b, *c = &b, d = -1, e, f, *g, *h = &f, **i = &g, j;
+        -:    6:
+       1*:    7:unsigned int foo(unsigned int p) { return p == 0 ? 0 : 1 / p; }
+        -:    8:
+        1:    9:static int *bar() {
+        1:   10:  *c = *h = foo(d) & (-9 < d);
+       1*:   11:  for (e = 0; e; e++)
+        -:   12:    ;
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  for (; j; j++)
+    #####:   18:    for (;; a--)
+        -:   19:      ;
+        1:   20:  *i = bar();
+        1:   21:  if (f != 0)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

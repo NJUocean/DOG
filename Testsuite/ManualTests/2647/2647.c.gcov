@@ -1,0 +1,40 @@
+        -:    0:Source:2647.c
+        -:    0:Graph:2647.gcno
+        -:    0:Data:2647.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target untyped_assembly } */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:  unsigned int unchanging : 1;
+        -:    6:} struc, *rtx;
+        -:    7:
+        1:    8:rtx dummy(int *a, rtx *b) {
+        1:    9:  *a = 1;
+        1:   10:  *b = (rtx)7;
+        1:   11:  return (rtx)1;
+        -:   12:}
+        -:   13:
+        1:   14:void bogus(insn, thread, delay_list) rtx insn;
+        -:   15:rtx thread;
+        -:   16:rtx delay_list;
+        -:   17:{
+        -:   18:  rtx new_thread;
+        -:   19:  int must_annul;
+        -:   20:
+        1:   21:  delay_list = dummy(&must_annul, &new_thread);
+       1*:   22:  if (delay_list == 0 && new_thread) {
+    #####:   23:    thread = new_thread;
+        -:   24:  }
+        1:   25:  if (delay_list && must_annul)
+        1:   26:    insn->unchanging = 1;
+        1:   27:  if (new_thread != thread)
+    #####:   28:    abort();
+        1:   29:}
+        -:   30:
+        1:   31:int main() {
+        -:   32:  struc baz;
+        1:   33:  bogus(&baz, (rtx)7, 0);
+        1:   34:  exit(0);
+        -:   35:  return 0;
+        -:   36:}

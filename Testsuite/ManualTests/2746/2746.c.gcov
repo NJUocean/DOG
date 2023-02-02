@@ -1,0 +1,29 @@
+        -:    0:Source:2746.c
+        -:    0:Graph:2746.gcno
+        -:    0:Data:2746.gcda
+        -:    0:Runs:1
+        1:    1:int foo1(void) {
+        -:    2:  union {
+        -:    3:    char a[sizeof(unsigned)];
+        -:    4:    unsigned b;
+        -:    5:  } u;
+        -:    6:
+        1:    7:  u.b = 0x01;
+        1:    8:  return u.a[0];
+        -:    9:}
+        -:   10:
+        1:   11:int foo2(void) {
+        -:   12:  volatile union {
+        -:   13:    char a[sizeof(unsigned)];
+        -:   14:    unsigned b;
+        -:   15:  } u;
+        -:   16:
+        1:   17:  u.b = 0x01;
+        1:   18:  return u.a[0];
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  if (foo1() != foo2())
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

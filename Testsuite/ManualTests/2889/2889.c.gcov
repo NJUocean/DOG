@@ -1,0 +1,19 @@
+        -:    0:Source:2889.c
+        -:    0:Graph:2889.gcno
+        -:    0:Data:2889.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct {
+        -:    5:  int b : 29;
+        -:    6:} f;
+        -:    7:
+        1:    8:void foo(short j) { f.b = j; }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo(-55);
+        1:   12:  if (f.b != -55)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,25 @@
+        -:    0:Source:2955.c
+        -:    0:Graph:2955.gcno
+        -:    0:Data:2955.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -mzarch -march=z13 --save-temps" } */
+        -:    3:
+        -:    4:/* { dg-final { scan-assembler-times "veslf" 1 } } */
+        -:    5:
+        -:    6:typedef __attribute__((vector_size(16))) signed int v4si;
+        -:    7:
+        -:    8:v4si __attribute__((noinline, noclone))
+        1:    9:shift_left_by_scalar(v4si in, int shift_count) {
+        1:   10:  return in << (3 + shift_count);
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v4si a = {1, 2, 3, 4};
+        1:   15:  v4si result = shift_left_by_scalar(a, 1);
+        -:   16:
+        1:   17:  if (result[1] != 32)
+    #####:   18:    __builtin_abort();
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

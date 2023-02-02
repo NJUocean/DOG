@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -mgeneral-regs-only" } */
+    3|       |
+    4|       |extern void abort();
+    5|       |
+    6|      1|int dec(int a, int b) { return a + b; }
+    7|       |
+    8|      1|int cal(int a, int b) {
+    9|      1|  int sum1 = a * b;
+   10|      1|  int sum2 = a / b;
+   11|      1|  int sum = dec(sum1, sum2);
+   12|      1|  return a + b + sum + sum1 + sum2;
+   13|      1|}
+   14|       |
+   15|      1|int main(int argc, char **argv) {
+   16|      1|  int ret = cal(2, 1);
+   17|      1|
+   18|      1|  if (ret != 11)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  return 0;
+   22|      1|}
+

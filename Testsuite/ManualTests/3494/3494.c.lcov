@@ -1,0 +1,12 @@
+    1|       |typedef unsigned long long u64;
+    2|       |unsigned long foo = 0;
+    3|       |u64 f() __attribute__((noinline));
+    4|       |
+    5|      1|u64 f() { return ((u64)40) + ((u64)24) * (int)(foo - 1); }
+    6|       |
+    7|      1|int main() {
+    8|      1|  if (f() != 16)
+    9|      0|    abort();
+   10|      1|  exit(0);
+   11|      1|}
+

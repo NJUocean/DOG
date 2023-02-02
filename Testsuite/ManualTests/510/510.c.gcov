@@ -1,0 +1,47 @@
+        -:    0:Source:510.c
+        -:    0:Graph:510.gcno
+        -:    0:Data:510.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/48466 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+        -:    5:
+        -:    6:struct S {
+        -:    7:  unsigned int a;
+        -:    8:  unsigned int *b;
+        -:    9:};
+        -:   10:struct T {
+        -:   11:  struct S a;
+        -:   12:  struct S b;
+        -:   13:};
+        -:   14:struct U {
+        -:   15:  const char *u;
+        -:   16:};
+        -:   17:int n[10];
+        -:   18:volatile int v;
+        -:   19:
+        1:   20:struct U foo(const char *s) {
+        -:   21:  struct U r;
+        1:   22:  r.u = s;
+        1:   23:  return r;
+        -:   24:}
+        -:   25:
+        1:   26:void bar(struct T *s, int a, int b) {
+        1:   27:  s->a.a = a;
+        1:   28:  s->a.b = &s->a.a;
+        1:   29:  s->b.a = b;
+        1:   30:  s->b.b = &s->b.a;
+        1:   31:}
+        -:   32:
+        1:   33:int main() {
+        -:   34:  struct T t;
+        1:   35:  struct U x = foo("this is x");
+        -:   36:  struct S y, z;
+        1:   37:  y.b = n;         /* { dg-final { gdb-test .+3 "t.a.a" "17" } } */
+        1:   38:  y.a = 0;         /* { dg-final { gdb-test .+2 "*t.a.b" "17" } } */
+        1:   39:  bar(&t, 17, 21); /* { dg-final { gdb-test .+1 "t.b.a" "21" } } */
+        1:   40:  v++;             /* { dg-final { gdb-test . "*t.b.b" "21" } } */
+        1:   41:  z = y;
+        1:   42:  return 0;
+        -:   43:}

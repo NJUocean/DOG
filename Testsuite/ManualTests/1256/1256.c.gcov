@@ -1,0 +1,32 @@
+        -:    0:Source:1256.c
+        -:    0:Graph:1256.gcno
+        -:    0:Data:1256.gcda
+        -:    0:Runs:1
+        -:    1:/* See http://gcc.gnu.org/ml/gcc/2009-06/msg00072.html.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct s {
+        -:    6:  unsigned long long a : 2;
+        -:    7:  unsigned long long b : 40;
+        -:    8:  unsigned long long c : 22;
+        -:    9:};
+        -:   10:
+        2:   11:__attribute__((noinline)) void g(unsigned long long a, unsigned long long b) {
+        2:   12:  asm("");
+        2:   13:  if (a != b)
+    #####:   14:    abort();
+        2:   15:}
+        -:   16:
+        2:   17:__attribute__((noinline)) void f(struct s s, unsigned long long b) {
+        2:   18:  asm("");
+        2:   19:  g(((unsigned long long)(s.b - 8)) + 8, b);
+        2:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  struct s s = {1, 10, 3};
+        1:   24:  struct s t = {1, 2, 3};
+        1:   25:  f(s, 10);
+        1:   26:  f(t, 0x10000000002);
+        1:   27:  return 0;
+        -:   28:}

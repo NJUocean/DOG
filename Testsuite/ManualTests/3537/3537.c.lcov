@@ -1,0 +1,11 @@
+    1|      1|void put_field(unsigned int start, unsigned int len) {
+    2|      1|  int cur_bitshift = ((start + len) % 8) - 8;
+    3|      1|  if (cur_bitshift > -8)
+    4|      1|    exit(0);
+    5|      1|}
+    6|       |
+    7|      1|int main() {
+    8|      1|  put_field(0, 1);
+    9|      1|  abort();
+   10|      1|}
+

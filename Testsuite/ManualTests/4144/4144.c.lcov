@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run { target fpic } } */
+    2|       |/* { dg-options "-O2 -fpic" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|      1|double foo(void) {
+    8|      1|  return (__extension__((union {
+    9|      1|            unsigned __l __attribute__((__mode__(__SI__)));
+   10|      1|            float __d;
+   11|      1|          }){__l : 0x3f800000UL})
+   12|      1|              .__d);
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  if (foo() != 1.0)
+   17|      0|    abort();
+   18|      1|  exit(0);
+   19|      1|}
+

@@ -1,0 +1,15 @@
+        -:    0:Source:974.c
+        -:    0:Graph:974.gcno
+        -:    0:Data:974.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/65780 */
+        -:    2:/* { dg-do link { target *-*-linux* *-*-gnu* *-*-uclinux* } } */
+        -:    3:/* { dg-require-effective-target pie } */
+        -:    4:/* { dg-options "-O2 -fpie" } */
+        -:    5:
+        -:    6:int optopt;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  optopt = 4;
+        1:   10:  return 0;
+        -:   11:}

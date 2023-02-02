@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-alias "" } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |#define ASMNAME(cname) ASMNAME2(__USER_LABEL_PREFIX__, cname)
+    8|       |#define ASMNAME2(prefix, cname) STRING(prefix) cname
+    9|       |#define STRING(x) #x
+   10|       |
+   11|       |int foo __asm__(ASMNAME("foo")) __attribute__((nocommon));
+   12|       |extern __typeof(foo) bar __attribute__((weak, alias("foo")));
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  if (&foo != &bar || foo || bar)
+   16|      0|    abort();
+   17|      1|  return bar;
+   18|      1|}
+

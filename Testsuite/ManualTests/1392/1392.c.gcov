@@ -1,0 +1,20 @@
+        -:    0:Source:1392.c
+        -:    0:Graph:1392.gcno
+        -:    0:Data:1392.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:extern void abort(void);
+    65535:    5:unsigned short __attribute__((noinline)) foo(int i) {
+    65535:    6:  if (i >= 0 && i <= 0x400000)
+    65535:    7:    return (unsigned short)(signed char)i;
+    #####:    8:  return i;
+        -:    9:}
+        1:   10:int main() {
+        -:   11:  int i;
+    65536:   12:  for (i = 0; i < 0xffff; ++i)
+    65535:   13:    if (foo(i) != (unsigned short)(signed char)i)
+    #####:   14:      abort();
+        1:   15:  return 0;
+        -:   16:}

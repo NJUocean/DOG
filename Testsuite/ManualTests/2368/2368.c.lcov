@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target lp64 } */
+    3|       |/* { dg-require-effective-target aarch64_bti_hw } */
+    4|       |/* If configured with --enable-standard-branch-protection, don't use
+    5|       |   command line option.  */
+    6|       |/* { dg-additional-options "-mbranch-protection=standard" { target { !
+    7|       | * default_branch_protection } } } */
+    8|       |
+    9|       |#include <stdio.h>
+   10|       |
+   11|       |typedef int FP(int);
+   12|       |
+   13|      1|int f1(FP fp, int n) { return (fp)(n); }
+   14|       |
+   15|      1|int f2(int n, FP fp) { return (fp)(n); }
+   16|       |
+   17|      2|int __attribute__((noinline)) func(int x) { return x + 1; }
+   18|       |
+   19|      1|int main() {
+   20|      1|  int s = 0;
+   21|      1|  s += f1(func, 10);
+   22|      1|  s += f2(s, func);
+   23|      1|  printf("S: %d\n", s);
+   24|      1|  return !(s == 23);
+   25|      1|}
+

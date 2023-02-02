@@ -1,0 +1,17 @@
+        -:    0:Source:1115.c
+        -:    0:Graph:1115.gcno
+        -:    0:Data:1115.gcda
+        -:    0:Runs:1
+        -:    1:int val;
+        -:    2:
+        -:    3:int *ptr = &val;
+        -:    4:float *ptr2 = &val;
+        -:    5:
+        1:    6:__attribute__((optimize("-fno-strict-aliasing"))) typepun() { *ptr2 = 0; }
+        -:    7:
+        1:    8:main() {
+        1:    9:  *ptr = 1;
+        1:   10:  typepun();
+        1:   11:  if (*ptr)
+    #####:   12:    __builtin_abort();
+        -:   13:}

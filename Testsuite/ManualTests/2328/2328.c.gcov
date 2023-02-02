@@ -1,0 +1,33 @@
+        -:    0:Source:2328.c
+        -:    0:Graph:2328.gcno
+        -:    0:Data:2328.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that branch percentages are calculated in variables
+        -:    2:   that are large enough to hold the count. */
+        -:    3:
+        -:    4:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    5:/* { dg-do run { target native } } */
+        -:    6:
+        -:    7:#define LIMIT1 7000
+        -:    8:#define LIMIT2 7000
+        -:    9:
+        -:   10:int count;
+        -:   11:
+ 24496500:   12:void incr_count() { count++; }
+        -:   13:
+ 49000000:   14:void doit(int i, int j) {
+ 49000000:   15:  if (i > j)
+ 24496500:   16:    incr_count();
+ 49000000:   17:}
+        -:   18:
+        1:   19:int main() {
+        -:   20:  int i, j;
+        -:   21:
+     7001:   22:  for (i = 0; i < LIMIT1; i++)
+ 49007000:   23:    for (j = 0; j < LIMIT2; j++)
+ 49000000:   24:      doit(i, j);
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { run-gcov branches { -b gcov-5b.c } } } */

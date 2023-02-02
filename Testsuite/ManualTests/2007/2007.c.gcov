@@ -1,0 +1,54 @@
+        -:    0:Source:2007.c
+        -:    0:Graph:2007.gcno
+        -:    0:Data:2007.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ftree-loop-distribute-patterns" } */
+        -:    3:
+        -:    4:static void __attribute__((noipa, noinline))
+        1:    5:foo(char **values, int ndim, char *needquotes, int *dims) {
+        -:    6:  int i;
+        1:    7:  int j = 0;
+        1:    8:  int k = 0;
+        1:    9:  char *retval = (char *)__builtin_malloc(1000);
+        1:   10:  char *p = retval;
+        -:   11:  char *tmp;
+        -:   12:
+        -:   13:  int indx[111];
+        -:   14:
+        -:   15:#define APPENDSTR(str) (__builtin_strcpy(p, (str)), p += __builtin_strlen(p))
+        -:   16:#define APPENDCHAR(ch) (*p++ = (ch), *p = '\0')
+        -:   17:
+        1:   18:  APPENDCHAR('{');
+        4:   19:  for (i = 0; i < ndim; i++)
+        3:   20:    indx[i] = 0;
+        -:   21:  do {
+        7:   22:    for (i = j; i < ndim - 1; i++)
+        3:   23:      APPENDCHAR('{');
+        -:   24:
+        4:   25:    APPENDSTR(values[k]);
+        4:   26:    k++;
+        -:   27:
+        8:   28:    for (i = ndim - 1; i >= 0; i--) {
+        7:   29:      indx[i] = (indx[i] + 1) % dims[i];
+        7:   30:      if (indx[i]) {
+        3:   31:        APPENDCHAR(',');
+        3:   32:        break;
+        -:   33:      } else
+        4:   34:        APPENDCHAR('}');
+        -:   35:    }
+        4:   36:    j = i;
+        4:   37:  } while (j != -1);
+        -:   38:
+        1:   39:  if (__builtin_strcmp(retval, "{{{0,1},{2,3}}}") != 0)
+    #####:   40:    __builtin_abort();
+        1:   41:}
+        -:   42:
+        1:   43:int main() {
+        1:   44:  char *array[4] = {"0", "1", "2", "3"};
+        1:   45:  char f[] = {0, 0, 0, 0, 0, 0, 0, 0};
+        1:   46:  int dims[] = {1, 2, 2};
+        1:   47:  foo(array, 3, f, dims);
+        -:   48:
+        1:   49:  return 0;
+        -:   50:}

@@ -1,0 +1,34 @@
+    1|       |/* PR target/70566.  */
+    2|       |
+    3|      2|#define NULL 0
+    4|       |
+    5|       |struct mystruct {
+    6|       |  unsigned int f1 : 1;
+    7|       |  unsigned int f2 : 1;
+    8|       |  unsigned int f3 : 1;
+    9|       |};
+   10|       |
+   11|      1|__attribute__((noinline)) void myfunc(int a, void *b) {}
+   12|      1|__attribute__((noinline)) int myfunc2(void *a) { return 0; }
+   13|       |
+   14|      1|static void set_f2(struct mystruct *user, int f2) {
+   15|      1|  if (user->f2 != f2)
+   16|      1|    myfunc(myfunc2(NULL), NULL);
+   17|      0|  else
+   18|      0|    __builtin_abort();
+   19|      1|}
+   20|       |
+   21|      1|__attribute__((noinline)) void foo(void *data) {
+   22|      1|  struct mystruct *user = data;
+   23|      1|  if (!user->f2)
+   24|      1|    set_f2(user, 1);
+   25|      1|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  struct mystruct a;
+   29|      1|  a.f1 = 1;
+   30|      1|  a.f2 = 0;
+   31|      1|  foo(&a);
+   32|      1|  return 0;
+   33|      1|}
+

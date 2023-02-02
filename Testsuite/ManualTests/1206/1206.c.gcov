@@ -1,0 +1,24 @@
+        -:    0:Source:1206.c
+        -:    0:Graph:1206.gcno
+        -:    0:Data:1206.gcda
+        -:    0:Runs:1
+        -:    1:struct foo {
+        -:    2:  unsigned half : 16;
+        -:    3:  unsigned long whole : 32 __attribute__((packed));
+        -:    4:};
+        -:    5:
+        1:    6:f(struct foo *q) {
+        1:    7:  if (q->half != 0x1234)
+    #####:    8:    abort();
+        1:    9:  if (q->whole != 0x56789abcL)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:main() {
+        -:   14:  struct foo bar;
+        -:   15:
+        1:   16:  bar.half = 0x1234;
+        1:   17:  bar.whole = 0x56789abcL;
+        1:   18:  f(&bar);
+        1:   19:  exit(0);
+        -:   20:}

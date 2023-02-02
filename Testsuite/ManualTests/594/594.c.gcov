@@ -1,0 +1,25 @@
+        -:    0:Source:594.c
+        -:    0:Graph:594.gcno
+        -:    0:Data:594.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-pta -fdump-ipa-pta2-details" } */
+        -:    3:
+        -:    4:int **x;
+        -:    5:
+        1:    6:static int __attribute__((noinline, noclone)) foo(int **q) {
+        1:    7:  int a = 1;
+        1:    8:  **q = 0;
+        1:    9:  *x = &a;
+        1:   10:  return **q;
+        -:   11:}
+        -:   12:
+        -:   13:extern void abort(void);
+        1:   14:int main() {
+        -:   15:  int b;
+        1:   16:  int *p = &b;
+        1:   17:  x = &p;
+        1:   18:  if (foo(&p) != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

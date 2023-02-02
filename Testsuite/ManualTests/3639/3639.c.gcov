@@ -1,0 +1,35 @@
+        -:    0:Source:3639.c
+        -:    0:Graph:3639.gcno
+        -:    0:Data:3639.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/40057 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:__attribute__((noinline)) int foo(unsigned long long x) {
+        2:    6:  unsigned long long y = (x >> 31ULL) & 1ULL;
+        2:    7:  if (y == 0ULL)
+        1:    8:    return 0;
+        1:    9:  return -1;
+        -:   10:}
+        -:   11:
+        2:   12:__attribute__((noinline)) int bar(long long x) {
+        2:   13:  long long y = (x >> 31LL) & 1LL;
+        2:   14:  if (y == 0LL)
+        1:   15:    return 0;
+        1:   16:  return -1;
+        -:   17:}
+        -:   18:
+        1:   19:int main(void) {
+        -:   20:  if (sizeof(long long) != 8)
+        -:   21:    return 0;
+        1:   22:  if (foo(0x1682a9aaaULL))
+    #####:   23:    abort();
+        1:   24:  if (!foo(0x1882a9aaaULL))
+    #####:   25:    abort();
+        1:   26:  if (bar(0x1682a9aaaLL))
+    #####:   27:    abort();
+        1:   28:  if (!bar(0x1882a9aaaLL))
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,23 @@
+        -:    0:Source:347.c
+        -:    0:Graph:347.gcno
+        -:    0:Data:347.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a = 1, b;
+        -:    4:
+        1:    5:void foo(void) {
+        1:    6:  signed char c = 0;
+        2:    7:  for (; a; a--)
+      129:    8:    for (; c >= 0; c++)
+        -:    9:      ;
+        1:   10:  if (!c)
+    #####:   11:    b = 1;
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  foo();
+        1:   16:  if (b != 0)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

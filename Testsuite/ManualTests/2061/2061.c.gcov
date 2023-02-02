@@ -1,0 +1,25 @@
+        -:    0:Source:2061.c
+        -:    0:Graph:2061.gcno
+        -:    0:Data:2061.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify straight-line strength reduction for array
+        -:    2:   subscripting.
+        -:    3:
+        -:    4:   elems[n-1] is reduced to elems + n * 4 + 0xffffffff * 4, only when
+        -:    5:   pointers are of the same size as that of int (assuming 4 bytes).  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:/* { dg-options "-O2" } */
+        -:    9:
+        -:   10:struct data {
+        -:   11:  unsigned long elms[1];
+        -:   12:} gData;
+        -:   13:
+        1:   14:void __attribute__((noinline)) foo(struct data *dst, unsigned int n) {
+        1:   15:  dst->elms[n - 1] &= 1;
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  foo(&gData, 1);
+        1:   20:  return 0;
+        -:   21:}

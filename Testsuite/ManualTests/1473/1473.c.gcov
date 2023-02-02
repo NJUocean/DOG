@@ -1,0 +1,42 @@
+        -:    0:Source:1473.c
+        -:    0:Graph:1473.gcno
+        -:    0:Data:1473.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-ftree-pre -ftree-partial-pre" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int b, c, d, f, g, h, i, j[6], *l = &b, *m, n, *o, r;
+        -:    7:char k;
+        -:    8:
+        1:    9:static int foo() {
+        1:   10:  char *p = &k;
+        -:   11:
+       1*:   12:  for (; d; d++)
+    #####:   13:    if (i)
+    #####:   14:      h = 0;
+        -:   15:    else
+    #####:   16:      h = c || (r = 0);
+        -:   17:
+        3:   18:  for (f = 0; f < 2; f++) {
+        -:   19:    unsigned int q;
+        2:   20:    *l = 0;
+        2:   21:    if (n)
+    #####:   22:      *m = g;
+        2:   23:    if (g)
+    #####:   24:      o = 0;
+       18:   25:    for (q = -8; q >= 5; q++)
+       16:   26:      (*p)--;
+        -:   27:  }
+        -:   28:
+        1:   29:  return 0;
+        -:   30:}
+        -:   31:
+        1:   32:int main() {
+        1:   33:  foo();
+        1:   34:  if (j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[j[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ^
+        1:   35:        (k & 15)] != 0)
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

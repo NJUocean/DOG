@@ -1,0 +1,9 @@
+    1|       |/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+    2|      1|f() {}
+    3|      1|main() {
+    4|      1|  int n = 2;
+    5|      1|  double x[n];
+    6|      1|  f();
+    7|      1|  exit(0);
+    8|      1|}
+

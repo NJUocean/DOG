@@ -1,0 +1,22 @@
+    1|       |/* { dg-skip-if "small alignment" { pdp11-*-* } } */
+    2|       |
+    3|       |typedef __attribute__((aligned(16))) struct {
+    4|       |  unsigned long long w[3];
+    5|       |} UINT192;
+    6|       |
+    7|       |UINT192 bid_Kx192[32];
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|int main() {
+   12|      1|  int i = 0;
+   13|      1|  unsigned long x = 0;
+   14|     33|  for (i = 0; i < 32; ++i)
+   15|     32|    bid_Kx192[i].w[1] = i == 1;
+   16|     33|  for (i = 0; i < 32; ++i)
+   17|     32|    x += bid_Kx192[1].w[1];
+   18|      1|  if (x != 32)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

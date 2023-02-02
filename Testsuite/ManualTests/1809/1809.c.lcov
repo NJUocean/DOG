@@ -1,0 +1,67 @@
+    1|       |/* Testcase derived from gcc.c-torture/execute 20050826-2.c
+    2|       |   which showed jump threading profile insanities.  */
+    3|       |/* { dg-options "-Ofast -fdump-tree-dom2-all" } */
+    4|       |
+    5|       |struct rtattr {
+    6|       |  unsigned short rta_len;
+    7|       |  unsigned short rta_type;
+    8|       |};
+    9|       |
+   10|    200|__attribute__((noinline)) int inet_check_attr(void *r, struct rtattr **rta) {
+   11|    200|  int i;
+   12|    200|
+   13|  2.10k|  for (i = 1; i <= 14; i++) {
+   14|  2.00k|    struct rtattr *attr = rta[i - 1];
+   15|  2.00k|    if (attr) {
+   16|  1.90k|      if (attr->rta_len - sizeof(struct rtattr) < 4)
+   17|    100|        return -22;
+   18|  1.80k|      if (i != 9 && i != 8)
+   19|  1.60k|        rta[i - 1] = attr + 1;
+   20|  1.80k|    }
+   21|  2.00k|  }
+   22|    200|  return 0;
+   23|    200|}
+   24|       |
+   25|       |extern void abort(void);
+   26|       |
+   27|    100|int test(void) {
+   28|    100|  struct rtattr rt[2];
+   29|    100|  struct rtattr *rta[14];
+   30|    100|  int i;
+   31|    100|
+   32|    100|  rt[0].rta_len = sizeof(struct rtattr) + 8;
+   33|    100|  rt[0].rta_type = 0;
+   34|    100|  rt[1] = rt[0];
+   35|  1.50k|  for (i = 0; i < 14; i++)
+   36|  1.40k|    rta[i] = &rt[0];
+   37|    100|  if (inet_check_attr(0, rta) != 0)
+   38|      0|    abort();
+   39|  1.50k|  for (i = 0; i < 14; i++)
+   40|  1.40k|    if (rta[i] != &rt[i != 7 && i != 8])
+   41|      0|      abort();
+   42|  1.50k|  for (i = 0; i < 14; i++)
+   43|  1.40k|    rta[i] = &rt[0];
+   44|    100|  rta[1] = 0;
+   45|    100|  rt[1].rta_len -= 8;
+   46|    100|  rta[5] = &rt[1];
+   47|    100|  if (inet_check_attr(0, rta) != -22)
+   48|      0|    abort();
+   49|  1.50k|  for (i = 0; i < 14; i++)
+   50|  1.40k|    if (i == 1 && rta[i] != 0)
+   51|      0|      abort();
+   52|  1.40k|    else if (i != 1 && i <= 5 && rta[i] != &rt[1])
+   53|      0|      abort();
+   54|  1.40k|    else if (i > 5 && rta[i] != &rt[0])
+   55|      0|      abort();
+   56|    100|  return 0;
+   57|    100|}
+   58|       |
+   59|      1|int main(void) {
+   60|      1|  int i;
+   61|    101|  for (i = 0; i < 100; i++)
+   62|    100|    test();
+   63|      1|  return 0;
+   64|      1|}
+   65|       |
+   66|       |/* { dg-final-use-not-autofdo { scan-tree-dump-not "Invalid sum" "dom2"} } */
+

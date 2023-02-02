@@ -1,0 +1,19 @@
+    1|       |/* PR rtl-optimization/89354 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+    5|       |
+    6|       |static unsigned long long q = 0;
+    7|       |
+    8|      1|__attribute__((noipa)) static void foo(void) {
+    9|      1|  q = (q & ~0x1ffffffffULL) | 0x100000000ULL;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  __asm volatile("" : "+m"(q));
+   14|      1|  foo();
+   15|      1|  if (q != 0x100000000ULL)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

@@ -1,0 +1,43 @@
+        -:    0:Source:200.c
+        -:    0:Graph:200.gcno
+        -:    0:Data:200.gcda
+        -:    0:Runs:1
+        -:    1:/* Test C11 _Alignof returning minimum alignment for a type.  PR
+        -:    2:   52023.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:#define CHECK_ALIGN(TYPE)                                                      \
+        -:   10:  do {                                                                         \
+        -:   11:    struct {                                                                   \
+        -:   12:      char c;                                                                  \
+        -:   13:      TYPE v;                                                                  \
+        -:   14:    } x;                                                                       \
+        -:   15:    if (_Alignof(TYPE) > __alignof__(x.v))                                     \
+        -:   16:      abort();                                                                 \
+        -:   17:  } while (0)
+        -:   18:
+        1:   19:int main(void) {
+        -:   20:  CHECK_ALIGN(_Bool);
+        -:   21:  CHECK_ALIGN(char);
+        -:   22:  CHECK_ALIGN(signed char);
+        -:   23:  CHECK_ALIGN(unsigned char);
+        -:   24:  CHECK_ALIGN(signed short);
+        -:   25:  CHECK_ALIGN(unsigned short);
+        -:   26:  CHECK_ALIGN(signed int);
+        -:   27:  CHECK_ALIGN(unsigned int);
+        -:   28:  CHECK_ALIGN(signed long);
+        -:   29:  CHECK_ALIGN(unsigned long);
+        -:   30:  CHECK_ALIGN(signed long long);
+        -:   31:  CHECK_ALIGN(unsigned long long);
+        -:   32:  CHECK_ALIGN(float);
+        -:   33:  CHECK_ALIGN(double);
+        -:   34:  CHECK_ALIGN(long double);
+        -:   35:  CHECK_ALIGN(_Complex float);
+        -:   36:  CHECK_ALIGN(_Complex double);
+        -:   37:  CHECK_ALIGN(_Complex long double);
+        1:   38:  exit(0);
+        -:   39:}

@@ -1,0 +1,12 @@
+    1|       |/* Test that optimized out __thread var doesn't have its location
+    2|       |   referenced in debug info.  */
+    3|       |/* { dg-do link } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |/* { dg-require-effective-target tls } */
+    6|       |
+    7|       |static __thread int vara;
+    8|       |
+    9|      1|int foo(int b) { return vara + b; }
+   10|       |
+   11|      1|int main(void) { return foo(0); }
+

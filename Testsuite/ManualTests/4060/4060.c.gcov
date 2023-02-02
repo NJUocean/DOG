@@ -1,0 +1,13 @@
+        -:    0:Source:4060.c
+        -:    0:Graph:4060.gcno
+        -:    0:Data:4060.gcda
+        -:    0:Runs:1
+        1:    1:char *f(char *s, unsigned int i) { return &s[i + 3 - 1]; }
+        -:    2:
+        1:    3:main() {
+        1:    4:  char *str = "abcdefghijkl";
+        1:    5:  char *x2 = f(str, 12);
+        1:    6:  if (str + 14 != x2)
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

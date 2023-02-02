@@ -1,0 +1,31 @@
+        -:    0:Source:3948.c
+        -:    0:Graph:3948.gcno
+        -:    0:Data:3948.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/78622 - [7 Regression] -Wformat-overflow/-fprintf-return-value
+        -:    2:   incorrect with overflow/wrapping
+        -:    3:   { dg-skip-if "Requires %hhd format" { hppa*-*-hpux* } }
+        -:    4:   { dg-require-effective-target c99_runtime }
+        -:    5:   { dg-additional-options "-Wformat-overflow=2" } */
+        -:    6:
+        8:    7:__attribute__((noinline, noclone)) int foo(int x) {
+        8:    8:  if (x < 4096 + 8 || x >= 4096 + 256 + 8)
+    #####:    9:    return -1;
+        -:   10:
+        -:   11:  char buf[5];
+        8:   12:  int n = __builtin_snprintf(buf, sizeof buf, "%hhd", x + 1);
+        8:   13:  __builtin_printf("\"%hhd\" => %i\n", x + 1, n);
+        8:   14:  return n;
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  if (__SCHAR_MAX__ != 127 || __CHAR_BIT__ != 8 || __SIZEOF_INT__ != 4)
+        -:   19:    return 0;
+        -:   20:
+        2:   21:  if (foo(4095 + 9) != 1 || foo(4095 + 32) != 2 || foo(4095 + 127) != 3 ||
+        3:   22:      foo(4095 + 128) != 4 || foo(4095 + 240) != 3 || foo(4095 + 248) != 2 ||
+        2:   23:      foo(4095 + 255) != 2 || foo(4095 + 256) != 1)
+    #####:   24:    __builtin_abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

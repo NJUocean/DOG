@@ -1,0 +1,14 @@
+// control flow context
+digraph {
+	subgraph cluster_bh {
+		color=red label=SFF
+		__N1 [label="201-passive-6, 10"]
+		__N3 [label="401-exit-11, 14"]
+	}
+	__N0 [label="201-func-entry--1, -1"]
+	EXIT
+	__N3 [label="401-exit-11, 14"]
+	__N0 -> __N3 [label=FEL color=red]
+	__N3 -> EXIT [label="=401"]
+	__N3 [color=yellow style=filled]
+}

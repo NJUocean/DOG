@@ -1,0 +1,11 @@
+        -:    0:Source:225.c
+        -:    0:Graph:225.gcno
+        -:    0:Data:225.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        1:    2:  double x, y = 0.5;
+        1:    3:  x = y / 0.2;
+        1:    4:  if (x != x)
+    #####:    5:    abort();
+        1:    6:  exit(0);
+        -:    7:}

@@ -1,0 +1,26 @@
+        -:    0:Source:2655.c
+        -:    0:Graph:2655.gcno
+        -:    0:Data:2655.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/55147 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O1" } */
+        -:    4:/* { dg-additional-options "-march=i486" { target ia32 } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+       64:    8:__attribute__((noclone, noinline)) unsigned int foo(unsigned long long *p,
+        -:    9:                                                    int i) {
+       64:   10:  return __builtin_bswap64(p[i]);
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  unsigned long long p[64];
+        -:   15:  int i;
+       65:   16:  for (i = 0; i < 64; i++)
+       64:   17:    p[i] = 0x123456789abcdef0ULL ^ (1ULL << i) ^ (1ULL << (63 - i));
+       65:   18:  for (i = 0; i < 64; i++)
+       64:   19:    if (foo(p, i) != __builtin_bswap32(p[i] >> 32))
+    #####:   20:      abort();
+        1:   21:  return 0;
+        -:   22:}

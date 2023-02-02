@@ -1,0 +1,44 @@
+        -:    0:Source:3476.c
+        -:    0:Graph:3476.gcno
+        -:    0:Data:3476.gcda
+        -:    0:Runs:1
+        -:    1:/* This used to generate unaligned accesses at -O2 because of IVOPTS.  */
+        -:    2:
+        -:    3:struct packed_struct {
+        -:    4:  struct packed_struct1 {
+        -:    5:    unsigned char cc11;
+        -:    6:    unsigned char cc12;
+        -:    7:  } __attribute__((packed)) pst1;
+        -:    8:  struct packed_struct2 {
+        -:    9:    unsigned char cc21;
+        -:   10:    unsigned char cc22;
+        -:   11:    unsigned short ss[104];
+        -:   12:    unsigned char cc23[13];
+        -:   13:  } __attribute__((packed)) pst2[4];
+        -:   14:} __attribute__((packed));
+        -:   15:
+        -:   16:typedef struct {
+        -:   17:  int ii;
+        -:   18:  struct packed_struct buf;
+        -:   19:} info_t;
+        -:   20:
+        -:   21:static unsigned short g;
+        -:   22:
+       16:   23:static void __attribute__((noinline)) dummy(unsigned short s) { g = s; }
+        -:   24:
+        1:   25:static int foo(info_t *info) {
+        -:   26:  int i, j;
+        -:   27:
+        3:   28:  for (i = 0; i < info->buf.pst1.cc11; i++)
+       18:   29:    for (j = 0; j < info->buf.pst2[i].cc22; j++)
+       16:   30:      dummy(info->buf.pst2[i].ss[j]);
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        -:   36:  info_t info;
+        1:   37:  info.buf.pst1.cc11 = 2;
+        1:   38:  info.buf.pst2[0].cc22 = info.buf.pst2[1].cc22 = 8;
+        1:   39:  return foo(&info);
+        -:   40:}

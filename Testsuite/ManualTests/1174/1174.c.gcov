@@ -1,0 +1,45 @@
+        -:    0:Source:1174.c
+        -:    0:Graph:1174.gcno
+        -:    0:Data:1174.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:char *buffer;
+        -:    5:char *test;
+        -:    6:
+        -:    7:#define SIZE 100
+        -:    8:
+        1:    9:char *__attribute__((noinline)) my_memcpy(char *d, char *s, unsigned l) {
+        1:   10:  return __builtin_memcpy(d, s, l);
+        -:   11:}
+        -:   12:
+        1:   13:char *__attribute__((noinline)) my_mempcpy(char *d, char *s, unsigned l) {
+        1:   14:  return __builtin_mempcpy(d, s, l);
+        -:   15:}
+        -:   16:
+        1:   17:void run_test(char *d, char *s, unsigned l) {
+        1:   18:  char *r = my_mempcpy(d, s, l);
+        1:   19:  if (r != d + l)
+    #####:   20:    __builtin_abort();
+        -:   21:
+        1:   22:  r = my_memcpy(d, s, l);
+        1:   23:  if (r != d)
+    #####:   24:    __builtin_abort();
+        1:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  const char *const foo = "hello world";
+        1:   29:  unsigned l = __builtin_strlen(foo) + 1;
+        -:   30:
+        1:   31:  buffer = __builtin_malloc(SIZE);
+        1:   32:  __builtin_memcpy(buffer, foo, l);
+        1:   33:  test = __builtin_malloc(SIZE);
+        -:   34:
+        1:   35:  run_test(test, buffer, l);
+        -:   36:
+        1:   37:  return 0;
+        -:   38:}
+        -:   39:
+        -:   40:/* { dg-final { scan-assembler "mempcpy" } } */
+        -:   41:/* { dg-final { scan-assembler "memcpy" } } */

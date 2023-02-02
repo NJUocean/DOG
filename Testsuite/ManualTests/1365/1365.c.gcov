@@ -1,0 +1,27 @@
+        -:    0:Source:1365.c
+        -:    0:Graph:1365.gcno
+        -:    0:Data:1365.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:struct S4 {
+        -:    5:  unsigned f0 : 24;
+        -:    6:} __attribute__((__packed__));
+        -:    7:
+        -:    8:struct S4 g_10 = {6210831};
+        -:    9:
+        1:   10:struct S4 func_2(int x) {
+        1:   11:  struct S4 l_8[2] = {{0}, {0}};
+        1:   12:  g_10 = l_8[1];
+        3:   13:  for (; x < 2; x++) {
+        2:   14:    struct S4 tmp = {11936567};
+        2:   15:    l_8[x] = tmp;
+        -:   16:  }
+        1:   17:  return g_10;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  func_2(0);
+        1:   22:  return 0;
+        -:   23:}

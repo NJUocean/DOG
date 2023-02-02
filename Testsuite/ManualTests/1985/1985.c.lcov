@@ -1,0 +1,8 @@
+    1|       |/* { dg-require-stack-size "4*4*2*80" } */
+    2|       |
+    3|    480|#define A "This is a long test that tests the structure initialization"
+    4|    240|#define B A, A
+    5|     60|#define C B, B, B, B
+    6|     15|#define D C, C, C, C
+    7|      1|int main() { char *subs[] = {D, D, D, D, D, D, D, D, D, D, D, D, D, D, D}; }
+

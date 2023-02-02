@@ -1,0 +1,28 @@
+        -:    0:Source:1152.c
+        -:    0:Graph:1152.gcno
+        -:    0:Data:1152.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow" } */
+        -:    3:
+        1:    4:int __attribute__((noinline)) foo(int i, int j) { return (i + j) - (i | j); }
+        -:    5:
+        -:    6:/* { dg-output "signed integer overflow: 2147483647 \\+ 1 cannot be represented
+        -:    7: * in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:    8:/* { dg-output "\[^\n\r]*signed integer overflow: -2147483648 - 2147483647
+        -:    9: * cannot be represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   10:
+        1:   11:int __attribute__((noinline)) bar(int i, int j) { return (i + j) - (i & j); }
+        -:   12:
+        -:   13:/* { dg-output "\[^\n\r]*signed integer overflow: 2147483647 \\+ 1 cannot be
+        -:   14: * represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   15:/* { dg-output "\[^\n\r]*signed integer overflow: -2147483648 - 1 cannot be
+        -:   16: * represented in type 'int'" } */
+        -:   17:
+        1:   18:int main() {
+        1:   19:  int r = foo(__INT_MAX__, 1);
+        1:   20:  asm volatile("" : "+g"(r));
+        1:   21:  r = bar(__INT_MAX__, 1);
+        1:   22:  asm volatile("" : "+g"(r));
+        1:   23:  return 0;
+        -:   24:}

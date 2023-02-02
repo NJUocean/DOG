@@ -1,0 +1,32 @@
+        -:    0:Source:2292.c
+        -:    0:Graph:2292.gcno
+        -:    0:Data:2292.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-builtin-memset" } */
+        -:    3:/* { dg-shouldfail "asan" } */
+        -:    4:
+        -:    5:extern
+        -:    6:#ifdef __cplusplus
+        -:    7:    "C"
+        -:    8:#endif
+        -:    9:    void *
+        -:   10:    memset(void *, int, __SIZE_TYPE__);
+        -:   11:
+        -:   12:volatile int ten = 10;
+        -:   13:
+        1:   14:int main() {
+        -:   15:  char x[10];
+        1:   16:  memset(x, 0, 10);
+        1:   17:  int res = x[ten]; /* BOOOM */
+        1:   18:  return res;
+        -:   19:}
+        -:   20:
+        -:   21:/* { dg-output "READ of size 1 at 0x\[0-9a-f\]+ thread T0\[^\n\r]*(\n|\r\n|\r)"
+        -:   22: * } */
+        -:   23:/* { dg-output "    #0 0x\[0-9a-f\]+ +(in _*main
+        -:   24: * (\[^\n\r]*stack-overflow-1.c:16|\[^\n\r]*:0|\[^\n\r]*\\+0x\[0-9a-z\]*)|\[(\]).*(\n|\r\n|\r)"
+        -:   25: * } */
+        -:   26:/* { dg-output "\[^\n\r]*Address 0x\[0-9a-f\]+ is located in stack of thread
+        -:   27: * T0.*(\n|\r\n|\r)" */
+        -:   28:/* { dg-output "\[^\n\r]*in main.*stack-overflow-1.c.*(\n|\r\n|\r)" */

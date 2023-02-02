@@ -1,0 +1,33 @@
+        -:    0:Source:847.c
+        -:    0:Graph:847.gcno
+        -:    0:Data:847.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:
+        -:    4:extern void *memcpy(void *, const void *, __SIZE_TYPE__);
+        -:    5:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:char str[9] = "1234";
+        -:    9:
+        1:   10:void bar(void) {
+        -:   11:#if __SIZEOF_INT__ >= 4
+        -:   12:  unsigned int temp;
+        -:   13:#else
+        -:   14:  __UINT32_TYPE__ temp;
+        -:   15:#endif
+        1:   16:  char *p = &str[2];
+        -:   17:
+        1:   18:  memcpy(&temp, &str[1], 4);
+        1:   19:  memcpy(p, &temp, 4);
+        1:   20:  str[1] = '.';
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  bar();
+        1:   25:  if (memcmp(str, "1.234", 5) != 0)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

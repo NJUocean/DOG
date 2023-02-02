@@ -1,0 +1,38 @@
+        -:    0:Source:1855.c
+        -:    0:Graph:1855.gcno
+        -:    0:Data:1855.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:const double dnan = 1.0 / 0.0 - 1.0 / 0.0;
+        -:    3:double x = 1.0;
+        -:    4:
+        -:    5:extern void link_error(void);
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:main() {
+        -:    9:#if !defined(__vax__) && !defined(_CRAY)
+        -:   10:  /* NaN is an IEEE unordered operand.  All these test should be false.  */
+        1:   11:  if (dnan == dnan)
+    #####:   12:    link_error();
+        1:   13:  if (dnan != x)
+        1:   14:    x = 1.0;
+        -:   15:  else
+    #####:   16:    link_error();
+        -:   17:
+        1:   18:  if (dnan < x)
+    #####:   19:    link_error();
+        1:   20:  if (dnan > x)
+    #####:   21:    link_error();
+        1:   22:  if (dnan <= x)
+    #####:   23:    link_error();
+        1:   24:  if (dnan >= x)
+    #####:   25:    link_error();
+        1:   26:  if (dnan == x)
+    #####:   27:    link_error();
+        -:   28:#endif
+        1:   29:  exit(0);
+        -:   30:}
+        -:   31:
+        -:   32:#ifndef __OPTIMIZE__
+    #####:   33:void link_error(void) { abort(); }
+        -:   34:#endif

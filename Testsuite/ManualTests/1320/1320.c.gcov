@@ -1,0 +1,26 @@
+        -:    0:Source:1320.c
+        -:    0:Graph:1320.gcno
+        -:    0:Data:1320.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct Foo {
+        -:    5:  int *p;
+        -:    6:} x;
+        1:    7:struct Foo __attribute__((noinline)) bar(int *p) {
+        -:    8:  struct Foo f;
+        1:    9:  f.p = p;
+        1:   10:  return f;
+        -:   11:}
+        1:   12:void __attribute__((noinline)) foo() { *x.p = 0; }
+        1:   13:int main() {
+        -:   14:  int b;
+        1:   15:  b = 1;
+        1:   16:  struct Foo g = bar(&b);
+        1:   17:  x = g;
+        1:   18:  foo();
+        1:   19:  if (b != 0)
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

@@ -1,0 +1,36 @@
+        -:    0:Source:956.c
+        -:    0:Graph:956.gcno
+        -:    0:Data:956.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:struct S1 {
+        -:    7:  volatile uint64_t f0;
+        -:    8:  unsigned f1 : 16;
+        -:    9:};
+        -:   10:
+        -:   11:static struct S1 g_2 = {18446744073709551610UL, 5};
+        -:   12:static struct S1 *volatile g_3 = &g_2;
+        -:   13:
+        -:   14:static int16_t func_1(void);
+        -:   15:
+        1:   16:static int16_t func_1(void) {
+        1:   17:  (*g_3) = g_2;
+        1:   18:  return g_2.f0;
+        -:   19:}
+        -:   20:
+        1:   21:int main(int argc, char *argv[]) {
+        1:   22:  int print_hash_value = 0;
+       1*:   23:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   24:    print_hash_value = 1;
+        1:   25:  platform_main_begin();
+        1:   26:  crc32_gentab();
+        1:   27:  func_1();
+        1:   28:  transparent_crc(g_2.f0, "g_2.f0", print_hash_value);
+        1:   29:  transparent_crc(g_2.f1, "g_2.f1", print_hash_value);
+        1:   30:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   31:  return 0;
+        -:   32:}

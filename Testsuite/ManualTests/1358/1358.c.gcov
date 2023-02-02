@@ -1,0 +1,25 @@
+        -:    0:Source:1358.c
+        -:    0:Graph:1358.gcno
+        -:    0:Data:1358.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int b;
+        1:    5:void foo(void *p_, int *q) {
+        -:    6:  int *p;
+        -:    7:  int i;
+        9:    8:  for (i = 0; i < sizeof(int *); ++i)
+        8:    9:    ((char *)&p)[i] = ((char *)p_)[i];
+        1:   10:  if (b)
+    #####:   11:    p = q;
+        1:   12:  *p = 1;
+        1:   13:}
+        1:   14:int main() {
+        1:   15:  int i = 0, j;
+        1:   16:  int *p = &i;
+        1:   17:  foo(&p, &j);
+        1:   18:  if (i != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,19 @@
+        -:    0:Source:1031.c
+        -:    0:Graph:1031.gcno
+        -:    0:Data:1031.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/82274 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-shouldfail "trapv" } */
+        -:    4:/* { dg-options "-ftrapv" } */
+        -:    5:
+        1:    6:int main() {
+        -:    7:#ifdef __SIZEOF_INT128__
+        1:    8:  volatile __int128 m =
+        -:    9:      -(((__int128)1) << (__CHAR_BIT__ * __SIZEOF_INT128__ / 2));
+        -:   10:#else
+        -:   11:  volatile long long m = -(1LL << (__CHAR_BIT__ * __SIZEOF_LONG_LONG__ / 2));
+        -:   12:#endif
+        1:   13:  m = m * m;
+        1:   14:  return 0;
+        -:   15:}

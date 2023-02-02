@@ -1,0 +1,39 @@
+        -:    0:Source:3413.c
+        -:    0:Graph:3413.gcno
+        -:    0:Data:3413.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/28096 */
+        -:    2:/* Origin: Jan Stein <jan@gatespacetelematics.com> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int bar(int, int) __attribute__((noinline));
+        1:    7:int bar(int a, int b) {
+        1:    8:  if (b != 1)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        -:   12:void foo(int, int) __attribute__((noinline));
+        1:   13:void foo(int e, int n) {
+        -:   14:  int i, bb2, bb5;
+        -:   15:
+        1:   16:  if (e > 0)
+        1:   17:    e = -e;
+        -:   18:
+        2:   19:  for (i = 0; i < n; i++) {
+        1:   20:    if (e >= 0) {
+    #####:   21:      bb2 = 0;
+    #####:   22:      bb5 = 0;
+        -:   23:    } else {
+        1:   24:      bb5 = -e;
+        1:   25:      bb2 = bb5;
+        -:   26:    }
+        -:   27:
+        1:   28:    bar(bb5, bb2);
+        -:   29:  }
+        1:   30:}
+        -:   31:
+        1:   32:int main(void) {
+        1:   33:  foo(1, 1);
+        1:   34:  return 0;
+        -:   35:}

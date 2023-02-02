@@ -1,0 +1,14 @@
+    1|       |/* PR rtl-optimization/70429 */
+    2|       |
+    3|      2|__attribute__((noinline, noclone)) int foo(int a) {
+    4|      2|  return (int)(0x14ff6e2207db5d1fLL >> a) >> 4;
+    5|      2|}
+    6|       |
+    7|      1|int main() {
+    8|      1|  if (sizeof(int) != 4 || sizeof(long long) != 8 || __CHAR_BIT__ != 8)
+    9|      0|    return 0;
+   10|      1|  if (foo(1) != 0x3edae8 || foo(2) != -132158092)
+   11|      0|    __builtin_abort();
+   12|      1|  return 0;
+   13|      1|}
+

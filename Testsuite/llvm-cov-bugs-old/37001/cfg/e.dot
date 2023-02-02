@@ -1,0 +1,19 @@
+digraph "" {
+  graph [fillcolor="#FFFFCC", label="", bgcolor="white", fontsize="12", pack="true", compound="true", style="rounded,filled", fontname="Arial", packmode="clust"];
+  node [node_initialized="no", fillcolor="white", label="", fontsize="12", shape="rectangle", color="grey", fixedsize="false", style="filled", compound="true", fontname="Arial"];
+  edge [dir="forward", label="", arrowsize="0.5", fontsize="12", arrowhead="normal", arrowtail="none", lhead="", color="black", ltail="", compound="true", fontcolor="black", fontname="Arial"];
+  __N1 [fillcolor="#ffffff", label="2 - if 5,3,6,3,6,8,3,6", shape="diamond", color="#0000ff", style="filled"];
+  __N2 [fillcolor="#ffffff", label="1 - passive-implicit 36,,,,,,2\n\nstart", shape="box", color="#006400", style="filled"];
+  __N3 [fillcolor="#ffffff", label="3 - passive 35,4,4,4,8,,4", shape="box", color="#0000ff", style="filled"];
+  __N4 [fillcolor="#ffffff", label="7 - return 30,8,4,8,11,,9", shape="box", color="#0000ff", style="filled"];
+  __N5 [fillcolor="#ffffff", label="4 - return 30,5,4,5,11,,9", shape="box", color="#0000ff", style="filled"];
+  __N6 [fillcolor="#ffffff", label="10 - passive-implicit 36,,,,,,\n\nend", shape="box", color="#a52a2a", style="filled"];
+  __N7 [fillcolor="#ffffff", label="5 - passive 35,6,4,6,14,,8", shape="box", color="red", style="filled"];
+  __N2 -> __N1 [dir="forward", label="", arrowhead="normal", arrowtail="none", color="#000000"];
+  __N1 -> __N3 [dir="forward", label="yes", arrowhead="normal", arrowtail="none", color="#00ff00"];
+  __N1 -> __N4 [dir="forward", label="no", arrowhead="normal", arrowtail="none", color="#ff0000"];
+  __N3 -> __N5 [dir="forward", label="", arrowhead="normal", arrowtail="none", color="#000000"];
+  __N5 -> __N6 [dir="forward", label="", arrowhead="normal", arrowtail="none", color="#000000"];
+  __N7 -> __N6 [dir="forward", label="", arrowhead="normal", arrowtail="none", color="#000000"];
+  __N4 -> __N6 [dir="forward", label="", arrowhead="normal", arrowtail="none", color="#000000"];
+}

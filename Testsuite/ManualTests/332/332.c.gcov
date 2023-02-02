@@ -1,0 +1,14 @@
+        -:    0:Source:332.c
+        -:    0:Graph:332.gcno
+        -:    0:Data:332.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/94111 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  _Decimal32 d = (_Decimal32)__builtin_inff();
+        1:    7:  if (!__builtin_isinf((double)d))
+    #####:    8:    __builtin_abort();
+        1:    9:  return 0;
+        -:   10:}

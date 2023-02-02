@@ -1,0 +1,30 @@
+        -:    0:Source:2439.c
+        -:    0:Graph:2439.gcno
+        -:    0:Data:2439.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:struct baz {
+        -:    5:  int a, b, c, d, e;
+        -:    6:};
+        -:    7:
+        1:    8:void bar(struct baz *x, int f, int g, int h, int i, int j) {
+        1:    9:  if (x->a != 1 || x->b != 2 || x->c != 3 || x->d != 4 || x->e != 5 || f != 6 ||
+        1:   10:      g != 7 || h != 8 || i != 9 || j != 10)
+    #####:   11:    abort();
+        1:   12:}
+        -:   13:
+        1:   14:void foo(char *z, struct baz x, char *y) { bar(&x, 6, 7, 8, 9, 10); }
+        -:   15:
+        1:   16:int main() {
+        -:   17:  struct baz x;
+        -:   18:
+        1:   19:  x.a = 1;
+        1:   20:  x.b = 2;
+        1:   21:  x.c = 3;
+        1:   22:  x.d = 4;
+        1:   23:  x.e = 5;
+        1:   24:  foo((char *)0, x, (char *)0);
+        1:   25:  exit(0);
+        -:   26:}

@@ -1,0 +1,22 @@
+        -:    0:Source:417.c
+        -:    0:Graph:417.gcno
+        -:    0:Data:417.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        1:    3:void fdouble(double one, ...) {
+        -:    4:  double value;
+        -:    5:  va_list ap;
+        -:    6:
+        1:    7:  va_start(ap, one);
+        1:    8:  value = va_arg(ap, double);
+        1:    9:  va_end(ap);
+        -:   10:
+        1:   11:  if (one != 1.0 || value != 2.0)
+    #####:   12:    abort();
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  fdouble(1.0, 2.0);
+        1:   17:  exit(0);
+        -:   18:}

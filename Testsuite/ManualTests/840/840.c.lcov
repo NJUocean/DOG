@@ -1,0 +1,22 @@
+    1|       |struct blah {
+    2|       |  int m1, m2;
+    3|       |};
+    4|       |
+    5|      1|void die(struct blah arg) {
+    6|      1|  int i;
+    7|      1|  struct blah buf[1];
+    8|      1|
+    9|      2|  for (i = 0; i < 1; buf[i++] = arg)
+   10|      1|    ;
+   11|      1|  if (buf[0].m1 != 1) {
+   12|      0|    abort();
+   13|      0|  }
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  struct blah s = {1, 2};
+   18|      1|
+   19|      1|  die(s);
+   20|      1|  exit(0);
+   21|      1|}
+

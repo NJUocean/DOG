@@ -1,0 +1,38 @@
+        -:    0:Source:3660.c
+        -:    0:Graph:3660.gcno
+        -:    0:Data:3660.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:static max;
+        -:    4:
+       11:    5:static void __attribute__((noinline)) storemax(int i) {
+       11:    6:  if (i > max)
+       10:    7:    max = i;
+       11:    8:}
+        -:    9:
+       10:   10:static int CallFunctionRec(int (*fun)(int depth), int depth) {
+       10:   11:  if (!fun(depth)) {
+    #####:   12:    return 0;
+        -:   13:  }
+       10:   14:  if (depth < 10) {
+        9:   15:    CallFunctionRec(fun, depth + 1);
+        -:   16:  }
+       10:   17:  return 1;
+        -:   18:}
+        -:   19:
+        1:   20:static int CallFunction(int (*fun)(int depth)) {
+       1*:   21:  return CallFunctionRec(fun, 1) && !fun(0);
+        -:   22:}
+        -:   23:
+       11:   24:static int callback(int depth) {
+       11:   25:  storemax(depth);
+       11:   26:  return depth != 0;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  CallFunction(callback);
+        1:   31:  if (max != 10)
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

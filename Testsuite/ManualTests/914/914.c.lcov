@@ -1,0 +1,20 @@
+    1|       |/* PR middle-end/50161 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-tree-ter -funroll-loops" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int main() {
+    8|      1|  unsigned i;
+    9|      1|  unsigned long a[16];
+   10|      1|
+   11|     17|  for (i = 0; i < 16; i++)
+   12|     16|    a[i] = ~0UL;
+   13|      1|
+   14|     17|  for (i = 0; i < 16; i++)
+   15|     16|    if (__builtin_popcountl(a[i]) != sizeof(a[i]) * 8)
+   16|      0|      abort();
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+

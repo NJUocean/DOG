@@ -1,0 +1,26 @@
+        -:    0:Source:1628.c
+        -:    0:Graph:1628.gcno
+        -:    0:Data:1628.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:static int a = 2;
+        -:    4:int b[1], c, d;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int e = a, *f = &b[0];
+        1:    8:  if (d)
+    #####:    9:    for (e = 0; e < 1; e++)
+        -:   10:      ;
+        1:   11:  if (e) {
+        1:   12:  L1:
+        1:   13:    if (b < f)
+    #####:   14:      __builtin_abort();
+        1:   15:    if (*f)
+    #####:   16:      c++;
+        1:   17:    return 0;
+        -:   18:  }
+    #####:   19:  f = 0;
+    #####:   20:  goto L1;
+        -:   21:  return 0;
+        -:   22:}

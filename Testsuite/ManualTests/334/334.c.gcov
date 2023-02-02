@@ -1,0 +1,20 @@
+        -:    0:Source:334.c
+        -:    0:Graph:334.gcno
+        -:    0:Data:334.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ffinite-math-only" } */
+        -:    3:/* { dg-require-effective-target double64plus } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:volatile double a = 2.002083e-146;
+        -:    8:volatile double b;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  b = 1. / a;
+        -:   12:
+        1:   13:  if (b != (1. / 2.002083e-146))
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

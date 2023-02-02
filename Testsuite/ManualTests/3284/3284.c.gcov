@@ -1,0 +1,29 @@
+        -:    0:Source:3284.c
+        -:    0:Graph:3284.gcno
+        -:    0:Data:3284.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that we get the low part of the long long as an int.  We
+        -:    2:   used to get it wrong on big-endian machines, if register allocation
+        -:    3:   succeeded at all.  We use volatile to make sure the long long is
+        -:    4:   actually truncated to int, in case a single register is wide enough
+        -:    5:   for a long long.  */
+        -:    6:/* { dg-skip-if "asm requires register allocation" { nvptx-*-* } } */
+        -:    7:#include <limits.h>
+        -:    8:
+        1:    9:void ll_to_int(long long x, volatile int *p) {
+        -:   10:  int i;
+        1:   11:  asm("" : "=r"(i) : "0"(x));
+        1:   12:  *p = i;
+        1:   13:}
+        -:   14:
+        -:   15:int val = INT_MIN + 1;
+        -:   16:
+        1:   17:int main() {
+        -:   18:  volatile int i;
+        -:   19:
+        1:   20:  ll_to_int((long long)val, &i);
+        1:   21:  if (i != val)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  exit(0);
+        -:   25:}

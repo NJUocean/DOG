@@ -1,0 +1,33 @@
+        -:    0:Source:779.c
+        -:    0:Graph:779.gcno
+        -:    0:Data:779.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        1:    6:void radix_tree_tag_clear(int *node) {
+        1:    7:  int *path[2], **pathp = path, height;
+        -:    8:  volatile int *addr;
+        -:    9:
+        1:   10:  height = 1;
+        1:   11:  pathp[0] = node;
+        -:   12:
+        2:   13:  while (height > 0) {
+        1:   14:    pathp[1] = pathp[0];
+        1:   15:    pathp++;
+        1:   16:    height--;
+        -:   17:  }
+        -:   18:
+        1:   19:  addr = pathp[0];
+        1:   20:  *addr = 1;
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  int n;
+        1:   25:  radix_tree_tag_clear(&n);
+        1:   26:  if (n != 1)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

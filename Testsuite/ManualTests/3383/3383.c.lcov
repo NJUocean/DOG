@@ -1,0 +1,8 @@
+    1|       |int s = 200;
+    2|      1|int __attribute__((noinline)) foo(void) { return (signed char)(s - 100) - 5; }
+    3|      1|int main(void) {
+    4|      1|  if (foo() != 95)
+    5|      0|    abort();
+    6|      1|  exit(0);
+    7|      1|}
+

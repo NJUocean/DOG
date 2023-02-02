@@ -1,0 +1,20 @@
+        -:    0:Source:4092.c
+        -:    0:Graph:4092.gcno
+        -:    0:Data:4092.gcda
+        -:    0:Runs:1
+        -:    1:struct S {
+        -:    2:  float f;
+        -:    3:};
+        1:    4:int __attribute__((noinline)) foo(int *r, struct S *p) {
+        1:    5:  int *q = (int *)&p->f;
+        1:    6:  int i = *q;
+        1:    7:  *r = 0;
+        1:    8:  return i + *q;
+        -:    9:}
+        -:   10:extern void abort(void);
+        1:   11:int main() {
+        1:   12:  int i = 1;
+        1:   13:  if (foo(&i, (struct S *)&i) != 1)
+    #####:   14:    abort();
+        1:   15:  return (0);
+        -:   16:}

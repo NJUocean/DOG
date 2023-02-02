@@ -1,0 +1,21 @@
+    1|       |typedef struct {
+    2|       |  int baddr;
+    3|       |} mstruct_t;
+    4|       |
+    5|       |static struct {
+    6|       |  unsigned int mapnum;
+    7|       |  mstruct_t unused;
+    8|       |} mtab;
+    9|       |
+   10|       |static mstruct_t *mactab = &mtab.unused;
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  int i;
+   14|      1|  int addr;
+   15|      1|
+   16|      1|  for (i = 1; i <= mtab.mapnum; i++)
+   17|      0|    if (addr < mactab[i].baddr)
+   18|      0|      break;
+   19|      1|  return 0;
+   20|      1|}
+

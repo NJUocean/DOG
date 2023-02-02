@@ -1,0 +1,18 @@
+        -:    0:Source:3060.c
+        -:    0:Graph:3060.gcno
+        -:    0:Data:3060.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:typedef __UINTPTR_TYPE__ uintptr_t;
+        -:    4:int n = 0;
+        1:    5:int f(void) { return ++n; }
+        1:    6:int main(void) {
+        1:    7:  int a = 0;
+        -:    8:  int *p;
+        -:    9:  uintptr_t b;
+        1:   10:  b = (uintptr_t)(p = &(int[]){0, f(), 2}[1]);
+        1:   11:  if (*p != 1 || *(int *)b != 1 || n != 1)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

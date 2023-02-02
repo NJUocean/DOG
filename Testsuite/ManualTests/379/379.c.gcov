@@ -1,0 +1,20 @@
+        -:    0:Source:379.c
+        -:    0:Graph:379.gcno
+        -:    0:Data:379.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:#define N 50
+        -:    4:#define CHUNKSIZE 5
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int i, chunk;
+        -:    8:  float c[N];
+        -:    9:
+        1:   10:  chunk = CHUNKSIZE;
+        -:   11:#pragma omp parallel for shared(c, chunk) schedule(dynamic, chunk)
+       51:   12:  for (i = 0; i < N; i++)
+       50:   13:    c[i] = i;
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

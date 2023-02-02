@@ -1,0 +1,21 @@
+    1|       |/* { dg-options "-O -floop-strip-mine" } */
+    2|       |
+    3|       |int a[128][40];
+    4|       |
+    5|      1|void __attribute__((noinline, noclone)) foo(void) {
+    6|      1|  int i, j;
+    7|     41|  for (i = 0; i < 40; i++)
+    8|  5.16k|    for (j = 0; j < 128; j++)
+    9|  5.12k|      a[j][i] = 4;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i, j;
+   14|      1|  foo();
+   15|     41|  for (i = 0; i < 40; i++)
+   16|  5.16k|    for (j = 0; j < 128; j++)
+   17|  5.12k|      if (a[j][i] != 4)
+   18|      0|        __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

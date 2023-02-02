@@ -1,0 +1,19 @@
+        -:    0:Source:246.c
+        -:    0:Graph:246.gcno
+        -:    0:Data:246.gcda
+        -:    0:Runs:1
+        -:    1:#ifdef __i386__
+        -:    2:f(rp) unsigned int *rp;
+        -:    3:{ __asm__("mull %3" : "=a"(rp[0]), "=d"(rp[1]) : "%0"(7), "rm"(7)); }
+        -:    4:
+        -:    5:main() {
+        -:    6:  unsigned int s[2];
+        -:    7:
+        -:    8:  f(s);
+        -:    9:  if (s[1] != 0 || s[0] != 49)
+        -:   10:    abort();
+        -:   11:  exit(0);
+        -:   12:}
+        -:   13:#else
+        1:   14:main() { exit(0); }
+        -:   15:#endif

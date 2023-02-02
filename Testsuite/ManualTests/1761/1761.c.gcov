@@ -1,0 +1,23 @@
+        -:    0:Source:1761.c
+        -:    0:Graph:1761.gcno
+        -:    0:Data:1761.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:static inline void foo(int *__restrict pr) { *pr = 1; }
+        -:    6:
+        1:    7:int __attribute__((noinline, noclone)) bar(int *q) {
+        1:    8:  int *__restrict qr = q;
+        1:    9:  *qr = 0;
+        1:   10:  foo(qr);
+        1:   11:  return *qr;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  int i;
+        1:   16:  if (bar(&i) != 1)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,25 @@
+    1|       |/* Test whether a partly call-clobbered register will be moved over a call.
+    2|       |   Although the original test case didn't use any GNUisms, it proved
+    3|       |   difficult to reduce without the named register extension.  */
+    4|       |#if __SH64__ == 32
+    5|       |#define LOC asm("r10")
+    6|       |#else
+    7|       |#define LOC
+    8|       |#endif
+    9|       |
+   10|      1|unsigned int foo(char *c, unsigned int x, unsigned int y) {
+   11|      1|  register unsigned int z LOC;
+   12|      1|
+   13|      1|  sprintf(c, "%d", x / y);
+   14|      1|  z = x + 1;
+   15|      1|  return z / (y + 1);
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  char c[16];
+   20|      1|
+   21|      1|  if (foo(c, ~1U, 4) != (~0U / 5))
+   22|      0|    abort();
+   23|      1|  exit(0);
+   24|      1|}
+

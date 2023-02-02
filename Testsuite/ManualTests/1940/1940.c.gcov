@@ -1,0 +1,29 @@
+        -:    0:Source:1940.c
+        -:    0:Graph:1940.gcno
+        -:    0:Data:1940.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct Bar {
+        -:    6:  int p;
+        -:    7:};
+        -:    8:struct Foo {
+        -:    9:  struct Bar *p;
+        -:   10:};
+        -:   11:struct Bar p0 = {0};
+        -:   12:struct Bar p1 = {1};
+        1:   13:void bar(struct Foo *f) { f->p = &p0; }
+        1:   14:int foo(struct Foo *f) {
+        1:   15:  f->p->p = 1;
+        1:   16:  bar(f);
+        1:   17:  return f->p->p;
+        -:   18:}
+        1:   19:int main() {
+        -:   20:  struct Foo f;
+        1:   21:  f.p = &p1;
+        1:   22:  if (foo(&f) != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

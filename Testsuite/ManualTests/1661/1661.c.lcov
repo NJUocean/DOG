@@ -1,0 +1,42 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |int a, b, c, e, h, j;
+    4|       |char d;
+    5|       |short f, g;
+    6|      0|static short fn2(int p1) {
+    7|      0|  for (;;)
+    8|      0|    for (; g; g++)
+    9|      0|      if (p1)
+   10|      0|        break;
+   11|      0|}
+   12|       |
+   13|       |static short fn3(void);
+   14|      0|static char fn4(char p1) {
+   15|      0|  int i;
+   16|      0|  for (; d;)
+   17|      0|    f = 8;
+   18|      0|  for (; f; f = 0)
+   19|      0|    for (; i; i++) {
+   20|      0|      j = 0;
+   21|      0|      for (; j; j++)
+   22|      0|        ;
+   23|      0|    }
+   24|      0|}
+   25|       |
+   26|      0|static short fn1(short p1) { fn2(b || fn3()); }
+   27|       |
+   28|      0|short fn3(void) {
+   29|      0|  if (c) {
+   30|      0|    fn4(e);
+   31|      0|    h = 0;
+   32|      0|    for (;; h++)
+   33|      0|      ;
+   34|      0|  }
+   35|      0|}
+   36|       |
+   37|      1|int main() {
+   38|      1|  for (; a;)
+   39|      0|    fn1(c);
+   40|      1|  return 0;
+   41|      1|}
+

@@ -1,0 +1,31 @@
+        -:    0:Source:1892.c
+        -:    0:Graph:1892.gcno
+        -:    0:Data:1892.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fdump-tree-ldist-details" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int a[1024], b[1024];
+        -:    7:
+        1:    8:void __attribute__((noinline, noclone)) foo(void) {
+        -:    9:  int i;
+     1025:   10:  for (i = 0; i < 1024; ++i) {
+     1024:   11:    a[i] = 0;
+     1024:   12:    if (i > 100)
+      923:   13:      b[i] = i;
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  b[100] = 1;
+        1:   19:  foo();
+        1:   20:  if (b[100] != 1 || b[101] != 101)
+    #####:   21:    abort();
+        1:   22:  if (a[0] != 0 || a[101] != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* { dg-final { scan-tree-dump "generated memset zero" "ldist" } } */

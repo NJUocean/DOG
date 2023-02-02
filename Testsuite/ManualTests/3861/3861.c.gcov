@@ -1,0 +1,26 @@
+        -:    0:Source:3861.c
+        -:    0:Graph:3861.gcno
+        -:    0:Data:3861.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/64255 */
+        -:    2:
+        1:    3:__attribute__((noinline, noclone)) void bar(long i, unsigned long j) {
+        1:    4:  if (i != 1 || j != 1)
+    #####:    5:    __builtin_abort();
+        1:    6:}
+        -:    7:
+        1:    8:__attribute__((noinline, noclone)) void foo(long i) {
+        -:    9:  unsigned long j;
+        -:   10:
+        1:   11:  if (!i)
+    #####:   12:    return;
+       1*:   13:  j = i >= 0 ? (unsigned long)i : -(unsigned long)i;
+       1*:   14:  if ((i >= 0 ? (unsigned long)i : -(unsigned long)i) != j)
+    #####:   15:    __builtin_abort();
+        1:   16:  bar(i, j);
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  foo(1);
+        1:   21:  return 0;
+        -:   22:}

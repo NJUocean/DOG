@@ -1,0 +1,19 @@
+        -:    0:Source:941.c
+        -:    0:Graph:941.gcno
+        -:    0:Data:941.gcda
+        -:    0:Runs:1
+        -:    1:#define mask 0xffff0000L
+        -:    2:#define value 0xabcd0000L
+        -:    3:
+        2:    4:long foo(long x) {
+        2:    5:  if ((x & mask) == value)
+        1:    6:    return x & 0xffffL;
+        1:    7:  return 1;
+        -:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  if (foo(value) != 0 || foo(0) != 1)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  exit(0);
+        -:   15:}

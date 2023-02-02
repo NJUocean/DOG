@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |/* z14 only because we need msrkc, msc, msgrkc, msgc  */
+    3|       |/* { dg-options "-O3 -march=z14 -mzarch --save-temps" } */
+    4|       |
+    5|       |#include <limits.h>
+    6|       |#include <stddef.h>
+    7|       |
+    8|      1|int __attribute__((noinline, noclone)) smul(int a, int b, int *res) {
+    9|      1|  return __builtin_smul_overflow(a, b, res);
+   10|      1|}
+   11|       |
+   12|      1|int __attribute__((noinline, noclone)) smull(long a, long b, long *res) {
+   13|      1|  return __builtin_smull_overflow(a, b, res);
+   14|      1|}
+   15|       |
+   16|       |int __attribute__((noinline, noclone))
+   17|      1|smulll(long long a, long long b, long long *res) {
+   18|      1|  return __builtin_smulll_overflow(a, b, res);
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  int ret = 0;
+   23|      1|  int result;
+   24|      1|  long lresult;
+   25|      1|  long long llresult;
+   26|      1|
+   27|      1|  ret += !!smul(INT_MAX, 2, &result);
+   28|      1|  ret += !!smull(LONG_MAX, 2, &lresult);
+   29|      1|  ret += !!smulll(LLONG_MAX, 2, &llresult);
+   30|      1|
+   31|      1|  if (ret != 3)
+   32|      0|    __builtin_abort();
+   33|      1|
+   34|      1|  return 0;
+   35|      1|}
+   36|       |
+   37|       |/* Check that no compare or bitop instructions are emitted.  */
+   38|       |/* { dg-final { scan-assembler-not "\tcr" } } */
+   39|       |/* { dg-final { scan-assembler-not "\txr" } } */
+   40|       |/* { dg-final { scan-assembler-not "\tnr" } } */
+   41|       |/* { dg-final { scan-assembler-not "\tcgr" } } */
+   42|       |/* { dg-final { scan-assembler-not "\txgr" } } */
+   43|       |/* { dg-final { scan-assembler-not "\tngr" } } */
+   44|       |/* On 31 bit the long long variants use risbgn to merge the 32 bit
+   45|       |   regs into a 64 bit reg.  */
+   46|       |/* { dg-final { scan-assembler-not "\trisbg" { target { lp64 } } } } */
+   47|       |/* Just one for the ret != 3 comparison.  */
+   48|       |/* { dg-final { scan-assembler-times "ci" 1 } } */
+   49|       |/* { dg-final { scan-assembler-times "\tlochio\t" 3 { target { ! lp64 } } } } */
+   50|       |/* { dg-final { scan-assembler-times "\tlocghio\t" 3 { target lp64 } } } */
+

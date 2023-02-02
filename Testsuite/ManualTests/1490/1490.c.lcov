@@ -1,0 +1,23 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |static struct X {
+    4|       |  void *a;
+    5|       |  void *b;
+    6|       |} a, b;
+    7|       |
+    8|      1|void __attribute__((noinline)) foo(void) {
+    9|      1|  void *tem = a.b;
+   10|      1|  a.b = (void *)0;
+   11|      1|  b.b = tem;
+   12|      1|  b.a = a.a;
+   13|      1|  a.a = tem;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  a.b = &a;
+   18|      1|  foo();
+   19|      1|  if (b.b != &a)
+   20|      0|    abort();
+   21|      1|  return 0;
+   22|      1|}
+

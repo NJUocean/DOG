@@ -1,0 +1,37 @@
+    1|       |/* Inspired from bitmap_or_and function in sbitmap.c.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves
+    4|       | * -fdump-rtl-sms" } */
+    5|       |/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves -fdump-rtl-sms
+    6|       | * --param sms-min-sc=1" { target powerpc*-*-* } } */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |int a[5] = {0, 1, 0, 0, 0};
+   11|       |int b[5] = {0, 1, 0, 1, 0};
+   12|       |int c[5] = {0, 0, 1, 1, 0};
+   13|       |int dst[5] = {0, 0, 0, 0, 0};
+   14|       |
+   15|       |__attribute__((noinline)) void foo(int size, int *ap, int *bp, int *cp,
+   16|      1|                                   int *dstp) {
+   17|      1|  unsigned int i, n = size;
+   18|      1|  int changed = 0;
+   19|      1|
+   20|      6|  for (i = 0; i < n; i++) {
+   21|      5|    const int tmp = *ap++ | (*bp++ & *cp++);
+   22|      5|    changed |= *dstp ^ tmp;
+   23|      5|    *dstp++ = tmp;
+   24|      5|  }
+   25|      1|
+   26|      1|  if (changed == 0)
+   27|      0|    abort();
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  foo(5, a, b, c, dst);
+   32|      1|  return 0;
+   33|      1|}
+   34|       |
+   35|       |/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms" { target
+   36|       | * powerpc*-*-* } } } */
+

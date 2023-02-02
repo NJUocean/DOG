@@ -1,0 +1,86 @@
+        -:    0:Source:3548.c
+        -:    0:Graph:3548.gcno
+        -:    0:Data:3548.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fopenmp-simd" } */
+        -:    3:/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+        -:    4:/* { dg-additional-options "-mavx" { target avx_runtime } } */
+        -:    5:
+        -:    6:#define N 1024
+        -:    7:extern
+        -:    8:#ifdef __cplusplus
+        -:    9:    "C"
+        -:   10:#endif
+        -:   11:    void
+        -:   12:    abort(void);
+        -:   13:
+        -:   14:int last;
+        -:   15:
+     2048:   16:void bar(unsigned char *a, int i, int safelen) {
+        -:   17:  int j, k;
+     2048:   18:  if (i != last++)
+    #####:   19:    abort();
+   165888:   20:  for (j = i - safelen - 32; j < i; j++)
+   163840:   21:    if (j >= 0 && a[j] != 2)
+    #####:   22:      break;
+     2048:   23:  if (j <= i - safelen || a[j] != 1)
+    #####:   24:    abort();
+     4096:   25:  for (k = j; k < i + safelen + 32; k++)
+     4096:   26:    if (k >= N || a[k] != 1)
+        -:   27:      break;
+     2048:   28:  if (k <= i || k > j + safelen)
+    #####:   29:    abort();
+     2048:   30:  if (k < N && a[k] != 0)
+    #####:   31:    abort();
+   163840:   32:  for (; k < i + safelen + 32; k++)
+   161792:   33:    if (k < N && a[k] != 0)
+    #####:   34:      abort();
+     2048:   35:}
+        -:   36:
+     1024:   37:static inline void foo(unsigned char *a, int i) {
+        -:   38:#pragma omp ordered simd
+     1024:   39:  bar(a, i, 64);
+     1024:   40:}
+        -:   41:
+        1:   42:int main() {
+        -:   43:  unsigned char a[N], b[N];
+        -:   44:  int i;
+        -:   45:#pragma omp simd
+     1025:   46:  for (i = 0; i < N; i++)
+     1024:   47:    a[i] = 0;
+        -:   48:#pragma omp simd safelen(64)
+     1025:   49:  for (i = 0; i < N; i++) {
+     1024:   50:    a[i]++;
+     1024:   51:    foo(a, i);
+     1024:   52:    a[i]++;
+        -:   53:  }
+        -:   54:#pragma omp simd
+     1025:   55:  for (i = 0; i < N; i++) {
+     1024:   56:    a[i] = 0;
+     1024:   57:    b[i] = 0;
+        -:   58:  }
+        1:   59:  last = 0;
+        -:   60:#pragma omp simd safelen(32)
+     1025:   61:  for (i = 0; i < N; i++) {
+     1024:   62:    a[i]++;
+        -:   63:#pragma omp ordered simd
+     1024:   64:    bar(a, i, 32);
+     1024:   65:    a[i]++;
+        -:   66:  }
+     1025:   67:  for (i = 0; i < N; i++)
+     1024:   68:    if (a[i] != 2)
+    #####:   69:      abort();
+        -:   70:#pragma omp simd safelen(32)
+     1024:   71:  for (i = 1; i < N; i++) {
+        -:   72:#pragma omp ordered simd
+     1023:   73:    b[i] = b[i - 1] + 1;
+     1023:   74:    a[i]++;
+        -:   75:#pragma omp ordered simd
+     1023:   76:    a[i] += a[i - 1];
+        -:   77:  }
+     1025:   78:  for (i = 0; i < N; i++)
+     1024:   79:    if (a[i] != (unsigned char)(2 + 3 * i) || b[i] != (unsigned char)i)
+    #####:   80:      abort();
+        1:   81:  return 0;
+        -:   82:}

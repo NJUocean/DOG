@@ -1,0 +1,7 @@
+    1|       |/* { dg-do run { xfail *-empty-* } } */
+    2|       |/* { dg-xfail-run-if "" { empty-*-* } } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|int main() { return 0; /* Neither xfail list matched, so pass.  */ }
+

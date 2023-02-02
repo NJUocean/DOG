@@ -1,0 +1,19 @@
+        -:    0:Source:741.c
+        -:    0:Graph:741.gcno
+        -:    0:Data:741.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/55976 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-Werror=return-type" } */
+        -:    4:/* { dg-prune-output "some warnings being treated as errors" } */
+        -:    5:
+        -:    6:/* Verify warnings for return type become errors.  */
+        -:    7:
+        1:    8:void t() { return 1; } /* { dg-error "return" "function returning void" } */
+        1:    9:int b() { return; }    /* { dg-error "return" "function returning non-void" } */
+        -:   10:
+        1:   11:int main() {
+        1:   12:  t();
+        1:   13:  b();
+        1:   14:  return 0;
+        -:   15:}

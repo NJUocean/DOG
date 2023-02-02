@@ -1,0 +1,19 @@
+        -:    0:Source:2436.c
+        -:    0:Graph:2436.gcno
+        -:    0:Data:2436.gcda
+        -:    0:Runs:1
+        1:    1:long foo(long a, long b, long c) {
+        1:    2:  if (a != 12 || b != 1 || c != 11)
+    #####:    3:    abort();
+        1:    4:  return 0;
+        -:    5:}
+        1:    6:long bar(long a, long b) { return b; }
+        1:    7:void baz(long a, long b, void *c) {
+        -:    8:  long d;
+        1:    9:  d = (long)c;
+        1:   10:  foo(d, bar(a, 1), b);
+        1:   11:}
+        1:   12:int main() {
+        1:   13:  baz(10, 11, (void *)12);
+        1:   14:  exit(0);
+        -:   15:}

@@ -1,0 +1,33 @@
+        -:    0:Source:505.c
+        -:    0:Graph:505.gcno
+        -:    0:Data:505.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/43479 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        1:    5:__attribute__((noinline)) void foo(int k, int l, int m, int n) {
+        1:    6:  l++;
+        -:    7:  {
+        1:    8:    int h = n;
+        -:    9:    {
+        1:   10:      int i = k;
+        1:   11:      k++; /* { dg-final { gdb-test . "i" "6" } } */
+        -:   12:    }      /* { dg-final { gdb-test .-1 "h" "9" } } */
+        -:   13:           /* { dg-final { gdb-test .-2 "n" "9" } } */
+        -:   14:    {
+        1:   15:      int j = m;
+        1:   16:      m++; /* { dg-final { gdb-test . "j" "8" } } */
+        -:   17:    }      /* { dg-final { gdb-test .-1 "h" "9" } } */
+        -:   18:    /* { dg-final { gdb-test 12 "n" "9" } } */
+        -:   19:  }
+        1:   20:  asm volatile("" : : "r"(k), "r"(l));
+        1:   21:  asm volatile("" : : "r"(m), "r"(n));
+        1:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        1:   25:  int q = 6;
+        1:   26:  asm("" : "+r"(q));
+        1:   27:  foo(q, q + 1, q + 2, q + 3);
+        1:   28:  return 0;
+        -:   29:}

@@ -1,0 +1,34 @@
+        -:    0:Source:3557.c
+        -:    0:Graph:3557.gcno
+        -:    0:Data:3557.gcda
+        -:    0:Runs:1
+        -:    1:/* REPRODUCED:RUN:SIGNAL MACHINE:mips OPTIONS: */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  int A;
+        -:    7:} T;
+        -:    8:
+        1:    9:T f(int x, ...) {
+        -:   10:  va_list ap;
+        -:   11:  T X;
+        1:   12:  va_start(ap, x);
+        1:   13:  X = va_arg(ap, T);
+        1:   14:  if (X.A != 10)
+    #####:   15:    abort();
+        1:   16:  X = va_arg(ap, T);
+        1:   17:  if (X.A != 20)
+    #####:   18:    abort();
+        1:   19:  va_end(ap);
+        1:   20:  return X;
+        -:   21:}
+        -:   22:
+        1:   23:main() {
+        -:   24:  T X, Y;
+        -:   25:  int i;
+        1:   26:  X.A = 10;
+        1:   27:  Y.A = 20;
+        1:   28:  f(2, X, Y);
+        1:   29:  exit(0);
+        -:   30:}

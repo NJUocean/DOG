@@ -1,0 +1,34 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -g" } */
+    3|       |
+    4|       |int a, c, d, e, f, g, h, i, j, k;
+    5|       |
+    6|       |struct S0 {
+    7|       |  int f0;
+    8|       |  int f1;
+    9|       |  int f2;
+   10|       |};
+   11|       |
+   12|       |struct S1 {
+   13|       |  int f0;
+   14|       |  int f1;
+   15|       |  struct S0 f2;
+   16|       |} b;
+   17|       |
+   18|      1|void fn1(struct S1 p) {
+   19|      1|  for (; k; k++)
+   20|      0|    h = j ? a : a - 1;
+   21|      1|  d &= i;
+   22|      1|}
+   23|       |
+   24|      1|int main() {
+   25|      1|  int l[5] = {0};
+   26|      1|  fn1(b);
+   27|      4|  for (c = 0; c < 3; c++)
+   28|     12|    for (g = 0; g < 3; g++)
+   29|      9|      l[c * 2] = e = l[c];
+   30|      1|  if (f)
+   31|      0|    fn1(b);
+   32|      1|  return 0;
+   33|      1|}
+

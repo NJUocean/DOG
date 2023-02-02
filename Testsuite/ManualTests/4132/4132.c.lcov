@@ -1,0 +1,17 @@
+    1|       |/* { dg-options "-finput-charset=utf-8" } */
+    2|       |typedef __WCHAR_TYPE__ wchar_t;
+    3|       |wchar_t x[] = L"Ä";
+    4|       |wchar_t y = L'Ä';
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  if (sizeof(x) / sizeof(wchar_t) != 2)
+   10|      0|    abort();
+   11|      1|  if (x[0] != L'Ä' || x[1] != L'\0')
+   12|      0|    abort();
+   13|      1|  if (y != L'Ä')
+   14|      0|    abort();
+   15|      1|  exit(0);
+   16|      1|}
+

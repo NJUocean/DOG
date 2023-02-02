@@ -1,0 +1,29 @@
+    1|       |/* PR rtl-optimization/55023 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-inline" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |typedef long long int64_t;
+    7|       |
+    8|       |struct foo {
+    9|       |  int x;
+   10|       |  int y;
+   11|       |};
+   12|       |
+   13|      1|int64_t foo(int64_t a, int64_t b, int64_t c) { return a + b + c; }
+   14|       |
+   15|      1|int64_t bar(int64_t a, struct foo bq, struct foo cq) {
+   16|      1|  int64_t b = bq.x + bq.y;
+   17|      1|  int64_t c = cq.x + cq.y;
+   18|      1|  return foo(a, b, c);
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  int64_t a = 1;
+   23|      1|  struct foo b = {2, 3};
+   24|      1|  struct foo c = {4, 5};
+   25|      1|  if (bar(a, b, c) != 15)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+

@@ -1,0 +1,16 @@
+    1|       |/* PR sanitizer/80800 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+    4|       |
+    5|       |int n = 20000;
+    6|       |int z = 0;
+    7|       |
+    8|      1|int fn1(void) { return (n * 10000 * z) * 50; }
+    9|       |
+   10|      1|int fn2(void) { return (10000 * n * z) * 50; }
+   11|       |
+   12|      1|int main() {
+   13|      1|  fn1();
+   14|      1|  fn2();
+   15|      1|}
+

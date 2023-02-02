@@ -1,0 +1,38 @@
+    1|       |/* PR tree-optimization/56899 */
+    2|       |
+    3|       |#if __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+    4|      1|__attribute__((noinline, noclone)) void f1(int v) {
+    5|      1|  int x = -214748365 * (v - 1);
+    6|      1|  if (x != -1932735285)
+    7|      0|    __builtin_abort();
+    8|      1|}
+    9|       |
+   10|      1|__attribute__((noinline, noclone)) void f2(int v) {
+   11|      1|  int x = 214748365 * (v + 1);
+   12|      1|  if (x != -1932735285)
+   13|      0|    __builtin_abort();
+   14|      1|}
+   15|       |
+   16|      1|__attribute__((noinline, noclone)) void f3(unsigned int v) {
+   17|      1|  unsigned int x = -214748365U * (v - 1);
+   18|      1|  if (x != -1932735285U)
+   19|      0|    __builtin_abort();
+   20|      1|}
+   21|       |
+   22|      1|__attribute__((noinline, noclone)) void f4(unsigned int v) {
+   23|      1|  unsigned int x = 214748365U * (v + 1);
+   24|      1|  if (x != -1932735285U)
+   25|      0|    __builtin_abort();
+   26|      1|}
+   27|       |#endif
+   28|       |
+   29|      1|int main() {
+   30|      1|#if __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+   31|      1|  f1(10);
+   32|      1|  f2(-10);
+   33|      1|  f3(10);
+   34|      1|  f4(-10U);
+   35|      1|#endif
+   36|      1|  return 0;
+   37|      1|}
+

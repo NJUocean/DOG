@@ -1,0 +1,12 @@
+        -:    0:Source:2110.c
+        -:    0:Graph:2110.gcno
+        -:    0:Data:2110.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift -w -std=c99" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  int a = -42;
+        -:    6:  a << 1;
+        -:    7:}
+        -:    8:/* { dg-output "left shift of negative value -42" } */

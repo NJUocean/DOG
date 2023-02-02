@@ -1,0 +1,8 @@
+    1|      0|static int strcmp() { return -1; }
+    2|      1|#define strcmp __builtin_strcmp
+    3|      1|main() {
+    4|      1|  if (strcmp("X", "X\376") >= 0)
+    5|      0|    abort();
+    6|      1|  exit(0);
+    7|      1|}
+

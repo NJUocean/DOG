@@ -1,0 +1,22 @@
+        -:    0:Source:3211.c
+        -:    0:Graph:3211.gcno
+        -:    0:Data:3211.gcda
+        -:    0:Runs:1
+        -:    1:/* On h8300 port, the following used to be broken with -mh or -ms.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        1:    6:unsigned long foo(unsigned long a) { return a ^ 0x0000ffff; }
+        -:    7:
+        1:    8:unsigned long bar(unsigned long a) { return a ^ 0xffff0000; }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  if (foo(0) != 0x0000ffff)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  if (bar(0) != 0xffff0000)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  exit(0);
+        -:   18:}

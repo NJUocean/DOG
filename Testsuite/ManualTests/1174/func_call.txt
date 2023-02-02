@@ -1,0 +1,11 @@
+my_memcpy:__builtin_memcpy:10
+my_mempcpy:__builtin_mempcpy:14
+run_test:my_mempcpy:18
+run_test:__builtin_abort:20
+run_test:my_memcpy:22
+run_test:__builtin_abort:24
+main:__builtin_strlen:29
+main:__builtin_malloc:31
+main:__builtin_memcpy:32
+main:__builtin_malloc:33
+main:run_test:35

@@ -1,0 +1,22 @@
+    1|       |struct g {};
+    2|       |char y[3];
+    3|       |char *f = &y[0];
+    4|       |char *ff = &y[0];
+    5|      1|void h(void) {
+    6|      1|  struct g t;
+    7|      1|  *((struct g *)(f++)) = *((struct g *)(ff++));
+    8|      1|  *((struct g *)(f++)) = (struct g){};
+    9|      1|  t = *((struct g *)(ff++));
+   10|      1|}
+   11|       |
+   12|       |void abort(void);
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  h();
+   16|      1|  if (f != &y[2])
+   17|      0|    abort();
+   18|      1|  if (ff != &y[2])
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

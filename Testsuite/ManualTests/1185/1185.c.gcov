@@ -1,0 +1,45 @@
+        -:    0:Source:1185.c
+        -:    0:Graph:1185.gcno
+        -:    0:Data:1185.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/91914 - Invalid strlen folding for offset into struct
+        -:    2:   { dg-do run }
+        -:    3:   { dg-options "-O2 -Wall" } */
+        -:    4:
+        -:    5:#define assert(expr)                                                           \
+        -:    6:  ((expr) ? (void)0                                                            \
+        -:    7:          : (__builtin_printf("%s:%i: assertion failed: %s\n", __FILE__,       \
+        -:    8:                              __LINE__, #expr),                                \
+        -:    9:             __builtin_abort()))
+        -:   10:
+        -:   11:extern __SIZE_TYPE__ strlen(const char *);
+        -:   12:
+        -:   13:struct stringpool_t {
+        -:   14:  char s1[sizeof("1")];
+        -:   15:  char s2[sizeof("12")];
+        -:   16:  char s3[sizeof("123")];
+        -:   17:  char s4[sizeof("1234")];
+        -:   18:  char s5[sizeof("12345")];
+        -:   19:};
+        -:   20:
+        -:   21:static const struct stringpool_t stringpool_contents = {"1", "12", "123",
+        -:   22:                                                        "1234", "12345"};
+        -:   23:
+        -:   24:#define stringpool ((const char *)&stringpool_contents)
+        -:   25:
+        -:   26:volatile int i0 = 0, i2 = 2, i5 = 5, i9 = 9, i14 = 14;
+        -:   27:
+        1:   28:int main(void) {
+        -:   29:  /* These shouldn't trigger warnings.  */
+       1*:   30:  assert(strlen(stringpool) == 1);
+       1*:   31:  assert(strlen(stringpool + 2) == 2);
+       1*:   32:  assert(strlen(stringpool + 5) == 3);
+       1*:   33:  assert(strlen(stringpool + 9) == 4);
+       1*:   34:  assert(strlen(stringpool + 14) == 5);
+        -:   35:
+       1*:   36:  assert(strlen(stringpool + i0) == 1);
+       1*:   37:  assert(strlen(stringpool + i2) == 2);
+       1*:   38:  assert(strlen(stringpool + i5) == 3);
+       1*:   39:  assert(strlen(stringpool + i9) == 4);
+       1*:   40:  assert(strlen(stringpool + i14) == 5);
+        -:   41:}

@@ -1,0 +1,21 @@
+        -:    0:Source:2455.c
+        -:    0:Graph:2455.gcno
+        -:    0:Data:2455.gcda
+        -:    0:Runs:1
+        -:    1:/* Extracted from gas.  Incorrectly generated non-pic code at -O0 for
+        -:    2:   IA-64, which produces linker errors on some operating systems.  */
+        -:    3:
+        -:    4:struct {
+        -:    5:  int offset;
+        -:    6:  struct slot {
+        -:    7:    int field[6];
+        -:    8:  } slot[4];
+        -:    9:} s;
+        -:   10:
+    #####:   11:int x() {
+    #####:   12:  int toggle = 0;
+    #####:   13:  int r = s.slot[0].field[!toggle];
+    #####:   14:  return r;
+        -:   15:}
+        -:   16:
+        1:   17:int main() { return 0; }

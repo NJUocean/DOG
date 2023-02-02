@@ -1,0 +1,53 @@
+        -:    0:Source:2538.c
+        -:    0:Graph:2538.gcno
+        -:    0:Data:2538.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2000  Free Software Foundation.
+        -:    2:
+        -:    3:   by Manfred Hollstein <manfredh@redhat.com>  */
+        -:    4:
+        -:    5:void *temporary_obstack;
+        -:    6:
+        -:    7:static int input(void);
+        -:    8:static int ISALNUM(int ch);
+        -:    9:static void obstack_1grow(void **ptr, int ch);
+        -:   10:
+        -:   11:int yylex(void);
+        -:   12:int main(void);
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  int ch = yylex();
+        -:   16:
+        1:   17:  exit(0);
+        -:   18:}
+        -:   19:
+        1:   20:int yylex(void) {
+        -:   21:  int ch;
+        -:   22:
+        -:   23:#ifndef WORK_AROUND
+        -:   24:  for (;;) {
+       1*:   25:    ch = input();
+        1:   26:    if (ISALNUM(ch))
+    #####:   27:      obstack_1grow(&temporary_obstack, ch);
+        1:   28:    else if (ch != '_')
+        1:   29:      break;
+        -:   30:  }
+        -:   31:#else
+        -:   32:  do {
+        -:   33:    ch = input();
+        -:   34:    if (ISALNUM(ch))
+        -:   35:      obstack_1grow(&temporary_obstack, ch);
+        -:   36:  } while (ch == '_');
+        -:   37:#endif
+        -:   38:
+        1:   39:  return ch;
+        -:   40:}
+        -:   41:
+        1:   42:static int input(void) { return 0; }
+        -:   43:
+        1:   44:static int ISALNUM(int ch) {
+       1*:   45:  return ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') ||
+    #####:   46:          (ch >= '0' && ch <= '0'));
+        -:   47:}
+        -:   48:
+    #####:   49:static void obstack_1grow(void **ptr, int ch) {}

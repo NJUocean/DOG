@@ -1,0 +1,16 @@
+    1|       |/* { dg-options "-Waddress" } */
+    2|       |/* Origin: Andrew Morton <akpm@osdl.org> */
+    3|       |/* Warn if a function address of a non-weak function is used
+    4|       |   as a truth value.  */
+    5|       |/* See thread starting at http://gcc.gnu.org/ml/gcc/2003-10/msg00414.html  */
+    6|       |
+    7|      0|void foo(void) {}
+    8|       |
+    9|      1|void bar(void) {}
+   10|       |
+   11|      1|int main() {
+   12|      1|  if (foo) /* { dg-warning "" } */
+   13|      1|    bar();
+   14|      1|  return 0;
+   15|      1|}
+

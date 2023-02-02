@@ -1,0 +1,13 @@
+    1|       |
+    2|      1|unsigned int f(unsigned int a) { return a * 65536 / 8; }
+    3|       |
+    4|      1|unsigned int g(unsigned int a) { return a * 65536; }
+    5|       |
+    6|      1|unsigned int h(unsigned int a) { return a / 8; }
+    7|       |
+    8|      1|int main() {
+    9|      1|  if (f(65536) != h(g(65536)))
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

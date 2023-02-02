@@ -1,0 +1,52 @@
+        -:    0:Source:1086.c
+        -:    0:Graph:1086.gcno
+        -:    0:Data:1086.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    3:/* { dg-options "-fsanitize=object-size -fno-sanitize-recover=object-size" } */
+        -:    4:
+        -:    5:/* Test valid uses.  */
+        -:    6:
+        -:    7:#define N 20
+        -:    8:
+        1:    9:__attribute__((noinline, noclone)) void f1(int i) {
+        -:   10:  volatile int j;
+        -:   11:  char *p, *orig;
+        1:   12:  orig = p = (char *)__builtin_calloc(N, 1);
+        1:   13:  j = *(p + i);
+        1:   14:  j = p[i];
+        1:   15:  p++;
+        1:   16:  j = p[i - 1];
+        1:   17:  j = *(p + i - 1);
+        1:   18:  __builtin_free(orig);
+        1:   19:}
+        -:   20:
+        1:   21:__attribute__((noinline, noclone)) void f2(int i) {
+        -:   22:  volatile int j;
+        -:   23:  char a[N];
+        1:   24:  __builtin_memset(a, 0, N);
+        1:   25:  j = *(a + i);
+        1:   26:  char *p = a;
+        1:   27:  j = *(p + i);
+        1:   28:  j = p[i];
+        1:   29:  p += 10;
+        1:   30:  j = *(p + i - 10);
+        1:   31:  j = p[i - 10];
+        1:   32:}
+        -:   33:
+        1:   34:__attribute__((noinline, noclone)) void f3(int i) {
+        -:   35:  volatile int j;
+        1:   36:  int *p = (int *)__builtin_calloc(N, sizeof(*p));
+        1:   37:  int *o = &p[i];
+        1:   38:  j = *o;
+        1:   39:  j = o[0];
+        1:   40:  __builtin_free(p);
+        1:   41:}
+        -:   42:
+        1:   43:int main() {
+        1:   44:  f1(N - 1);
+        1:   45:  f2(N - 1);
+        1:   46:  f3(N - 1);
+        1:   47:  return 0;
+        -:   48:}

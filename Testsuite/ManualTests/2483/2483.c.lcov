@@ -1,0 +1,16 @@
+    1|       |/* Check that a change mode to a static function is correctly handled. */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|      1|static void __attribute__((__noinline__)) foo(void) { __asm__(""); }
+    5|       |
+    6|       |static void __attribute__((__noinline__)) __attribute__((target("thumb")))
+    7|      1|bar(void) {
+    8|      1|  __asm__("");
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  foo();
+   13|      1|  bar();
+   14|      1|  return 0;
+   15|      1|}
+

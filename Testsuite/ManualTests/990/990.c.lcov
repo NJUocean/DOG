@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-Og -fif-conversion -flive-range-shrinkage -fpeel-loops
+    3|       | * -frerun-cse-after-loop" } */
+    4|       |
+    5|     16|static inline int foo(int *x, int y) {
+    6|     16|  int z = *x;
+    7|     26|  while (y > z)
+    8|     10|    z *= 2;
+    9|     16|  return z;
+   10|     16|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|     17|  for (i = 1; i < 17; i++) {
+   15|     16|    int j;
+   16|     16|    int k;
+   17|     16|    j = foo(&i, 7);
+   18|     16|    if (i >= 7)
+   19|     10|      k = i;
+   20|      6|    else if (i >= 4)
+   21|      3|      k = 8 + (i - 4) * 2;
+   22|      3|    else if (i == 3)
+   23|      1|      k = 12;
+   24|      2|    else
+   25|      2|      k = 8;
+   26|     16|    if (j != k)
+   27|      0|      __builtin_abort();
+   28|     16|  }
+   29|      1|  return 0;
+   30|      1|}
+

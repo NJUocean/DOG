@@ -1,0 +1,8 @@
+        -:    0:Source:2258.c
+        -:    0:Graph:2258.gcno
+        -:    0:Data:2258.gcda
+        -:    0:Runs:1
+        1:    1:long long foo(a) int a;
+        1:    2:{ return a; }
+        -:    3:
+        1:    4:main() { printf("%d\n", (int)(foo(-1) >> 32)); }

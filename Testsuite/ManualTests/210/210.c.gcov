@@ -1,0 +1,18 @@
+        -:    0:Source:210.c
+        -:    0:Graph:210.gcno
+        -:    0:Data:210.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for C99 __func__: not merging with string literals.  */
+        -:    2:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  if ("main" == __func__)
+        -:   11:    abort();
+        -:   12:  else
+        1:   13:    exit(0);
+        -:   14:}

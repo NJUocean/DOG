@@ -1,0 +1,13 @@
+    1|       |/* Verify that rmw instructions supported */
+    2|       |/* { dg-do assemble } */
+    3|       |
+    4|      1|int main() {
+    5|       |#ifdef __AVR_ISA_RMW__
+    6|       |  __asm("xch Z, r12");
+    7|       |  __asm("las Z, r12");
+    8|       |  __asm("lac Z, r12");
+    9|       |  __asm("lat Z, r12");
+   10|       |#endif
+   11|      1|  return 0;
+   12|      1|}
+

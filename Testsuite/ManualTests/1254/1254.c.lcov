@@ -1,0 +1,23 @@
+    1|       |/* Test floating-point conversions.  __float128 type with TImode: bug
+    2|       |   53317.  */
+    3|       |/* Origin: Joseph Myers <joseph@codesourcery.com> */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-effective-target __float128 } */
+    6|       |/* { dg-require-effective-target base_quadfloat_support } */
+    7|       |/* { dg-require-effective-target int128 } */
+    8|       |/* { dg-options "" } */
+    9|       |/* { dg-add-options __float128 } */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |extern void exit(int);
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  volatile unsigned long long a = 0x1000000000000ULL;
+   16|      1|  volatile unsigned long long b = 0xffffffffffffffffULL;
+   17|      1|  unsigned __int128 c = (((unsigned __int128)a) << 64) | b;
+   18|      1|  __float128 d = c;
+   19|      1|  if (d != 0x1.000000000000ffffffffffffffffp112q)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

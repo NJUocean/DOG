@@ -1,0 +1,26 @@
+        -:    0:Source:1124.c
+        -:    0:Graph:1124.gcno
+        -:    0:Data:1124.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -foptimize-sibling-calls" } */
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:  int data[4];
+        -:    6:} arr16_t;
+        -:    7:
+        -:    8:int result = 0;
+        -:    9:
+        1:   10:void func2(int i, int j, arr16_t arr) {
+       2*:   11:  result = (arr.data[0] != 1 || arr.data[1] != 2 || arr.data[2] != 3 ||
+        1:   12:            arr.data[3] != 4);
+        1:   13:}
+        -:   14:
+        1:   15:void func1(int i, int j, int k, arr16_t a) { func2(i, j, a); }
+        -:   16:
+        1:   17:int main(int argc, const char *argv[]) {
+        1:   18:  arr16_t arr = {{1, 2, 3, 4}};
+        -:   19:
+        1:   20:  func1(0, 0, 0, arr);
+        1:   21:  return result;
+        -:   22:}

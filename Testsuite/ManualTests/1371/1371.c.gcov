@@ -1,0 +1,37 @@
+        -:    0:Source:1371.c
+        -:    0:Graph:1371.gcno
+        -:    0:Data:1371.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99" } */
+        -:    3:/* { dg-options "-std=gnu99" { target *-*-hpux* } } */
+        -:    4:/* { dg-additional-options "-D__USE_MINGW_ANSI_STDIO=1" { target *-*-mingw* } }
+        -:    5: */
+        -:    6:/* { dg-xfail-run-if "no C99 snprintf function" { *-*-hpux10* } } */
+        -:    7:/* { dg-xfail-run-if "non-conforming C99 snprintf" { *-*-hpux11.[012]* } } */
+        -:    8:
+        -:    9:/* PR middle-end/47917 */
+        -:   10:
+        -:   11:#include <stdio.h>
+        -:   12:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:   13:extern void abort(void);
+        -:   14:
+        -:   15:char buf1[6], buf2[6], buf3[4], buf4[4];
+        -:   16:int i;
+        -:   17:
+        1:   18:int foo(void) {
+        1:   19:  int ret = snprintf(buf1, sizeof buf1, "abcde");
+        1:   20:  ret += snprintf(buf2, sizeof buf2, "abcdef") * 16;
+       1*:   21:  ret += snprintf(buf3, sizeof buf3, "%s", i++ < 6 ? "abc" : "def") * 256;
+       1*:   22:  ret += snprintf(buf4, sizeof buf4, "%s", i++ > 10 ? "abcde" : "defgh") * 4096;
+        1:   23:  return ret;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  if (foo() != 5 + 6 * 16 + 3 * 256 + 5 * 4096)
+    #####:   28:    abort();
+        1:   29:  if (memcmp(buf1, "abcde", 6) != 0 || memcmp(buf2, "abcde", 6) != 0 ||
+        1:   30:      memcmp(buf3, "abc", 4) != 0 || memcmp(buf4, "def", 4) != 0 || i != 2)
+    #####:   31:    abort();
+        1:   32:  return 0;
+        -:   33:}

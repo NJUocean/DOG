@@ -1,0 +1,30 @@
+        -:    0:Source:1050.c
+        -:    0:Graph:1050.gcno
+        -:    0:Data:1050.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:int a, g;
+        -:    5:long b, f;
+        -:    6:short c, d, e;
+        -:    7:
+        1:    8:static void fn1() {
+        1:    9:  if (a) {
+    #####:   10:    long i = 5, j = b / i | c;
+    #####:   11:    int k = b % (d % i) & j;
+    #####:   12:    short l = ~f % (-d / j ^ -e), m = e << (d - l);
+    #####:   13:    if (k)
+    #####:   14:      m = d;
+    #####:   15:    i = d | (i & b);
+    #####:   16:    g = (c | ~f) % i + l;
+    #####:   17:    e = (c - f) & e;
+    #####:   18:    d = m;
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  b |= 1;
+        1:   24:  fn1();
+        1:   25:  return 0;
+        -:   26:}

@@ -1,0 +1,44 @@
+        -:    0:Source:4017.c
+        -:    0:Graph:4017.gcno
+        -:    0:Data:4017.gcda
+        -:    0:Runs:1
+        -:    1:/* PR bootstrap/88714 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int a, b, c;
+        -:    5:  int *d;
+        -:    6:};
+        -:    7:struct T {
+        -:    8:  int *e, *f, *g;
+        -:    9:} *t = 0;
+        -:   10:int *o = 0;
+        -:   11:
+        2:   12:__attribute__((noipa)) void bar(int *x, int y, int z, int w) {
+        2:   13:  if (w == -1) {
+        1:   14:    if (x != 0 || y != 0 || z != 0)
+    #####:   15:      __builtin_abort();
+        1:   16:  } else if (w != 0 || x != t->g || y != 0 || z != 12)
+    #####:   17:    __builtin_abort();
+        2:   18:}
+        -:   19:
+        1:   20:__attribute__((noipa)) void foo(struct S *x, struct S *y, int *z, int w) {
+        1:   21:  *o = w;
+        1:   22:  if (w)
+        1:   23:    bar(0, 0, 0, -1);
+        1:   24:  x->d = z;
+        1:   25:  if (y->d)
+        1:   26:    y->c = y->c + y->d[0];
+        1:   27:  bar(t->g, 0, y->c, 0);
+        1:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  int a[4] = {8, 9, 10, 11};
+        1:   32:  struct S s = {1, 2, 3, &a[0]};
+        1:   33:  struct T u = {0, 0, &a[3]};
+        1:   34:  o = &a[2];
+        1:   35:  t = &u;
+        1:   36:  foo(&s, &s, &a[1], 5);
+        1:   37:  if (s.c != 12 || s.d != &a[1])
+    #####:   38:    __builtin_abort();
+        1:   39:  return 0;
+        -:   40:}

@@ -1,0 +1,56 @@
+        -:    0:Source:3749.c
+        -:    0:Graph:3749.gcno
+        -:    0:Data:3749.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/51933 */
+        -:    2:
+        -:    3:static signed char v1;
+        -:    4:static unsigned char v2[256], v3[256];
+        -:    5:
+        2:    6:__attribute__((noclone, noinline)) void foo(void) {
+        -:    7:#if defined(__s390__) && !defined(__zarch__)
+        -:    8:  /* S/390 31 bit cannot deal with more than one literal pool
+        -:    9:     reference per insn.  */
+        -:   10:  asm volatile("" : : "g"(&v1) : "memory");
+        -:   11:  asm volatile("" : : "g"(&v2[0]));
+        -:   12:  asm volatile("" : : "g"(&v3[0]));
+        -:   13:#else
+        2:   14:  asm volatile("" : : "g"(&v1), "g"(&v2[0]), "g"(&v3[0]) : "memory");
+        -:   15:#endif
+        2:   16:}
+        -:   17:
+        1:   18:__attribute__((noclone, noinline)) int bar(const int x, const unsigned short *y,
+        -:   19:                                           char *z) {
+        -:   20:  int i;
+        -:   21:  unsigned short u;
+        1:   22:  if (!v1)
+        1:   23:    foo();
+       18:   24:  for (i = 0; i < x; i++) {
+       17:   25:    u = y[i];
+       17:   26:    z[i] = u < 0x0100 ? v2[u] : v3[u & 0xff];
+        -:   27:  }
+        1:   28:  z[x] = '\0';
+        1:   29:  return x;
+        -:   30:}
+        -:   31:
+        1:   32:int main(void) {
+        -:   33:  char buf[18];
+        -:   34:  unsigned short s[18];
+        1:   35:  unsigned char c[18] = "abcdefghijklmnopq";
+        -:   36:  int i;
+      257:   37:  for (i = 0; i < 256; i++) {
+      256:   38:    v2[i] = i;
+      256:   39:    v3[i] = i + 1;
+        -:   40:  }
+       19:   41:  for (i = 0; i < 18; i++)
+       18:   42:    s[i] = c[i];
+        1:   43:  s[5] |= 0x600;
+        1:   44:  s[6] |= 0x500;
+        1:   45:  s[11] |= 0x2000;
+        1:   46:  s[15] |= 0x500;
+        1:   47:  foo();
+        1:   48:  if (bar(17, s, buf) != 17 ||
+        1:   49:      __builtin_memcmp(buf, "abcdeghhijkmmnoqq", 18) != 0)
+    #####:   50:    __builtin_abort();
+        1:   51:  return 0;
+        -:   52:}

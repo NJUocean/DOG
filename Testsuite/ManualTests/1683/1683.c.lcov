@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |static int p[48], v;
+    4|       |
+    5|      1|int main() {
+    6|      1|  p[32] = 1;
+    7|     49|  for (int i = 48; i--;) {
+    8|     48|    if (!p[i])
+    9|     47|      continue;
+   10|      1|    if ((i & 7) > 2)
+   11|      0|      break;
+   12|      1|    v = i & 1;
+   13|      1|  }
+   14|      1|  if (v != 0)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+

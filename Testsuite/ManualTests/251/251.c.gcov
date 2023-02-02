@@ -1,0 +1,35 @@
+        -:    0:Source:251.c
+        -:    0:Graph:251.gcno
+        -:    0:Data:251.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* Tests we stringify without changing unprintable characts.
+        -:    3:
+        -:    4:   Andrew Pinski */
+        -:    5:
+        -:    6:extern int strcmp(const char *, const char *);
+        -:    7:#if DEBUG
+        -:    8:extern int puts(const char *);
+        -:    9:#else
+        -:   10:#define puts(X)
+        -:   11:#endif
+        -:   12:extern void abort(void);
+        -:   13:#define err(str)                                                               \
+        -:   14:  do {                                                                         \
+        -:   15:    puts(str);                                                                 \
+        -:   16:    abort();                                                                   \
+        -:   17:  } while (0)
+        -:   18:
+        -:   19:#define S(X) S2(X)
+        -:   20:#define S2(X) #X
+        -:   21:#define TAB "	" /* Note there is a tab character here. */
+        -:   22:
+        1:   23:int main(int argc, char *argv[]) {
+        -:   24:  /* The space before "bar" here is vital.  */
+        1:   25:  char a[] = S(S(TAB));
+        -:   26:
+        1:   27:  if (strcmp(a, "\"\\\"	\\\"\""))
+    #####:   28:    err("stringification caused octal");
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

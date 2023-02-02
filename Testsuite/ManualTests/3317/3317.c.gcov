@@ -1,0 +1,36 @@
+        -:    0:Source:3317.c
+        -:    0:Graph:3317.gcno
+        -:    0:Data:3317.gcda
+        -:    0:Runs:1
+        -:    1:/* "i" overflows in f().  Check that x[i] is not treated as a giv.  */
+        -:    2:#include <limits.h>
+        -:    3:
+        -:    4:#if CHAR_BIT == 8
+        -:    5:
+        1:    6:void f(unsigned int *x) {
+        -:    7:  unsigned char i;
+        -:    8:  int j;
+        -:    9:
+        1:   10:  i = 0x10;
+       17:   11:  for (j = 0; j < 0x10; j++) {
+       16:   12:    i += 0xe8;
+       16:   13:    x[i] = 0;
+       16:   14:    i -= 0xe7;
+        -:   15:  }
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  unsigned int x[256];
+        -:   20:  int i;
+        -:   21:
+      257:   22:  for (i = 0; i < 256; i++)
+      256:   23:    x[i] = 1;
+        1:   24:  f(x);
+      257:   25:  for (i = 0; i < 256; i++)
+      256:   26:    if (x[i] != (i >= 0x08 && i < 0xf8))
+    #####:   27:      abort();
+        1:   28:  exit(0);
+        -:   29:}
+        -:   30:#else
+        -:   31:int main() { exit(0); }
+        -:   32:#endif

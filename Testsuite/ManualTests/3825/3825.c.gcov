@@ -1,0 +1,21 @@
+        -:    0:Source:3825.c
+        -:    0:Graph:3825.gcno
+        -:    0:Data:3825.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-xfail-if "ptxas crashes" { nvptx-*-* } { "*" } { "-O0" "-Os" } } */
+        -:    2:
+        -:    3:int a = 1, b, d;
+        -:    4:short e;
+        -:    5:
+        1:    6:int main() {
+       1*:    7:  for (; b; b++)
+        -:    8:    ;
+        1:    9:  short f = a;
+        1:   10:  int g = 15;
+       1*:   11:  e = f ? f : 1 << g;
+        1:   12:  int h = e;
+       1*:   13:  d = h == 83647 ? 0 : h;
+        1:   14:  if (d != 1)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

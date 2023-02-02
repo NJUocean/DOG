@@ -1,0 +1,59 @@
+        -:    0:Source:4033.c
+        -:    0:Graph:4033.gcno
+        -:    0:Data:4033.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/92618 */
+        -:    2:
+        -:    3:typedef long long __m128i
+        -:    4:    __attribute__((__may_alias__, __vector_size__(2 * sizeof(long long))));
+        -:    5:
+        -:    6:double a[4];
+        -:    7:unsigned long long b[4];
+        -:    8:
+        2:    9:__attribute__((noipa)) __m128i bar(void) {
+        -:   10:  static int cnt;
+        2:   11:  cnt += 2;
+        2:   12:  return (__m128i){cnt, cnt + 1};
+        -:   13:}
+        -:   14:
+        -:   15:#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+        -:   16:typedef double __m128d
+        -:   17:    __attribute__((__may_alias__, __vector_size__(2 * sizeof(double))));
+        -:   18:
+        2:   19:__attribute__((noipa)) __m128i qux(void) {
+        -:   20:  static double cnt;
+        2:   21:  cnt += 2.0;
+        2:   22:  return (__m128i)(__m128d){cnt, cnt + 1.0};
+        -:   23:}
+        -:   24:#endif
+        -:   25:
+        1:   26:void foo(unsigned long long *x) {
+        1:   27:  __m128i c = bar();
+        1:   28:  __m128i d = bar();
+        1:   29:  *(__m128i *)&b[0] = c;
+        1:   30:  *(__m128i *)&b[2] = d;
+        1:   31:  *x = b[0] + b[1] + b[2] + b[3];
+        1:   32:}
+        -:   33:
+        1:   34:void baz(double *x) {
+        -:   35:#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+        1:   36:  __m128i c = qux();
+        1:   37:  __m128i d = qux();
+        1:   38:  *(__m128i *)&a[0] = c;
+        1:   39:  *(__m128i *)&a[2] = d;
+        1:   40:  *x = a[0] + a[1] + a[2] + a[3];
+        -:   41:#endif
+        1:   42:}
+        -:   43:
+        1:   44:int main() {
+        1:   45:  unsigned long long c = 0;
+        1:   46:  foo(&c);
+        1:   47:  if (c != 2 + 3 + 4 + 5)
+    #####:   48:    __builtin_abort();
+        -:   49:#if __SIZEOF_LONG_LONG__ == __SIZEOF_DOUBLE__
+        1:   50:  double d = 0.0;
+        1:   51:  baz(&d);
+        1:   52:  if (d != 2.0 + 3.0 + 4.0 + 5.0)
+    #####:   53:    __builtin_abort();
+        -:   54:#endif
+        -:   55:}

@@ -1,0 +1,20 @@
+    1|      1|main() {
+    2|      1|  union {
+    3|      1|    double d;
+    4|      1|    unsigned short i[sizeof(double) / sizeof(short)];
+    5|      1|  } u;
+    6|      1|  int a = 0;
+    7|      1|  int b = -5;
+    8|      1|  int j;
+    9|      1|
+   10|      1|  u.d = (double)a / b;
+   11|      1|
+   12|      1|  /* Look for the right pattern, but be sloppy since
+   13|      1|     we don't know the byte order.  */
+   14|      4|  for (j = 0; j < sizeof(double) / sizeof(short); j++) {
+   15|      4|    if (u.i[j] == 0x8000)
+   16|      1|      exit(0);
+   17|      4|  }
+   18|      1|  abort();
+   19|      1|}
+

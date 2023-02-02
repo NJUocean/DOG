@@ -1,0 +1,15 @@
+        -:    0:Source:2057.c
+        -:    0:Graph:2057.gcno
+        -:    0:Data:2057.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-reassoc1" } */
+        -:    3:
+        1:    4:int main(int a, int b, int c, int d, int e, int f, int g, int h) {
+        -:    5:  /* e & ~e -> 0 */
+        1:    6:  int i = (a & 9) & (c & d);
+        1:    7:  int j = (~e & d) & (~c & e);
+        1:    8:  e = i & j;
+        1:    9:  return e;
+        -:   10:}
+        -:   11:/* { dg-final { scan-tree-dump-times "= 0" 1 "reassoc1"} } */

@@ -1,0 +1,24 @@
+        -:    0:Source:3661.c
+        -:    0:Graph:3661.gcno
+        -:    0:Data:3661.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  _Complex double a;
+        -:    3:  _Complex double b;
+        -:    4:} Scf10;
+        -:    5:
+        -:    6:Scf10 g1s;
+        -:    7:
+        1:    8:void check(Scf10 x, _Complex double y) {
+        1:    9:  if (x.a != y)
+    #####:   10:    __builtin_abort();
+        1:   11:}
+        -:   12:
+        1:   13:void init(Scf10 *p, _Complex double y) { p->a = y; }
+        -:   14:
+        1:   15:int main() {
+        1:   16:  init(&g1s, (_Complex double)1);
+        1:   17:  check(g1s, (_Complex double)1);
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

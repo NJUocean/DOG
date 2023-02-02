@@ -1,0 +1,31 @@
+    1|      1|foo(int *bar) { *bar = 8; }
+    2|       |
+    3|      1|bugger() {
+    4|      1|  int oldDepth, newDepth;
+    5|      1|
+    6|      1|  foo(&oldDepth);
+    7|      1|
+    8|      1|  switch (oldDepth) {
+    9|      1|  case 8:
+   10|      1|  case 500:
+   11|      1|    newDepth = 8;
+   12|      1|    break;
+   13|      1|
+   14|      1|  case 5000:
+   15|      0|    newDepth = 500;
+   16|      0|    break;
+   17|      1|
+   18|      1|  default:
+   19|      0|    newDepth = 17;
+   20|      0|    break;
+   21|      1|  }
+   22|      1|
+   23|      1|  return newDepth - oldDepth;
+   24|      1|}
+   25|       |
+   26|      1|main() {
+   27|      1|  if (bugger() != 0)
+   28|      0|    abort();
+   29|      1|  exit(0);
+   30|      1|}
+

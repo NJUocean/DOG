@@ -1,0 +1,18 @@
+    1|       |/* PR tree-optimization/82388 */
+    2|       |
+    3|       |struct A {
+    4|       |  int b;
+    5|       |  int c;
+    6|       |  int d;
+    7|       |} e;
+    8|       |
+    9|      1|struct A foo(void) {
+   10|      1|  struct A h[30] = {{0, 0, 0}};
+   11|      1|  return h[29];
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  e = foo();
+   16|      1|  return e.b;
+   17|      1|}
+

@@ -1,0 +1,34 @@
+        -:    0:Source:990.c
+        -:    0:Graph:990.gcno
+        -:    0:Data:990.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Og -fif-conversion -flive-range-shrinkage -fpeel-loops
+        -:    3: * -frerun-cse-after-loop" } */
+        -:    4:
+       16:    5:static inline int foo(int *x, int y) {
+       16:    6:  int z = *x;
+       26:    7:  while (y > z)
+       10:    8:    z *= 2;
+       16:    9:  return z;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int i;
+       17:   14:  for (i = 1; i < 17; i++) {
+        -:   15:    int j;
+        -:   16:    int k;
+       16:   17:    j = foo(&i, 7);
+       16:   18:    if (i >= 7)
+       10:   19:      k = i;
+        6:   20:    else if (i >= 4)
+        3:   21:      k = 8 + (i - 4) * 2;
+        3:   22:    else if (i == 3)
+        1:   23:      k = 12;
+        -:   24:    else
+        2:   25:      k = 8;
+       16:   26:    if (j != k)
+    #####:   27:      __builtin_abort();
+        -:   28:  }
+        1:   29:  return 0;
+        -:   30:}

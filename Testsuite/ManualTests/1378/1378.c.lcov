@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      6|#define LEN 4
+    6|       |
+    7|      1|static inline void unpack(int array[LEN]) {
+    8|      1|  int ii, val;
+    9|      1|  val = 1;
+   10|      5|  for (ii = 0; ii < LEN; ii++) {
+   11|      4|    array[ii] = val % 2;
+   12|      4|    val = val / 2;
+   13|      4|  }
+   14|      1|}
+   15|       |
+   16|      1|static inline int pack(int array[LEN]) {
+   17|      1|  int ans, ii;
+   18|      1|  ans = 0;
+   19|      5|  for (ii = LEN - 1; ii >= 0; ii--) {
+   20|      4|    ans = 2 * ans + array[ii];
+   21|      4|  }
+   22|      1|  return ans;
+   23|      1|}
+   24|       |
+   25|      1|int __attribute__((noinline)) foo() {
+   26|      1|  int temp, ans;
+   27|      1|  int array[LEN];
+   28|      1|  unpack(array);
+   29|      1|  temp = array[0];
+   30|      1|  array[0] = array[2];
+   31|      1|  array[2] = temp;
+   32|      1|  ans = pack(array);
+   33|      1|  return ans;
+   34|      1|}
+   35|       |
+   36|      1|int main(void) {
+   37|      1|  int val;
+   38|      1|  val = foo();
+   39|      1|  if (val != 4)
+   40|      0|    abort();
+   41|      1|  return 0;
+   42|      1|}
+

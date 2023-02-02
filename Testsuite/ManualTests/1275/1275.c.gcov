@@ -1,0 +1,25 @@
+        -:    0:Source:1275.c
+        -:    0:Graph:1275.gcno
+        -:    0:Data:1275.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:union U {
+        -:    3:  const int a;
+        -:    4:  unsigned b : 24;
+        -:    5:};
+        -:    6:
+        -:    7:static union U u = {0x12345678};
+        -:    8:
+        -:    9:/* Constant folding used to fail to account for endianness when folding a
+        -:   10:   union.  */
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:#ifdef __BYTE_ORDER__
+        -:   14:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   15:  return u.b - 0x345678;
+        -:   16:#else
+        -:   17:  return u.b - 0x123456;
+        -:   18:#endif
+        -:   19:#endif
+        -:   20:  return 0;
+        -:   21:}

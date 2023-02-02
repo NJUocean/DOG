@@ -1,0 +1,28 @@
+    1|       |/* PR sanitizer/60613 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+    4|       |
+    5|       |long long y;
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) long long foo(long long x) {
+    8|      1|  asm("");
+    9|      1|  if (x >= 0 || x < -2040)
+   10|      0|    return 23;
+   11|      1|  x += 2040;
+   12|      1|  return x - y;
+   13|      1|}
+   14|       |
+   15|      1|__attribute__((noinline, noclone)) long long bar(long long x) {
+   16|      1|  asm("");
+   17|      1|  return 8LL - x;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  y = 1;
+   22|      1|  if (foo(8 - 2040) != 8 - 1)
+   23|      0|    __builtin_abort();
+   24|      1|  if (bar(1) != 8 - 1)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

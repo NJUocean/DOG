@@ -1,0 +1,16 @@
+    1|       |typedef struct {
+    2|       |  short f : 3, g : 3, h : 10;
+    3|       |} small;
+    4|       |
+    5|       |struct {
+    6|       |  int i;
+    7|       |  small s[10];
+    8|       |} x;
+    9|       |
+   10|      1|main() {
+   11|      1|  int i;
+   12|     11|  for (i = 0; i < 10; i++)
+   13|     10|    x.s[i].f = 0;
+   14|      1|  exit(0);
+   15|      1|}
+

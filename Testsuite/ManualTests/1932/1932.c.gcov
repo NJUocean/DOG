@@ -1,0 +1,23 @@
+        -:    0:Source:1932.c
+        -:    0:Graph:1932.gcno
+        -:    0:Data:1932.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  union {
+        -:    3:    double d;
+        -:    4:    unsigned short i[sizeof(double) / sizeof(short)];
+        -:    5:  } u;
+        1:    6:  int a = 0;
+        1:    7:  int b = -5;
+        -:    8:  int j;
+        -:    9:
+        1:   10:  u.d = (double)a / b;
+        -:   11:
+        -:   12:  /* Look for the right pattern, but be sloppy since
+        -:   13:     we don't know the byte order.  */
+        4:   14:  for (j = 0; j < sizeof(double) / sizeof(short); j++) {
+        4:   15:    if (u.i[j] == 0x8000)
+        1:   16:      exit(0);
+        -:   17:  }
+    #####:   18:  abort();
+        -:   19:}

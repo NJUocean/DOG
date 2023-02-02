@@ -1,0 +1,29 @@
+    1|       |/* PR sanitizer/71498 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=bounds -Wno-array-bounds" } */
+    4|       |
+    5|       |struct S {
+    6|       |  int a[100];
+    7|       |  int b, c;
+    8|       |} s;
+    9|       |
+   10|      1|__attribute__((noinline, noclone)) int foo(int x) { return s.a[x]; }
+   11|       |
+   12|      1|__attribute__((noinline, noclone)) int bar(int x) {
+   13|      1|  static int *d = &s.a[99];
+   14|      1|  asm volatile("" : : "r"(&d));
+   15|      1|  return s.a[x];
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  volatile int a = 0;
+   20|      1|  a += foo(100);
+   21|      1|  a += bar(100);
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-output "index 100 out of bounds for type 'int
+   26|       | * \\\[100\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+   27|       |/* { dg-output "\[^\n\r]*index 100 out of bounds for type 'int
+   28|       | * \\\[100\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+

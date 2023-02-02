@@ -1,0 +1,57 @@
+        -:    0:Source:474.c
+        -:    0:Graph:474.gcno
+        -:    0:Data:474.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define N 200
+        -:    9:
+        -:   10:unsigned int A[N][N], B[N][N], C[N][N];
+        -:   11:
+        1:   12:static void __attribute__((noinline)) matmult(void) {
+        -:   13:  int i, j, k;
+        -:   14:
+      201:   15:  for (i = 0; i < N; i++)
+    40200:   16:    for (j = 0; j < N; j++)
+    40000:   17:      A[i][j] = 0;
+        -:   18:
+        -:   19:  /* Loops J and K should be interchanged.  */
+      201:   20:  for (i = 0; i < N; i++)
+    40200:   21:    for (j = 0; j < N; j++)
+  8040000:   22:      for (k = 0; k < N; k++)
+  8000000:   23:        A[i][j] += B[i][k] * C[k][j];
+        1:   24:}
+        -:   25:
+        -:   26:extern void abort();
+        -:   27:
+        1:   28:int main(void) {
+        -:   29:  int i, j;
+        1:   30:  unsigned res = 0;
+        -:   31:
+      201:   32:  for (i = 0; i < N; i++)
+    40200:   33:    for (j = 0; j < N; j++) {
+    40000:   34:      B[i][j] = j;
+    40000:   35:      C[i][j] = i;
+        -:   36:    }
+        -:   37:
+        1:   38:  matmult();
+        -:   39:
+      201:   40:  for (i = 0; i < N; i++)
+      200:   41:    res += A[i][i];
+        -:   42:
+        -:   43:#if DEBUG
+        -:   44:  fprintf(stderr, "res = %d \n", res);
+        -:   45:#endif
+        -:   46:
+        1:   47:  if (res != 529340000)
+    #####:   48:    abort();
+        -:   49:
+        1:   50:  return 0;
+        -:   51:}
+        -:   52:
+        -:   53:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

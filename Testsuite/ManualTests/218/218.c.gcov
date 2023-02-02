@@ -1,0 +1,31 @@
+        -:    0:Source:218.c
+        -:    0:Graph:218.gcno
+        -:    0:Data:218.gcda
+        -:    0:Runs:1
+        1:    1:unsigned f() {
+        -:    2:  long long l2;
+        -:    3:  unsigned short us;
+        -:    4:  unsigned long long ul;
+        -:    5:  short s2;
+        -:    6:
+        1:    7:  ul = us = l2 = s2 = -1;
+        1:    8:  return ul;
+        -:    9:}
+        -:   10:
+        1:   11:unsigned long long g() {
+        -:   12:  long long l2;
+        -:   13:  unsigned short us;
+        -:   14:  unsigned long long ul;
+        -:   15:  short s2;
+        -:   16:
+        1:   17:  ul = us = l2 = s2 = -1;
+        1:   18:  return ul;
+        -:   19:}
+        -:   20:
+        1:   21:main() {
+        1:   22:  if (f() != (unsigned short)-1)
+    #####:   23:    abort();
+        1:   24:  if (g() != (unsigned short)-1)
+    #####:   25:    abort();
+        1:   26:  exit(0);
+        -:   27:}

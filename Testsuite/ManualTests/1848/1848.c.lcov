@@ -1,0 +1,27 @@
+    1|       |/* { dg-options "-O2 -fdump-rtl-expand -mtune=core2" } */
+    2|       |/* { dg-skip-if "" { ! { i?86-*-* x86_64-*-* } } } */
+    3|       |
+    4|       |long buffer1[128], buffer2[128];
+    5|       |char *x;
+    6|       |
+    7|  10.0k|void foo(long *r) {
+    8|  10.0k|  x = (char *)r;
+    9|  10.0k|  asm volatile("" ::: "memory");
+   10|  10.0k|}
+   11|       |
+   12|  10.0k|void __attribute__((noinline)) compute() {
+   13|  10.0k|  volatile int n = 24;
+   14|  10.0k|  __builtin_memcpy(buffer1, buffer2, n);
+   15|  10.0k|  foo(&buffer1[0]);
+   16|  10.0k|}
+   17|       |
+   18|      1|int main() {
+   19|  10.0k|  for (unsigned i = 0; i < 10000; i++)
+   20|  10.0k|    compute();
+   21|      1|
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final-use-not-autofdo { scan-rtl-dump "Selected stringop expansion
+   26|       | * strategy: rep_byte" "expand" } } */
+

@@ -1,0 +1,38 @@
+    1|       |/* This tests an insn length of sign extension on h8300 port.  */
+    2|       |
+    3|       |extern void exit(int);
+    4|       |
+    5|       |volatile signed char *q;
+    6|       |volatile signed int n;
+    7|       |
+    8|      0|void foo(void) {
+    9|      0|  signed char *p;
+   10|      0|
+   11|      0|  for (;;) {
+   12|      0|    p = (signed char *)q;
+   13|      0|    n = p[2];
+   14|      0|    p = (signed char *)q;
+   15|      0|    n = p[2];
+   16|      0|    p = (signed char *)q;
+   17|      0|    n = p[2];
+   18|      0|    p = (signed char *)q;
+   19|      0|    n = p[2];
+   20|      0|    p = (signed char *)q;
+   21|      0|    n = p[2];
+   22|      0|    p = (signed char *)q;
+   23|      0|    n = p[2];
+   24|      0|    p = (signed char *)q;
+   25|      0|    n = p[2];
+   26|      0|    p = (signed char *)q;
+   27|      0|    n = p[2];
+   28|      0|    p = (signed char *)q;
+   29|      0|    n = p[2];
+   30|      0|    p = (signed char *)q;
+   31|      0|    n = p[2];
+   32|      0|    p = (signed char *)q;
+   33|      0|    n = p[2];
+   34|      0|  }
+   35|      0|}
+   36|       |
+   37|      1|int main() { exit(0); }
+

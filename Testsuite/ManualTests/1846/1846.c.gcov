@@ -1,0 +1,18 @@
+        -:    0:Source:1846.c
+        -:    0:Graph:1846.gcno
+        -:    0:Data:1846.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-tree-tailc -fdump-tree-optimized" } */
+      100:    2:__attribute__((noinline)) int factorial(int x) {
+      100:    3:  if (x == 1)
+        1:    4:    return 1;
+        -:    5:  else
+       99:    6:    return x * factorial(--x);
+        -:    7:}
+        -:    8:int gbl;
+        1:    9:int main() {
+        1:   10:  gbl = factorial(100);
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "tailc"} } */
+        -:   14:/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */

@@ -1,0 +1,24 @@
+        -:    0:Source:2651.c
+        -:    0:Graph:2651.gcno
+        -:    0:Data:2651.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target {! ia32 } } } */
+        -:    2:/* { dg-options "-O2 -fdump-rtl-ree" } */
+        -:    3:
+        -:    4:#include <stdint.h>
+        -:    5:
+        -:    6:typedef int (*inst_t)(int64_t rdi, int64_t rsi, int64_t rdx);
+        -:    7:
+        -:    8:int16_t code[256];
+        -:    9:inst_t dispatch[256];
+        -:   10:
+    #####:   11:void an_inst(int64_t rdi, int64_t rsi, int64_t rdx) {
+    #####:   12:  rdx = code[rdx];
+    #####:   13:  uint8_t inst = (uint8_t)rdx;
+    #####:   14:  rdx >>= 8;
+    #####:   15:  dispatch[inst](rdi, rsi, rdx);
+    #####:   16:}
+        -:   17:
+        1:   18:int main(void) { return 0; }
+        -:   19:
+        -:   20:/* { dg-final { scan-rtl-dump "copy needed" "ree" } } */

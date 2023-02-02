@@ -1,0 +1,47 @@
+        -:    0:Source:3216.c
+        -:    0:Graph:3216.gcno
+        -:    0:Data:3216.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-additional-options "-Wuninitialized" } */
+        -:    3:/* { dg-excess-errors "PR70392" { xfail c++ } } */
+        -:    4:
+        -:    5:#include <stdbool.h>
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  int l, l2, l3, l4;
+        -:    9:  bool b, b2, b3, b4;
+        -:   10:  int i, i2;
+        -:   11:
+        -:   12:#pragma acc parallel if (l) /* { dg-warning "is used uninitialized in this     \
+        -:   13:                               function" } */
+        -:   14:  ;
+        -:   15:
+        -:   16:#pragma acc parallel if (b) /* { dg-warning "is used uninitialized in this     \
+        -:   17:                               function" "" { xfail c++ } } */
+        -:   18:  ;
+        -:   19:
+        -:   20:#pragma acc kernels if (l2) /* { dg-warning "is used uninitialized in this     \
+        -:   21:                               function" } */
+        -:   22:  ;
+        -:   23:
+        -:   24:#pragma acc kernels if (b2) /* { dg-warning "is used uninitialized in this     \
+        -:   25:                               function" "" { xfail c++ } } */
+        -:   26:  ;
+        -:   27:
+        -:   28:#pragma acc                                                                    \
+        -:   29:    data if (l3) /* { dg-warning "is used uninitialized in this function" } */
+        -:   30:  ;
+        -:   31:
+        -:   32:#pragma acc data if (b3) /* { dg-warning "is used uninitialized in this        \
+        -:   33:                            function" "" { xfail c++ } } */
+        -:   34:  ;
+        -:   35:
+        -:   36:#pragma acc update if (l4)                                                     \
+        -:   37:    self(i) /* { dg-warning "is used uninitialized in this function" } */
+        -:   38:  ;
+        -:   39:
+        -:   40:#pragma acc update if (b4) self(i2) /* { dg-warning "is used uninitialized in  \
+        -:   41:                                       this function" "" { xfail c++ } } */
+        -:   42:  ;
+        -:   43:}

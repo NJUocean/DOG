@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|static inline void foo(int *__restrict pr) { *pr = 1; }
+    6|       |
+    7|      1|int __attribute__((noinline, noclone)) bar(int *__restrict qr) {
+    8|      1|  *qr = 0;
+    9|      1|  foo(qr);
+   10|      1|  return *qr;
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  int i;
+   15|      1|  if (bar(&i) != 1)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

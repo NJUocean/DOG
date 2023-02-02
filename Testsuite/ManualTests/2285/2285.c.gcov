@@ -1,0 +1,35 @@
+        -:    0:Source:2285.c
+        -:    0:Graph:2285.gcno
+        -:    0:Data:2285.gcda
+        -:    0:Runs:1
+        -:    1:/* PR opt/7130 */
+        -:    2:#define TYPE long
+        -:    3:
+        1:    4:void scale(TYPE *alpha, TYPE *x, int n) {
+        -:    5:  int i, ix;
+        -:    6:
+        1:    7:  if (*alpha != 1)
+        6:    8:    for (i = 0, ix = 0; i < n; i++, ix += 2) {
+        -:    9:      TYPE tmpr, tmpi;
+        5:   10:      tmpr = *alpha * x[ix];
+        5:   11:      tmpi = *alpha * x[ix + 1];
+        5:   12:      x[ix] = tmpr;
+        5:   13:      x[ix + 1] = tmpi;
+        -:   14:    }
+        1:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        -:   18:  int i;
+        -:   19:  TYPE x[10];
+        1:   20:  TYPE alpha = 2;
+        -:   21:
+       11:   22:  for (i = 0; i < 10; i++)
+       10:   23:    x[i] = i;
+        -:   24:
+        1:   25:  scale(&alpha, x, 5);
+        -:   26:
+        1:   27:  if (x[9] != 18)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}

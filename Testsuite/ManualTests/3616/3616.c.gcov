@@ -1,0 +1,20 @@
+        -:    0:Source:3616.c
+        -:    0:Graph:3616.gcno
+        -:    0:Data:3616.gcda
+        -:    0:Runs:1
+        -:    1:unsigned int a[0x1000];
+        -:    2:extern const unsigned long v;
+        -:    3:
+        1:    4:main() {
+        1:    5:  f(v);
+        1:    6:  f(v);
+        1:    7:  exit(0);
+        -:    8:}
+        -:    9:
+        2:   10:f(a) unsigned long a;
+        -:   11:{
+        2:   12:  if (a != 0xdeadbeefL)
+    #####:   13:    abort();
+        2:   14:}
+        -:   15:
+        -:   16:const unsigned long v = 0xdeadbeefL;

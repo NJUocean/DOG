@@ -1,0 +1,39 @@
+        -:    0:Source:2995.c
+        -:    0:Graph:2995.gcno
+        -:    0:Data:2995.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/11018 */
+        -:    2:/* Originator: <partain@dcs.gla.ac.uk> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-require-effective-target ultrasparc_hw } */
+        -:    6:/* { dg-options "-O2 -mcpu=ultrasparc" } */
+        -:    7:
+        -:    8:/* This used to fail on 32-bit Ultrasparc because
+        -:    9:   of broken DImode shift patterns.  */
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        -:   13:typedef unsigned long long uint64_t;
+        -:   14:typedef unsigned int size_t;
+        -:   15:
+        1:   16:void to_octal(uint64_t value, char *where, size_t size) {
+        1:   17:  uint64_t v = value;
+        1:   18:  size_t i = size;
+        -:   19:
+        -:   20:  do {
+        6:   21:    where[--i] = '0' + (v & ((1 << 3) - 1));
+        6:   22:    v >>= 3;
+        6:   23:  } while (i);
+        1:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        -:   27:  char buf[8];
+        -:   28:
+        1:   29:  to_octal(010644, buf, 6);
+        -:   30:
+        1:   31:  if (buf[1] != '1')
+    #####:   32:    abort();
+        -:   33:
+        1:   34:  return 0;
+        -:   35:}

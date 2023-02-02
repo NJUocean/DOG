@@ -1,0 +1,40 @@
+    1|       |/* Copyright (C) 2004  Free Software Foundation.
+    2|       |
+    3|       |   Verify that built-in ctype function attributes are correctly set by
+    4|       |   the compiler.
+    5|       |
+    6|       |   Written by Kaveh Ghazi, 2004-03-23.  */
+    7|       |
+    8|       |/* { dg-do link } */
+    9|       |
+   10|      0|void test(int i) {
+   11|      0|  /* All of these ctype functions should be const/pure and thus
+   12|      0|     eliminated.  */
+   13|      0|#define TEST_CTYPE(FN)                                                         \
+   14|      0|  extern int FN(int);                                                          \
+   15|      0|  extern void link_failure_##FN(void);                                         \
+   16|      0|  if (FN(i) != FN(i))                                                          \
+   17|      0|  link_failure_##FN()
+   18|      0|
+   19|       |#ifdef __OPTIMIZE__
+   20|       |  TEST_CTYPE(isalnum);
+   21|       |  TEST_CTYPE(isalpha);
+   22|       |  TEST_CTYPE(isascii);
+   23|       |  TEST_CTYPE(isblank);
+   24|       |  TEST_CTYPE(iscntrl);
+   25|       |  TEST_CTYPE(isdigit);
+   26|       |  TEST_CTYPE(isgraph);
+   27|       |  TEST_CTYPE(islower);
+   28|       |  TEST_CTYPE(isprint);
+   29|       |  TEST_CTYPE(ispunct);
+   30|       |  TEST_CTYPE(isspace);
+   31|       |  TEST_CTYPE(isupper);
+   32|       |  TEST_CTYPE(isxdigit);
+   33|       |  TEST_CTYPE(toascii);
+   34|       |  TEST_CTYPE(tolower);
+   35|       |  TEST_CTYPE(toupper);
+   36|       |#endif /* __OPTIMIZE__ */
+   37|      0|}
+   38|       |
+   39|      1|int main(void) { return 0; }
+

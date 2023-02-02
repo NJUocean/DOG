@@ -1,0 +1,23 @@
+        -:    0:Source:2446.c
+        -:    0:Graph:2446.gcno
+        -:    0:Data:2446.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:struct baz {
+        -:    5:  int a, b, c;
+        -:    6:};
+        -:    7:
+        1:    8:void foo(int a, int b, int c) {
+        1:    9:  if (a != 4)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:void bar(struct baz x, int b, int c) { foo(x.b, b, c); }
+        -:   14:
+        1:   15:int main() {
+        1:   16:  struct baz x = {3, 4, 5};
+        1:   17:  bar(x, 1, 2);
+        1:   18:  exit(0);
+        -:   19:}

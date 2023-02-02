@@ -1,0 +1,44 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Test the support for char32_t character constants. */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    5|       |
+    6|       |typedef __CHAR32_TYPE__ char32_t;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |char32_t c0 = U'a';
+   11|       |char32_t c1 = U'\0';
+   12|       |char32_t c2 = U'\u0024';
+   13|       |char32_t c3 = U'\u2029';
+   14|       |char32_t c4 = U'\U00064321';
+   15|       |
+   16|      1|#define A 0x00000061
+   17|      1|#define D 0x00000024
+   18|      1|#define X 0x00002029
+   19|      1|#define Y 0x00064321
+   20|       |
+   21|      1|int main() {
+   22|      1|  if (sizeof(U'a') != sizeof(char32_t))
+   23|      0|    abort();
+   24|      1|  if (sizeof(U'\0') != sizeof(char32_t))
+   25|      0|    abort();
+   26|      1|  if (sizeof(U'\u0024') != sizeof(char32_t))
+   27|      0|    abort();
+   28|      1|  if (sizeof(U'\u2029') != sizeof(char32_t))
+   29|      0|    abort();
+   30|      1|  if (sizeof(U'\U00064321') != sizeof(char32_t))
+   31|      0|    abort();
+   32|      1|
+   33|      1|  if (c0 != A)
+   34|      1|    abort();
+   35|      1|  if (c1 != 0x0000)
+   36|      0|    abort();
+   37|      1|  if (c2 != D)
+   38|      1|    abort();
+   39|      1|  if (c3 != X)
+   40|      1|    abort();
+   41|      1|  if (c4 != Y)
+   42|      1|    abort();
+   43|      1|}
+

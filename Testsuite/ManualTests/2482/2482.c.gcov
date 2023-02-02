@@ -1,0 +1,29 @@
+        -:    0:Source:2482.c
+        -:    0:Graph:2482.gcno
+        -:    0:Data:2482.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:extern void abort(void);
+        -:    3:extern void link_error(void);
+        -:    4:
+        -:    5:static int ok = 0;
+        -:    6:
+        1:    7:void bar(void) { ok = 1; }
+        -:    8:
+        1:    9:void foo(int x) {
+        1:   10:  switch (x) {
+    #####:   11:  case 0:
+        -:   12:    if (0) {
+        -:   13:      link_error();
+        1:   14:    case 1:
+        1:   15:      bar();
+        -:   16:    }
+        -:   17:  }
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  foo(1);
+        1:   22:  if (!ok)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

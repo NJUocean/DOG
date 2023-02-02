@@ -1,0 +1,15 @@
+        -:    0:Source:2128.c
+        -:    0:Graph:2128.gcno
+        -:    0:Data:2128.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/95810 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int x = -__INT_MAX__ - 1;
+        1:    7:  x = (x <= 0 ? x : -x);
+        1:    8:  if (x != -__INT_MAX__ - 1)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

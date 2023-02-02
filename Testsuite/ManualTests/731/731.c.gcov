@@ -1,0 +1,32 @@
+        -:    0:Source:731.c
+        -:    0:Graph:731.gcno
+        -:    0:Data:731.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-omit-frame-pointer" } */
+        -:    3:
+        1:    4:int __attribute__((noipa)) foo(int i) {
+        -:    5:  int a;
+        -:    6:
+        1:    7:  void __attribute__((noipa)) nested2(int i) { a = i; }
+        -:    8:
+        1:    9:  void __attribute__((noipa)) nested1(int i) {
+        -:   10:    int b[32];
+        -:   11:
+       33:   12:    for (int j = 0; j < 32; j++)
+       32:   13:      b[j] = i + j;
+        -:   14:
+        1:   15:    nested2(b[i]);
+        1:   16:  }
+        -:   17:
+        1:   18:  nested1(i);
+        -:   19:
+        1:   20:  return a;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  if (foo(4) != 8)
+    #####:   25:    __builtin_abort();
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}

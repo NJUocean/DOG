@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target ia32 } */
+    3|       |/* { dg-options "-O1 -foptimize-sibling-calls" } */
+    4|       |
+    5|       |void abort(void);
+    6|       |
+    7|       |struct S {
+    8|       |  void(__attribute__((__stdcall__)) * f)(struct S *);
+    9|       |  int i;
+   10|       |};
+   11|       |
+   12|      2|void __attribute__((__stdcall__)) foo(struct S *s) { s->i++; }
+   13|       |
+   14|      1|void __attribute__((__stdcall__)) bar(struct S *s) {
+   15|      1|  foo(s);
+   16|      1|  s->f(s);
+   17|      1|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  struct S s = {foo, 0};
+   21|      1|
+   22|      1|  bar(&s);
+   23|      1|  if (s.i != 2)
+   24|      0|    abort();
+   25|      1|
+   26|      1|  return 0;
+   27|      1|}
+

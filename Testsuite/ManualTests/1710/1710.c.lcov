@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |int one = 1;
+    4|       |
+    5|      1|char __attribute__((noipa)) foo(char v) {
+    6|      1|  int modec;
+    7|      1|
+    8|      1|  if (one) {
+    9|      1|    modec = ((v < 'A' || v > 'Z') ? v : v + ('a' - 'A'));
+   10|      1|    if (modec != 't' && modec != 'c' && modec != 'g')
+   11|      0|      modec = 0;
+   12|      1|  } else
+   13|      0|    modec = 'g';
+   14|      1|
+   15|      1|  return modec;
+   16|      1|}
+   17|       |
+   18|      1|int main(int argc, char **argv) {
+   19|      1|  char c = 't';
+   20|      1|  int r = foo(c);
+   21|      1|
+   22|      1|  if (r != c)
+   23|      0|    __builtin_abort();
+   24|      1|
+   25|      1|  return 0;
+   26|      1|}
+

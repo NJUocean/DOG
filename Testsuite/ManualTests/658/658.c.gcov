@@ -1,0 +1,55 @@
+        -:    0:Source:658.c
+        -:    0:Graph:658.gcno
+        -:    0:Data:658.gcda
+        -:    0:Runs:1
+        -:    1:/* Test division by const int generates only one shift.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fdump-rtl-combine-all" } */
+        -:    4:/* { dg-options "-O2 -fdump-rtl-combine-all -mtune=cortex-a53" { target
+        -:    5: * aarch64*-*-* } } */
+        -:    6:/* { dg-require-effective-target int32plus } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:#define NOINLINE __attribute__((noinline))
+        -:   11:
+        2:   12:static NOINLINE int f1(unsigned int n) { return n % 0x33; }
+        -:   13:
+        2:   14:static NOINLINE int f2(unsigned int n) { return n % 0x12; }
+        -:   15:
+        1:   16:int main() {
+        1:   17:  int a = 0xaaaaaaaa;
+        1:   18:  int b = 0x55555555;
+        -:   19:  int c;
+        1:   20:  c = f1(a);
+        1:   21:  if (c != 0x11)
+    #####:   22:    abort();
+        1:   23:  c = f1(b);
+        1:   24:  if (c != 0x22)
+    #####:   25:    abort();
+        1:   26:  c = f2(a);
+        1:   27:  if (c != 0xE)
+    #####:   28:    abort();
+        1:   29:  c = f2(b);
+        1:   30:  if (c != 0x7)
+    #####:   31:    abort();
+        1:   32:  return 0;
+        -:   33:}
+        -:   34:
+        -:   35:/* Following replacement pattern of intger division by constant, GCC is expected
+        -:   36:   to generate UMULL and (x)SHIFTRT.  This test checks that considering division
+        -:   37:   by const 0x33, gcc generates a single LSHIFTRT by 37, instead of
+        -:   38:   two - LSHIFTRT by 32 and LSHIFTRT by 5.  */
+        -:   39:
+        -:   40:/* { dg-final { scan-rtl-dump "\\(set \\(subreg:DI \\(reg:SI" "combine" { target
+        -:   41: * aarch64*-*-* } } } */
+        -:   42:/* { dg-final { scan-rtl-dump "\\(lshiftrt:DI \\(reg:DI" "combine" { target
+        -:   43: * aarch64*-*-* } } } */
+        -:   44:/* { dg-final { scan-rtl-dump "\\(const_int 37 " "combine" { target aarch64*-*-*
+        -:   45: * } } } */
+        -:   46:
+        -:   47:/* Similarly, considering division by const 0x12, gcc generates a
+        -:   48:   single LSHIFTRT by 34, instead of two - LSHIFTRT by 32 and LSHIFTRT by 2.  */
+        -:   49:
+        -:   50:/* { dg-final { scan-rtl-dump "\\(const_int 34 " "combine" { target aarch64*-*-*
+        -:   51: * } } } */

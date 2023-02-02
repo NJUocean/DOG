@@ -1,0 +1,23 @@
+        -:    0:Source:2327.c
+        -:    0:Graph:2327.gcno
+        -:    0:Data:2327.gcda
+        -:    0:Runs:1
+        -:    1:/* Test Gcov basics.  */
+        -:    2:
+        -:    3:/* { dg-options "-fprofile-arcs -ftest-coverage -g" } */
+        -:    4:/* { dg-do run { target native } } */
+        -:    5:
+       10:    6:void noop() {}
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i;
+        -:   10:
+       11:   11:  for (i = 0; i < 10; i++) /* count(11) */
+       10:   12:    noop();                /* count(10) */
+        -:   13:
+        1:   14:  return 0; /* count(1) */
+        -:   15:}
+        -:   16:
+        -:   17:int a_variable = 0;
+        -:   18:
+        -:   19:/* { dg-final { run-gcov gcov-2.c } } */

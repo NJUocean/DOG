@@ -1,0 +1,31 @@
+        -:    0:Source:2607.c
+        -:    0:Graph:2607.gcno
+        -:    0:Data:2607.gcda
+        -:    0:Runs:1
+        -:    1:/* PR ipa/84722.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-ifunc "" } */
+        -:    4:
+        -:    5:__attribute__((target_clones("avx", "arch=core-avx2", "default"))) int
+       1*:    6:foo(int i) {
+       1*:    7:  return i - 1;
+        -:    8:}
+------------------
+foo.arch_core_avx2.1:
+    #####:    6:foo(int i) {
+    #####:    7:  return i - 1;
+        -:    8:}
+------------------
+foo.avx.0:
+        1:    6:foo(int i) {
+        1:    7:  return i - 1;
+        -:    8:}
+------------------
+foo.default.2:
+    #####:    6:foo(int i) {
+    #####:    7:  return i - 1;
+        -:    8:}
+------------------
+        -:    9:int weaks(int i) __attribute__((weak, alias("foo")));
+        -:   10:
+        1:   11:int main(int argc, char **argv) { return weaks(argc); }

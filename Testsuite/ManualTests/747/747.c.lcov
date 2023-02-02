@@ -1,0 +1,26 @@
+    1|       |/* Test that the NRV optimization doesn't cause a1 to change too soon.  This
+    2|       |   is equivalent to c++/19317.  */
+    3|       |/* { dg-do run } */
+    4|       |
+    5|       |void abort(void);
+    6|       |
+    7|       |struct A {
+    8|       |  int i[100];
+    9|       |};
+   10|       |
+   11|       |struct A a1;
+   12|       |
+   13|      1|struct A f() {
+   14|      1|  struct A a2;
+   15|      1|  a2.i[0] = 42;
+   16|      1|  /* a1.i[0] should still be 0 until we return. */
+   17|      1|  if (a1.i[0] != 0)
+   18|      0|    abort();
+   19|      1|  return a2;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  a1 = f();
+   24|      1|  return 0;
+   25|      1|}
+

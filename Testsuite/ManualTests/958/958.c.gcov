@@ -1,0 +1,48 @@
+        -:    0:Source:958.c
+        -:    0:Graph:958.gcno
+        -:    0:Data:958.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:struct node {
+        -:    7:  struct node *next;
+        -:    8:  struct node *prev;
+        -:    9:};
+        -:   10:
+        -:   11:struct node node;
+        -:   12:
+        -:   13:struct head {
+        -:   14:  struct node *first;
+        -:   15:};
+        -:   16:
+        -:   17:struct head heads[5];
+        -:   18:
+        -:   19:int k = 2;
+        -:   20:
+        -:   21:struct head *head = &heads[2];
+        -:   22:
+        1:   23:static int __attribute__((noinline)) foo(void) {
+        1:   24:  node.prev = (void *)head;
+        1:   25:  head->first = &node;
+        -:   26:
+        1:   27:  struct node *n = head->first;
+        1:   28:  struct head *h = &heads[k];
+        1:   29:  struct node *next = n->next;
+        -:   30:
+        1:   31:  if (n->prev == (void *)h)
+        1:   32:    h->first = next;
+        -:   33:  else
+    #####:   34:    n->prev->next = next;
+        -:   35:
+        1:   36:  n->next = h->first;
+        1:   37:  return n->next == &node;
+        -:   38:}
+        -:   39:
+        1:   40:int main(void) {
+        1:   41:  if (foo())
+    #####:   42:    abort();
+        1:   43:  return 0;
+        -:   44:}

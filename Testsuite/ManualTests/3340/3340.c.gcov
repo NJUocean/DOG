@@ -1,0 +1,62 @@
+        -:    0:Source:3340.c
+        -:    0:Graph:3340.gcno
+        -:    0:Data:3340.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2004 Free Software Foundation.
+        -:    2:
+        -:    3:   Check that constant folding and RTL simplification of -(x >> y) doesn't
+        -:    4:   break anything and produces the expected results.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 11th March 2004.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:#define INT_BITS (sizeof(int) * 8)
+        -:   11:
+        3:   12:int test1(int x) { return -(x >> (INT_BITS - 1)); }
+        -:   13:
+        3:   14:int test2(unsigned int x) { return -((int)(x >> (INT_BITS - 1))); }
+        -:   15:
+        3:   16:int test3(int x) {
+        -:   17:  int y;
+        3:   18:  y = INT_BITS - 1;
+        3:   19:  return -(x >> y);
+        -:   20:}
+        -:   21:
+        3:   22:int test4(unsigned int x) {
+        -:   23:  int y;
+        3:   24:  y = INT_BITS - 1;
+        3:   25:  return -((int)(x >> y));
+        -:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  if (test1(0) != 0)
+    #####:   30:    abort();
+        1:   31:  if (test1(1) != 0)
+    #####:   32:    abort();
+        1:   33:  if (test1(-1) != 1)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  if (test2(0) != 0)
+    #####:   37:    abort();
+        1:   38:  if (test2(1) != 0)
+    #####:   39:    abort();
+        1:   40:  if (test2((unsigned int)-1) != -1)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  if (test3(0) != 0)
+    #####:   44:    abort();
+        1:   45:  if (test3(1) != 0)
+    #####:   46:    abort();
+        1:   47:  if (test3(-1) != 1)
+    #####:   48:    abort();
+        -:   49:
+        1:   50:  if (test4(0) != 0)
+    #####:   51:    abort();
+        1:   52:  if (test4(1) != 0)
+    #####:   53:    abort();
+        1:   54:  if (test4((unsigned int)-1) != -1)
+    #####:   55:    abort();
+        -:   56:
+        1:   57:  return 0;
+        -:   58:}

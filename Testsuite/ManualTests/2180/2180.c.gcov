@@ -1,0 +1,27 @@
+        -:    0:Source:2180.c
+        -:    0:Graph:2180.gcno
+        -:    0:Data:2180.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:typedef double d_type;
+        -:    4:struct {
+        -:    5:  d_type x;
+        -:    6:  d_type y;
+        -:    7:} S[100];
+        -:    8:
+        -:    9:#define N 16
+        -:   10:d_type foo(d_type t);
+        -:   11:
+        1:   12:d_type main1() {
+        -:   13:  int i;
+        -:   14:  d_type t;
+        -:   15:
+       17:   16:  for (i = 0; i < N; i++) {
+       16:   17:    t = (d_type)i / (d_type)10;
+       16:   18:    S[5].x = t * t;
+        -:   19:  }
+        1:   20:  return S[5].x;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) { d_type tmp = main1(); }

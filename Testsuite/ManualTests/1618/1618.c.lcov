@@ -1,0 +1,11 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|int main() {
+    4|      1|  unsigned short sum = 0;
+    5|  65.5k|  for (short x = -(__SHRT_MAX__ - 1); x <= (__SHRT_MAX__ - 1); x++)
+    6|  65.5k|    sum += x;
+    7|      1|  if (sum != 0)
+    8|      0|    __builtin_abort();
+    9|      1|  return 0;
+   10|      1|}
+

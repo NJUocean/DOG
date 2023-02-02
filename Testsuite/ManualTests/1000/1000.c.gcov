@@ -1,0 +1,19 @@
+        -:    0:Source:1000.c
+        -:    0:Graph:1000.gcno
+        -:    0:Data:1000.gcda
+        -:    0:Runs:1
+        -:    1:/* This code was miscompiled at -O3 on x86.
+        -:    2:   Reported by Jim Meyering; distilled from bash.  */
+        -:    3:
+    #####:    4:int rl_show_char(int c) { return 0; }
+        -:    5:
+        2:    6:int rl_character_len(int c, int pos) { return isprint(c) ? 1 : 2; }
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  int (*x)(int, int) = rl_character_len;
+        1:   10:  if (x('a', 1) != 1)
+    #####:   11:    abort();
+        1:   12:  if (x('\002', 1) != 2)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

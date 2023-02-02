@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct S {
+    4|       |  int *p;
+    5|       |  int *q;
+    6|       |};
+    7|       |
+    8|      1|int **__attribute__((noinline, noclone, const)) foo(struct S *s) {
+    9|      1|  return &s->q;
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  struct S s;
+   14|      1|  int i = 1, j = 2;
+   15|      1|  int **x;
+   16|      1|  s.p = &i;
+   17|      1|  s.q = &j;
+   18|      1|  x = foo(&s);
+   19|      1|  **x = 7;
+   20|      1|  if (j != 7)
+   21|      0|    __builtin_abort();
+   22|      1|  return 0;
+   23|      1|}
+

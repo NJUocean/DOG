@@ -1,0 +1,29 @@
+        -:    0:Source:1691.c
+        -:    0:Graph:1691.gcno
+        -:    0:Data:1691.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef unsigned int u32;
+        -:    4:#if __SIZEOF_INT128__
+        -:    5:typedef unsigned long long u64;
+        -:    6:typedef unsigned __int128 u128;
+        -:    7:#else
+        -:    8:typedef unsigned long u64;
+        -:    9:typedef unsigned long long u128;
+        -:   10:#endif
+        -:   11:
+        -:   12:u128 g;
+        -:   13:
+        1:   14:static __attribute__((noinline, noclone)) void check(u64 a, u64 b) {
+        1:   15:  if (a != 0 || b != 4)
+    #####:   16:    __builtin_abort();
+        1:   17:}
+        -:   18:
+        1:   19:int main(void) {
+       1*:   20:  u64 d = (g ? 5 : 4);
+        1:   21:  u32 f = __builtin_sub_overflow_p(d, (u128)d, (u64)0);
+        1:   22:  u128 x = g + f + d;
+        1:   23:  check((x >> 1) >> (sizeof(u64) * __CHAR_BIT__ - 1), x);
+        1:   24:  return 0;
+        -:   25:}

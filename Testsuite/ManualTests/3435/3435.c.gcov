@@ -1,0 +1,42 @@
+        -:    0:Source:3435.c
+        -:    0:Graph:3435.gcno
+        -:    0:Data:3435.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/32575 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  void *s1, *s2;
+        -:    7:  unsigned char s3, s4, s5;
+        -:    8:};
+        -:    9:
+        1:   10:__attribute__((noinline)) void *foo(void) {
+        -:   11:  static struct S s;
+        1:   12:  return &s;
+        -:   13:}
+        -:   14:
+    #####:   15:__attribute__((noinline)) void *bar() { return (void *)0; }
+        -:   16:
+        1:   17:__attribute__((noinline)) struct S *test(void *a, void *b) {
+        -:   18:  struct S *p, q;
+        1:   19:  p = foo();
+        1:   20:  if (p == 0) {
+    #####:   21:    p = &q;
+    #####:   22:    __builtin_memset(p, 0, sizeof(*p));
+        -:   23:  }
+        1:   24:  p->s1 = a;
+        1:   25:  p->s2 = b;
+        1:   26:  if (p == &q)
+    #####:   27:    p = 0;
+        1:   28:  return p;
+        -:   29:}
+        -:   30:
+        1:   31:int main(void) {
+        -:   32:  int a;
+        -:   33:  int b;
+        1:   34:  struct S *z = test((void *)&a, (void *)&b);
+        1:   35:  if (z == 0 || z->s1 != (void *)&a || z->s2 != (void *)&b || z->s3 || z->s4)
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

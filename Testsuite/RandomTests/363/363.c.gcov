@@ -1,0 +1,51 @@
+        -:    0:Source:363.c
+        -:    0:Graph:363.gcno
+        -:    0:Data:363.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int16_t g_2[5] = {0x85F7L, 0x85F7L, 0x85F7L, 0x85F7L, 0x85F7L};
+        -:    7:static int32_t g_3 = 0x020F89B5L;
+        -:    8:static int32_t g_7[5][4] = {{1L, (-10L), (-10L), 1L}, {(-10L), 1L, (-10L), (-10L)}, {1L, 1L, (-1L), 1L}, {1L, (-10L), (-10L), 1L}, {(-10L), 1L, (-10L), (-10L)}};
+        -:    9:
+        -:   10:static int32_t func_1(void);
+        -:   11:
+        1:   12:static int32_t func_1(void) {
+        1:   13:  int16_t l_8 = 0L;
+        6:   14:  for (g_3 = 4; (g_3 >= 0); g_3 -= 1) {
+        5:   15:    int32_t *l_5 = &g_3;
+        5:   16:    int32_t **l_4 = &l_5;
+        5:   17:    int32_t *l_6 = &g_7[4][3];
+        5:   18:    (*l_4) = &g_3;
+        5:   19:    (*l_6) &= 0L;
+        -:   20:  }
+        1:   21:  return l_8;
+        -:   22:}
+        -:   23:
+        1:   24:int main(int argc, char *argv[]) {
+        -:   25:  int i, j;
+        1:   26:  int print_hash_value = 0;
+       1*:   27:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   28:    print_hash_value = 1;
+        1:   29:  platform_main_begin();
+        1:   30:  crc32_gentab();
+        1:   31:  func_1();
+        6:   32:  for (i = 0; i < 5; i++) {
+        5:   33:    transparent_crc(g_2[i], "g_2[i]", print_hash_value);
+        5:   34:    if (print_hash_value)
+    #####:   35:      printf("index = [%d]\n", i);
+        -:   36:  }
+        1:   37:  transparent_crc(g_3, "g_3", print_hash_value);
+        6:   38:  for (i = 0; i < 5; i++) {
+       25:   39:    for (j = 0; j < 4; j++) {
+       20:   40:      transparent_crc(g_7[i][j], "g_7[i][j]", print_hash_value);
+       20:   41:      if (print_hash_value)
+    #####:   42:        printf("index = [%d][%d]\n", i, j);
+        -:   43:    }
+        -:   44:  }
+        1:   45:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   46:  return 0;
+        -:   47:}

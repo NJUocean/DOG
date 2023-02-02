@@ -1,0 +1,28 @@
+    1|       |/* PR debug/4461
+    2|       |   This testcase failed to link in Dwarf-2 because
+    3|       |   constant -4.0 in constant pool was never referenced by anything
+    4|       |   but Dwarf-2 location descriptor.  */
+    5|       |/* { dg-do run } */
+    6|       |
+    7|       |void __attribute__((noinline))
+    8|       |foo(const char *x __attribute__((unused)),
+    9|       |    __complex__ long double y __attribute__((unused)),
+   10|      0|    __complex__ long double z __attribute__((unused))) {}
+   11|       |
+   12|      0|void bar(void) {
+   13|      0|  foo("", __builtin_conjl(({
+   14|      0|        __complex__ long double r;
+   15|      0|        __real__ r = 3.0;
+   16|      0|        __imag__ r = -4.0;
+   17|      0|        r;
+   18|      0|      })),
+   19|      0|      ({
+   20|      0|        __complex__ long double s;
+   21|      0|        __real__ s = 3.0;
+   22|      0|        __imag__ s = 4.0;
+   23|      0|        s;
+   24|      0|      }));
+   25|      0|}
+   26|       |
+   27|      1|int main(void) { return 0; }
+

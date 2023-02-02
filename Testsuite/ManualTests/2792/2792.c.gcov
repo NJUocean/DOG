@@ -1,0 +1,35 @@
+        -:    0:Source:2792.c
+        -:    0:Graph:2792.gcno
+        -:    0:Data:2792.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that the compiler properly optimizes vector shift instructions into
+        -:    2:   psha/pshl on XOP systems.  */
+        -:    3:
+        -:    4:/* { dg-do compile { target { ! ia32 } } } */
+        -:    5:/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize" } */
+        -:    6:
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+        -:   10:
+        -:   11:#define SIZE 10240
+        -:   12:
+        -:   13:union {
+        -:   14:  __m128i i_align;
+        -:   15:  int i32[SIZE];
+        -:   16:  unsigned u32[SIZE];
+        -:   17:} a, b, c;
+        -:   18:
+        1:   19:void right_uns_shift32(void) {
+        -:   20:  int i;
+        -:   21:
+    10241:   22:  for (i = 0; i < SIZE; i++)
+    10240:   23:    a.u32[i] = b.u32[i] >> c.i32[i];
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  right_uns_shift32();
+        1:   28:  exit(0);
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final { scan-assembler "vpshld" } } */

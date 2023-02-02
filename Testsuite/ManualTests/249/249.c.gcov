@@ -1,0 +1,15 @@
+        -:    0:Source:249.c
+        -:    0:Graph:249.gcno
+        -:    0:Data:249.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/61854 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=gnu89 -pedantic -w" } */
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:  // Comment.
+        -:    7:  /* { dg-bogus "C\\+\\+ style comments are not allowed in ISO C90" "comments"
+        -:    8:   * { target *-*-*} .-1 } */
+        -:    9:  /* { dg-bogus "note: \[^\n\r]*reported only once" ""  { target *-*-*} .-2 } */
+        1:   10:  return 0;
+        -:   11:}

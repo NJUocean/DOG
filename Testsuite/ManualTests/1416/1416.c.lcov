@@ -1,0 +1,20 @@
+    1|       |/* Copyright (C) 2002 Free Software Foundation.
+    2|       |
+    3|       |   Ensure that the composite comparison optimization doesn't misfire
+    4|       |   and attempt to combine a signed comparison with an unsigned one.
+    5|       |
+    6|       |   Written by Roger Sayle, 3rd June 2002.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|      1|int foo(int x, int y) {
+   11|      1|  /* If miscompiled the following may become "x == y".  */
+   12|      1|  return (x <= y) && ((unsigned int)x >= (unsigned int)y);
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  if (!foo(-1, 0))
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

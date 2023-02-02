@@ -1,0 +1,19 @@
+        -:    0:Source:1472.c
+        -:    0:Graph:1472.gcno
+        -:    0:Data:1472.gcda
+        -:    0:Runs:1
+        2:    1:float __complex__ p(float __complex__ a, float __complex__ b) { return a + b; }
+        -:    2:
+        -:    3:float __complex__ x = 1.0 + 14.0 * (1.0fi);
+        -:    4:float __complex__ y = 7.0 + 5.0 * (1.0fi);
+        -:    5:float __complex__ w = 8.0 + 19.0 * (1.0fi);
+        -:    6:float __complex__ z;
+        -:    7:
+        1:    8:main() {
+        -:    9:
+        1:   10:  z = p(x, y);
+        1:   11:  y = p(x, 1.0f / z);
+        1:   12:  if (z != w)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

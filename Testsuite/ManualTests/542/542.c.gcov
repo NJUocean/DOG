@@ -1,0 +1,16 @@
+        -:    0:Source:542.c
+        -:    0:Graph:542.gcno
+        -:    0:Data:542.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* ICE for signed/unsigned long and signed char comparison */
+        1:    3:int main() {
+        1:    4:  unsigned long ul = 4;
+        1:    5:  long sl = 2;
+        1:    6:  signed char sch = -1;
+        1:    7:  if (ul <= sch)
+        -:    8:    ;
+        1:    9:  return 0;
+        -:   10:  if (sl <= sch)
+        -:   11:    return 1;
+        -:   12:}

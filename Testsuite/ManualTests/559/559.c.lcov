@@ -1,0 +1,18 @@
+    1|       |struct fd {
+    2|       |  unsigned char a;
+    3|       |  unsigned char b;
+    4|       |} f = {5};
+    5|       |
+    6|      1|struct fd *g() {
+    7|      1|  return &f;
+    8|      1|}
+    9|      1|int h() { return -1; }
+   10|       |
+   11|      1|int main() {
+   12|      1|  struct fd *f = g();
+   13|      1|  f->b = h();
+   14|      1|  if (((f->a & 0x7f) & ~0x10) <= 2)
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

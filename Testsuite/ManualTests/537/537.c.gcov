@@ -1,0 +1,50 @@
+        -:    0:Source:537.c
+        -:    0:Graph:537.gcno
+        -:    0:Data:537.gcda
+        -:    0:Runs:1
+        -:    1:/* debuginfo tests for combinations of const, volatile, restrict pointers. */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c99 -gdwarf-3" } */
+        -:    4:
+        -:    5:int *ip __attribute__((used));
+        -:    6:const int *cip __attribute__((used));
+        -:    7:int *restrict irp __attribute__((used));
+        -:    8:int *const icp __attribute__((used));
+        -:    9:const int *restrict cirp __attribute__((used));
+        -:   10:int *const restrict icrp __attribute__((used));
+        -:   11:const int *const restrict cicrp __attribute__((used));
+        -:   12:
+        -:   13:int *const volatile restrict cvirp __attribute__((used));
+        -:   14:const volatile int *restrict pcvir __attribute__((used));
+        -:   15:
+        -:   16:static __attribute__((noclone, noinline)) void *
+    #####:   17:cpy(void *restrict s1, const void *restrict s2, unsigned int n) {
+    #####:   18:  char *t1 = s1;
+    #####:   19:  const char *t2 = s2;
+    #####:   20:  while (n-- > 0)
+    #####:   21:    *t1++ = *t2++;
+    #####:   22:  return s1;
+        -:   23:}
+        -:   24:
+        1:   25:int main(int argc, char **argv) {
+        1:   26:  void *foo = 0;
+        1:   27:  if (argc > 16)
+    #####:   28:    foo = cpy(argv[0], argv[1], argc);
+        -:   29:
+        1:   30:  return foo != 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-final { gdb-test 30 "type:ip" "int *" } } */
+        -:   34:/* { dg-final { gdb-test 30 "type:cip" "const int *" } } */
+        -:   35:/* { dg-final { gdb-test 30 "type:irp" "int * restrict" } } */
+        -:   36:/* { dg-final { gdb-test 30 "type:icp" "int * const" } } */
+        -:   37:/* { dg-final { gdb-test 30 "type:cirp" "const int * restrict" } } */
+        -:   38:/* { dg-final { gdb-test 30 "type:icrp" "int * const restrict" } } */
+        -:   39:/* { dg-final { gdb-test 30 "type:cicrp" "const int * const restrict" } } */
+        -:   40:
+        -:   41:/* { dg-final { gdb-test 30 "type:cvirp" "int * const volatile restrict" } } */
+        -:   42:/* { dg-final { gdb-test 30 "type:pcvir" "const volatile int * restrict" } } */
+        -:   43:
+        -:   44:/* { dg-final { gdb-test 30 "type:main" "int (int, char **)" } } */
+        -:   45:/* { dg-final { gdb-test 30 "type:cpy" "void *(void * restrict, const void *
+        -:   46: * restrict, unsigned int)" } } */

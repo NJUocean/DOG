@@ -1,0 +1,22 @@
+        -:    0:Source:1469.c
+        -:    0:Graph:1469.gcno
+        -:    0:Data:1469.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:void __attribute__((noinline, noclone))
+        1:    5:clear_board(unsigned char *board, int board_size) {
+        -:    6:  int k;
+      422:    7:  for (k = 0; k < 421; k++)
+      421:    8:    if (k < board_size)
+      420:    9:      board[k] = 3;
+        1:   10:}
+        1:   11:int main() {
+        -:   12:  unsigned char board[421];
+        1:   13:  board[420] = 1;
+        1:   14:  clear_board(board, 420);
+        1:   15:  if (board[420] != 1)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

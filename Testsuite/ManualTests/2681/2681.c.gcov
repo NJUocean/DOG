@@ -1,0 +1,23 @@
+        -:    0:Source:2681.c
+        -:    0:Graph:2681.gcno
+        -:    0:Data:2681.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  char text[11];
+        -:    3:  int flag;
+        -:    4:} cell;
+        -:    5:
+        1:    6:int check(struct s p) {
+        1:    7:  if (p.flag != 99)
+    #####:    8:    return 1;
+        1:    9:  return strcmp(p.text, "0123456789");
+        -:   10:}
+        -:   11:
+        1:   12:main() {
+        1:   13:  cell.flag = 99;
+        1:   14:  strcpy(cell.text, "0123456789");
+        -:   15:
+        1:   16:  if (check(cell))
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

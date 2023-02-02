@@ -1,0 +1,42 @@
+    1|       |/* This testcase failed on IA-32 at -O and above, because combine attached
+    2|       |   a REG_LABEL note to jump instruction already using JUMP_LABEL.  */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |enum X { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q };
+    8|       |
+    9|      0|void bar(const char *x, int y, const char *z) {}
+   10|       |
+   11|      1|long foo(enum X x, const void *y) {
+   12|      1|  long a;
+   13|      1|
+   14|      1|  switch (x) {
+   15|      0|  case K:
+   16|      0|    a = *(long *)y;
+   17|      0|    break;
+   18|      0|  case L:
+   19|      0|    a = *(long *)y;
+   20|      0|    break;
+   21|      0|  case M:
+   22|      0|    a = *(long *)y;
+   23|      0|    break;
+   24|      1|  case N:
+   25|      1|    a = *(long *)y;
+   26|      1|    break;
+   27|      0|  case O:
+   28|      0|    a = *(long *)y;
+   29|      0|    break;
+   30|      0|  default:
+   31|      0|    bar("foo", 1, "bar");
+   32|      1|  }
+   33|      1|  return a;
+   34|      1|}
+   35|       |
+   36|      1|int main() {
+   37|      1|  long i = 24;
+   38|      1|  if (foo(N, &i) != 24)
+   39|      0|    abort();
+   40|      1|  exit(0);
+   41|      1|}
+

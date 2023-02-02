@@ -1,0 +1,25 @@
+        -:    0:Source:929.c
+        -:    0:Graph:929.gcno
+        -:    0:Data:929.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Wmissing-braces -Wmissing-field-initializers" } */
+        -:    3:
+        -:    4:struct a {
+        -:    5:  int x, y, z;
+        -:    6:};
+        -:    7:
+        -:    8:struct b {
+        -:    9:  struct a w, z;
+        -:   10:};
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  struct a az = {0};
+        1:   14:  struct a anz = {1};    /* { dg-warning "missing initializer for" } */
+        1:   15:  struct a aez = {0, 0}; /* { dg-warning "missing initializer for" } */
+        -:   16:
+        1:   17:  struct b bz = {0};
+        1:   18:  struct b bnz = {0, 0, 0, 0, 0, 0}; /* { dg-warning "missing braces" }  */
+        -:   19:
+        1:   20:  return 0;
+        -:   21:}

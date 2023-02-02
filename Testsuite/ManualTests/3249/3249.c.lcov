@@ -1,0 +1,34 @@
+    1|       |/* PR target/7559
+    2|       |   This testcase was miscompiled on x86-64, because classify_argument
+    3|       |   wrongly computed the offset of nested structure fields.  */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct A {
+    8|       |  long x;
+    9|       |};
+   10|       |
+   11|       |struct R {
+   12|       |  struct A a, b;
+   13|       |};
+   14|       |
+   15|       |struct R R = {100, 200};
+   16|       |
+   17|      1|void f(struct R r) {
+   18|      1|  if (r.a.x != R.a.x || r.b.x != R.b.x)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|struct R g(void) {
+   23|      1|  return R;
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  struct R r;
+   28|      1|  f(R);
+   29|      1|  r = g();
+   30|      1|  if (r.a.x != R.a.x || r.b.x != R.b.x)
+   31|      0|    abort();
+   32|      1|  return 0;
+   33|      1|}
+

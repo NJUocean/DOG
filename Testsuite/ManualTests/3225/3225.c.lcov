@@ -1,0 +1,34 @@
+    1|       |/* { dg-require-effective-target alloca } */
+    2|      1|void f(void *a, double y) {}
+    3|       |
+    4|      1|double g(double a, double b, double c, double d) {
+    5|      1|  double x, y, z;
+    6|      1|  void *p;
+    7|      1|
+    8|      1|  x = a + b;
+    9|      1|  y = c * d;
+   10|      1|
+   11|      1|  p = alloca(16);
+   12|      1|
+   13|      1|  f(p, y);
+   14|      1|  z = x * y * a;
+   15|      1|
+   16|      1|  return z + b;
+   17|      1|}
+   18|       |
+   19|      1|main() {
+   20|      1|  double a, b, c, d;
+   21|      1|  a = 1.0;
+   22|      1|  b = 0.0;
+   23|      1|  c = 10.0;
+   24|      1|  d = 0.0;
+   25|      1|
+   26|      1|  if (g(a, b, c, d) != 0.0)
+   27|      0|    abort();
+   28|      1|
+   29|      1|  if (a != 1.0 || b != 0.0 || c != 10.0 || d != 0.0)
+   30|      0|    abort();
+   31|      1|
+   32|      1|  exit(0);
+   33|      1|}
+

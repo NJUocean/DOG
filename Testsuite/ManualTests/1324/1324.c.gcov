@@ -1,0 +1,23 @@
+        -:    0:Source:1324.c
+        -:    0:Graph:1324.gcno
+        -:    0:Data:1324.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fsanitize=unreachable" } */
+        -:    3:
+        -:    4:char a, c;
+        -:    5:short b;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  unsigned d = 0;
+        1:    9:  int e = 1;
+        3:   10:  for (a = 0; a < 2; a++) {
+        2:   11:    if (e)
+        1:   12:      c--;
+        4:   13:    for (; d < 2; d++)
+       2*:   14:      for (b = 0; b; b++)
+        -:   15:        ;
+        2:   16:    e = 0;
+        -:   17:  }
+        1:   18:  __builtin_exit(0);
+        -:   19:}

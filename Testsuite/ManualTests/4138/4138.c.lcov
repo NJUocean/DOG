@@ -1,0 +1,31 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|       |union iso_directory_record {
+    5|       |  char carr[4];
+    6|       |  struct {
+    7|       |    unsigned char name_len[1];
+    8|       |    char name[0];
+    9|       |  } u;
+   10|       |} entry;
+   11|       |
+   12|       |void set(union iso_directory_record *);
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  union iso_directory_record *de;
+   16|      1|
+   17|      1|  de = &entry;
+   18|      1|  set(de);
+   19|      1|
+   20|      1|  if (de->u.name_len[0] == 1 && de->u.name[0] == 0)
+   21|      1|    exit(0);
+   22|      0|  else
+   23|      0|    abort();
+   24|      1|}
+   25|       |
+   26|      1|void set(union iso_directory_record *p) {
+   27|      1|  p->carr[0] = 1;
+   28|      1|  p->carr[1] = 0;
+   29|      1|  return;
+   30|      1|}
+

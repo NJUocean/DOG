@@ -1,0 +1,66 @@
+    1|       |/* This testcase is from PR43012.
+    2|       |   You will need CLooG-PPL 0.15.8 or later to have this testcase fixed.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O2 -floop-strip-mine" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |#ifdef DBG
+   10|       |extern int printf(const char *, ...);
+   11|       |#endif
+   12|       |
+   13|    981|#define LAST_TOKEN 534
+   14|    728|#define FLOAT_FUNCT_TOKEN 64
+   15|    511|#define VECTOR_FUNCT_TOKEN 77
+   16|    495|#define COLOUR_KEY_TOKEN 89
+   17|       |
+   18|       |int Table[LAST_TOKEN];
+   19|       |
+   20|      1|void pre_init_tokenizer() {
+   21|      1|  int i;
+   22|      1|
+   23|    535|  for (i = 0; i < LAST_TOKEN; i++) {
+   24|    534|    Table[i] = i;
+   25|    534|    if (i < FLOAT_FUNCT_TOKEN)
+   26|    534|      Table[i] = FLOAT_FUNCT_TOKEN;
+   27|    534|    else {
+   28|    470|      if (i < VECTOR_FUNCT_TOKEN)
+   29|    470|        Table[i] = VECTOR_FUNCT_TOKEN;
+   30|    470|      else {
+   31|    457|        if (i < COLOUR_KEY_TOKEN)
+   32|    457|          Table[i] = COLOUR_KEY_TOKEN;
+   33|    457|      }
+   34|    470|    }
+   35|    534|  }
+   36|      1|}
+   37|       |
+   38|      1|void check() {
+   39|      1|  int i;
+   40|      1|
+   41|     65|  for (i = 0; i < FLOAT_FUNCT_TOKEN; i++)
+   42|     64|    if (Table[i] != FLOAT_FUNCT_TOKEN)
+   43|     64|      abort();
+   44|     14|  for (i = FLOAT_FUNCT_TOKEN; i < VECTOR_FUNCT_TOKEN; i++)
+   45|     13|    if (Table[i] != VECTOR_FUNCT_TOKEN)
+   46|     13|      abort();
+   47|     13|  for (i = VECTOR_FUNCT_TOKEN; i < COLOUR_KEY_TOKEN; i++)
+   48|     12|    if (Table[i] != COLOUR_KEY_TOKEN)
+   49|     12|      abort();
+   50|    446|  for (i = COLOUR_KEY_TOKEN; i < LAST_TOKEN; i++)
+   51|    445|    if (Table[i] != i)
+   52|      0|      abort();
+   53|      1|}
+   54|       |
+   55|      1|int main() {
+   56|      1|  int i;
+   57|      1|
+   58|      1|  pre_init_tokenizer();
+   59|       |#ifdef DBG
+   60|       |  for (i = 0; i < LAST_TOKEN; i++)
+   61|       |    printf("%3d: %d\n", i, Table[i]);
+   62|       |#endif
+   63|      1|  check();
+   64|      1|  return 0;
+   65|      1|}
+

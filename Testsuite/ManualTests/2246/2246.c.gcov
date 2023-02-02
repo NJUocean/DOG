@@ -1,0 +1,19 @@
+        -:    0:Source:2246.c
+        -:    0:Graph:2246.gcno
+        -:    0:Data:2246.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/82564 */
+        -:    2:/* { dg-require-effective-target alloca } */
+        -:    3:
+        1:    4:int main() {
+        1:    5:  int t = 8, i;
+        1:    6:  typedef struct {
+        1:    7:    char v[t];
+        -:    8:  } B;
+        1:    9:  B a, b;
+        1:   10:  B __attribute__((noinline)) f() { return b; }
+        9:   11:  for (i = 0; i < 8; i++)
+        8:   12:    b.v[i] = i;
+        1:   13:  a = f();
+        1:   14:  return 0;
+        -:   15:}

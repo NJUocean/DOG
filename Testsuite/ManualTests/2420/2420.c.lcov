@@ -1,0 +1,19 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-skip-if "Not applicable for mcmodel=large" { aarch64*-*-* }  {
+    4|       | * "-mcmodel=large" } { "" } } */
+    5|       |
+    6|       |extern void __attribute__((weak)) foo_weakref(void);
+    7|      0|void __attribute__((weak, noinline)) bar(void) { return; }
+    8|       |void (*f)(void);
+    9|       |void (*g)(void);
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  f = &foo_weakref;
+   13|      1|  g = &bar;
+   14|      1|  return 0;
+   15|      1|}
+   16|       |
+   17|       |/* { dg-final { scan-assembler-not "adr*foo_weakref" } } */
+   18|       |/* { dg-final { scan-assembler-not "\\.(word|xword)\tbar" } } */
+

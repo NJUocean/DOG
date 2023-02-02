@@ -1,0 +1,29 @@
+        -:    0:Source:835.c
+        -:    0:Graph:835.gcno
+        -:    0:Data:835.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33434 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:
+        -:    5:int k;
+        -:    6:
+        1:    7:void __attribute__((noinline)) f2(int b) { k = b - 1; }
+        -:    8:
+        1:    9:void f1(int a, int b) {
+        1:   10:  f2(b);
+        1:   11:  a = 1;
+        1:   12:  b = 1;
+        1:   13:  if (a)
+        2:   14:    while (b--)
+        1:   15:      k = 1;
+    #####:   16:  else if (b != 1)
+    #####:   17:    __builtin_abort();
+        1:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  f1(1, 1);
+        1:   22:  if (k != 1)
+    #####:   23:    __builtin_abort();
+        1:   24:  return 0;
+        -:   25:}

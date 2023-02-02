@@ -1,0 +1,34 @@
+        -:    0:Source:3260.c
+        -:    0:Graph:3260.gcno
+        -:    0:Data:3260.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/8467 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        -:    6:int aim_callhandler(int sess, int conn, unsigned short family,
+        -:    7:                    unsigned short type);
+        -:    8:
+        2:    9:int aim_callhandler(int sess, int conn, unsigned short family,
+        -:   10:                    unsigned short type) {
+        -:   11:  static int i = 0;
+        -:   12:
+        2:   13:  if (!conn)
+    #####:   14:    return 0;
+        -:   15:
+        2:   16:  if (type == 0xffff) {
+        1:   17:    return 0;
+        -:   18:  }
+        -:   19:
+        1:   20:  if (i >= 1)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  i++;
+        1:   24:  return aim_callhandler(sess, conn, family, (unsigned short)0xffff);
+        -:   25:}
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  aim_callhandler(0, 1, 0, 0);
+        1:   29:  exit(0);
+        -:   30:}

@@ -1,0 +1,15 @@
+        -:    0:Source:2962.c
+        -:    0:Graph:2962.gcno
+        -:    0:Data:2962.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that the option -mdiv=call-fp works.  */
+        -:    2:/* { dg-do link }  */
+        -:    3:/* { dg-options "-mdiv=call-fp" }  */
+        -:    4:
+        1:    5:int test00(int a, int b) { return a / b; }
+        -:    6:
+        1:    7:unsigned int test01(unsigned int a, unsigned b) { return a / b; }
+        -:    8:
+        1:    9:int main(int argc, char **argv) {
+        1:   10:  return test00(argc, 123) + test01(argc, 123);
+        -:   11:}

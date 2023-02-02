@@ -1,0 +1,23 @@
+        -:    0:Source:3763.c
+        -:    0:Graph:3763.gcno
+        -:    0:Data:3763.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:void exit(int);
+        -:    3:void abort(void);
+        -:    4:int a[1];
+        -:    5:void (*terminate_me)(int);
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) t(int c) {
+        -:    8:  int i;
+        2:    9:  for (i = 0; i < c; i++) {
+        2:   10:    if (i)
+        1:   11:      terminate_me(0);
+        1:   12:    a[i] = 0;
+        -:   13:  }
+    #####:   14:}
+        1:   15:main() {
+        1:   16:  terminate_me = exit;
+        1:   17:  t(100);
+    #####:   18:  abort();
+        -:   19:}

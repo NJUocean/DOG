@@ -1,0 +1,17 @@
+        -:    0:Source:3336.c
+        -:    0:Graph:3336.gcno
+        -:    0:Data:3336.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target alloca } */
+        -:    2:#include <stdio.h>
+        -:    3:#include <string.h>
+        -:    4:
+        1:    5:void a(void *x, int y) {
+        1:    6:  if (y != 1234)
+    #####:    7:    abort();
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  a(strcpy(alloca(100), "abc"), 1234);
+        1:   12:  return 0;
+        -:   13:}

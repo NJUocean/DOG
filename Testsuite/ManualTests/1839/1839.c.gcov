@@ -1,0 +1,31 @@
+        -:    0:Source:1839.c
+        -:    0:Graph:1839.gcno
+        -:    0:Data:1839.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  char y;
+        -:    3:  char x[32];
+        -:    4:} X;
+        -:    5:
+        1:    6:int z(void) {
+        -:    7:  X xxx;
+        1:    8:  xxx.x[0] = xxx.x[31] = '0';
+        1:    9:  xxx.y = 0xf;
+        1:   10:  return f(xxx, xxx);
+        -:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int val;
+        -:   15:
+        1:   16:  val = z();
+        1:   17:  if (val != 0x60)
+    #####:   18:    abort();
+        1:   19:  exit(0);
+        -:   20:}
+        -:   21:
+        1:   22:int f(X x, X y) {
+        1:   23:  if (x.y != y.y)
+    #####:   24:    return 'F';
+        -:   25:
+        1:   26:  return x.x[0] + y.x[0];
+        -:   27:}

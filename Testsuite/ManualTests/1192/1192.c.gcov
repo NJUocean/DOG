@@ -1,0 +1,26 @@
+        -:    0:Source:1192.c
+        -:    0:Graph:1192.gcno
+        -:    0:Data:1192.gcda
+        -:    0:Runs:1
+        -:    1:/* This should not warn about the case label being out of range.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O0" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:int foo(unsigned int i) {
+        1:    9:  switch (i) {
+    #####:   10:  case 123456123456ULL: /* { dg-warning "conversion from .long long unsigned
+        -:   11:                           int. to .unsigned int. changes value" } */
+    #####:   12:    return 0;
+        1:   13:  default:
+        1:   14:    return 3;
+        -:   15:  }
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  if (foo(10) != 3)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

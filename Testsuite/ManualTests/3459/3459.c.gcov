@@ -1,0 +1,23 @@
+        -:    0:Source:3459.c
+        -:    0:Graph:3459.gcno
+        -:    0:Data:3459.gcda
+        -:    0:Runs:1
+        -:    1:struct S {
+        -:    2:  char c;
+        -:    3:  char arr[4];
+        -:    4:  float f;
+        -:    5:};
+        -:    6:
+        -:    7:char A[4] = {'1', '2', '3', '4'};
+        -:    8:
+        1:    9:void foo(struct S s) {
+        1:   10:  if (__builtin_memcmp(s.arr, A, 4))
+    #####:   11:    __builtin_abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  struct S s;
+        1:   16:  __builtin_memcpy(s.arr, A, 4);
+        1:   17:  foo(s);
+        1:   18:  return 0;
+        -:   19:}

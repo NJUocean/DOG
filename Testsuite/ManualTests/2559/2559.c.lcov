@@ -1,0 +1,26 @@
+    1|       |/* PR rtl-optimization/25703 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-effective-target ia32 } */
+    4|       |/* { dg-options "-O2 -mtune=pentiumpro" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |struct a {
+    9|       |  int a;
+   10|       |  char b, c, d, e;
+   11|       |};
+   12|       |
+   13|      1|__attribute__((noinline)) __attribute__((regparm(1))) void t(struct a a) {
+   14|      1|  if (a.a != 1 || a.b != 1 || a.c != 1)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  struct a a;
+   20|      1|  a.c = 1;
+   21|      1|  a.a = 1;
+   22|      1|  a.b = 1;
+   23|      1|  t(a);
+   24|      1|  return 0;
+   25|      1|}
+

@@ -1,0 +1,30 @@
+        -:    0:Source:1917.c
+        -:    0:Graph:1917.gcno
+        -:    0:Data:1917.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-sccp-details" } */
+        -:    3:
+        -:    4:typedef unsigned char u8;
+        -:    5:typedef __UINT32_TYPE__ u32;
+        -:    6:
+       41:    7:static u32 b(u8 d, u32 e, u32 g) {
+        -:    8:  do {
+       41:    9:    e += g + 1;
+       41:   10:    d--;
+       41:   11:  } while (d >= (u8)e);
+        -:   12:
+        1:   13:  return e;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  u32 x = b(200, -0x378704, ~0xba64fc);
+        1:   18:  if (x != 0xe1ee4ca0)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}
+        -:   23:
+        -:   24:/* Niter analyzer should be able to compute niters for the loop.  */
+        -:   25:/* { dg-final { scan-tree-dump "Replacing uses of: .* with: 3790490784" "sccp" {
+        -:   26: * xfail *-*-* } } } */

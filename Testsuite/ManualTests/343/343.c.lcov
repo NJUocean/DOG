@@ -1,0 +1,37 @@
+    1|       |/* PR rtl-optimization/51924 */
+    2|       |/* Testcase by Zdenek Sojka <zsojka@seznam.cz> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O -free -fno-rename-registers -ftree-vectorize -funroll-loops"
+    6|       | * } */
+    7|       |
+    8|       |typedef __UINT64_TYPE__ uint64_t;
+    9|       |
+   10|       |uint64_t __attribute__((noinline, noclone))
+   11|      1|bn_sub_words(uint64_t *r, const uint64_t *a, const uint64_t *b, int n) {
+   12|      1|  uint64_t t1, t2;
+   13|      1|  unsigned c = 0;
+   14|      1|
+   15|      3|  while (n) {
+   16|      2|    t1 = a[0];
+   17|      2|    t2 = b[0];
+   18|      2|    r[0] = (t1 - t2 - c);
+   19|      2|    if (t1 != t2)
+   20|      2|      c = (t1 < t2);
+   21|      2|    a++;
+   22|      2|    b++;
+   23|      2|    r++;
+   24|      2|    n--;
+   25|      2|  }
+   26|      1|  return (c);
+   27|      1|}
+   28|       |
+   29|      1|int main(void) {
+   30|      1|  uint64_t r[2];
+   31|      1|  uint64_t a[2] = {-1, -1};
+   32|      1|  uint64_t b[2] = {0, 0};
+   33|      1|  if (bn_sub_words(r, a, b, 2) != 0)
+   34|      0|    __builtin_abort();
+   35|      1|  return 0;
+   36|      1|}
+

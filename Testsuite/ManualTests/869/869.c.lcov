@@ -1,0 +1,23 @@
+    1|       |/* { dg-options "-O1 -fno-strict-aliasing" } */
+    2|       |/* PR rtl-optimization/41033 */
+    3|       |
+    4|       |struct X {
+    5|       |  int i;
+    6|       |  int j;
+    7|       |};
+    8|       |
+    9|      1|int foo(struct X *p, struct X *q) {
+   10|      1|  p->j = 1;
+   11|      1|  q->i = 0;
+   12|      1|  return p->j;
+   13|      1|}
+   14|       |
+   15|       |extern void abort(void);
+   16|       |
+   17|      1|int main() {
+   18|      1|  struct X x;
+   19|      1|  if (foo(&x, (struct X *)&x.j) != 0)
+   20|      0|    abort();
+   21|      1|  return 0;
+   22|      1|}
+

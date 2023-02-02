@@ -1,0 +1,54 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fomit-frame-pointer" } */
+    3|       |/* { dg-options "-O2 -fomit-frame-pointer -march=i386" { target { { i?86-*-*
+    4|       | * x86_64-*-* } && ia32 } } } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|       |struct S {
+   10|       |  int *a;
+   11|       |  unsigned char *b, c;
+   12|       |};
+   13|       |
+   14|       |int u, v, w;
+   15|       |
+   16|      1|void foo(unsigned short x) { u += x; }
+   17|       |
+   18|      0|int bar(struct S **x, int *y) {
+   19|      0|  w += *y;
+   20|      0|  *y = w + 25;
+   21|      0|  return 0;
+   22|      0|}
+   23|       |
+   24|      1|int baz(struct S **x) {
+   25|      1|  struct S *y = *x;
+   26|      1|  unsigned char *a = y->b;
+   27|      1|
+   28|      1|  foo(*a);
+   29|      1|
+   30|      1|  if (__builtin_expect(y->c != 0 || y->a == &v, 0))
+   31|      1|    return 1;
+   32|      0|
+   33|      0|  if (__builtin_expect(*a == 1, 0)) {
+   34|      0|    int a, b = bar(x, &a);
+   35|      0|
+   36|      0|    if (a)
+   37|      0|      return b;
+   38|      0|  }
+   39|      0|
+   40|      0|  return 0;
+   41|      0|}
+   42|       |
+   43|      1|int main(void) {
+   44|      1|  struct S a, *b = &a;
+   45|      1|  unsigned char c;
+   46|      1|
+   47|      1|  __builtin_memset(b, 0, sizeof(a));
+   48|      1|  a.a = &v;
+   49|      1|  a.b = &c;
+   50|      1|  if (baz(&b) != 1)
+   51|      0|    abort();
+   52|      1|  exit(0);
+   53|      1|}
+

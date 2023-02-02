@@ -1,0 +1,15 @@
+        -:    0:Source:1243.c
+        -:    0:Graph:1243.gcno
+        -:    0:Data:1243.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    3:
+        1:    4:unsigned int __attribute__((noinline, noclone)) foo(unsigned int x) {
+       1*:    5:  return x <= __INT_MAX__ ? x : -x;
+        -:    6:}
+        -:    7:
+        1:    8:int main() {
+        1:    9:  volatile unsigned int tem = foo(-__INT_MAX__ - 1);
+        1:   10:  return 0;
+        -:   11:}

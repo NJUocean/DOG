@@ -1,0 +1,31 @@
+    1|       |/* PR debug/36690 */
+    2|       |/* Verify that breakpoint can be put on goto f1, it is hit and
+    3|       |   varz at that spot is defined and contains 5.  Nowhere else
+    4|       |   in the function should be varz in the scope.  */
+    5|       |/* { dg-do compile } */
+    6|       |/* { dg-options "-O0 -gdwarf -dA" } */
+    7|       |
+    8|       |int cnt;
+    9|       |
+   10|      4|void bar(int i) { cnt += i; }
+   11|       |
+   12|      2|void foo(int i) {
+   13|      2|  if (!i)
+   14|      1|    bar(0);
+   15|      1|  else {
+   16|      1|    static int varz = 5;
+   17|      1|    goto f1;
+   18|      1|  }
+   19|      1|  bar(1);
+   20|      2|f1:
+   21|      2|  bar(2);
+   22|      2|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  foo(0);
+   26|      1|  foo(1);
+   27|      1|  return 0;
+   28|      1|}
+   29|       |
+   30|       |/* { dg-final { scan-assembler "pr36690-2.c:24" } } */
+

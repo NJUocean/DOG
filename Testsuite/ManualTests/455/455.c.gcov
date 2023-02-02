@@ -1,0 +1,49 @@
+        -:    0:Source:455.c
+        -:    0:Graph:455.gcno
+        -:    0:Data:455.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-nest-optimize" } */
+        -:    3:
+        -:    4:int rk, si = 0;
+        -:    5:int jr[2];
+        -:    6:
+        1:    7:int wv(signed char n8) {
+        1:    8:  const int tw = 8;
+        1:    9:  int xq[tw];
+        1:   10:  int bj, pu = 0;
+        -:   11:
+        9:   12:  for (bj = 0; bj < tw; ++bj)
+        8:   13:    xq[bj] = 0;
+        -:   14:
+        1:   15:  bj = 0;
+        2:   16:  while (bj < 1) {
+        1:   17:    int gs = n8 ^ 128;
+        -:   18:
+        1:   19:    if (gs != 0) {
+        -:   20:      int u7[3];
+        -:   21:
+        3:   22:      while (bj < 2) {
+        2:   23:        u7[bj] = 0;
+        2:   24:        ++bj;
+        -:   25:      }
+        -:   26:
+        1:   27:      jr[0] = u7[0];
+        1:   28:      rk = xq[0];
+        1:   29:      pu = n8;
+        -:   30:
+        1:   31:      if (si != 0)
+    #####:   32:        return si;
+        -:   33:    }
+        -:   34:  }
+        -:   35:
+        1:   36:  return pu;
+        -:   37:}
+        -:   38:
+        1:   39:int main(void) {
+        1:   40:  signed char ax = 1;
+        -:   41:
+        1:   42:  if (wv(ax) != ax)
+    #####:   43:    __builtin_abort();
+        1:   44:  return 0;
+        -:   45:}

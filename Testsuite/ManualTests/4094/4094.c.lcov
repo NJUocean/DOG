@@ -1,0 +1,13 @@
+    1|       |struct S {
+    2|       |  char f1;
+    3|       |  int f2[2];
+    4|       |};
+    5|       |
+    6|       |struct S object = {'X', 8, 9};
+    7|       |
+    8|      1|main() {
+    9|      1|  if (object.f1 != 'X' || object.f2[0] != 8 || object.f2[1] != 9)
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

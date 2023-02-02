@@ -1,0 +1,29 @@
+        -:    0:Source:3394.c
+        -:    0:Graph:3394.gcno
+        -:    0:Data:3394.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that TRUTH_AND_EXPR is not wrongly changed to TRUTH_ANDIF_EXPR.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int count = 0;
+        -:    6:
+        1:    7:int foo1(void) {
+        1:    8:  count++;
+        1:    9:  return 0;
+        -:   10:}
+        -:   11:
+        1:   12:int foo2(void) {
+        1:   13:  count++;
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  if ((foo1() == 1) & (foo2() == 1))
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  if (count != 2)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

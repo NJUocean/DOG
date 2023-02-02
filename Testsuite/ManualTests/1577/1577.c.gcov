@@ -1,0 +1,24 @@
+        -:    0:Source:1577.c
+        -:    0:Graph:1577.gcno
+        -:    0:Data:1577.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-alias "" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int a = 1, c = 1;
+        -:    7:extern int b __attribute__((alias("a")));
+        -:    8:extern int d __attribute__((alias("c")));
+        1:    9:int main(int argc) {
+        -:   10:  int *p, *q;
+        1:   11:  if (argc >= 0)
+        1:   12:    p = &c, q = &d;
+        -:   13:  else
+    #####:   14:    p = &b, q = &d;
+        1:   15:  *p = 1;
+        1:   16:  *q = 2;
+        1:   17:  if (*p == 1)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

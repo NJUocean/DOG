@@ -1,0 +1,27 @@
+        -:    0:Source:561.c
+        -:    0:Graph:561.gcno
+        -:    0:Data:561.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -fipa-cp -fipa-cp-clone -fdump-ipa-cp -fno-early-inlining"
+        -:    3: * } */
+        -:    4:/* { dg-add-options bind_pic_locally } */
+        -:    5:
+        -:    6:#include <stdio.h>
+        1:    7:static int g(int b, int c) { printf("%d %d\n", b, c); }
+        1:    8:static int f(int a) {
+        -:    9:  /* Second parameter of g gets different values.  */
+        1:   10:  if (a > 0)
+        1:   11:    g(a, 3);
+        -:   12:  else
+    #####:   13:    g(a, 5);
+        1:   14:}
+        1:   15:int main() {
+        1:   16:  f(7);
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-ipa-dump "Creating a specialized node of f" "cp" } } */
+        -:   21:/* { dg-final { scan-ipa-dump "replacing param .0 a with const 7" "cp"  } } */
+        -:   22:/* { dg-final { scan-ipa-dump "Creating a specialized node of g" "cp" } } */
+        -:   23:/* { dg-final { scan-ipa-dump "replacing param .0 b with const 7" "cp"  } } */

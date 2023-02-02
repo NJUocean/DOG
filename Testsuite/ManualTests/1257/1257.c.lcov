@@ -1,0 +1,15 @@
+    1|       |/* PR sanitizer/60636 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined" } */
+    4|       |
+    5|       |volatile long long int a;
+    6|       |
+    7|      1|int main() {
+    8|      1|  long long int u = -__LONG_LONG_MAX__ - 1;
+    9|      1|  a = u > 0 ? u : -u;
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|       |/* { dg-output "negation of -9223372036854775808 cannot be represented in type
+   14|       | * 'long long int'" } */
+

@@ -1,0 +1,35 @@
+    1|       |/* PR middle-end/81814 */
+    2|       |/* { dg-do run { target int32plus } } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  int i = 0x01000000;
+    6|      1|  int a;
+    7|      1|
+    8|      1|  a = ((signed char)i) != 0 ? 0 : (unsigned long long int)i;
+    9|      1|  if (a != 0x01000000)
+   10|      0|    __builtin_abort();
+   11|      1|  a = ((signed short int)i) != 0 ? 0 : (unsigned long long int)i;
+   12|      1|  if (a != 0x01000000)
+   13|      0|    __builtin_abort();
+   14|      1|  a = ((unsigned short int)i) != 0 ? 0 : (unsigned long long int)i;
+   15|      1|  if (a != 0x01000000)
+   16|      0|    __builtin_abort();
+   17|      1|  a = ((unsigned char)i) != 0 ? 0 : (unsigned long long int)i;
+   18|      1|  if (a != 0x01000000)
+   19|      0|    __builtin_abort();
+   20|      1|  a = ((signed char)i) == 0 ? (unsigned long long int)i : 0;
+   21|      1|  if (a != 0x01000000)
+   22|      0|    __builtin_abort();
+   23|      1|  a = ((signed short int)i) == 0 ? (unsigned long long int)i : 0;
+   24|      1|  if (a != 0x01000000)
+   25|      0|    __builtin_abort();
+   26|      1|  a = ((unsigned short int)i) == 0 ? (unsigned long long int)i : 0;
+   27|      1|  if (a != 0x01000000)
+   28|      0|    __builtin_abort();
+   29|      1|  a = ((unsigned char)i) == 0 ? (unsigned long long int)i : 0;
+   30|      1|  if (a != 0x01000000)
+   31|      0|    __builtin_abort();
+   32|      1|
+   33|      1|  return 0;
+   34|      1|}
+

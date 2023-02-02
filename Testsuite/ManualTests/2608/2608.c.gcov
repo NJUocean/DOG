@@ -1,0 +1,45 @@
+        -:    0:Source:2608.c
+        -:    0:Graph:2608.gcno
+        -:    0:Data:2608.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-ifunc "" } */
+        -:    3:/* { dg-options "-std=gnu99" } */
+        -:    4:
+        1:    5:__attribute__((noipa)) int baz(int (*fn)(void)) {
+        1:    6:  asm volatile("" : "+g"(fn) : : "memory");
+        1:    7:  return fn();
+        -:    8:}
+        -:    9:
+        -:   10:__attribute__((target_clones("arch=sandybridge", "default"))) static int
+       1*:   11:bar(void) {
+       1*:   12:  return 1;
+        -:   13:}
+------------------
+bar.arch_sandybridge.0:
+    #####:   11:bar(void) {
+    #####:   12:  return 1;
+        -:   13:}
+------------------
+bar.default.1:
+        1:   11:bar(void) {
+        1:   12:  return 1;
+        -:   13:}
+------------------
+        -:   14:
+       1*:   15:__attribute__((target_clones("arch=sandybridge", "default"))) int foo(void) {
+       1*:   16:  baz(bar) - 1;
+       1*:   17:}
+------------------
+foo.arch_sandybridge.0:
+    #####:   15:__attribute__((target_clones("arch=sandybridge", "default"))) int foo(void) {
+    #####:   16:  baz(bar) - 1;
+    #####:   17:}
+------------------
+foo.default.1:
+        1:   15:__attribute__((target_clones("arch=sandybridge", "default"))) int foo(void) {
+        1:   16:  baz(bar) - 1;
+        1:   17:}
+------------------
+        -:   18:
+        1:   19:int main() { foo(); }

@@ -1,0 +1,27 @@
+        -:    0:Source:1832.c
+        -:    0:Graph:1832.gcno
+        -:    0:Data:1832.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target lto } */
+        -:    2:/* { dg-options "-O2 -flto" } */
+        -:    3:
+        -:    4:unsigned long global = -12345;
+        -:    5:
+        -:    6:unsigned long __attribute__((noinline))
+      100:    7:test(unsigned long v, unsigned long v2) {
+      100:    8:  unsigned long x = v % v2;
+        -:    9:
+      100:   10:  return x;
+        -:   11:}
+        -:   12:
+        1:   13:int main(int argc, char **argv) {
+        1:   14:  unsigned long r = 0;
+        -:   15:
+      101:   16:  for (int i = 0; i < 100; i++)
+      100:   17:    r += test(argc, global);
+        -:   18:
+        1:   19:  if (r != 100)
+    #####:   20:    __builtin_abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}

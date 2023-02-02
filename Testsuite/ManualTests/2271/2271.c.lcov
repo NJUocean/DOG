@@ -1,0 +1,16 @@
+    1|       |#include <string.h>
+    2|       |
+    3|       |static int special_format(fmt) const char *fmt;
+    4|      2|{
+    5|      2|  return (strchr(fmt, '*') != 0 || strchr(fmt, 'V') != 0 ||
+    6|      2|          strchr(fmt, 'S') != 0 || strchr(fmt, 'n') != 0);
+    7|      2|}
+    8|       |
+    9|      1|main() {
+   10|      1|  if (special_format("ee"))
+   11|      0|    abort();
+   12|      1|  if (!special_format("*e"))
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

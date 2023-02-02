@@ -1,0 +1,26 @@
+    1|       |/* PR sanitizer/70712 */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |struct __attribute__((aligned(64))) S {
+    5|       |  char s[4];
+    6|       |};
+    7|       |
+    8|       |struct T {
+    9|       |  char t[8];
+   10|       |  char u[480];
+   11|       |};
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) void foo(struct T *p, struct S *q) {
+   14|      1|  __builtin_memset(p->t, '\0', sizeof(p->t));
+   15|      1|  __builtin_memset(p->u, '\0', sizeof(p->u));
+   16|      1|  __builtin_memset(q->s, '\0', sizeof(q->s));
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  struct S s;
+   21|      1|  struct T t;
+   22|      1|  foo(&t, &s);
+   23|      1|  asm volatile("" : : "r"(&t), "r"(&s) : "memory");
+   24|      1|  return 0;
+   25|      1|}
+

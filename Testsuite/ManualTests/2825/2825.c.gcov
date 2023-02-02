@@ -1,0 +1,36 @@
+        -:    0:Source:2825.c
+        -:    0:Graph:2825.gcno
+        -:    0:Data:2825.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/19005 */
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:int v, s;
+        -:    5:
+      552:    6:void bar(int a, int b) {
+      552:    7:  unsigned char x = v;
+        -:    8:
+      552:    9:  if (!s) {
+      276:   10:    if (a != x || b != (unsigned char)(x + 1))
+    #####:   11:      abort();
+      276:   12:  } else if (a != (unsigned char)(x + 1) || b != x)
+    #####:   13:    abort();
+      552:   14:  s ^= 1;
+      552:   15:}
+        -:   16:
+      276:   17:int foo(int x) {
+      276:   18:  unsigned char a = x, b = x + 1;
+        -:   19:
+      276:   20:  bar(a, b);
+      276:   21:  a ^= b;
+      276:   22:  b ^= a;
+      276:   23:  a ^= b;
+      276:   24:  bar(a, b);
+      276:   25:  return 0;
+        -:   26:}
+        -:   27:
+        1:   28:int main(void) {
+      277:   29:  for (v = -10; v < 266; v++)
+      276:   30:    foo(v);
+        1:   31:  return 0;
+        -:   32:}

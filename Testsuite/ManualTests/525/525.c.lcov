@@ -1,0 +1,17 @@
+    1|       |/* The bit-field below would have a problem if __INT_MAX__ is too
+    2|       |   small.  */
+    3|       |#if __INT_MAX__ < 2147483647
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|       |struct {
+    7|       |  unsigned bit : 30;
+    8|       |} t;
+    9|       |
+   10|      1|int main() {
+   11|      1|  if (!(t.bit++))
+   12|      1|    exit(0);
+   13|      0|  else
+   14|      0|    abort();
+   15|      1|}
+   16|       |#endif
+

@@ -1,0 +1,28 @@
+    1|       |/* Verify that indirect inlining can also remove references of the functions it
+    2|       |   discovers calls for, even when nodes being inlined are virtual IPA-CP
+    3|       |   clones.  */
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-options "-O3 -fno-early-inlining -fdump-ipa-cp-details -fdump-ipa-inline
+    6|       | * -fdump-tree-optimized"  } */
+    7|       |
+    8|       |int global;
+    9|       |
+   10|      2|void __attribute__((noinline, noclone, used)) stuff(int i) { global = i; }
+   11|       |
+   12|      1|static void hooray() { stuff(1); }
+   13|       |
+   14|      1|static void hiphip(void (*f)()) {
+   15|      1|  stuff(2);
+   16|      1|  f();
+   17|      1|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  hiphip(hooray);
+   21|      1|  return 0;
+   22|      1|}
+   23|       |
+   24|       |/* { dg-final { scan-ipa-dump "removing its cloning-created reference"  "cp"  }
+   25|       | * } */
+   26|       |/* { dg-final { scan-ipa-dump "ipa-prop: Removed a reference"  "inline"  } } */
+   27|       |/* { dg-final { scan-tree-dump-not "hooray"  "optimized"  } } */
+

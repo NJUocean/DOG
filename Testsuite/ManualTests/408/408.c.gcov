@@ -1,0 +1,51 @@
+        -:    0:Source:408.c
+        -:    0:Graph:408.gcno
+        -:    0:Data:408.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define NMAX 2000
+        -:    9:
+        -:   10:static int x[NMAX], a[NMAX][NMAX];
+        -:   11:
+        1:   12:static int __attribute__((noinline)) mvt(long N) {
+        -:   13:  int i, j;
+        -:   14:
+        -:   15:  /* These two loops should be interchanged.  */
+     2001:   16:  for (i = 0; i < N; i++)
+  4002000:   17:    for (j = 0; j < N; j++)
+  4000000:   18:      x[i] += a[j][i];
+        -:   19:
+        1:   20:  return x[1];
+        -:   21:}
+        -:   22:
+        -:   23:extern void abort();
+        -:   24:
+        1:   25:int main(void) {
+        -:   26:  int i, j, res;
+        -:   27:
+     2001:   28:  for (i = 0; i < NMAX; i++)
+  4002000:   29:    for (j = 0; j < NMAX; j++)
+  4000000:   30:      a[i][j] = j;
+        -:   31:
+     2001:   32:  for (i = 0; i < NMAX; i++)
+     2000:   33:    x[i] = i;
+        -:   34:
+        1:   35:  res = mvt(NMAX);
+        -:   36:
+        -:   37:#if DEBUG
+        -:   38:  fprintf(stderr, "res = %d \n", res);
+        -:   39:#endif
+        -:   40:
+        1:   41:  if (res != 2001)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}
+        -:   46:
+        -:   47:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

@@ -1,0 +1,32 @@
+    1|       |/* PR target/14209.  Bug in cris.md, shrinking access size of
+    2|       |   postincrement.
+    3|       |   Origin: <hp@axis.com>.  */
+    4|       |
+    5|       |long int xb(long int *y) __attribute__((__noinline__));
+    6|       |long int xw(long int *y) __attribute__((__noinline__));
+    7|       |short int yb(short int *y) __attribute__((__noinline__));
+    8|       |
+    9|      1|long int xb(long int *y) {
+   10|      1|  long int xx = *y & 255;
+   11|      1|  return xx + y[1];
+   12|      1|}
+   13|       |
+   14|      1|long int xw(long int *y) {
+   15|      1|  long int xx = *y & 65535;
+   16|      1|  return xx + y[1];
+   17|      1|}
+   18|       |
+   19|      1|short int yb(short int *y) {
+   20|      1|  short int xx = *y & 255;
+   21|      1|  return xx + y[1];
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  long int y[] = {-1, 16000};
+   26|      1|  short int yw[] = {-1, 16000};
+   27|      1|
+   28|      1|  if (xb(y) != 16255 || xw(y) != 81535 || yb(yw) != 16255)
+   29|      0|    abort();
+   30|      1|  exit(0);
+   31|      1|}
+

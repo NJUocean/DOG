@@ -1,0 +1,26 @@
+        -:    0:Source:622.c
+        -:    0:Graph:622.gcno
+        -:    0:Data:622.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fno-guess-branch-probability" } */
+        -:    2:
+        -:    3:int z;
+        -:    4:
+    #####:    5:__attribute__((noinline)) void g() {
+    #####:    6:  if (++z)
+    #####:    7:    __builtin_exit(0);
+    #####:    8:  g();
+    #####:    9:}
+        -:   10:
+        1:   11:__attribute__((noinline)) void f() {
+        1:   12:  if (++z)
+        1:   13:    __builtin_exit(0);
+    #####:   14:  f();
+    #####:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  f();
+    #####:   19:  g();
+        -:   20:
+    #####:   21:  return 0;
+        -:   22:}

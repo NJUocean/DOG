@@ -1,0 +1,66 @@
+        -:    0:Source:3712.c
+        -:    0:Graph:3712.gcno
+        -:    0:Data:3712.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/47538 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  double a, b, *c;
+        -:    5:  unsigned long d;
+        -:    6:};
+        -:    7:
+        4:    8:__attribute__((noinline, noclone)) void foo(struct S *x, const struct S *y) {
+        4:    9:  const unsigned long n = y->d + 1;
+        4:   10:  const double m = 0.25 * (y->b - y->a);
+        4:   11:  x->a = y->a;
+        4:   12:  x->b = y->b;
+        4:   13:  if (n == 1) {
+        1:   14:    x->c[0] = 0.;
+        3:   15:  } else if (n == 2) {
+        1:   16:    x->c[1] = m * y->c[0];
+        1:   17:    x->c[0] = 2.0 * x->c[1];
+        -:   18:  } else {
+        2:   19:    double o = 0.0, p = 1.0;
+        -:   20:    unsigned long i;
+        -:   21:
+        5:   22:    for (i = 1; i <= n - 2; i++) {
+        3:   23:      x->c[i] = m * (y->c[i - 1] - y->c[i + 1]) / (double)i;
+        3:   24:      o += p * x->c[i];
+        3:   25:      p = -p;
+        -:   26:    }
+        2:   27:    x->c[n - 1] = m * y->c[n - 2] / (n - 1.0);
+        2:   28:    o += p * x->c[n - 1];
+        2:   29:    x->c[0] = 2.0 * o;
+        -:   30:  }
+        4:   31:}
+        -:   32:
+        1:   33:int main(void) {
+        -:   34:  struct S x, y;
+        1:   35:  double c[4] = {10, 20, 30, 40}, d[4], e[4] = {118, 118, 118, 118};
+        -:   36:
+        1:   37:  y.a = 10;
+        1:   38:  y.b = 6;
+        1:   39:  y.c = c;
+        1:   40:  x.c = d;
+        1:   41:  y.d = 3;
+        1:   42:  __builtin_memcpy(d, e, sizeof d);
+        1:   43:  foo(&x, &y);
+        1:   44:  if (d[0] != 0 || d[1] != 20 || d[2] != 10 || d[3] != -10)
+    #####:   45:    __builtin_abort();
+        1:   46:  y.d = 2;
+        1:   47:  __builtin_memcpy(d, e, sizeof d);
+        1:   48:  foo(&x, &y);
+        1:   49:  if (d[0] != 60 || d[1] != 20 || d[2] != -10 || d[3] != 118)
+    #####:   50:    __builtin_abort();
+        1:   51:  y.d = 1;
+        1:   52:  __builtin_memcpy(d, e, sizeof d);
+        1:   53:  foo(&x, &y);
+        1:   54:  if (d[0] != -20 || d[1] != -10 || d[2] != 118 || d[3] != 118)
+    #####:   55:    __builtin_abort();
+        1:   56:  y.d = 0;
+        1:   57:  __builtin_memcpy(d, e, sizeof d);
+        1:   58:  foo(&x, &y);
+        1:   59:  if (d[0] != 0 || d[1] != 118 || d[2] != 118 || d[3] != 118)
+    #####:   60:    __builtin_abort();
+        1:   61:  return 0;
+        -:   62:}

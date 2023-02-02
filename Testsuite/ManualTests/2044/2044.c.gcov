@@ -1,0 +1,84 @@
+        -:    0:Source:2044.c
+        -:    0:Graph:2044.gcno
+        -:    0:Data:2044.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        -:    2:  int i, j;
+        -:    3:
+        -:    4:#pragma acc parallel firstprivate(j) private(i)
+        -:    5:  {
+        -:    6:#pragma acc loop seq
+       11:    7:    for (i = 0; i < 10; i++) {
+        -:    8:    }
+        -:    9:  }
+        -:   10:
+        -:   11:#pragma acc parallel default(none)
+        -:   12:  {
+        -:   13:#pragma acc loop auto private(j)
+       11:   14:    for (i = 0; i < 10; i++) {
+        -:   15:    }
+        -:   16:#pragma acc loop gang
+       11:   17:    for (i = 0; i < 10; i++) {
+        -:   18:    }
+        -:   19:#pragma acc loop gang(static : 5)
+       11:   20:    for (i = 0; i < 10; i++) {
+        -:   21:    }
+        -:   22:#pragma acc loop gang(static : *)
+       11:   23:    for (i = 0; i < 10; i++) {
+        -:   24:    }
+        -:   25:#pragma acc loop vector
+       11:   26:    for (i = 0; i < 10; i++) {
+        -:   27:    }
+        -:   28:#pragma acc loop worker
+       11:   29:    for (i = 0; i < 10; i++) {
+        -:   30:    }
+        -:   31:#pragma acc loop auto
+       11:   32:    for (i = 0; i < 10; i++) {
+        -:   33:    }
+        -:   34:#pragma acc loop independent
+       11:   35:    for (i = 0; i < 10; i++) {
+        -:   36:    }
+        -:   37:#pragma acc loop seq
+       11:   38:    for (i = 0; i < 10; i++) {
+        -:   39:    }
+        -:   40:#pragma acc loop gang worker vector
+       11:   41:    for (i = 0; i < 10; i++) {
+        -:   42:    }
+        -:   43:  }
+        -:   44:
+        -:   45:#pragma acc kernels default(none)
+        -:   46:  {
+        -:   47:#pragma acc loop auto
+       11:   48:    for (i = 0; i < 10; i++) {
+        -:   49:    }
+        -:   50:#pragma acc loop gang(num : 5)
+       11:   51:    for (i = 0; i < 10; i++) {
+        -:   52:    }
+        -:   53:#pragma acc loop gang(static : 5)
+       11:   54:    for (i = 0; i < 10; i++) {
+        -:   55:    }
+        -:   56:#pragma acc loop gang(static : *)
+       11:   57:    for (i = 0; i < 10; i++) {
+        -:   58:    }
+        -:   59:#pragma acc loop vector(length : 10)
+       11:   60:    for (i = 0; i < 10; i++) {
+        -:   61:    }
+        -:   62:#pragma acc loop worker(num : 5)
+       11:   63:    for (i = 0; i < 10; i++) {
+        -:   64:    }
+        -:   65:#pragma acc loop auto
+       11:   66:    for (i = 0; i < 10; i++) {
+        -:   67:    }
+        -:   68:#pragma acc loop independent
+       11:   69:    for (i = 0; i < 10; i++) {
+        -:   70:    }
+        -:   71:#pragma acc loop seq
+       11:   72:    for (i = 0; i < 10; i++) {
+        -:   73:    }
+        -:   74:#pragma acc loop gang worker vector
+       11:   75:    for (i = 0; i < 10; i++) {
+        -:   76:    }
+        -:   77:  }
+        -:   78:
+        1:   79:  return 0;
+        -:   80:}

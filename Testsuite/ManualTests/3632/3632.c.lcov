@@ -1,0 +1,22 @@
+    1|       |struct X {
+    2|       |  int *p;
+    3|       |} x;
+    4|       |
+    5|      1|struct X __attribute__((noinline)) foo(int *p) {
+    6|      1|  struct X x;
+    7|      1|  x.p = p;
+    8|      1|  return x;
+    9|      1|}
+   10|       |
+   11|      1|void __attribute((noinline)) bar() { *x.p = 1; }
+   12|       |
+   13|       |extern void abort(void);
+   14|      1|int main() {
+   15|      1|  int i = 0;
+   16|      1|  x = foo(&i);
+   17|      1|  bar();
+   18|      1|  if (i != 1)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

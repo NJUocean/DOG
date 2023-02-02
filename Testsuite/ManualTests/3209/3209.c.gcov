@@ -1,0 +1,45 @@
+        -:    0:Source:3209.c
+        -:    0:Graph:3209.gcno
+        -:    0:Data:3209.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase failed on IA-32 at -O and above, because combine attached
+        -:    2:   a REG_LABEL note to jump instruction already using JUMP_LABEL.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:enum X { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q };
+        -:    8:
+    #####:    9:void bar(const char *x, int y, const char *z) {}
+        -:   10:
+        1:   11:long foo(enum X x, const void *y) {
+        -:   12:  long a;
+        -:   13:
+        1:   14:  switch (x) {
+    #####:   15:  case K:
+    #####:   16:    a = *(long *)y;
+    #####:   17:    break;
+    #####:   18:  case L:
+    #####:   19:    a = *(long *)y;
+    #####:   20:    break;
+    #####:   21:  case M:
+    #####:   22:    a = *(long *)y;
+    #####:   23:    break;
+        1:   24:  case N:
+        1:   25:    a = *(long *)y;
+        1:   26:    break;
+    #####:   27:  case O:
+    #####:   28:    a = *(long *)y;
+    #####:   29:    break;
+    #####:   30:  default:
+    #####:   31:    bar("foo", 1, "bar");
+        -:   32:  }
+        1:   33:  return a;
+        -:   34:}
+        -:   35:
+        1:   36:int main() {
+        1:   37:  long i = 24;
+        1:   38:  if (foo(N, &i) != 24)
+    #####:   39:    abort();
+        1:   40:  exit(0);
+        -:   41:}

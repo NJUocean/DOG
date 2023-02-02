@@ -1,0 +1,16 @@
+    1|       |struct x {
+    2|       |  int a, b;
+    3|       |} z = {-4028, 4096};
+    4|       |
+    5|      1|int foo(struct x *p, int y) {
+    6|      1|  if ((y & 0xff) != y || -p->b >= p->a)
+    7|      0|    return 1;
+    8|      1|  return 0;
+    9|      1|}
+   10|       |
+   11|      1|main() {
+   12|      1|  if (foo(&z, 10))
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

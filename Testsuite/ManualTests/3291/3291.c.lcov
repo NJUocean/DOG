@@ -1,0 +1,14 @@
+    1|       |/* PR opt/10011 */
+    2|       |/* This is link test for builtin_constant_p simplification + DCE.  */
+    3|       |
+    4|       |extern void link_error(void);
+    5|      0|static void usb_hub_port_wait_reset(unsigned int delay) {
+    6|      0|  int delay_time;
+    7|      0|  for (delay_time = 0; delay_time < 500; delay_time += delay) {
+    8|      0|    if (__builtin_constant_p(delay))
+    9|      0|      link_error();
+   10|      0|  }
+   11|      0|}
+   12|       |
+   13|      1|int main() { return 0; }
+

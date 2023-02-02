@@ -1,0 +1,65 @@
+        -:    0:Source:1913.c
+        -:    0:Graph:1913.gcno
+        -:    0:Data:1913.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-effective-target size20plus } */
+        -:    4:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    5:
+        -:    6:#define M 256
+        -:    7:int a[M][M], b[M][M], c[M][M], d[M][M];
+        1:    8:void __attribute__((noinline)) matrix_mul_1(int n) {
+      257:    9:  for (int j = 0; j < n; j++)
+    65792:   10:    for (int k = 0; k < n; k++)
+ 16842752:   11:      for (int i = 0; i < n; i++)
+ 16777216:   12:        c[i][j] = c[i][j] + a[i][k] * b[k][j];
+        1:   13:}
+        -:   14:
+        1:   15:void __attribute__((noinline)) matrix_mul_2(int n) {
+      257:   16:  for (int i = 0; i < n; i++) {
+    65792:   17:    for (int j = 0; j < n; j++) {
+ 16842752:   18:      for (int k = 0; k < n; k++)
+ 16777216:   19:        d[i][j] = d[i][j] + a[i][k] * b[k][j];
+        -:   20:
+    65536:   21:      asm volatile("" ::: "memory");
+        -:   22:    }
+      256:   23:    asm volatile("" ::: "memory");
+        -:   24:  }
+        1:   25:}
+        -:   26:
+        -:   27:extern void abort();
+        -:   28:
+      256:   29:static void __attribute__((noinline)) init(int i) {
+    65792:   30:  for (int j = 0; j < M; j++) {
+    65536:   31:    a[i][j] = i;
+    65536:   32:    b[i][j] = j;
+    65536:   33:    c[i][j] = 0;
+    65536:   34:    d[i][j] = 0;
+        -:   35:  }
+      256:   36:}
+        -:   37:
+      256:   38:static int __attribute__((noinline)) check(int i) {
+    65792:   39:  for (int j = 0; j < M; j++)
+    65536:   40:    if (c[i][j] != d[i][j])
+    #####:   41:      return 0;
+        -:   42:
+      256:   43:  return 1;
+        -:   44:}
+        -:   45:
+        1:   46:int main(void) {
+      257:   47:  for (int i = 0; i < M; ++i)
+      256:   48:    init(i);
+        -:   49:
+        1:   50:  matrix_mul_1(M);
+        1:   51:  matrix_mul_2(M);
+        -:   52:
+      257:   53:  for (int i = 0; i < M; ++i)
+      256:   54:    if (!check(i))
+    #####:   55:      abort();
+        -:   56:
+        1:   57:  return 0;
+        -:   58:}
+        -:   59:
+        -:   60:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   61: * interchanged" 2 "linterchange" } } */

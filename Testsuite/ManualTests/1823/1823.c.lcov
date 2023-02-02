@@ -1,0 +1,40 @@
+    1|       |#ifndef SIGNAL_SUPPRESS
+    2|       |#include <signal.h>
+    3|       |#endif
+    4|       |
+    5|       |float fnan = 1.0f / 0.0f - 1.0f / 0.0f;
+    6|       |float x = 1.0f;
+    7|       |
+    8|      0|void leave() { exit(0); }
+    9|       |
+   10|      1|main() {
+   11|      1|#if !defined(__vax__) && !defined(_CRAY)
+   12|      1|  /* Move this line earlier, for architectures (like alpha) that issue
+   13|      1|     SIGFPE on the first comparisons. */
+   14|      1|#ifndef SIGNAL_SUPPRESS
+   15|      1|  /* Some machines catches a SIGFPE when a NaN is compared.
+   16|      1|     Let this test succeed o such machines.  */
+   17|      1|  signal(SIGFPE, leave);
+   18|      1|#endif
+   19|      1|  /* NaN is an IEEE unordered operand.  All these test should be false.  */
+   20|      1|  if (fnan == fnan)
+   21|      0|    abort();
+   22|      1|  if (fnan != x)
+   23|      1|    x = 1.0;
+   24|      0|  else
+   25|      0|    abort();
+   26|      1|
+   27|      1|  if (fnan < x)
+   28|      0|    abort();
+   29|      1|  if (fnan > x)
+   30|      0|    abort();
+   31|      1|  if (fnan <= x)
+   32|      0|    abort();
+   33|      1|  if (fnan >= x)
+   34|      0|    abort();
+   35|      1|  if (fnan == x)
+   36|      0|    abort();
+   37|      1|#endif
+   38|      1|  exit(0);
+   39|      1|}
+

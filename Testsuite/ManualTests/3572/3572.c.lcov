@@ -1,0 +1,16 @@
+    1|       |typedef union {
+    2|       |  int __lock;
+    3|       |} pthread_mutex_t;
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int main() {
+    8|      1|  struct {
+    9|      1|    int c;
+   10|      1|    pthread_mutex_t m;
+   11|      1|  } r = {.m = 0};
+   12|      1|  if (r.c != 0)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

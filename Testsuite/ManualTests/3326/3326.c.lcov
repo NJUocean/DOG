@@ -1,0 +1,78 @@
+    1|       |/* Copyright (C) 2003  Free Software Foundation.
+    2|       |   PR target/13256
+    3|       |   STRICT_LOW_PART was handled incorrectly in delay slots.
+    4|       |   Origin: Hans-Peter Nilsson.  */
+    5|       |
+    6|       |typedef struct {
+    7|       |  unsigned int e0 : 16;
+    8|       |  unsigned int e1 : 16;
+    9|       |} s1;
+   10|       |typedef struct {
+   11|       |  unsigned int e0 : 16;
+   12|       |  unsigned int e1 : 16;
+   13|       |} s2;
+   14|       |typedef struct {
+   15|       |  s1 i12;
+   16|       |  s2 i16;
+   17|       |} io;
+   18|       |static int test_length = 2;
+   19|       |static io *i;
+   20|       |static int m = 1;
+   21|       |static int d = 1;
+   22|       |static unsigned long test_t0;
+   23|       |static unsigned long test_t1;
+   24|       |void test(void) __attribute__((__noinline__));
+   25|       |extern int f1(void *port) __attribute__((__noinline__));
+   26|       |extern void f0(void) __attribute__((__noinline__));
+   27|      1|int f1(void *port) {
+   28|      1|  int fail_count = 0;
+   29|      1|  unsigned long tlen;
+   30|      1|  s1 x0 = {0};
+   31|      1|  s2 x1 = {0};
+   32|      1|
+   33|      1|  i = port;
+   34|      1|  x0.e0 = x1.e0 = 32;
+   35|      1|  i->i12 = x0;
+   36|      1|  i->i16 = x1;
+   37|      1|  do
+   38|      1|    f0();
+   39|      1|  while (test_t1);
+   40|      1|  x0.e0 = x1.e0 = 8;
+   41|      1|  i->i12 = x0;
+   42|      1|  i->i16 = x1;
+   43|      1|  test();
+   44|      1|  if (m) {
+   45|      0|    unsigned long e = 1000000000 / 460800 * test_length;
+   46|      0|    tlen = test_t1 - test_t0;
+   47|      0|    if (((tlen - e) & 0x7FFFFFFF) > 1000)
+   48|      0|      f0();
+   49|      0|  }
+   50|      1|  if (d) {
+   51|      0|    unsigned long e = 1000000000 / 460800 * test_length;
+   52|      0|    tlen = test_t1 - test_t0;
+   53|      0|    if (((tlen - e) & 0x7FFFFFFF) > 1000)
+   54|      0|      f0();
+   55|      0|  }
+   56|      1|  return fail_count != 0 ? 1 : 0;
+   57|      1|}
+   58|       |
+   59|      1|int main() {
+   60|      1|  io io0;
+   61|      1|  f1(&io0);
+   62|      1|  abort();
+   63|      1|}
+   64|       |
+   65|      1|void test(void) {
+   66|      1|  io *iop = i;
+   67|      1|  if (iop->i12.e0 != 8 || iop->i16.e0 != 8)
+   68|      0|    abort();
+   69|      1|  exit(0);
+   70|      1|}
+   71|       |
+   72|      1|void f0(void) {
+   73|      1|  static int washere = 0;
+   74|      1|  io *iop = i;
+   75|      1|  if (washere++ || iop->i12.e0 != 32 || iop->i16.e0 != 32)
+   76|      0|    abort();
+   77|      1|}
+

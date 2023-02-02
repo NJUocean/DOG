@@ -1,0 +1,11 @@
+    1|       |/* PR target/60072 */
+    2|       |
+    3|       |int c = 1;
+    4|       |
+    5|      1|__attribute__((optimize(1))) static int *foo(int *p) { return p; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  *foo(&c) = 2;
+    9|      1|  return c - 2;
+   10|      1|}
+

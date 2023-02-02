@@ -1,0 +1,16 @@
+    1|       |/* PR middle-end/38676 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-fopenmp" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  int bar, foo = 1;
+    7|      1|#pragma omp parallel for shared(foo)
+    8|      4|  for (bar = 0; bar < 3; bar++) {
+    9|      3|    switch (foo) {
+   10|      3|    case 1:
+   11|      3|      break;
+   12|      3|    }
+   13|      3|  }
+   14|      1|  return 0;
+   15|      1|}
+

@@ -1,0 +1,73 @@
+        -:    0:Source:2561.c
+        -:    0:Graph:2561.gcno
+        -:    0:Data:2561.gcda
+        -:    0:Runs:1
+        -:    1:/* Test double on x86. */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options -O2 } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        2:    8:static __inline double mypow(double __x, double __y) {
+        -:    9:  register double __value, __exponent;
+        2:   10:  long __p = (long)__y;
+        2:   11:  if (__y == (double)__p) {
+    #####:   12:    double __r = 1.0;
+    #####:   13:    if (__p == 0)
+    #####:   14:      return 1.0;
+    #####:   15:    if (__p < 0) {
+    #####:   16:      __p = -__p;
+    #####:   17:      __x = 1.0 / __x;
+        -:   18:    }
+        -:   19:    while (1) {
+    #####:   20:      if (__p & 1)
+    #####:   21:        __r *= __x;
+    #####:   22:      __p >>= 1;
+    #####:   23:      if (__p == 0)
+    #####:   24:        return __r;
+    #####:   25:      __x *= __x;
+        -:   26:    }
+        -:   27:  }
+        2:   28:  __asm __volatile__("fmul	%%st(1),%%st\n\t" /* y * log2(x) */
+        -:   29:                     "fst	%%st(1)\n\t"
+        -:   30:                     "frndint\n\t" /* int(y * log2(x)) */
+        -:   31:                     "fxch  %%st(1)\n\t"
+        -:   32:                     "fsub	%%st(1),%%st\n\t" /* fract(y * log2(x)) */
+        -:   33:                     "f2xm1\n\t" /* 2^(fract(y * log2(x))) - 1 */
+        -:   34:                     : "=t"(__value), "=u"(__exponent)
+        -:   35:                     : "0"(__x), "1"(__y));
+        2:   36:  __value += 1.0;
+        2:   37:  __asm __volatile__("fscale" : "=t"(__value) : "0"(__value), "u"(__exponent));
+        2:   38:  return __value;
+        -:   39:}
+        -:   40:
+        -:   41:const double E1 = 2.71828182845904523536028747135;
+        -:   42:
+        1:   43:double fact(double x) {
+        -:   44:  double corr;
+        1:   45:  corr = 1.0;
+        1:   46:  return corr * mypow(x / E1, x);
+        -:   47:}
+        -:   48:
+        1:   49:int main() {
+        -:   50:  double y, z;
+        -:   51:
+        1:   52:  y = fact(46.2);
+        1:   53:  z = mypow(46.2 / E1, 46.2);
+        -:   54:
+        -:   55:#if 0
+        -:   56:  printf ("%26.19e, %26.19e\n", y, z);
+        -:   57:#endif
+        -:   58:
+        1:   59:  if (y > z)
+    #####:   60:    y -= z;
+        -:   61:  else
+        1:   62:    y = z - y;
+        -:   63:
+        1:   64:  y /= z;
+        1:   65:  if (y > 0.1)
+    #####:   66:    abort();
+        -:   67:
+        1:   68:  return 0;
+        -:   69:}

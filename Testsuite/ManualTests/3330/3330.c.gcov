@@ -1,0 +1,30 @@
+        -:    0:Source:3330.c
+        -:    0:Graph:3330.gcno
+        -:    0:Data:3330.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/10312 */
+        -:    2:/* Originator: Peter van Hoof <p dot van-hoof at qub dot ac dot uk> */
+        -:    3:
+        -:    4:/* Verify that the strength reduction pass doesn't find
+        -:    5:   illegitimate givs.  */
+        -:    6:
+        -:    7:struct {
+        -:    8:  double a;
+        -:    9:  int n[2];
+        -:   10:} g = {0., {1, 2}};
+        -:   11:
+        -:   12:int k = 0;
+        -:   13:
+        1:   14:void b(int *j) {}
+        -:   15:
+        1:   16:int main() {
+        -:   17:  int j;
+        -:   18:
+        3:   19:  for (j = 0; j < 2; j++)
+        2:   20:    k = (k > g.n[j]) ? k : g.n[j];
+        -:   21:
+        1:   22:  k++;
+        1:   23:  b(&j);
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

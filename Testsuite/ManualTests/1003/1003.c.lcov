@@ -1,0 +1,21 @@
+    1|       |/* PR tree-optimization/71518 */
+    2|       |/* { dg-options "-O3" } */
+    3|       |
+    4|       |int a, *b[9], c, d, e;
+    5|       |
+    6|      1|static int fn1() {
+    7|      8|  for (c = 6; c >= 0; c--)
+    8|     21|    for (d = 0; d < 2; d++) {
+    9|     14|      b[d * 2 + c] = 0;
+   10|     14|      e = a > 1 ?: 0;
+   11|     14|      if (e == 2)
+   12|      0|        return 0;
+   13|     14|    }
+   14|      1|  return 0;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  fn1();
+   19|      1|  return 0;
+   20|      1|}
+

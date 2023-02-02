@@ -1,0 +1,27 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O" } */
+    3|       |
+    4|       |int a, g;
+    5|       |long b, f;
+    6|       |short c, d, e;
+    7|       |
+    8|      1|static void fn1() {
+    9|      1|  if (a) {
+   10|      0|    long i = 5, j = b / i | c;
+   11|      0|    int k = b % (d % i) & j;
+   12|      0|    short l = ~f % (-d / j ^ -e), m = e << (d - l);
+   13|      0|    if (k)
+   14|      0|      m = d;
+   15|      0|    i = d | (i & b);
+   16|      0|    g = (c | ~f) % i + l;
+   17|      0|    e = (c - f) & e;
+   18|      0|    d = m;
+   19|      0|  }
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  b |= 1;
+   24|      1|  fn1();
+   25|      1|  return 0;
+   26|      1|}
+

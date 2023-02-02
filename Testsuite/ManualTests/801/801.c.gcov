@@ -1,0 +1,38 @@
+        -:    0:Source:801.c
+        -:    0:Graph:801.gcno
+        -:    0:Data:801.gcda
+        -:    0:Runs:1
+        -:    1:/* PR27363.  CSE was breaking on the arm store multiple insn used for
+        -:    2:   structure copies.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-Os" } */
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:struct snd_mask {
+        -:    8:  unsigned int bits[6];
+        -:    9:};
+        -:   10:
+        1:   11:static int __attribute__((noinline)) snd_mask_refine(struct snd_mask *mask) {
+        -:   12:  struct snd_mask old;
+        -:   13:
+        1:   14:  old = *mask;
+       1*:   15:  if (mask->bits[0] == 0 && mask->bits[1] == 0)
+    #####:   16:    return 1;
+        -:   17:
+        1:   18:  return old.bits[0] != mask->bits[0];
+        -:   19:}
+        -:   20:
+        1:   21:int main(int argc, char *argv[]) {
+        -:   22:  struct snd_mask mask;
+        -:   23:
+        1:   24:  mask.bits[0] = 23;
+        1:   25:  mask.bits[1] = 42;
+        1:   26:  mask.bits[2] = 0;
+        1:   27:  mask.bits[3] = 0;
+        1:   28:  mask.bits[4] = 0;
+        1:   29:  mask.bits[5] = 0;
+        -:   30:
+        1:   31:  if (snd_mask_refine(&mask))
+    #####:   32:    abort();
+        1:   33:  return 0;
+        -:   34:}

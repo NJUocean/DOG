@@ -1,0 +1,63 @@
+        -:    0:Source:1297.c
+        -:    0:Graph:1297.gcno
+        -:    0:Data:1297.gcda
+        -:    0:Runs:1
+        -:    1:struct mouse_button_str {
+        -:    2:  unsigned char left : 1;
+        -:    3:  unsigned char right : 1;
+        -:    4:  unsigned char middle : 1;
+        -:    5:} button;
+        -:    6:
+        -:    7:static char fct(struct mouse_button_str newbutton) __attribute__((__noipa__));
+        8:    8:static char fct(struct mouse_button_str newbutton) {
+        8:    9:  char l = newbutton.left;
+        8:   10:  char r = newbutton.right;
+        8:   11:  char m = newbutton.middle;
+        8:   12:  return l && r && m;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:  struct mouse_button_str newbutton1;
+        1:   17:  newbutton1.left = 1;
+        1:   18:  newbutton1.middle = 1;
+        1:   19:  newbutton1.right = 1;
+        1:   20:  if (!fct(newbutton1))
+    #####:   21:    __builtin_abort();
+        -:   22:
+        1:   23:  newbutton1.left = 0;
+        1:   24:  newbutton1.middle = 1;
+        1:   25:  newbutton1.right = 1;
+        1:   26:  if (fct(newbutton1))
+    #####:   27:    __builtin_abort();
+        1:   28:  newbutton1.left = 1;
+        1:   29:  newbutton1.middle = 0;
+        1:   30:  newbutton1.right = 1;
+        1:   31:  if (fct(newbutton1))
+    #####:   32:    __builtin_abort();
+        1:   33:  newbutton1.left = 1;
+        1:   34:  newbutton1.middle = 1;
+        1:   35:  newbutton1.right = 0;
+        1:   36:  if (fct(newbutton1))
+    #####:   37:    __builtin_abort();
+        -:   38:
+        1:   39:  newbutton1.left = 1;
+        1:   40:  newbutton1.middle = 0;
+        1:   41:  newbutton1.right = 0;
+        1:   42:  if (fct(newbutton1))
+    #####:   43:    __builtin_abort();
+        1:   44:  newbutton1.left = 0;
+        1:   45:  newbutton1.middle = 1;
+        1:   46:  newbutton1.right = 0;
+        1:   47:  if (fct(newbutton1))
+    #####:   48:    __builtin_abort();
+        1:   49:  newbutton1.left = 0;
+        1:   50:  newbutton1.middle = 0;
+        1:   51:  newbutton1.right = 1;
+        1:   52:  if (fct(newbutton1))
+    #####:   53:    __builtin_abort();
+        1:   54:  newbutton1.left = 0;
+        1:   55:  newbutton1.middle = 0;
+        1:   56:  newbutton1.right = 0;
+        1:   57:  if (fct(newbutton1))
+    #####:   58:    __builtin_abort();
+        -:   59:}

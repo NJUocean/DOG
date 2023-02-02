@@ -1,0 +1,24 @@
+    1|       |/* Test that variable
+    2|       |     int val;
+    3|       |   may hold value of tyope "struct c" which has same size.
+    4|       |   This is valid in GIMPLE memory model.  */
+    5|       |
+    6|       |struct a {
+    7|       |  int val;
+    8|       |} a = {1}, a2;
+    9|       |struct b {
+   10|       |  struct a a;
+   11|       |};
+   12|       |int val;
+   13|       |struct c {
+   14|       |  struct b b;
+   15|       |} *cptr = (void *)&val;
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  cptr->b.a = a;
+   19|      1|  val = 2;
+   20|      1|  a2 = cptr->b.a;
+   21|      1|  if (a2.val == a.val)
+   22|      0|    __builtin_abort();
+   23|      1|}
+

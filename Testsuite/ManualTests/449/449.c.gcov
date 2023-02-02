@@ -1,0 +1,27 @@
+        -:    0:Source:449.c
+        -:    0:Graph:449.gcno
+        -:    0:Data:449.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -floop-nest-optimize" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:int yu[4][1] = {{1}, {2}, {3}, {4}};
+        -:    7:
+        1:    8:static void __attribute__((noinline, noclone)) foo(void) {
+        -:    9:  int zh, ro;
+        -:   10:
+        3:   11:  for (zh = 0; zh < 2; ++zh)
+        8:   12:    for (ro = 0; ro < 3; ++ro)
+        6:   13:      yu[ro][0] = yu[zh + 1][0];
+        1:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  foo();
+        -:   18:
+        1:   19:  if (yu[0][0] != 2 || yu[1][0] != 2 || yu[2][0] != 2 || yu[3][0] != 4)
+    #####:   20:    abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}

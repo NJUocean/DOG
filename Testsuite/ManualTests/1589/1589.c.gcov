@@ -1,0 +1,40 @@
+        -:    0:Source:1589.c
+        -:    0:Graph:1589.gcno
+        -:    0:Data:1589.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-ftracer" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef long int _PyTime_t;
+        -:    7:typedef enum {
+        -:    8:  _PyTime_ROUND_FLOOR = 0,
+        -:    9:  _PyTime_ROUND_CEILING = 1
+        -:   10:} _PyTime_round_t;
+        -:   11:
+        1:   12:static _PyTime_t _PyTime_Divide(const _PyTime_t t, const _PyTime_t k,
+        -:   13:                                const _PyTime_round_t round) {
+        1:   14:  if (round == _PyTime_ROUND_CEILING) {
+    #####:   15:    if (t >= 0)
+    #####:   16:      return (t + k - 1) / k;
+        -:   17:    else
+    #####:   18:      return t / k;
+        -:   19:  } else {
+        1:   20:    if (t >= 0)
+        1:   21:      return t / k;
+        -:   22:    else
+    #####:   23:      return (t - (k - 1)) / k;
+        -:   24:  }
+        -:   25:}
+        -:   26:
+        -:   27:_PyTime_t __attribute__((noinline, noclone))
+        1:   28:_PyTime_AsMicroseconds(_PyTime_t t, _PyTime_round_t round) {
+        1:   29:  return _PyTime_Divide(t, 1000, round);
+        -:   30:}
+        -:   31:
+        1:   32:int main() {
+        1:   33:  if (_PyTime_AsMicroseconds(10000, _PyTime_ROUND_FLOOR) != 10)
+    #####:   34:    abort();
+        1:   35:  return 0;
+        -:   36:}

@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fwrapv" } */
+    3|       |
+    4|      1|int __attribute__((noinline)) foo(long i, long j) {
+    5|      1|  if (i >= 1)
+    6|      1|    if (j > -(long)(((unsigned long)(long)-1) >> 1)) {
+    7|      1|      long x;
+    8|      1|      j--;
+    9|      1|      x = i + j;
+   10|      1|      if (x >= 0)
+   11|      1|        return 1;
+   12|      0|    }
+   13|      0|  return 0;
+   14|      0|}
+   15|       |extern void abort(void);
+   16|      1|int main() {
+   17|      1|  if (foo(1, 1) != 1)
+   18|      0|    abort();
+   19|      1|  return 0;
+   20|      1|}
+

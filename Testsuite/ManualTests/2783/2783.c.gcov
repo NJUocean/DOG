@@ -1,0 +1,36 @@
+        -:    0:Source:2783.c
+        -:    0:Graph:2783.gcno
+        -:    0:Data:2783.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that the compiler properly optimizes floating point multiply and add
+        -:    2:   instructions vector into pmacsdd/etc. on XOP systems.  */
+        -:    3:
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-require-effective-target lp64 } */
+        -:    6:/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize -fno-vect-cost-model" } */
+        -:    7:
+        -:    8:extern void exit(int);
+        -:    9:
+        -:   10:typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+        -:   11:
+        -:   12:#define SIZE 10240
+        -:   13:
+        -:   14:union {
+        -:   15:  __m128i i_align;
+        -:   16:  long i64[SIZE];
+        -:   17:} a, b, c, d;
+        -:   18:
+        1:   19:void imul64(void) {
+        -:   20:  int i;
+        -:   21:
+    10241:   22:  for (i = 0; i < SIZE; i++)
+    10240:   23:    a.i64[i] = b.i64[i] * c.i64[i];
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  imul64();
+        1:   28:  exit(0);
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final { scan-assembler "vpmulld" } } */
+        -:   32:/* { dg-final { scan-assembler "vphadddq" } } */

@@ -1,0 +1,28 @@
+    1|       |/* PR target/30185 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |typedef struct S {
+    6|       |  char a;
+    7|       |  long long b;
+    8|       |} S;
+    9|       |
+   10|      2|S foo(S x, S y) {
+   11|      2|  S z;
+   12|      2|  z.b = x.b / y.b;
+   13|      2|  return z;
+   14|      2|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  S a, b;
+   18|      1|  a.b = 32LL;
+   19|      1|  b.b = 4LL;
+   20|      1|  if (foo(a, b).b != 8LL)
+   21|      0|    abort();
+   22|      1|  a.b = -8LL;
+   23|      1|  b.b = -2LL;
+   24|      1|  if (foo(a, b).b != 4LL)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

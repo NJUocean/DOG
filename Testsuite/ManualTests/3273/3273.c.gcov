@@ -1,0 +1,22 @@
+        -:    0:Source:3273.c
+        -:    0:Graph:3273.gcno
+        -:    0:Data:3273.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/8032 */
+        -:    2:/* Verify that an empty initializer inside a partial
+        -:    3:   parent initializer doesn't confuse GCC.  */
+        -:    4:
+        -:    5:struct X {
+        -:    6:  int a;
+        -:    7:  int b;
+        -:    8:  int z[];
+        -:    9:};
+        -:   10:
+        -:   11:struct X x = {.b = 40, .z = {}};
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (x.b != 40)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

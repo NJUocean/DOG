@@ -1,0 +1,29 @@
+        -:    0:Source:1368.c
+        -:    0:Graph:1368.gcno
+        -:    0:Data:1368.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static int heap[2 * (256 + 1 + 29) + 1];
+        -:    4:static int heap_len;
+        -:    5:static int heap_max;
+        1:    6:void __attribute__((noinline)) foo(int elems) {
+        -:    7:  int n, m;
+        1:    8:  int max_code = -1;
+        1:    9:  int node = elems;
+        1:   10:  heap_len = 0, heap_max = (2 * (256 + 1 + 29) + 1);
+      287:   11:  for (n = 0; n < elems; n++)
+      286:   12:    heap[++heap_len] = max_code = n;
+        -:   13:  do {
+      285:   14:    n = heap[1];
+      285:   15:    heap[1] = heap[heap_len--];
+      285:   16:    m = heap[1];
+      285:   17:    heap[--heap_max] = n;
+      285:   18:    heap[--heap_max] = m;
+      285:   19:  } while (heap_len >= 2);
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(286);
+        1:   24:  return 0;
+        -:   25:}

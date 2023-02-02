@@ -1,0 +1,59 @@
+        -:    0:Source:3391.c
+        -:    0:Graph:3391.gcno
+        -:    0:Data:3391.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/23560 */
+        -:    2:
+        -:    3:struct rtattr {
+        -:    4:  unsigned short rta_len;
+        -:    5:  unsigned short rta_type;
+        -:    6:};
+        -:    7:
+        2:    8:__attribute__((noinline)) int inet_check_attr(void *r, struct rtattr **rta) {
+        -:    9:  int i;
+        -:   10:
+       21:   11:  for (i = 1; i <= 14; i++) {
+       20:   12:    struct rtattr *attr = rta[i - 1];
+       20:   13:    if (attr) {
+       19:   14:      if (attr->rta_len - sizeof(struct rtattr) < 4)
+        1:   15:        return -22;
+       18:   16:      if (i != 9 && i != 8)
+       16:   17:        rta[i - 1] = attr + 1;
+        -:   18:    }
+        -:   19:  }
+        1:   20:  return 0;
+        -:   21:}
+        -:   22:
+        -:   23:extern void abort(void);
+        -:   24:
+        1:   25:int main(void) {
+        -:   26:  struct rtattr rt[2];
+        -:   27:  struct rtattr *rta[14];
+        -:   28:  int i;
+        -:   29:
+        1:   30:  rt[0].rta_len = sizeof(struct rtattr) + 8;
+        1:   31:  rt[0].rta_type = 0;
+        1:   32:  rt[1] = rt[0];
+       15:   33:  for (i = 0; i < 14; i++)
+       14:   34:    rta[i] = &rt[0];
+        1:   35:  if (inet_check_attr(0, rta) != 0)
+    #####:   36:    abort();
+       15:   37:  for (i = 0; i < 14; i++)
+       14:   38:    if (rta[i] != &rt[i != 7 && i != 8])
+    #####:   39:      abort();
+       15:   40:  for (i = 0; i < 14; i++)
+       14:   41:    rta[i] = &rt[0];
+        1:   42:  rta[1] = 0;
+        1:   43:  rt[1].rta_len -= 8;
+        1:   44:  rta[5] = &rt[1];
+        1:   45:  if (inet_check_attr(0, rta) != -22)
+    #####:   46:    abort();
+       15:   47:  for (i = 0; i < 14; i++)
+       14:   48:    if (i == 1 && rta[i] != 0)
+    #####:   49:      abort();
+       14:   50:    else if (i != 1 && i <= 5 && rta[i] != &rt[1])
+    #####:   51:      abort();
+       14:   52:    else if (i > 5 && rta[i] != &rt[0])
+    #####:   53:      abort();
+        1:   54:  return 0;
+        -:   55:}

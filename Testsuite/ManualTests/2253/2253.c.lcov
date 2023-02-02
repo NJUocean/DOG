@@ -1,0 +1,18 @@
+    1|       |/* { dg-require-effective-target untyped_assembly } */
+    2|       |int g1, g2;
+    3|       |
+    4|       |void write_at(addr, off, val) int *addr;
+    5|       |int off;
+    6|       |int val;
+    7|      1|{
+    8|      1|  g2 = 1;
+    9|      1|  addr[off] = val;
+   10|      1|  g2++;
+   11|      1|}
+   12|       |
+   13|      1|main() {
+   14|      1|  g2 = 12;
+   15|      1|  write_at(&g1, &g2 - &g1, 12345);
+   16|      1|  printf("%d\n", g2);
+   17|      1|}
+

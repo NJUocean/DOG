@@ -1,0 +1,34 @@
+    1|       |/* PR c/19342 */
+    2|       |typedef enum { A, B, C, D } E;
+    3|       |
+    4|       |struct S {
+    5|       |  E __attribute__((mode(__byte__))) a;
+    6|       |  E __attribute__((mode(__byte__))) b;
+    7|       |  E __attribute__((mode(__byte__))) c;
+    8|       |  E __attribute__((mode(__byte__))) d;
+    9|       |};
+   10|       |
+   11|       |extern void abort(void);
+   12|       |extern void exit(int);
+   13|       |
+   14|      1|void foo(struct S *s) {
+   15|      1|  if (s->a != s->b)
+   16|      0|    abort();
+   17|      1|  if (s->c != C)
+   18|      0|    abort();
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  struct S s[2];
+   23|      1|  s[0].a = B;
+   24|      1|  s[0].b = B;
+   25|      1|  s[0].c = C;
+   26|      1|  s[0].d = D;
+   27|      1|  s[1].a = D;
+   28|      1|  s[1].b = C;
+   29|      1|  s[1].c = B;
+   30|      1|  s[1].d = A;
+   31|      1|  foo(s);
+   32|      1|  exit(0);
+   33|      1|}
+

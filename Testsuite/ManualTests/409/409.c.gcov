@@ -1,0 +1,22 @@
+        -:    0:Source:409.c
+        -:    0:Graph:409.gcno
+        -:    0:Data:409.gcda
+        -:    0:Runs:1
+    #####:    1:void spread_i1(int *rptr, int *sptr, int ncopies, int *extent, int rdelta,
+        -:    2:               int m) {
+        -:    3:  int *dest;
+        -:    4:  int n;
+        -:    5:
+    #####:    6:  while (m--) {
+    #####:    7:    dest = rptr;
+    #####:    8:    for (n = 0; n < ncopies; n++) {
+    #####:    9:      *dest = *sptr;
+    #####:   10:      dest += rdelta;
+        -:   11:    }
+    #####:   12:    if (extent[n])
+    #####:   13:      if (n)
+    #####:   14:        rptr++;
+        -:   15:  }
+    #####:   16:}
+        -:   17:
+        1:   18:int main() { return 0; }

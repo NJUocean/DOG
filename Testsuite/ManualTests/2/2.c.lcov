@@ -1,0 +1,20 @@
+    1|       |struct foo {
+    2|       |  unsigned : 12;
+    3|       |  unsigned field : 4;
+    4|       |} foo;
+    5|       |unsigned oldfoo;
+    6|       |
+    7|      1|int bar(unsigned k) {
+    8|      1|  oldfoo = foo.field;
+    9|      1|  foo.field = k;
+   10|      1|  if (k)
+   11|      1|    return 1;
+   12|      0|  return 2;
+   13|      0|}
+   14|       |
+   15|      1|main() {
+   16|      1|  if (bar(1U) != 1)
+   17|      0|    abort();
+   18|      1|  exit(0);
+   19|      1|}
+

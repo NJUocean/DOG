@@ -1,0 +1,16 @@
+        -:    0:Source:2808.c
+        -:    0:Graph:2808.gcno
+        -:    0:Data:2808.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-mxl-gp-opt -fno-pic" } */
+        -:    2:
+        -:    3:/* { dg-final { scan-assembler "\.sbss\[^2]+" } } */
+        -:    4:typedef int Boolean;
+        -:    5:volatile Boolean global = 0;
+    #####:    6:int testfunc() {
+        -:    7:  /* { dg-final { scan-assembler "\lwi\tr(\[0-9]\|\[1-2]\[0-9]\|3\[0-1]),r13" }
+        -:    8:   * } */
+    #####:    9:  return global;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {}

@@ -1,0 +1,17 @@
+        -:    0:Source:1716.c
+        -:    0:Graph:1716.gcno
+        -:    0:Data:1716.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=vla-bound -Wall -Wno-unused-variable
+        -:    3: * -fno-sanitize-recover=vla-bound" } */
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  const int t = 0;
+        1:    7:  struct s {
+        -:    8:    int x;
+        -:    9:    /* Don't instrument this one.  */
+        1:   10:    int g[t];
+        -:   11:  };
+        1:   12:  return 0;
+        -:   13:}

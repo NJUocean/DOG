@@ -1,0 +1,12 @@
+        -:    0:Source:714.c
+        -:    0:Graph:714.gcno
+        -:    0:Data:-
+        -:    0:Runs:0
+        -:    1:void __open_alias(int, ...) __asm__("open");
+    #####:    2:void __open_alias(int flags, ...) {}
+        -:    3:extern __inline __attribute__((__gnu_inline__)) int open() {}
+        -:    4:struct {
+        -:    5:  void *func;
+        -:    6:} a = {open};
+        -:    7:
+    #####:    8:int main() { return 0; }

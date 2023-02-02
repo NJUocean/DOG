@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -fno-delete-null-pointer-checks" } */
+    3|       |extern void abort(void);
+    4|       |int g = 0;
+    5|      1|static int __attribute__((noinline)) f(long long a, long long b) {
+    6|      1|  int cmp;
+    7|      1|  cmp = a > b;
+    8|      1|  if (&g == 0)
+    9|      0|    cmp -= 2;
+   10|      1|  else
+   11|      1|    cmp++;
+   12|      1|  return cmp;
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  int ret = f(2, 1);
+   17|      1|  if (ret != 2)
+   18|      0|    abort();
+   19|      1|  return 0;
+   20|      1|}
+

@@ -1,0 +1,15 @@
+    1|      1|int __attribute__((noinline, noclone)) copysign_bug(double x) {
+    2|      1|  if (x != 0.0 && (x * 0.5 == x))
+    3|      0|    return 1;
+    4|      1|  if (__builtin_copysign(1.0, x) < 0.0)
+    5|      1|    return 2;
+    6|      0|  else
+    7|      0|    return 3;
+    8|      1|}
+    9|      1|int main(void) {
+   10|      1|  double x = -0.0;
+   11|      1|  if (copysign_bug(x) != 2)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

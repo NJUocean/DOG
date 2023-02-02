@@ -1,0 +1,39 @@
+        -:    0:Source:215.c
+        -:    0:Graph:215.gcno
+        -:    0:Data:215.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for new block scopes in C99.  Inspired by C99 Rationale (N897).  */
+        -:    2:/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:struct foo {
+        -:    7:  char a;
+        -:    8:};
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        1:   13:int sfoo(void) {
+        -:   14:  if (sizeof(struct foo {
+        -:   15:        int a;
+        -:   16:        double b;
+        -:   17:        char *c;
+        -:   18:        void *d;
+        -:   19:      }))
+        -:   20:    (void)0;
+        1:   21:  return sizeof(struct foo);
+        -:   22:}
+        -:   23:
+        1:   24:int main(void) {
+        -:   25:  int t, u;
+        1:   26:  t = sfoo();
+        1:   27:  u = sizeof(struct foo);
+        -:   28:  /* With C90 scoping rules the new declaration of struct foo is in scope
+        -:   29:     above; with C99 it is local to the if.
+        -:   30:  */
+        1:   31:  if (t == u)
+        1:   32:    exit(0); /* C99 rules apply.  */
+        -:   33:  else
+    #####:   34:    abort(); /* C90 rules apply.  */
+        -:   35:}

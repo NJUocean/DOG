@@ -1,0 +1,25 @@
+        -:    0:Source:1417.c
+        -:    0:Graph:1417.gcno
+        -:    0:Data:1417.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:union u {
+        -:    6:  int i;
+        -:    7:  short f;
+        -:    8:} v;
+        -:    9:
+        1:   10:short foo(short *f) {
+        1:   11:  *f = 1;
+        1:   12:  v.i = 0;
+        1:   13:  v.f = 0;
+        1:   14:  return *f;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  if (foo(&v.f) != 0)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

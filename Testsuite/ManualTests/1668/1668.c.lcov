@@ -1,0 +1,12 @@
+    1|       |static double f(float a);
+    2|       |static double (*fp)(float a);
+    3|       |
+    4|      1|main() {
+    5|      1|  fp = f;
+    6|      1|  if (fp((float)1) != 1.0)
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+   10|       |
+   11|      1|static double f(float a) { return a; }
+

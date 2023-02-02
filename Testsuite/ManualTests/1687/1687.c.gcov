@@ -1,0 +1,21 @@
+        -:    0:Source:1687.c
+        -:    0:Graph:1687.gcno
+        -:    0:Data:1687.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/86066 */
+        -:    2:/* Testcase by Zhendong Su <Zhendong Su> */
+        -:    3:
+        -:    4:struct A {
+        -:    5:  int b : 2;
+        -:    6:  int c : 2;
+        -:    7:  unsigned d : 8;
+        -:    8:};
+        -:    9:
+        1:   10:int main() {
+        1:   11:  struct A t = {0, 0, 2};
+        1:   12:L:
+        1:   13:  t.d = ~(~(~0 % t.d) % 2);
+        1:   14:  if (!t.d)
+    #####:   15:    goto L;
+        1:   16:  return 0;
+        -:   17:}

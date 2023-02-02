@@ -1,0 +1,50 @@
+        -:    0:Source:3433.c
+        -:    0:Graph:3433.gcno
+        -:    0:Data:3433.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:typedef union {
+        -:    5:  struct {
+        -:    6:    int f1, f2, f3, f4, f5, f6, f7, f8;
+        -:    7:    long int f9, f10;
+        -:    8:    int f11;
+        -:    9:  } f;
+        -:   10:  char s[56];
+        -:   11:  long int a;
+        -:   12:} T;
+        -:   13:
+        9:   14:__attribute__((noinline)) void test(T *t) {
+        -:   15:  static int i = 11;
+        9:   16:  if (t->f.f1 != i++)
+    #####:   17:    abort();
+        9:   18:  if (t->f.f2 || t->f.f3 || t->f.f4 || t->f.f5 || t->f.f6 || t->f.f7 ||
+        9:   19:      t->f.f8 || t->f.f9 || t->f.f10 || t->f.f11)
+    #####:   20:    abort();
+        9:   21:  if (i == 20)
+        1:   22:    exit(0);
+        8:   23:}
+        -:   24:
+        9:   25:__attribute__((noinline)) void foo(int i) {
+        -:   26:  T t;
+        9:   27:again:
+        9:   28:  t = (T){{++i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+        9:   29:  test(&t);
+        8:   30:  goto again;
+        -:   31:}
+        -:   32:
+        1:   33:int main(void) {
+        -:   34:  T *t1, *t2;
+        1:   35:  int cnt = 0;
+        1:   36:  t1 = (T *)0;
+        3:   37:loop:
+        3:   38:  t2 = t1;
+        3:   39:  t1 = &(T){.f.f9 = cnt++};
+        3:   40:  if (cnt < 3)
+        2:   41:    goto loop;
+        1:   42:  if (t1 != t2 || t1->f.f9 != 2)
+    #####:   43:    abort();
+        1:   44:  foo(10);
+    #####:   45:  return 0;
+        -:   46:}

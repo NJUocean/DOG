@@ -1,0 +1,36 @@
+        -:    0:Source:889.c
+        -:    0:Graph:889.gcno
+        -:    0:Data:889.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target powerpc*-*-* ia64-*-* i?86-*-* x86_64-*-* } } */
+        -:    2:/* { dg-options "-O2 -fselective-scheduling2" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  double i[2];
+        -:    6:};
+        -:    7:
+        2:    8:void __attribute__((noinline)) checkcd(struct S x) {
+        2:    9:  if (x.i[0] != 7.0 || x.i[1] != 8.0)
+    #####:   10:    __builtin_abort();
+        2:   11:}
+        -:   12:
+        1:   13:void __attribute__((noinline)) testvacd(int n, ...) {
+        -:   14:  int i;
+        -:   15:  __builtin_va_list ap;
+        1:   16:  __builtin_va_start(ap, n);
+        3:   17:  for (i = 0; i < n; i++) {
+        2:   18:    struct S t = __builtin_va_arg(ap, struct S);
+        2:   19:    checkcd(t);
+        -:   20:  }
+        1:   21:  __builtin_va_end(ap);
+        1:   22:}
+        -:   23:
+        1:   24:void testitcd(void) {
+        1:   25:  struct S x = {{7.0, 8.0}};
+        1:   26:  testvacd(2, x, x);
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  testitcd();
+        1:   31:  return 0;
+        -:   32:}

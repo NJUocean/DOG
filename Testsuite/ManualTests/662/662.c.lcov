@@ -1,0 +1,7 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options {{-O0 -flto -flto-partition=1to1}} } */
+    3|       |/* { dg-extra-ld-options {-r -nostdlib -O2 -flto -flto-partition=1to1
+    4|       | * -flinker-output=nolto-rel} } */
+    5|       |
+    6|      1|int main(int argc, char **argv) { return 0; }
+

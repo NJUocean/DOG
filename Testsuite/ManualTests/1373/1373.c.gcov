@@ -1,0 +1,19 @@
+        -:    0:Source:1373.c
+        -:    0:Graph:1373.gcno
+        -:    0:Data:1373.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/80800 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    4:
+        -:    5:int n = 20000;
+        -:    6:int z = 0;
+        -:    7:
+        1:    8:int fn1(void) { return (n * 10000 * z) * 50; }
+        -:    9:
+        1:   10:int fn2(void) { return (10000 * n * z) * 50; }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  fn1();
+        1:   14:  fn2();
+        -:   15:}

@@ -1,0 +1,24 @@
+        -:    0:Source:2757.c
+        -:    0:Graph:2757.gcno
+        -:    0:Data:2757.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options -mpreferred-stack-boundary=4 } */
+        -:    3:/* { dg-require-effective-target ia32 } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        2:    7:void __attribute__((regparm(2), stdcall)) foo(int i, int j, float x) {
+        -:    8:  static int last_align = -1;
+        2:    9:  int dummy, align = (int)&dummy & 15;
+        2:   10:  if (last_align < 0)
+        1:   11:    last_align = align;
+        1:   12:  else if (align != last_align)
+    #####:   13:    abort();
+        2:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  foo(0, 0, 0.0);
+        1:   18:  foo(0, 0, 0.0);
+        1:   19:  return 0;
+        -:   20:}

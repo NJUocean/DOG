@@ -1,0 +1,13 @@
+        -:    0:Source:1382.c
+        -:    0:Graph:1382.gcno
+        -:    0:Data:1382.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/80932 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+        -:    4:
+        -:    5:int x = 1;
+        -:    6:
+        1:    7:int foo(void) { return ((int)(2855545792U * x) - (int)(3269399503U * x)) * -5; }
+        -:    8:
+        1:    9:int main() { foo(); }

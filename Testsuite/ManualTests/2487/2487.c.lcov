@@ -1,0 +1,61 @@
+    1|       |/* { dg-add-options stack_size } */
+    2|       |
+    3|       |#include <string.h>
+    4|       |
+    5|       |#if defined(STACK_SIZE)
+    6|       |#define MEMCPY_SIZE (STACK_SIZE / 3)
+    7|       |#else
+    8|   527k|#define MEMCPY_SIZE (1 << 17)
+    9|       |#endif
+   10|       |
+   11|      2|void *copy(void *o, const void *i, unsigned l) { return memcpy(o, i, l); }
+   12|       |
+   13|      1|main() {
+   14|      1|  unsigned i;
+   15|      1|  unsigned char src[MEMCPY_SIZE];
+   16|      1|  unsigned char dst[MEMCPY_SIZE];
+   17|      1|
+   18|   131k|  for (i = 0; i < MEMCPY_SIZE; i++)
+   19|   131k|    src[i] = (unsigned char)i, dst[i] = 0;
+   20|      1|
+   21|      1|  (void)memcpy(dst, src, MEMCPY_SIZE / 128);
+   22|      1|
+   23|  1.02k|  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+   24|  1.02k|    if (dst[i] != (unsigned char)i)
+   25|      0|      abort();
+   26|      1|
+   27|      1|  (void)memset(dst, 1, MEMCPY_SIZE / 128);
+   28|      1|
+   29|  1.02k|  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+   30|  1.02k|    if (dst[i] != 1)
+   31|      0|      abort();
+   32|      1|
+   33|      1|  (void)memcpy(dst, src, MEMCPY_SIZE);
+   34|      1|
+   35|   131k|  for (i = 0; i < MEMCPY_SIZE; i++)
+   36|   131k|    if (dst[i] != (unsigned char)i)
+   37|      0|      abort();
+   38|      1|
+   39|      1|  (void)memset(dst, 0, MEMCPY_SIZE);
+   40|      1|
+   41|   131k|  for (i = 0; i < MEMCPY_SIZE; i++)
+   42|   131k|    if (dst[i] != 0)
+   43|      0|      abort();
+   44|      1|
+   45|      1|  (void)copy(dst, src, MEMCPY_SIZE / 128);
+   46|      1|
+   47|  1.02k|  for (i = 0; i < MEMCPY_SIZE / 128; i++)
+   48|  1.02k|    if (dst[i] != (unsigned char)i)
+   49|      0|      abort();
+   50|      1|
+   51|      1|  (void)memset(dst, 0, MEMCPY_SIZE);
+   52|      1|
+   53|      1|  (void)copy(dst, src, MEMCPY_SIZE);
+   54|      1|
+   55|   131k|  for (i = 0; i < MEMCPY_SIZE; i++)
+   56|   131k|    if (dst[i] != (unsigned char)i)
+   57|      0|      abort();
+   58|      1|
+   59|      1|  exit(0);
+   60|      1|}
+

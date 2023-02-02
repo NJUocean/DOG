@@ -1,0 +1,37 @@
+        -:    0:Source:906.c
+        -:    0:Graph:906.gcno
+        -:    0:Data:906.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/48156 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fcrossjumping --param min-crossjump-insns=1" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:static int __attribute__((noinline, noclone)) equals(int s1, int s2) {
+        1:    8:  return s1 == s2;
+        -:    9:}
+        -:   10:
+        1:   11:static int __attribute__((noinline, noclone)) bar(void) { return 1; }
+        -:   12:
+        1:   13:static void __attribute__((noinline, noclone)) baz(int f, int j) {
+        1:   14:  if (f != 4 || j != 2)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:void foo(int x) {
+        1:   19:  int i = 0, j = bar();
+        -:   20:
+        1:   21:  if (x == 1)
+        1:   22:    i = 2;
+        -:   23:
+        1:   24:  if (j && equals(i, j))
+    #####:   25:    baz(8, i);
+        -:   26:  else
+        1:   27:    baz(4, i);
+        1:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  foo(1);
+        1:   32:  return 0;
+        -:   33:}

@@ -1,0 +1,16 @@
+        -:    0:Source:3744.c
+        -:    0:Graph:3744.gcno
+        -:    0:Data:3744.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/51023 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:short int foo(long int x) { return x; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  long int a = 0x4272AL;
+        1:    9:  if (foo(a) == a)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

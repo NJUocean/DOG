@@ -1,0 +1,30 @@
+        -:    0:Source:649.c
+        -:    0:Graph:649.gcno
+        -:    0:Data:649.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-cp-details" } */
+        -:    3:
+        -:    4:volatile int cond;
+        -:    5:
+    #####:    6:static __attribute__((noinline, noclone)) int foo(int i) {
+    #####:    7:  if (i < 5)
+    #####:    8:    __builtin_abort();
+    #####:    9:  return 0;
+        -:   10:}
+        -:   11:
+       10:   12:static __attribute__((noinline, noclone)) int bar(int j) {
+       10:   13:  if (cond)
+    #####:   14:    foo(j);
+       10:   15:  return 0;
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+       11:   19:  for (unsigned int i = 0; i < 10; ++i)
+       10:   20:    bar(i);
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-ipa-dump-times "Setting value range of param 0 \\(now 0\\)
+        -:   26: * \\\[0, 9\\\]" 2 "cp" } } */

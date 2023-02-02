@@ -1,0 +1,18 @@
+    1|       |/* PR debug/65771 */
+    2|       |/* { dg-do link } */
+    3|       |/* { dg-require-effective-target tls_runtime } */
+    4|       |/* { dg-add-options tls } */
+    5|       |
+    6|       |struct S {
+    7|       |  int s;
+    8|       |  int t;
+    9|       |};
+   10|       |__thread struct S a[10];
+   11|       |int b;
+   12|       |
+   13|      1|int main() {
+   14|      1|  int c = a[b].t;
+   15|      1|  (void)c;
+   16|      1|  return 0;
+   17|      1|}
+

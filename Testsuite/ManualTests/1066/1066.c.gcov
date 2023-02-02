@@ -1,0 +1,16 @@
+        -:    0:Source:1066.c
+        -:    0:Graph:1066.gcno
+        -:    0:Data:1066.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/87483 */
+        -:    2:/* { dg-require-alias "" } */
+        -:    3:
+        1:    4:int f(void) { return 0; }
+    #####:    5:__attribute__((alias("f"))) int g() {
+    #####:    6:  return 1;
+        -:    7:} /* { dg-warning "attribute ignored because function is defined" } */
+        -:    8:__attribute__((alias("f"))) int g2();
+        -:    9:
+        1:   10:int h(void) { return g2(); }
+        -:   11:
+        1:   12:int main() { return h(); }

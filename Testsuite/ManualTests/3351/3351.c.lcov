@@ -1,0 +1,13 @@
+    1|       |struct s {
+    2|       |  char c1, c2;
+    3|       |};
+    4|      1|void foo(struct s s) {
+    5|      1|  static struct s s1;
+    6|      1|  s1 = s;
+    7|      1|}
+    8|      1|int main() {
+    9|      1|  static struct s s2;
+   10|      1|  foo(s2);
+   11|      1|  exit(0);
+   12|      1|}
+

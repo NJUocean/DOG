@@ -1,0 +1,28 @@
+    1|       |/* PR middle-end/78622 - [7 Regression] -Wformat-overflow/-fprintf-return-value
+    2|       |   incorrect with overflow/wrapping
+    3|       |   { dg-skip-if "Requires %hhd format" { hppa*-*-hpux* } }
+    4|       |   { dg-require-effective-target c99_runtime }
+    5|       |   { dg-additional-options "-Wformat-overflow=2" } */
+    6|       |
+    7|      8|__attribute__((noinline, noclone)) int foo(int x) {
+    8|      8|  if (x < 4096 + 8 || x >= 4096 + 256 + 8)
+    9|      0|    return -1;
+   10|      8|
+   11|      8|  char buf[5];
+   12|      8|  int n = __builtin_snprintf(buf, sizeof buf, "%hhd", x + 1);
+   13|      8|  __builtin_printf("\"%hhd\" => %i\n", x + 1, n);
+   14|      8|  return n;
+   15|      8|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  if (__SCHAR_MAX__ != 127 || __CHAR_BIT__ != 8 || __SIZEOF_INT__ != 4)
+   19|      0|    return 0;
+   20|      1|
+   21|      1|  if (foo(4095 + 9) != 1 || foo(4095 + 32) != 2 || foo(4095 + 127) != 3 ||
+   22|      1|      foo(4095 + 128) != 4 || foo(4095 + 240) != 3 || foo(4095 + 248) != 2 ||
+   23|      1|      foo(4095 + 255) != 2 || foo(4095 + 256) != 1)
+   24|      0|    __builtin_abort();
+   25|      1|
+   26|      1|  return 0;
+   27|      1|}
+

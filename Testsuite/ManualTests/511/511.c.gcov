@@ -1,0 +1,26 @@
+        -:    0:Source:511.c
+        -:    0:Graph:511.gcno
+        -:    0:Data:511.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/49888 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        -:    5:static int v __attribute__((used));
+        -:    6:
+        1:    7:static void __attribute__((noinline, noclone)) f(int *p) {
+        1:    8:  int c = *p;
+        1:    9:  v = c;
+        1:   10:  *p = 1; /* { dg-final { gdb-test . "!!c" "0" } } */
+        -:   11:  /* c may very well be optimized out at this point, so we test !c,
+        -:   12:     which will evaluate to the expected value.  We just want to make
+        -:   13:     sure it doesn't remain bound to *p as it did before, in which
+        -:   14:     case !c would evaluate to 0.  *p may also be regarded as aliasing
+        -:   15:     register saves, thus the !!c above.  */
+        1:   16:  v = 0; /* { dg-final { gdb-test . "!c" "1" } } */
+        1:   17:}
+        1:   18:int main() {
+        1:   19:  int a = 0;
+        1:   20:  f(&a);
+        1:   21:  return 0;
+        -:   22:}

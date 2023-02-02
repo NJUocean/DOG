@@ -1,0 +1,35 @@
+        -:    0:Source:624.c
+        -:    0:Graph:624.gcno
+        -:    0:Data:624.gcda
+        -:    0:Runs:1
+        -:    1:#define NG 0x100L
+        -:    2:
+        -:    3:unsigned long flg = 0;
+        -:    4:
+       45:    5:long sub(int n) {
+        -:    6:  int a, b;
+        -:    7:
+       45:    8:  if (n >= 2) {
+       22:    9:    if (n % 2 == 0) {
+       15:   10:      a = sub(n / 2);
+        -:   11:
+       15:   12:      return (a + 2 * sub(n / 2 - 1)) * a;
+        -:   13:    } else {
+        7:   14:      a = sub(n / 2 + 1);
+        7:   15:      b = sub(n / 2);
+        -:   16:
+        7:   17:      return a * a + b * b;
+        -:   18:    }
+        -:   19:  } else
+       23:   20:    return (long)n;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  if (sub(30) != 832040L)
+    #####:   25:    flg |= NG;
+        -:   26:
+        1:   27:  if (flg)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  exit(0);
+        -:   31:}

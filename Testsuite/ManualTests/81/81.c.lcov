@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-profiling "-pg" } */
+    3|       |/* { dg-options "-O2 -pg" } */
+    4|       |
+    5|      5|static int __attribute__((noinline)) bar(int x) { return x + 3; }
+    6|       |
+    7|      1|int __attribute__((noinline)) foo(int y0, int y1, int y2, int y3, int y4) {
+    8|      1|  int r = 0;
+    9|      1|  r += bar(r + y4);
+   10|      1|  r += bar(r + y3);
+   11|      1|  r += bar(r + y2);
+   12|      1|  r += bar(r + y1);
+   13|      1|  r += bar(r + y0);
+   14|      1|  return r;
+   15|      1|}
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  int z = foo(0, 1, 2, 3, 4);
+   19|      1|  return !(z == 191);
+   20|      1|}
+   21|       |
+   22|       |/* { dg-final { cleanup-profile-file } } */
+

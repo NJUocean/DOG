@@ -1,0 +1,11 @@
+        -:    0:Source:3383.c
+        -:    0:Graph:3383.gcno
+        -:    0:Data:3383.gcda
+        -:    0:Runs:1
+        -:    1:int s = 200;
+        1:    2:int __attribute__((noinline)) foo(void) { return (signed char)(s - 100) - 5; }
+        1:    3:int main(void) {
+        1:    4:  if (foo() != 95)
+    #####:    5:    abort();
+        1:    6:  exit(0);
+        -:    7:}

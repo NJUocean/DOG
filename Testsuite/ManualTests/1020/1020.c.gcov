@@ -1,0 +1,28 @@
+        -:    0:Source:1020.c
+        -:    0:Graph:1020.gcno
+        -:    0:Data:1020.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/81019 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fno-tree-ccp" } */
+        -:    4:
+        -:    5:unsigned long long __attribute__((noinline, noclone))
+        1:    6:foo(unsigned char a, unsigned short b, unsigned c, unsigned long long d,
+        -:    7:    unsigned char e, unsigned short f, unsigned g, unsigned long long h) {
+        1:    8:  g = e;
+        1:    9:  c &= 0 < d;
+        1:   10:  b *= d;
+        1:   11:  g ^= -1;
+        1:   12:  g &= 1;
+        1:   13:  c |= 1;
+        1:   14:  a -= 0 < g;
+        1:   15:  g >>= 1;
+        1:   16:  f = b | (f >> b);
+        1:   17:  return a + c + d + f + g + h;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  if (foo(0, 0, 0, 0, 0, 0, 0, 0) != 0x100)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

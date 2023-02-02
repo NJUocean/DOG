@@ -1,0 +1,25 @@
+    1|       |/* Test __atomic routines for existence and execution with each valid
+    2|       |   memory model.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target sync_char_short } */
+    5|       |
+    6|       |/* Test that __atomic_{thread,signal}_fence builtins execute.  */
+    7|       |
+    8|      1|int main() {
+    9|      1|  __atomic_thread_fence(__ATOMIC_RELAXED);
+   10|      1|  __atomic_thread_fence(__ATOMIC_CONSUME);
+   11|      1|  __atomic_thread_fence(__ATOMIC_ACQUIRE);
+   12|      1|  __atomic_thread_fence(__ATOMIC_RELEASE);
+   13|      1|  __atomic_thread_fence(__ATOMIC_ACQ_REL);
+   14|      1|  __atomic_thread_fence(__ATOMIC_SEQ_CST);
+   15|      1|
+   16|      1|  __atomic_signal_fence(__ATOMIC_RELAXED);
+   17|      1|  __atomic_signal_fence(__ATOMIC_CONSUME);
+   18|      1|  __atomic_signal_fence(__ATOMIC_ACQUIRE);
+   19|      1|  __atomic_signal_fence(__ATOMIC_RELEASE);
+   20|      1|  __atomic_signal_fence(__ATOMIC_ACQ_REL);
+   21|      1|  __atomic_signal_fence(__ATOMIC_SEQ_CST);
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

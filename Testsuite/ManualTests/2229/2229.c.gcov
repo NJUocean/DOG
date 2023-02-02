@@ -1,0 +1,16 @@
+        -:    0:Source:2229.c
+        -:    0:Graph:2229.gcno
+        -:    0:Data:2229.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/88619 */
+        -:    2:/* { dg-do compile { target fstack_protector } } */
+        -:    3:/* { dg-options "-fstack-protector-strong -fsanitize=address" } */
+        -:    4:
+        -:    5:typedef int A __attribute__((aligned(64)));
+        -:    6:
+        1:    7:int main() {
+        -:    8:  A b;
+        1:    9:  int *p = &b;
+        1:   10:  *(p - 1) = 123;
+        1:   11:  void *p2 = __builtin_alloca(b);
+        -:   12:}

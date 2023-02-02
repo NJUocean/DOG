@@ -1,0 +1,28 @@
+        -:    0:Source:1027.c
+        -:    0:Graph:1027.gcno
+        -:    0:Data:1027.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/81020 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fno-tree-bit-ccp -fno-tree-coalesce-vars -fno-tree-vrp" }
+        -:    4: */
+        -:    5:
+        -:    6:unsigned v = 4;
+        -:    7:
+        1:    8:unsigned long long __attribute__((noipa)) foo(unsigned x) {
+        -:    9:#if __SIZEOF_INT__ == 2
+        -:   10:  __UINT32_TYPE__ a = v;
+        -:   11:#else
+        1:   12:  unsigned a = v;
+        -:   13:#endif
+        1:   14:  a &= 1;
+        1:   15:  x |= 0 < a;
+        1:   16:  a >>= 31;
+        1:   17:  return x + a;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  if (foo(2) != 2)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

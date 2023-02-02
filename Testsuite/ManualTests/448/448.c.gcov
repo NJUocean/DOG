@@ -1,0 +1,25 @@
+        -:    0:Source:448.c
+        -:    0:Graph:448.gcno
+        -:    0:Data:448.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -floop-nest-optimize" } */
+        -:    2:
+        -:    3:int au[4] = {0};
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:  int dc;
+        -:    7:  int m7;
+        -:    8:  int lv;
+        -:    9:  int f2;
+        1:   10:  int uq[3] = {1};
+        3:   11:  for (dc = 0; dc < 2; ++dc) {
+        6:   12:    for (lv = 0; lv < 2; ++lv)
+       16:   13:      for (m7 = 0; m7 < 3; ++m7) {
+       12:   14:        if (uq[dc] == 0)
+        6:   15:          continue;
+       24:   16:        for (f2 = 0; f2 < 3; ++f2)
+       18:   17:          au[dc + 2] = uq[f2];
+        -:   18:      }
+        -:   19:  }
+        1:   20:  return 0;
+        -:   21:}

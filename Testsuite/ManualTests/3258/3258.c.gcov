@@ -1,0 +1,30 @@
+        -:    0:Source:3258.c
+        -:    0:Graph:3258.gcno
+        -:    0:Data:3258.gcda
+        -:    0:Runs:1
+        -:    1:/* PR opt/7409.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:char g_list[] = {'1'};
+        -:    6:
+        1:    7:void g(void *p, char *list, int length, char **elementPtr, char **nextPtr) {
+        1:    8:  if (*nextPtr != g_list)
+    #####:    9:    abort();
+        -:   10:
+        1:   11:  **nextPtr = 0;
+        1:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  char *list = g_list;
+        -:   16:  char *element;
+        1:   17:  int i, length = 100;
+        -:   18:
+        2:   19:  for (i = 0; *list != 0; i++) {
+        1:   20:    char *prevList = list;
+        1:   21:    g(0, list, length, &element, &list);
+        1:   22:    length -= (list - prevList);
+        -:   23:  }
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

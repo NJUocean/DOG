@@ -1,0 +1,14 @@
+        -:    0:Source:524.c
+        -:    0:Graph:524.gcno
+        -:    0:Data:524.gcda
+        -:    0:Runs:1
+        -:    1:/* PR63300 'const volatile' sometimes stripped in debug info */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        1:    5:int main(int argc, char **argv) {
+        1:    6:  const volatile int v = argc;
+        1:    7:  return v - argc;
+        -:    8:}
+        -:    9:
+        -:   10:/* { dg-final { gdb-test 9 "type:v" "const volatile int" } } */

@@ -1,0 +1,26 @@
+        -:    0:Source:2713.c
+        -:    0:Graph:2713.gcno
+        -:    0:Data:2713.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int128 } */
+        -:    3:/* { dg-options "-O2 -Wno-psabi" } */
+        -:    4:
+        -:    5:#define MAGIC 0x0706050403020100
+        -:    6:
+        -:    7:typedef unsigned long long u64;
+        -:    8:typedef unsigned __int128 v64u128 __attribute__((vector_size(64)));
+        -:    9:
+        -:   10:v64u128 __attribute__((noinline, noclone))
+        1:   11:foo(u64 x1, u64 x2, u64 x3, u64 x4, v64u128 x5) {
+        -:   12:  (void)x1, (void)x2;
+        1:   13:  x4 >>= x4 & 63;
+        1:   14:  return x3 + x4 + x5;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  v64u128 x = foo(0, 0, 0, MAGIC, (v64u128){});
+        1:   19:  if (x[0] != MAGIC || x[1] != MAGIC || x[2] != MAGIC || x[3] != MAGIC)
+    #####:   20:    __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

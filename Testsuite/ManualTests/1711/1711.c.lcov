@@ -1,0 +1,24 @@
+    1|       |#include <float.h>
+    2|       |
+    3|       |long double dfrom = 1.1L;
+    4|       |long double m1;
+    5|       |long double m2;
+    6|       |unsigned long mant_long;
+    7|       |
+    8|      1|int main() {
+    9|      1|  /* Some targets don't support a conforming long double type.  This is
+   10|      1|     common with very small parts which set long double == float.   Look
+   11|      1|     to see if the type has at least 32 bits of precision.  */
+   12|      1|  if (LDBL_EPSILON > 0x1p-31L)
+   13|      0|    return 0;
+   14|      1|
+   15|      1|  m1 = dfrom / 2.0L;
+   16|      1|  m2 = m1 * 4294967296.0L;
+   17|      1|  mant_long = ((unsigned long)m2) & 0xffffffff;
+   18|      1|
+   19|      1|  if (mant_long == 0x8ccccccc)
+   20|      1|    return 0;
+   21|      0|  else
+   22|      0|    abort();
+   23|      1|}
+

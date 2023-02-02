@@ -1,0 +1,24 @@
+    1|       |/* PR middle-end/40747 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      7|int foo(int i) { return (i < 4 && i >= 0) ? i : 4; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  if (foo(-1) != 4)
+    9|      0|    abort();
+   10|      1|  if (foo(0) != 0)
+   11|      0|    abort();
+   12|      1|  if (foo(1) != 1)
+   13|      0|    abort();
+   14|      1|  if (foo(2) != 2)
+   15|      0|    abort();
+   16|      1|  if (foo(3) != 3)
+   17|      0|    abort();
+   18|      1|  if (foo(4) != 4)
+   19|      0|    abort();
+   20|      1|  if (foo(5) != 4)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

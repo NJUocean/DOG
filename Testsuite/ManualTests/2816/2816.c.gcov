@@ -1,0 +1,28 @@
+        -:    0:Source:2816.c
+        -:    0:Graph:2816.gcno
+        -:    0:Data:2816.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:
+        -:    3:volatile int gv;
+        -:    4:const char *ptrs[2];
+        -:    5:
+        1:    6:void foo(volatile int *v, const char **ptrs) {
+        1:    7:  switch (*v & 1) {
+        1:    8:  case 0:
+        1:    9:    ptrs[0] = 0;
+        1:   10:    break;
+    #####:   11:  case 1:
+    #####:   12:    break;
+    #####:   13:  default:
+    #####:   14:    ptrs[1] = "Some text";
+    #####:   15:    break;
+        -:   16:  }
+        1:   17:  while (*v > 0)
+    #####:   18:    *v -= 1;
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  foo(&gv, ptrs);
+        1:   23:  return 0;
+        -:   24:}

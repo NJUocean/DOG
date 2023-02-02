@@ -1,0 +1,60 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target vect_double } */
+    3|       |/* { dg-require-effective-target vsx_hw { target { powerpc*-*-* } } } */
+    4|       |/* { dg-require-effective-target sse2_runtime { target { i?86-*-* x86_64-*-* } }
+    5|       | * } */
+    6|       |/* { dg-options "-O2 -ffast-math -fdump-tree-reassoc1" } */
+    7|       |/* { dg-additional-options "-mvsx" { target { powerpc*-*-* } } } */
+    8|       |/* { dg-additional-options "-msse2" { target { i?86-*-* x86_64-*-* } } } */
+    9|       |
+   10|       |/* To test reassoc can undistribute vector bit_field_ref summation.
+   11|       |
+   12|       |   arg1 and arg2 are two arrays whose elements of type vector double.
+   13|       |   Assuming:
+   14|       |     A0 = arg1[0], A1 = arg1[1], A2 = arg1[2], A3 = arg1[3],
+   15|       |     B0 = arg2[0], B1 = arg2[1], B2 = arg2[2], B3 = arg2[3],
+   16|       |
+   17|       |   Then:
+   18|       |     V0 = A0 * B0, V1 = A1 * B1, V2 = A2 * B2, V3 = A3 * B3,
+   19|       |
+   20|       |   reassoc transforms
+   21|       |
+   22|       |     accumulator += V0[0] + V0[1] + V1[0] + V1[1] + V2[0] + V2[1]
+   23|       |          + V3[0] + V3[1];
+   24|       |
+   25|       |   into:
+   26|       |
+   27|       |     T = V0 + V1 + V2 + V3
+   28|       |     accumulator += T[0] + T[1];
+   29|       |
+   30|       |   Fewer bit_field_refs, only two for 128 or more bits vector.  */
+   31|       |
+   32|       |typedef double v2df __attribute__((vector_size(16)));
+   33|       |__attribute__((noinline)) double test(double accumulator, v2df arg1[],
+   34|      1|                                      v2df arg2[]) {
+   35|      1|  v2df temp;
+   36|      1|  temp = arg1[0] * arg2[0];
+   37|      1|  accumulator += temp[0] + temp[1];
+   38|      1|  temp = arg1[1] * arg2[1];
+   39|      1|  accumulator += temp[0] + temp[1];
+   40|      1|  temp = arg1[2] * arg2[2];
+   41|      1|  accumulator += temp[0] + temp[1];
+   42|      1|  temp = arg1[3] * arg2[3];
+   43|      1|  accumulator += temp[0] + temp[1];
+   44|      1|  return accumulator;
+   45|      1|}
+   46|       |
+   47|       |extern void abort(void);
+   48|       |
+   49|      1|int main() {
+   50|      1|  v2df v2[4] = {{1.0, 2.0}, {4.0, 8.0}, {1.0, 3.0}, {9.0, 27.0}};
+   51|      1|  v2df v3[4] = {{1.0, 4.0}, {16.0, 64.0}, {1.0, 2.0}, {3.0, 4.0}};
+   52|      1|  double acc = 100.0;
+   53|      1|  double res = test(acc, v2, v3);
+   54|      1|  if (res != 827.0)
+   55|      0|    abort();
+   56|      1|  return 0;
+   57|      1|}
+   58|       |/* { dg-final { scan-tree-dump-times "BIT_FIELD_REF" 2 "reassoc1" { target {
+   59|       | * powerpc*-*-* i?86-*-* x86_64-*-* } } } } */
+

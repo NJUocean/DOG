@@ -1,0 +1,17 @@
+    1|       |/* { dg-options "-O2 -Wno-coverage-mismatch" } */
+    2|       |
+    3|      0|int __attribute__((noinline)) bar(void) {}
+    4|       |
+    5|      1|int foo(int i) {
+    6|       |#ifdef _PROFILE_USE
+    7|       |  if (i)
+    8|       |    bar();
+    9|       |#endif
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|      1|int main(int argc, char **argv) {
+   14|      1|  foo(argc);
+   15|      1|  return 0;
+   16|      1|}
+

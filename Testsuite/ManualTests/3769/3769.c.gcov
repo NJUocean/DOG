@@ -1,0 +1,17 @@
+        -:    0:Source:3769.c
+        -:    0:Graph:3769.gcno
+        -:    0:Data:3769.gcda
+        -:    0:Runs:1
+        -:    1:int a[251];
+      252:    2:__attribute__((noinline)) t(int i) {
+      252:    3:  if (i == 0)
+        1:    4:    exit(0);
+      251:    5:  if (i > 255)
+    #####:    6:    abort();
+      251:    7:}
+        1:    8:main() {
+        -:    9:  unsigned int i;
+        1:   10:  for (i = 0;; i++) {
+      252:   11:    a[i] = t((unsigned char)(i + 5));
+        -:   12:  }
+        -:   13:}

@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fno-tree-loop-vectorize -fdump-tree-pcom-details" } */
+    3|       |
+    4|       |int a, b, c, d[6], e = 3, f;
+    5|       |
+    6|       |void abort(void);
+    7|      1|void fn1() {
+    8|      5|  for (b = 1; b < 5; b++) {
+    9|     24|    for (c = 0; c < 5; c++)
+   10|     20|      d[b] = e;
+   11|      4|    if (a)
+   12|      0|      f++;
+   13|      4|    d[b + 1] = 1;
+   14|      4|  }
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  fn1();
+   19|      1|  if (d[0] != 0 || d[1] != 3 || d[2] != 3 || d[3] != 3 || d[4] != 3 ||
+   20|      1|      d[5] != 1)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+   25|       |/* { dg-final { scan-tree-dump-times "Store-stores chain" 1 "pcom" } } */
+

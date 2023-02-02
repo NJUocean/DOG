@@ -1,0 +1,30 @@
+        -:    0:Source:1062.c
+        -:    0:Graph:1062.gcno
+        -:    0:Data:1062.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -floop-unroll-and-jam --param unroll-jam-min-percent=0" }
+        -:    3: */
+        -:    4:long b;
+        -:    5:unsigned c[5];
+        -:    6:unsigned long long d = 3;
+        -:    7:int e, f, g;
+        -:    8:
+        1:    9:void h() {
+       12:   10:  for (; f < 11; f++) {
+       11:   11:    b = g;
+       66:   12:    for (e = 0; e < 5; e++) {
+       55:   13:      c[e] = e - b - (c[e] >> 5);
+       55:   14:      g = c[e];
+        -:   15:    }
+        -:   16:  }
+        1:   17:  if (c[0])
+        1:   18:    d = 0;
+        1:   19:}
+        -:   20:
+        -:   21:extern void abort(void);
+        1:   22:int main() {
+        1:   23:  h();
+        1:   24:  if (d != 0)
+    #####:   25:    abort();
+        -:   26:}

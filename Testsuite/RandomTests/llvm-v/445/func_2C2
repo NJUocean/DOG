@@ -1,0 +1,36 @@
+// control flow context
+digraph {
+	"1-while-for-93, 93" [shape=box]
+	in__N8__N10 [label=0 style=dotted]
+	in__N8 [label="1-if-50, 50"]
+	in__N8 -> in__N8__N10
+	in__N10 [label="0-passive-81, 81" color=lightblue style=filled]
+	in__N8__N10 -> in__N10
+	in__N8__N10 -> "1-while-for-93, 93" [color=red]
+	in__N11__N13 [label=0 style=dotted]
+	in__N11 [label="1-if-69, 69"]
+	in__N11 -> in__N11__N13
+	in__N13 [label="0-passive-76, 78" color=lightblue style=filled]
+	in__N11__N13 -> in__N13
+	in__N11__N13 -> "1-while-for-93, 93" [color=red]
+	in__N14__N16 [label=0 style=dotted]
+	in__N14 [label="1-if-72, 72"]
+	in__N14 -> in__N14__N16
+	in__N16 [label="0-passive-74, 74" color=lightblue style=filled]
+	in__N14__N16 -> in__N16
+	in__N14__N16 -> "1-while-for-93, 93" [color=red]
+	out__N17__N5 [label=-1 style=dotted]
+	"1-while-for-93, 93" -> out__N17__N5
+	out__N5 [label="1-while-for-47, 47"]
+	out__N17__N5 -> out__N5
+	out__N17__N20 [label=0 style=dotted]
+	"1-while-for-93, 93" -> out__N17__N20
+	out__N23 [label="0-exit-98, 98"]
+	out__N23 [color=lightblue style=filled]
+	out__N17__N20 -> out__N23
+	out__N20 [label="0-passive-94, 94"]
+	out__N20 [color=lightblue style=filled]
+	out__N17__N20 -> out__N20
+	out__N21 [label="0-while-for-95, 95"]
+	out__N17__N20 -> out__N21
+}

@@ -1,0 +1,32 @@
+    1|       |/* PR debug/36690 */
+    2|       |/* Verify that breakpoint can be put on goto f1, it is hit and
+    3|       |   varz at that spot is defined and contains 5.  Nowhere else
+    4|       |   in the function should be varz in the scope.
+    5|       |   This version of the test just checks that it can be compiled, linked
+    6|       |   and executed, further testing is done in corresponding gcc.dg/dwarf2/
+    7|       |   test and hopefully in gdb testsuite.  */
+    8|       |/* { dg-do run } */
+    9|       |/* { dg-options "-O0 -g -dA" } */
+   10|       |
+   11|       |int cnt;
+   12|       |
+   13|      4|void bar(int i) { cnt += i; }
+   14|       |
+   15|      2|void foo(int i) {
+   16|      2|  if (!i)
+   17|      1|    bar(0);
+   18|      1|  else {
+   19|      1|    static int varz = 5;
+   20|      1|    goto f1;
+   21|      1|  }
+   22|      1|  bar(1);
+   23|      2|f1:
+   24|      2|  bar(2);
+   25|      2|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  foo(0);
+   29|      1|  foo(1);
+   30|      1|  return 0;
+   31|      1|}
+

@@ -1,0 +1,16 @@
+        -:    0:Source:1052.c
+        -:    0:Graph:1052.gcno
+        -:    0:Data:1052.gcda
+        -:    0:Runs:1
+        -:    1:
+        1:    2:unsigned int f(unsigned int a) { return a * 65536 / 8; }
+        -:    3:
+        1:    4:unsigned int g(unsigned int a) { return a * 65536; }
+        -:    5:
+        1:    6:unsigned int h(unsigned int a) { return a / 8; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  if (f(65536) != h(g(65536)))
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

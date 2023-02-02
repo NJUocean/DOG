@@ -1,0 +1,15 @@
+        -:    0:Source:1127.c
+        -:    0:Graph:1127.gcno
+        -:    0:Data:1127.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-alias "" } */
+        -:    2:int a[10] = {};
+        -:    3:extern int b[10] __attribute__((alias("a")));
+        -:    4:int off;
+        1:    5:main() {
+        1:    6:  b[off] = 1;
+        1:    7:  a[off] = 2;
+        1:    8:  if (b[off] != 2)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

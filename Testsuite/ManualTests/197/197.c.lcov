@@ -1,0 +1,9 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target alloca } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  char *mem = __builtin_alloca(40);
+    6|      1|  __builtin___clear_cache(mem, mem + 40);
+    7|      1|  return 0;
+    8|      1|}
+

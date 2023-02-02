@@ -1,0 +1,11 @@
+        -:    0:Source:3193.c
+        -:    0:Graph:3193.gcno
+        -:    0:Data:3193.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Wunused-value -Werror" } */
+        -:    3:
+        1:    4:int main(void) { 0; } /* { dg-error "no effect" } */
+        -:    5:
+        -:    6:/* { dg-message "warnings being treated as errors" "" { target *-*-* } 0 } */
+        -:    7:/* { dg-final { output-exists { target *-*-* } } } */

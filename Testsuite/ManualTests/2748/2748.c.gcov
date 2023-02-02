@@ -1,0 +1,40 @@
+        -:    0:Source:2748.c
+        -:    0:Graph:2748.gcno
+        -:    0:Data:2748.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/89965 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -mtune=nano-x2 -fcaller-saves -fexpensive-optimizations
+        -:    4: * -fno-tree-dce -fno-tree-ter" } */
+        -:    5:/* { dg-additional-options "-march=i386" { target ia32 } } */
+        -:    6:
+        -:    7:int a;
+        -:    8:
+        1:    9:__attribute__((noipa)) unsigned long long foo(unsigned char c, unsigned d,
+        -:   10:                                              unsigned e, unsigned long long f,
+        -:   11:                                              unsigned char g, unsigned h,
+        -:   12:                                              unsigned long long i) {
+        -:   13:  (void)d;
+        1:   14:  unsigned short j = __builtin_mul_overflow_p(~0, h, c);
+        1:   15:  e <<= e;
+        1:   16:  i >>= 7;
+        1:   17:  c *= i;
+        1:   18:  i /= 12;
+        1:   19:  a = __builtin_popcount(c);
+        1:   20:  __builtin_add_overflow(e, a, &f);
+        1:   21:  return c + f + g + j + h;
+        -:   22:}
+        -:   23:
+        1:   24:__attribute__((noipa)) void bar(void) {
+        -:   25:  char buf[64];
+        1:   26:  __builtin_memset(buf, 0x55, sizeof buf);
+        1:   27:  asm volatile("" : : "r"(&buf[0]) : "memory");
+        1:   28:}
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  bar();
+        1:   32:  unsigned long long x = foo(2, 0, 0, 0, 0, 0, 0);
+        1:   33:  if (x != 0)
+    #####:   34:    __builtin_abort();
+        1:   35:  return 0;
+        -:   36:}

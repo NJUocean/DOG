@@ -1,0 +1,24 @@
+        -:    0:Source:3694.c
+        -:    0:Graph:3694.gcno
+        -:    0:Data:3694.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/44858 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a = 3;
+        -:    5:int b = 1;
+        -:    6:
+        1:    7:__attribute__((noinline)) long long foo(int x, int y) { return x / y; }
+        -:    8:
+        1:    9:__attribute__((noinline)) int bar(void) {
+        1:   10:  int c = 2;
+        1:   11:  c &= foo(1, b) > b;
+        1:   12:  b = (a != 0) | c;
+        1:   13:  return c;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  if (bar() != 0 || b != 1)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

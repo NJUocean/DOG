@@ -1,0 +1,19 @@
+        -:    0:Source:1067.c
+        -:    0:Graph:1067.gcno
+        -:    0:Data:1067.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/88074 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    4:/* { dg-add-options float128 } */
+        -:    5:/* { dg-require-effective-target float128 } */
+        -:    6:/* { dg-final { scan-tree-dump-not "link_error " "optimized" } } */
+        -:    7:
+        -:    8:extern void link_error(void);
+        1:    9:int main() {
+        -:   10:  if (((__FLT128_MAX__ * 0.5 + __FLT128_MAX__ * 0.5i) /
+        -:   11:       (__FLT128_MAX__ * 0.25 + __FLT128_MAX__ * 0.25i)) !=
+        -:   12:      (_Complex _Float128)2)
+        -:   13:    link_error();
+        1:   14:  return 0;
+        -:   15:}

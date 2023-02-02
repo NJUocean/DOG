@@ -1,0 +1,12 @@
+// control flow context
+digraph {
+	subgraph cluster_bh {
+		color=red
+		__N34 [label="0-passive-162, 162"]
+		__N35 [label="1-passive-164, 164" color=yellow style=filled]
+	}
+	in__N27__N34 [label=-1 style=dotted]
+	in__N27__N34 -> __N35
+	in__N27 [label="0-if-160, 160"]
+	in__N27 -> in__N27__N34
+}

@@ -1,0 +1,29 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:struct decision
+        -:    2:{
+        -:    3:  char enforce_mode;
+        -:    4:  struct decision *next;
+        -:    5:};
+        -:    6:
+        -:    7:
+        1:    8:static void clear_modes (p)  register struct decision *p;
+        -:    9:{
+        1:   10:  goto blah;
+        -:   11:
+        1:   12:foo:
+        -:   13:    ;//  p->enforce_mode = 0;
+        1:   14:blah:
+        1:   15:  if (p)
+    #####:   16:    goto foo;
+        1:   17:}
+        -:   18:
+        1:   19:main()
+        -:   20:{
+        1:   21:  struct decision *p = 0;
+        1:   22:  clear_modes (p);
+        1:   23:  exit (0);
+        -:   24:}

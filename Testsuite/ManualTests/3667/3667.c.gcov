@@ -1,0 +1,42 @@
+        -:    0:Source:3667.c
+        -:    0:Graph:3667.gcno
+        -:    0:Data:3667.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:union _D_rep {
+        -:    4:  unsigned short rep[4];
+        -:    5:  double val;
+        -:    6:};
+        -:    7:
+        1:    8:int add(double *key, double *table) {
+        1:    9:  unsigned i = 0;
+        1:   10:  double *deletedEntry = 0;
+        1:   11:  while (1) {
+        2:   12:    double *entry = table + i;
+        -:   13:
+        2:   14:    if (*entry == *key)
+        1:   15:      break;
+        -:   16:
+        1:   17:    union _D_rep _D_inf = {{0, 0, 0, 0x7ff0}};
+        1:   18:    if (*entry != _D_inf.val)
+    #####:   19:      abort();
+        -:   20:
+        1:   21:    union _D_rep _D_inf2 = {{0, 0, 0, 0x7ff0}};
+        1:   22:    if (!_D_inf2.val)
+    #####:   23:      deletedEntry = entry;
+        -:   24:
+        1:   25:    i++;
+        -:   26:  }
+        1:   27:  if (deletedEntry)
+    #####:   28:    *deletedEntry = 0.0;
+        1:   29:  return 0;
+        -:   30:}
+        -:   31:
+        1:   32:int main() {
+        1:   33:  union _D_rep infinit = {{0, 0, 0, 0x7ff0}};
+        1:   34:  double table[2] = {infinit.val, 23};
+        1:   35:  double key = 23;
+        1:   36:  int ret = add(&key, table);
+        1:   37:  return ret;
+        -:   38:}

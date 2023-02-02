@@ -1,0 +1,38 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |/* On MIPS, disable generating hints (R_MIPS_JALR) for PIC calls.  In addition
+    5|       |   to the load from the GOT this also contains the name of the function so for
+    6|       |   each call the function name would appear twice.  */
+    7|       |/* { dg-options "-O2 -mno-relax-pic-calls" { target mips*-*-* } } */
+    8|       |/* For epiphany, use -mshort-calls to avoid loading the address in two
+    9|       |   steps using lowpart and highpart.  */
+   10|       |/* { dg-options "-O2 -mshort-calls" { target epiphany-*-* } } */
+   11|       |
+   12|       |extern void *memset(void *, int, __SIZE_TYPE__);
+   13|       |extern __SIZE_TYPE__ strlen(const char *);
+   14|       |
+   15|      1|int main(int argc, char **argv) {
+   16|      1|  char x[8] = "abc";
+   17|      1|  memset(x, argc, strlen(x));
+   18|      1|  return 0;
+   19|      1|}
+   20|       |/* { dg-final { scan-assembler-not "(?n)strlen\(.*\n\)+.*strlen" { target { ! {
+   21|       | * powerpc*-*-darwin* hppa*-*-hpux* ia64-*-hpux* alpha*-*-* tic6x-*-* } } } } }
+   22|       | */
+   23|       |/* hppa*-*-hpux* has an IMPORT statement for strlen (plus the branch). */
+   24|       |/* *-*-darwin* has something similar. */
+   25|       |/* tic6x emits a comment at the point where the delayed branch happens.  */
+   26|       |/* { dg-final { scan-assembler-not
+   27|       | * "(?n)strlen\(.*\n\)+.*strlen\(.*\n\)+.*strlen" { target hppa*-*-hpux*
+   28|       | * tic6x-*-* } } } */
+   29|       |/* { dg-final { scan-assembler-not "(?n)bl L_strlen\(.*\n\)+.*bl L_strlen" {
+   30|       | * target powerpc*-*-darwin* } } } */
+   31|       |/* ia64-*-hpux* has a global statement, a type statement, and the branch. */
+   32|       |/* { dg-final { scan-assembler-not
+   33|       | * "(?n)strlen\(.*\n\)+.*strlen\(.*\n\)+.*strlen\(.*\n\)+.*strlen" { target
+   34|       | * ia64-*-hpux* } } } */
+   35|       |/* alpha-*-* has a GOT load and the call.  */
+   36|       |/* { dg-final { scan-assembler-not "(?n)jsr .*,strlen\(.*\n\)+.*jsr .*,strlen" {
+   37|       | * target alpha*-*-* } } } */
+

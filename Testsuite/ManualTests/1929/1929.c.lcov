@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -fno-tree-vrp -fwrapv" } */
+    3|       |
+    4|       |/* PR tree-optimization/22236
+    5|       |
+    6|       |    Avoid conversion of (signed char) {(uchar)1, +, (uchar)1}_x when
+    7|       |    it is not possible to prove that the scev does not wrap.
+    8|       |
+    9|       |    In this PR, a sequence 1, 2, ..., 255 has to be converted to
+   10|       |    signed char, but this would wrap: 1, 2, ..., 127, -128, ...  The
+   11|       |    result should not be a linear scev {(schar)1, +, (schar)1}_x.
+   12|       |    The conversion should be kept: (schar) {(uchar)1, +, (uchar)1}_x.
+   13|       | */
+   14|       |
+   15|       |void abort(void);
+   16|       |
+   17|    255|static inline void foo(signed char a) {
+   18|    255|  int b = a - 0x7F;
+   19|    255|  if (b > 1)
+   20|      0|    abort();
+   21|    255|}
+   22|       |
+   23|      1|int main() {
+   24|      1|  unsigned char b;
+   25|    256|  for (b = 0; b < 0xFF; b++)
+   26|    255|    foo(b);
+   27|      1|
+   28|      1|  return 0;
+   29|      1|}
+

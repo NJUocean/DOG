@@ -1,0 +1,17 @@
+    1|       |/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+    2|       |/* { dg-final { scan-assembler "mov.w B100,r" } } */
+    3|       |
+    4|       |char acDummy[0xf0] __attribute__((__BELOW100__));
+    5|       |unsigned short B100 __attribute__((__BELOW100__));
+    6|       |unsigned short *p = &B100;
+    7|       |
+    8|       |unsigned short wData = 0x1234;
+    9|       |
+   10|      1|void Do(void) { B100 = wData; }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  *p = 0x9876;
+   14|      1|  Do();
+   15|      1|  return (*p == 0x1234) ? 0 : 1;
+   16|      1|}
+

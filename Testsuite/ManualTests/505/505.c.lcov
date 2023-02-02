@@ -1,0 +1,30 @@
+    1|       |/* PR debug/43479 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|      1|__attribute__((noinline)) void foo(int k, int l, int m, int n) {
+    6|      1|  l++;
+    7|      1|  {
+    8|      1|    int h = n;
+    9|      1|    {
+   10|      1|      int i = k;
+   11|      1|      k++; /* { dg-final { gdb-test . "i" "6" } } */
+   12|      1|    }      /* { dg-final { gdb-test .-1 "h" "9" } } */
+   13|      1|           /* { dg-final { gdb-test .-2 "n" "9" } } */
+   14|      1|    {
+   15|      1|      int j = m;
+   16|      1|      m++; /* { dg-final { gdb-test . "j" "8" } } */
+   17|      1|    }      /* { dg-final { gdb-test .-1 "h" "9" } } */
+   18|      1|    /* { dg-final { gdb-test 12 "n" "9" } } */
+   19|      1|  }
+   20|      1|  asm volatile("" : : "r"(k), "r"(l));
+   21|      1|  asm volatile("" : : "r"(m), "r"(n));
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  int q = 6;
+   26|      1|  asm("" : "+r"(q));
+   27|      1|  foo(q, q + 1, q + 2, q + 3);
+   28|      1|  return 0;
+   29|      1|}
+

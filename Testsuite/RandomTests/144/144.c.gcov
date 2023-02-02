@@ -1,0 +1,125 @@
+        -:    0:Source:144.c
+        -:    0:Graph:144.gcno
+        -:    0:Data:144.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:struct S0 {
+        -:    7:  const volatile unsigned f0 : 30;
+        -:    8:  signed f1 : 30;
+        -:    9:  signed f2 : 2;
+        -:   10:  volatile unsigned f3 : 15;
+        -:   11:  unsigned f4 : 13;
+        -:   12:};
+        -:   13:
+        -:   14:union U1 {
+        -:   15:  uint64_t f0;
+        -:   16:  int32_t f1;
+        -:   17:  uint8_t f2;
+        -:   18:  int32_t f3;
+        -:   19:};
+        -:   20:
+        -:   21:union U2 {
+        -:   22:  int64_t f0;
+        -:   23:  int8_t f1;
+        -:   24:  int32_t f2;
+        -:   25:};
+        -:   26:
+        -:   27:union U3 {
+        -:   28:  uint32_t f0;
+        -:   29:  int64_t f1;
+        -:   30:  uint32_t f2;
+        -:   31:  uint8_t f3;
+        -:   32:};
+        -:   33:
+        -:   34:union U4 {
+        -:   35:  int32_t f0;
+        -:   36:  volatile int16_t f1;
+        -:   37:  uint8_t f2;
+        -:   38:};
+        -:   39:
+        -:   40:union U5 {
+        -:   41:  volatile int16_t f0;
+        -:   42:  const volatile uint32_t f1;
+        -:   43:};
+        -:   44:
+        -:   45:static uint8_t g_11 = 0x35L;
+        -:   46:static uint32_t g_15 = 0xB5725D36L;
+        -:   47:static volatile struct S0 g_27 = {18213, -23519, 1, 112, 19};
+        -:   48:static volatile union U1 g_28 = {0xDAE89405DBD55ADBLL};
+        -:   49:static volatile union U4 g_30 = {0x5EA37665L};
+        -:   50:static union U3 *g_32 = (void *)0;
+        -:   51:static union U3 g_34[1][3] = {{{4294967295UL}, {4294967295UL}, {4294967295UL}}};
+        -:   52:static int8_t g_37 = 1L;
+        -:   53:static volatile union U5 g_47[4] = {{-7L}, {-7L}, {-7L}, {-7L}};
+        -:   54:static union U4 g_50 = {-6L};
+        -:   55:
+        -:   56:static union U4 func_1(void);
+        -:   57:static union U3 *func_2(uint64_t p_3, uint32_t p_4, const uint16_t p_5, union U3 *p_6);
+        -:   58:
+        1:   59:static union U4 func_1(void) {
+        1:   60:  const uint32_t l_12 = 0x0DB959C4L;
+        1:   61:  uint32_t *l_13 = (void *)0;
+        1:   62:  uint32_t *l_14 = &g_15;
+        1:   63:  int32_t l_16 = 0x5F7919ADL;
+        1:   64:  union U2 l_19[1][2][2] = {{{{1L}, {1L}}, {{1L}, {1L}}}};
+        1:   65:  uint64_t l_29 = 1UL;
+        -:   66:  int8_t l_31[3][1][1];
+        -:   67:  int i, j, k;
+        4:   68:  for (i = 0; i < 3; i++) {
+        6:   69:    for (j = 0; j < 1; j++) {
+        6:   70:      for (k = 0; k < 1; k++)
+        3:   71:        l_31[i][j][k] = (-4L);
+        -:   72:    }
+        -:   73:  }
+       1*:   74:  g_32 = func_2((safe_div_func_int64_t_s_s((safe_mod_func_int32_t_s_s((g_11, l_12), (l_16 = ((*l_14) = l_12)))), (safe_lshift_func_int32_t_s_u((l_19[0][1][1], ((safe_unary_minus_func_int32_t_s(((0x0A98CEEFL >= (safe_div_func_int64_t_s_s((((((((safe_mod_func_int64_t_s_s(((g_11 <= l_19[0][1][1].f0) ^ (l_12 <= (safe_sub_func_uint8_t_u_u((((g_27, g_28), 0x8A87EA82BC906383LL) || l_12), g_11)))), l_29)) <= l_29), g_30), 0x394A737BL) == l_29) == l_12) || g_27.f3), l_12))) > g_11))), 5L)), 0)))), l_31[0][0][0], l_19[0][1][1].f0, g_32);
+        1:   75:  return g_50;
+        -:   76:}
+        -:   77:
+        1:   78:static union U3 *func_2(uint64_t p_3, uint32_t p_4, const uint16_t p_5, union U3 *p_6) {
+        1:   79:  union U3 *l_33 = &g_34[0][2];
+        1:   80:  uint32_t *l_35 = (void *)0;
+        1:   81:  int8_t *l_36 = &g_37;
+        1:   82:  int32_t l_48 = 0L;
+        1:   83:  int32_t *l_49 = &l_48;
+       1*:   84:  (*l_49) = ((((g_15 = (g_27.f4 | (l_33 == l_33))), 0x24L) | ((*l_36) &= p_4)) && (safe_sub_func_int8_t_s_s((safe_mod_func_int8_t_s_s((safe_lshift_func_uint32_t_u_u((safe_unary_minus_func_uint64_t_u((safe_rshift_func_uint32_t_u_s((g_47[2], l_48), 0)))), 0)), p_3)), 255UL)));
+        1:   85:  return &g_34[0][1];
+        -:   86:}
+        -:   87:
+        1:   88:int main(int argc, char *argv[]) {
+        -:   89:  int i, j;
+        1:   90:  int print_hash_value = 0;
+       1*:   91:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   92:    print_hash_value = 1;
+        1:   93:  platform_main_begin();
+        1:   94:  crc32_gentab();
+        1:   95:  func_1();
+        1:   96:  transparent_crc(g_11, "g_11", print_hash_value);
+        1:   97:  transparent_crc(g_15, "g_15", print_hash_value);
+        1:   98:  transparent_crc(g_27.f0, "g_27.f0", print_hash_value);
+        1:   99:  transparent_crc(g_27.f1, "g_27.f1", print_hash_value);
+        1:  100:  transparent_crc(g_27.f2, "g_27.f2", print_hash_value);
+        1:  101:  transparent_crc(g_27.f3, "g_27.f3", print_hash_value);
+        1:  102:  transparent_crc(g_27.f4, "g_27.f4", print_hash_value);
+        1:  103:  transparent_crc(g_28.f0, "g_28.f0", print_hash_value);
+        1:  104:  transparent_crc(g_30.f0, "g_30.f0", print_hash_value);
+        2:  105:  for (i = 0; i < 1; i++) {
+        4:  106:    for (j = 0; j < 3; j++) {
+        3:  107:      transparent_crc(g_34[i][j].f0, "g_34[i][j].f0", print_hash_value);
+        3:  108:      if (print_hash_value)
+    #####:  109:        printf("index = [%d][%d]\n", i, j);
+        -:  110:    }
+        -:  111:  }
+        1:  112:  transparent_crc(g_37, "g_37", print_hash_value);
+        5:  113:  for (i = 0; i < 4; i++) {
+        4:  114:    transparent_crc(g_47[i].f0, "g_47[i].f0", print_hash_value);
+        4:  115:    if (print_hash_value)
+    #####:  116:      printf("index = [%d]\n", i);
+        -:  117:  }
+        1:  118:  transparent_crc(g_50.f0, "g_50.f0", print_hash_value);
+        1:  119:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:  120:  return 0;
+        -:  121:}

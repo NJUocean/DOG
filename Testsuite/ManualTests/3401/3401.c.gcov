@@ -1,0 +1,69 @@
+        -:    0:Source:3401.c
+        -:    0:Graph:3401.gcno
+        -:    0:Data:3401.gcda
+        -:    0:Runs:1
+        -:    1:extern void *malloc(__SIZE_TYPE__);
+        -:    2:extern void *memset(void *, int, __SIZE_TYPE__);
+        -:    3:typedef struct {
+        -:    4:  short a;
+        -:    5:  unsigned short b;
+        -:    6:  unsigned short c;
+        -:    7:  unsigned long long Count;
+        -:    8:  long long Count2;
+        -:    9:} __attribute__((packed)) Struct1;
+        -:   10:
+        -:   11:typedef struct {
+        -:   12:  short a;
+        -:   13:  unsigned short b;
+        -:   14:  unsigned short c;
+        -:   15:  unsigned long long d;
+        -:   16:  long long e;
+        -:   17:  long long f;
+        -:   18:} __attribute__((packed)) Struct2;
+        -:   19:
+        -:   20:typedef union {
+        -:   21:  Struct1 a;
+        -:   22:  Struct2 b;
+        -:   23:} Union;
+        -:   24:
+        -:   25:typedef struct {
+        -:   26:  int Count;
+        -:   27:  Union List[0];
+        -:   28:} __attribute__((packed)) Struct3;
+        -:   29:
+        -:   30:unsigned long long Sum(Struct3 *instrs) __attribute__((noinline));
+        1:   31:unsigned long long Sum(Struct3 *instrs) {
+        1:   32:  unsigned long long count = 0;
+        -:   33:  int i;
+        -:   34:
+        4:   35:  for (i = 0; i < instrs->Count; i++) {
+        3:   36:    count += instrs->List[i].a.Count;
+        -:   37:  }
+        1:   38:  return count;
+        -:   39:}
+        -:   40:long long Sum2(Struct3 *instrs) __attribute__((noinline));
+        1:   41:long long Sum2(Struct3 *instrs) {
+        1:   42:  long long count = 0;
+        -:   43:  int i;
+        -:   44:
+        4:   45:  for (i = 0; i < instrs->Count; i++) {
+        3:   46:    count += instrs->List[i].a.Count2;
+        -:   47:  }
+        1:   48:  return count;
+        -:   49:}
+        1:   50:main() {
+        1:   51:  Struct3 *p = malloc(sizeof(int) + 3 * sizeof(Union));
+        1:   52:  memset(p, 0, sizeof(int) + 3 * sizeof(Union));
+        1:   53:  p->Count = 3;
+        1:   54:  p->List[0].a.Count = 555;
+        1:   55:  p->List[1].a.Count = 999;
+        1:   56:  p->List[2].a.Count = 0x101010101ULL;
+        1:   57:  p->List[0].a.Count2 = 555;
+        1:   58:  p->List[1].a.Count2 = 999;
+        1:   59:  p->List[2].a.Count2 = 0x101010101LL;
+        1:   60:  if (Sum(p) != 555 + 999 + 0x101010101ULL)
+    #####:   61:    abort();
+        1:   62:  if (Sum2(p) != 555 + 999 + 0x101010101LL)
+    #####:   63:    abort();
+        1:   64:  return 0;
+        -:   65:}

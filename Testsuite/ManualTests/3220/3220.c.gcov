@@ -1,0 +1,22 @@
+        -:    0:Source:3220.c
+        -:    0:Graph:3220.gcno
+        -:    0:Data:3220.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/3444
+        -:    2:   This used to fail because bitwise xor was improperly computed in char type
+        -:    3:   and sign extended to int type.  */
+        -:    4:
+        -:    5:extern void abort();
+        -:    6:extern void exit(int);
+        -:    7:
+        -:    8:signed char c = (signed char)0xffffffff;
+        -:    9:
+        1:   10:int foo(void) { return (unsigned short)c ^ (signed char)0x99999999; }
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  if ((unsigned char)-1 != 0xff || sizeof(short) != 2 || sizeof(int) != 4)
+        -:   14:    exit(0);
+        1:   15:  if (foo() != (int)0xffff0066)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

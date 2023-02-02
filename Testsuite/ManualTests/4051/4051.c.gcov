@@ -1,0 +1,23 @@
+        -:    0:Source:4051.c
+        -:    0:Graph:4051.gcno
+        -:    0:Data:4051.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/94567 */
+        -:    2:
+        -:    3:volatile int a = 1, b;
+        -:    4:short c, d = 4, f = 2, g;
+        -:    5:unsigned short e = 53736;
+        -:    6:
+       1*:    7:int foo(int i, int j) { return i && j ? 0 : i + j; }
+        -:    8:
+        1:    9:int main() {
+        2:   10:  for (; a; a = 0) {
+        1:   11:    unsigned short k = e;
+        1:   12:    g = k >> 3;
+       1*:   13:    if (foo(g < (f || c), b))
+    #####:   14:      d = 0;
+        -:   15:  }
+        1:   16:  if (d != 4)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

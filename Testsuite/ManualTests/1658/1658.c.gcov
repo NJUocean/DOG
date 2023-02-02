@@ -1,0 +1,18 @@
+        -:    0:Source:1658.c
+        -:    0:Graph:1658.gcno
+        -:    0:Data:1658.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-Wno-overflow" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:const signed char c = -84;
+        -:    6:signed char s;
+        -:    7:
+        1:    8:void foo() { s = (unsigned short)c / -55; }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo();
+        1:   12:  if (s != 90)
+    #####:   13:    __builtin_abort();
+        -:   14:}

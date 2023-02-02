@@ -1,0 +1,36 @@
+        -:    0:Source:726.c
+        -:    0:Graph:726.gcno
+        -:    0:Data:726.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that expand can generate correct stores to misaligned data even on
+        -:    2:   strict alignment platforms.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O0" } */
+        -:    6:
+        -:    7:extern void abort();
+        -:    8:
+        -:    9:typedef unsigned int myint __attribute__((aligned(1)));
+        -:   10:
+        8:   11:void foo(myint *p, unsigned int i) { *p = i; }
+        -:   12:
+        -:   13:#define cst (int)0xdeadbeef
+        -:   14:#define NUM 8
+        -:   15:
+        -:   16:struct blah {
+        -:   17:  char c;
+        -:   18:  myint i[NUM];
+        -:   19:};
+        -:   20:
+        -:   21:struct blah g;
+        -:   22:
+        1:   23:int main(int argc, char **argv) {
+        -:   24:  int k;
+        -:   25:
+        9:   26:  for (k = 0; k < NUM; k++) {
+        8:   27:    foo(&g.i[k], cst);
+        8:   28:    if (g.i[k] != cst)
+    #####:   29:      abort();
+        -:   30:  }
+        1:   31:  return 0;
+        -:   32:}

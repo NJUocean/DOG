@@ -1,0 +1,34 @@
+        -:    0:Source:621.c
+        -:    0:Graph:621.gcno
+        -:    0:Data:621.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-ipa-icf" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:static int __attribute__((noinline)) foo(int i) {
+        1:    5:  switch (i) {
+        1:    6:  case 0:
+        -:    7:  case 1:
+        -:    8:  case 2:
+        -:    9:  case 3:
+        1:   10:    return 0;
+    #####:   11:  default:
+    #####:   12:    return 1;
+        -:   13:  }
+        -:   14:}
+        -:   15:
+        1:   16:static int __attribute__((noinline)) bar(int i) {
+        1:   17:  switch (i) {
+        1:   18:  case 4:
+        -:   19:  case 5:
+        -:   20:  case 6:
+        -:   21:  case 7:
+        1:   22:    return 0;
+    #####:   23:  default:
+    #####:   24:    return 1;
+        -:   25:  }
+        -:   26:}
+        -:   27:
+        1:   28:int main() { return foo(0) + bar(4); }
+        -:   29:
+        -:   30:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

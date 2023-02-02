@@ -1,0 +1,18 @@
+        -:    0:Source:2979.c
+        -:    0:Graph:2979.gcno
+        -:    0:Data:2979.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-Wl,-u,_printf_float" { target newlib_nano_io } } */
+        -:    2:
+        -:    3:#include <stdio.h>
+        -:    4:char buf[2];
+        -:    5:
+        1:    6:f(fp) int (*fp)(char *, const char *, ...);
+        1:    7:{ (*fp)(buf, "%.0f", 5.0); }
+        -:    8:
+        1:    9:main() {
+        1:   10:  f(&sprintf);
+        1:   11:  if (buf[0] != '5' || buf[1] != 0)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

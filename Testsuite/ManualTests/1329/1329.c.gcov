@@ -1,0 +1,38 @@
+        -:    0:Source:1329.c
+        -:    0:Graph:1329.gcno
+        -:    0:Data:1329.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target stdint_types } */
+        -:    3:/* { dg-options "-fdump-tree-alias" } */
+        -:    4:/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+        -:    5:
+        -:    6:#include <stdint.h>
+        -:    7:
+        -:    8:int i;
+        1:    9:uintptr_t __attribute__((noinline, const)) bar(int ***p) {
+        1:   10:  return (uintptr_t)p;
+        -:   11:}
+        1:   12:void __attribute__((noinline)) foo(void) {
+        -:   13:  int *y;
+        1:   14:  int **a = &y, **x;
+        -:   15:  int ***p;
+        -:   16:  uintptr_t b;
+        1:   17:  b = bar(&a);
+        1:   18:  p = (int ***)b;
+        1:   19:  x = *p;
+        1:   20:  *x = &i; /* *ANYTHING = &i has to make sure that y points to i.  */
+        1:   21:  *y = 0;
+        1:   22:}
+        -:   23:extern void abort(void);
+        1:   24:int main() {
+        1:   25:  i = 1;
+        1:   26:  foo();
+        1:   27:  if (i != 0)
+    #####:   28:    abort();
+        1:   29:  return 0;
+        -:   30:}
+        -:   31:
+        -:   32:/* { dg-final { scan-tree-dump "y.._. = { i }" "alias" } } */
+        -:   33:/* { dg-final { scan-tree-dump "y.._., points-to NULL, points-to vars: { D.....
+        -:   34: * }" "alias" } } */

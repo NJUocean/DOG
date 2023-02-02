@@ -1,0 +1,43 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|       |struct s {
+    4|       |  int x, y;
+    5|       |};
+    6|       |
+    7|      1|f(int attr, ...) {
+    8|      1|  struct s va_values;
+    9|      1|  va_list va;
+   10|      1|  int i;
+   11|      1|
+   12|      1|  va_start(va, attr);
+   13|      1|
+   14|      1|  if (attr != 2)
+   15|      0|    abort();
+   16|      1|
+   17|      1|  va_values = va_arg(va, struct s);
+   18|      1|  if (va_values.x != 0xaaaa || va_values.y != 0x5555)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  attr = va_arg(va, int);
+   22|      1|  if (attr != 3)
+   23|      0|    abort();
+   24|      1|
+   25|      1|  va_values = va_arg(va, struct s);
+   26|      1|  if (va_values.x != 0xffff || va_values.y != 0x1111)
+   27|      0|    abort();
+   28|      1|
+   29|      1|  va_end(va);
+   30|      1|}
+   31|       |
+   32|      1|main() {
+   33|      1|  struct s a, b;
+   34|      1|
+   35|      1|  a.x = 0xaaaa;
+   36|      1|  a.y = 0x5555;
+   37|      1|  b.x = 0xffff;
+   38|      1|  b.y = 0x1111;
+   39|      1|
+   40|      1|  f(2, a, 3, b);
+   41|      1|  exit(0);
+   42|      1|}
+

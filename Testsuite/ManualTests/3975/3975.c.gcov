@@ -1,0 +1,23 @@
+        -:    0:Source:3975.c
+        -:    0:Graph:3975.gcno
+        -:    0:Data:3975.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/81556 */
+        -:    2:
+        -:    3:unsigned long long int b = 0xb82ff73c5c020599ULL;
+        -:    4:unsigned long long int c = 0xd4e8188733a29d8eULL;
+        -:    5:unsigned long long int d = 2, f = 1, g = 0, h = 0;
+        -:    6:unsigned long long int e = 0xf27771784749f32bULL;
+        -:    7:
+        1:    8:__attribute__((noinline, noclone)) void foo(void) {
+        1:    9:  _Bool a = d > 1;
+       1*:   10:  g = f % ((d > 1) << 9);
+        1:   11:  h = a & (e & (a & b & c));
+        1:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  foo();
+        1:   16:  if (g != 1 || h != 0)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

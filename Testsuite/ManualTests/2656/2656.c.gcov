@@ -1,0 +1,49 @@
+        -:    0:Source:2656.c
+        -:    0:Graph:2656.gcno
+        -:    0:Data:2656.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57003 */
+        -:    2:/* { dg-do run { target { ! x32 } } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:#define N 2001
+        -:    6:unsigned short *b, *c, *d;
+        -:    7:
+        1:    8:__attribute__((noinline, noclone)) unsigned bar(void) {
+        1:    9:  asm volatile("" : : : "memory");
+        1:   10:  return N;
+        -:   11:}
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) unsigned short *baz(unsigned long x) {
+        1:   14:  if (x != N * sizeof(unsigned short) + 20)
+    #####:   15:    __builtin_abort();
+        1:   16:  asm volatile("" : : : "memory");
+        1:   17:  return d;
+        -:   18:}
+        -:   19:
+        1:   20:__attribute__((ms_abi, noinline, noclone)) void foo(void) {
+        -:   21:  unsigned d;
+        -:   22:  unsigned short *e;
+        1:   23:  if ((d = bar())) {
+        1:   24:    e = baz(d * sizeof(unsigned short) + 20);
+        1:   25:    __builtin_memcpy(e, b, d * sizeof(unsigned short));
+        1:   26:    c = e;
+        -:   27:  }
+        1:   28:}
+        -:   29:
+        1:   30:int main() {
+        -:   31:  unsigned short a[2 * N];
+        -:   32:  int i;
+     4003:   33:  for (i = 0; i < 2 * N; i++)
+     4002:   34:    a[i] = i + 1;
+        1:   35:  b = a;
+        1:   36:  d = a + N;
+        1:   37:  asm volatile("" : : : "memory");
+        1:   38:  foo();
+     2002:   39:  for (i = 0; i < N; i++)
+     2001:   40:    if (a[i] != i + 1 || a[i + N] != i + 1)
+    #####:   41:      __builtin_abort();
+        1:   42:  if (c != a + N)
+    #####:   43:    __builtin_abort();
+        1:   44:  return 0;
+        -:   45:}

@@ -1,0 +1,27 @@
+        -:    0:Source:1718.c
+        -:    0:Graph:1718.gcno
+        -:    0:Data:1718.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int i;
+        -:    5:  void *p;
+        -:    6:  int j;
+        -:    7:};
+        -:    8:int a;
+        1:    9:int __attribute__((noinline)) foo(struct S *__restrict p, int q) {
+        1:   10:  int *x = &p->j;
+        1:   11:  if (q)
+    #####:   12:    x = &a;
+        1:   13:  p->j = 1;
+        1:   14:  *x = 2;
+        1:   15:  return p->j;
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  struct S s;
+        1:   20:  if (foo(&s, 0) != 2)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,39 @@
+        -:    0:Source:629.c
+        -:    0:Graph:629.gcno
+        -:    0:Data:629.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fdump-ipa-icf" } */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target global_constructor } */
+        -:    4:
+        -:    5:int ctor_counter = 1;
+        -:    6:int dtor_counter;
+        -:    7:
+        1:    8:__attribute__((constructor)) void A() { ctor_counter++; }
+        -:    9:
+        1:   10:__attribute__((destructor)) void B() {
+        1:   11:  if (dtor_counter == 0)
+    #####:   12:    __builtin_abort();
+        -:   13:
+        1:   14:  dtor_counter--;
+        1:   15:}
+        -:   16:
+        1:   17:__attribute__((constructor)) static void C() { ctor_counter++; }
+        -:   18:
+        1:   19:__attribute__((destructor)) static void D() {
+        1:   20:  if (dtor_counter == 0)
+    #####:   21:    __builtin_abort();
+        -:   22:
+        1:   23:  dtor_counter--;
+        1:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  if (ctor_counter != 3)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  dtor_counter = 2;
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}
+        -:   34:
+        -:   35:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

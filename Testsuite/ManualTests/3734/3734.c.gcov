@@ -1,0 +1,19 @@
+        -:    0:Source:3734.c
+        -:    0:Graph:3734.gcno
+        -:    0:Data:3734.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/49281 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        3:    5:__attribute__((noinline, noclone)) int foo(int x) { return (x << 2) | 4; }
+        -:    6:
+        3:    7:__attribute__((noinline, noclone)) int bar(int x) { return (x << 2) | 3; }
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (foo(43) != 172 || foo(1) != 4 || foo(2) != 12)
+    #####:   11:    abort();
+        1:   12:  if (bar(43) != 175 || bar(1) != 7 || bar(2) != 11)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

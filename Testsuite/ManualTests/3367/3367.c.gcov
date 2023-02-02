@@ -1,0 +1,13 @@
+        -:    0:Source:3367.c
+        -:    0:Graph:3367.gcno
+        -:    0:Data:3367.gcda
+        -:    0:Runs:1
+        -:    1:/* A function pointer compared with a void pointer should not be canonicalized.
+        -:    2:   See PR middle-end/17564.  */
+        -:    3:void *f(void) __attribute__((__noinline__));
+        1:    4:void *f(void) { return f; }
+        1:    5:int main(void) {
+        1:    6:  if (f() != f)
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

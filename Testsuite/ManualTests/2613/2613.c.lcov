@@ -1,0 +1,35 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+    5|       |
+    6|      1|void *x(void *pdst, const void *psrc, unsigned int pn) {
+    7|      1|  register void *return_dst = pdst;
+    8|      1|  register unsigned char *dst = pdst;
+    9|      1|  register unsigned const char *src = psrc;
+   10|      1|  register int n __asm__("ebx") = pn;
+   11|      1|
+   12|      1|  if (src < dst && dst < src + n) {
+   13|      1|    src += n;
+   14|      1|    dst += n;
+   15|      3|    while (n--)
+   16|      2|      *--dst = *--src;
+   17|      1|    return return_dst;
+   18|      1|  }
+   19|      0|
+   20|      0|  while (n >= 16)
+   21|      0|    n--;
+   22|      0|
+   23|      0|  return return_dst;
+   24|      0|}
+   25|       |extern void abort();
+   26|       |extern void exit(int);
+   27|       |char xx[30] = "abc";
+   28|      1|int main(void) {
+   29|      1|  char yy[30] = "aab";
+   30|      1|
+   31|      1|  if (x(xx + 1, xx, 2) != xx + 1 || memcmp(xx, yy, sizeof(yy)) != 0)
+   32|      0|    abort();
+   33|      1|  exit(0);
+   34|      1|}
+

@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fweb" } */
+    3|       |
+    4|       |typedef unsigned char u8;
+    5|       |#if __SIZEOF_INT__ < 4
+    6|       |__extension__ typedef __UINT32_TYPE__ u32;
+    7|       |#else
+    8|       |typedef unsigned int u32;
+    9|       |#endif
+   10|       |typedef unsigned long long u64;
+   11|       |int a;
+   12|       |
+   13|      1|static __attribute__((noinline, noclone)) u64 foo(u8 p1, u32 p2) {
+   14|      1|  u64 b = a <= 0;
+   15|      1|  p2 = 4;
+   16|      1|  b >>= a == 0;
+   17|      1|  p1 %= 0xfffffffff;
+   18|      1|  p2 >>= b & 31;
+   19|      1|  p1 += b;
+   20|      1|  p2 <<= 31;
+   21|      1|  return p1 + p2 + b;
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  u64 x = foo(0, 1);
+   26|      1|  if (x != 0)
+   27|      0|    __builtin_abort();
+   28|      1|  return 0;
+   29|      1|}
+

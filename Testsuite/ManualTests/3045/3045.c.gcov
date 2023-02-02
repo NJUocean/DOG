@@ -1,0 +1,29 @@
+        -:    0:Source:3045.c
+        -:    0:Graph:3045.gcno
+        -:    0:Data:3045.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "set1 B100,#7" } } */
+        -:    3:
+        -:    4:typedef struct {
+        -:    5:  unsigned char b0 : 1;
+        -:    6:  unsigned char b1 : 1;
+        -:    7:  unsigned char b2 : 1;
+        -:    8:  unsigned char b3 : 1;
+        -:    9:  unsigned char b4 : 1;
+        -:   10:  unsigned char b5 : 1;
+        -:   11:  unsigned char b6 : 1;
+        -:   12:  unsigned char b7 : 1;
+        -:   13:} BitField;
+        -:   14:
+        -:   15:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:   16:BitField B100 __attribute__((__BELOW100__));
+        -:   17:unsigned char *p = (unsigned char *)&B100;
+        -:   18:
+        1:   19:void Do(void) { B100.b7 = 1; }
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  *p = 0x34;
+        1:   23:  Do();
+        1:   24:  return (*p == 0xb4) ? 0 : 1;
+        -:   25:}

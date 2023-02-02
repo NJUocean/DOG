@@ -1,0 +1,18 @@
+        -:    0:Source:1426.c
+        -:    0:Graph:1426.gcno
+        -:    0:Data:1426.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:int main() {
+        1:    4:  signed char result = 0;
+        -:    5:  int n;
+       14:    6:  for (n = 0; n < 13; ++n) {
+       13:    7:    int tem = result;
+       13:    8:    tem = tem + 31;
+       13:    9:    result = tem;
+        -:   10:  }
+        1:   11:  if (result != -109)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,23 @@
+    1|       |/* PR 23190 */
+    2|       |/* Well, collateral damage from a proposed patch fixing 23190.  We'd emit
+    3|       |   debug info for multilib_exclusions_raw without emitting the variable
+    4|       |   itself, leading to link errors.  This reduced form is filed as PR 23777,
+    5|       |   for not eliminating things soon enough.  */
+    6|       |/* { dg-do link } */
+    7|       |
+    8|       |static const char *const multilib_exclusions_raw[] = {0};
+    9|       |
+   10|      0|void __attribute__((noinline)) f(char *const *p) {
+   11|      0|  __asm__("" : : "g"(p) : "memory");
+   12|      0|}
+   13|       |
+   14|      0|void g(char **o) {
+   15|      0|  const char *const *q = multilib_exclusions_raw;
+   16|      0|
+   17|      0|  f(o);
+   18|      0|  while (*q++)
+   19|      0|    f(o);
+   20|      0|}
+   21|       |
+   22|      1|int main() { return 0; }
+

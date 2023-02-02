@@ -1,0 +1,24 @@
+        -:    0:Source:1960.c
+        -:    0:Graph:1960.gcno
+        -:    0:Data:1960.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target untyped_assembly } */
+    #####:    2:foo(a, p) int *p;
+        -:    3:{
+    #####:    4:  p[0] = a;
+    #####:    5:  a = (short)a;
+    #####:    6:  return a;
+        -:    7:}
+        -:    8:
+        1:    9:main() {
+        -:   10:  int i;
+        1:   11:  foobar(i, &i);
+        -:   12:}
+        -:   13:
+        1:   14:foobar(a, b) {
+        -:   15:  int c;
+        -:   16:
+        1:   17:  c = a % b;
+        1:   18:  a = a / b;
+        1:   19:  return a + b;
+        -:   20:}

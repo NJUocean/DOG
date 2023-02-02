@@ -1,0 +1,62 @@
+        -:    0:Source:1954.c
+        -:    0:Graph:1954.gcno
+        -:    0:Data:1954.gcda
+        -:    0:Runs:1
+        -:    1:/* Test IEEE +0/-0 rules */
+        -:    2:
+        -:    3:static double pzero = +0.0;
+        -:    4:static double nzero = -0.0;
+        -:    5:static double pinf = +1.0 / 0.0;
+        -:    6:static double ninf = -1.0 / 0.0;
+        -:    7:static double nan = 0.0 / 0.0;
+        -:    8:
+       24:    9:void expect(double value, double expected) {
+       24:   10:  if (expected != expected) /* expected value is Not a number */
+        -:   11:  {
+        4:   12:    if (value == value) /* actual value is a number */
+    #####:   13:      abort();
+        -:   14:  }
+        -:   15:
+       20:   16:  else if (value != value)
+    #####:   17:    abort(); /* actual value is a NaN */
+        -:   18:
+       20:   19:  else if (memcmp((void *)&value, (void *)&expected, sizeof(double)) != 0)
+    #####:   20:    abort(); /* values don't match */
+       24:   21:}
+        -:   22:
+        1:   23:main() {
+        1:   24:  expect(pzero + pzero, pzero);
+        1:   25:  expect(pzero + nzero, pzero);
+        1:   26:  expect(nzero + pzero, pzero);
+        1:   27:  expect(nzero + nzero, nzero);
+        -:   28:
+        1:   29:  expect(pzero - pzero, pzero);
+        1:   30:  expect(pzero - nzero, pzero);
+        1:   31:  expect(nzero - pzero, nzero);
+        1:   32:  expect(nzero - nzero, pzero);
+        -:   33:
+        1:   34:  expect(pzero * pzero, pzero);
+        1:   35:  expect(pzero * nzero, nzero);
+        1:   36:  expect(nzero * pzero, nzero);
+        1:   37:  expect(nzero * nzero, pzero);
+        -:   38:
+        1:   39:  expect(+1.00 * pzero, pzero);
+        1:   40:  expect(-1.00 * pzero, nzero);
+        1:   41:  expect(+1.00 * nzero, nzero);
+        1:   42:  expect(-1.00 * nzero, pzero);
+        -:   43:
+        -:   44:#ifndef _TMS320C6700
+        -:   45:  /* C6X floating point division is implemented using reciprocals.  */
+        1:   46:  expect(pzero / pzero, nan);
+        1:   47:  expect(pzero / nzero, nan);
+        1:   48:  expect(nzero / pzero, nan);
+        1:   49:  expect(nzero / nzero, nan);
+        -:   50:
+        1:   51:  expect(+1.00 / pzero, pinf);
+        1:   52:  expect(-1.00 / pzero, ninf);
+        1:   53:  expect(+1.00 / nzero, ninf);
+        1:   54:  expect(-1.00 / nzero, pinf);
+        -:   55:#endif
+        -:   56:
+        1:   57:  exit(0);
+        -:   58:}

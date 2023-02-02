@@ -1,0 +1,14 @@
+        -:    0:Source:973.c
+        -:    0:Graph:973.gcno
+        -:    0:Data:973.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/65780 */
+        -:    2:/* { dg-do link { target *-*-linux* *-*-gnu* *-*-uclinux* } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:int optopt;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  optopt = 4;
+        1:    9:  return 0;
+        -:   10:}

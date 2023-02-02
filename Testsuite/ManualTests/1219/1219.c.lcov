@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow" } */
+    3|       |
+    4|      8|__attribute__((noinline, noclone)) int foo1(int x, int y) { return x - y; }
+    5|       |
+    6|      8|__attribute__((noinline, noclone)) int foo2(int x, int y) {
+    7|      8|  unsigned int xa = (unsigned int)x - (__INT_MAX__ - 3);
+    8|      8|  xa &= 3;
+    9|      8|  x = __INT_MAX__ - 3 + xa;
+   10|      8|  unsigned int ya = y + 1U;
+   11|      8|  ya &= 1;
+   12|      8|  y = ya - 1;
+   13|      8|  return x - y;
+   14|      8|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  int xm1, y;
+   18|      5|  for (xm1 = __INT_MAX__ - 4; xm1 < __INT_MAX__; xm1++)
+   19|     12|    for (y = -1; y <= 0; y++)
+   20|      8|      if (foo1(xm1 + 1, y) != (int)(xm1 + 1U - y) ||
+   21|      8|          foo2(xm1 + 1, y) != (int)(xm1 + 1U - y))
+   22|      0|        __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+   25|       |/* { dg-output ":7:\[0-9]\[^\n\r]*signed integer overflow: 2147483647 - -1
+   26|       | * cannot be represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   27|       |/* { dg-output "\[^\n\r]*:19:\[0-9]\[^\n\r]*signed integer overflow: 2147483647
+   28|       | * - -1 cannot be represented in type 'int'" } */
+

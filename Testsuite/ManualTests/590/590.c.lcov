@@ -1,0 +1,21 @@
+    1|      1|ns_name_skip(unsigned char **x, unsigned char *y) {
+    2|      1|  *x = 0;
+    3|      1|  return 0;
+    4|      1|}
+    5|       |
+    6|       |unsigned char a[2];
+    7|       |
+    8|      1|int dn_skipname(unsigned char *ptr, unsigned char *eom) {
+    9|      1|  unsigned char *saveptr = ptr;
+   10|      1|
+   11|      1|  if (ns_name_skip(&ptr, eom) == -1)
+   12|      0|    return (-1);
+   13|      1|  return (ptr - saveptr);
+   14|      1|}
+   15|       |
+   16|      1|main() {
+   17|      1|  if (dn_skipname(&a[0], &a[1]) == 0)
+   18|      0|    abort();
+   19|      1|  exit(0);
+   20|      1|}
+

@@ -1,0 +1,53 @@
+        -:    0:Source:897.c
+        -:    0:Graph:897.gcno
+        -:    0:Data:897.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=integer-divide-by-zero -Wno-div-by-zero
+        -:    3: * -fno-sanitize-recover=integer-divide-by-zero" } */
+        -:    4:/* { dg-shouldfail "ubsan" } */
+        -:    5:
+        -:    6:#include <stdio.h>
+        -:    7:
+        -:    8:int x;
+        -:    9:
+        3:   10:__attribute__((noinline, noclone)) void barrier(void) {
+        3:   11:  asm volatile("" : : : "memory");
+        3:   12:  if (++x == 3)
+        1:   13:    __builtin_exit(0);
+        2:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  volatile int a = 0;
+        1:   18:  volatile long long int b = 0;
+        1:   19:  volatile unsigned int c = 1;
+        -:   20:
+        1:   21:  barrier();
+        1:   22:  fputs("1st\n", stderr);
+        1:   23:  barrier();
+        1:   24:  a / b;
+        1:   25:  barrier();
+    #####:   26:  fputs("2nd\n", stderr);
+    #####:   27:  barrier();
+        -:   28:  0 / 0;
+    #####:   29:  barrier();
+    #####:   30:  fputs("3rd\n", stderr);
+    #####:   31:  barrier();
+    #####:   32:  a / 0;
+    #####:   33:  barrier();
+    #####:   34:  fputs("4th\n", stderr);
+    #####:   35:  barrier();
+    #####:   36:  0 / b;
+    #####:   37:  barrier();
+    #####:   38:  fputs("5th\n", stderr);
+    #####:   39:  barrier();
+    #####:   40:  2 / --c;
+    #####:   41:  barrier();
+    #####:   42:  fputs("6th\n", stderr);
+    #####:   43:  barrier();
+        -:   44:
+    #####:   45:  return 0;
+        -:   46:}
+        -:   47:
+        -:   48:/* { dg-output "1st(\n|\r\n|\r)" } */
+        -:   49:/* { dg-output "\[^\n\r]*division by zero" } */

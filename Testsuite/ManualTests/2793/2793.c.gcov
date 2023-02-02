@@ -1,0 +1,52 @@
+        -:    0:Source:2793.c
+        -:    0:Graph:2793.gcno
+        -:    0:Data:2793.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target sse2_runtime } } */
+        -:    2:/* { dg-options "-O2 -msse2 -mfpmath=sse -ftree-vectorize
+        -:    3: * -fdump-tree-vect-details -save-temps" } */
+        -:    4:
+        -:    5:extern void abort();
+        -:    6:
+        -:    7:#define N 16
+        -:    8:float a[N] = {-0.1f, -3.2f, -6.3f, -9.4f, -12.5f, -15.6f, -18.7f, -21.8f,
+        -:    9:              24.9f, 27.1f, 30.2f, 33.3f, 36.4f,  39.5f,  42.6f,  45.7f};
+        -:   10:float b[N] = {-1.2f, 3.4f,  -5.6f, 7.8f, -9.0f, 1.0f,  -2.0f, 3.0f,
+        -:   11:              -4.0f, -5.0f, 6.0f,  7.0f, -8.0f, -9.0f, 10.0f, 11.0f};
+        -:   12:float r[N];
+        -:   13:
+        -:   14:double ad[N] = {-0.1d, -3.2d, -6.3d, -9.4d, -12.5d, -15.6d, -18.7d, -21.8d,
+        -:   15:                24.9d, 27.1d, 30.2d, 33.3d, 36.4d,  39.5d,  42.6d,  45.7d};
+        -:   16:double bd[N] = {-1.2d, 3.4d,  -5.6d, 7.8d, -9.0d, 1.0d,  -2.0d, 3.0d,
+        -:   17:                -4.0d, -5.0d, 6.0d,  7.0d, -8.0d, -9.0d, 10.0d, 11.0d};
+        -:   18:double rd[N];
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  int i;
+        -:   22:
+       17:   23:  for (i = 0; i < N; i++)
+       16:   24:    r[i] = a[i] * __builtin_copysignf(1.0f, b[i]);
+        -:   25:
+        -:   26:  /* check results:  */
+       17:   27:  for (i = 0; i < N; i++)
+       16:   28:    if (r[i] != a[i] * __builtin_copysignf(1.0f, b[i]))
+    #####:   29:      abort();
+        -:   30:
+       17:   31:  for (i = 0; i < N; i++)
+       16:   32:    rd[i] = ad[i] * __builtin_copysign(1.0d, bd[i]);
+        -:   33:
+        -:   34:  /* check results:  */
+       17:   35:  for (i = 0; i < N; i++)
+       16:   36:    if (rd[i] != ad[i] * __builtin_copysign(1.0d, bd[i]))
+    #####:   37:      abort();
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}
+        -:   41:
+        -:   42:/* { dg-final { scan-tree-dump-times "vectorized 2 loops" 1 "vect" } } */
+        -:   43:/* { dg-final { scan-assembler "\[ \t\]xor" } } */
+        -:   44:/* { dg-final { scan-assembler "\[ \t\]and" } } */
+        -:   45:/* { dg-final { scan-assembler-not "copysign" } } */
+        -:   46:/* { dg-final { scan-assembler-not "\[ \t\]fxam" } } */
+        -:   47:/* { dg-final { scan-assembler-not "\[ \t\]or" } } */
+        -:   48:/* { dg-final { scan-assembler-not "\[ \t\]mul" } } */

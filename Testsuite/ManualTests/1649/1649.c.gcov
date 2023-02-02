@@ -1,0 +1,21 @@
+        -:    0:Source:1649.c
+        -:    0:Graph:1649.gcno
+        -:    0:Data:1649.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fwrapv" } */
+        -:    3:
+        1:    4:static void __attribute__((noinline, noclone)) func(void) {
+        1:    5:  signed char c = 0;
+        -:    6:
+      129:    7:  for (; c >= 0; c++)
+        -:    8:    ;
+        -:    9:
+        1:   10:  if (c != -128)
+    #####:   11:    __builtin_abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main(int argc, char *argv[]) {
+        1:   15:  func();
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,16 @@
+        -:    0:Source:1253.c
+        -:    0:Graph:1253.gcno
+        -:    0:Data:1253.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int128 } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:float __attribute__((noinline)) f(__uint128_t x) { return x + 1; }
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  if (f(0xffffffffu) == 0)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

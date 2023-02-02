@@ -1,0 +1,14 @@
+        -:    0:Source:1623.c
+        -:    0:Graph:1623.gcno
+        -:    0:Data:1623.gcda
+        -:    0:Runs:1
+        -:    1:__volatile int a = 0;
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  if (__builtin_ffs(a) != 0)
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

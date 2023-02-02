@@ -1,0 +1,12 @@
+    1|      1|main() {
+    2|      1|  double db1 = 1.7976931348623157e+308;
+    3|      1|  long double ldb1 = db1;
+    4|      1|
+    5|      1|  if (sizeof(double) != 8 || sizeof(long double) != 16)
+    6|      0|    exit(0);
+    7|      1|
+    8|      1|  if (ldb1 != 1.7976931348623157e+308)
+    9|      0|    abort();
+   10|      1|  exit(0);
+   11|      1|}
+

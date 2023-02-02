@@ -1,0 +1,13 @@
+    1|       |unsigned char foo(unsigned long);
+    2|      1|main() {
+    3|      1|  unsigned char AChar;
+    4|      1|  unsigned long ALong = 0x12345678;
+    5|      1|
+    6|      1|  AChar = foo(ALong);
+    7|      1|
+    8|      1|  printf("AChar = %x\n", (int)AChar);
+    9|      1|}
+   10|      1|unsigned char foo(unsigned long TheLong) {
+   11|      1|  return ((unsigned char)(TheLong & 0xff));
+   12|      1|}
+

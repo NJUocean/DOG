@@ -1,0 +1,28 @@
+        -:    0:Source:2904.c
+        -:    0:Graph:2904.gcno
+        -:    0:Data:2904.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-msmall-data-limit=100" } */
+        -:    3:
+        -:    4:double a = 6.76, b = 7.34, c = 0.54;
+        -:    5:double x_1 = 45.46;
+        -:    6:static double SD_1;
+        -:    7:static double SD_init = 45.54;
+        -:    8:double DD_1;
+        -:    9:double DD_init = 769.0;
+        -:   10:
+        1:   11:int main() {
+        -:   12:  volatile double x, y, z;
+        -:   13:
+        1:   14:  x = 56.76;
+        1:   15:  y = 4.5645;
+        -:   16:
+        1:   17:  z = x + y;
+        1:   18:  z = x - 4.65;
+        1:   19:  z = 4.566 - x;
+        1:   20:  z = x * y;
+        1:   21:  b = 8;
+        1:   22:  c = 34;
+        1:   23:  return 0;
+        -:   24:}

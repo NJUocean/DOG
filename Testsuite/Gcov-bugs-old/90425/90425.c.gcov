@@ -1,0 +1,16 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        1:    1:long f1(long a){return a&0xff000000L;}
+        1:    2:long f6(long a){return a&~0x0000ffffL;}
+        -:    3:
+        1:    4:main ()
+        -:    5:{
+        1:    6:  long a = 0x89ABCDEF;
+        -:    7:
+        2:    8:  if (f1(a)!=0x89000000L||
+        1:    9:      f6(a)!=0x89AB0000L)
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

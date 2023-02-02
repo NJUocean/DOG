@@ -1,0 +1,51 @@
+        -:    0:Source:2905.c
+        -:    0:Graph:2905.gcno
+        -:    0:Data:2905.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* The testcase failed due to corrupted alias information.
+        -:    3:   During the crossjump analyzing step the mem alias info of the
+        -:    4:   st instructions are merged and get copied during basic block
+        -:    5:   reordering which leads to an insn with wrong alias info.
+        -:    6:   The scheduler afterwards exchanges the mvc and st instructions
+        -:    7:   not recognizing the anti dependence.  */
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-O3 -mtune=z990 -fno-inline" } */
+        -:   10:
+        -:   11:extern void exit(int);
+        -:   12:extern void abort(void);
+        -:   13:
+        -:   14:int f;
+        -:   15:int g;
+        -:   16:int h;
+        -:   17:
+        -:   18:int *x = &f;
+        -:   19:int *p1 = &g;
+        -:   20:int *p2 = &h;
+        -:   21:
+        1:   22:int foo(void) {
+        -:   23:
+        1:   24:  if (*x == 0) {
+        1:   25:    x = p1;        /* mvc - memory to memory */
+        1:   26:    p1 = (int *)0; /* st  - register to memory */
+        1:   27:    return 1;
+        -:   28:  }
+    #####:   29:  if (*x == 5) {
+    #####:   30:    f = 1;
+    #####:   31:    g = 2;
+        -:   32:
+    #####:   33:    p2 = (int *)0; /* st */
+    #####:   34:    return 1;
+        -:   35:  }
+    #####:   36:}
+        -:   37:
+        1:   38:int main(int argc, char **argv) {
+        1:   39:  foo();
+        -:   40:
+        -:   41:  /* If the scheduler has exchanged the mvc and st instructions,
+        -:   42:     x is 0. The expected result is &g.  */
+        1:   43:  if (x == &g)
+        1:   44:    exit(0);
+        -:   45:  else
+    #####:   46:    abort();
+        -:   47:}

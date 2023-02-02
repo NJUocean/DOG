@@ -1,0 +1,20 @@
+    1|       |/* PR debug/54551 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|      2|void __attribute__((__noinline__)) bar(void) { asm volatile(""); }
+    6|       |
+    7|      1|int __attribute__((__noinline__)) foo(int x, int y, int z) {
+    8|      1|  if (x != z) {
+    9|      1|    int a = z + 1;
+   10|      1|    bar(); /* { dg-final { gdb-test .+1 "a" "4" } } */
+   11|      1|    bar(); /* { dg-final { gdb-test . "z" "3" } } */
+   12|      1|  }
+   13|      1|  return y;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  foo(1, 2, 3);
+   18|      1|  return 0;
+   19|      1|}
+

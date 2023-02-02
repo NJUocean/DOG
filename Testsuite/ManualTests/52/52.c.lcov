@@ -1,0 +1,12 @@
+    1|       |/* Copyright (C) 2005  Free Software Foundation.
+    2|       |
+    3|       |   by Gabriel Dos Reis  <gdr@integrable-solutions.net>  */
+    4|       |
+    5|       |/* { dg-do compile }  */
+    6|       |/* { dg-options "-Wchar-subscripts" } */
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  int ary[256] = {0};
+   10|      1|  return ary['a'];
+   11|      1|}
+

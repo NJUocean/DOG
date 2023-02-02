@@ -1,0 +1,28 @@
+        -:    0:Source:1468.c
+        -:    0:Graph:1468.gcno
+        -:    0:Data:1468.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define MAX_LENGTH 96
+        -:    4:#define SEQUENCE_LENGTH 31
+        -:    5:
+        -:    6:static struct { char buf[MAX_LENGTH + 1]; } u1, u2;
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i;
+        -:   12:  char c;
+        -:   13:
+       97:   14:  for (i = 0, c = 'A'; i < MAX_LENGTH; i++, c++) {
+       96:   15:    u1.buf[i] = 'a';
+       96:   16:    if (c >= 'A' + SEQUENCE_LENGTH)
+        3:   17:      c = 'A';
+       96:   18:    u2.buf[i] = c;
+        -:   19:  }
+        1:   20:  if (u1.buf[MAX_LENGTH] != '\0')
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

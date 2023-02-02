@@ -1,0 +1,14 @@
+        -:    0:Source:2727.c
+        -:    0:Graph:2727.gcno
+        -:    0:Data:2727.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/82145 */
+        -:    2:/* { dg-do compile { target { pie && lp64 } } } */
+        -:    3:/* { dg-options "-O2 -fpie -mcmodel=large -march=haswell" } */
+        -:    4:
+        -:    5:int l;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  l++;
+        1:    9:  return 0;
+        -:   10:}

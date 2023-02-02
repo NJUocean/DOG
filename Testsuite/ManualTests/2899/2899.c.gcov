@@ -1,0 +1,20 @@
+        -:    0:Source:2899.c
+        -:    0:Graph:2899.gcno
+        -:    0:Data:2899.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:unsigned int __attribute__((noinline, noclone)) foo(unsigned int i) {
+        -:    8:
+        1:    9:  return 0xFFFF & (0xd066 << (((i & 0x1) ^ 0x2f) & 0xf));
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (foo(1) != 0x8000)
+    #####:   14:    abort();
+        1:   15:  exit(0);
+        -:   16:}

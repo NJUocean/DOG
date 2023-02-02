@@ -1,0 +1,66 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow
+    3|       | * -fno-sanitize-recover=signed-integer-overflow" } */
+    4|       |
+    5|     32|__attribute__((noinline, noclone)) long long mul(long long x, long long y) {
+    6|     32|  return x * y;
+    7|     32|}
+    8|       |
+    9|       |long long tab[] = {0x7fffffffLL,
+   10|       |                   0x7fffffffLL,
+   11|       |                   0x3fffffff00000001LL,
+   12|       |                   -0x80000000LL,
+   13|       |                   -0x80000000LL,
+   14|       |                   0x4000000000000000LL,
+   15|       |                   0x7fffffffLL,
+   16|       |                   -0x80000000LL,
+   17|       |                   -0x3fffffff80000000LL,
+   18|       |                   -0x80000000LL,
+   19|       |                   0x7fffffffLL,
+   20|       |                   -0x3fffffff80000000LL,
+   21|       |                   3LL,
+   22|       |                   5LL,
+   23|       |                   15LL,
+   24|       |                   -3LL,
+   25|       |                   -9LL,
+   26|       |                   27LL,
+   27|       |                   6LL,
+   28|       |                   -7LL,
+   29|       |                   -42LL,
+   30|       |                   -12LL,
+   31|       |                   13LL,
+   32|       |                   -156LL,
+   33|       |                   0x1555555555555555LL,
+   34|       |                   6LL,
+   35|       |                   0x7ffffffffffffffeLL,
+   36|       |                   -0x1555555555555555LL,
+   37|       |                   -6LL,
+   38|       |                   0x7ffffffffffffffeLL,
+   39|       |                   0x1555555555555555LL,
+   40|       |                   -6LL,
+   41|       |                   -0x7ffffffffffffffeLL,
+   42|       |                   -0x1555555555555555LL,
+   43|       |                   6LL,
+   44|       |                   -0x7ffffffffffffffeLL,
+   45|       |                   0x81234567LL,
+   46|       |                   0xfdbe971fLL,
+   47|       |                   0x7fffffffbea72879LL,
+   48|       |                   -0x81234567LL,
+   49|       |                   -0xfdbe971fLL,
+   50|       |                   0x7fffffffbea72879LL,
+   51|       |                   0x81234567LL,
+   52|       |                   -0xfdbe971fLL,
+   53|       |                   -0x7fffffffbea72879LL,
+   54|       |                   -0x81234567LL,
+   55|       |                   0xfdbe971fLL,
+   56|       |                   -0x7fffffffbea72879LL};
+   57|       |
+   58|      1|int main() {
+   59|      1|  unsigned int i;
+   60|     17|  for (i = 0; i < sizeof(tab) / sizeof(long long); i += 3)
+   61|     16|    if (mul(tab[i], tab[i + 1]) != tab[i + 2] ||
+   62|     16|        mul(tab[i + 1], tab[i]) != tab[i + 2])
+   63|      0|      __builtin_abort();
+   64|      1|  return 0;
+   65|      1|}
+

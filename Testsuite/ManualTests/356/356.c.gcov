@@ -1,0 +1,24 @@
+        -:    0:Source:356.c
+        -:    0:Graph:356.gcno
+        -:    0:Data:356.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2004 Free Software Foundation.
+        -:    2:
+        -:    3:   PR other/15526
+        -:    4:   Verify correct overflow checking with -ftrapv.
+        -:    5:
+        -:    6:   Written by Falk Hueffner, 20th May 2004.  */
+        -:    7:
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-ftrapv" } */
+        -:   10:/* { dg-require-effective-target trapping } */
+        -:   11:
+        4:   12:__attribute__((noinline)) int mulv(int a, int b) { return a * b; }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  mulv(0, 0);
+        1:   16:  mulv(0, -1);
+        1:   17:  mulv(-1, 0);
+        1:   18:  mulv(-1, -1);
+        1:   19:  return 0;
+        -:   20:}

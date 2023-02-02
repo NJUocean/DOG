@@ -1,0 +1,23 @@
+        -:    0:Source:3248.c
+        -:    0:Graph:3248.gcno
+        -:    0:Data:3248.gcda
+        -:    0:Runs:1
+        -:    1:/* This testcase was miscompiled on IA-32, because fold-const
+        -:    2:   assumed associate_trees is always done on PLUS_EXPR.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:void check(unsigned int m) {
+        1:    8:  if (m != (unsigned int)-1)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        -:   12:unsigned int n = 1;
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  unsigned int m;
+        1:   16:  m = (1 | (2 - n)) | (-n);
+        1:   17:  check(m);
+        1:   18:  exit(0);
+        -:   19:}

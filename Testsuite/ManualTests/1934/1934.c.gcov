@@ -1,0 +1,43 @@
+        -:    0:Source:1934.c
+        -:    0:Graph:1934.gcno
+        -:    0:Data:1934.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase provided by HUAWEI.  */
+        -:    2:
+        -:    3:extern int printf(const char *__format, ...);
+        -:    4:
+        1:    5:int main() {
+        -:    6:  int cur_k;
+        1:    7:  int cur_j = 0;
+        1:    8:  int cur_i = 28;
+        -:    9:  unsigned char temp_data[8];
+        1:   10:  unsigned int Data_Size = 20;
+        -:   11:
+        8:   12:  for (cur_k = 0; cur_j < 7; cur_j++, cur_i++) {
+        7:   13:    if (cur_j % 2 == 0) {
+        4:   14:      temp_data[cur_k++] = 0;
+        -:   15:    }
+        7:   16:    if (cur_k == 7) {
+    #####:   17:      for (; cur_k > 0; cur_k--) {
+    #####:   18:        if (cur_k > 2) {
+    #####:   19:          if ((temp_data[7 - cur_k] == 'n' || temp_data[7 - cur_k] == 'N') &&
+    #####:   20:              (temp_data[7 - cur_k + 1] == 'a' ||
+    #####:   21:               temp_data[7 - cur_k + 1] == 'A')) {
+        -:   22:            break;
+        -:   23:          }
+        -:   24:        }
+    #####:   25:        if (cur_k == 1) {
+    #####:   26:          if (temp_data[7 - cur_k] == 'n' || temp_data[7 - cur_k] == 'N') {
+        -:   27:            break;
+        -:   28:          }
+        -:   29:        }
+        -:   30:      }
+    #####:   31:      if (cur_k == 7) {
+        -:   32:      } else {
+    #####:   33:        if (cur_k > 0)
+    #####:   34:          printf("dfjk");
+        -:   35:      }
+        -:   36:    }
+        -:   37:  }
+        1:   38:  return 0;
+        -:   39:}

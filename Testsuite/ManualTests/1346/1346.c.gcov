@@ -1,0 +1,18 @@
+        -:    0:Source:1346.c
+        -:    0:Graph:1346.gcno
+        -:    0:Data:1346.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-tree-pta" } */
+        -:    3:
+        1:    4:static void __attribute__((noinline)) foo(int *i, int n) { *i = n; }
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  int i = 0;
+        1:    8:  foo(&i, 1);
+        -:    9:
+        1:   10:  if (i != 1)
+    #####:   11:    __builtin_abort();
+        -:   12:
+        1:   13:  return 0;
+        -:   14:}

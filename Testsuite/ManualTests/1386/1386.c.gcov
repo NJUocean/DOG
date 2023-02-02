@@ -1,0 +1,28 @@
+        -:    0:Source:1386.c
+        -:    0:Graph:1386.gcno
+        -:    0:Data:1386.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:/* Make sure data-dependence analysis does not compute a bogus
+        -:    4:   distance vector for the different sized accesses.  */
+        -:    5:
+        -:    6:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:    7:extern void abort(void);
+        -:    8:short a[32] = {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+        -:    9:               16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+        -:   10:short b[32] = {
+        -:   11:    4, 0, 5, 0, 6, 0, 7, 0, 8, 0,
+        -:   12:};
+        1:   13:int main() {
+        -:   14:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        -:   15:  int i;
+        -:   16:  if (sizeof(short) == 2) {
+       33:   17:    for (i = 0; i < 32; ++i)
+       32:   18:      (*((unsigned short(*)[32]) & a[0]))[i] = (*((char(*)[32]) & a[0]))[i + 8];
+        1:   19:    if (memcmp(&a, &b, sizeof(a)) != 0)
+    #####:   20:      abort();
+        -:   21:  }
+        -:   22:#endif
+        1:   23:  return 0;
+        -:   24:}

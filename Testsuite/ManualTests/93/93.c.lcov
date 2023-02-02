@@ -1,0 +1,21 @@
+    1|       |// { dg-do run }
+    2|       |// { dg-shouldfail "asan" }
+    3|       |// { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } }
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  char *ptr;
+    7|      1|  char *ptr2;
+    8|      1|  {
+    9|      1|    char my_char[9];
+   10|      1|    ptr = &my_char[0];
+   11|      1|    __builtin_memcpy(&ptr2, &ptr, sizeof(ptr2));
+   12|      1|  }
+   13|      1|
+   14|      1|  *(ptr2 + 9) = 'c';
+   15|      1|}
+   16|       |
+   17|       |// { dg-output "ERROR: AddressSanitizer: stack-use-after-scope on
+   18|       |// address.*(\n|\r\n|\r)" } { dg-output "WRITE of size 1 at.*" } { dg-output
+   19|       |// ".*'my_char' \\(line 11\\) <== Memory access at offset \[0-9\]* overflows
+   20|       |// this variable.*" }
+

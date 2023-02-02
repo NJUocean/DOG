@@ -1,0 +1,12 @@
+    1|       |/* Check that the option -mdiv=call-div1 works.  */
+    2|       |/* { dg-do link }  */
+    3|       |/* { dg-options "-mdiv=call-div1" }  */
+    4|       |
+    5|      1|int test00(int a, int b) { return a / b; }
+    6|       |
+    7|      1|unsigned int test01(unsigned int a, unsigned b) { return a / b; }
+    8|       |
+    9|      1|int main(int argc, char **argv) {
+   10|      1|  return test00(argc, 123) + test01(argc, 123);
+   11|      1|}
+

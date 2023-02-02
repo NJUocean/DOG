@@ -1,0 +1,27 @@
+        -:    0:Source:3987.c
+        -:    0:Graph:3987.gcno
+        -:    0:Data:3987.gcda
+        -:    0:Runs:1
+        -:    1:typedef __UINT8_TYPE__ u8;
+        -:    2:typedef __UINT32_TYPE__ u32;
+        -:    3:
+        -:    4:u32 a, b, d, e;
+        -:    5:u8 c;
+        -:    6:
+        3:    7:static u32 __attribute__((noinline, noclone)) foo(u32 p) {
+        -:    8:  do {
+        3:    9:    e /= 0xfff;
+        3:   10:    if (p > c)
+        3:   11:      d = 0;
+        3:   12:    e -= 3;
+        3:   13:    e *= b <= a;
+        3:   14:  } while (e >= 88030);
+        1:   15:  return e;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  u32 x = foo(1164);
+        1:   20:  if (x != 0xfd)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

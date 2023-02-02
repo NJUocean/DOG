@@ -1,0 +1,27 @@
+    1|       |struct rtx_def {
+    2|       |  int code;
+    3|       |};
+    4|       |
+    5|      1|main() {
+    6|      1|  int tmp[2];
+    7|      1|  struct rtx_def *r, s;
+    8|      1|  int *p, *q;
+    9|      1|
+   10|      1|  /* The alias analyzer was creating the same memory tag for r, p and q
+   11|      1|     because 'struct rtx_def *' is type-compatible with 'int *'.  However,
+   12|      1|     the alias set of 'int[2]' is not the same as 'int *', so variable
+   13|      1|     'tmp' was deemed not aliased with anything.  */
+   14|      1|  r = &s;
+   15|      1|  r->code = 39;
+   16|      1|
+   17|      1|  /* If 'r' wasn't declared, then q and tmp would have had the same memory
+   18|      1|     tag.  */
+   19|      1|  p = tmp;
+   20|      1|  q = p + 1;
+   21|      1|  *q = 0;
+   22|      1|  tmp[1] = 39;
+   23|      1|  if (*q != 39)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

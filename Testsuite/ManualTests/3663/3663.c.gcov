@@ -1,0 +1,16 @@
+        -:    0:Source:3663.c
+        -:    0:Graph:3663.gcno
+        -:    0:Data:3663.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:short g_3;
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:  int l_2;
+      256:    7:  for (l_2 = -1; l_2 != 0; l_2 = (unsigned char)(l_2 - 1))
+      255:    8:    g_3 |= l_2;
+        1:    9:  if (g_3 != -1)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

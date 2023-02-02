@@ -1,0 +1,29 @@
+        -:    0:Source:1920.c
+        -:    0:Graph:1920.gcno
+        -:    0:Data:1920.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target popcountl } */
+        -:    3:/* { dg-options "-O2 -fno-tree-ch -fdump-tree-optimized" } */
+        -:    4:
+        3:    5:int __attribute__((noinline, noclone)) foo(long b) {
+        3:    6:  int c = 0;
+        -:    7:
+       14:    8:  while (b) {
+       11:    9:    b &= b - 1;
+       11:   10:    c++;
+        -:   11:  }
+        3:   12:  return c;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (foo(7) != 3)
+    #####:   17:    __builtin_abort();
+        1:   18:  if (foo(0) != 0)
+    #####:   19:    __builtin_abort();
+        1:   20:  if (foo(0xff) != 8)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-tree-dump-times "__builtin_popcount" 1 "optimized" } } */

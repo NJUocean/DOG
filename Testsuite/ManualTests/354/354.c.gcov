@@ -1,0 +1,23 @@
+        -:    0:Source:354.c
+        -:    0:Graph:354.gcno
+        -:    0:Data:354.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c11" } */
+        -:    3:
+        -:    4:/* Test that when compiling with -std=c11, we only see the C99/C11 values
+        -:    5:   for FLT_EVAL_METHOD.  */
+        -:    6:
+        -:    7:#include <float.h>
+        -:    8:
+        1:    9:int main(int argc, char **argv) {
+        -:   10:  switch (FLT_EVAL_METHOD) {
+        -:   11:  case 0:
+        -:   12:  case 1:
+        -:   13:  case 2:
+        -:   14:  case -1:
+        1:   15:    return 0;
+        -:   16:  default:
+        -:   17:    return 1;
+        -:   18:  }
+        -:   19:}

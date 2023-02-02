@@ -1,0 +1,52 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |
+    3|       |#define DEBUG 0
+    4|       |#if DEBUG
+    5|       |#include <stdio.h>
+    6|       |#endif
+    7|       |
+    8|  80.8k|#define N 200
+    9|       |
+   10|       |int a[N][N];
+   11|       |int b[N][N];
+   12|       |
+   13|      1|static int __attribute__((noinline)) foo(void) {
+   14|      1|  int i, j;
+   15|      1|  int res = 0;
+   16|      1|
+   17|      1|  /* This loop nest should be blocked.  */
+   18|    200|  for (j = 1; j < N; j++)
+   19|  39.9k|    for (i = 0; i < N; i++)
+   20|  39.8k|      a[i][j] = a[i][j - 1] + b[i][j];
+   21|      1|
+   22|    201|  for (i = 0; i < N; i++)
+   23|    200|    res += a[i][i];
+   24|      1|
+   25|      1|  return res;
+   26|      1|}
+   27|       |
+   28|       |extern void abort();
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  int i, j, res;
+   32|      1|
+   33|    201|  for (i = 0; i < N; i++)
+   34|  40.2k|    for (j = 0; j < N; j++) {
+   35|  40.0k|      a[i][j] = i + j;
+   36|  40.0k|      b[i][j] = i - j;
+   37|  40.0k|    }
+   38|      1|
+   39|      1|  res = foo();
+   40|      1|
+   41|       |#if DEBUG
+   42|       |  fprintf(stderr, "res = %d \n", res);
+   43|       |#endif
+   44|      1|
+   45|      1|  if (res != 1333300)
+   46|      0|    abort();
+   47|      1|
+   48|      1|  return 0;
+   49|      1|}
+   50|       |
+   51|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

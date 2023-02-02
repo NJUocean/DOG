@@ -1,0 +1,29 @@
+        -:    0:Source:188.c
+        -:    0:Graph:188.gcno
+        -:    0:Data:188.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern char *strncpy(char *, const char *, __SIZE_TYPE__);
+        -:    6:
+        -:    7:union u {
+        -:    8:  struct {
+        -:    9:    char vi[8];
+        -:   10:    char pi[16];
+        -:   11:  };
+        -:   12:  char all[8 + 16 + 4];
+        -:   13:};
+        -:   14:
+        1:   15:void __attribute__((noinline, noclone)) f(union u *u) {
+        -:   16:  char vi[8 + 1];
+        1:   17:  __builtin_strncpy(vi, u->vi, sizeof(u->vi));
+        1:   18:  if (__builtin_object_size(u->all, 1) != -1)
+    #####:   19:    abort();
+        1:   20:}
+        1:   21:int main() {
+        -:   22:  union u u;
+        1:   23:  f(&u);
+        1:   24:  return 0;
+        -:   25:}

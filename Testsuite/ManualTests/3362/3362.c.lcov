@@ -1,0 +1,14 @@
+    1|       |struct s {
+    2|       |  _Complex unsigned short x;
+    3|       |};
+    4|       |struct s gs = {100 + 200i};
+    5|      1|struct s __attribute__((noinline)) foo(void) {
+    6|      1|  return gs;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  if (foo().x != gs.x)
+   11|      0|    abort();
+   12|      1|  exit(0);
+   13|      1|}
+

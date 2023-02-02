@@ -1,0 +1,32 @@
+        -:    0:Source:3456.c
+        -:    0:Graph:3456.gcno
+        -:    0:Data:3456.gcda
+        -:    0:Runs:1
+        -:    1:struct barstruct {
+        -:    2:  char const *some_string;
+        -:    3:} x;
+        -:    4:extern void abort(void);
+        1:    5:void __attribute__((noinline)) foo(void) {
+        1:    6:  if (!x.some_string)
+    #####:    7:    abort();
+        1:    8:}
+        1:    9:void baz(int b) {
+        -:   10:  struct barstruct bar;
+        -:   11:  struct barstruct *barptr;
+        1:   12:  if (b)
+    #####:   13:    barptr = &bar;
+        -:   14:  else {
+        1:   15:    barptr = &x + 1;
+        1:   16:    barptr = barptr - 1;
+        -:   17:  }
+        1:   18:  barptr->some_string = "Everything OK";
+        1:   19:  foo();
+        1:   20:  barptr->some_string = "Everything OK";
+        1:   21:}
+        1:   22:int main() {
+        1:   23:  x.some_string = (void *)0;
+        1:   24:  baz(0);
+        1:   25:  if (!x.some_string)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

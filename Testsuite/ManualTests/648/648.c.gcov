@@ -1,0 +1,35 @@
+        -:    0:Source:648.c
+        -:    0:Graph:648.gcno
+        -:    0:Data:648.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-cp-details" } */
+        -:    3:
+       11:    4:static __attribute__((noinline, noclone)) int foo(int i) {
+       11:    5:  if (i < 4)
+    #####:    6:    __builtin_abort();
+       11:    7:  return 0;
+        -:    8:}
+        -:    9:
+       12:   10:static __attribute__((noinline, noclone)) int bar(int j) {
+       12:   11:  if (j > 8)
+        3:   12:    return foo(j + 2);
+        9:   13:  else if (j > 2)
+        6:   14:    return foo(j + 3);
+        -:   15:
+        3:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  foo(100);
+       13:   21:  for (unsigned int i = 0; i < 12; ++i) {
+       12:   22:    bar(i);
+        -:   23:  }
+        1:   24:  foo(4);
+        1:   25:  return 0;
+        -:   26:}
+        -:   27:
+        -:   28:/* { dg-final { scan-ipa-dump "Setting value range of param 0 \\(now 0\\)
+        -:   29: * \\\[4," "cp" } } */
+        -:   30:/* { dg-final { scan-ipa-dump "Setting value range of param 0 \\(now 0\\) \\\[0,
+        -:   31: * 11\\\]" "cp" } } */

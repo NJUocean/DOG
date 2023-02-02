@@ -1,0 +1,36 @@
+        -:    0:Source:1931.c
+        -:    0:Graph:1931.gcno
+        -:    0:Data:1931.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -funsafe-math-optimizations -ftrapping-math
+        -:    3: * -fdump-tree-recip -fdump-tree-lim2" } */
+        -:    4:/* { dg-warning "'-fassociative-math' disabled" "" { target *-*-* } 0 } */
+        -:    5:
+        -:    6:double F[2] = {0., 0.}, e = 0.;
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i;
+        -:   10:  double E, W, P, d;
+        -:   11:
+        -:   12:  /* make sure the program crashes on FP exception */
+        -:   13:  unsigned short int Mask;
+        -:   14:
+        1:   15:  W = 1.;
+        1:   16:  d = 2. * e;
+        1:   17:  E = 1. - d;
+        -:   18:
+        3:   19:  for (i = 0; i < 2; i++)
+        2:   20:    if (d > 0.01) {
+    #####:   21:      P = (W < E) ? (W - E) / d : (E - W) / d;
+    #####:   22:      F[i] += P;
+        -:   23:    }
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}
+        -:   27:
+        -:   28:/* LIM only performs the transformation in the no-trapping-math case.  In
+        -:   29:   the future we will do it for trapping-math as well in recip, check that
+        -:   30:   this is not wrongly optimized.  */
+        -:   31:/* { dg-final { scan-tree-dump-not "reciptmp" "lim2" } } */
+        -:   32:/* { dg-final { scan-tree-dump-not "reciptmp" "recip" } } */

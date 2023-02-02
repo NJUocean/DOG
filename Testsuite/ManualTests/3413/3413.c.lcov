@@ -1,0 +1,36 @@
+    1|       |/* PR rtl-optimization/28096 */
+    2|       |/* Origin: Jan Stein <jan@gatespacetelematics.com> */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int bar(int, int) __attribute__((noinline));
+    7|      1|int bar(int a, int b) {
+    8|      1|  if (b != 1)
+    9|      0|    abort();
+   10|      1|}
+   11|       |
+   12|       |void foo(int, int) __attribute__((noinline));
+   13|      1|void foo(int e, int n) {
+   14|      1|  int i, bb2, bb5;
+   15|      1|
+   16|      1|  if (e > 0)
+   17|      1|    e = -e;
+   18|      1|
+   19|      2|  for (i = 0; i < n; i++) {
+   20|      1|    if (e >= 0) {
+   21|      0|      bb2 = 0;
+   22|      0|      bb5 = 0;
+   23|      1|    } else {
+   24|      1|      bb5 = -e;
+   25|      1|      bb2 = bb5;
+   26|      1|    }
+   27|      1|
+   28|      1|    bar(bb5, bb2);
+   29|      1|  }
+   30|      1|}
+   31|       |
+   32|      1|int main(void) {
+   33|      1|  foo(1, 1);
+   34|      1|  return 0;
+   35|      1|}
+

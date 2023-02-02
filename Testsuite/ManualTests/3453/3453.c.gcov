@@ -1,0 +1,55 @@
+        -:    0:Source:3453.c
+        -:    0:Graph:3453.gcno
+        -:    0:Data:3453.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:typedef unsigned long HARD_REG_SET[2];
+        -:    4:HARD_REG_SET reg_class_contents[2];
+        -:    5:
+        -:    6:struct du_chain {
+        -:    7:  struct du_chain *next_use;
+        -:    8:  int cl;
+        -:    9:};
+        -:   10:
+        1:   11:void __attribute__((noinline)) merge_overlapping_regs(HARD_REG_SET *p) {
+        1:   12:  if ((*p)[0] != -1 || (*p)[1] != -1)
+    #####:   13:    abort();
+        1:   14:}
+        -:   15:
+        1:   16:void __attribute__((noinline)) regrename_optimize(struct du_chain *this) {
+        -:   17:  HARD_REG_SET this_unavailable;
+        -:   18:  unsigned long *scan_fp_;
+        -:   19:  int n_uses;
+        -:   20:  struct du_chain *last;
+        -:   21:
+        1:   22:  this_unavailable[0] = 0;
+        1:   23:  this_unavailable[1] = 0;
+        -:   24:
+        1:   25:  n_uses = 0;
+        2:   26:  for (last = this; last->next_use; last = last->next_use) {
+        1:   27:    scan_fp_ = reg_class_contents[last->cl];
+        1:   28:    n_uses++;
+        1:   29:    this_unavailable[0] |= ~scan_fp_[0];
+        1:   30:    this_unavailable[1] |= ~scan_fp_[1];
+        -:   31:  }
+        1:   32:  if (n_uses < 1)
+    #####:   33:    return;
+        -:   34:
+        1:   35:  scan_fp_ = reg_class_contents[last->cl];
+        1:   36:  this_unavailable[0] |= ~scan_fp_[0];
+        1:   37:  this_unavailable[1] |= ~scan_fp_[1];
+        -:   38:
+        1:   39:  merge_overlapping_regs(&this_unavailable);
+        -:   40:}
+        -:   41:
+        1:   42:int main() {
+        1:   43:  struct du_chain du1 = {0, 0};
+        1:   44:  struct du_chain du0 = {&du1, 1};
+        1:   45:  reg_class_contents[0][0] = -1;
+        1:   46:  reg_class_contents[0][1] = -1;
+        1:   47:  reg_class_contents[1][0] = 0;
+        1:   48:  reg_class_contents[1][1] = 0;
+        1:   49:  regrename_optimize(&du0);
+        1:   50:  return 0;
+        -:   51:}

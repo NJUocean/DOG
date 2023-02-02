@@ -1,0 +1,19 @@
+    1|       |/* Verify that that Thumb-1 epilogue size optimization does not clobber the
+    2|       |   return value.  */
+    3|       |
+    4|       |long long v = 0x123456789abc;
+    5|       |
+    6|      1|__attribute__((noinline)) void bar(int *x) { asm volatile("" : "=m"(x)::); }
+    7|       |
+    8|      1|__attribute__((noinline)) long long foo() {
+    9|      1|  int x;
+   10|      1|  bar(&x);
+   11|      1|  return v;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  if (foo() != v)
+   16|      0|    abort();
+   17|      1|  exit(0);
+   18|      1|}
+

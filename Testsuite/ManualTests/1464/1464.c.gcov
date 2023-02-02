@@ -1,0 +1,19 @@
+        -:    0:Source:1464.c
+        -:    0:Graph:1464.gcno
+        -:    0:Data:1464.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/82072 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=signed-integer-overflow" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  long long int l = -__LONG_LONG_MAX__ - 1;
+        -:    7:  unsigned int u;
+        1:    8:  u = -l;
+        1:    9:  asm volatile("" : "+r"(u));
+        1:   10:  return 0;
+        -:   11:}
+        -:   12:
+        -:   13:/* { dg-output "negation of -9223372036854775808 cannot be represented in type
+        -:   14: * 'long long int'\[^\n\r]*; cast to an unsigned type to negate this value to
+        -:   15: * itself" } */

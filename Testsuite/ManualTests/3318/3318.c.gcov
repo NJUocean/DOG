@@ -1,0 +1,18 @@
+        -:    0:Source:3318.c
+        -:    0:Graph:3318.gcno
+        -:    0:Data:3318.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:int main() {
+        1:    4:  int hicount = 0;
+        -:    5:  unsigned char *c;
+        1:    6:  char *str = "\x7f\xff";
+        3:    7:  for (c = (unsigned char *)str; *c; c++) {
+        2:    8:    if (!(((unsigned int)(*c)) < 0x80))
+        1:    9:      hicount++;
+        -:   10:  }
+        1:   11:  if (hicount != 1)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

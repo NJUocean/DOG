@@ -1,0 +1,38 @@
+        -:    0:Source:1215.c
+        -:    0:Graph:1215.gcno
+        -:    0:Data:1215.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-skip-if "RAM usage too large" { "avr-*-*" } } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int i;
+        -:    6:};
+     1024:    7:__attribute__((const, noinline, noclone)) struct S foo(int x) {
+        -:    8:  struct S s;
+     1024:    9:  s.i = x;
+     1024:   10:  return s;
+        -:   11:}
+        -:   12:
+        -:   13:int a[2048], b[2048], c[2048], d[2048];
+        -:   14:struct S e[2048];
+        -:   15:
+        1:   16:__attribute__((noinline, noclone)) void bar(void) {
+        -:   17:  int i;
+     1025:   18:  for (i = 0; i < 1024; i++) {
+     1024:   19:    e[i] = foo(i);
+     1024:   20:    a[i + 2] = a[i] + a[i + 1];
+     1024:   21:    b[10] = b[10] + i;
+     1024:   22:    c[i] = c[2047 - i];
+     1024:   23:    d[i] = d[i + 1];
+        -:   24:  }
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        -:   28:  int i;
+        1:   29:  bar();
+     1025:   30:  for (i = 0; i < 1024; i++)
+     1024:   31:    if (e[i].i != i)
+    #####:   32:      __builtin_abort();
+        1:   33:  return 0;
+        -:   34:}

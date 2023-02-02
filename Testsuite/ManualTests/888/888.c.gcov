@@ -1,0 +1,68 @@
+        -:    0:Source:888.c
+        -:    0:Graph:888.gcno
+        -:    0:Data:888.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -fno-tree-dominator-opts" } */
+        -:    3:
+        -:    4:typedef unsigned long int st;
+        -:    5:typedef unsigned long long dt;
+        -:    6:typedef union {
+        -:    7:  dt d;
+        -:    8:  struct {
+        -:    9:    st h, l;
+        -:   10:  } s;
+        -:   11:} t_be;
+        -:   12:
+        -:   13:typedef union {
+        -:   14:  dt d;
+        -:   15:  struct {
+        -:   16:    st l, h;
+        -:   17:  } s;
+        -:   18:} t_le;
+        -:   19:
+        -:   20:#define df(f, t)                                                               \
+        -:   21:  int f(t afh, t bfh) {                                                        \
+        -:   22:    t hh;                                                                      \
+        -:   23:    t hp, lp, dp, m;                                                           \
+        -:   24:    st ad, bd;                                                                 \
+        -:   25:    int s;                                                                     \
+        -:   26:    s = 0;                                                                     \
+        -:   27:    ad = afh.s.h - afh.s.l;                                                    \
+        -:   28:    bd = bfh.s.l - bfh.s.h;                                                    \
+        -:   29:    if (bd > bfh.s.l) {                                                        \
+        -:   30:      bd = -bd;                                                                \
+        -:   31:      s = ~s;                                                                  \
+        -:   32:    }                                                                          \
+        -:   33:    lp.d = (dt)afh.s.l * bfh.s.l;                                              \
+        -:   34:    hp.d = (dt)afh.s.h * bfh.s.h;                                              \
+        -:   35:    dp.d = (dt)ad * bd;                                                        \
+        -:   36:    dp.d ^= s;                                                                 \
+        -:   37:    hh.d = hp.d + hp.s.h + lp.s.h + dp.s.h;                                    \
+        -:   38:    m.d = (dt)lp.s.h + hp.s.l + lp.s.l + dp.s.l;                               \
+        -:   39:    return hh.s.l + m.s.l;                                                     \
+        -:   40:  }
+        -:   41:
+    #####:   42:df(f_le, t_le) df(f_be, t_be)
+------------------
+f_le:
+    #####:   42:df(f_le, t_le) df(f_be, t_be)
+------------------
+f_be:
+    #####:   42:df(f_le, t_le) df(f_be, t_be)
+------------------
+        -:   43:
+        -:   44:    void abort(void);
+        -:   45:void exit(int);
+        1:   46:int main() {
+        -:   47:  t_be x;
+        1:   48:  x.s.h = 0x10000000U;
+        1:   49:  x.s.l = 0xe0000000U;
+       1*:   50:  if (x.d == 0x10000000e0000000ULL &&
+    #####:   51:      f_be((t_be)0x100000000ULL, (t_be)0x100000000ULL) != -1)
+    #####:   52:    abort();
+       1*:   53:  if (x.d == 0xe000000010000000ULL &&
+    #####:   54:      f_le((t_le)0x100000000ULL, (t_le)0x100000000ULL) != -1)
+    #####:   55:    abort();
+        1:   56:  exit(0);
+        -:   57:}

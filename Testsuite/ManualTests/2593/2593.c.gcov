@@ -1,0 +1,46 @@
+        -:    0:Source:2593.c
+        -:    0:Graph:2593.gcno
+        -:    0:Data:2593.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target trampolines } */
+        -:    2:
+        -:    3:extern int foo(int, int, int (*)(int, int, int, int, int, int, int));
+        -:    4:
+        -:    5:int z;
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int sum = 0;
+        -:    9:  int i;
+        -:   10:
+     1000:   11:  int nested(int a, int b, int c, int d, int e, int f, int g) {
+     1000:   12:    z = c + d + e + f + g;
+        -:   13:
+     1000:   14:    if (a > 2 * b)
+      350:   15:      return a - b;
+        -:   16:    else
+      650:   17:      return b - a;
+        -:   18:  }
+        -:   19:
+       11:   20:  for (i = 0; i < 10; ++i) {
+        -:   21:    int j;
+        -:   22:
+      110:   23:    for (j = 0; j < 10; ++j) {
+        -:   24:      int k;
+        -:   25:
+     1100:   26:      for (k = 0; k < 10; ++k)
+     1000:   27:        sum += foo(i, j > k ? j - k : k - j, nested);
+        -:   28:    }
+        -:   29:  }
+        -:   30:
+        1:   31:  if (sum != 2300)
+    #####:   32:    abort();
+        -:   33:
+        1:   34:  if (z != 0x1b)
+    #####:   35:    abort();
+        -:   36:
+        1:   37:  exit(0);
+        -:   38:}
+        -:   39:
+     1000:   40:int foo(int a, int b, int (*fp)(int, int, int, int, int, int, int)) {
+     1000:   41:  return fp(a, b, a, b, a, b, a);
+        -:   42:}

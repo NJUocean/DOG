@@ -1,0 +1,14 @@
+        -:    0:Source:3792.c
+        -:    0:Graph:3792.gcno
+        -:    0:Data:3792.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/57568 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a[6][9] = {}, b = 1, *c = &a[3][5];
+        -:    5:
+        1:    6:int main() {
+        1:    7:  if (b && (*c = *c + *c))
+    #####:    8:    abort();
+        1:    9:  return 0;
+        -:   10:}

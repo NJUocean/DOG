@@ -1,0 +1,27 @@
+        -:    0:Source:3649.c
+        -:    0:Graph:3649.gcno
+        -:    0:Data:3649.gcda
+        -:    0:Runs:1
+        -:    1:struct VEC_char_base {
+        -:    2:  unsigned num;
+        -:    3:  unsigned alloc;
+        -:    4:  short vec[1];
+        -:    5:};
+        -:    6:
+        1:    7:short __attribute__((noinline)) foo(struct VEC_char_base *p, int i) {
+        -:    8:  short *q;
+        1:    9:  p->vec[i] = 0;
+        1:   10:  q = &p->vec[8];
+        1:   11:  *q = 1;
+        1:   12:  return p->vec[i];
+        -:   13:}
+        -:   14:
+        -:   15:extern void abort(void);
+        -:   16:extern void *malloc(__SIZE_TYPE__);
+        -:   17:
+        1:   18:int main() {
+        1:   19:  struct VEC_char_base *p = malloc(sizeof(struct VEC_char_base) + 256);
+        1:   20:  if (foo(p, 8) != 1)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

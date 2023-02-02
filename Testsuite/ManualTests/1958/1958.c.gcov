@@ -1,0 +1,24 @@
+        -:    0:Source:1958.c
+        -:    0:Graph:1958.gcno
+        -:    0:Data:1958.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:int a, b, c, d = 1;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int e = d;
+        6:    8:  for (b = 0; b < 5; b++) {
+       5*:    9:    for (a = 0; a < 1; a++) {
+        5:   10:      if (e)
+        5:   11:        break;
+    #####:   12:      for (c = 0; c < 1; c++)
+        -:   13:        ;
+        -:   14:    }
+        5:   15:    e |= 1;
+        -:   16:  }
+        1:   17:  if (c)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

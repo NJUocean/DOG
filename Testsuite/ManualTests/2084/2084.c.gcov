@@ -1,0 +1,38 @@
+        -:    0:Source:2084.c
+        -:    0:Graph:2084.gcno
+        -:    0:Data:2084.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/83075 - Invalid strncpy optimization */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -Wstringop-overflow" } */
+        -:    4:
+        -:    5:typedef __SIZE_TYPE__ size_t;
+        -:    6:
+        1:    7:__attribute__((noipa)) size_t foo(char *p, char *q, size_t *r) {
+        1:    8:  size_t n0 = __builtin_strlen(p);
+        1:    9:  __builtin_strncpy(
+        -:   10:      q, p, n0); /* { dg-warning "specified bound depends on the length" } */
+        1:   11:  size_t n1 = __builtin_strlen(p);
+        1:   12:  *r = n0;
+        1:   13:  return n1;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  char a[8] = "";
+        1:   18:  __builtin_strcpy(a, "123");
+        1:   19:  size_t n0 = __builtin_strlen(a);
+        1:   20:  __builtin_strncpy(
+        -:   21:      a + 3, a,
+        -:   22:      n0); /* { dg-warning "specified bound depends on the length" } */
+        1:   23:  size_t n1 = __builtin_strlen(a);
+        1:   24:  if (n1 == n0)
+    #####:   25:    __builtin_abort();
+        1:   26:  a[6] = '7';
+        1:   27:  __builtin_strcpy(a, "456");
+        -:   28:  size_t n2;
+        1:   29:  if (foo(a, a + 3, &n2) != 7 || n2 != 3)
+    #####:   30:    __builtin_abort();
+        1:   31:  if (__builtin_memcmp(a, "4564567", sizeof "4564567"))
+    #####:   32:    __builtin_abort();
+        1:   33:  return 0;
+        -:   34:}

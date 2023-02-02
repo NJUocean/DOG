@@ -1,0 +1,48 @@
+    1|       |/* PR middle-end/32912 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -w" } */
+    4|       |/* { dg-additional-options "-fno-common" { target hppa*-*-hpux* } } */
+    5|       |/* { dg-additional-options "-msse" { target { i?86-*-* x86_64-*-* } } } */
+    6|       |/* { dg-require-effective-target sse_runtime { target { i?86-*-* x86_64-*-* } }
+    7|       | * } */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |typedef int __m128i __attribute__((__vector_size__(16)));
+   12|       |
+   13|       |__m128i a, b, c, d, e, f;
+   14|       |
+   15|      1|void foo(__m128i x) {
+   16|      1|  a = x ^ ~x;
+   17|      1|  b = ~x ^ x;
+   18|      1|  c = x | ~x;
+   19|      1|  d = ~x | x;
+   20|      1|  e = x & ~x;
+   21|      1|  f = ~x & x;
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  union {
+   26|      1|    __m128i v;
+   27|      1|    int i[sizeof(__m128i) / sizeof(int)];
+   28|      1|  } u;
+   29|      1|  int i;
+   30|      1|
+   31|      5|  for (i = 0; i < sizeof(u.i) / sizeof(u.i[0]); i++)
+   32|      4|    u.i[i] = i * 49 - 36;
+   33|      1|  foo(u.v);
+   34|      1|#define check(x, val)                                                          \
+   35|      6|  u.v = (x);                                                                   \
+   36|     30|  for (i = 0; i < sizeof(u.i) / sizeof(u.i[0]); i++)                           \
+   37|     24|    if (u.i[i] != (val))                                                       \
+   38|     24|  abort()
+   39|      1|
+   40|      1|  check(a, ~0);
+   41|      1|  check(b, ~0);
+   42|      1|  check(c, ~0);
+   43|      1|  check(d, ~0);
+   44|      1|  check(e, 0);
+   45|      1|  check(f, 0);
+   46|      1|  return 0;
+   47|      1|}
+

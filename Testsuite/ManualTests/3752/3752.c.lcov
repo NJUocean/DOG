@@ -1,0 +1,19 @@
+    1|       |/* PR tree-optimization/52286 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int main() {
+    6|      1|#if __SIZEOF_INT__ > 2
+    7|      1|  int a, b;
+    8|      1|  asm("" : "=r"(a) : "0"(0));
+    9|      1|  b = (~a | 1) & -2038094497;
+   10|       |#else
+   11|       |  long a, b;
+   12|       |  asm("" : "=r"(a) : "0"(0));
+   13|       |  b = (~a | 1) & -2038094497L;
+   14|       |#endif
+   15|      1|  if (b >= 0)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+

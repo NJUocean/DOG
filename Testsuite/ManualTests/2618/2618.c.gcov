@@ -1,0 +1,42 @@
+        -:    0:Source:2618.c
+        -:    0:Graph:2618.gcno
+        -:    0:Data:2618.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:typedef struct {
+        -:    4:  long r[(19 + sizeof(long)) / (sizeof(long))];
+        -:    5:} realvaluetype;
+        -:    6:
+        -:    7:typedef void *tree;
+        -:    8:
+        1:    9:static realvaluetype real_value_from_int_cst(tree x, tree y) {
+        -:   10:  realvaluetype r;
+        -:   11:  int i;
+        4:   12:  for (i = 0; i < sizeof(r.r) / sizeof(long); ++i)
+        3:   13:    r.r[i] = -1;
+        1:   14:  return r;
+        -:   15:}
+        -:   16:
+        -:   17:struct brfic_args {
+        -:   18:  tree type;
+        -:   19:  tree i;
+        -:   20:  realvaluetype d;
+        -:   21:};
+        -:   22:
+        1:   23:static void build_real_from_int_cst_1(data) void *data;
+        -:   24:{
+        1:   25:  struct brfic_args *args = (struct brfic_args *)data;
+        1:   26:  args->d = real_value_from_int_cst(args->type, args->i);
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  struct brfic_args args;
+        -:   31:
+        1:   32:  __builtin_memset(&args, 0, sizeof(args));
+        1:   33:  build_real_from_int_cst_1(&args);
+        -:   34:
+        1:   35:  if (args.d.r[0] == 0)
+    #####:   36:    abort();
+        1:   37:  return 0;
+        -:   38:}

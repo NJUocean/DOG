@@ -1,0 +1,33 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fdump-tree-alias" } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+    4|       |
+    5|       |struct Foo {
+    6|       |  int **p;
+    7|       |  int **q;
+    8|       |};
+    9|       |
+   10|      1|int __attribute__((noinline)) bar(void) {
+   11|      1|  struct Foo f;
+   12|      1|  int j, i = 1;
+   13|      1|  char *p;
+   14|      1|  int *x = &i;
+   15|      1|  int *y = &j;
+   16|      1|  f.p = &y;
+   17|      1|  f.q = &x;
+   18|      1|  p = (char *)&f;
+   19|      9|  for (j = 0; j < sizeof(int *); ++j)
+   20|      8|    p++;
+   21|      1|  return ***(int ***)p;
+   22|      1|}
+   23|       |extern void abort(void);
+   24|      1|int main() {
+   25|      1|  if (bar() != 1)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+   29|       |
+   30|       |/* In theory = { i } is the correct solution.  But it's not easy to scan
+   31|       |   for that reliably, so just use what we create now.  */
+   32|       |/* { dg-final { scan-tree-dump "= { i j }" "alias" } } */
+

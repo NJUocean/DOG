@@ -1,0 +1,29 @@
+        -:    0:Source:827.c
+        -:    0:Graph:827.gcno
+        -:    0:Data:827.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/33017 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -ftree-vectorize" } */
+        -:    4:
+        -:    5:extern __SIZE_TYPE__ strlen(const char *);
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:char *__attribute__((noinline)) foo(const char *string) {
+        -:    9:  int len;
+        -:   10:  static char var[0x104];
+        -:   11:  int off;
+        1:   12:  len = strlen(string);
+       65:   13:  for (off = 0; off < 64; off++)
+       64:   14:    var[len + off + 2] = 0x57;
+        1:   15:  return var;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  char *p = foo("abcd");
+        -:   20:  int i;
+      261:   21:  for (i = 0; i < 0x104; i++)
+      260:   22:    if (p[i] != ((i >= 6 && i < 70) ? 0x57 : 0))
+    #####:   23:      abort();
+        1:   24:  return 0;
+        -:   25:}

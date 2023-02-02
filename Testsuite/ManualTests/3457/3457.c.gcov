@@ -1,0 +1,55 @@
+        -:    0:Source:3457.c
+        -:    0:Graph:3457.gcno
+        -:    0:Data:3457.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned int u32;
+        -:    2:
+        -:    3:static const u32 deadfish = 0xdeadf155;
+        -:    4:
+        -:    5:static const u32 cfb_tab8_be[] = {
+        -:    6:    0x00000000, 0x000000ff, 0x0000ff00, 0x0000ffff, 0x00ff0000, 0x00ff00ff,
+        -:    7:    0x00ffff00, 0x00ffffff, 0xff000000, 0xff0000ff, 0xff00ff00, 0xff00ffff,
+        -:    8:    0xffff0000, 0xffff00ff, 0xffffff00, 0xffffffff};
+        -:    9:
+        -:   10:static const u32 cfb_tab8_le[] = {
+        -:   11:    0x00000000, 0xff000000, 0x00ff0000, 0xffff0000, 0x0000ff00, 0xff00ff00,
+        -:   12:    0x00ffff00, 0xffffff00, 0x000000ff, 0xff0000ff, 0x00ff00ff, 0xffff00ff,
+        -:   13:    0x0000ffff, 0xff00ffff, 0x00ffffff, 0xffffffff};
+        -:   14:
+        -:   15:static const u32 cfb_tab16_be[] = {0x00000000, 0x0000ffff, 0xffff0000,
+        -:   16:                                   0xffffffff};
+        -:   17:
+        -:   18:static const u32 cfb_tab16_le[] = {0x00000000, 0xffff0000, 0x0000ffff,
+        -:   19:                                   0xffffffff};
+        -:   20:
+        -:   21:static const u32 cfb_tab32[] = {0x00000000, 0xffffffff};
+        -:   22:
+        1:   23:const u32 *xxx(int bpp) {
+        -:   24:  const u32 *tab;
+        -:   25:
+        -:   26:  if (0)
+        -:   27:    return &deadfish;
+        -:   28:
+        1:   29:  switch (bpp) {
+        1:   30:  case 8:
+        1:   31:    tab = cfb_tab8_be;
+        1:   32:    break;
+    #####:   33:  case 16:
+    #####:   34:    tab = cfb_tab16_be;
+    #####:   35:    break;
+    #####:   36:  case 32:
+        -:   37:  default:
+    #####:   38:    tab = cfb_tab32;
+    #####:   39:    break;
+        -:   40:  }
+        -:   41:
+        1:   42:  return tab;
+        -:   43:}
+        -:   44:
+        1:   45:int main(void) {
+        1:   46:  const u32 *a = xxx(8);
+        1:   47:  int b = a[0];
+        1:   48:  if (b != cfb_tab8_be[0])
+    #####:   49:    __builtin_abort();
+        1:   50:  return 0;
+        -:   51:}

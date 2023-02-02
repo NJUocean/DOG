@@ -1,0 +1,17 @@
+    1|       |/* PR c++/55137 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      2|int foo(unsigned int x) { return ((int)(x + 1U) + 1) < (int)x; }
+    6|       |
+    7|      1|int bar(unsigned int x) { return (int)(x + 1U) + 1; }
+    8|       |
+    9|      1|int baz(unsigned int x) { return x + 1U; }
+   10|       |
+   11|      1|int main() {
+   12|      1|  if (foo(__INT_MAX__) != (bar(__INT_MAX__) < __INT_MAX__) ||
+   13|      1|      foo(__INT_MAX__) != ((int)baz(__INT_MAX__) + 1 < __INT_MAX__))
+   14|      0|    abort();
+   15|      1|  return 0;
+   16|      1|}
+

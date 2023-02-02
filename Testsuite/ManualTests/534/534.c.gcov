@@ -1,0 +1,34 @@
+        -:    0:Source:534.c
+        -:    0:Graph:534.gcno
+        -:    0:Data:534.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        2:    4:void __attribute__((noinline)) optimize_me_not() {
+        2:    5:  __asm__ volatile("" : : : "memory");
+        2:    6:}
+        -:    7:volatile long a;
+        -:    8:int b[9][1];
+        -:    9:static short c[2][1] = {3};
+        1:   10:int main() {
+        -:   11:  int i, d, e;
+        1:   12:  i = 0;
+       10:   13:  for (; i < 9; i++)
+        9:   14:    a = b[i][0];
+        1:   15:  i = 0;
+        3:   16:  for (; i < 2; i++) {
+        2:   17:    d = 0;
+        4:   18:    for (; d < 1; d++) {
+        2:   19:      e = 0;
+        4:   20:      for (; e < 1; e++)
+        2:   21:        a = c[i][e];
+        -:   22:      /* i may very well be optimized out, so we cannot test for i == 0.
+        -:   23:         Instead test i + 1 which will make the test UNSUPPORTED if i
+        -:   24:         is optimized out.  Since the test previously had wrong debug
+        -:   25:         with i == 9 this is acceptable.  */
+        2:   26:      optimize_me_not(); /* { dg-final { gdb-test . "i + 1" "1" } } */
+        -:   27:    }
+        -:   28:  }
+        1:   29:  return 0;
+        -:   30:}

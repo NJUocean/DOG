@@ -1,0 +1,9 @@
+    1|       |#include <stdio.h>
+    2|      1|int main() {
+    3|      1|  FILE *f = fopen("conftest.out", "w");
+    4|      1|  return ferror(f) || fclose(f) != 0;
+    5|      1|
+    6|      1|  ;
+    7|      0|  return 0;
+    8|      1|}
+

@@ -1,0 +1,16 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |extern void abort(void);
+    3|       |
+    4|       |struct {
+    5|       |  int b : 29;
+    6|       |} f;
+    7|       |
+    8|      1|void foo(short j) { f.b = j; }
+    9|       |
+   10|      1|int main() {
+   11|      1|  foo(-55);
+   12|      1|  if (f.b != -55)
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

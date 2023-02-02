@@ -1,0 +1,59 @@
+        -:    0:Source:1230.c
+        -:    0:Graph:1230.gcno
+        -:    0:Data:1230.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2008  Free Software Foundation.
+        -:    2:
+        -:    3:   Verify that __builtin_isinf_sign folds correctly.
+        -:    4:
+        -:    5:   Origin: Kaveh R. Ghazi,  May 17, 2008.  */
+        -:    6:
+        -:    7:/* { dg-do link } */
+        -:    8:
+        -:    9:/* All references to link_error should go away at compile-time.  */
+        -:   10:extern void link_error(int);
+        -:   11:
+        1:   12:void __attribute__((__noinline__)) foo(float f, double d, long double ld) {
+        -:   13:  /* Test the generic expansion of isinf_sign.  */
+        -:   14:
+        -:   15:  if (__builtin_isinf_sign(f) !=
+        -:   16:      (__builtin_isinf(f) ? (__builtin_signbit(f) ? -1 : 1) : 0))
+        -:   17:    link_error(__LINE__);
+        -:   18:  if (__builtin_isinf_sign(d) !=
+        -:   19:      (__builtin_isinf(d) ? (__builtin_signbit(d) ? -1 : 1) : 0))
+        -:   20:    link_error(__LINE__);
+        -:   21:  if (__builtin_isinf_sign(ld) !=
+        -:   22:      (__builtin_isinf(ld) ? (__builtin_signbit(ld) ? -1 : 1) : 0))
+        -:   23:    link_error(__LINE__);
+        -:   24:
+        -:   25:#ifdef __OPTIMIZE__
+        -:   26:  /* In boolean contexts, GCC will fold the inner conditional
+        -:   27:     expression to 1.  So isinf_sign folds to plain isinf.  */
+        -:   28:
+        -:   29:  if ((_Bool)__builtin_isinf_sign(f) != (__builtin_isinf(f) != 0))
+        -:   30:    link_error(__LINE__);
+        -:   31:  if ((_Bool)__builtin_isinf_sign(d) != (__builtin_isinf(d) != 0))
+        -:   32:    link_error(__LINE__);
+        -:   33:  if ((_Bool)__builtin_isinf_sign(ld) != (__builtin_isinf(ld) != 0))
+        -:   34:    link_error(__LINE__);
+        -:   35:#endif
+        -:   36:
+        -:   37:  if ((__builtin_isinf_sign(f) != 0) != (__builtin_isinf(f) != 0))
+        -:   38:    link_error(__LINE__);
+        -:   39:  if ((__builtin_isinf_sign(d) != 0) != (__builtin_isinf(d) != 0))
+        -:   40:    link_error(__LINE__);
+        -:   41:  if ((__builtin_isinf_sign(ld) != 0) != (__builtin_isinf(ld) != 0))
+        -:   42:    link_error(__LINE__);
+        -:   43:
+        -:   44:  if ((__builtin_isinf_sign(f) ? 5 : 6) != (__builtin_isinf(f) ? 5 : 6))
+        -:   45:    link_error(__LINE__);
+        -:   46:  if ((__builtin_isinf_sign(d) ? 5 : 6) != (__builtin_isinf(d) ? 5 : 6))
+        -:   47:    link_error(__LINE__);
+        -:   48:  if ((__builtin_isinf_sign(ld) ? 5 : 6) != (__builtin_isinf(ld) ? 5 : 6))
+        -:   49:    link_error(__LINE__);
+        1:   50:}
+        -:   51:
+        1:   52:int main(void) {
+        1:   53:  foo(1, 2, 3);
+        1:   54:  return 0;
+        -:   55:}

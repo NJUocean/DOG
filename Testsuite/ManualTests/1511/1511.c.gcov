@@ -1,0 +1,36 @@
+        -:    0:Source:1511.c
+        -:    0:Graph:1511.gcno
+        -:    0:Data:1511.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct X {
+        -:    6:  void *p;
+        -:    7:  int res;
+        -:    8:} a[32];
+        -:    9:
+        1:   10:int foo(unsigned i, unsigned n, void *q) {
+        1:   11:  if (i + 1 < n && q == a[i + 1].p) {
+        -:   12:    do {
+        2:   13:      ++i;
+        2:   14:    } while (i < n && q == a[i].p);
+        1:   15:    --i;
+        1:   16:    return a[i].res;
+        -:   17:  } else
+    #####:   18:    return a[i].res;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        -:   22:  int x;
+        1:   23:  a[0].p = &x;
+        1:   24:  a[0].res = -1;
+        1:   25:  a[1].p = &x;
+        1:   26:  a[1].res = 1;
+        1:   27:  a[2].p = (void *)0;
+        1:   28:  a[2].res = 0;
+        1:   29:  if (foo(0, 3, &x) != 1)
+    #####:   30:    abort();
+        1:   31:  return 0;
+        -:   32:}

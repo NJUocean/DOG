@@ -1,0 +1,73 @@
+    1|       |struct C {
+    2|       |  unsigned int c;
+    3|       |  struct D {
+    4|       |    unsigned int columns : 4;
+    5|       |    unsigned int fore : 12;
+    6|       |    unsigned int back : 6;
+    7|       |    unsigned int fragment : 1;
+    8|       |    unsigned int standout : 1;
+    9|       |    unsigned int underline : 1;
+   10|       |    unsigned int strikethrough : 1;
+   11|       |    unsigned int reverse : 1;
+   12|       |    unsigned int blink : 1;
+   13|       |    unsigned int half : 1;
+   14|       |    unsigned int bold : 1;
+   15|       |    unsigned int invisible : 1;
+   16|       |    unsigned int pad : 1;
+   17|       |  } attr;
+   18|       |};
+   19|       |
+   20|       |struct A {
+   21|       |  struct C *data;
+   22|       |  unsigned int len;
+   23|       |};
+   24|       |
+   25|       |struct B {
+   26|       |  struct A *cells;
+   27|       |  unsigned char soft_wrapped : 1;
+   28|       |};
+   29|       |
+   30|       |struct E {
+   31|       |  long row, col;
+   32|       |  struct C defaults;
+   33|       |};
+   34|       |
+   35|       |__attribute__((noinline)) void foo(struct E *screen, unsigned int c,
+   36|      1|                                   int columns, struct B *row) {
+   37|      1|  struct D attr;
+   38|      1|  long col;
+   39|      1|  int i;
+   40|      1|  col = screen->col;
+   41|      1|  attr = screen->defaults.attr;
+   42|      1|  attr.columns = columns;
+   43|      1|  row->cells->data[col].c = c;
+   44|      1|  row->cells->data[col].attr = attr;
+   45|      1|  col++;
+   46|      1|  attr.fragment = 1;
+   47|      2|  for (i = 1; i < columns; i++) {
+   48|      1|    row->cells->data[col].c = c;
+   49|      1|    row->cells->data[col].attr = attr;
+   50|      1|    col++;
+   51|      1|  }
+   52|      1|}
+   53|       |
+   54|      1|int main(void) {
+   55|      1|  struct E e = {.row = 5,
+   56|      1|                .col = 0,
+   57|      1|                .defaults = {6, {-1, -1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}}};
+   58|      1|  struct C c[4];
+   59|      1|  struct A a = {c, 4};
+   60|      1|  struct B b = {&a, 1};
+   61|      1|  struct D d;
+   62|      1|  __builtin_memset(&c, 0, sizeof c);
+   63|      1|  foo(&e, 65, 2, &b);
+   64|      1|  d = e.defaults.attr;
+   65|      1|  d.columns = 2;
+   66|      1|  if (__builtin_memcmp(&d, &c[0].attr, sizeof d))
+   67|      0|    __builtin_abort();
+   68|      1|  d.fragment = 1;
+   69|      1|  if (__builtin_memcmp(&d, &c[1].attr, sizeof d))
+   70|      0|    __builtin_abort();
+   71|      1|  return 0;
+   72|      1|}
+

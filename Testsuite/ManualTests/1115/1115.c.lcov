@@ -1,0 +1,14 @@
+    1|       |int val;
+    2|       |
+    3|       |int *ptr = &val;
+    4|       |float *ptr2 = &val;
+    5|       |
+    6|      1|__attribute__((optimize("-fno-strict-aliasing"))) typepun() { *ptr2 = 0; }
+    7|       |
+    8|      1|main() {
+    9|      1|  *ptr = 1;
+   10|      1|  typepun();
+   11|      1|  if (*ptr)
+   12|      0|    __builtin_abort();
+   13|      1|}
+

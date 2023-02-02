@@ -1,0 +1,39 @@
+        -:    0:Source:2488.c
+        -:    0:Graph:2488.gcno
+        -:    0:Data:2488.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        2:    4:void foo(char *bp, unsigned n) {
+        -:    5:  register char c;
+        2:    6:  register char *ep = bp + n;
+        -:    7:  register char *sp;
+        -:    8:
+        4:    9:  while (bp < ep) {
+        2:   10:    sp = bp + 3;
+        2:   11:    c = *sp;
+        2:   12:    *sp = *bp;
+        2:   13:    *bp++ = c;
+        2:   14:    sp = bp + 1;
+        2:   15:    c = *sp;
+        2:   16:    *sp = *bp;
+        2:   17:    *bp++ = c;
+        2:   18:    bp += 2;
+        -:   19:  }
+        2:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  int one = 1;
+        -:   24:
+        -:   25:  if (sizeof(int) != 4 * sizeof(char))
+        -:   26:    exit(0);
+        -:   27:
+        1:   28:  foo((char *)&one, sizeof(one));
+        1:   29:  foo((char *)&one, sizeof(one));
+        -:   30:
+        1:   31:  if (one != 1)
+    #####:   32:    abort();
+        -:   33:
+        1:   34:  exit(0);
+        -:   35:}

@@ -1,0 +1,21 @@
+        -:    0:Source:2089.c
+        -:    0:Graph:2089.gcno
+        -:    0:Data:2089.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/72824 */
+        -:    2:
+        -:    3:typedef float V __attribute__((vector_size(4 * sizeof(float))));
+        -:    4:
+        1:    5:static inline void foo(V *x, V value) {
+        -:    6:  int i;
+       33:    7:  for (i = 0; i < 32; ++i)
+       32:    8:    x[i] = value;
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  V x[32];
+        1:   13:  foo(x, (V){0.f, -0.f, 0.f, -0.f});
+        1:   14:  if (__builtin_copysignf(1.0, x[3][1]) != -1.0f)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

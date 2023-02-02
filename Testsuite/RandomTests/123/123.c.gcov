@@ -1,0 +1,50 @@
+        -:    0:Source:123.c
+        -:    0:Graph:123.gcno
+        -:    0:Data:123.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static int32_t g_3 = (-1L);
+        -:    7:static volatile int32_t g_4[5][1] = {{0x54207647L}, {1L}, {0x54207647L}, {1L}, {0x54207647L}};
+        -:    8:static volatile int8_t g_5 = (-5L);
+        -:    9:static uint32_t g_6[1] = {18446744073709551612UL};
+        -:   10:
+        -:   11:static uint64_t func_1(void);
+        -:   12:
+        1:   13:static uint64_t func_1(void) {
+        -:   14:  int32_t *l_2[1];
+        -:   15:  int i;
+        2:   16:  for (i = 0; i < 1; i++)
+        1:   17:    l_2[i] = &g_3;
+        1:   18:  g_6[0]--;
+        1:   19:  return g_4[1][0];
+        -:   20:}
+        -:   21:
+        1:   22:int main(int argc, char *argv[]) {
+        -:   23:  int i, j;
+        1:   24:  int print_hash_value = 0;
+       1*:   25:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   26:    print_hash_value = 1;
+        1:   27:  platform_main_begin();
+        1:   28:  crc32_gentab();
+        1:   29:  func_1();
+        1:   30:  transparent_crc(g_3, "g_3", print_hash_value);
+        6:   31:  for (i = 0; i < 5; i++) {
+       10:   32:    for (j = 0; j < 1; j++) {
+        5:   33:      transparent_crc(g_4[i][j], "g_4[i][j]", print_hash_value);
+        5:   34:      if (print_hash_value)
+    #####:   35:        printf("index = [%d][%d]\n", i, j);
+        -:   36:    }
+        -:   37:  }
+        1:   38:  transparent_crc(g_5, "g_5", print_hash_value);
+        2:   39:  for (i = 0; i < 1; i++) {
+        1:   40:    transparent_crc(g_6[i], "g_6[i]", print_hash_value);
+        1:   41:    if (print_hash_value)
+    #####:   42:      printf("index = [%d]\n", i);
+        -:   43:  }
+        1:   44:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   45:  return 0;
+        -:   46:}

@@ -1,0 +1,28 @@
+    1|       |/* It is not clear whether this test is conforming.  See DR#236
+    2|       |   http://www.open-std.org/jtc1/sc22/wg14/www/docs/dr_236.htm.  However,
+    3|       |   there seems to be consensus that the presence of a union to aggregate
+    4|       |   struct s1 and struct s2 should make it conforming.  */
+    5|       |struct s1 {
+    6|       |  double d;
+    7|       |};
+    8|       |struct s2 {
+    9|       |  double d;
+   10|       |};
+   11|       |union u {
+   12|       |  struct s1 x;
+   13|       |  struct s2 y;
+   14|       |};
+   15|       |
+   16|      1|double f(struct s1 *a, struct s2 *b) {
+   17|      1|  a->d = 1.0;
+   18|      1|  return b->d + 1.0;
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  union u a;
+   23|      1|  a.x.d = 0.0;
+   24|      1|  if (f(&a.x, &a.y) != 2.0)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

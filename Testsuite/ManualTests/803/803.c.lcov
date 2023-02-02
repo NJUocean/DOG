@@ -1,0 +1,22 @@
+    1|       |/* PR rtl-optimization/27671.
+    2|       |   The combiner used to simplify "a ^ b == a" to "a" via
+    3|       |   simplify_relational_operation_1 in simplify-rtx.c.  */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O1" } */
+    6|       |/* { dg-options "-O1 -march=pentium4" { target { { i?86-*-* x86_64-*-* } && ia32
+    7|       | * } } } */
+    8|       |
+    9|       |extern void abort(void) __attribute__((noreturn));
+   10|       |extern void exit(int) __attribute__((noreturn));
+   11|       |
+   12|      1|static void __attribute__((noinline)) bar(int k) {
+   13|      1|  int n = k % 2;
+   14|      1|  if (n == 0)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  bar(1);
+   20|      1|  exit(0);
+   21|      1|}
+

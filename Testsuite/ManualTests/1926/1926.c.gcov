@@ -1,0 +1,32 @@
+        -:    0:Source:1926.c
+        -:    0:Graph:1926.gcno
+        -:    0:Data:1926.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:/* { dg-options -O2 }  */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:void g(int);
+        1:    6:void f(int l) {
+        -:    7:  unsigned i;
+        4:    8:  for (i = 0; i < l; i++) {
+        3:    9:    int y = i;
+        -:   10:    /* VRP was wrongfully computing z's range to be [0, 0] instead
+        -:   11:       of [-INF, 0].  */
+        3:   12:    int z = y * -32;
+        3:   13:    g(z);
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        3:   17:void g(int i) {
+        -:   18:  static int x = 0;
+        3:   19:  if (i == 0)
+        1:   20:    x++;
+        3:   21:  if (x > 1)
+    #####:   22:    abort();
+        3:   23:}
+        -:   24:
+        1:   25:int main(void) {
+        1:   26:  f(3);
+        1:   27:  return 0;
+        -:   28:}

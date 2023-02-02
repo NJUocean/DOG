@@ -1,0 +1,27 @@
+        -:    0:Source:3518.c
+        -:    0:Graph:3518.gcno
+        -:    0:Data:3518.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/84071 */
+        -:    2:/* Reported by Wilco <wilco@gcc.gnu.org> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:typedef union {
+        -:    7:  signed short ss;
+        -:    8:  unsigned short us;
+        -:    9:  int x;
+        -:   10:} U;
+        -:   11:
+        -:   12:int f(int x, int y, int z, int a, U u) __attribute__((noclone, noinline));
+        -:   13:
+        1:   14:int f(int x, int y, int z, int a, U u) { return (u.ss <= 0) + u.us; }
+        -:   15:
+        1:   16:int main(void) {
+        1:   17:  U u = {.ss = -1};
+        -:   18:
+        1:   19:  if (f(0, 0, 0, 0, u) != (1 << sizeof(short) * 8))
+    #####:   20:    abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}

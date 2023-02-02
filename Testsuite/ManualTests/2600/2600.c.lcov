@@ -1,0 +1,74 @@
+    1|       |/* PR target/11044 */
+    2|       |/* Originator: Tim McGrath <misty-@charter.net> */
+    3|       |/* Testcase contributed by Eric Botcazou <ebotcazou@libertysurf.fr> */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-effective-target ia32 } */
+    6|       |/* { dg-options "-mtune=k6 -O3 -ffast-math -funroll-loops" } */
+    7|       |
+    8|       |extern void *memset(void *, int, __SIZE_TYPE__);
+    9|       |extern void abort(void);
+   10|       |
+   11|       |typedef struct {
+   12|       |  unsigned char colormod;
+   13|       |} entity_state_t;
+   14|       |
+   15|       |typedef struct {
+   16|       |  int num_entities;
+   17|       |  entity_state_t *entities;
+   18|       |} packet_entities_t;
+   19|       |
+   20|       |typedef struct {
+   21|       |  double senttime;
+   22|       |  float ping_time;
+   23|       |  packet_entities_t entities;
+   24|       |} client_frame_t;
+   25|       |
+   26|       |typedef enum {
+   27|       |  cs_free,
+   28|       |  cs_server,
+   29|       |  cs_zombie,
+   30|       |  cs_connected,
+   31|       |  cs_spawned
+   32|       |} sv_client_state_t;
+   33|       |
+   34|       |typedef struct client_s {
+   35|       |  sv_client_state_t state;
+   36|       |  int ping;
+   37|       |  client_frame_t frames[64];
+   38|       |} client_t;
+   39|       |
+   40|      1|int CalcPing(client_t *cl) {
+   41|      1|  float ping;
+   42|      1|  int count, i;
+   43|      1|  register client_frame_t *frame;
+   44|      1|
+   45|      1|  if (cl->state == cs_server)
+   46|      0|    return cl->ping;
+   47|      1|  ping = 0;
+   48|      1|  count = 0;
+   49|     65|  for (frame = cl->frames, i = 0; i < 64; i++, frame++) {
+   50|     64|    if (frame->ping_time > 0) {
+   51|      1|      ping += frame->ping_time;
+   52|      1|      count++;
+   53|      1|    }
+   54|     64|  }
+   55|      1|  if (!count)
+   56|      0|    return 9999;
+   57|      1|  ping /= count;
+   58|      1|
+   59|      1|  return ping * 1000;
+   60|      1|}
+   61|       |
+   62|      1|int main(void) {
+   63|      1|  client_t cl;
+   64|      1|
+   65|      1|  memset(&cl, 0, sizeof(cl));
+   66|      1|
+   67|      1|  cl.frames[0].ping_time = 1.0f;
+   68|      1|
+   69|      1|  if (CalcPing(&cl) != 1000)
+   70|      0|    abort();
+   71|      1|
+   72|      1|  return 0;
+   73|      1|}
+

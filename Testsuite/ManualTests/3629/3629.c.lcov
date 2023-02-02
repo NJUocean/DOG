@@ -1,0 +1,24 @@
+    1|       |extern void exit(int);
+    2|       |extern void abort(void);
+    3|       |
+    4|       |volatile int a = 1;
+    5|       |volatile int b = 0;
+    6|       |volatile int x = 2;
+    7|       |volatile signed int r = 8;
+    8|       |
+    9|      1|void __attribute__((noinline)) foo(void) { exit(0); }
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  int si1 = a;
+   13|      1|  int si2 = b;
+   14|      1|  int i;
+   15|      1|
+   16|      2|  for (i = 0; i < 100; ++i) {
+   17|      1|    foo();
+   18|      1|    if (x == 8)
+   19|      0|      i++;
+   20|      1|    r += i + si1 % si2;
+   21|      1|  }
+   22|      1|  abort();
+   23|      1|}
+

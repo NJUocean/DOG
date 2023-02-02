@@ -1,0 +1,18 @@
+        -:    0:Source:878.c
+        -:    0:Graph:878.gcno
+        -:    0:Data:878.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O -fwhole-program -g" } */
+        -:    3:
+        -:    4:extern void *malloc(__SIZE_TYPE__);
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int i;
+        -:    8:};
+        -:    9:
+        1:   10:int main(int argc, char *argv[]) {
+        1:   11:  int i = argc;
+        1:   12:  struct S *p = malloc(sizeof(struct S));
+        1:   13:  return p[i].i;
+        -:   14:}

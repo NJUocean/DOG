@@ -1,0 +1,14 @@
+        -:    0:Source:1073.c
+        -:    0:Graph:1073.gcno
+        -:    0:Data:1073.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do-compile } */
+        -:    2:/* { dg-options "-O -Wunused-but-set-variable" } */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  const int i = 0;
+        -:    6:  switch (i) {
+        -:    7:  default:
+        1:    8:    break;
+        -:    9:  }
+        -:   10:}

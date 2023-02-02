@@ -1,0 +1,40 @@
+        -:    0:Source:727.c
+        -:    0:Graph:727.gcno
+        -:    0:Data:727.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that expand can generate correct stores to misaligned data of complex
+        -:    2:   type even on strict alignment platforms.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O0" } */
+        -:    6:
+        -:    7:extern void abort();
+        -:    8:
+        -:    9:typedef _Complex float mycmplx __attribute__((aligned(1)));
+        -:   10:
+        8:   11:void foo(mycmplx *p, float r, float i) {
+        8:   12:  __real__ *p = r;
+        8:   13:  __imag__ *p = i;
+        8:   14:}
+        -:   15:
+        -:   16:#define cvr 3.2f
+        -:   17:#define cvi 2.5f
+        -:   18:#define NUM 8
+        -:   19:
+        -:   20:struct blah {
+        -:   21:  char c;
+        -:   22:  mycmplx x[NUM];
+        -:   23:} __attribute__((packed));
+        -:   24:
+        -:   25:struct blah g;
+        -:   26:
+        1:   27:int main(int argc, char **argv) {
+        -:   28:  int k;
+        -:   29:
+        9:   30:  for (k = 0; k < NUM; k++) {
+        8:   31:    foo(&g.x[k], cvr, cvi);
+        8:   32:    if (__real__ g.x[k] != cvr || __imag__ g.x[k] != cvi)
+    #####:   33:      abort();
+        -:   34:  }
+        1:   35:  return 0;
+        -:   36:}

@@ -1,0 +1,24 @@
+    1|       |/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+    2|       |extern void abort(void);
+    3|       |
+    4|       |extern __SIZE_TYPE__ strlen(const char *);
+    5|      1|void foo(char *str) {
+    6|      1|  int len2 = strlen(str);
+    7|      1|  char *a = (char *)__builtin_alloca(0);
+    8|      1|  char *b = (char *)__builtin_alloca(len2 * 3);
+    9|      1|
+   10|      1|  if ((int)(a - b) < (len2 * 3)) {
+   11|       |#ifdef _WIN32
+   12|       |    abort();
+   13|       |#endif
+   14|      0|    return;
+   15|      0|  }
+   16|      1|}
+   17|       |
+   18|       |static char *volatile argp = "pr36321.x";
+   19|       |
+   20|      1|int main(int argc, char **argv) {
+   21|      1|  foo(argp);
+   22|      1|  return 0;
+   23|      1|}
+

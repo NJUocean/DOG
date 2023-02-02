@@ -1,0 +1,8 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-profiling "-fprofile-generate" } */
+    3|       |/* { dg-options "-O -fprofile-generate=. -fdump-ipa-cgraph" } */
+    4|       |/* { dg-final { scan-ipa-dump "Using data file \.\/.*#profile-dir-1.gcda"
+    5|       | * "cgraph" } } */
+    6|       |
+    7|      1|int main(void) { return 0; }
+

@@ -1,0 +1,20 @@
+        -:    0:Source:3347.c
+        -:    0:Graph:3347.gcno
+        -:    0:Data:3347.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 15454 */
+        -:    2:
+        -:    3:void abort();
+        1:    4:int main() {
+        -:    5:  int foo;
+        1:    6:  int bar(void) {
+        1:    7:    int baz = 0;
+        1:    8:    if (foo != 45)
+        1:    9:      baz = foo;
+        1:   10:    return baz;
+        -:   11:  }
+        1:   12:  foo = 1;
+        1:   13:  if (!bar())
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

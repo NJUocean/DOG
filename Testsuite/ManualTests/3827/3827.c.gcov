@@ -1,0 +1,43 @@
+        -:    0:Source:3827.c
+        -:    0:Graph:3827.gcno
+        -:    0:Data:3827.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/59358 */
+        -:    2:
+       32:    3:__attribute__((noinline, noclone)) int foo(int *x, int y) {
+       32:    4:  int z = *x;
+       32:    5:  if (y > z && y <= 16)
+       57:    6:    while (y > z)
+       36:    7:      z *= 2;
+       32:    8:  return z;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  int i;
+       17:   13:  for (i = 1; i < 17; i++) {
+       16:   14:    int j = foo(&i, 16);
+        -:   15:    int k;
+       16:   16:    if (i >= 8 && i <= 15)
+        8:   17:      k = 16 + (i - 8) * 2;
+        8:   18:    else if (i >= 4 && i <= 7)
+        4:   19:      k = 16 + (i - 4) * 4;
+        4:   20:    else if (i == 3)
+        1:   21:      k = 24;
+        -:   22:    else
+        3:   23:      k = 16;
+       16:   24:    if (j != k)
+    #####:   25:      __builtin_abort();
+       16:   26:    j = foo(&i, 7);
+       16:   27:    if (i >= 7)
+       10:   28:      k = i;
+        6:   29:    else if (i >= 4)
+        3:   30:      k = 8 + (i - 4) * 2;
+        3:   31:    else if (i == 3)
+        1:   32:      k = 12;
+        -:   33:    else
+        2:   34:      k = 8;
+       16:   35:    if (j != k)
+    #####:   36:      __builtin_abort();
+        -:   37:  }
+        1:   38:  return 0;
+        -:   39:}

@@ -1,0 +1,18 @@
+        -:    0:Source:3263.c
+        -:    0:Graph:3263.gcno
+        -:    0:Data:3263.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        2:    4:int foo(int x) {
+        2:    5:  if (x == -2 || -x - 100 >= 0)
+    #####:    6:    abort();
+        2:    7:  return 0;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  foo(-3);
+        1:   12:  foo(-99);
+        1:   13:  exit(0);
+        -:   14:}

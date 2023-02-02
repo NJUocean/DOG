@@ -1,0 +1,45 @@
+        -:    0:Source:330.c
+        -:    0:Graph:330.gcno
+        -:    0:Data:330.gcda
+        -:    0:Runs:1
+        -:    1:/* Ensure that IPA-ICF is disabled on OpenACC routines.  */
+        -:    2:
+        -:    3:/* { dg-additional-options "-fopenacc -O2 -fdump-ipa-icf" }  */
+        -:    4:
+        -:    5:#pragma acc routine gang
+    #####:    6:int routine1(int n) {
+        -:    7:  int i;
+        -:    8:
+        -:    9:#pragma acc loop
+    #####:   10:  for (i = 0; i < n; i++)
+        -:   11:    ;
+        -:   12:
+    #####:   13:  return n + 1;
+        -:   14:}
+        -:   15:
+        -:   16:#pragma acc routine gang
+    #####:   17:int routine2(int n) {
+        -:   18:  int i;
+        -:   19:
+        -:   20:#pragma acc loop
+    #####:   21:  for (i = 0; i < n; i++)
+        -:   22:    ;
+        -:   23:
+    #####:   24:  return n + 1;
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        -:   28:  int i;
+        -:   29:
+        -:   30:#pragma acc parallel loop
+        9:   31:  for (i = 0; i < 8; i++)
+        -:   32:    ;
+        -:   33:
+        -:   34:#pragma acc parallel loop
+        9:   35:  for (i = 0; i < 8; i++)
+        -:   36:    ;
+        -:   37:
+        1:   38:  return 0;
+        -:   39:}
+        -:   40:
+        -:   41:/* { dg-final { scan-ipa-dump-times "with total: 1 items" 5 "icf" } }  */

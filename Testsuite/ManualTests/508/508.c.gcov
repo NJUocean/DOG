@@ -1,0 +1,35 @@
+        -:    0:Source:508.c
+        -:    0:Graph:508.gcno
+        -:    0:Data:508.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/45003 */
+        -:    2:/* { dg-do run { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        1:    5:int __attribute__((noinline)) foo(unsigned short *p) {
+        1:    6:  int a = *p;
+        1:    7:  asm volatile("nop" : : "D"((int)*p));
+        1:    8:  asm volatile("nop"
+        -:    9:               :
+        1:   10:               : "D"((int)*p)); /* { dg-final { gdb-test . "a" "0x8078" } } */
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:
+        1:   14:int __attribute__((noinline)) bar(short *p) {
+        1:   15:  unsigned int a = *p;
+        1:   16:  asm volatile("nop" : : "D"((unsigned int)*p));
+        1:   17:  asm volatile(
+        -:   18:      "nop"
+        -:   19:      :
+        -:   20:      : "D"(
+        1:   21:          (unsigned int)*p)); /* { dg-final { gdb-test . "a" "0xffff8078" } } */
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  unsigned short us = 0x8078;
+        1:   27:  foo(&us);
+        1:   28:  short s = -32648;
+        1:   29:  bar(&s);
+        1:   30:  return 0;
+        -:   31:}

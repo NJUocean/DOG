@@ -1,0 +1,38 @@
+        -:    0:Source:2973.c
+        -:    0:Graph:2973.gcno
+        -:    0:Data:2973.gcda
+        -:    0:Runs:1
+        -:    1:/* A testcase to check generation of the following SH2A specific
+        -:    2:   instructions.
+        -:    3:
+        -:    4:    BLD #imm3, Rn
+        -:    5:    BLD.B #imm3, @(disp12, Rn)
+        -:    6: */
+        -:    7:/* { dg-do compile { target { sh2a } } }  */
+        -:    8:/* { dg-options "-Os -mbitops" }  */
+        -:    9:/* { dg-final { scan-assembler "bld"} }  */
+        -:   10:/* { dg-final { scan-assembler "bld.b"} }  */
+        -:   11:
+        -:   12:volatile struct {
+        -:   13:  union {
+        -:   14:    unsigned char BYTE;
+        -:   15:    struct {
+        -:   16:      unsigned char BIT7 : 1;
+        -:   17:      unsigned char BIT6 : 1;
+        -:   18:      unsigned char BIT5 : 1;
+        -:   19:      unsigned char BIT4 : 1;
+        -:   20:      unsigned char BIT3 : 1;
+        -:   21:      unsigned char BIT2 : 1;
+        -:   22:      unsigned char BIT1 : 1;
+        -:   23:      unsigned char BIT0 : 1;
+        -:   24:    } BIT;
+        -:   25:  } ICR0;
+        -:   26:} USRSTR;
+        -:   27:
+        1:   28:int main() {
+        -:   29:  volatile unsigned char a, b, c;
+        1:   30:  USRSTR.ICR0.BIT.BIT6 &= a;
+        1:   31:  USRSTR.ICR0.BIT.BIT5 |= b;
+        1:   32:  USRSTR.ICR0.BIT.BIT4 ^= c;
+        1:   33:  return 0;
+        -:   34:}

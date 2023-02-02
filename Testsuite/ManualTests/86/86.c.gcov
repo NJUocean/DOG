@@ -1,0 +1,15 @@
+        -:    0:Source:86.c
+        -:    0:Graph:86.gcno
+        -:    0:Data:86.gcda
+        -:    0:Runs:1
+        -:    1:// PR tree-optimization/79196
+        -:    2:// { dg-do run }
+        -:    3:
+        1:    4:int __attribute__((noinline)) test(char *a) {
+        1:    5:  if (__builtin_strstr(a, "DROP CONVERSION") == a)
+    #####:    6:    return 1;
+        -:    7:
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main(int argc, char **argv) { return test("x"); }

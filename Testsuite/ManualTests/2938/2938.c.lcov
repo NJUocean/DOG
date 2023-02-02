@@ -1,0 +1,49 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -march=z900 --save-temps -mfunction-return-mem=thunk
+    3|       | * -mindirect-branch-table" } */
+    4|       |
+    5|       |int gl = 0;
+    6|       |
+    7|      3|int __attribute__((noinline, noclone)) bar(int a) { return a + 2; }
+    8|       |
+    9|      1|void __attribute__((noinline, noclone)) foo(int a) {
+   10|      1|  int i;
+   11|      1|
+   12|      1|  if (a == 42)
+   13|      0|    return;
+   14|      1|
+   15|      4|  for (i = 0; i < a; i++)
+   16|      3|    gl += bar(i);
+   17|      1|}
+   18|       |
+   19|      0|void __attribute__((noinline, noclone)) baz(int a) {
+   20|      0|  int i;
+   21|      0|
+   22|      0|  for (i = 0; i < a; i++)
+   23|      0|    gl += bar(i);
+   24|      0|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  foo(3);
+   28|      1|  if (gl != 9)
+   29|      0|    __builtin_abort();
+   30|      1|
+   31|      1|  return 0;
+   32|      1|}
+   33|       |
+   34|       |/* 1 x foo, 1 x baz, 1 x main */
+   35|       |/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 3 } } */
+   36|       |
+   37|       |/* 1 x foo, conditional return, shrink wrapped */
+   38|       |/* { dg-final { scan-assembler "jge\t__s390_indirect_jump" } } */
+   39|       |
+   40|       |/* 1 x baz, conditional return, shrink wrapped */
+   41|       |/* { dg-final { scan-assembler "jgle\t__s390_indirect_jump" } } */
+   42|       |
+   43|       |/* { dg-final { scan-assembler "ex\t" } } */
+   44|       |
+   45|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   46|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+   47|       |/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+   48|       |/* { dg-final { scan-assembler     "section\t.s390_return_mem" } } */
+

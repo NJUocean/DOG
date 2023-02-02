@@ -1,0 +1,29 @@
+        -:    0:Source:454.c
+        -:    0:Graph:454.gcno
+        -:    0:Data:454.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:#define vector __attribute__((vector_size(16)))
+        -:    3:
+        -:    4:/* Check whether register declaration of vector type still
+        -:    5:   allow us to subscript this type.  */
+        -:    6:
+        -:    7:typedef vector short myvec_t;
+        -:    8:
+        -:    9:struct vec_s {
+        -:   10:  vector short member;
+        -:   11:};
+        -:   12:
+        1:   13:int main() {
+        1:   14:  register short vector v0 = {1, 2, 3, 4, 5, 6, 7};
+        1:   15:  register myvec_t v1 = {1, 2, 3, 4, 5, 6, 7};
+        -:   16:  register struct vec_s v2;
+        -:   17:
+        1:   18:  v2.member = v1;
+        -:   19:
+        1:   20:  short r = v0[0] + v1[1] + v2.member[2];
+        1:   21:  if (r != 6)
+    #####:   22:    __builtin_abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

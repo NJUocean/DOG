@@ -1,0 +1,27 @@
+        -:    0:Source:787.c
+        -:    0:Graph:787.gcno
+        -:    0:Data:787.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:int func_pure(void);
+        -:    5:void func_other(int);
+        -:    6:int global_int;
+        2:    7:int func_pure(void) { return global_int; }
+        1:    8:void func_other(int a) { global_int = a + 1; }
+        1:    9:int f(void) {
+        -:   10:  int a;
+        1:   11:  a = func_pure();
+        1:   12:  func_other(a);
+        1:   13:  a = func_pure(); // We were removing this function call
+        1:   14:  return a;
+        -:   15:}
+        -:   16:void abort(void);
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  global_int = 10;
+        1:   20:  if (f() != 11)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

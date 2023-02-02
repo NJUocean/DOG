@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+    3|       |/* { dg-options "-fsanitize=undefined" } */
+    4|       |
+    5|       |struct T {
+    6|       |  int c;
+    7|       |  char d[];
+    8|       |};
+    9|       |struct T t __attribute__((aligned(4096))) = {1, "a"};
+   10|       |
+   11|      1|int baz(int i) { return t.d[i]; }
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  baz(2);
+   15|      1|  return 0;
+   16|      1|}
+   17|       |
+   18|       |/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+   19|       | * of type 'char'\[^\n\r]*(\n|\r\n|\r)" } */
+   20|       |/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+   21|       |/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+   22|       |/* { dg-output "\[^\n\r]*\\^" } */
+

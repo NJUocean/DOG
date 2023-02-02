@@ -1,0 +1,40 @@
+        -:    0:Source:2357.c
+        -:    0:Graph:2357.gcno
+        -:    0:Data:2357.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:struct s {
+        -:    9:  /* This forces the alignment and size of the struct to 16.  */
+        -:   10:  __attribute__((__aligned__(16))) long x;
+        -:   11:  int y;
+        -:   12:  /* 4 bytes padding.  */
+        -:   13:};
+        -:   14:
+        -:   15:typedef struct s __attribute__((__aligned__(8))) underaligned;
+        -:   16:
+        -:   17:underaligned a = {1, 4};
+        -:   18:underaligned b = {9, 16};
+        -:   19:underaligned c = {25, 36};
+        -:   20:
+        1:   21:void test_underaligned_struct(int x0, underaligned x2, int x4, underaligned x6,
+        -:   22:                              int stack, underaligned stack16) {
+        1:   23:  if (x0 != 3 || x4 != 5 || stack != 7)
+    #####:   24:    abort();
+        1:   25:  if (memcmp((void *)&x2, (void *)&a, sizeof(underaligned)))
+    #####:   26:    abort();
+        1:   27:  if (memcmp((void *)&x6, (void *)&b, sizeof(underaligned)))
+    #####:   28:    abort();
+        1:   29:  if (memcmp((void *)&stack16, (void *)&c, sizeof(underaligned)))
+    #####:   30:    abort();
+        1:   31:}
+        -:   32:
+        1:   33:int main(int argc, char **argv) {
+        1:   34:  test_underaligned_struct(3, a, 5, b, 7, c);
+        1:   35:  return 0;
+        -:   36:}

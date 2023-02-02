@@ -1,0 +1,16 @@
+// control flow context
+digraph {
+	__N1 [label="2-switch-5, 5"]
+	__N1__N3 [label=2 style=dotted]
+	__N1 -> __N1__N3 [label=ON color=red]
+	__N3 [label="2-switch-case-7, 7"]
+	__N1__N3 -> __N3 [label=agent color=lightblue]
+	__N1__N4 [label=2 style=dotted]
+	__N1 -> __N1__N4 [label=ON color=red]
+	__N4 [label="2-switch-case-8, 8"]
+	__N1__N4 -> __N4 [label=agent color=lightblue]
+	__N1__N5 [label=2 style=dotted]
+	__N1 -> __N1__N5 [label=ON color=red]
+	__N5 [label="2-switch-default-9, 9"]
+	__N1__N5 -> __N5 [label=agent color=lightblue]
+}

@@ -1,0 +1,26 @@
+        -:    0:Source:992.c
+        -:    0:Graph:992.gcno
+        -:    0:Data:992.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fno-dce -fno-forward-propagate" } */
+        -:    3:
+        1:    4:void __attribute__((noinline, noclone)) foo(int *a, int n) {
+        1:    5:  int *lasta = a + n;
+       14:    6:  for (; a != lasta; a++) {
+       13:    7:    *a *= 2;
+       13:    8:    a[1] = a[-1] + a[-2];
+        -:    9:  }
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  int a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+        1:   14:  int r[16] = {1,   2,   6,   6,   16,   24,   44,   80,
+        -:   15:               136, 248, 432, 768, 1360, 2400, 4256, 3760};
+        -:   16:  unsigned i;
+        1:   17:  foo(&a[2], 13);
+        9:   18:  for (i = 0; i < 8; ++i)
+        8:   19:    if (a[i] != r[i])
+    #####:   20:      __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

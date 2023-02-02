@@ -1,0 +1,60 @@
+        -:    0:Source:421.c
+        -:    0:Graph:421.gcno
+        -:    0:Data:421.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define NMAX 2000
+        -:    9:
+        -:   10:static int x1[NMAX], x2[NMAX], a[NMAX][NMAX], y1[NMAX], y2[NMAX];
+        -:   11:
+        1:   12:static int __attribute__((noinline)) mvt(long N) {
+        -:   13:
+        -:   14:  int i, j;
+        -:   15:
+     2001:   16:  for (i = 0; i < N; i++)
+  4002000:   17:    for (j = 0; j < N; j++)
+  4000000:   18:      x1[i] = x1[i] + a[i][j] * y1[j];
+        -:   19:
+        -:   20:  /* These two loops should be interchanged.  */
+     2001:   21:  for (i = 0; i < N; i++)
+  4002000:   22:    for (j = 0; j < N; j++)
+  4000000:   23:      x2[i] = x2[i] + a[j][i] * y2[j];
+        -:   24:
+        1:   25:  return x1[0] + x2[0];
+        -:   26:}
+        -:   27:
+        -:   28:extern void abort();
+        -:   29:
+        1:   30:int main(void) {
+        -:   31:  int i, j, res;
+        -:   32:
+     2001:   33:  for (i = 0; i < NMAX; i++)
+  4002000:   34:    for (j = 0; j < NMAX; j++)
+  4000000:   35:      a[i][j] = i + j;
+        -:   36:
+     2001:   37:  for (i = 0; i < NMAX; i++) {
+     2000:   38:    x1[i] = 0;
+     2000:   39:    x2[i] = 2 * i;
+     2000:   40:    y1[i] = 100 - i;
+     2000:   41:    y2[i] = i;
+        -:   42:  }
+        -:   43:
+        1:   44:  res = mvt(NMAX);
+        -:   45:
+        -:   46:#if DEBUG
+        -:   47:  fprintf(stderr, "res = %d \n", res);
+        -:   48:#endif
+        -:   49:
+        1:   50:  if (res != 199900000)
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  return 0;
+        -:   54:}
+        -:   55:
+        -:   56:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

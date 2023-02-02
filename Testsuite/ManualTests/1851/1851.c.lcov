@@ -1,0 +1,7 @@
+    1|       |/* { dg-require-stack-size "1024" } */
+    2|       |
+    3|      1|int main() {
+    4|      1|  char temp[1024] = "tempfile";
+    5|      1|  return temp[0] != 't';
+    6|      1|}
+

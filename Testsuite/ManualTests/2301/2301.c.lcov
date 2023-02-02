@@ -1,0 +1,43 @@
+    1|       |/* Test for typeof evaluation: should be at the appropriate point in
+    2|       |   the containing expression rather than just adding a statement.  */
+    3|       |/* Origin: Joseph Myers <joseph@codesourcery.com> */
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=gnu99" } */
+    6|       |
+    7|       |extern void exit(int);
+    8|       |extern void abort(void);
+    9|       |
+   10|       |void *p;
+   11|       |
+   12|      1|void f1(void) {
+   13|      1|  int i = 0, j = -1, k = -1;
+   14|      1|  /* typeof applied to expression with cast.  */
+   15|      1|  (j = ++i), (void)(typeof((int(*)[(k = ++i)]) p)) p;
+   16|      1|  if (j != 1 || k != 2 || i != 2)
+   17|      0|    abort();
+   18|      1|}
+   19|       |
+   20|      1|void f2(void) {
+   21|      1|  int i = 0, j = -1, k = -1;
+   22|      1|  /* typeof applied to type.  */
+   23|      1|  (j = ++i), (void)(typeof(int(*)[(k = ++i)])) p;
+   24|      1|  if (j != 1 || k != 2 || i != 2)
+   25|      0|    abort();
+   26|      1|}
+   27|       |
+   28|      1|void f3(void) {
+   29|      1|  int i = 0, j = -1, k = -1;
+   30|      1|  void *q;
+   31|      1|  /* typeof applied to expression with cast that is used.  */
+   32|      1|  (j = ++i), (void)((typeof(1 + (int(*)[(k = ++i)]) p)) p);
+   33|      1|  if (j != 1 || k != 2 || i != 2)
+   34|      0|    abort();
+   35|      1|}
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  f1();
+   39|      1|  f2();
+   40|      1|  f3();
+   41|      1|  exit(0);
+   42|      1|}
+

@@ -1,0 +1,20 @@
+    1|       |/* This testcase was miscompiled on IA-32, because fold-const
+    2|       |   assumed associate_trees is always done on PLUS_EXPR.  */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|      1|void check(unsigned int m) {
+    8|      1|  if (m != (unsigned int)-1)
+    9|      0|    abort();
+   10|      1|}
+   11|       |
+   12|       |unsigned int n = 1;
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  unsigned int m;
+   16|      1|  m = (1 | (2 - n)) | (-n);
+   17|      1|  check(m);
+   18|      1|  exit(0);
+   19|      1|}
+

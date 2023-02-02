@@ -1,0 +1,27 @@
+        -:    0:Source:2676.c
+        -:    0:Graph:2676.gcno
+        -:    0:Data:2676.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/63618 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -mtune=corei7 -fno-inline" } */
+        -:    4:/* { dg-additional-options "-msse4.2" { target sse4 } } */
+        -:    5:/* { dg-additional-options "-fpic" { target fpic } } */
+        -:    6:
+        -:    7:static const __float128 cf = 0.1E+10Q;
+        -:    8:
+        1:    9:__float128 f128_square(__float128 x) { return x * x; }
+        -:   10:
+        1:   11:__float128 f128_p3(__float128 x) { return x * x * x; }
+        -:   12:
+        1:   13:__float128 cond_f128_square(__float128 x, int p) {
+        1:   14:  x = f128_p3(x);
+        1:   15:  if (p)
+        1:   16:    x = f128_square(cf);
+        1:   17:  return x;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  __float128 x = cond_f128_square(cf, 1);
+        1:   22:  return (int)(x < cf);
+        -:   23:}

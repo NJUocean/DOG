@@ -1,0 +1,8 @@
+        -:    0:Source:2195.c
+        -:    0:Graph:2195.gcno
+        -:    0:Data:2195.gcda
+        -:    0:Runs:1
+        1:    1:foo(b, c) unsigned b, c;
+        1:    2:{ return (b << 12) | (c >> 20); }
+        -:    3:
+        1:    4:main() { printf("0x%x\n", foo(0x11223344, 0xaabbccdd)); }

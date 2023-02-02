@@ -1,0 +1,40 @@
+    1|       |/* We used to mis-compile this testcase as we did not know that
+    2|       |   &a+offsetof(b,a) was the same as &a.b */
+    3|       |struct A {
+    4|       |  int t;
+    5|       |  int i;
+    6|       |};
+    7|       |
+    8|      1|void bar(float *p) { *p = 5.2; }
+    9|       |
+   10|      1|int foo(struct A *locp, int i, int str) {
+   11|      1|  float f, g, *p;
+   12|      1|  int T355;
+   13|      1|  int *T356;
+   14|      1|  /* Currently, the alias analyzer has limited support for handling
+   15|      1|     aliases of structure fields when no other variables are aliased.
+   16|      1|     Introduce additional aliases to confuse it.  */
+   17|      1|  p = i ? &g : &f;
+   18|      1|  bar(p);
+   19|      1|  if (*p > 0.0)
+   20|      1|    str = 1;
+   21|      1|
+   22|      1|  T355 = locp->i;
+   23|      1|  T356 = &locp->i;
+   24|      1|  *T356 = str;
+   25|      1|  T355 = locp->i;
+   26|      1|
+   27|      1|  return T355;
+   28|      1|}
+   29|       |
+   30|      1|main() {
+   31|      1|  struct A loc;
+   32|      1|  int str;
+   33|      1|
+   34|      1|  loc.i = 2;
+   35|      1|  str = foo(&loc, 10, 3);
+   36|      1|  if (str != 1)
+   37|      0|    abort();
+   38|      1|  return 0;
+   39|      1|}
+

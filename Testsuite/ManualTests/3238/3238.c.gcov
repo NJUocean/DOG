@@ -1,0 +1,31 @@
+        -:    0:Source:3238.c
+        -:    0:Graph:3238.gcno
+        -:    0:Data:3238.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 6534 */
+        -:    2:/* GCSE unified the two i<0 tests, but if-conversion to ui=abs(i)
+        -:    3:   insertted the code at the wrong place corrupting the i<0 test.  */
+        -:    4:
+        -:    5:void abort(void);
+        1:    6:static char *inttostr(long i, char buf[128]) {
+        1:    7:  unsigned long ui = i;
+        1:    8:  char *p = buf + 127;
+        1:    9:  *p = '\0';
+        1:   10:  if (i < 0)
+        1:   11:    ui = -ui;
+        -:   12:  do
+        1:   13:    *--p = '0' + ui % 10;
+        1:   14:  while ((ui /= 10) != 0);
+        1:   15:  if (i < 0)
+        1:   16:    *--p = '-';
+        1:   17:  return p;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  char buf[128], *p;
+        -:   22:
+        1:   23:  p = inttostr(-1, buf);
+        1:   24:  if (*p != '-')
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

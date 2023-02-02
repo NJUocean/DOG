@@ -1,0 +1,23 @@
+        -:    0:Source:2459.c
+        -:    0:Graph:2459.gcno
+        -:    0:Data:2459.gcda
+        -:    0:Runs:1
+        -:    1:/* Tests that the may_alias attribute works as expected.
+        -:    2:   Author: Osku Salerma <osku@iki.fi> Apr 2002.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:typedef short __attribute__((__may_alias__)) short_a;
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int a = 0x12345678;
+        1:   11:  short_a *b = (short_a *)&a;
+        -:   12:
+        1:   13:  b[1] = 0;
+        -:   14:
+        1:   15:  if (a == 0x12345678)
+    #####:   16:    abort();
+        -:   17:
+        1:   18:  exit(0);
+        -:   19:}

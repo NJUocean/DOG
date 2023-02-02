@@ -1,0 +1,15 @@
+        -:    0:Source:2321.c
+        -:    0:Graph:2321.gcno
+        -:    0:Data:2321.gcda
+        -:    0:Runs:1
+        -:    1:/* Test gcov weak ellision.  */
+        -:    2:
+        -:    3:/* { dg-do run { target native } } */
+        -:    4:/* { dg-require-weak "" } */
+        -:    5:/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+        -:    6:
+        1:    7:int __attribute__((weak)) weak() { return 0; /* count(1) */ }
+        -:    8:
+        1:    9:int main() { return weak(); /* count(1) */ }
+        -:   10:
+        -:   11:/* { dg-final { run-gcov { -a gcov-12.c } } } */

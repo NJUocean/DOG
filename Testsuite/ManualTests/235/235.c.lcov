@@ -1,0 +1,24 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-Wwrite-strings" } */
+    3|       |/* The purpose of this test is to ensure that line numbers in diagnostics
+    4|       |   are accurate after macros whose arguments contain newlines and are
+    5|       |   substituted multiple times.  The semicolons are on separate lines because
+    6|       |   #line can only correct numbering on line boundaries.  */
+    7|      1|#define one(x) x
+    8|      3|#define two(x) x x
+    9|      1|#define four(x) two(x) two(x)
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  char *A;
+   13|      1|
+   14|      1|  A = "text";    /* { dg-warning "discards 'const' qualifier" "case zero" } */
+   15|      1|  A = one("text" /* { dg-warning "discards 'const' qualifier" "case one" } */
+   16|      1|          "text");
+   17|      1|  A = two("text" /* { dg-warning "discards 'const' qualifier" "case two" } */
+   18|      1|          "text");
+   19|      1|  A = four("text" /* { dg-warning "discards 'const' qualifier" "case four" } */
+   20|      1|           "text");
+   21|      1|
+   22|      1|  return 0;
+   23|      1|}
+

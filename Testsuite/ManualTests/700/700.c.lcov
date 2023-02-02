@@ -1,0 +1,5 @@
+    1|       |/* { dg-lto-do assemble }  */
+    2|      0|void baz(void) {}
+    3|       |void *y = (void *)baz;
+    4|      1|int main() { return 0; }
+

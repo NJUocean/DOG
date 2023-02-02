@@ -1,0 +1,52 @@
+        -:    0:Source:2972.c
+        -:    0:Graph:2972.gcno
+        -:    0:Data:2972.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase to check generation of a SH2A specific instruction
+        -:    2:   "BCLR #imm3,@(disp12,Rn)".  */
+        -:    3:/* { dg-do compile { target { sh2a } } }  */
+        -:    4:/* { dg-options "-O2 -mbitops" }  */
+        -:    5:/* { dg-final { scan-assembler "bclr"} }  */
+        -:    6:/* { dg-final { scan-assembler "bclr.b"} }  */
+        -:    7:
+        -:    8:volatile union un_paddr {
+        -:    9:  unsigned char BYTE;
+        -:   10:  struct {
+        -:   11:    unsigned char B15 : 1;
+        -:   12:    unsigned char B14 : 1;
+        -:   13:    unsigned char B13 : 1;
+        -:   14:    unsigned char B12 : 1;
+        -:   15:    unsigned char B11 : 1;
+        -:   16:    unsigned char B10 : 1;
+        -:   17:    unsigned char B9 : 1;
+        -:   18:    unsigned char B8 : 1;
+        -:   19:    unsigned char B7 : 1;
+        -:   20:    unsigned char B6 : 1;
+        -:   21:    unsigned char B5 : 1;
+        -:   22:    unsigned char B4 : 1;
+        -:   23:    unsigned char B3 : 1;
+        -:   24:    unsigned char B2 : 1;
+        -:   25:    unsigned char B1 : 1;
+        -:   26:    unsigned char B0 : 1;
+        -:   27:  } BIT;
+        -:   28:} PADDR;
+        -:   29:
+        1:   30:int main() {
+        1:   31:  PADDR.BIT.B0 = 0;
+        1:   32:  PADDR.BIT.B3 = 0;
+        1:   33:  PADDR.BIT.B6 = 0;
+        -:   34:
+        1:   35:  PADDR.BIT.B1 &= 0;
+        1:   36:  PADDR.BIT.B4 &= 0;
+        1:   37:  PADDR.BIT.B7 &= 0;
+        -:   38:
+        1:   39:  PADDR.BIT.B10 = 0;
+        1:   40:  PADDR.BIT.B13 = 0;
+        1:   41:  PADDR.BIT.B15 = 0;
+        -:   42:
+        1:   43:  PADDR.BIT.B9 &= 0;
+        1:   44:  PADDR.BIT.B12 &= 0;
+        1:   45:  PADDR.BIT.B14 &= 0;
+        -:   46:
+        1:   47:  return 0;
+        -:   48:}

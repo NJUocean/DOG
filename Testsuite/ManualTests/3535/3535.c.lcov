@@ -1,0 +1,37 @@
+    1|       |/* { dg-additional-options "-Wl,-u,_printf_float" { target newlib_nano_io } } */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |#include <stdio.h>
+    5|       |
+    6|       |char buf[50];
+    7|      1|int va(int a, double b, int c, ...) {
+    8|      1|  va_list ap;
+    9|      1|  int d, e, f, g, h, i, j, k, l, m, n, o, p;
+   10|      1|  va_start(ap, c);
+   11|      1|
+   12|      1|  d = va_arg(ap, int);
+   13|      1|  e = va_arg(ap, int);
+   14|      1|  f = va_arg(ap, int);
+   15|      1|  g = va_arg(ap, int);
+   16|      1|  h = va_arg(ap, int);
+   17|      1|  i = va_arg(ap, int);
+   18|      1|  j = va_arg(ap, int);
+   19|      1|  k = va_arg(ap, int);
+   20|      1|  l = va_arg(ap, int);
+   21|      1|  m = va_arg(ap, int);
+   22|      1|  n = va_arg(ap, int);
+   23|      1|  o = va_arg(ap, int);
+   24|      1|  p = va_arg(ap, int);
+   25|      1|
+   26|      1|  sprintf(buf, "%d,%f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", a, b, c, d, e,
+   27|      1|          f, g, h, i, j, k, l, m, n, o, p);
+   28|      1|  va_end(ap);
+   29|      1|}
+   30|       |
+   31|      1|main() {
+   32|      1|  va(1, 1.0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+   33|      1|  if (strcmp("1,1.000000,2,3,4,5,6,7,8,9,10,11,12,13,14,15", buf))
+   34|      0|    abort();
+   35|      1|  exit(0);
+   36|      1|}
+

@@ -1,0 +1,34 @@
+    1|       |typedef enum { POSITION_ASIS, POSITION_UNSPECIFIED } unit_position;
+    2|       |
+    3|       |typedef enum { STATUS_UNKNOWN, STATUS_UNSPECIFIED } unit_status;
+    4|       |
+    5|       |typedef struct {
+    6|       |  unit_position position;
+    7|       |  unit_status status;
+    8|       |} unit_flags;
+    9|       |
+   10|       |extern void abort(void);
+   11|       |
+   12|      1|void new_unit(unit_flags *flags) {
+   13|      1|  if (flags->status == STATUS_UNSPECIFIED)
+   14|      1|    flags->status = STATUS_UNKNOWN;
+   15|      1|
+   16|      1|  if (flags->position == POSITION_UNSPECIFIED)
+   17|      0|    flags->position = POSITION_ASIS;
+   18|      1|
+   19|      1|  switch (flags->status) {
+   20|      1|  case STATUS_UNKNOWN:
+   21|      1|    break;
+   22|      0|
+   23|      0|  default:
+   24|      0|    abort();
+   25|      1|  }
+   26|      1|}
+   27|       |
+   28|      1|int main() {
+   29|      1|  unit_flags f;
+   30|      1|  f.status = STATUS_UNSPECIFIED;
+   31|      1|  new_unit(&f);
+   32|      1|  return 0;
+   33|      1|}
+

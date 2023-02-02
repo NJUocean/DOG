@@ -1,0 +1,40 @@
+        -:    0:Source:3932.c
+        -:    0:Graph:3932.gcno
+        -:    0:Data:3932.gcda
+        -:    0:Runs:1
+       22:    1:unsigned int f1(int diff) { return ((unsigned int)(diff < 0 ? -diff : diff)); }
+        -:    2:
+       22:    3:unsigned int f2(unsigned int diff) {
+       22:    4:  return ((unsigned int)((signed int)diff < 0 ? -diff : diff));
+        -:    5:}
+        -:    6:
+       22:    7:unsigned long long f3(long long diff) {
+       22:    8:  return ((unsigned long long)(diff < 0 ? -diff : diff));
+        -:    9:}
+        -:   10:
+       22:   11:unsigned long long f4(unsigned long long diff) {
+       22:   12:  return ((unsigned long long)((signed long long)diff < 0 ? -diff : diff));
+        -:   13:}
+        -:   14:
+        1:   15:main() {
+        -:   16:  int i;
+       12:   17:  for (i = 0; i <= 10; i++) {
+       11:   18:    if (f1(i) != i)
+    #####:   19:      abort();
+       11:   20:    if (f1(-i) != i)
+    #####:   21:      abort();
+       11:   22:    if (f2(i) != i)
+    #####:   23:      abort();
+       11:   24:    if (f2(-i) != i)
+    #####:   25:      abort();
+       11:   26:    if (f3((long long)i) != i)
+    #####:   27:      abort();
+       11:   28:    if (f3((long long)-i) != i)
+    #####:   29:      abort();
+       11:   30:    if (f4((long long)i) != i)
+    #####:   31:      abort();
+       11:   32:    if (f4((long long)-i) != i)
+    #####:   33:      abort();
+        -:   34:  }
+        1:   35:  exit(0);
+        -:   36:}

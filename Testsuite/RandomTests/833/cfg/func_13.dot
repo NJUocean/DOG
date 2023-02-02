@@ -1,0 +1,17 @@
+digraph "" {
+  graph [pack="true", label="", fontsize="12", packmode="clust", fontname="Arial", fillcolor="#FFFFCC", bgcolor="white", style="rounded,filled", compound="true"];
+  node [node_initialized="no", label="", color="grey", fontsize="12", fillcolor="white", fontname="Arial", style="filled", shape="rectangle", compound="true", fixedsize="false"];
+  edge [fontcolor="black", arrowhead="normal", arrowtail="none", arrowsize="0.5", ltail="", label="", color="black", fontsize="12", lhead="", fontname="Arial", dir="forward", compound="true"];
+  __N1 [label="2 - passive 35,108,2,108,16,,33 - passive 35,109,2,109,21,,44 - passive 35,110,2,110,76,,55 - passive 35,111,2,111,9,,6", color="#0000ff", fillcolor="#ffffff", style="filled", shape="box"];
+  __N2 [label="1 - passive-implicit 36,,,,,,2\n\nstart", color="#006400", fillcolor="#ffffff", style="filled", shape="box"];
+  __N3 [label="6 - while-for 10,112,6,112,72,25,7,26", color="#0000ff", fillcolor="#ffffff", style="filled", shape="oval"];
+  __N4 [label="7 - passive 35,113,4,113,21,,88 - passive 35,114,4,114,23,,99 - passive 35,115,4,115,21,,1010 - passive 35,116,4,116,28,,1111 - passive 35,117,4,117,21,,1212 - passive 35,118,4,118,21,,1313 - passive 35,119,4,119,21,,1414 - passive 35,120,4,120,21,,1515 - passive 35,121,4,121,28,,1616 - passive 35,122,4,122,21,,1717 - passive 35,123,4,123,28,,1818 - passive 35,124,4,124,28,,1919 - passive 35,125,4,125,21,,2020 - passive 35,126,4,126,28,,2121 - passive 35,127,4,127,21,,2222 - passive 35,128,4,128,50,,2323 - passive 35,129,4,129,8,,2424 - passive 35,130,4,130,15,,25", color="#0000ff", fillcolor="#ffffff", style="filled", shape="box"];
+  __N5 [label="27 - return 30,132,2,132,9,,28", color="#0000ff", fillcolor="#ffffff", style="filled", shape="box"];
+  __N6 [label="28 - passive-implicit 36,,,,,,\n\nend", color="#a52a2a", fillcolor="#ffffff", style="filled", shape="box"];
+  __N2 -> __N1 [arrowhead="normal", arrowtail="none", color="#000000", label="", dir="forward"];
+  __N1 -> __N3 [arrowhead="normal", arrowtail="none", color="#000000", label="", dir="forward"];
+  __N3 -> __N4 [arrowhead="normal", arrowtail="none", color="#00ff00", label="yes", dir="forward"];
+  __N4 -> __N3 [arrowhead="normal", arrowtail="none", color="#000000", label="", dir="forward"];
+  __N3 -> __N5 [arrowhead="normal", arrowtail="none", color="#ff0000", label="no", dir="forward"];
+  __N5 -> __N6 [arrowhead="normal", arrowtail="none", color="#000000", label="", dir="forward"];
+}

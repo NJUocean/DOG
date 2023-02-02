@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |struct S1 {
+    5|       |  int f0;
+    6|       |  int : 1;
+    7|       |  int f3;
+    8|       |  int : 1;
+    9|       |  int : 0;
+   10|       |  int f6 : 1;
+   11|       |};
+   12|       |int g_13 = 1;
+   13|       |volatile struct S1 g_118 = {1};
+   14|       |
+   15|      1|void __attribute__((noinline)) func_46() {
+   16|      2|  for (g_13 = 0; g_13 >= 0; g_13 -= 1)
+   17|      1|    g_118.f6 = 0;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  func_46();
+   22|      1|  if (g_13 != -1)
+   23|      0|    abort();
+   24|      1|  return 0;
+   25|      1|}
+

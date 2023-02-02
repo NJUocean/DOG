@@ -1,0 +1,7 @@
+    1|       |/* PR target/43668 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fschedule-insns" } */
+    4|       |
+    5|      1|int foo(int i, ...) { return i; }
+    6|      1|int main() { return foo(0, 0.0); }
+

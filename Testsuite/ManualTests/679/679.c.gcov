@@ -1,0 +1,9 @@
+        -:    0:Source:679.c
+        -:    0:Graph:679.gcno
+        -:    0:Data:679.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options {{-funsigned-char -flto} {-fsigned-char -flto}} } */
+        -:    3:
+        -:    4:char *foo;
+        1:    5:int main() { foo = "bar"; }

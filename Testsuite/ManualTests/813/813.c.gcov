@@ -1,0 +1,41 @@
+        -:    0:Source:813.c
+        -:    0:Graph:813.gcno
+        -:    0:Data:813.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/30286 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -ftrapv" } */
+        -:    4:/* { dg-require-effective-target trapping } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:struct S {
+        -:    8:  struct S *s;
+        -:    9:};
+        -:   10:struct T {
+        -:   11:  struct S *t[25];
+        -:   12:};
+        -:   13:
+        2:   14:void __attribute__((noinline)) foo(int i, struct T *x, struct S *y) {
+        -:   15:  int j;
+       25:   16:  for (j = 14; j > i; j--)
+       23:   17:    x->t[j] = y->s;
+        2:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  struct S s;
+        -:   22:  struct T t;
+        -:   23:  int i;
+        -:   24:
+        1:   25:  s.s = &s;
+        1:   26:  __builtin_memset(&t, 0, sizeof(t));
+        1:   27:  foo(6, &t, &s);
+       26:   28:  for (i = 0; i < 25; i++)
+       25:   29:    if (t.t[i] != ((i > 6 && i <= 14) ? &s : (struct S *)0))
+    #####:   30:      abort();
+        1:   31:  __builtin_memset(&t, 0, sizeof(t));
+        1:   32:  foo(-1, &t, &s);
+       26:   33:  for (i = 0; i < 25; i++)
+       25:   34:    if (t.t[i] != ((i >= 0 && i <= 14) ? &s : (struct S *)0))
+    #####:   35:      abort();
+        1:   36:  return 0;
+        -:   37:}

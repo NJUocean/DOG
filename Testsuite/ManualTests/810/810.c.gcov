@@ -1,0 +1,46 @@
+        -:    0:Source:810.c
+        -:    0:Graph:810.gcno
+        -:    0:Data:810.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/29091 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:__attribute__((vector_size(sizeof(int) * 4))) int a = {1, 2};
+        -:    8:int d = 3;
+        -:    9:__attribute__((vector_size(sizeof(int) * 4))) int b = {4, 5, 6};
+        -:   10:int e = 7;
+        -:   11:__attribute__((vector_size(sizeof(int) * 4))) int c = {};
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  int *p = (int *)&a;
+        1:   15:  if (p[0] != 1)
+    #####:   16:    abort();
+        1:   17:  if (p[1] != 2)
+    #####:   18:    abort();
+        1:   19:  if (p[2] != 0)
+    #####:   20:    abort();
+        1:   21:  if (p[3] != 0)
+    #####:   22:    abort();
+        1:   23:  p = (int *)&b;
+        1:   24:  if (p[0] != 4)
+    #####:   25:    abort();
+        1:   26:  if (p[1] != 5)
+    #####:   27:    abort();
+        1:   28:  if (p[2] != 6)
+    #####:   29:    abort();
+        1:   30:  if (p[3] != 0)
+    #####:   31:    abort();
+        1:   32:  p = (int *)&c;
+        1:   33:  if (p[0] != 0)
+    #####:   34:    abort();
+        1:   35:  if (p[1] != 0)
+    #####:   36:    abort();
+        1:   37:  if (p[2] != 0)
+    #####:   38:    abort();
+        1:   39:  if (p[3] != 0)
+    #####:   40:    abort();
+        1:   41:  return 0;
+        -:   42:}

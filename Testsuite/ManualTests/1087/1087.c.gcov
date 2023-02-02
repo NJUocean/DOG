@@ -1,0 +1,20 @@
+        -:    0:Source:1087.c
+        -:    0:Graph:1087.gcno
+        -:    0:Data:1087.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/90095 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Os -fno-tree-bit-ccp" } */
+        -:    4:
+        -:    5:unsigned long long a;
+        -:    6:unsigned int b;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  unsigned int c = 255, d = c |= b;
+        -:   10:  if (__CHAR_BIT__ != 8 || __SIZEOF_INT__ != 4 || __SIZEOF_LONG_LONG__ != 8)
+        -:   11:    return 0;
+        1:   12:  d = __builtin_mul_overflow(-(unsigned long long)d, (unsigned char)-c, &a);
+        1:   13:  if (d != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

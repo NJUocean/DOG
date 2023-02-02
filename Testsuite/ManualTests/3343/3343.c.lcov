@@ -1,0 +1,23 @@
+    1|       |/* PR c++/14755 */
+    2|       |extern void abort(void);
+    3|       |extern void exit(int);
+    4|       |
+    5|      1|int main(void) {
+    6|      1|#if __INT_MAX__ >= 2147483647
+    7|      1|  struct {
+    8|      1|    int count : 31;
+    9|      1|  } s = {0};
+   10|      1|  while (s.count--)
+   11|      0|    abort();
+   12|       |#elif __INT_MAX__ >= 32767
+   13|       |  struct {
+   14|       |    int count : 15;
+   15|       |  } s = {0};
+   16|       |  while (s.count--)
+   17|       |    abort();
+   18|       |#else
+   19|       |  /* Don't bother because __INT_MAX__ is too small.  */
+   20|       |#endif
+   21|      1|  exit(0);
+   22|      1|}
+

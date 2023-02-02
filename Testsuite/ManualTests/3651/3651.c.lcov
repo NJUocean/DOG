@@ -1,0 +1,58 @@
+    1|       |/* PR 41750 - IPA-SRA used to pass hash->sgot by value rather than by
+    2|       |   reference.  */
+    3|       |
+    4|       |struct bfd_link_hash_table {
+    5|       |  int hash;
+    6|       |};
+    7|       |
+    8|       |struct foo_link_hash_table {
+    9|       |  struct bfd_link_hash_table root;
+   10|       |  int *dynobj;
+   11|       |  int *sgot;
+   12|       |};
+   13|       |
+   14|       |struct foo_link_info {
+   15|       |  struct foo_link_hash_table *hash;
+   16|       |};
+   17|       |
+   18|       |extern void abort(void);
+   19|       |
+   20|       |int __attribute__((noinline))
+   21|      1|foo_create_got_section(int *abfd, struct foo_link_info *info) {
+   22|      1|  info->hash->sgot = abfd;
+   23|      1|  return 1;
+   24|      1|}
+   25|       |
+   26|       |static int *get_got(int *abfd, struct foo_link_info *info,
+   27|      1|                    struct foo_link_hash_table *hash) {
+   28|      1|  int *got;
+   29|      1|  int *dynobj;
+   30|      1|
+   31|      1|  got = hash->sgot;
+   32|      1|  if (!got) {
+   33|      1|    dynobj = hash->dynobj;
+   34|      1|    if (!dynobj)
+   35|      1|      hash->dynobj = dynobj = abfd;
+   36|      1|    if (!foo_create_got_section(dynobj, info))
+   37|      0|      return 0;
+   38|      1|    got = hash->sgot;
+   39|      1|  }
+   40|      1|  return got;
+   41|      1|}
+   42|       |
+   43|       |int *__attribute__((noinline, noclone))
+   44|      1|elf64_ia64_check_relocs(int *abfd, struct foo_link_info *info) {
+   45|      1|  return get_got(abfd, info, info->hash);
+   46|      1|}
+   47|       |
+   48|       |struct foo_link_info link_info;
+   49|       |struct foo_link_hash_table hash;
+   50|       |int abfd;
+   51|       |
+   52|      1|int main() {
+   53|      1|  link_info.hash = &hash;
+   54|      1|  if (elf64_ia64_check_relocs(&abfd, &link_info) != &abfd)
+   55|      0|    abort();
+   56|      1|  return 0;
+   57|      1|}
+

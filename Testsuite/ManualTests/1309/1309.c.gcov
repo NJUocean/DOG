@@ -1,0 +1,19 @@
+        -:    0:Source:1309.c
+        -:    0:Graph:1309.gcno
+        -:    0:Data:1309.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { stdint_types } } } */
+        -:    2:
+        -:    3:#include <stdint.h>
+        -:    4:extern void abort(void);
+        1:    5:int main() {
+        1:    6:  int i = 1;
+        1:    7:  int *p = &i;
+        -:    8:  uintptr_t iptr;
+        -:    9:
+        1:   10:  iptr = (uintptr_t)p - (uintptr_t)&iptr;
+        1:   11:  p = (int *)((uintptr_t)&iptr + iptr);
+        1:   12:  if (*p != 1)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

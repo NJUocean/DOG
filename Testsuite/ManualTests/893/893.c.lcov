@@ -1,0 +1,14 @@
+    1|       |/* PR middle-end/46499 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O -fno-tree-ccp -fno-tree-dominator-opts" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      2|static inline int foo(void) { return 0; }
+    8|       |
+    9|      1|int main() {
+   10|      1|  if ((foo() == 1) & (foo() == 1))
+   11|      0|    abort();
+   12|      1|  return 0;
+   13|      1|}
+

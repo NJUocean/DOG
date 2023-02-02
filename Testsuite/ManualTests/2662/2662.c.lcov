@@ -1,0 +1,61 @@
+    1|       |/* PR rtl-optimization/57459 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fno-inline -O2 -minline-all-stringops -fno-omit-frame-pointer"
+    4|       | * } */
+    5|       |
+    6|       |int total1[10], total2[10], total3[10], total4[10], total5[10], a[20];
+    7|       |int len;
+    8|       |
+    9|      1|void stackclean() {
+   10|      1|  void *ptr = __builtin_alloca(20000);
+   11|      1|  __builtin_memset(ptr, 0, 20000);
+   12|      1|}
+   13|       |
+   14|      1|void foo(const char *s) {
+   15|      1|  int r1 = a[1];
+   16|      1|  int r2 = a[2];
+   17|      1|  int r3 = a[3];
+   18|      1|  int r4 = a[4];
+   19|      1|  int r5 = a[5];
+   20|      1|
+   21|      1|  len = __builtin_strlen(s);
+   22|      1|
+   23|      1|  if (s != 0)
+   24|      1|    return;
+   25|      0|
+   26|      0|  while (r1) {
+   27|      0|    total1[r1] = r1;
+   28|      0|    r1--;
+   29|      0|  }
+   30|      0|
+   31|      0|  while (r2) {
+   32|      0|    total2[r2] = r2;
+   33|      0|    r2--;
+   34|      0|  }
+   35|      0|
+   36|      0|  while (r3) {
+   37|      0|    total3[r3] = r3;
+   38|      0|    r3--;
+   39|      0|  }
+   40|      0|
+   41|      0|  while (r4) {
+   42|      0|    total4[r4] = r4;
+   43|      0|    r4--;
+   44|      0|  }
+   45|      0|
+   46|      0|  while (r5) {
+   47|      0|    total5[r5] = r5;
+   48|      0|    r5--;
+   49|      0|  }
+   50|      0|}
+   51|       |
+   52|       |extern void abort(void);
+   53|       |
+   54|      1|int main() {
+   55|      1|  stackclean();
+   56|      1|  foo("abcdefgh");
+   57|      1|  if (len != 8)
+   58|      0|    abort();
+   59|      1|  return 0;
+   60|      1|}
+

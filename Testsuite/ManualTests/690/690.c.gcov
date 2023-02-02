@@ -1,0 +1,14 @@
+        -:    0:Source:690.c
+        -:    0:Graph:690.gcno
+        -:    0:Data:690.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:
+    #####:    3:static inline void bar(unsigned *u) { __asm__("" : "=r"(*u)); }
+        -:    4:
+    #####:    5:void foo(void) {
+        -:    6:  int i;
+    #####:    7:  bar(&i);
+    #####:    8:}
+        -:    9:
+        1:   10:int main() { return 0; }

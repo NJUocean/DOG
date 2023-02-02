@@ -1,0 +1,48 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+    3|       |
+    4|       |/* Copied from graphite/interchange-4.c */
+    5|       |
+    6|       |#define DEBUG 0
+    7|       |#if DEBUG
+    8|       |#include <stdio.h>
+    9|       |#endif
+   10|       |
+   11|       |unsigned u[1024];
+   12|       |
+   13|       |static void __attribute__((noinline, noclone, noipa))
+   14|      1|foo(int N, unsigned *res) {
+   15|      1|  int i, j;
+   16|      1|  unsigned sum = 1;
+   17|      3|  for (i = 0; i < N; i++)
+   18|      6|    for (j = 0; j < N; j++)
+   19|      4|      sum = u[i + 2 * j] / sum;
+   20|      1|
+   21|      1|  *res = sum;
+   22|      1|}
+   23|       |
+   24|       |extern void abort();
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  int i, j;
+   28|      1|  unsigned res;
+   29|      1|
+   30|      1|  u[0] = 10;
+   31|      1|  u[1] = 200;
+   32|      1|  u[2] = 10;
+   33|      1|  u[3] = 10;
+   34|      1|
+   35|      1|  foo(2, &res);
+   36|      1|
+   37|       |#if DEBUG
+   38|       |  fprintf(stderr, "res = %d \n", res);
+   39|       |#endif
+   40|      1|
+   41|      1|  if (res != 0)
+   42|      0|    abort();
+   43|      1|
+   44|      1|  return 0;
+   45|      1|}
+   46|       |
+   47|       |/* { dg-final { scan-tree-dump-not "is interchanged" "linterchange"} } */
+

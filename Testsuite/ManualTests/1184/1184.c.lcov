@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow -Wno-unused-variable
+    3|       | * -fno-sanitize-recover=signed-integer-overflow" } */
+    4|       |
+    5|      1|#define SCHAR_MIN (-__SCHAR_MAX__ - 1)
+    6|      1|#define SHRT_MIN (-__SHRT_MAX__ - 1)
+    7|      1|#define INT_MIN (-__INT_MAX__ - 1)
+    8|      1|#define LONG_MIN (-__LONG_MAX__ - 1L)
+    9|      1|#define LLONG_MIN (-__LONG_LONG_MAX__ - 1LL)
+   10|       |
+   11|       |#define CHECK(A, B)                                                            \
+   12|      5|  ({                                                                           \
+   13|      5|    if ((A) != (B))                                                            \
+   14|      5|      __builtin_abort();                                                       \
+   15|      5|  })
+   16|       |
+   17|      1|int main(void) {
+   18|      1|  volatile signed char c = -SCHAR_MIN;
+   19|      1|  CHECK(c, -128);
+   20|      1|
+   21|      1|  volatile short s = -SHRT_MIN;
+   22|      1|  CHECK(s, -32768);
+   23|      1|
+   24|      1|  volatile int i = INT_MIN;
+   25|      1|  i = -(unsigned)i;
+   26|      1|  CHECK(i, -0x80000000);
+   27|      1|
+   28|      1|  volatile long int li = LONG_MIN;
+   29|      1|  li = -(unsigned long)li;
+   30|       |#if __LONG_MAX__ == 2147483647L
+   31|       |  CHECK(li, -0x80000000L);
+   32|       |#elif __LONG_MAX__ == 9223372036854775807L
+   33|      1|  CHECK(li, -0x8000000000000000L);
+   34|      1|#endif
+   35|      1|
+   36|      1|  volatile long long lli = LLONG_MIN;
+   37|      1|  lli = -(unsigned long long)lli;
+   38|      1|  CHECK(lli, -0x8000000000000000L);
+   39|      1|  return 0;
+   40|      1|}
+

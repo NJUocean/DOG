@@ -1,0 +1,52 @@
+        -:    0:Source:612.c
+        -:    0:Graph:612.gcno
+        -:    0:Data:612.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that IPA-CP can clone mark_cell without miscompiling it despite its
+        -:    2:   type_attributes.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O3 -fdump-ipa-cp" } */
+        -:    5:
+        -:    6:struct PMC {
+        -:    7:  unsigned flags;
+        -:    8:};
+        -:    9:
+        -:   10:typedef struct Pcc_cell {
+        -:   11:  struct PMC *p;
+        -:   12:  long bla;
+        -:   13:  long type;
+        -:   14:} Pcc_cell;
+        -:   15:
+        -:   16:int gi;
+        -:   17:
+        -:   18:extern void abort();
+        -:   19:extern void never_ever(int *interp, struct PMC *pmc) __attribute__((noinline));
+        -:   20:
+    #####:   21:void never_ever(int *interp, struct PMC *pmc) { abort(); }
+        -:   22:
+        -:   23:static void mark_cell(int *interp, Pcc_cell *c) __attribute__((__nonnull__(1)))
+        -:   24:__attribute__((noinline));
+        -:   25:
+      100:   26:static void mark_cell(int *interp, Pcc_cell *c) {
+     100*:   27:  if (c && c->type == 4 && c->p && !(c->p->flags & (1 << 14)))
+    #####:   28:    never_ever(interp, c->p);
+      100:   29:}
+        -:   30:
+        -:   31:static void foo(int *interp, Pcc_cell *c) __attribute__((noinline));
+        -:   32:
+      100:   33:static void foo(int *interp, Pcc_cell *c) { mark_cell(interp, c); }
+        -:   34:
+      100:   35:static struct Pcc_cell *__attribute__((noinline, noclone)) getnull(void) {
+      100:   36:  return (struct Pcc_cell *)0;
+        -:   37:}
+        -:   38:
+        1:   39:int main() {
+        -:   40:  int i;
+        -:   41:
+      101:   42:  for (i = 0; i < 100; i++)
+      100:   43:    foo(&gi, getnull());
+        1:   44:  return 0;
+        -:   45:}
+        -:   46:
+        -:   47:/* { dg-final { scan-ipa-dump "Creating a specialized node of mark_cell" "cp" }
+        -:   48: * } */

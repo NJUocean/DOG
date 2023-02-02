@@ -1,0 +1,32 @@
+    1|       |// { dg-do run }
+    2|       |// { dg-options "-O2" }
+    3|       |
+    4|       |#ifndef T
+    5|       |#if __SIZEOF_INT128__ && defined __SSE__
+    6|       |#define T __int128
+    7|       |#else
+    8|       |#define T long
+    9|       |#endif
+   10|       |#endif
+   11|       |#ifndef R
+   12|       |#ifdef __SSE__
+   13|       |#define R "x"
+   14|       |#else
+   15|       |#define R "r"
+   16|       |#endif
+   17|       |#endif
+   18|       |
+   19|       |typedef T A; // #define T to long or __int128
+   20|       |struct B {
+   21|       |  char d;
+   22|       |  A c;
+   23|       |} __attribute__((packed));
+   24|       |struct B b[50]; // many elements to avoid loop unrolling
+   25|       |
+   26|      1|int main() {
+   27|      1|  int i;
+   28|     51|  for (i = 0; i < sizeof(b) / sizeof(*b); i++) {
+   29|     50|    asm("" : "+" R(b[i].c)); // #define R to "r" on ppc or "x" on x86_64
+   30|     50|  }
+   31|      1|}
+

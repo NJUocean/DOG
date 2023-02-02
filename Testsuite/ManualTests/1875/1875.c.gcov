@@ -1,0 +1,14 @@
+        -:    0:Source:1875.c
+        -:    0:Graph:1875.gcno
+        -:    0:Data:1875.gcda
+        -:    0:Runs:1
+        1:    1:int main(int argc, char **argv) {
+        1:    2:  int size = 10;
+        -:    3:
+        1:    4:  typedef struct {
+        1:    5:    char val[size];
+        -:    6:  } block;
+        -:    7:  block retframe_block() { return *(block *)0; }
+        -:    8:
+        1:    9:  return 0;
+        -:   10:}

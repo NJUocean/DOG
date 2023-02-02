@@ -1,0 +1,37 @@
+        -:    0:Source:1955.c
+        -:    0:Graph:1955.gcno
+        -:    0:Data:1955.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:struct in_addr {
+        -:    5:  unsigned int s_addr;
+        -:    6:};
+        -:    7:
+        -:    8:struct ip {
+        -:    9:  unsigned char ip_p;
+        -:   10:  unsigned short ip_sum;
+        -:   11:  struct in_addr ip_src, ip_dst;
+        -:   12:} __attribute__((aligned(1), packed));
+        -:   13:
+        -:   14:struct ip ip_fw_fwd_addr;
+        -:   15:
+        1:   16:int test_alignment(char *m) {
+        1:   17:  struct ip *ip = (struct ip *)m;
+        -:   18:  struct in_addr pkt_dst;
+        1:   19:  pkt_dst = ip->ip_dst;
+        1:   20:  if (pkt_dst.s_addr == 0)
+    #####:   21:    return 1;
+        -:   22:  else
+        1:   23:    return 0;
+        -:   24:}
+        -:   25:
+        1:   26:int __attribute__((noinline, noclone)) intermediary(char *p) {
+        1:   27:  return test_alignment(p);
+        -:   28:}
+        -:   29:
+        1:   30:int main(int argc, char *argv[]) {
+        1:   31:  ip_fw_fwd_addr.ip_dst.s_addr = 1;
+        1:   32:  return intermediary((void *)&ip_fw_fwd_addr);
+        -:   33:}

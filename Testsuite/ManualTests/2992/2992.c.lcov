@@ -1,0 +1,8 @@
+    1|       |/* { dg-do preprocess } */
+    2|       |/* { dg-additional-options "-fdirectives-only" } */
+    3|       |
+    4|      1|int main() { return 0; }
+    5|       |
+    6|       |/* A regexp that doesn't match itself!  */
+    7|       |/* { dg-final { scan-file-not pr93452-1.i {_[_]has_include} } } */
+

@@ -1,0 +1,25 @@
+        -:    0:Source:3339.c
+        -:    0:Graph:3339.gcno
+        -:    0:Data:3339.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:
+        5:    3:int foo(unsigned short x) {
+        -:    4:  unsigned short y;
+        5:    5:  y = x > 32767 ? x - 32768 : 0;
+        5:    6:  return y;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (foo(0) != 0)
+    #####:   11:    abort();
+        1:   12:  if (foo(32767) != 0)
+    #####:   13:    abort();
+        1:   14:  if (foo(32768) != 0)
+    #####:   15:    abort();
+        1:   16:  if (foo(32769) != 1)
+    #####:   17:    abort();
+        1:   18:  if (foo(65535) != 32767)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

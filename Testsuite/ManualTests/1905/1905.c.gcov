@@ -1,0 +1,59 @@
+        -:    0:Source:1905.c
+        -:    0:Graph:1905.gcno
+        -:    0:Data:1905.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/83337 */
+        -:    2:/* { dg-do run { target int32plus } } */
+        -:    3:/* { dg-options "-O2 -floop-interchange" } */
+        -:    4:/* { dg-require-effective-target alloca }  */
+        -:    5:/* { dg-skip-if "too big stack" { visium-*-* } } */
+        -:    6:
+        -:    7:/* Copied from graphite/interchange-5.c */
+        -:    8:
+        -:    9:#define DEBUG 0
+        -:   10:#if DEBUG
+        -:   11:#include <stdio.h>
+        -:   12:#endif
+        -:   13:
+        -:   14:#define N 100
+        -:   15:#define M 1111
+        -:   16:
+        -:   17:extern void abort();
+        -:   18:
+        2:   19:static void __attribute__((noipa)) foo(int n) {
+        -:   20:  int i, j;
+        2:   21:  struct S {
+        2:   22:    char d[n];
+        -:   23:    int a : 3;
+        -:   24:    int b : 17;
+        -:   25:    int c : 12;
+        -:   26:  };
+        2:   27:  struct S A[N][M];
+        -:   28:
+      202:   29:  for (i = 0; i < N; i++) {
+      200:   30:    asm volatile("" : : "g"(&A[0][0]) : "memory");
+   222400:   31:    for (j = 0; j < M; j++)
+   222200:   32:      A[i][j].b = 2;
+        -:   33:  }
+        2:   34:  asm volatile("" : : "g"(&A[0][0]) : "memory");
+        -:   35:
+     2224:   36:  for (i = 0; i < M; i++)
+   224422:   37:    for (j = 0; j < N; j++)
+   222200:   38:      A[j][i].b = 5 * A[j][i].b;
+        -:   39:
+        2:   40:  asm volatile("" : : "g"(&A[0][0]) : "memory");
+        2:   41:  int res = A[0][0].b + A[N - 1][M - 1].b;
+        -:   42:
+        -:   43:#if DEBUG
+        -:   44:  fprintf(stderr, "res = %d \n", res);
+        -:   45:#endif
+        -:   46:
+        2:   47:  if (res != 20)
+    #####:   48:    abort();
+        2:   49:}
+        -:   50:
+        1:   51:int main(void) {
+        1:   52:  foo(1);
+        1:   53:  foo(8);
+        1:   54:  return 0;
+        -:   55:}

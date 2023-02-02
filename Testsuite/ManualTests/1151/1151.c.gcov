@@ -1,0 +1,27 @@
+        -:    0:Source:1151.c
+        -:    0:Graph:1151.gcno
+        -:    0:Data:1151.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that variable
+        -:    2:     int val;
+        -:    3:   may hold value of tyope "struct c" which has same size.
+        -:    4:   This is valid in GIMPLE memory model.  */
+        -:    5:
+        -:    6:struct a {
+        -:    7:  int val;
+        -:    8:} a = {1}, a2;
+        -:    9:struct b {
+        -:   10:  struct a a;
+        -:   11:};
+        -:   12:int val;
+        -:   13:struct c {
+        -:   14:  struct b b;
+        -:   15:} *cptr = (void *)&val;
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  cptr->b.a = a;
+        1:   19:  val = 2;
+        1:   20:  a2 = cptr->b.a;
+        1:   21:  if (a2.val == a.val)
+    #####:   22:    __builtin_abort();
+        -:   23:}

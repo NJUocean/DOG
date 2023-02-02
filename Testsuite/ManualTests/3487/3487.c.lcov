@@ -1,0 +1,21 @@
+    1|       |struct __attribute__((packed)) S {
+    2|       |  int a, b, c;
+    3|       |};
+    4|       |
+    5|      1|static int __attribute__((noinline, noclone)) extract(const char *p) {
+    6|      1|  struct S s;
+    7|      1|  __builtin_memcpy(&s, p, sizeof(struct S));
+    8|      1|  return s.a;
+    9|      1|}
+   10|       |
+   11|       |volatile int i;
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  char p[sizeof(struct S) + 1];
+   15|      1|
+   16|      1|  __builtin_memset(p, 0, sizeof(struct S) + 1);
+   17|      1|  i = extract(p + 1);
+   18|      1|
+   19|      1|  return 0;
+   20|      1|}
+

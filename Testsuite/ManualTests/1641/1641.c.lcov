@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |int printf(const char *, ...);
+    4|       |
+    5|       |int a, b = -600, c, d[] = {0}, e, f, g = -1, h;
+    6|       |unsigned i = ~0;
+    7|       |
+    8|      1|int main() {
+    9|      3|  for (; h < 2; h++) {
+   10|      2|    if (a > 0)
+   11|      0|      printf("%d\n", d[b]);
+   12|      2|    f = ~(b % i);
+   13|      2|    c = g | (f && g) && e | b;
+   14|      2|    a = ~(~g & b);
+   15|      2|  }
+   16|      1|  return 0;
+   17|      1|}
+

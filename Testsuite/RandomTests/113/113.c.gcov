@@ -1,0 +1,32 @@
+        -:    0:Source:113.c
+        -:    0:Graph:113.gcno
+        -:    0:Data:113.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:union U2 {
+        -:    7:  uint32_t f0;
+        -:    8:  int64_t f1;
+        -:    9:  int32_t f2;
+        -:   10:};
+        -:   11:
+        -:   12:static union U2 g_2 = {0xF69F7FD1L};
+        -:   13:
+        -:   14:static union U2 func_1(void);
+        -:   15:
+        1:   16:static union U2 func_1(void) { return g_2; }
+        -:   17:
+        1:   18:int main(int argc, char *argv[]) {
+        1:   19:  int print_hash_value = 0;
+       1*:   20:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   21:    print_hash_value = 1;
+        1:   22:  platform_main_begin();
+        1:   23:  crc32_gentab();
+        1:   24:  func_1();
+        1:   25:  transparent_crc(g_2.f0, "g_2.f0", print_hash_value);
+        1:   26:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   27:  return 0;
+        -:   28:}

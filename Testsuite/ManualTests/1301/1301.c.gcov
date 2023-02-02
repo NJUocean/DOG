@@ -1,0 +1,23 @@
+        -:    0:Source:1301.c
+        -:    0:Graph:1301.gcno
+        -:    0:Data:1301.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct T {
+        -:    4:  int a, b;
+        -:    5:} t, q;
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  struct T *p;
+        -:    9:
+        1:   10:  t.a = 1;
+        1:   11:  t.b = 2;
+        1:   12:  q = t;
+        1:   13:  t.a = 3;
+        -:   14:
+        1:   15:  if (q.a != 1)
+    #####:   16:    __builtin_abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

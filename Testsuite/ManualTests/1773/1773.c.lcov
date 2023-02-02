@@ -1,0 +1,24 @@
+    1|      1|int test_endianness() {
+    2|      1|  union doubleword {
+    3|      1|    double d;
+    4|      1|    unsigned long u[2];
+    5|      1|  } dw;
+    6|      1|  dw.d = 10;
+    7|      1|  return dw.u[0] != 0 ? 1 : 0;
+    8|      1|}
+    9|       |
+   10|      1|int test_endianness_vol() {
+   11|      1|  union doubleword {
+   12|      1|    volatile double d;
+   13|      1|    volatile long u[2];
+   14|      1|  } dw;
+   15|      1|  dw.d = 10;
+   16|      1|  return dw.u[0] != 0 ? 1 : 0;
+   17|      1|}
+   18|       |
+   19|      1|main() {
+   20|      1|  if (test_endianness() != test_endianness_vol())
+   21|      0|    abort();
+   22|      1|  exit(0);
+   23|      1|}
+

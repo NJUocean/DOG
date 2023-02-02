@@ -1,0 +1,17 @@
+    1|       |#ifdef __SIZEOF_INT128__
+    2|       |typedef __int128 L;
+    3|       |#else
+    4|       |typedef long long L;
+    5|       |#endif
+    6|       |float f;
+    7|       |
+    8|      1|int main() {
+    9|      1|  L i = f;
+   10|      1|  if (i <= 10)
+   11|     11|    do {
+   12|     11|      ++i;
+   13|     11|      asm("");
+   14|     11|    } while (i != 11);
+   15|      1|  return 0;
+   16|      1|}
+

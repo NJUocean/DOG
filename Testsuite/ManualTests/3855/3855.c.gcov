@@ -1,0 +1,51 @@
+        -:    0:Source:3855.c
+        -:    0:Graph:3855.gcno
+        -:    0:Data:3855.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/63641 */
+        -:    2:
+      256:    3:__attribute__((noinline, noclone)) int foo(unsigned char b) {
+      256:    4:  if (0x0 <= b && b <= 0x8)
+        9:    5:    goto lab;
+      247:    6:  if (b == 0x0b)
+        1:    7:    goto lab;
+      246:    8:  if (0x0e <= b && b <= 0x1a)
+       13:    9:    goto lab;
+      233:   10:  if (0x1c <= b && b <= 0x1f)
+        4:   11:    goto lab;
+      229:   12:  return 0;
+       27:   13:lab:
+       27:   14:  return 1;
+        -:   15:}
+        -:   16:
+      256:   17:__attribute__((noinline, noclone)) int bar(unsigned char b) {
+      256:   18:  if (0x0 <= b && b <= 0x8)
+        9:   19:    goto lab;
+      247:   20:  if (b == 0x0b)
+        1:   21:    goto lab;
+      246:   22:  if (0x0e <= b && b <= 0x1a)
+       13:   23:    goto lab;
+      233:   24:  if (0x3c <= b && b <= 0x3f)
+        4:   25:    goto lab;
+      229:   26:  return 0;
+       27:   27:lab:
+       27:   28:  return 1;
+        -:   29:}
+        -:   30:
+        -:   31:char tab1[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1,
+        -:   32:               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
+        -:   33:char tab2[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        -:   34:               1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        -:   35:               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1};
+        -:   36:
+        1:   37:int main() {
+        -:   38:  int i;
+        1:   39:  asm volatile("" : : : "memory");
+      257:   40:  for (i = 0; i < 256; i++)
+      256:   41:    if (foo(i) != (i < 32 ? tab1[i] : 0))
+    #####:   42:      __builtin_abort();
+      257:   43:  for (i = 0; i < 256; i++)
+      256:   44:    if (bar(i) != (i < 64 ? tab2[i] : 0))
+    #####:   45:      __builtin_abort();
+        1:   46:  return 0;
+        -:   47:}

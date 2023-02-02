@@ -1,0 +1,36 @@
+        -:    0:Source:3680.c
+        -:    0:Graph:3680.gcno
+        -:    0:Data:3680.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  unsigned char a[256];
+        -:    3:};
+        -:    4:union u {
+        -:    5:  struct {
+        -:    6:    struct s b;
+        -:    7:    int c;
+        -:    8:  } d;
+        -:    9:  struct {
+        -:   10:    int c;
+        -:   11:    struct s b;
+        -:   12:  } e;
+        -:   13:};
+        -:   14:
+        -:   15:static union u v;
+        -:   16:static struct s *p = &v.d.b;
+        -:   17:static struct s *q = &v.e.b;
+        -:   18:
+        1:   19:static struct s __attribute__((noinline)) rp(void) { return *p; }
+        -:   20:
+        1:   21:static void qp(void) { *q = rp(); }
+        -:   22:
+        1:   23:int main() {
+        -:   24:  int i;
+      257:   25:  for (i = 0; i < 256; i++)
+      256:   26:    p->a[i] = i;
+        1:   27:  qp();
+      257:   28:  for (i = 0; i < 256; i++)
+      256:   29:    if (q->a[i] != i)
+    #####:   30:      __builtin_abort();
+        1:   31:  return 0;
+        -:   32:}

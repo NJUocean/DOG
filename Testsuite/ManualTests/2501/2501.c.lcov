@@ -1,0 +1,24 @@
+    1|       |/* Test that expressions involving __fp16 values have the right types.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-mfp16-format=ieee" } */
+    4|       |
+    5|       |/* This produces a diagnostic if EXPR doesn't have type TYPE.  */
+    6|       |#define CHECK(expr, type)                                                      \
+    7|      7|  do {                                                                         \
+    8|      7|    type v;                                                                    \
+    9|      7|    __typeof(expr) *p = &v;                                                    \
+   10|      7|  } while (0);
+   11|       |
+   12|       |volatile __fp16 f1;
+   13|       |volatile __fp16 f2;
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  CHECK(f1, __fp16);
+   17|      1|  CHECK(+f1, float);
+   18|      1|  CHECK(-f1, float);
+   19|      1|  CHECK(f1 + f2, float);
+   20|      1|  CHECK((__fp16)(f1 + f2), __fp16);
+   21|      1|  CHECK((__fp16)99.99, __fp16);
+   22|      1|  CHECK((f1 + f2, f1), __fp16);
+   23|      1|}
+

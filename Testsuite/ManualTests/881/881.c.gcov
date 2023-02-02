@@ -1,0 +1,20 @@
+        -:    0:Source:881.c
+        -:    0:Graph:881.gcno
+        -:    0:Data:881.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/43557 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-require-effective-target lto } */
+        -:    4:/* { dg-options "-flto -g -O2" } */
+        -:    5:/* { dg-additional-sources "pr43557-2.c" } */
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int v;
+        -:    9:} g;
+        -:   10:
+    #####:   11:void f1(void) {
+    #####:   12:  struct S *s = &g;
+    #####:   13:  s->v = 0;
+    #####:   14:}
+        -:   15:
+        1:   16:int main() { return 0; }

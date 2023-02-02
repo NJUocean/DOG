@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=vla-bound -fno-sanitize-recover=vla-bound" } */
+    3|       |
+    4|       |/* Don't instrument the arrays here.  */
+    5|      1|int foo(int n, int a[]) { return a[n - 1]; }
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int a[6] = {};
+    9|      1|  int ret = foo(3, a);
+   10|      1|  return ret;
+   11|      1|}
+

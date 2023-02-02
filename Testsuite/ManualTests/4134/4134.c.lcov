@@ -1,0 +1,10 @@
+    1|       |#include <stddef.h>
+    2|       |
+    3|       |const wchar_t ws[] = L"foo";
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  if (ws[0] != L'f' || ws[1] != L'o' || ws[2] != L'o' || ws[3] != L'\0')
+    7|      0|    abort();
+    8|      1|  exit(0);
+    9|      1|}
+

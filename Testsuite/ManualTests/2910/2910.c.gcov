@@ -1,0 +1,13 @@
+        -:    0:Source:2910.c
+        -:    0:Graph:2910.gcno
+        -:    0:Data:2910.gcda
+        -:    0:Runs:1
+        2:    1:int f(b) { return (b >> 1) > 0; }
+        -:    2:
+        1:    3:main() {
+        1:    4:  if (!f(9))
+    #####:    5:    abort();
+        1:    6:  if (f(-9))
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

@@ -1,0 +1,40 @@
+        -:    0:Source:4106.c
+        -:    0:Graph:4106.gcno
+        -:    0:Data:4106.gcda
+        -:    0:Runs:1
+        -:    1:/* derived from mozilla source code */
+        -:    2:
+        -:    3:#include <stdarg.h>
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  void *stream;
+        -:    7:  va_list ap;
+        -:    8:  int nChar;
+        -:    9:} ScanfState;
+        -:   10:
+        2:   11:void dummy(va_list vap) {
+        2:   12:  if (va_arg(vap, int) != 1234)
+    #####:   13:    abort();
+        2:   14:  return;
+        -:   15:}
+        -:   16:
+        1:   17:void test(int fmt, ...) {
+        -:   18:  ScanfState state, *statep;
+        -:   19:
+        1:   20:  statep = &state;
+        -:   21:
+        1:   22:  va_start(statep->ap, fmt);
+        1:   23:  dummy(statep->ap);
+        1:   24:  va_end(statep->ap);
+        -:   25:
+        1:   26:  va_start(state.ap, fmt);
+        1:   27:  dummy(state.ap);
+        1:   28:  va_end(state.ap);
+        -:   29:
+        1:   30:  return;
+        -:   31:}
+        -:   32:
+        1:   33:int main(void) {
+        1:   34:  test(456, 1234);
+        1:   35:  exit(0);
+        -:   36:}

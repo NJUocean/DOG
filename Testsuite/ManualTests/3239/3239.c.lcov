@@ -1,0 +1,71 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation.
+    2|       |
+    3|       |   Test that optimizing ((c>=1) && (c<=127)) into (signed char)c < 0
+    4|       |   doesn't cause any problems for the compiler and behaves correctly.
+    5|       |
+    6|       |   Written by Roger Sayle, 8th May 2002.  */
+    7|       |
+    8|       |#include <limits.h>
+    9|       |
+   10|       |extern void abort(void);
+   11|       |
+   12|      5|void testc(unsigned char c, int ok) {
+   13|      5|  if ((c >= 1) && (c <= SCHAR_MAX)) {
+   14|      2|    if (!ok)
+   15|      0|      abort();
+   16|      3|  } else if (ok)
+   17|      0|    abort();
+   18|      5|}
+   19|       |
+   20|      5|void tests(unsigned short s, int ok) {
+   21|      5|  if ((s >= 1) && (s <= SHRT_MAX)) {
+   22|      2|    if (!ok)
+   23|      0|      abort();
+   24|      3|  } else if (ok)
+   25|      0|    abort();
+   26|      5|}
+   27|       |
+   28|      5|void testi(unsigned int i, int ok) {
+   29|      5|  if ((i >= 1) && (i <= INT_MAX)) {
+   30|      2|    if (!ok)
+   31|      0|      abort();
+   32|      3|  } else if (ok)
+   33|      0|    abort();
+   34|      5|}
+   35|       |
+   36|      5|void testl(unsigned long l, int ok) {
+   37|      5|  if ((l >= 1) && (l <= LONG_MAX)) {
+   38|      2|    if (!ok)
+   39|      0|      abort();
+   40|      3|  } else if (ok)
+   41|      0|    abort();
+   42|      5|}
+   43|       |
+   44|      1|int main() {
+   45|      1|  testc(0, 0);
+   46|      1|  testc(1, 1);
+   47|      1|  testc(SCHAR_MAX, 1);
+   48|      1|  testc(SCHAR_MAX + 1, 0);
+   49|      1|  testc(UCHAR_MAX, 0);
+   50|      1|
+   51|      1|  tests(0, 0);
+   52|      1|  tests(1, 1);
+   53|      1|  tests(SHRT_MAX, 1);
+   54|      1|  tests(SHRT_MAX + 1, 0);
+   55|      1|  tests(USHRT_MAX, 0);
+   56|      1|
+   57|      1|  testi(0, 0);
+   58|      1|  testi(1, 1);
+   59|      1|  testi(INT_MAX, 1);
+   60|      1|  testi(INT_MAX + 1U, 0);
+   61|      1|  testi(UINT_MAX, 0);
+   62|      1|
+   63|      1|  testl(0, 0);
+   64|      1|  testl(1, 1);
+   65|      1|  testl(LONG_MAX, 1);
+   66|      1|  testl(LONG_MAX + 1UL, 0);
+   67|      1|  testl(ULONG_MAX, 0);
+   68|      1|
+   69|      1|  return 0;
+   70|      1|}
+

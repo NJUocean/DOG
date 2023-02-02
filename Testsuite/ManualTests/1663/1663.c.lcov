@@ -1,0 +1,15 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |int b, d, f, h;
+    4|       |char e;
+    5|       |int fn1();
+    6|      1|int main() { return fn1(); }
+    7|      1|int fn1(int p1) {
+    8|      1|  for (; d;)
+    9|      0|    for (; e < 3;) {
+   10|      0|      for (; h;)
+   11|      0|        b = fn1(0);
+   12|      0|      return f;
+   13|      0|    }
+   14|      1|}
+

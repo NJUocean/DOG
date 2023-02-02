@@ -1,0 +1,16 @@
+    1|       |/* Copyright (C) 2001 Free Software Foundation, Inc.  */
+    2|       |
+    3|       |/* { dg-do compile } */
+    4|       |
+    5|       |/* Source: Neil Booth, 15 Sep 2001.
+    6|       |
+    7|       |   A silly test to check that if a function-like macro name is
+    8|       |   immediately followed by a directive, then we process the directive
+    9|       |   properly.  */
+   10|       |
+   11|       |#define main()
+   12|       |int main
+   13|       |#define mainbody                                                               \
+   14|      1|  () { return 0; }
+   15|       |    mainbody
+

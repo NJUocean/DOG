@@ -1,0 +1,45 @@
+    1|       |/* This testcase generates MMX instructions together with x87 instructions.
+    2|       |   Currently, there is no "emms" generated to switch between register sets,
+    3|       |   so the testcase fails for targets where MMX insns are enabled.  */
+    4|       |/* { dg-options "-mno-mmx -Wno-psabi" { target { x86_64-*-* i?86-*-* } } } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |typedef int V2SI __attribute__((vector_size(8)));
+    9|       |typedef unsigned int V2USI __attribute__((vector_size(8)));
+   10|       |typedef float V2SF __attribute__((vector_size(8)));
+   11|       |typedef short V2HI __attribute__((vector_size(4)));
+   12|       |typedef unsigned int V2UHI __attribute__((vector_size(4)));
+   13|       |
+   14|      1|long long test1(V2SF x) { return (long long)(V2SI)x; }
+   15|       |
+   16|      1|long long test2(V2SF x) { return (long long)x; }
+   17|       |
+   18|      1|long long test3(V2SI x) { return (long long)(V2SF)x; }
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  if (sizeof(short) != 2 || sizeof(int) != 4 || sizeof(long long) != 8)
+   22|      0|    return 0;
+   23|      1|
+   24|      1|  V2SF x = {2.0, 2.0};
+   25|      1|  union {
+   26|      1|    long long l;
+   27|      1|    float f[2];
+   28|      1|    int i[2];
+   29|      1|  } u;
+   30|      1|  u.l = test1(x);
+   31|      1|  if (u.f[0] != 2.0 || u.f[1] != 2.0)
+   32|      0|    abort();
+   33|      1|
+   34|      1|  V2SF y = {6.0, 6.0};
+   35|      1|  u.l = test2(y);
+   36|      1|  if (u.f[0] != 6.0 || u.f[1] != 6.0)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  V2SI z = {4, 4};
+   40|      1|  u.l = test3(z);
+   41|      1|  if (u.i[0] != 4 || u.i[1] != 4)
+   42|      0|    abort();
+   43|      1|  return 0;
+   44|      1|}
+

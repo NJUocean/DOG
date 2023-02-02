@@ -1,0 +1,24 @@
+    1|       |/* PR rtl-optimization/57877 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |int a, b, *c = &b, e, f = 6, g, h;
+    5|       |short d;
+    6|       |
+    7|      1|static unsigned char foo(unsigned long long p1, int *p2) {
+    8|      2|  for (; g <= 0; g++) {
+    9|      1|    short *i = &d;
+   10|      1|    int *j = &e;
+   11|      1|    h = *c;
+   12|      1|    *i = h;
+   13|      1|    *j = (*i == *p2) < p1;
+   14|      1|  }
+   15|      1|  return 0;
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  foo(f, &a);
+   20|      1|  if (e != 1)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

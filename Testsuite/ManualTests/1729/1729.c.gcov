@@ -1,0 +1,28 @@
+        -:    0:Source:1729.c
+        -:    0:Graph:1729.gcno
+        -:    0:Data:1729.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:long long a;
+        -:    4:int b[92][32];
+        -:    5:unsigned int c, d;
+        -:    6:
+      672:    7:void e(long long *f, int p2) { *f = p2; }
+        -:    8:
+        1:    9:int main() {
+       16:   10:  for (int i = 6; i <= 20; d = i++)
+     1305:   11:    for (int j = 6; j <= 91; j++) {
+    21930:   12:      for (int k = 16; k <= 31; k++)
+    20640:   13:        b[j][k] ^= 7;
+     1290:   14:      c *= d;
+        -:   15:    }
+        -:   16:
+       22:   17:  for (int i = 0; i < 21; ++i)
+      693:   18:    for (int j = 0; j < 32; ++j)
+      672:   19:      e(&a, b[i][j]);
+        -:   20:
+        1:   21:  if (a != 7)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

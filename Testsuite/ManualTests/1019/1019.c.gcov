@@ -1,0 +1,27 @@
+        -:    0:Source:1019.c
+        -:    0:Graph:1019.gcno
+        -:    0:Data:1019.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O -fno-tree-coalesce-vars" } */
+        -:    3:typedef unsigned char u8;
+        -:    4:typedef unsigned short u16;
+        -:    5:typedef unsigned u32;
+        -:    6:typedef unsigned long long u64;
+        -:    7:
+        -:    8:static u64 __attribute__((noinline, noclone))
+        1:    9:foo(u8 u8_0, u16 u16_0, u32 u32_0, u64 u64_0, u16 u16_1) {
+        1:   10:  u16_1 += 0x1051;
+        1:   11:  u16_1 &= 1;
+        1:   12:  u8_0 <<= u32_0 & 7;
+        1:   13:  u16_0 -= !u16_1;
+        1:   14:  u16_1 >>= ((u16)-u8_0 != 0xff);
+        1:   15:  return u8_0 + u16_0 + u64_0 + u16_1;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  u64 x = foo(1, 1, 0xffff, 0, 1);
+        1:   20:  if (x != 0x80)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

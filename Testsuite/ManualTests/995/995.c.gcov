@@ -1,0 +1,24 @@
+        -:    0:Source:995.c
+        -:    0:Graph:995.gcno
+        -:    0:Data:995.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/69442 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Og" } */
+        -:    4:
+        -:    5:unsigned long long __attribute__((noinline, noclone))
+        1:    6:foo(unsigned int x, unsigned long long y) {
+        1:    7:  x |= 0xffff;
+        1:    8:  y -= 0xffULL;
+        1:    9:  y %= 0xffff0000ffffffe7ULL;
+        1:   10:  return x + y;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  if (sizeof(unsigned long long) * __CHAR_BIT__ != 64)
+        -:   15:    return 0;
+        -:   16:
+        1:   17:  if (foo(0, 0) != 0xffff0000ff19ULL)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

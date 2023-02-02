@@ -1,0 +1,9 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options {{-flto -fsigned-char} {-flto -funsigned-char}} } */
+    3|       |
+    4|       |char *a;
+    5|       |int f;
+    6|       |
+    7|      0|void foo(void) { f = (*a != '-'); }
+    8|      1|int main() { return 0; }
+

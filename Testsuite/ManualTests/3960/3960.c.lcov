@@ -1,0 +1,29 @@
+    1|       |/* Test recovery mode.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize-recover=address" } */
+    4|       |/* { dg-set-target-env-var ASAN_OPTIONS "halt_on_error=true" } */
+    5|       |/* { dg-shouldfail "asan" } */
+    6|       |
+    7|       |#include <string.h>
+    8|       |
+    9|       |volatile int ten = 10;
+   10|       |
+   11|      1|int main() {
+   12|      1|  char x[10];
+   13|      1|  __builtin_memset(x, 0, ten + 1);
+   14|      1|  asm volatile("" : : : "memory");
+   15|      1|  volatile int res = x[ten];
+   16|      1|  x[ten] = res + 3;
+   17|      1|  res = x[ten];
+   18|      1|  return 0;
+   19|      1|}
+   20|       |
+   21|       |/* { dg-output "WRITE of size 11 at 0x\[0-9a-f\]+ thread
+   22|       | * T0\[^\n\r]*(\n|\r\n|\r).*" } */
+   23|       |/* { dg-prune-output "\[^\n\r]*READ of size 1 at 0x\[0-9a-f\]+ thread
+   24|       | * T0\[^\n\r]*(\n|\r\n|\r).*" } */
+   25|       |/* { dg-prune-output "\[^\n\r]*WRITE of size 1 at 0x\[0-9a-f\]+ thread
+   26|       | * T0\[^\n\r]*(\n|\r\n|\r).*" } */
+   27|       |/* { dg-prune-output "\[^\n\r]*READ of size 1 at 0x\[0-9a-f\]+ thread
+   28|       | * T0\[^\n\r]*(\n|\r\n|\r).*" } */
+

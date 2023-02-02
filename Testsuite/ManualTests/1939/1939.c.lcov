@@ -1,0 +1,14 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-weak-override "" } */
+    3|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    4|       |
+    5|      1|void __attribute__((weak)) func(void) { /* no code */
+    6|      1|}
+    7|       |
+    8|      1|int main() {
+    9|      1|  func();
+   10|      1|  return 0;
+   11|      1|}
+   12|       |
+   13|       |/* { dg-final { scan-tree-dump "func \\(\\);" "optimized" } } */
+

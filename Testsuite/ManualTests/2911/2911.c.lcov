@@ -1,0 +1,24 @@
+    1|       |int f(int **, int *, int *, int **, int **) __attribute__((__noinline__));
+    2|      1|int f(int **ipp, int *i1p, int *i2p, int **i3, int **i4) {
+    3|      1|  **ipp = *i1p;
+    4|      1|  *ipp = i2p;
+    5|      1|  *i3 = *i4;
+    6|      1|  **ipp = 99;
+    7|      1|  return 3;
+    8|      1|}
+    9|       |
+   10|       |extern void exit(int);
+   11|       |extern void abort(void);
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  int i = 42, i1 = 66, i2 = 1, i3 = -1, i4 = 55;
+   15|      1|  int *ip = &i;
+   16|      1|  int *i3p = &i3;
+   17|      1|  int *i4p = &i4;
+   18|      1|
+   19|      1|  f(&ip, &i1, &i2, &i3p, &i4p);
+   20|      1|  if (i != 66 || ip != &i2 || i2 != 99 || i3 != -1 || i3p != i4p || i4 != 55)
+   21|      0|    abort();
+   22|      1|  exit(0);
+   23|      1|}
+

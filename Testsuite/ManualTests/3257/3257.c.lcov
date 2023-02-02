@@ -1,0 +1,22 @@
+    1|       |void __attribute__((noinline)) foo(int *p, int d1, int d2, int d3, short count,
+    2|      1|                                   int s1, int s2, int s3, int s4, int s5) {
+    3|      1|  int n = count;
+    4|      3|  while (n--) {
+    5|      2|    *p++ = s1;
+    6|      2|    *p++ = s2;
+    7|      2|    *p++ = s3;
+    8|      2|    *p++ = s4;
+    9|      2|    *p++ = s5;
+   10|      2|  }
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  int x[10], i;
+   15|      1|
+   16|      1|  foo(x, 0, 0, 0, 2, 100, 200, 300, 400, 500);
+   17|     11|  for (i = 0; i < 10; i++)
+   18|     10|    if (x[i] != (i % 5 + 1) * 100)
+   19|      0|      abort();
+   20|      1|  exit(0);
+   21|      1|}
+

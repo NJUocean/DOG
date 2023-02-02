@@ -1,0 +1,15 @@
+    1|       |/* Test against a problem with loop reversal.  */
+    2|      1|static void bug(int size, int tries) {
+    3|      1|  int i;
+    4|      1|  int num = 0;
+    5|      2|  while (num < size) {
+    6|     10|    for (i = 1; i < tries; i++)
+    7|      9|      num++;
+    8|      1|  }
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  bug(5, 10);
+   13|      1|  exit(0);
+   14|      1|}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:1613.c
+        -:    0:Graph:1613.gcno
+        -:    0:Data:1613.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target lp64 } } */
+        -:    2:/* { dg-additional-options "-w -Wno-psabi" } */
+        -:    3:
+        -:    4:typedef unsigned char v64u8 __attribute__((vector_size(64)));
+        -:    5:typedef unsigned long v64u64 __attribute__((vector_size(64)));
+        -:    6:typedef unsigned char u8;
+        -:    7:
+        1:    8:static u8 __attribute__((noinline, noclone)) foo(v64u64 v64u64_0) {
+        1:    9:  return ((v64u8)(v64u64){0, v64u64_0[0]})[13];
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  u8 x = foo((v64u64){0x0706050403020100UL});
+        -:   14:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   15:  if (x != 5)
+    #####:   16:    __builtin_abort();
+        -:   17:#endif
+        1:   18:  return 0;
+        -:   19:}

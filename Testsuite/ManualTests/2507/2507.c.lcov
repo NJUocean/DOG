@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target arm_thumb2_ok } */
+    3|       |/* { dg-options "-mthumb -O2 -mrestrict-it" }  */
+    4|       |
+    5|      2|__attribute__((noinline, noclone)) int fn1(int a, int b) {
+    6|      2|  return (a == b ? 0 : -1);
+    7|      2|}
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  if (fn1(3, 3) != 0)
+   11|      0|    __builtin_abort();
+   12|      1|
+   13|      1|  if (fn1(6, 7) != -1)
+   14|      0|    __builtin_abort();
+   15|      1|}
+

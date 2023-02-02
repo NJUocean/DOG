@@ -1,0 +1,24 @@
+        -:    0:Source:1991.c
+        -:    0:Graph:1991.gcno
+        -:    0:Data:1991.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:struct S0 {
+        -:    5:  __INT32_TYPE__ f0 : 24;
+        -:    6:  __INT32_TYPE__ f1;
+        -:    7:  __INT32_TYPE__ f74;
+        -:    8:} a, *c = &a;
+        1:    9:struct S0 fn1() {
+        1:   10:  struct S0 b = {4, 3};
+        1:   11:  return b;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  *c = fn1();
+        -:   16:
+        1:   17:  if (a.f1 != 3)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,23 @@
+        -:    0:Source:3934.c
+        -:    0:Graph:3934.gcno
+        -:    0:Data:3934.gcda
+        -:    0:Runs:1
+        -:    1:/* Signed left-shift is implementation-defined in C89 (and see
+        -:    2:   DR#081), not undefined.  Bug 7284 from Al Grant (AlGrant at
+        -:    3:   myrealbox.com).  */
+        -:    4:
+        -:    5:/* { dg-require-effective-target int32plus } */
+        -:    6:/* { dg-options "-std=c89" } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+        1:   11:int f(int n) { return (n << 24) / (1 << 23); }
+        -:   12:
+        -:   13:volatile int x = 128;
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  if (f(x) != -256)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

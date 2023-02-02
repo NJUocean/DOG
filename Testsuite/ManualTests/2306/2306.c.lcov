@@ -1,0 +1,21 @@
+    1|       |unsigned bug(unsigned short value, unsigned short *buffer,
+    2|       |             unsigned short *bufend);
+    3|       |
+    4|       |unsigned short buf[] = {1, 4, 16, 64, 256};
+    5|      1|int main() {
+    6|      1|  if (bug(512, buf, buf + 3) != 491)
+    7|      0|    abort();
+    8|      1|
+    9|      1|  exit(0);
+   10|      1|}
+   11|       |
+   12|       |unsigned bug(unsigned short value, unsigned short *buffer,
+   13|      1|             unsigned short *bufend) {
+   14|      1|  unsigned short *tmp;
+   15|      1|
+   16|      4|  for (tmp = buffer; tmp < bufend; tmp++)
+   17|      3|    value -= *tmp;
+   18|      1|
+   19|      1|  return value;
+   20|      1|}
+

@@ -1,0 +1,17 @@
+        -:    0:Source:3072.c
+        -:    0:Graph:3072.gcno
+        -:    0:Data:3072.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+       16:    2:void f(int i) {
+       16:    3:  if (i > 4 + 3 * 16)
+    #####:    4:    abort();
+       16:    5:}
+        -:    6:
+        1:    7:int main() {
+        -:    8:  unsigned int buflen, i;
+        1:    9:  buflen = 4 + 3 * 16;
+       17:   10:  for (i = 4; i < buflen; i += 3)
+       16:   11:    f(i);
+        1:   12:  return 0;
+        -:   13:}

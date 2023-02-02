@@ -1,0 +1,30 @@
+        -:    0:Source:1710.c
+        -:    0:Graph:1710.gcno
+        -:    0:Data:1710.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int one = 1;
+        -:    4:
+        1:    5:char __attribute__((noipa)) foo(char v) {
+        -:    6:  int modec;
+        -:    7:
+        1:    8:  if (one) {
+       1*:    9:    modec = ((v < 'A' || v > 'Z') ? v : v + ('a' - 'A'));
+       1*:   10:    if (modec != 't' && modec != 'c' && modec != 'g')
+    #####:   11:      modec = 0;
+        -:   12:  } else
+    #####:   13:    modec = 'g';
+        -:   14:
+        1:   15:  return modec;
+        -:   16:}
+        -:   17:
+        1:   18:int main(int argc, char **argv) {
+        1:   19:  char c = 't';
+        1:   20:  int r = foo(c);
+        -:   21:
+        1:   22:  if (r != c)
+    #####:   23:    __builtin_abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

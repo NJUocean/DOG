@@ -1,0 +1,13 @@
+        -:    0:Source:2804.c
+        -:    0:Graph:2804.gcno
+        -:    0:Data:2804.gcda
+        -:    0:Runs:1
+        -:    1:/* Test visibility attribute.  */
+        -:    2:/* { dg-do link { target ia64*-*-linux* } } */
+        -:    3:/* { dg-options "-O2 -fpic" } */
+        -:    4:
+        -:    5:int foo(int x);
+        -:    6:int bar(int x) __asm__("foo") __attribute__((visibility("hidden")));
+    #####:    7:int bar(int x) { return x; }
+        -:    8:
+        1:    9:int main() { return 0; }

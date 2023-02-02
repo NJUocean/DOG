@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int128 } */
+    3|       |/* { dg-options "-Og -w -Wno-psabi" } */
+    4|       |
+    5|       |typedef unsigned __int128 u128;
+    6|       |typedef unsigned __int128 v64u128 __attribute__((vector_size(64)));
+    7|       |
+    8|      1|u128 __attribute__((noinline, noclone)) foo(unsigned c, v64u128 v) {
+    9|      1|  v64u128 u;
+   10|      1|  if (c) {
+   11|      0|    u = (v64u128){(u128)0, (u128)0};
+   12|      1|  } else {
+   13|      1|    u = (v64u128){(u128)0, (u128)1};
+   14|      1|  }
+   15|      1|  u += v;
+   16|      1|  return u[1];
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  u128 x = foo(0, (v64u128){});
+   21|      1|  if (x != 1)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

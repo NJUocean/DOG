@@ -1,0 +1,7 @@
+    1|      1|sub(int i, int array[i++]) { return i; }
+    2|       |
+    3|      1|main() {
+    4|      1|  int array[10];
+    5|      1|  exit(sub(10, array) != 11);
+    6|      1|}
+

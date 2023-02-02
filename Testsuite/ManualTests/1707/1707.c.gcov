@@ -1,0 +1,31 @@
+        -:    0:Source:1707.c
+        -:    0:Graph:1707.gcno
+        -:    0:Data:1707.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct X {
+        -:    4:  long x;
+        -:    5:  long y;
+        -:    6:};
+        -:    7:
+        -:    8:struct X a[1024], b[1024];
+        -:    9:
+        1:   10:void foo() {
+     1025:   11:  for (int i = 0; i < 1024; ++i) {
+     1024:   12:    long tem = a[i].x;
+     1024:   13:    a[i].x = 0;
+     1024:   14:    b[i].x = tem;
+     1024:   15:    b[i].y = a[i].y;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+     1025:   20:  for (int i = 0; i < 1024; ++i)
+     1024:   21:    a[i].x = i;
+        1:   22:  foo();
+     1025:   23:  for (int i = 0; i < 1024; ++i)
+     1024:   24:    if (b[i].x != i)
+    #####:   25:      __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}

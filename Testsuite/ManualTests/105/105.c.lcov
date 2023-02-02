@@ -1,0 +1,35 @@
+    1|       |/* { dg-do run  { target powerpc*-*-* i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-options "-O1" } */
+    3|       |/* Test to make sure that inline-asm causes the tree optimizers to get the
+    4|       |   V_MAY_DEFs and clobber memory.  */
+    5|       |/* Test from Jakub Jelinek, modified by Andrew Pinski to work on all powerpc
+    6|       | * targets.  */
+    7|       |extern void abort(void);
+    8|       |
+    9|       |unsigned short v = 0x0300;
+   10|       |
+   11|      1|void foo(unsigned short *p) { *p = v; }
+   12|       |
+   13|      1|int bar(void) {
+   14|      1|  unsigned short x;
+   15|      1|  volatile unsigned short *z;
+   16|      1|  foo(&x);
+   17|      1|  const unsigned int y = x;
+   18|      1|  z = &x;
+   19|       |#if defined(__powerpc__) || defined(__PPC__) || defined(__ppc__) ||            \
+   20|       |    defined(_POWER) || defined(__ppc64__) || defined(__ppc)
+   21|       |  __asm __volatile("sthbrx %1,0,%2" : "=m"(*z) : "r"(y), "r"(z));
+   22|       |#elif defined __i386__ || defined __x86_64__
+   23|       |  __asm __volatile("movb %b1,1(%2)\n\tmovb %h1,(%2)"
+   24|      1|                   : "=m"(*z)
+   25|      1|                   : "Q"(y), "R"(z));
+   26|      1|#endif
+   27|      1|  return (x & 1) == 0;
+   28|      1|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  if (bar())
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

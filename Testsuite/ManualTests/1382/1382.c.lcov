@@ -1,0 +1,10 @@
+    1|       |/* PR sanitizer/80932 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+    4|       |
+    5|       |int x = 1;
+    6|       |
+    7|      1|int foo(void) { return ((int)(2855545792U * x) - (int)(3269399503U * x)) * -5; }
+    8|       |
+    9|      1|int main() { foo(); }
+

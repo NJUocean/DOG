@@ -1,0 +1,37 @@
+        -:    0:Source:236.c
+        -:    0:Graph:236.gcno
+        -:    0:Data:236.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002 Free Software Foundation, Inc.  */
+        -:    2:
+        -:    3:/* { dg-do preprocess } */
+        -:    4:
+        -:    5:/* Source: Neil Booth, 26 Feb 2002.
+        -:    6:
+        -:    7:   Test that we allow directives in macro arguments.  */
+        -:    8:
+        -:    9:/* { dg-do run } */
+        -:   10:/* { dg-options "" } */
+        -:   11:
+        -:   12:#define f(x) x
+        -:   13:extern void abort(void);
+        -:   14:
+        1:   15:int main() {
+        -:   16:  if (f(
+        -:   17:#if f(1) /* True.  */
+        -:   18:          0)) /* False. */
+        -:   19:#else
+        -:   20:          1))
+        -:   21:#endif
+        -:   22:    abort();
+        -:   23:
+        -:   24:  /* Outer f expands to original definition, f in argument expands
+        -:   25:     to new definition, so result is: if (1 != 2 - 1).  */
+        -:   26:  if (1 != f(2
+        -:   27:#undef f
+        -:   28:#define f -1
+        -:   29:             f))
+        -:   30:    abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

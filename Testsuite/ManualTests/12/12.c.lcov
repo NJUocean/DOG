@@ -1,0 +1,12 @@
+    1|       |/* PR c/11420 */
+    2|       |/* { dg-do link { target fpic } } */
+    3|       |/* { dg-options "-O2 -fpic" } */
+    4|       |
+    5|       |void (*volatile fn)(void);
+    6|      0|static void foo(void) {}
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  fn = foo;
+   10|      1|  return 0;
+   11|      1|}
+

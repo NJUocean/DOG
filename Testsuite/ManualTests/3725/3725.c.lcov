@@ -1,0 +1,15 @@
+    1|      0|int f(int a, int b) {}
+    2|       |
+    3|      1|main() {
+    4|      1|  unsigned long addr1;
+    5|      1|  unsigned long addr2;
+    6|      1|
+    7|      1|  addr1 = (unsigned long)&f;
+    8|      1|  addr1 += 5;
+    9|      1|  addr2 = 5 + (unsigned long)&f;
+   10|      1|
+   11|      1|  if (addr1 != addr2)
+   12|      0|    abort();
+   13|      1|  exit(0);
+   14|      1|}
+

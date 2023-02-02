@@ -1,0 +1,46 @@
+        -:    0:Source:2301.c
+        -:    0:Graph:2301.gcno
+        -:    0:Data:2301.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for typeof evaluation: should be at the appropriate point in
+        -:    2:   the containing expression rather than just adding a statement.  */
+        -:    3:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-std=gnu99" } */
+        -:    6:
+        -:    7:extern void exit(int);
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:void *p;
+        -:   11:
+        1:   12:void f1(void) {
+        1:   13:  int i = 0, j = -1, k = -1;
+        -:   14:  /* typeof applied to expression with cast.  */
+        1:   15:  (j = ++i), (void)(typeof((int(*)[(k = ++i)]) p)) p;
+        1:   16:  if (j != 1 || k != 2 || i != 2)
+    #####:   17:    abort();
+        1:   18:}
+        -:   19:
+        1:   20:void f2(void) {
+        1:   21:  int i = 0, j = -1, k = -1;
+        -:   22:  /* typeof applied to type.  */
+        1:   23:  (j = ++i), (void)(typeof(int(*)[(k = ++i)])) p;
+        1:   24:  if (j != 1 || k != 2 || i != 2)
+    #####:   25:    abort();
+        1:   26:}
+        -:   27:
+        1:   28:void f3(void) {
+        1:   29:  int i = 0, j = -1, k = -1;
+        -:   30:  void *q;
+        -:   31:  /* typeof applied to expression with cast that is used.  */
+        1:   32:  (j = ++i), (void)((typeof(1 + (int(*)[(k = ++i)]) p)) p);
+        1:   33:  if (j != 1 || k != 2 || i != 2)
+    #####:   34:    abort();
+        1:   35:}
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  f1();
+        1:   39:  f2();
+        1:   40:  f3();
+        1:   41:  exit(0);
+        -:   42:}

@@ -1,0 +1,21 @@
+    1|       |/* PR tree-optimization/81913 */
+    2|       |
+    3|       |typedef __UINT8_TYPE__ u8;
+    4|       |typedef __UINT32_TYPE__ u32;
+    5|       |
+    6|      1|static u32 b(u8 d, u32 e, u32 g) {
+    7|     53|  do {
+    8|     53|    e += g + 1;
+    9|     53|    d--;
+   10|     53|  } while (d >= (u8)e);
+   11|      1|
+   12|      1|  return e;
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  u32 x = b(1, -0x378704, ~0xba64fc);
+   17|      1|  if (x != 0xd93190d0)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

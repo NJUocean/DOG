@@ -1,0 +1,21 @@
+    1|       |/* { dg-require-effective-target untyped_assembly } */
+    2|       |foo(a, p) int *p;
+    3|      0|{
+    4|      0|  p[0] = a;
+    5|      0|  a = (short)a;
+    6|      0|  return a;
+    7|      0|}
+    8|       |
+    9|      1|main() {
+   10|      1|  int i;
+   11|      1|  foobar(i, &i);
+   12|      1|}
+   13|       |
+   14|      1|foobar(a, b) {
+   15|      1|  int c;
+   16|      1|
+   17|      1|  c = a % b;
+   18|      1|  a = a / b;
+   19|      1|  return a + b;
+   20|      1|}
+

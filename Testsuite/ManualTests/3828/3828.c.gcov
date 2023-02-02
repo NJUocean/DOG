@@ -1,0 +1,22 @@
+        -:    0:Source:3828.c
+        -:    0:Graph:3828.gcno
+        -:    0:Data:3828.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/59387 */
+        -:    2:
+        -:    3:int a, *d, **e = &d, f;
+        -:    4:char c;
+        -:    5:struct S {
+        -:    6:  int f1;
+        -:    7:} b;
+        -:    8:
+        1:    9:int main() {
+       20:   10:  for (a = -19; a; a++) {
+      475:   11:    for (b.f1 = 0; b.f1 < 24; b.f1++)
+      456:   12:      c--;
+       19:   13:    *e = &f;
+       19:   14:    if (!d)
+    #####:   15:      return 0;
+        -:   16:  }
+        1:   17:  return 0;
+        -:   18:}

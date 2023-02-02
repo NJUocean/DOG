@@ -1,0 +1,23 @@
+        -:    0:Source:664.c
+        -:    0:Graph:664.gcno
+        -:    0:Data:664.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-skip-if "" { ! { i?86-*-linux* i?86-*-gnu* x86_64-*-linux* } } } */
+        -:    3:/* { dg-require-effective-target fpic } */
+        -:    4:/* { dg-lto-options {{-flto -flto-partition=1to1 -fPIC}} } */
+        -:    5:/* { dg-suppress-ld-options {-fPIC} } */
+        -:    6:
+        1:    7:void func(int n) {
+        -:    8:  static int __thread v = 0;
+        -:    9:  int i;
+        2:   10:  for (i = 0; i < n; ++i) {
+        1:   11:    volatile int *p = &v;
+        1:   12:    volatile int x __attribute__((unused)) = *p;
+        -:   13:  }
+        1:   14:}
+        -:   15:
+        1:   16:int main(int argc, char **argv) {
+        1:   17:  func(argc);
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,19 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|      1|void fdouble(double one, ...) {
+    4|      1|  double value;
+    5|      1|  va_list ap;
+    6|      1|
+    7|      1|  va_start(ap, one);
+    8|      1|  value = va_arg(ap, double);
+    9|      1|  va_end(ap);
+   10|      1|
+   11|      1|  if (one != 1.0 || value != 2.0)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  fdouble(1.0, 2.0);
+   17|      1|  exit(0);
+   18|      1|}
+

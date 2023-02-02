@@ -1,0 +1,34 @@
+        -:    0:Source:3770.c
+        -:    0:Graph:3770.gcno
+        -:    0:Data:3770.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56051 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main() {
+        1:    6:  unsigned char x1[1] = {0};
+        1:    7:  unsigned int s1 = __CHAR_BIT__;
+        1:    8:  int a1 = x1[0] < (unsigned char)(1 << s1);
+        1:    9:  unsigned char y1 = (unsigned char)(1 << s1);
+        1:   10:  int b1 = x1[0] < y1;
+        1:   11:  if (a1 != b1)
+    #####:   12:    abort();
+        -:   13:#if __SIZEOF_LONG_LONG__ > __SIZEOF_INT__
+        1:   14:  unsigned long long x2[1] = {2ULL << (sizeof(int) * __CHAR_BIT__)};
+        1:   15:  unsigned int s2 = sizeof(int) * __CHAR_BIT__ - 1;
+        1:   16:  int a2 = x2[0] >= (unsigned long long)(1 << s2);
+        1:   17:  unsigned long long y2 = 1 << s2;
+        1:   18:  int b2 = x2[0] >= y2;
+        1:   19:  if (a2 != b2)
+    #####:   20:    abort();
+        1:   21:  unsigned long long x3[1] = {2ULL << (sizeof(int) * __CHAR_BIT__)};
+        1:   22:  unsigned int s3 = sizeof(int) * __CHAR_BIT__ - 1;
+        1:   23:  int a3 = x3[0] >= (unsigned long long)(1U << s3);
+        1:   24:  unsigned long long y3 = 1U << s3;
+        1:   25:  int b3 = x3[0] >= y3;
+        1:   26:  if (a3 != b3)
+    #####:   27:    abort();
+        -:   28:#endif
+        1:   29:  return 0;
+        -:   30:}

@@ -1,0 +1,24 @@
+    1|       |/* This test was miscompiled when using sibling call optimization,
+    2|       |   because X ? Y : Y - 1 optimization changed X into !X in place
+    3|       |   and haven't reverted it if do_store_flag was successful, so
+    4|       |   when expanding the expression the second time it was
+    5|       |   !X ? Y : Y - 1.  */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|      1|void foo(int x) {
+   11|      1|  if (x != 1)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|       |int z;
+   16|       |
+   17|      1|int main(int argc, char **argv) {
+   18|      1|  char *a = "test";
+   19|      1|  char *b = a + 2;
+   20|      1|
+   21|      1|  foo(z > 0 ? b - a : b - a - 1);
+   22|      1|  exit(0);
+   23|      1|}
+

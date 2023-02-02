@@ -1,0 +1,21 @@
+        -:    0:Source:406.c
+        -:    0:Graph:406.gcno
+        -:    0:Data:406.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:#define vector __attribute__((vector_size(8 * sizeof(short))))
+        -:    3:
+        1:    4:int main(int argc, char *argv[]) {
+        1:    5:  vector short v0 = {(short)argc, 2, 3, 4, 5, 6, 7};
+        1:    6:  vector short v1 = {2, 2, 2, 2, 2, 2, 2};
+        -:    7:  vector short r1, r2, r3, r4;
+        1:    8:  int i = 8;
+        -:    9:
+        1:   10:  r1 = v0 << 1;
+        1:   11:  r2 = v0 >> 1;
+        -:   12:
+        1:   13:  r3 = v0 << v1;
+        1:   14:  r4 = v0 >> v1;
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

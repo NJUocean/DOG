@@ -1,0 +1,15 @@
+        -:    0:Source:1537.c
+        -:    0:Graph:1537.gcno
+        -:    0:Data:1537.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:short foo[100];
+        -:    4:
+        1:    5:int main() {
+        1:    6:  short *bar = &foo[50];
+        1:    7:  short i = 1;
+        1:    8:  short j = 1;
+        1:    9:  short value = bar[8 - i * 2 * j];
+        1:   10:  return value;
+        -:   11:}

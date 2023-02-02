@@ -1,0 +1,24 @@
+        -:    0:Source:1689.c
+        -:    0:Graph:1689.gcno
+        -:    0:Data:1689.gcda
+        -:    0:Runs:1
+        -:    1:volatile double a, *p;
+        -:    2:
+        1:    3:int main() {
+        -:    4:  double c, d;
+        -:    5:  volatile double b;
+        -:    6:
+        1:    7:  d = 1.0;
+        1:    8:  p = &b;
+        -:    9:  do {
+       53:   10:    c = d;
+       53:   11:    d = c * 0.5;
+       53:   12:    b = 1 + d;
+       53:   13:  } while (b != 1.0);
+        -:   14:
+        1:   15:  a = 1.0 + c;
+        1:   16:  if (a == 1.0)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  exit(0);
+        -:   20:}

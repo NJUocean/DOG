@@ -1,0 +1,19 @@
+        -:    0:Source:740.c
+        -:    0:Graph:740.gcno
+        -:    0:Data:740.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/30552 */
+        -:    2:
+        -:    3:/* Statement expression as formal array argument size in nested function
+        -:    4: * prototype scope is valid.  */
+        -:    5:
+        -:    6:/* { dg-do compile } */
+        -:    7:/* { dg-options "" } */
+        -:    8:
+        1:    9:int main() {
+        -:   10:  void fun(int a[({
+        -:   11:    void h() {}
+        -:   12:    10;
+        -:   13:  })]) {}
+        1:   14:  return 0;
+        -:   15:}

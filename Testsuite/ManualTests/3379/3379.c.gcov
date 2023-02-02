@@ -1,0 +1,29 @@
+        -:    0:Source:3379.c
+        -:    0:Graph:3379.gcno
+        -:    0:Data:3379.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/19828 */
+        -:    2:typedef __SIZE_TYPE__ size_t;
+        -:    3:extern size_t strlen(const char *s);
+        -:    4:extern int strncmp(const char *s1, const char *s2, size_t n);
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:const char *a[16] = {"a", "bc", "de", "fgh"};
+        -:    8:
+        1:    9:int foo(char *x, const char *y, size_t n) {
+        1:   10:  size_t i, j = 0;
+        4:   11:  for (i = 0; i < n; i++) {
+        3:   12:    if (strncmp(x + j, a[i], strlen(a[i])) != 0)
+    #####:   13:      return 2;
+        3:   14:    j += strlen(a[i]);
+        3:   15:    if (y)
+    #####:   16:      j += strlen(y);
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  if (foo("abcde", (const char *)0, 3) != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

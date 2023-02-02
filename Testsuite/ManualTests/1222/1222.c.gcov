@@ -1,0 +1,31 @@
+        -:    0:Source:1222.c
+        -:    0:Graph:1222.gcno
+        -:    0:Data:1222.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct list {
+        -:    4:  struct list *n;
+        -:    5:};
+        -:    6:
+        -:    7:struct obj {
+        -:    8:  int n;
+        -:    9:  struct list l;
+        -:   10:} _o;
+        -:   11:
+        -:   12:struct list _l = {.n = &_o.l};
+        -:   13:
+        1:   14:int main(int argc, char *argv[]) {
+        1:   15:  struct obj *o = &_o;
+        1:   16:  _o.l.n = &_l;
+        2:   17:  while (&o->l != &_l)
+        -:   18:    /* Note the following is invoking undefined behavior but in
+        -:   19:       this kind of "obvious" cases we don't want to break things
+        -:   20:       unnecessarily and thus we avoid analyzing o as pointing
+        -:   21:       to nothing via the undefined pointer subtraction.  Instead
+        -:   22:       we canonicalize the pointer subtraction followed by the
+        -:   23:       pointer conversion to pointer offsetting.  */
+        1:   24:    o = ((struct obj *)((const char *)(o->l.n) -
+        -:   25:                        (const char *)&((struct obj *)0)->l));
+        1:   26:  return 0;
+        -:   27:}

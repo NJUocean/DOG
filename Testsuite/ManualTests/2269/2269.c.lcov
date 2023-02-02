@@ -1,0 +1,17 @@
+    1|       |int xorn(a, b) int a, b;
+    2|      4|{ return a ^ ~b; }
+    3|       |
+    4|       |int not(a) int a;
+    5|      4|{ return ~a; }
+    6|       |
+    7|       |int xor (a, b) int a, b;
+    8|      4|{ return a ^ b; }
+    9|       |
+   10|      1|main() {
+   11|      1|  int i, j;
+   12|      1|
+   13|      3|  for (i = 0; i <= 1; i++)
+   14|      6|    for (j = 0; j <= 1; j++)
+   15|      4|      printf("%d op %d = %d = %d?\n", i, j, 1 & xor(i, not(j)), 1 & xorn(i, j));
+   16|      1|}
+

@@ -1,0 +1,29 @@
+        -:    0:Source:956.c
+        -:    0:Graph:956.gcno
+        -:    0:Data:956.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/61529 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:
+        -:    5:unsigned int a = 0, b = 0;
+        -:    6:unsigned int c;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  unsigned int d = 0;
+        -:   10:  int e[5];
+        -:   11:
+        2:   12:  for (; b < 1; b++)
+        1:   13:    d = 0;
+        2:   14:  for (; d < 1; d++)
+        1:   15:    a = 0;
+        2:   16:  for (; a < 1; a++)
+        -:   17:    ;
+        -:   18:
+        6:   19:  for (c = 0; c < 5; c++)
+        5:   20:    e[c] = 1;
+        1:   21:  if (e[0])
+        1:   22:    c = 0;
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

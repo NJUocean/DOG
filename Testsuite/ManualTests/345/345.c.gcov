@@ -1,0 +1,24 @@
+        -:    0:Source:345.c
+        -:    0:Graph:345.gcno
+        -:    0:Data:345.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -ffast-math" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        8:    6:int foo(float *dists, int k) {
+        8:    7:  if ((dists[0] > 0) == (dists[1] > 0))
+        4:    8:    return k;
+        4:    9:  return 0;
+        -:   10:}
+        1:   11:int main() {
+        1:   12:  float dists[16] = {0., 1., 1., 0.,  0.,  -1., -1., 0.,
+        -:   13:                     1., 1., 1., -1., -1., 1.,  -1., -1.};
+        1:   14:  if (foo(&dists[0], 1) + foo(&dists[2], 2) + foo(&dists[4], 4) +
+        1:   15:          foo(&dists[6], 8) + foo(&dists[8], 16) + foo(&dists[10], 32) +
+        1:   16:          foo(&dists[12], 64) + foo(&dists[14], 128) !=
+        -:   17:      156)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,16 @@
+    1|       |/* PR 3997 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-alias "" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|void foo(void) { exit(0); }
+    9|       |
+   10|       |static void bar(void) __attribute__((alias("foo")));
+   11|       |
+   12|      1|int main() {
+   13|      1|  bar();
+   14|      1|  abort();
+   15|      1|}
+

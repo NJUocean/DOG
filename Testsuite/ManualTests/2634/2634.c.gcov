@@ -1,0 +1,27 @@
+        -:    0:Source:2634.c
+        -:    0:Graph:2634.gcno
+        -:    0:Data:2634.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O2 -fomit-frame-pointer -fno-asynchronous-unwind-tables
+        -:    4: * -mpush-args" } */
+        -:    5:/* { dg-additional-options "-mno-accumulate-outgoing-args" { target { ! {
+        -:    6: * *-*-mingw* *-*-cygwin* } } } } */
+        -:    7:
+        -:    8:void abort(void);
+        -:    9:
+        1:   10:void __attribute__((noinline)) f(long double a) {
+        1:   11:  if (a != 1.23L)
+    #####:   12:    abort();
+        1:   13:}
+        -:   14:
+        1:   15:int __attribute__((noinline)) g(long double b) {
+        1:   16:  f(b);
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  g(1.23L);
+        1:   22:  return 0;
+        -:   23:}

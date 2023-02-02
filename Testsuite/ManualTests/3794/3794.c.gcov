@@ -1,0 +1,25 @@
+        -:    0:Source:3794.c
+        -:    0:Graph:3794.gcno
+        -:    0:Data:3794.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57860 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:int a, *b = &a, c, d, e, *f = &e, g, *h = &d, k[1] = {1};
+        -:    5:
+        1:    6:int foo(int p) {
+    #####:    7:  for (;; g++) {
+       1*:    8:    for (; c; c--)
+        -:    9:      ;
+        1:   10:    *f = *h = p > ((0x1FFFFFFFFLL ^ a) & *b);
+        1:   11:    if (k[g])
+        1:   12:      return 0;
+        -:   13:  }
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  foo(1);
+        1:   18:  if (d != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,41 @@
+    1|       |extern void abort();
+    2|       |extern int abs(int __x) __attribute__((__nothrow__, __leaf__))
+    3|       |__attribute__((__const__));
+    4|       |
+    5|      1|static int foo(signed char *w, int i, signed char *x, int j) {
+    6|      1|  int tot = 0;
+    7|     17|  for (int a = 0; a < 16; a++) {
+    8|    272|    for (int b = 0; b < 16; b++)
+    9|    256|      tot += abs(w[b] - x[b]);
+   10|     16|    w += i;
+   11|     16|    x += j;
+   12|     16|  }
+   13|      1|  return tot;
+   14|      1|}
+   15|       |
+   16|      1|void bar(signed char *w, signed char *x, int i, int *result) {
+   17|      1|  *result = foo(w, 16, x, i);
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  signed char m[256];
+   22|      1|  signed char n[256];
+   23|      1|  int sum, i;
+   24|      1|
+   25|    257|  for (i = 0; i < 256; ++i)
+   26|    256|    if (i % 2 == 0) {
+   27|    128|      m[i] = (i % 8) * 2 + 1;
+   28|    128|      n[i] = -(i % 8);
+   29|    128|    } else {
+   30|    128|      m[i] = -((i % 8) * 2 + 2);
+   31|    128|      n[i] = -((i % 8) >> 1);
+   32|    128|    }
+   33|      1|
+   34|      1|  bar(m, n, 16, &sum);
+   35|      1|
+   36|      1|  if (sum != 2368)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  return 0;
+   40|      1|}
+

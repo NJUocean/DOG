@@ -1,0 +1,18 @@
+    1|       |/* PR rtl-optimization/57131 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int main() {
+    6|      1|  volatile int x1 = 0;
+    7|      1|  volatile long long x2 = 0;
+    8|      1|  volatile int x3 = 0;
+    9|      1|  volatile int x4 = 1;
+   10|      1|  volatile int x5 = 1;
+   11|      1|  volatile long long x6 = 1;
+   12|      1|  long long t = ((x1 * (x2 << x3)) / (x4 * x5)) + x6;
+   13|      1|
+   14|      1|  if (t != 1)
+   15|      0|    abort();
+   16|      1|  return 0;
+   17|      1|}
+

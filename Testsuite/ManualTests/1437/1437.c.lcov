@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run { target { size32plus } } } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |int a, c, d = 1;
+    5|       |struct S {
+    6|       |  int s;
+    7|       |} b, f;
+    8|       |short e;
+    9|       |
+   10|      1|static void foo(int x) {
+   11|      1|  int g[] = {};
+   12|  52.4k|  for (e = 0; e != 1; e = e + 5) {
+   13|  52.4k|    int *h[1] = {&g[0]};
+   14|  52.4k|    if (!x)
+   15|      0|      return;
+   16|  52.4k|    f = b;
+   17|  52.4k|  }
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  int i, j;
+   22|      7|  for (i = 0; i < 6; i++)
+   23|     54|    for (j = 8; j; j--)
+   24|     48|      a = 0;
+   25|      1|  foo(d);
+   26|      1|  while (c)
+   27|      0|    ;
+   28|      1|  return 0;
+   29|      1|}
+

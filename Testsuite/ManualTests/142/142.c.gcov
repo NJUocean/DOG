@@ -1,0 +1,45 @@
+        -:    0:Source:142.c
+        -:    0:Graph:142.gcno
+        -:    0:Data:142.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_load routines for existence and proper execution on
+        -:    2:   2-byte values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    5:
+        -:    6:#include <stdatomic.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:_Atomic short v;
+        -:   11:short count;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v = 0;
+        1:   15:  count = 0;
+        -:   16:
+        1:   17:  if (atomic_load_explicit(&v, memory_order_relaxed) != count++)
+    #####:   18:    abort();
+        -:   19:  else
+        1:   20:    v++;
+        -:   21:
+        1:   22:  if (atomic_load_explicit(&v, memory_order_acquire) != count++)
+    #####:   23:    abort();
+        -:   24:  else
+        1:   25:    v++;
+        -:   26:
+        1:   27:  if (atomic_load_explicit(&v, memory_order_consume) != count++)
+    #####:   28:    abort();
+        -:   29:  else
+        1:   30:    v++;
+        -:   31:
+        1:   32:  if (atomic_load_explicit(&v, memory_order_seq_cst) != count++)
+    #####:   33:    abort();
+        -:   34:  else
+        1:   35:    v++;
+        -:   36:
+        1:   37:  if (atomic_load(&v) != count)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  return 0;
+        -:   41:}

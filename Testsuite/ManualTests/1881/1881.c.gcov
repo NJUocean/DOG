@@ -1,0 +1,17 @@
+        -:    0:Source:1881.c
+        -:    0:Graph:1881.gcno
+        -:    0:Data:1881.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:void abort(void);
+        1:    5:int main() {
+        -:    6:  int a[2];
+        1:    7:  int i = 1;
+        1:    8:  a[0] = 1;
+        1:    9:  a[1] = 2;
+        1:   10:  if (*(a + i) != 2)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

@@ -1,0 +1,20 @@
+        -:    0:Source:3963.c
+        -:    0:Graph:3963.gcno
+        -:    0:Data:3963.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/79450 */
+        -:    2:
+        1:    3:unsigned int foo(unsigned char x, unsigned long long y) {
+        -:    4:  do {
+        1:    5:    x &= !y;
+        1:    6:    x %= 24;
+        1:    7:  } while (x < y);
+        1:    8:  return x + y;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  unsigned int x = foo(1, 0);
+        1:   13:  if (x != 1)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

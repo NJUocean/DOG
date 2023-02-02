@@ -1,0 +1,11 @@
+    1|       |struct __attribute__((__packed__)) s {
+    2|       |  char c;
+    3|       |  unsigned long long x;
+    4|       |};
+    5|      1|void __attribute__((__noinline__)) foo(struct s *s) { s->x = 0; }
+    6|      1|int main(void) {
+    7|      1|  struct s s = {1, ~0ULL};
+    8|      1|  foo(&s);
+    9|      1|  return s.x != 0;
+   10|      1|}
+

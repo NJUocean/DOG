@@ -1,0 +1,40 @@
+        -:    0:Source:2351.c
+        -:    0:Graph:2351.gcno
+        -:    0:Data:2351.gcda
+        -:    0:Runs:1
+        1:    1:void f(int *p, int **q) {
+        -:    2:  int i;
+       41:    3:  for (i = 0; i < 40; i++) {
+       40:    4:    *q++ = &p[i];
+        -:    5:  }
+        1:    6:}
+        -:    7:
+        1:    8:int main() {
+        -:    9:  void *p;
+        -:   10:  int *q[40];
+        -:   11:  __SIZE_TYPE__ start;
+        -:   12:
+        -:   13:  /* Find the signed middle of the address space.  */
+        -:   14:  if (sizeof(start) == sizeof(int))
+        -:   15:    start = (__SIZE_TYPE__)__INT_MAX__;
+        -:   16:  else if (sizeof(start) == sizeof(long))
+        1:   17:    start = (__SIZE_TYPE__)__LONG_MAX__;
+        -:   18:  else if (sizeof(start) == sizeof(long long))
+        -:   19:    start = (__SIZE_TYPE__)__LONG_LONG_MAX__;
+        -:   20:  else
+        -:   21:    return 0;
+        -:   22:
+        -:   23:  /* Arbitrarily align the pointer.  */
+        1:   24:  start &= -32;
+        -:   25:
+        -:   26:  /* Pretend that's good enough to start address arithmetic.  */
+        1:   27:  p = (void *)start;
+        -:   28:
+        -:   29:  /* Verify that GIV replacement computes the correct results.  */
+        1:   30:  q[39] = 0;
+        1:   31:  f(p, q);
+        1:   32:  if (q[39] != (int *)p + 39)
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}

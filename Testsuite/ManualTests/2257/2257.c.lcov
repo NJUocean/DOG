@@ -1,0 +1,20 @@
+    1|       |void longprint(x) long long x;
+    2|      1|{ printf(" %d, %d\n", (unsigned)((unsigned long long)x >> 32), (unsigned)x); }
+    3|       |
+    4|       |void k_min(p, qa, d) int d;
+    5|      1|{
+    6|      1|  int s = 1;
+    7|      1|  long long x;
+    8|      1|
+    9|      1|  if (s >= d)
+   10|      0|    s -= d;
+   11|      1|
+   12|      1|  x = ((long long)((8 * s) % 3) + qa) % d;
+   13|      1|  longprint(x);
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  k_min(100003, -600017, 3);
+   18|      1|  return 0;
+   19|      1|}
+

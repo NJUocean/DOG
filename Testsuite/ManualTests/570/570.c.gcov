@@ -1,0 +1,32 @@
+        -:    0:Source:570.c
+        -:    0:Graph:570.gcno
+        -:    0:Data:570.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-optimized"  } */
+        -:    3:
+    #####:    4:void destroy(void) {}
+        -:    5:
+    #####:    6:void remove(void) {}
+        -:    7:
+        -:    8:struct callbacks {
+        -:    9:  void (*success)(void);
+        -:   10:  void (*error)(void);
+        -:   11:};
+        -:   12:
+        -:   13:struct callbacks my_callbacks;
+        -:   14:
+        1:   15:__attribute__((noinline)) void foo() { my_callbacks.success = destroy; }
+        -:   16:
+        1:   17:__attribute__((noinline)) void bar() { my_callbacks.success = remove; }
+        -:   18:
+        1:   19:int main() {
+        1:   20:  foo();
+        1:   21:  bar();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final { scan-ipa-dump "Semantic equality
+        -:   27: * hit:destroy/\[0-9+\]+->remove/\[0-9+\]+" "icf"  } } */
+        -:   28:/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */

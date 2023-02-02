@@ -1,0 +1,57 @@
+        -:    0:Source:3966.c
+        -:    0:Graph:3966.gcno
+        -:    0:Data:3966.gcda
+        -:    0:Runs:1
+        -:    1:int errflag;
+        -:    2:
+        8:    3:long long f(long long x, long long y) {
+        -:    4:  long long r;
+        -:    5:
+        8:    6:  errflag = 0;
+        8:    7:  r = x + y;
+        8:    8:  if (x >= 0) {
+        5:    9:    if ((y < 0) || (r >= 0))
+        3:   10:      return r;
+        -:   11:  } else {
+        3:   12:    if ((y > 0) || (r < 0))
+        1:   13:      return r;
+        -:   14:  }
+        4:   15:  errflag = 1;
+        4:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:main() {
+        1:   20:  f(0, 0);
+        1:   21:  if (errflag)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  f(1, -1);
+        1:   25:  if (errflag)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  f(-1, 1);
+        1:   29:  if (errflag)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  f(0x8000000000000000LL, 0x8000000000000000LL);
+        1:   33:  if (!errflag)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  f(0x8000000000000000LL, -1LL);
+        1:   37:  if (!errflag)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  f(0x7fffffffffffffffLL, 0x7fffffffffffffffLL);
+        1:   41:  if (!errflag)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  f(0x7fffffffffffffffLL, 1LL);
+        1:   45:  if (!errflag)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  f(0x7fffffffffffffffLL, 0x8000000000000000LL);
+        1:   49:  if (errflag)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  exit(0);
+        -:   53:}

@@ -1,0 +1,22 @@
+        -:    0:Source:3935.c
+        -:    0:Graph:3935.gcno
+        -:    0:Data:3935.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/77718 */
+        -:    2:
+        -:    3:char a[64] __attribute__((aligned(8)));
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) int foo(void) {
+        1:    6:  return __builtin_memcmp("bbbbbb", a, 6);
+        -:    7:}
+        -:    8:
+        1:    9:__attribute__((noinline, noclone)) int bar(void) {
+        1:   10:  return __builtin_memcmp(a, "bbbbbb", 6);
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  __builtin_memset(a, 'a', sizeof(a));
+        1:   15:  if (((foo() < 0) ^ ('a' > 'b')) || ((bar() < 0) ^ ('a' < 'b')))
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

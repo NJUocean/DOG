@@ -1,0 +1,54 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fomit-frame-pointer" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|       |unsigned char a[256], b[256], c[256], d[256];
+    8|       |
+    9|      1|void foo(unsigned char *x, int y, unsigned char *z) {}
+   10|       |
+   11|      2|void bar(int x, ...) {}
+   12|       |
+   13|      1|void baz(int y) {
+   14|      1|  if (y != 0x10)
+   15|      0|    abort();
+   16|      1|}
+   17|       |
+   18|      1|void test(int x, unsigned char *y) {
+   19|      1|  unsigned char g, h, j, k[5], l[5], m[30];
+   20|      1|  int i;
+   21|      1|
+   22|      1|  bar(x, y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8], y[9]);
+   23|      6|  for (i = 5; --i >= 0;)
+   24|      5|    k[i] = y[5 + i] ^ a[i] ^ c[i];
+   25|      1|
+   26|      1|  foo(&m[29], sizeof m, k);
+   27|      1|  g = d[x] ^ c[x];
+   28|      1|  bar(x, d[x], x, c[x]);
+   29|      1|  baz(g);
+   30|      6|  for (i = 5, h = 0; --i >= 0; h = y[i]) {
+   31|      5|    j = m[25 + i] ^ y[i];
+   32|      5|    j = b[j] ^ g;
+   33|      5|    k[i] = c[j] ^ h;
+   34|      5|  }
+   35|      6|  for (i = 5, h = 0; --i >= 0; h = k[i]) {
+   36|      5|    j = m[20 + i] ^ k[i];
+   37|      5|    j = b[j] ^ g;
+   38|      5|    l[i] = c[j] ^ h;
+   39|      5|  }
+   40|      6|  for (i = 5, h = 0; --i >= 0; h = l[i]) {
+   41|      5|    j = m[15 + i] ^ l[i];
+   42|      5|    j = b[j] ^ g;
+   43|      5|    j = c[j] ^ h;
+   44|      5|    k[i] = a[j] ^ c[j];
+   45|      5|  }
+   46|      1|}
+   47|       |
+   48|      1|int main() {
+   49|      1|  c[4] = 0xdc;
+   50|      1|  d[4] = 0xcc;
+   51|      1|  test(4, a);
+   52|      1|  exit(0);
+   53|      1|}
+

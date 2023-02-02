@@ -1,0 +1,41 @@
+        -:    0:Source:3787.c
+        -:    0:Graph:3787.gcno
+        -:    0:Data:3787.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/84982 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:#ifndef __cplusplus
+        -:    6:#define bool _Bool
+        -:    7:#define true 1
+        -:    8:#define false 0
+        -:    9:#endif
+        -:   10:
+        -:   11:struct S {
+        -:   12:  bool a, b, c, d;
+        -:   13:};
+        -:   14:
+        1:   15:__attribute__((noipa)) void bar(bool *x) {
+        1:   16:  if (x[0] || !x[1] || !x[2] || x[3])
+    #####:   17:    __builtin_abort();
+        1:   18:}
+        -:   19:
+        1:   20:__attribute__((noipa)) void foo(struct S *x) {
+        -:   21:  bool a[4];
+        1:   22:  a[0] = !x->a;
+        1:   23:  a[1] = !x->b;
+        1:   24:  a[2] = x->c;
+        1:   25:  a[3] = !x->d;
+        1:   26:  bar(a);
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  struct S s;
+        1:   31:  s.a = true;
+        1:   32:  s.b = false;
+        1:   33:  s.c = true;
+        1:   34:  s.d = true;
+        1:   35:  foo(&s);
+        1:   36:  return 0;
+        -:   37:}

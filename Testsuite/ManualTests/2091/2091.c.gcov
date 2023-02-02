@@ -1,0 +1,21 @@
+        -:    0:Source:2091.c
+        -:    0:Graph:2091.gcno
+        -:    0:Data:2091.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        -:    2:  static char static_char_array[1];
+        -:    3:  static char *static_char_pointer;
+        -:    4:  static char static_char;
+        -:    5:  char char_array[1];
+        -:    6:  char *char_pointer;
+        -:    7:  char character;
+        -:    8:
+        -:    9:  char *cp, c;
+        -:   10:
+        1:   11:  c = cp - static_char_array; /* error */
+        1:   12:  c = cp - static_char_pointer;
+        1:   13:  c = cp - &static_char; /* error */
+        1:   14:  c = cp - char_array;
+        1:   15:  c = cp - char_pointer;
+        1:   16:  c = cp - &character;
+        -:   17:}

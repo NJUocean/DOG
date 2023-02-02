@@ -1,0 +1,41 @@
+        -:    0:Source:614.c
+        -:    0:Graph:614.gcno
+        -:    0:Data:614.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fno-early-inlining"  } */
+        -:    3:
+        -:    4:int array[128];
+        -:    5:
+        -:    6:volatile int v = 0;
+        -:    7:volatile int blah = 0;
+        -:    8:volatile int counter = 0;
+        -:    9:
+        1:   10:int __attribute__((noipa)) obscured_one() { return 1; }
+        -:   11:
+        6:   12:static void f(int c, int l) {
+        -:   13:  int i;
+       6*:   14:  for (i = 0; i < c; i++)
+    #####:   15:    array[i] = 455;
+        -:   16:
+        6:   17:  counter++;
+        6:   18:  if (counter > 6)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        6:   21:  v = l;
+        6:   22:  if (l > 0)
+        5:   23:    f(c, l - 1);
+        6:   24:  blah = l;
+        6:   25:}
+        -:   26:
+        1:   27:int main(int argc, char *argv[]) {
+        -:   28:  int i;
+       1*:   29:  for (i = 0; i < 100; i++) {
+        1:   30:    counter = 0;
+        1:   31:    f(0, 5);
+        1:   32:    if (obscured_one())
+        1:   33:      break;
+        -:   34:  }
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

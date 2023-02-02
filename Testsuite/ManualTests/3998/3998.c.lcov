@@ -1,0 +1,19 @@
+    1|       |/* PR target/85169 */
+    2|       |
+    3|       |typedef char V __attribute__((vector_size(64)));
+    4|       |
+    5|      1|static void __attribute__((noipa)) foo(V *p) {
+    6|      1|  V v = *p;
+    7|      1|  v[63] = 1;
+    8|      1|  *p = v;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  V v = (V){};
+   13|      1|  foo(&v);
+   14|     65|  for (unsigned i = 0; i < 64; i++)
+   15|     64|    if (v[i] != (i == 63))
+   16|      0|      __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

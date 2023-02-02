@@ -1,0 +1,17 @@
+        -:    0:Source:2299.c
+        -:    0:Graph:2299.gcno
+        -:    0:Data:2299.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/32219 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-require-visibility "" } */
+        -:    4:/* { dg-final { scan-hidden "foo" } } */
+        -:    5:/* { dg-options "-O2 -fPIC" { target fpic } } */
+        -:    6:/* { dg-skip-if "" { "hppa*-*-hpux*" "*-*-aix*" "*-*-darwin*" } }  */
+        -:    7:
+        -:    8:extern void foo() __attribute__((weak, visibility("hidden")));
+        1:    9:int main() {
+        1:   10:  if (foo)
+    #####:   11:    foo();
+        1:   12:  return 0;
+        -:   13:}

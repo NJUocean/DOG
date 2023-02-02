@@ -1,0 +1,16 @@
+    1|       |/* { dg-options "-O2 -fdump-tree-optimized -fwhole-program" } */
+    2|       |int b[100];
+    3|       |void abort(void);
+    4|       |
+    5|      1|void large_function() {
+    6|      1|  int i;
+    7|    100|  for (i = 0; i < 99; i++)
+    8|     99|    if (b[i] / (b[i + 1] + 1))
+    9|      0|      abort();
+   10|      1|}
+   11|       |
+   12|      1|int main() { large_function(); }
+   13|       |
+   14|       |/* Function should be inlined as called once.  */
+   15|       |/* { dg-final { scan-tree-dump-not "large_function" "optimized"} } */
+

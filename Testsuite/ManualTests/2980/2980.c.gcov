@@ -1,0 +1,26 @@
+        -:    0:Source:2980.c
+        -:    0:Graph:2980.gcno
+        -:    0:Data:2980.gcda
+        -:    0:Runs:1
+        4:    1:sub3(i) const int *i;
+        4:    2:{}
+        -:    3:
+        4:    4:eq(a, b) {
+        -:    5:  static int i = 0;
+        4:    6:  if (a != i)
+    #####:    7:    abort();
+        4:    8:  i++;
+        4:    9:}
+        -:   10:
+        1:   11:main() {
+        -:   12:  int i;
+        -:   13:
+        5:   14:  for (i = 0; i < 4; i++) {
+        4:   15:    const int j = i;
+        -:   16:    int k;
+        4:   17:    sub3(&j);
+        4:   18:    k = j;
+        4:   19:    eq(k, k);
+        -:   20:  }
+        1:   21:  exit(0);
+        -:   22:}

@@ -1,0 +1,81 @@
+    1|       |#include <stdio.h>
+    2|       |
+    3|       |/* Convert a decimal string to a long long unsigned.  No error check is
+    4|       |   performed.  */
+    5|       |
+    6|       |long long unsigned str2llu(str) char *str;
+    7|      2|{
+    8|      2|  long long unsigned acc;
+    9|      2|  int d;
+   10|      2|  acc = *str++ - '0';
+   11|     20|  for (;;) {
+   12|     20|    d = *str++;
+   13|     20|    if (d == '\0')
+   14|      2|      break;
+   15|     18|    d -= '0';
+   16|     18|    acc = acc * 10 + d;
+   17|     18|  }
+   18|      2|
+   19|      2|  return acc;
+   20|      2|}
+   21|       |
+   22|       |/* isqrt(t) - computes the square root of t. (tege 86-10-27) */
+   23|       |
+   24|      9|long unsigned sqrtllu(long long unsigned t) {
+   25|      9|  long long unsigned s;
+   26|      9|  long long unsigned b;
+   27|      9|
+   28|    279|  for (b = 0, s = t; b++, (s >>= 1) != 0;)
+   29|    270|    ;
+   30|      9|
+   31|      9|  s = 1LL << (b >> 1);
+   32|      9|
+   33|      9|  if (b & 1)
+   34|      9|    s += s >> 1;
+   35|      9|
+   36|     36|  do {
+   37|     36|    b = t / s;
+   38|     36|    s = (s + b) >> 1;
+   39|     36|  } while (b < s);
+   40|      9|
+   41|      9|  return s;
+   42|      9|}
+   43|       |
+   44|       |int plist(p0, p1, tab) long long unsigned p0, p1;
+   45|       |long long unsigned *tab;
+   46|      1|{
+   47|      1|  long long unsigned p;
+   48|      1|  long unsigned d;
+   49|      1|  long unsigned s;
+   50|      1|  long long unsigned *xp = tab;
+   51|      1|
+   52|     10|  for (p = p0; p <= p1; p += 2) {
+   53|      9|    s = sqrtllu(p);
+   54|      9|
+   55|  52.7k|    for (d = 3; d <= s; d += 2) {
+   56|  52.7k|      long long unsigned q = p % d;
+   57|  52.7k|      if (q == 0)
+   58|      6|        goto not_prime;
+   59|  52.7k|    }
+   60|      9|
+   61|      9|    *xp++ = p;
+   62|      9|  not_prime:;
+   63|      9|  }
+   64|      1|  *xp = 0;
+   65|      1|  return xp - tab;
+   66|      1|}
+   67|       |
+   68|       |main(argc, argv) int argc;
+   69|       |char *argv[];
+   70|      1|{
+   71|      1|  long long tab[10];
+   72|      1|  int nprimes;
+   73|      1|  nprimes = plist(str2llu("1234111111"), str2llu("1234111127"), tab);
+   74|      1|
+   75|      1|  if (tab[0] != 1234111117LL || tab[1] != 1234111121LL ||
+   76|      1|      tab[2] != 1234111127LL || tab[3] != 0)
+   77|      0|    abort();
+   78|      1|
+   79|      1|  exit(0);
+   80|      1|}
+

@@ -1,0 +1,12 @@
+    1|       |/* Test gcov weak ellision.  */
+    2|       |
+    3|       |/* { dg-do run { target native } } */
+    4|       |/* { dg-require-weak "" } */
+    5|       |/* { dg-options "-fprofile-arcs -ftest-coverage" } */
+    6|       |
+    7|      1|int __attribute__((weak)) weak() { return 0; /* count(1) */ }
+    8|       |
+    9|      1|int main() { return weak(); /* count(1) */ }
+   10|       |
+   11|       |/* { dg-final { run-gcov { -a gcov-12.c } } } */
+

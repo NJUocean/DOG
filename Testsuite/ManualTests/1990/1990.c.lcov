@@ -1,0 +1,57 @@
+    1|       |/* { dg-do run { target int32plus } } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |struct S0 {
+    5|       |  unsigned a : 15;
+    6|       |  int b;
+    7|       |  int c;
+    8|       |};
+    9|       |
+   10|       |struct S1 {
+   11|       |  struct S0 s0;
+   12|       |  int e;
+   13|       |};
+   14|       |
+   15|       |struct Z {
+   16|       |  char c;
+   17|       |  int z;
+   18|       |} __attribute__((packed));
+   19|       |
+   20|       |union U {
+   21|       |  struct S1 s1;
+   22|       |  struct Z z;
+   23|       |};
+   24|       |
+   25|      1|int __attribute__((noinline, noclone)) return_zero(void) { return 0; }
+   26|       |
+   27|       |volatile union U gu;
+   28|       |struct S0 gs;
+   29|       |
+   30|      1|int __attribute__((noinline, noclone)) check_outcome() {
+   31|      1|  if (gs.a != 6 || gs.b != 80000)
+   32|      0|    __builtin_abort();
+   33|      1|}
+   34|       |
+   35|      1|int main(int argc, char *argv[]) {
+   36|      1|  union U u;
+   37|      1|  struct S1 m;
+   38|      1|  struct S0 l;
+   39|      1|
+   40|      1|  if (return_zero())
+   41|      0|    u.z.z = 20000;
+   42|      1|  else {
+   43|      1|    u.s1.s0.a = 6;
+   44|      1|    u.s1.s0.b = 80000;
+   45|      1|    u.s1.e = 2;
+   46|      1|
+   47|      1|    m = u.s1;
+   48|      1|    m.s0.c = 0;
+   49|      1|    l = m.s0;
+   50|      1|    gs = l;
+   51|      1|  }
+   52|      1|
+   53|      1|  gu = u;
+   54|      1|  check_outcome();
+   55|      1|  return 0;
+   56|      1|}
+

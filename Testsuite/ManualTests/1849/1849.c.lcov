@@ -1,0 +1,27 @@
+    1|       |/* { dg-options "-O2 -fdump-tree-optimized -fdump-ipa-profile-optimized" } */
+    2|       |unsigned int a[1000];
+    3|       |unsigned int b = 256;
+    4|       |unsigned int c = 1024;
+    5|       |unsigned int d = 17;
+    6|      1|int main() {
+    7|      1|  int i;
+    8|      1|  unsigned int n;
+    9|  1.00k|  for (i = 0; i < 1000; i++) {
+   10|  1.00k|    a[i] = 100 * i;
+   11|  1.00k|  }
+   12|  1.00k|  for (i = 0; i < 1000; i++) {
+   13|  1.00k|    if (i % 2)
+   14|    500|      n = b;
+   15|    500|    else if (i % 3)
+   16|    333|      n = c;
+   17|    167|    else
+   18|    167|      n = d;
+   19|  1.00k|    a[i] %= n;
+   20|  1.00k|  }
+   21|      1|  return 0;
+   22|      1|}
+   23|       |/* autofdo does not do value profiling so far */
+   24|       |/* { dg-final-use-not-autofdo { scan-ipa-dump "Transformation done: div/mod by
+   25|       | * constant 256" "profile" } } */
+   26|       |/* { dg-final-use { scan-tree-dump-not "Invalid sum" "optimized"} } */
+

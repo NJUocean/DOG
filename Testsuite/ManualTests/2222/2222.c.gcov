@@ -1,0 +1,21 @@
+        -:    0:Source:2222.c
+        -:    0:Graph:2222.gcno
+        -:    0:Data:2222.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-msse4.1" { target { sse4_runtime } } } */
+        -:    2:
+        -:    3:long long a;
+        -:    4:unsigned b, c;
+        -:    5:int d = 62;
+        1:    6:void e(long long *f, int p2) { *f = p2; }
+        -:    7:int xx = 5, yy = 4;
+        1:    8:int main() {
+       62:    9:  for (int g = 2; g <= d; g++) {
+       61:   10:    c += xx - g;
+       61:   11:    b += yy + g;
+        -:   12:  }
+        1:   13:  e(&a, b);
+        1:   14:  if (a != 2196)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

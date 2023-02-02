@@ -1,0 +1,32 @@
+        -:    0:Source:3244.c
+        -:    0:Graph:3244.gcno
+        -:    0:Data:3244.gcda
+        -:    0:Runs:1
+        -:    1:#if (__SIZEOF_INT__ == 4)
+        -:    2:typedef int int32;
+        -:    3:#elif (__SIZEOF_LONG__ == 4)
+        -:    4:typedef long int32;
+        -:    5:#else
+        -:    6:#error Add target support for int32
+        -:    7:#endif
+        1:    8:static int32 ref(void) {
+        -:    9:  union {
+        -:   10:    char c[5];
+        -:   11:    int32 i;
+        -:   12:  } u;
+        -:   13:
+        1:   14:  __builtin_memset(&u, 0, sizeof(u));
+        1:   15:  u.c[0] = 1;
+        1:   16:  u.c[1] = 2;
+        1:   17:  u.c[2] = 3;
+        1:   18:  u.c[3] = 4;
+        -:   19:
+        1:   20:  return u.i;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  int32 b = ref();
+        1:   25:  if (b != 0x01020304 && b != 0x04030201)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

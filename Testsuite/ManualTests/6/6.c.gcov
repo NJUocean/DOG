@@ -1,0 +1,27 @@
+        -:    0:Source:6.c
+        -:    0:Graph:6.gcno
+        -:    0:Data:6.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-profiling "-p" } */
+        -:    3:/* { dg-options "-O2 -p" } */
+        -:    4:/* { dg-options "-O2 -p -static" { target hppa*-*-hpux* } } */
+        -:    5:/* { dg-error "profiler" "No profiler support" { target xstormy16-*-* } 0 } */
+        -:    6:/* { dg-message "" "consider using `-pg' instead of `-p' with gprof(1)" { target
+        -:    7: * *-*-freebsd* } 0 } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:
+        1:   12:int foo(void) {
+        2:   13:  int bar(int x) { return x + 3; }
+        1:   14:  return bar(1) + bar(2);
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  if (foo() != 9)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}
+        -:   22:
+        -:   23:/* { dg-final { cleanup-profile-file } } */

@@ -1,0 +1,61 @@
+        -:    0:Source:2029.c
+        -:    0:Graph:2029.gcno
+        -:    0:Data:2029.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-inline -fno-tree-loop-distribute-patterns
+        -:    3: * -fpredictive-commoning -fdump-tree-pcom-details" } */
+        -:    4:
+        -:    5:int arr[105] = {2, 3, 5, 7, 11};
+        -:    6:int result0[10] = {2, 3, 5, 7, 11};
+        -:    7:int result1[10] = {0, 3, 5, -1, 11, 0};
+        -:    8:int result2[10] = {0, 0, 5, -1, -1, 0};
+        -:    9:int result3[10] = {0, 0, 0, -1, -1, -1, 0};
+        -:   10:int result4[10] = {0, 0, 0, 0, -1, -1, -1, 0};
+        -:   11:int result100[105] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0,
+        -:   12:                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0,
+        -:   13:                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0,
+        -:   14:                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0,
+        -:   15:                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0,
+        -:   16:                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 0};
+        -:   17:
+        -:   18:extern void abort(void);
+        -:   19:
+        6:   20:void __attribute__((noinline)) foo(int *a, int len) {
+        -:   21:  int i;
+      116:   22:  for (i = 0; i < len; i++) {
+      110:   23:    a[i] = 0;
+      110:   24:    a[i + 3] = -1;
+        -:   25:  }
+        6:   26:}
+        -:   27:
+        6:   28:void check(int *a, int *res, int len) {
+        -:   29:  int i;
+        -:   30:
+      161:   31:  for (i = 0; i < len; i++)
+      155:   32:    if (a[i] != res[i])
+    #####:   33:      abort();
+        6:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        1:   37:  foo(arr, 0);
+        1:   38:  check(arr, result0, 10);
+        -:   39:
+        1:   40:  foo(arr, 1);
+        1:   41:  check(arr, result1, 10);
+        -:   42:
+        1:   43:  foo(arr, 2);
+        1:   44:  check(arr, result2, 10);
+        -:   45:
+        1:   46:  foo(arr, 3);
+        1:   47:  check(arr, result3, 10);
+        -:   48:
+        1:   49:  foo(arr, 4);
+        1:   50:  check(arr, result4, 10);
+        -:   51:
+        1:   52:  foo(arr, 100);
+        1:   53:  check(arr, result100, 105);
+        -:   54:
+        1:   55:  return 0;
+        -:   56:}
+        -:   57:/* { dg-final { scan-tree-dump "Store-stores chain" "pcom"} } */

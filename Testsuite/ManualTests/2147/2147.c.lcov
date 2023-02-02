@@ -1,0 +1,41 @@
+    1|       |/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+    2|       |/* { dg-options "-O -fgcse -fno-split-wide-types" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |typedef unsigned short int uint16_t;
+    7|       |typedef unsigned int uint32_t;
+    8|       |typedef unsigned long long uint64_t;
+    9|       |
+   10|       |typedef struct {
+   11|       |  uint16_t thread;
+   12|       |  uint16_t phase;
+   13|       |} s32;
+   14|       |
+   15|       |typedef union {
+   16|       |  uint32_t i;
+   17|       |  s32 s;
+   18|       |} u32;
+   19|       |
+   20|       |typedef union {
+   21|       |  uint64_t i;
+   22|       |  u32 u;
+   23|       |} u64;
+   24|       |
+   25|      1|static __attribute__((noinline)) void foo(int val) {
+   26|      1|  u64 data;
+   27|      1|  uint32_t thread;
+   28|      1|
+   29|      1|  data.u.i = 0x10000L;
+   30|      1|  thread = data.u.s.thread;
+   31|      1|  if (val)
+   32|      0|    abort();
+   33|      1|  if (thread)
+   34|      0|    abort();
+   35|      1|}
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  foo(0);
+   39|      1|  return 0;
+   40|      1|}
+

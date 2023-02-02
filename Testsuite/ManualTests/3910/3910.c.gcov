@@ -1,0 +1,30 @@
+        -:    0:Source:3910.c
+        -:    0:Graph:3910.gcno
+        -:    0:Data:3910.gcda
+        -:    0:Runs:1
+       16:    1:static inline int foo(int *x, int y) {
+       16:    2:  int z = *x;
+       26:    3:  while (y > z)
+       10:    4:    z *= 2;
+       16:    5:  return z;
+        -:    6:}
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i;
+       17:   10:  for (i = 1; i < 17; i++) {
+        -:   11:    int j;
+        -:   12:    int k;
+       16:   13:    j = foo(&i, 7);
+       16:   14:    if (i >= 7)
+       10:   15:      k = i;
+        6:   16:    else if (i >= 4)
+        3:   17:      k = 8 + (i - 4) * 2;
+        3:   18:    else if (i == 3)
+        1:   19:      k = 12;
+        -:   20:    else
+        2:   21:      k = 8;
+       16:   22:    if (j != k)
+    #####:   23:      __builtin_abort();
+        -:   24:  }
+        1:   25:  return 0;
+        -:   26:}

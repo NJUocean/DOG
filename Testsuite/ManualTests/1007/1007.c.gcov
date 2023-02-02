@@ -1,0 +1,28 @@
+        -:    0:Source:1007.c
+        -:    0:Graph:1007.gcno
+        -:    0:Data:1007.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int128 } */
+        -:    3:/* { dg-options "-Og -w -Wno-psabi" } */
+        -:    4:
+        -:    5:typedef unsigned __int128 u128;
+        -:    6:typedef unsigned __int128 v64u128 __attribute__((vector_size(64)));
+        -:    7:
+        1:    8:u128 __attribute__((noinline, noclone)) foo(unsigned c, v64u128 v) {
+        -:    9:  v64u128 u;
+        1:   10:  if (c) {
+    #####:   11:    u = (v64u128){(u128)0, (u128)0};
+        -:   12:  } else {
+        1:   13:    u = (v64u128){(u128)0, (u128)1};
+        -:   14:  }
+        1:   15:  u += v;
+        1:   16:  return u[1];
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  u128 x = foo(0, (v64u128){});
+        1:   21:  if (x != 1)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

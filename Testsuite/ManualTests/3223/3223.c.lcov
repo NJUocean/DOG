@@ -1,0 +1,16 @@
+    1|      1|static int test(int x) {
+    2|      1|  union {
+    3|      1|    int i;
+    4|      1|    double d;
+    5|      1|  } a;
+    6|      1|  a.d = 0;
+    7|      1|  a.i = 1;
+    8|      1|  return x >> a.i;
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  if (test(5) != 2)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

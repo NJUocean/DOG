@@ -1,0 +1,36 @@
+        -:    0:Source:586.c
+        -:    0:Graph:586.gcno
+        -:    0:Data:586.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-O2 -fipa-pta -fdump-ipa-pta2-details" } */
+        -:    3:
+        -:    4:static int i;
+        -:    5:/* i should not escape here, p should point to i only.  */
+        -:    6:/* { dg-final { scan-ipa-dump "p = { i }" "pta2" } } */
+        -:    7:static int *p = &i;
+        -:    8:
+        -:    9:int j;
+        -:   10:/* q should point to j only.  */
+        -:   11:/* { dg-final { scan-ipa-dump "q = { j }" "pta2" } } */
+        -:   12:static int *q = &j;
+        -:   13:
+        -:   14:static int k;
+        -:   15:/* k should escape here, r should point to NONLOCAL, ESCAPED, k.  */
+        -:   16:int *r = &k;
+        -:   17:/* { dg-final { scan-ipa-dump "r = { ESCAPED NONLOCAL k }" "pta2" } } */
+        -:   18:
+        -:   19:int l;
+        -:   20:/* s should point to NONLOCAL, ESCAPED, l.  */
+        -:   21:int *s = &l;
+        -:   22:/* { dg-final { scan-ipa-dump "s = { ESCAPED NONLOCAL l }" "pta2" } } */
+        -:   23:
+        -:   24:/* Make p and q referenced so they do not get optimized out.  */
+    #####:   25:int foo() { return &p < &q; }
+        -:   26:
+        1:   27:int main() { return 0; }
+        -:   28:
+        -:   29:/* It isn't clear if the escape if l is strictly necessary, if it were
+        -:   30:   we should have i, r and s in ESCAPED as well.  */
+        -:   31:
+        -:   32:/* { dg-final { scan-ipa-dump "ESCAPED = { ESCAPED NONLOCAL l k }" "pta2" } } */

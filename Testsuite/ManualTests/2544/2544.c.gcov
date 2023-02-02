@@ -1,0 +1,18 @@
+        -:    0:Source:2544.c
+        -:    0:Graph:2544.gcno
+        -:    0:Data:2544.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#include <stdio.h>
+        -:    4:
+        -:    5:#define PROGMEM __attribute__((__progmem__))
+        -:    6:
+        -:    7:const char PROGMEM a1 = 0x12;
+        -:    8:const int PROGMEM a2 = 0x2345;
+        -:    9:const long PROGMEM a3 = 0x12345678;
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  printf("Hello World\n");
+        1:   13:  return 0;
+        -:   14:}

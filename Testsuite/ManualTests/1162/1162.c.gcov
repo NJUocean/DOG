@@ -1,0 +1,54 @@
+        -:    0:Source:1162.c
+        -:    0:Graph:1162.gcno
+        -:    0:Data:1162.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/83843 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-store-merging" } */
+        -:    4:/* { dg-final { scan-tree-dump-times "Merging successful" 3 "store-merging" {
+        -:    5: * target store_merge } } } */
+        -:    6:
+        1:    7:__attribute__((noipa)) void foo(unsigned char *buf, unsigned char *tab) {
+        1:    8:  tab = __builtin_assume_aligned(tab, 2);
+        1:    9:  buf = __builtin_assume_aligned(buf, 2);
+        1:   10:  unsigned v = tab[1] ^ (tab[0] << 8);
+        1:   11:  buf[0] = ~(v >> 8);
+        1:   12:  buf[1] = ~v;
+        1:   13:}
+        -:   14:
+        1:   15:__attribute__((noipa)) void bar(unsigned char *buf, unsigned char *tab) {
+        1:   16:  tab = __builtin_assume_aligned(tab, 2);
+        1:   17:  buf = __builtin_assume_aligned(buf, 2);
+        1:   18:  unsigned v = tab[1] ^ (tab[0] << 8);
+        1:   19:  buf[0] = (v >> 8);
+        1:   20:  buf[1] = ~v;
+        1:   21:}
+        -:   22:
+        1:   23:__attribute__((noipa)) void baz(unsigned char *buf, unsigned char *tab) {
+        1:   24:  tab = __builtin_assume_aligned(tab, 2);
+        1:   25:  buf = __builtin_assume_aligned(buf, 2);
+        1:   26:  unsigned v = tab[1] ^ (tab[0] << 8);
+        1:   27:  buf[0] = ~(v >> 8);
+        1:   28:  buf[1] = v;
+        1:   29:}
+        -:   30:
+        1:   31:int main() {
+        1:   32:  volatile unsigned char l1 = 0;
+        1:   33:  volatile unsigned char l2 = 1;
+        -:   34:  unsigned char buf[2] __attribute__((aligned(2)));
+        1:   35:  unsigned char tab[2] __attribute__((aligned(2))) = {l1 + 1, l2 * 2};
+        1:   36:  foo(buf, tab);
+        1:   37:  if (buf[0] != (unsigned char)~1 || buf[1] != (unsigned char)~2)
+    #####:   38:    __builtin_abort();
+        1:   39:  buf[0] = l1 + 7;
+        1:   40:  buf[1] = l2 * 8;
+        1:   41:  bar(buf, tab);
+        1:   42:  if (buf[0] != 1 || buf[1] != (unsigned char)~2)
+    #####:   43:    __builtin_abort();
+        1:   44:  buf[0] = l1 + 9;
+        1:   45:  buf[1] = l2 * 10;
+        1:   46:  baz(buf, tab);
+        1:   47:  if (buf[0] != (unsigned char)~1 || buf[1] != 2)
+    #####:   48:    __builtin_abort();
+        1:   49:  return 0;
+        -:   50:}

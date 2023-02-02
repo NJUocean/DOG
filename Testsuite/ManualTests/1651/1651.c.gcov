@@ -1,0 +1,48 @@
+        -:    0:Source:1651.c
+        -:    0:Graph:1651.gcno
+        -:    0:Data:1651.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define __GNU_ALWAYS_INLINE inline __attribute__((__always_inline__))
+        -:    4:
+        -:    5:#define DEVT_ALL 0
+        -:    6:
+        -:    7:#define CMD_ABI_DEVICES 100
+        -:    8:
+        -:    9:static __GNU_ALWAYS_INLINE int
+        -:   10:send_msg_to_gm_w_dev_t(int msg_type, unsigned int dev_msg_type, int devt, ...) {
+        -:   11:  char s[256];
+        1:   12:  int nArgs = __builtin_va_arg_pack_len();
+        1:   13:  if (nArgs != 2)
+    #####:   14:    __builtin_abort();
+        1:   15:  __builtin_sprintf(s, "%d", __builtin_va_arg_pack());
+        1:   16:  if (__builtin_strcmp(s, "99") != 0)
+    #####:   17:    __builtin_abort();
+        -:   18:  /* do something with nArgs and ... */
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        -:   22:static __GNU_ALWAYS_INLINE int send_msg_to_gm(int msg_type,
+        -:   23:                                              unsigned int dev_msg_type, ...) {
+        1:   24:  int nArgs = __builtin_va_arg_pack_len();
+        1:   25:  if (nArgs != 2)
+    #####:   26:    __builtin_abort();
+        1:   27:  return send_msg_to_gm_w_dev_t(msg_type, dev_msg_type, DEVT_ALL,
+        -:   28:                                __builtin_va_arg_pack());
+        -:   29:}
+        -:   30:
+        -:   31:static __GNU_ALWAYS_INLINE int send_enable(unsigned int dev_msg_type, ...) {
+        1:   32:  int nArgs = __builtin_va_arg_pack_len();
+        1:   33:  if (nArgs != 2)
+    #####:   34:    __builtin_abort();
+        1:   35:  return send_msg_to_gm(CMD_ABI_DEVICES, dev_msg_type, __builtin_va_arg_pack());
+        -:   36:}
+        -:   37:
+        1:   38:int main(void) {
+        1:   39:  int mode = 99;
+        -:   40:
+        -:   41:  send_enable(1, mode, sizeof(mode));
+        -:   42:
+        1:   43:  return 0;
+        -:   44:}

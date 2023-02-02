@@ -1,0 +1,38 @@
+    1|       |/* PR regression/21897 */
+    2|       |/* This testcase generates MMX instructions together with x87 instructions.
+    3|       |   Currently, there is no "emms" generated to switch between register sets,
+    4|       |   so the testcase fails for targets where MMX insns are enabled.  */
+    5|       |/* { dg-options "-mno-mmx" { target { x86_64-*-* i?86-*-* } } } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |typedef unsigned short v4hi __attribute__((vector_size(8)));
+   10|       |typedef float v4sf __attribute__((vector_size(16)));
+   11|       |
+   12|       |union {
+   13|       |  v4hi v;
+   14|       |  short s[4];
+   15|       |} u;
+   16|       |
+   17|       |union {
+   18|       |  v4sf v;
+   19|       |  float f[4];
+   20|       |} v;
+   21|       |
+   22|      1|void foo(void) {
+   23|      1|  unsigned int i;
+   24|      3|  for (i = 0; i < 2; i++)
+   25|      2|    u.v += (v4hi){12, 32768};
+   26|      3|  for (i = 0; i < 2; i++)
+   27|      2|    v.v += (v4sf){18.0, 20.0, 22};
+   28|      1|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  foo();
+   32|      1|  if (u.s[0] != 24 || u.s[1] != 0 || u.s[2] || u.s[3])
+   33|      0|    abort();
+   34|      1|  if (v.f[0] != 36.0 || v.f[1] != 40.0 || v.f[2] != 44.0 || v.f[3] != 0.0)
+   35|      0|    abort();
+   36|      1|  return 0;
+   37|      1|}
+

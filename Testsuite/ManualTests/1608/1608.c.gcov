@@ -1,0 +1,19 @@
+        -:    0:Source:1608.c
+        -:    0:Graph:1608.gcno
+        -:    0:Data:1608.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fdisable-rtl-init-regs" } */
+        -:    3:
+        1:    4:static _Bool foo(_Bool a, _Bool b) {
+       1*:    5:  int x = a && !b;
+        1:    6:  return x != 0;
+        -:    7:}
+        -:    8:
+        -:    9:int y = 1;
+        1:   10:int main() {
+        -:   11:  _Bool x;
+        1:   12:  if (foo(x, y))
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

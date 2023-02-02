@@ -1,0 +1,74 @@
+        -:    0:Source:2498.c
+        -:    0:Graph:2498.gcno
+        -:    0:Data:2498.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Test memcpy with various combinations of pointer alignments and lengths to
+        -:    4:   make sure any optimizations in the library are correct.
+        -:    5:
+        -:    6:   Written by Michael Meissner, March 9, 2002.  */
+        -:    7:
+        -:    8:#include <string.h>
+        -:    9:
+        -:   10:#ifndef MAX_OFFSET
+        -:   11:#define MAX_OFFSET (sizeof(long long))
+        -:   12:#endif
+        -:   13:
+        -:   14:#ifndef MAX_COPY
+        -:   15:#define MAX_COPY (10 * sizeof(long long))
+        -:   16:#endif
+        -:   17:
+        -:   18:#ifndef MAX_EXTRA
+        -:   19:#define MAX_EXTRA (sizeof(long long))
+        -:   20:#endif
+        -:   21:
+        -:   22:#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + MAX_EXTRA)
+        -:   23:
+        -:   24:/* Use a sequence length that is not divisible by two, to make it more
+        -:   25:   likely to detect when words are mixed up.  */
+        -:   26:#define SEQUENCE_LENGTH 31
+        -:   27:
+        -:   28:static union {
+        -:   29:  char buf[MAX_LENGTH];
+        -:   30:  long long align_int;
+        -:   31:  long double align_fp;
+        -:   32:} u1, u2;
+        -:   33:
+        1:   34:main() {
+        -:   35:  int off1, off2, len, i;
+        -:   36:  char *p, *q, c;
+        -:   37:
+        9:   38:  for (off1 = 0; off1 < MAX_OFFSET; off1++)
+       72:   39:    for (off2 = 0; off2 < MAX_OFFSET; off2++)
+     5120:   40:      for (len = 1; len < MAX_COPY; len++) {
+   490432:   41:        for (i = 0, c = 'A'; i < MAX_LENGTH; i++, c++) {
+   485376:   42:          u1.buf[i] = 'a';
+   485376:   43:          if (c >= 'A' + SEQUENCE_LENGTH)
+    15168:   44:            c = 'A';
+   485376:   45:          u2.buf[i] = c;
+        -:   46:        }
+        -:   47:
+     5056:   48:        p = memcpy(u1.buf + off1, u2.buf + off2, len);
+     5056:   49:        if (p != u1.buf + off1)
+    #####:   50:          abort();
+        -:   51:
+     5056:   52:        q = u1.buf;
+    22752:   53:        for (i = 0; i < off1; i++, q++)
+    17696:   54:          if (*q != 'a')
+    #####:   55:            abort();
+        -:   56:
+   207296:   57:        for (i = 0, c = 'A' + off2; i < len; i++, q++, c++) {
+   202240:   58:          if (c >= 'A' + SEQUENCE_LENGTH)
+     4608:   59:            c = 'A';
+   202240:   60:          if (*q != c)
+    #####:   61:            abort();
+        -:   62:        }
+        -:   63:
+    45504:   64:        for (i = 0; i < MAX_EXTRA; i++, q++)
+    40448:   65:          if (*q != 'a')
+    #####:   66:            abort();
+        -:   67:      }
+        -:   68:
+        1:   69:  exit(0);
+        -:   70:}

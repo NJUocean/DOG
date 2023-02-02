@@ -1,0 +1,22 @@
+        -:    0:Source:2516.c
+        -:    0:Graph:2516.gcno
+        -:    0:Data:2516.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-skip-if "Test is specific to the iWMMXt" { arm*-*-* } { "-mcpu=*" } {
+        -:    3: * "-mcpu=iwmmxt" } } */
+        -:    4:/* { dg-skip-if "Test is specific to the iWMMXt" { arm*-*-* } { "-mabi=*" } {
+        -:    5: * "-mabi=iwmmxt" } } */
+        -:    6:/* { dg-skip-if "Test is specific to the iWMMXt" { arm*-*-* } { "-march=*" } {
+        -:    7: * "-march=iwmmxt" } } */
+        -:    8:/* { dg-skip-if "Test is specific to ARM mode" { arm*-*-* } { "-mthumb" } { "" }
+        -:    9: * } */
+        -:   10:/* { dg-require-effective-target arm32 } */
+        -:   11:/* { dg-require-effective-target arm_iwmmxt_ok } */
+        -:   12:/* { dg-options "-mcpu=iwmmxt" } */
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  volatile long long t1;
+        1:   16:  t1 ^= 0x55;
+        1:   17:  return 0;
+        -:   18:}

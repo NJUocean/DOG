@@ -1,0 +1,63 @@
+    1|       |/*
+    2|       | This test checks promotion of bitfields.  Bitfields should be promoted
+    3|       | very much like chars and shorts:
+    4|       |
+    5|       | Bitfields (signed or unsigned) should be promoted to signed int if their
+    6|       | value will fit in a signed int, otherwise to an unsigned int if their
+    7|       | value will fit in an unsigned int, otherwise we don't promote them (ANSI/ISO
+    8|       | does not specify the behavior of bitfields larger than an unsigned int).
+    9|       |
+   10|       | We test the behavior by subtracting two from the promoted value: this will
+   11|       | result in a negitive value for signed types, a positive value for unsigned
+   12|       | types.  This test (of course) assumes that the compiler is correctly
+   13|       | implementing signed and unsigned arithmetic.
+   14|       | */
+   15|       |
+   16|       |struct X {
+   17|       |  unsigned int u3 : 3;
+   18|       |  signed long int s31 : 31;
+   19|       |  signed long int s32 : 32;
+   20|       |  unsigned long int u31 : 31;
+   21|       |  unsigned long int u32 : 32;
+   22|       |  unsigned long long ull3 : 3;
+   23|       |  unsigned long long ull35 : 35;
+   24|       |  unsigned u15 : 15;
+   25|       |};
+   26|       |
+   27|       |struct X x;
+   28|       |
+   29|      1|main() {
+   30|      1|  if ((x.u3 - 2) >= 0) /* promoted value should be signed */
+   31|      0|    abort();
+   32|      1|
+   33|      1|  if ((x.s31 - 2) >= 0) /* promoted value should be signed */
+   34|      0|    abort();
+   35|      1|
+   36|      1|  if ((x.s32 - 2) >= 0) /* promoted value should be signed */
+   37|      0|    abort();
+   38|      1|
+   39|      1|  if ((x.u15 - 2) >= 0) /* promoted value should be signed */
+   40|      0|    abort();
+   41|      1|
+   42|      1|  /* Conditionalize check on whether integers are 4 bytes or larger, i.e.
+   43|      1|     larger than a 31 bit bitfield.  */
+   44|      1|  if (sizeof(int) >= 4) {
+   45|      1|    if ((x.u31 - 2) >= 0) /* promoted value should be signed */
+   46|      0|      abort();
+   47|      0|  } else {
+   48|      0|    if ((x.u31 - 2) < 0) /* promoted value should be UNsigned */
+   49|      0|      abort();
+   50|      1|  }
+   51|      1|
+   52|      1|  if ((x.u32 - 2) < 0) /* promoted value should be UNsigned */
+   53|      0|    abort();
+   54|      1|
+   55|      1|  if ((x.ull3 - 2) >= 0) /* promoted value should be signed */
+   56|      0|    abort();
+   57|      1|
+   58|      1|  if ((x.ull35 - 2) < 0) /* promoted value should be UNsigned */
+   59|      0|    abort();
+   60|      1|
+   61|      1|  exit(0);
+   62|      1|}
+

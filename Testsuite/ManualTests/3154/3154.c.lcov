@@ -1,0 +1,8 @@
+    1|      1|char foo(char bar[]) { return bar[1]; }
+    2|       |extern char foo(char *);
+    3|      1|int main(void) {
+    4|      1|  if (foo("xy") != 'y')
+    5|      0|    abort();
+    6|      1|  exit(0);
+    7|      1|}
+

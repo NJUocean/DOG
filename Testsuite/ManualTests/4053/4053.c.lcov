@@ -1,0 +1,16 @@
+    1|      1|f(double *ty) { *ty = -1.0; }
+    2|       |
+    3|      1|main() {
+    4|      1|  double foo[6];
+    5|      1|  double tx = 0.0, ty, d;
+    6|      1|
+    7|      1|  f(&ty);
+    8|      1|
+    9|      1|  if (ty < 0)
+   10|      1|    ty = -ty;
+   11|      1|  d = (tx > ty) ? tx : ty;
+   12|      1|  if (ty != d)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

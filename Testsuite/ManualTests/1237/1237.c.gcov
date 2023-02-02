@@ -1,0 +1,56 @@
+        -:    0:Source:1237.c
+        -:    0:Graph:1237.gcno
+        -:    0:Data:1237.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2004, 2005  Free Software Foundation.
+        -:    2:
+        -:    3:   Verify that built-in wctype function attributes are correctly set
+        -:    4:   by the compiler.
+        -:    5:
+        -:    6:   Written by Kaveh Ghazi, 2004-03-25.  */
+        -:    7:
+        -:    8:/* { dg-do link } */
+        -:    9:
+        -:   10:/* Use the target type definitions if we can.  */
+        -:   11:#ifndef __WINT_TYPE__
+        -:   12:#define __WINT_TYPE__ int
+        -:   13:#endif
+        -:   14:
+        -:   15:#ifndef __WCHAR_TYPE__
+        -:   16:#define __WCHAR_TYPE__ int
+        -:   17:#endif
+        -:   18:
+    #####:   19:void test(int i) {
+        -:   20:  /* All of these ctype functions should be const/pure and thus
+        -:   21:     eliminated.  */
+        -:   22:#define TEST_IS_WCTYPE(FN)                                                     \
+        -:   23:  extern int FN(__WINT_TYPE__);                                                \
+        -:   24:  extern void link_failure_##FN(void);                                         \
+        -:   25:  if (FN(i) != FN(i))                                                          \
+        -:   26:  link_failure_##FN()
+        -:   27:
+        -:   28:#define TEST_TO_WCTYPE(FN)                                                     \
+        -:   29:  extern __WINT_TYPE__ FN(__WINT_TYPE__);                                      \
+        -:   30:  extern void link_failure_##FN(void);                                         \
+        -:   31:  if (FN(i) != FN(i))                                                          \
+        -:   32:  link_failure_##FN()
+        -:   33:
+        -:   34:#ifdef __OPTIMIZE__
+        -:   35:  TEST_IS_WCTYPE(iswalnum);
+        -:   36:  TEST_IS_WCTYPE(iswalpha);
+        -:   37:  TEST_IS_WCTYPE(iswblank);
+        -:   38:  TEST_IS_WCTYPE(iswcntrl);
+        -:   39:  TEST_IS_WCTYPE(iswdigit);
+        -:   40:  TEST_IS_WCTYPE(iswgraph);
+        -:   41:  TEST_IS_WCTYPE(iswlower);
+        -:   42:  TEST_IS_WCTYPE(iswprint);
+        -:   43:  TEST_IS_WCTYPE(iswpunct);
+        -:   44:  TEST_IS_WCTYPE(iswspace);
+        -:   45:  TEST_IS_WCTYPE(iswupper);
+        -:   46:  TEST_IS_WCTYPE(iswxdigit);
+        -:   47:  TEST_TO_WCTYPE(towlower);
+        -:   48:  TEST_TO_WCTYPE(towupper);
+        -:   49:#endif /* __OPTIMIZE__ */
+    #####:   50:}
+        -:   51:
+        1:   52:int main(void) { return 0; }

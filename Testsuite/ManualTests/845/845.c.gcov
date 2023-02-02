@@ -1,0 +1,20 @@
+        -:    0:Source:845.c
+        -:    0:Graph:845.gcno
+        -:    0:Data:845.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/34668 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-require-effective-target lto } */
+        -:    4:/* { dg-options "-flto -O2" } */
+        -:    5:/* { dg-additional-sources "pr34668-2.c" } */
+        -:    6:
+        -:    7:struct optab {
+        -:    8:  unsigned code;
+        -:    9:};
+        -:   10:struct optab optab_table[1];
+        -:   11:
+    #####:   12:void init_optab(struct optab *op) { op->code = 0xdead; }
+        -:   13:
+    #####:   14:void set_conv_libfunc(void) { init_optab(&optab_table[0]); }
+        -:   15:
+        1:   16:int main() { return 0; }

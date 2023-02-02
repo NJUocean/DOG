@@ -1,0 +1,31 @@
+        -:    0:Source:1485.c
+        -:    0:Graph:1485.gcno
+        -:    0:Data:1485.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#include <limits.h>
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        5:    8:long long __attribute__((noinline)) f(int a) { return -(long long)a; }
+        -:    9:
+        1:   10:int main() {
+        1:   11:  if (f(0) != 0)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  if (f(1) != -(long long)1)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  if (f(-1) != -(long long)-1)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  if (f(INT_MIN) != -(long long)INT_MIN)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  if (f(INT_MAX) != -(long long)INT_MAX)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  exit(0);
+        -:   27:}

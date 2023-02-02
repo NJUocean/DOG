@@ -1,0 +1,33 @@
+        -:    0:Source:1662.c
+        -:    0:Graph:1662.gcno
+        -:    0:Data:1662.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:long long int a = -465274079317386463LL;
+        -:    5:int b = 856872806;
+        -:    6:int c = -1940894202;
+        -:    7:int d = 1718449211;
+        -:    8:int e = -392681565;
+        -:    9:unsigned long long int f = 13521452247506316486ULL;
+        -:   10:int g = -13194608;
+        -:   11:
+        1:   12:__attribute__((noinline, noclone)) void foo() {
+        1:   13:  if (!a - a)
+        1:   14:    c = b = 0;
+        -:   15:  else
+    #####:   16:    d = 3UL * a == 0;
+        1:   17:  if (g / a)
+    #####:   18:    e = 0 < -a + 500849970701012771LL + (unsigned long)-a;
+        -:   19:  else
+        1:   20:    f = 4081116982543369LL & a;
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  asm volatile("" : : : "memory");
+        1:   25:  foo();
+        1:   26:  if (f != 2818598057803777LL)
+    #####:   27:    __builtin_abort();
+        1:   28:  return 0;
+        -:   29:}

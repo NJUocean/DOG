@@ -1,0 +1,39 @@
+    1|       |/* PR tree-optimization/32575 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |struct S {
+    6|       |  void *s1, *s2;
+    7|       |  unsigned char s3, s4, s5;
+    8|       |};
+    9|       |
+   10|      1|__attribute__((noinline)) void *foo(void) {
+   11|      1|  static struct S s;
+   12|      1|  return &s;
+   13|      1|}
+   14|       |
+   15|      0|__attribute__((noinline)) void *bar() { return (void *)0; }
+   16|       |
+   17|      1|__attribute__((noinline)) struct S *test(void *a, void *b) {
+   18|      1|  struct S *p, q;
+   19|      1|  p = foo();
+   20|      1|  if (p == 0) {
+   21|      0|    p = &q;
+   22|      0|    __builtin_memset(p, 0, sizeof(*p));
+   23|      0|  }
+   24|      1|  p->s1 = a;
+   25|      1|  p->s2 = b;
+   26|      1|  if (p == &q)
+   27|      0|    p = 0;
+   28|      1|  return p;
+   29|      1|}
+   30|       |
+   31|      1|int main(void) {
+   32|      1|  int a;
+   33|      1|  int b;
+   34|      1|  struct S *z = test((void *)&a, (void *)&b);
+   35|      1|  if (z == 0 || z->s1 != (void *)&a || z->s2 != (void *)&b || z->s3 || z->s4)
+   36|      0|    abort();
+   37|      1|  return 0;
+   38|      1|}
+

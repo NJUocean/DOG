@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fdump-tree-ldist-details" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int a[1024], b[1024];
+    7|       |
+    8|      1|void __attribute__((noinline, noclone)) foo(void) {
+    9|      1|  int i;
+   10|  1.02k|  for (i = 0; i < 1024; ++i) {
+   11|  1.02k|    a[i] = 0;
+   12|  1.02k|    if (i > 100)
+   13|    923|      b[i] = i;
+   14|  1.02k|  }
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  b[100] = 1;
+   19|      1|  foo();
+   20|      1|  if (b[100] != 1 || b[101] != 101)
+   21|      0|    abort();
+   22|      1|  if (a[0] != 0 || a[101] != 0)
+   23|      0|    abort();
+   24|      1|  return 0;
+   25|      1|}
+   26|       |
+   27|       |/* { dg-final { scan-tree-dump "generated memset zero" "ldist" } } */
+

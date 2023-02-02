@@ -1,0 +1,54 @@
+        -:    0:Source:1906.c
+        -:    0:Graph:1906.gcno
+        -:    0:Data:1906.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-effective-target size32plus } */
+        -:    4:/* { dg-skip-if "too big data segment" { visium-*-* } } */
+        -:    5:
+        -:    6:/* Copied from graphite/interchange-4.c */
+        -:    7:
+        -:    8:#define DEBUG 0
+        -:    9:#if DEBUG
+        -:   10:#include <stdio.h>
+        -:   11:#endif
+        -:   12:
+        -:   13:double u[1782225];
+        -:   14:
+        1:   15:static void __attribute__((noinline)) foo(int N, double *res) {
+        -:   16:  int i, j;
+        1:   17:  double sum = 0;
+     1336:   18:  for (i = 0; i < N; i++)
+  1783560:   19:    for (j = 0; j < N; j++)
+  1782225:   20:      sum = sum + u[i + 1335 * j];
+        -:   21:
+        1:   22:  *res = sum;
+        1:   23:}
+        -:   24:
+        -:   25:extern void abort();
+        -:   26:
+        1:   27:int main(void) {
+        -:   28:  int i, j;
+        -:   29:  double res;
+        -:   30:
+  1782226:   31:  for (i = 0; i < 1782225; i++)
+  1782225:   32:    u[i] = 0;
+        1:   33:  u[0] = __DBL_MAX__;
+        1:   34:  u[1335] = -__DBL_MAX__;
+        1:   35:  u[1] = __DBL_MAX__;
+        1:   36:  u[1336] = -__DBL_MAX__;
+        -:   37:
+        1:   38:  foo(1335, &res);
+        -:   39:
+        -:   40:#if DEBUG
+        -:   41:  fprintf(stderr, "res = %d \n", res);
+        -:   42:#endif
+        -:   43:
+        1:   44:  if (res != 0.0)
+    #####:   45:    abort();
+        -:   46:
+        1:   47:  return 0;
+        -:   48:}
+        -:   49:
+        -:   50:/* { dg-final { scan-tree-dump-not "is interchanged" "linterchange"} } */

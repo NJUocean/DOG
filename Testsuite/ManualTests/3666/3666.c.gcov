@@ -1,0 +1,57 @@
+        -:    0:Source:3666.c
+        -:    0:Graph:3666.gcno
+        -:    0:Data:3666.gcda
+        -:    0:Runs:1
+        -:    1:extern void *malloc(__SIZE_TYPE__);
+        -:    2:extern void abort(void);
+        -:    3:extern void free(void *);
+        -:    4:
+        -:    5:typedef struct SEntry {
+        -:    6:  unsigned char num;
+        -:    7:} TEntry;
+        -:    8:
+        -:    9:typedef struct STable {
+        -:   10:  TEntry data[2];
+        -:   11:} TTable;
+        -:   12:
+        1:   13:TTable *init() { return malloc(sizeof(TTable)); }
+        -:   14:
+        -:   15:void expect_func(int a, unsigned char *b) __attribute__((noinline));
+        -:   16:
+        -:   17:static inline void inlined_wrong(TEntry *entry_p, int flag);
+        -:   18:
+        2:   19:void inlined_wrong(TEntry *entry_p, int flag) {
+        -:   20:  unsigned char index;
+        2:   21:  entry_p->num = 0;
+        -:   22:
+        2:   23:  if (flag == 0)
+    #####:   24:    abort();
+        -:   25:
+        4:   26:  for (index = 0; index < 1; index++)
+        2:   27:    entry_p->num++;
+        -:   28:
+        2:   29:  if (!entry_p->num) {
+    #####:   30:    abort();
+        -:   31:  }
+        2:   32:}
+        -:   33:
+        1:   34:void expect_func(int a, unsigned char *b) {
+        1:   35:  if (abs((a == 0)))
+    #####:   36:    abort();
+        1:   37:  if (abs((b == 0)))
+    #####:   38:    abort();
+        1:   39:}
+        -:   40:
+        1:   41:int main() {
+        1:   42:  unsigned char index = 0;
+        1:   43:  TTable *table_p = init();
+        -:   44:  TEntry work;
+        -:   45:
+        1:   46:  inlined_wrong(&(table_p->data[1]), 1);
+        1:   47:  expect_func(1, &index);
+        1:   48:  inlined_wrong(&work, 1);
+        -:   49:
+        1:   50:  free(table_p);
+        -:   51:
+        1:   52:  return 0;
+        -:   53:}

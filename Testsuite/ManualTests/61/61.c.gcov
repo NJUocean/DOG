@@ -1,0 +1,20 @@
+        -:    0:Source:61.c
+        -:    0:Graph:61.gcno
+        -:    0:Data:61.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -Wall" } */
+        -:    3:
+        -:    4:struct a {
+        -:    5:  int i;
+        -:    6:};
+        -:    7:struct b {
+        -:    8:  struct a a;
+        -:    9:  int j;
+        -:   10:};
+        1:   11:int main(void) {
+        -:   12:  static struct b b;
+        1:   13:  struct a *ap = (struct a *)&b;
+        1:   14:  return ((struct b *)&ap->i)
+        1:   15:      ->j; /* { dg-bogus "will break strict-aliasing" } */
+        -:   16:}

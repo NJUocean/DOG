@@ -1,0 +1,24 @@
+        -:    0:Source:3742.c
+        -:    0:Graph:3742.gcno
+        -:    0:Data:3742.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/51628.  */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        -:    5:struct pair_t {
+        -:    6:  char c;
+        -:    7:  __int128_t i;
+        -:    8:} __attribute__((packed));
+        -:    9:
+        -:   10:typedef struct unaligned_int128_t_ {
+        -:   11:  __int128_t value;
+        -:   12:} __attribute__((packed, may_alias)) unaligned_int128_t;
+        -:   13:
+        -:   14:struct pair_t p = {0, 1};
+        -:   15:unaligned_int128_t *addr = (unaligned_int128_t *)&p.i;
+        -:   16:
+        1:   17:int main() {
+        1:   18:  addr->value = ~(__int128_t)0;
+        1:   19:  return (p.i != 1) ? 0 : 1;
+        -:   20:}

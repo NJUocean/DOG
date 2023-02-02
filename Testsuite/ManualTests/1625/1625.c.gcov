@@ -1,0 +1,20 @@
+        -:    0:Source:1625.c
+        -:    0:Graph:1625.gcno
+        -:    0:Data:1625.gcda
+        -:    0:Runs:1
+        -:    1:/* PR ipa/77677 */
+        -:    2:/* { dg-do compile } */
+        -:    3:
+        -:    4:int a, b;
+        -:    5:
+        1:    6:static void fn1(short p1) {
+        1:    7:  a = -p1;
+       1*:    8:  if (a || b)
+        1:    9:    __builtin_printf("%d\n", b);
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  int c[] = {40000};
+        1:   14:  fn1(c[0]);
+        1:   15:  return 0;
+        -:   16:}

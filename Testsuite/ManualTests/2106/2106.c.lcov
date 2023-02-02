@@ -1,0 +1,15 @@
+    1|       |/* Origin: PR c/675 from aj@suse.de.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |
+    5|       |#include <stddef.h>
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  size_t len;
+    9|      1|
+   10|      1|  len = ~(sizeof(size_t) -
+   11|      1|          1); /* { dg-bogus "truncated" "bogus truncation warning" } */
+   12|      1|
+   13|      1|  return len - len;
+   14|      1|}
+

@@ -1,0 +1,25 @@
+        -:    0:Source:4127.c
+        -:    0:Graph:4127.gcno
+        -:    0:Data:4127.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort();
+        -:    3:
+        1:    4:void test(int x, int y) {
+        -:    5:  int c;
+        -:    6:
+        1:    7:  if (x == 1)
+    #####:    8:    abort();
+        1:    9:  if (y == 1)
+    #####:   10:    abort();
+        -:   11:
+        1:   12:  c = x / y;
+        -:   13:
+        1:   14:  if (c != 1)
+    #####:   15:    abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  test(2, 2);
+        1:   20:  exit(0);
+        -:   21:}

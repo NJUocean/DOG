@@ -1,0 +1,44 @@
+        -:    0:Source:2025.c
+        -:    0:Graph:2025.gcno
+        -:    0:Data:2025.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fno-inline -fpredictive-commoning
+        -:    3: * -fdump-tree-pcom-details" } */
+        -:    4:
+        -:    5:int arr[105] = {2, 3, 5, 7, 11};
+        -:    6:int result0[10] = {2, 3, 5, 7, 11};
+        -:    7:int result1[10] = {0, 3, 5, -2, 11, 0};
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        2:   11:void __attribute__((noinline)) foo(int *a, int len, int flag) {
+        -:   12:  int i;
+        3:   13:  for (i = 0; i < len; i++) {
+        1:   14:    a[i] = 0;
+        1:   15:    if (flag)
+    #####:   16:      a[i + 1] = -1;
+        1:   17:    a[i + 3] = -2;
+        -:   18:  }
+        2:   19:}
+        -:   20:
+        2:   21:void check(int *a, int *res, int len) {
+        -:   22:  int i;
+        -:   23:
+       22:   24:  for (i = 0; i < len; i++)
+       20:   25:    if (a[i] != res[i])
+    #####:   26:      abort();
+        2:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  int i;
+        -:   31:
+        1:   32:  foo(arr, 0, 0);
+        1:   33:  check(arr, result0, 10);
+        -:   34:
+        1:   35:  foo(arr, 1, 0);
+        1:   36:  check(arr, result1, 10);
+        -:   37:
+        1:   38:  return 0;
+        -:   39:}
+        -:   40:/* { dg-final { scan-tree-dump-not "Store-stores chain" "pcom"} } */

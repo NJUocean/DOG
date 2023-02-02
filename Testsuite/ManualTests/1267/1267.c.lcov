@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* PR 25718: invalid constant operand to the "bound" insn; error at
+    3|       |   assembly time.  We'll make sure the code is correct to: run a few
+    4|       |   example values.  */
+    5|       |
+    6|       |extern void exit(int);
+    7|       |extern void abort(void);
+    8|      6|unsigned __attribute__((__noinline__)) foo(unsigned a) {
+    9|      6|  unsigned l;
+   10|      6|  l = (a >= (~0u - 512) ? (~0u - 512) : a);
+   11|      6|  return l;
+   12|      6|}
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  if (foo((unsigned)-512) != (unsigned)-513 ||
+   16|      1|      foo((unsigned)-514) != (unsigned)-514 ||
+   17|      1|      foo((unsigned)-513) != (unsigned)-513 ||
+   18|      1|      foo((unsigned)-1) != (unsigned)-513 || foo(513) != 513 || foo(0) != 0)
+   19|      0|    abort();
+   20|      1|
+   21|      1|  exit(0);
+   22|      1|}
+

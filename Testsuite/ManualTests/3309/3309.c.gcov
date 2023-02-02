@@ -1,0 +1,30 @@
+        -:    0:Source:3309.c
+        -:    0:Graph:3309.gcno
+        -:    0:Data:3309.gcda
+        -:    0:Runs:1
+        -:    1:struct rtx_def {
+        -:    2:  int code;
+        -:    3:};
+        -:    4:
+        1:    5:main() {
+        -:    6:  int tmp[2];
+        -:    7:  struct rtx_def *r, s;
+        -:    8:  int *p, *q;
+        -:    9:
+        -:   10:  /* The alias analyzer was creating the same memory tag for r, p and q
+        -:   11:     because 'struct rtx_def *' is type-compatible with 'int *'.  However,
+        -:   12:     the alias set of 'int[2]' is not the same as 'int *', so variable
+        -:   13:     'tmp' was deemed not aliased with anything.  */
+        1:   14:  r = &s;
+        1:   15:  r->code = 39;
+        -:   16:
+        -:   17:  /* If 'r' wasn't declared, then q and tmp would have had the same memory
+        -:   18:     tag.  */
+        1:   19:  p = tmp;
+        1:   20:  q = p + 1;
+        1:   21:  *q = 0;
+        1:   22:  tmp[1] = 39;
+        1:   23:  if (*q != 39)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

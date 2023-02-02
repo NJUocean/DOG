@@ -1,0 +1,11 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |
+    3|      0|static inline void bar(unsigned *u) { __asm__("" : "=r"(*u)); }
+    4|       |
+    5|      0|void foo(void) {
+    6|      0|  int i;
+    7|      0|  bar(&i);
+    8|      0|}
+    9|       |
+   10|      1|int main() { return 0; }
+

@@ -1,0 +1,27 @@
+    1|       |/* This testcase ICEd on IA-32 because the backend was inconsistent whether
+    2|       |   to allow addends for @dtpoff relocs or not.  */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-require-effective-target fpic } */
+    5|       |/* { dg-options "-O2 -fpic" } */
+    6|       |/* { dg-require-effective-target tls } */
+    7|       |
+    8|       |struct S {
+    9|       |  int s0, s1, s2, s3;
+   10|       |};
+   11|       |static __thread struct S x;
+   12|       |extern void abort(void);
+   13|       |extern void exit(int);
+   14|       |
+   15|      1|void foo(struct S *s) { s->s2 = 231; }
+   16|       |
+   17|      1|void bar(void) {
+   18|      1|  if (x.s0 == 231 || x.s2 != 231)
+   19|      0|    abort();
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  foo(&x);
+   24|      1|  bar();
+   25|      1|  exit(0);
+   26|      1|}
+

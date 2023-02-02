@@ -1,0 +1,32 @@
+        -:    0:Source:865.c
+        -:    0:Graph:865.gcno
+        -:    0:Data:865.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/39794 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -funroll-loops" } */
+        -:    4:
+        -:    5:extern void abort();
+        -:    6:
+        1:    7:void foo(int *a, int n) {
+        -:    8:  int i;
+       14:    9:  for (i = 0; i < n; i++) {
+       13:   10:    a[i] *= 2;
+       13:   11:    a[i + 1] = a[i - 1] + a[i - 2];
+        -:   12:  }
+        1:   13:}
+        -:   14:
+        -:   15:int a[16];
+        -:   16:int ref[16] = {0,  1,   4,   2,   10,  12,   24,   44,
+        -:   17:               72, 136, 232, 416, 736, 1296, 2304, 2032};
+        -:   18:
+        1:   19:int main() {
+        -:   20:  int i;
+       17:   21:  for (i = 0; i < 16; i++)
+       16:   22:    a[i] = i;
+        1:   23:  foo(a + 2, 16 - 3);
+       17:   24:  for (i = 0; i < 16; i++)
+       16:   25:    if (ref[i] != a[i])
+    #####:   26:      abort();
+        1:   27:  return 0;
+        -:   28:}

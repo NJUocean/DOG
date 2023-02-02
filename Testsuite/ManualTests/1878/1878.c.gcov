@@ -1,0 +1,29 @@
+        -:    0:Source:1878.c
+        -:    0:Graph:1878.gcno
+        -:    0:Data:1878.gcda
+        -:    0:Runs:1
+        -:    1:#include <math.h>
+        -:    2:
+        -:    3:static const double zero = 0.0;
+        -:    4:static const double pone = 1.0;
+        -:    5:static const double none = -1.0;
+        -:    6:static const double pinf = 1.0 / 0.0;
+        -:    7:static const double ninf = -1.0 / 0.0;
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (pinf != pone / zero)
+    #####:   11:    abort();
+        -:   12:
+        1:   13:  if (ninf != none / zero)
+    #####:   14:    abort();
+        -:   15:
+        -:   16:#ifdef HUGE_VAL
+        1:   17:  if (HUGE_VAL != pinf)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  if (-HUGE_VAL != ninf)
+    #####:   21:    abort();
+        -:   22:#endif
+        -:   23:
+        1:   24:  exit(0);
+        -:   25:}

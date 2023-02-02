@@ -1,0 +1,16 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|      1|int main() {
+    5|      1|  int i;
+    6|      1|  foobar(i, &i); /* { dg-warning "implicit declaration" } */
+    7|      1|}
+    8|       |
+    9|      1|int foobar(int a, long long b) {
+   10|      1|  int c;
+   11|      1|
+   12|      1|  c = a % b;
+   13|      1|  a = a / b;
+   14|      1|  return a + b;
+   15|      1|}
+

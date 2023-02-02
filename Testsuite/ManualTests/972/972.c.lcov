@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |struct pack {
+    5|       |  int fine;
+    6|       |  int victim;
+    7|       |  int killer;
+    8|       |};
+    9|       |
+   10|       |int __attribute__((__noinline__, __noclone__))
+   11|      1|bar(int a, int b, struct pack p) {
+   12|      1|  if (a != 20 || b != 30)
+   13|      0|    __builtin_abort();
+   14|      1|  if (p.fine != 40 || p.victim != 50 || p.killer != 60)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |int __attribute__((__noinline__, __noclone__))
+   20|      1|foo(int arg1, int arg2, int arg3, struct pack p) {
+   21|      1|  return bar(arg2, arg3, p);
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  struct pack p = {40, 50, 60};
+   26|      1|
+   27|      1|  (void)foo(10, 20, 30, p);
+   28|      1|  return 0;
+   29|      1|}
+

@@ -1,0 +1,5 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |char one[50] = "ijk";
+    4|      1|int main(void) { return __builtin_strlen(one) != 3; }
+

@@ -1,0 +1,17 @@
+    1|       |/* { dg-options "-O0 -fdump-tree-optimized" } */
+    2|       |
+    3|      1|int main(int argc, char **argv) {
+    4|      1|  unsigned u = (argc - 1);
+    5|      1|  int counter = 0;
+    6|      1|
+    7|    101|  for (unsigned i = 0; i < 100; i++) {
+    8|    100|    counter += u % 16;
+    9|    100|  }
+   10|      1|
+   11|      1|  return counter;
+   12|      1|}
+   13|       |
+   14|       |/* autofdo does not do value profiling so far */
+   15|       |/* { dg-final-use-not-autofdo { scan-tree-dump-times "__gcov_pow2_profiler" 0
+   16|       | * "optimized" } } */
+

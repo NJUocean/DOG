@@ -1,0 +1,29 @@
+        -:    0:Source:3254.c
+        -:    0:Graph:3254.gcno
+        -:    0:Data:3254.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:struct B {
+        -:    5:  int x;
+        -:    6:  int y;
+        -:    7:};
+        -:    8:
+        -:    9:struct A {
+        -:   10:  int z;
+        -:   11:  struct B b;
+        -:   12:};
+        -:   13:
+        1:   14:struct A f() {
+        1:   15:  struct B b = {0, 1};
+        1:   16:  struct A a = {2, b};
+        1:   17:  return a;
+        -:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        1:   21:  struct A a = f();
+        1:   22:  if (a.z != 2 || a.b.x != 0 || a.b.y != 1)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

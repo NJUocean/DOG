@@ -1,0 +1,41 @@
+        -:    0:Source:2984.c
+        -:    0:Graph:2984.gcno
+        -:    0:Data:2984.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ultrasparc_hw } */
+        -:    3:/* { dg-options "-O2 -mcpu=ultrasparc -mvis" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:int foo(double a, int b, int c, double *d, int h) {
+        -:    9:  int f, g;
+        -:   10:  double e;
+        -:   11:
+        1:   12:l:
+        1:   13:  f = (int)a;
+        1:   14:  a -= (double)f;
+        1:   15:  if (b == 1) {
+        1:   16:    g = c;
+        1:   17:    f += g;
+        1:   18:    c -= g;
+        -:   19:  }
+        1:   20:  if (b == 2) {
+    #####:   21:    f++;
+    #####:   22:    h = c;
+        -:   23:  }
+        1:   24:  if (!h) {
+    #####:   25:    for (g = 0; g <= 10; g++)
+    #####:   26:      for (h = 0; h <= 10; h++)
+    #####:   27:        e += d[10 + g - h];
+    #####:   28:    goto l;
+        -:   29:  }
+        1:   30:  return f & 7;
+        -:   31:}
+        -:   32:
+        1:   33:int main() {
+        1:   34:  if (foo(0.1, 1, 3, 0, 1) != 3)
+    #####:   35:    abort();
+        1:   36:  exit(0);
+        -:   37:}

@@ -1,0 +1,23 @@
+        -:    0:Source:1467.c
+        -:    0:Graph:1467.gcno
+        -:    0:Data:1467.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:long long arr[6] = {0, 1, 2, 3, 4, 5};
+        -:    4:extern void abort(void);
+        5:    5:void __attribute__((noinline, noclone)) foo(long long sum) { asm(""); }
+        1:    6:int main() {
+        1:    7:  int i, n = 5;
+        1:    8:  long long sum = 0, prevsum = 0;
+        -:    9:
+        6:   10:  for (i = 1; i <= n; i++) {
+        5:   11:    foo(sum);
+        5:   12:    sum = (i - 1) * arr[i] - prevsum;
+        5:   13:    prevsum += arr[i];
+        -:   14:  }
+        -:   15:
+        1:   16:  if (sum != 10)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

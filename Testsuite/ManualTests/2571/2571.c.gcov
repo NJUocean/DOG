@@ -1,0 +1,43 @@
+        -:    0:Source:2571.c
+        -:    0:Graph:2571.gcno
+        -:    0:Data:2571.gcda
+        -:    0:Runs:1
+        -:    1:/* Test if functions marked __attribute__((used)), but with address never
+        -:    2:   taken in C code, don't use alternate calling convention for local
+        -:    3:   functions on IA-32.  */
+        -:    4:/* { dg-do run } */
+        -:    5:/* The asm in this test uses an absolute address.  */
+        -:    6:/* { dg-require-effective-target nonpic } */
+        -:    7:/* { dg-options "-O2" } */
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:static int foo(int, int, int, int) __asm("foo");
+        2:   12:static __attribute__((noinline, used)) int foo(int i, int j, int k, int l) {
+        2:   13:  return i + j + k + l;
+        -:   14:}
+        -:   15:
+        1:   16:void bar(void) {
+        1:   17:  if (foo(1, 2, 3, 4) != 10)
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        -:   21:int (*fn)(int, int, int, int);
+        -:   22:
+        1:   23:void baz(void) {
+        -:   24:  /* Darwin loads 64-bit regions above the 4GB boundary so
+        -:   25:     we need to use this instead.  */
+        -:   26:#if defined(__LP64__)
+        1:   27:  __asm("leaq foo(%%rip), %0" : "=r"(fn));
+        -:   28:#else
+        -:   29:  __asm("movl $foo, %k0" : "=r"(fn));
+        -:   30:#endif
+        1:   31:  if (fn(2, 3, 4, 5) != 14)
+    #####:   32:    abort();
+        1:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        1:   36:  bar();
+        1:   37:  baz();
+        1:   38:  return 0;
+        -:   39:}

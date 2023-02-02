@@ -1,0 +1,21 @@
+        -:    0:Source:1641.c
+        -:    0:Graph:1641.gcno
+        -:    0:Data:1641.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int printf(const char *, ...);
+        -:    4:
+        -:    5:int a, b = -600, c, d[] = {0}, e, f, g = -1, h;
+        -:    6:unsigned i = ~0;
+        -:    7:
+        1:    8:int main() {
+        3:    9:  for (; h < 2; h++) {
+        2:   10:    if (a > 0)
+    #####:   11:      printf("%d\n", d[b]);
+        2:   12:    f = ~(b % i);
+       2*:   13:    c = g | (f && g) && e | b;
+        2:   14:    a = ~(~g & b);
+        -:   15:  }
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,20 @@
+    1|       |/* PR tree-optimization/54877 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-ffast-math" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int foo(void) {
+    8|      1|  double d;
+    9|      1|  int i;
+   10|     65|  for (i = 0, d = 0; i < 64; i++)
+   11|     64|    d--;
+   12|      1|  return (int)d;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  if (foo() != -64)
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

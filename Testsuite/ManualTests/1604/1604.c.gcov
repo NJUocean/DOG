@@ -1,0 +1,45 @@
+        -:    0:Source:1604.c
+        -:    0:Graph:1604.gcno
+        -:    0:Data:1604.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-prune-output "use of enum values across objects may fail" } */
+        -:    3:/* { dg-additional-options "-fshort-enums" } */
+        -:    4:
+        -:    5:enum e1 { c1 = -__INT_MAX__ };
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) int f(enum e1 *p, signed int *q) {
+        1:    8:  *p = c1;
+        1:    9:  *q = 2;
+        1:   10:  return *p;
+        -:   11:}
+        -:   12:
+        -:   13:enum e2 { c2 = __SHRT_MAX__ + 1 };
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) int g(enum e2 *p, unsigned short *q) {
+        1:   16:  *p = c2;
+        1:   17:  *q = 2;
+        1:   18:  return *p;
+        -:   19:}
+        -:   20:
+        -:   21:enum e3 { c3 = __SCHAR_MAX__ };
+        -:   22:
+        1:   23:__attribute__((noinline, noclone)) int h(enum e3 *p, unsigned char *q) {
+        1:   24:  *p = c3;
+        1:   25:  *q = 2;
+        1:   26:  return *p;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        -:   30:  signed x;
+        -:   31:  unsigned short y;
+        -:   32:  unsigned char z;
+        -:   33:
+        1:   34:  if (f(&x, &x) != 2)
+    #####:   35:    __builtin_abort();
+        1:   36:  if (g(&y, &y) != 2)
+    #####:   37:    __builtin_abort();
+        1:   38:  if (h(&z, &z) != 2)
+    #####:   39:    __builtin_abort();
+        1:   40:  return 0;
+        -:   41:}

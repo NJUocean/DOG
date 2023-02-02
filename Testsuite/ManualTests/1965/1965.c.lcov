@@ -1,0 +1,39 @@
+    1|       |/* Copyright (C) 2002  Free Software Foundation.
+    2|       |   by Hans-Peter Nilsson  <hp@bitrange.com>, derived from mzero2.c
+    3|       |
+    4|       |   In the MMIX port, negdf2 was bogusly expanding -x into 0 - x.  */
+    5|       |
+    6|       |double nzerod = -0.0;
+    7|       |float nzerof = -0.0;
+    8|       |double zerod = 0.0;
+    9|       |float zerof = 0.0;
+   10|       |
+   11|       |void expectd(double, double);
+   12|       |void expectf(float, float);
+   13|       |double negd(double);
+   14|       |float negf(float);
+   15|       |
+   16|      1|main() {
+   17|      1|  expectd(negd(zerod), nzerod);
+   18|      1|  expectf(negf(zerof), nzerof);
+   19|      1|  expectd(negd(nzerod), zerod);
+   20|      1|  expectf(negf(nzerof), zerof);
+   21|      1|  exit(0);
+   22|      1|}
+   23|       |
+   24|      2|void expectd(double value, double expected) {
+   25|      2|  if (value != expected ||
+   26|      2|      memcmp((void *)&value, (void *)&expected, sizeof(double)) != 0)
+   27|      0|    abort();
+   28|      2|}
+   29|       |
+   30|      2|void expectf(float value, float expected) {
+   31|      2|  if (value != expected ||
+   32|      2|      memcmp((void *)&value, (void *)&expected, sizeof(float)) != 0)
+   33|      0|    abort();
+   34|      2|}
+   35|       |
+   36|      2|double negd(double v) { return -v; }
+   37|       |
+   38|      2|float negf(float v) { return -v; }
+

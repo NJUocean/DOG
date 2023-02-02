@@ -1,0 +1,23 @@
+        -:    0:Source:1645.c
+        -:    0:Graph:1645.gcno
+        -:    0:Data:1645.gcda
+        -:    0:Runs:1
+        -:    1:/* The fp-bit.c function __floatunsisf had a latent bug where guard bits
+        -:    2:   could be lost leading to incorrect rounding.  */
+        -:    3:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:#if __INT_MAX__ >= 0x7fffffff
+        -:    8:volatile unsigned u = 0x80000081;
+        -:    9:#else
+        -:   10:volatile unsigned long u = 0x80000081;
+        -:   11:#endif
+        -:   12:volatile float f1, f2;
+        1:   13:int main(void) {
+        1:   14:  f1 = (float)u;
+        1:   15:  f2 = (float)0x80000081;
+        1:   16:  if (f1 != f2)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

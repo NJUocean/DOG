@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run }  */
+    2|       |/* { dg-require-ifunc "" } */
+    3|       |/* { dg-options "" } */
+    4|       |
+    5|       |#include <stdio.h>
+    6|       |
+    7|      2|static int __attribute__((noinline)) implementation(void *ptr) {
+    8|      2|  if (ptr)
+    9|      1|    return ((int (*)(void *))ptr)(0);
+   10|      1|
+   11|      1|  printf("'ere I am JH\n");
+   12|      1|  return 0;
+   13|      1|}
+   14|       |
+   15|      1|static __typeof__(implementation) *resolver(void) {
+   16|      1|  return (void *)implementation;
+   17|      1|}
+   18|       |
+   19|       |extern int magic(void *) __attribute__((ifunc("resolver")));
+   20|       |
+   21|      1|int main() { return magic((void *)magic); }
+

@@ -1,0 +1,18 @@
+        -:    0:Source:1220.c
+        -:    0:Graph:1220.gcno
+        -:    0:Data:1220.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fno-common" { target hppa*-*-hpux* } } */
+        -:    3:
+        -:    4:typedef long v2di __attribute__((vector_size(16)));
+        -:    5:v2di v;
+        1:    6:void __attribute__((noinline)) foo() { v = (v2di){v[1], v[0]}; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  v[0] = 1;
+        1:   10:  foo();
+        1:   11:  if (v[0] != 0 || v[1] != 1)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

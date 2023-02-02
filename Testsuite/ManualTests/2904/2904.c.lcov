@@ -1,0 +1,25 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-msmall-data-limit=100" } */
+    3|       |
+    4|       |double a = 6.76, b = 7.34, c = 0.54;
+    5|       |double x_1 = 45.46;
+    6|       |static double SD_1;
+    7|       |static double SD_init = 45.54;
+    8|       |double DD_1;
+    9|       |double DD_init = 769.0;
+   10|       |
+   11|      1|int main() {
+   12|      1|  volatile double x, y, z;
+   13|      1|
+   14|      1|  x = 56.76;
+   15|      1|  y = 4.5645;
+   16|      1|
+   17|      1|  z = x + y;
+   18|      1|  z = x - 4.65;
+   19|      1|  z = 4.566 - x;
+   20|      1|  z = x * y;
+   21|      1|  b = 8;
+   22|      1|  c = 34;
+   23|      1|  return 0;
+   24|      1|}
+

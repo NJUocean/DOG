@@ -1,0 +1,17 @@
+        -:    0:Source:1584.c
+        -:    0:Graph:1584.gcno
+        -:    0:Data:1584.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target lp64 } */
+        -:    3:
+        1:    4:unsigned long int foo(signed char b, signed char e) {
+        1:    5:  return ((2ULL * b) * (e * 13)) * (32 << 24);
+        -:    6:}
+        -:    7:
+        1:    8:int main() {
+        1:    9:  if (__CHAR_BIT__ == 8 && sizeof(int) == 4 && sizeof(long long) == 8 &&
+        1:   10:      foo(-60, 1) != 0xffffff3d00000000ULL)
+    #####:   11:    __builtin_abort();
+        1:   12:  return 0;
+        -:   13:}

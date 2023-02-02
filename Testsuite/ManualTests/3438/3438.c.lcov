@@ -1,0 +1,22 @@
+    1|       |extern void abort() __attribute__((noreturn));
+    2|       |
+    3|       |struct s {
+    4|       |  unsigned long long f1 : 40;
+    5|       |#if (__SIZEOF_INT__ >= 4)
+    6|       |  unsigned int f2 : 24;
+    7|       |#else
+    8|       |  unsigned long int f2 : 24;
+    9|       |#endif
+   10|       |} sv;
+   11|       |
+   12|      1|int main() {
+   13|      1|  int f2;
+   14|      1|  sv.f2 = (1 << 24) - 1;
+   15|      1|  __asm__ volatile("" : : : "memory");
+   16|      1|  ++sv.f2;
+   17|      1|  f2 = sv.f2;
+   18|      1|  if (f2 != 0)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

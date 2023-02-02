@@ -1,0 +1,15 @@
+    1|       |/* PR rtl-optimization/23567 */
+    2|       |
+    3|       |struct {
+    4|       |  int len;
+    5|       |  char *name;
+    6|       |} s;
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  s.len = 0;
+   10|      1|  s.name = "";
+   11|      1|  if (s.name[s.len] != 0)
+   12|      0|    s.name[s.len] = 0;
+   13|      1|  return 0;
+   14|      1|}
+

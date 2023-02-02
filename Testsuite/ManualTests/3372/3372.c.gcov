@@ -1,0 +1,24 @@
+        -:    0:Source:3372.c
+        -:    0:Graph:3372.gcno
+        -:    0:Data:3372.gcda
+        -:    0:Runs:1
+        -:    1:typedef enum { C = 1, D = 2 } B;
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:struct S {
+        -:    5:  B __attribute__((mode(byte))) a;
+        -:    6:  B __attribute__((mode(byte))) b;
+        -:    7:};
+        -:    8:
+        1:    9:void foo(struct S *x) {
+        1:   10:  if (x->a != C || x->b != D)
+    #####:   11:    abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        -:   15:  struct S s;
+        1:   16:  s.a = C;
+        1:   17:  s.b = D;
+        1:   18:  foo(&s);
+        1:   19:  return 0;
+        -:   20:}

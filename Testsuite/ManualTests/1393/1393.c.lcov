@@ -1,0 +1,14 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+    3|       |
+    4|       |unsigned char x = 154;
+    5|      1|int foo() {
+    6|      1|  // 8575 * (254408 - 9057) = 8575 * 245351 = 2103884825 = 0x7d66bc19
+    7|      1|  return 8575 * (1652 * x - 9057);
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  foo();
+   12|      1|  return 0;
+   13|      1|}
+

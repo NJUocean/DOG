@@ -1,0 +1,29 @@
+        -:    0:Source:3865.c
+        -:    0:Graph:3865.gcno
+        -:    0:Data:3865.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/64756 */
+        -:    2:
+        -:    3:int a, *tmp, **c = &tmp;
+        -:    4:volatile int d;
+        -:    5:static int *volatile *e = &tmp;
+        -:    6:unsigned int f;
+        -:    7:
+        1:    8:static void fn1(int *p) {
+        -:    9:  int g;
+        2:   10:  for (; f < 1; f++)
+        3:   11:    for (g = 1; g >= 0; g--) {
+       2*:   12:      d || d;
+        2:   13:      *c = p;
+        -:   14:
+        2:   15:      if (tmp != &a)
+    #####:   16:        __builtin_abort();
+        -:   17:
+        2:   18:      *e = 0;
+        -:   19:    }
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  fn1(&a);
+        1:   24:  return 0;
+        -:   25:}

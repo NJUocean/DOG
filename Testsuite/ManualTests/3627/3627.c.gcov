@@ -1,0 +1,21 @@
+        -:    0:Source:3627.c
+        -:    0:Graph:3627.gcno
+        -:    0:Data:3627.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/38422 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int s : (sizeof(int) * __CHAR_BIT__ - 2);
+        -:    7:} s;
+        -:    8:
+        1:    9:void foo(void) { s.s *= 2; }
+        -:   10:
+        1:   11:int main() {
+        1:   12:  s.s = 24;
+        1:   13:  foo();
+        1:   14:  if (s.s != 48)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

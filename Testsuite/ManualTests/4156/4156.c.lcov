@@ -1,0 +1,49 @@
+    1|       |/* PR c/4389
+    2|       |   This testcase failed because host_integerp (x, 0) was returning
+    3|       |   1 even for constants bigger than 2^31.  It fails under hppa
+    4|       |   hpux without -mdisable-indexing because the pointer x - 1 is used
+    5|       |   as the base address of an indexed load.  Because the struct A is not
+    6|       |   actually allocated, x - 1 lies in the text segment and this causes
+    7|       |   the wrong space register to be selected for the load.  It fails on
+    8|       |   IA64 hpux in ILP32 mode because extending x - 1 before adding the
+    9|       |   array offset gives a different answer then adding first and then
+   10|       |   extending.  The underlying problem is the same as with hppa, x - 1 is
+   11|       |   not a legal data address.  It also fails on x32 targets for the
+   12|       |   same reason.  */
+   13|       |/* { dg-do run } */
+   14|       |/* { dg-options "-O2" } */
+   15|       |/* { dg-options "-O2 -mdisable-indexing" { target hppa*-*-hpux* } } */
+   16|       |/* { dg-skip-if "" { aarch64*-*-* && ilp32 } } */
+   17|       |/* { dg-skip-if "" { "ia64-*-hpux*" } "*" "-mlp64" } */
+   18|       |/* { dg-skip-if "" { { i?86-*-* x86_64-*-* } && x32 } } */
+   19|       |
+   20|       |/* Disable the test entirely for 16-bit targets.  */
+   21|       |#if __INT_MAX__ > 32767
+   22|       |
+   23|       |extern void abort(void);
+   24|       |extern void exit(int);
+   25|       |struct A {
+   26|       |  int a[10000][10000];
+   27|       |};
+   28|       |int b[2] = {213151, 0};
+   29|       |
+   30|      1|void foo(struct A *x, int y) {
+   31|      1|  if (x->a[9999][9999] != x->a[y][y])
+   32|      0|    abort();
+   33|      1|  if (x->a[9999][9999] != 213151)
+   34|      0|    abort();
+   35|      1|}
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  struct A *x;
+   39|      1|  asm("" : "=r"(x) : "0"(&b[1]));
+   40|      1|  foo(x - 1, 9999);
+   41|      1|  exit(0);
+   42|      1|}
+   43|       |
+   44|       |#else
+   45|       |
+   46|       |int main() { return 0; }
+   47|       |
+   48|       |#endif /* __INT_MAX__ */
+

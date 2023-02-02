@@ -1,0 +1,15 @@
+        -:    0:Source:3300.c
+        -:    0:Graph:3300.gcno
+        -:    0:Data:3300.gcda
+        -:    0:Runs:1
+        -:    1:char buf[10];
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern int sprintf(char *, const char *, ...);
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int l = sprintf(buf, "foo\0bar");
+        1:    8:  if (l != 3)
+    #####:    9:    abort();
+        1:   10:  return 0;
+        -:   11:}

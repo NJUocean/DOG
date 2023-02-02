@@ -1,0 +1,75 @@
+        -:    0:Source:159.c
+        -:    0:Graph:159.gcno
+        -:    0:Data:159.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static volatile int32_t g_2[2] = {0x3A473EB9L, 0x3A473EB9L};
+        -:    7:static int32_t g_3 = 0x98311173L;
+        -:    8:static int16_t g_15 = 0x61B5L;
+        -:    9:static int32_t g_17 = (-4L);
+        -:   10:static volatile uint64_t g_34 = 1UL;
+        -:   11:
+        -:   12:static int32_t func_1(void);
+        -:   13:static int8_t func_9(uint8_t p_10, uint16_t p_11, int16_t p_12);
+        -:   14:
+        1:   15:static int32_t func_1(void) {
+        1:   16:  int32_t l_6 = 0xB6069300L;
+        1:   17:  int32_t l_31 = (-10L);
+        1:   18:  int32_t l_32 = 0x5E13CD4FL;
+        1:   19:  int32_t l_33[5][5][3] = {{{0x8A57461DL, 0L, 0L}, {0L, 0L, 0xE945D447L}, {0x8A57461DL, 0xE945D447L, 0L}, {0L, 0xE945D447L, 0x8A57461DL}, {0xE945D447L, 0L, 0L}}, {{0L, 0L, 0x8A57461DL}, {1L, 0xD029B4CCL, 0L}, {1L, 4L, 0xE945D447L}, {0L, 0xCB407CB0L, 0L}, {0xE945D447L, 4L, 1L}}, {{0L, 0xD029B4CCL, 1L}, {0x8A57461DL, 0L, 0L}, {0L, 0L, 0xE945D447L}, {0x8A57461DL, 0xE945D447L, 0L}, {0L, 0xE945D447L, 1L}}, {{0L, (-1L), (-1L)}, {4L, 0xCB407CB0L, 1L}, {0L, 0x8A57461DL, 0xCB407CB0L}, {0L, 0xE945D447L, 0L}, {4L, 0x52E2CC7BL, 4L}}, {{0L, 0xE945D447L, 0L}, {0xCB407CB0L, 0x8A57461DL, 0L}, {1L, 0xCB407CB0L, 4L}, {(-1L), (-1L), 0L}, {1L, 0L, 0xCB407CB0L}}};
+        -:   20:  int i, j, k;
+       1*:   21:  for (g_3 = 0; (g_3 != (-6)); g_3 = safe_sub_func_uint16_t_u_u(g_3, 3)) {
+        -:   22:    uint32_t l_13[1];
+        1:   23:    int16_t *l_14 = &g_15;
+        1:   24:    int32_t l_30 = (-1L);
+        -:   25:    int i;
+        2:   26:    for (i = 0; i < 1; i++)
+        1:   27:      l_13[i] = 1UL;
+        1:   28:    if ((((l_6, g_2[0]), (safe_sub_func_int8_t_s_s(func_9(l_13[0], g_3, ((*l_14) = (l_6 < (-1L)))), (((safe_rshift_func_uint64_t_u_s(g_3, (safe_mul_func_int64_t_s_s((safe_mul_func_uint32_t_u_u((g_3 >= g_3), g_3)), 0L)))) | (-8L)), g_3)))) > l_6)) {
+        1:   29:      uint32_t l_24 = 0x72C02A30L;
+        1:   30:      return l_24;
+        -:   31:    } else {
+    #####:   32:      int32_t *l_25 = (void *)0;
+    #####:   33:      int32_t *l_26 = &g_17;
+    #####:   34:      int32_t *l_27 = &g_17;
+    #####:   35:      int32_t *l_28 = (void *)0;
+        -:   36:      int32_t *l_29[4];
+        -:   37:      int i;
+    #####:   38:      for (i = 0; i < 4; i++)
+    #####:   39:        l_29[i] = &g_17;
+    #####:   40:      g_34++;
+        -:   41:    }
+        -:   42:  }
+    #####:   43:  return l_6;
+        -:   44:}
+        -:   45:
+        1:   46:static int8_t func_9(uint8_t p_10, uint16_t p_11, int16_t p_12) {
+        1:   47:  int32_t *l_16 = &g_17;
+        1:   48:  (*l_16) |= 0xE3E76316L;
+        1:   49:  return g_2[0];
+        -:   50:}
+        -:   51:
+        1:   52:int main(int argc, char *argv[]) {
+        -:   53:  int i;
+        1:   54:  int print_hash_value = 0;
+       1*:   55:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   56:    print_hash_value = 1;
+        1:   57:  platform_main_begin();
+        1:   58:  crc32_gentab();
+        1:   59:  func_1();
+        3:   60:  for (i = 0; i < 2; i++) {
+        2:   61:    transparent_crc(g_2[i], "g_2[i]", print_hash_value);
+        2:   62:    if (print_hash_value)
+    #####:   63:      printf("index = [%d]\n", i);
+        -:   64:  }
+        1:   65:  transparent_crc(g_3, "g_3", print_hash_value);
+        1:   66:  transparent_crc(g_15, "g_15", print_hash_value);
+        1:   67:  transparent_crc(g_17, "g_17", print_hash_value);
+        1:   68:  transparent_crc(g_34, "g_34", print_hash_value);
+        1:   69:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   70:  return 0;
+        -:   71:}

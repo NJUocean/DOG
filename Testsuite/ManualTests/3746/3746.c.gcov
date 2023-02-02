@@ -1,0 +1,22 @@
+        -:    0:Source:3746.c
+        -:    0:Graph:3746.gcno
+        -:    0:Data:3746.gcda
+        -:    0:Runs:1
+        -:    1:double glob_dbl;
+        -:    2:
+        1:    3:f(pdbl, value) double *pdbl;
+        -:    4:double value;
+        -:    5:{
+        1:    6:  if (pdbl == 0)
+        1:    7:    pdbl = &glob_dbl;
+        -:    8:
+        1:    9:  *pdbl = value;
+        1:   10:}
+        -:   11:
+        1:   12:main() {
+        1:   13:  f((void *)0, 55.1);
+        -:   14:
+        1:   15:  if (glob_dbl != 55.1)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

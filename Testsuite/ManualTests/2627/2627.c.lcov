@@ -1,0 +1,35 @@
+    1|       |/* { dg-do run { target { { *-*-linux* *-*-gnu* } && ilp32 } } } */
+    2|       |/* { dg-options "-Os" } */
+    3|       |/* PR target/36613 */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|static inline int lshifts(int val, int cnt) {
+    8|      1|  if (val < 0)
+    9|      0|    return val;
+   10|      1|  return val << cnt;
+   11|      1|}
+   12|       |
+   13|      1|static inline unsigned int lshiftu(unsigned int val, unsigned int cnt) {
+   14|      1|  if (cnt >= sizeof(unsigned int) * __CHAR_BIT__ ||
+   15|      1|      val > ((__INT_MAX__ * 2U) >> cnt))
+   16|      0|    return val;
+   17|      1|  return val << cnt;
+   18|      1|}
+   19|       |
+   20|      1|static inline int rshifts(int val, unsigned int cnt) {
+   21|      1|  if (val < 0 || cnt >= sizeof(int) * __CHAR_BIT__)
+   22|      0|    return val;
+   23|      1|  return val >> cnt;
+   24|      1|}
+   25|       |
+   26|      1|int foo(unsigned int val) {
+   27|      1|  return rshifts(1 + val, lshifts(lshiftu(val, val), 1));
+   28|      1|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  if (foo(1) != 0)
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

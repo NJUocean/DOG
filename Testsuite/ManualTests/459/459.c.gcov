@@ -1,0 +1,29 @@
+        -:    0:Source:459.c
+        -:    0:Graph:459.gcno
+        -:    0:Data:459.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-Wl,--stack,12582912" { target *-*-mingw* *-*-cygwin* } } */
+        -:    2:/* { dg-require-effective-target size32plus } */
+        -:    3:/* { dg-require-stack-size "4*1000*1000" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        1:    7:void foo(int N) {
+        -:    8:  int i, j;
+        -:    9:  int x[1000][1000];
+        -:   10:
+     1001:   11:  for (i = 0; i < N; i++)
+  1001000:   12:    for (j = 0; j < N; j++)
+  1000000:   13:      x[i][j] = i + j + 3;
+        -:   14:
+     1001:   15:  for (i = 0; i < N; i++)
+  1001000:   16:    for (j = 0; j < N; j++)
+  1000000:   17:      if (x[i][j] != i + j + 3)
+    #####:   18:        abort();
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  foo(1000);
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

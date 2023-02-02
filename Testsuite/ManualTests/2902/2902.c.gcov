@@ -1,0 +1,32 @@
+        -:    0:Source:2902.c
+        -:    0:Graph:2902.gcno
+        -:    0:Data:2902.gcda
+        -:    0:Runs:1
+        -:    1:void b(int *);
+        -:    2:void c(int, int);
+        -:    3:void d(int);
+        -:    4:
+        -:    5:int e;
+        -:    6:
+        1:    7:void a(int x, int y) {
+       1*:    8:  int f = x ? e : 0;
+        1:    9:  int z = y;
+        -:   10:
+        1:   11:  b(&y);
+        1:   12:  c(z, y);
+        1:   13:  d(f);
+        1:   14:}
+        -:   15:
+        1:   16:void b(int *y) { (*y)++; }
+        -:   17:
+        1:   18:void c(int x, int y) {
+        1:   19:  if (x == y)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+        1:   23:void d(int x) {}
+        -:   24:
+        1:   25:int main(void) {
+        1:   26:  a(0, 0);
+        1:   27:  exit(0);
+        -:   28:}

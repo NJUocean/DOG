@@ -1,0 +1,14 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|      1|void __attribute__((noinline)) foo(int a) {
+    5|      1|  int z = a > 0 ? a : -a;
+    6|      1|  long long x = z;
+    7|      1|  if (x > 0x100000000LL)
+    8|      0|    abort();
+    9|      1|  else
+   10|      1|    exit(0);
+   11|      1|}
+   12|       |
+   13|      1|int main() { foo(1); }
+

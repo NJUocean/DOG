@@ -1,0 +1,13 @@
+        -:    0:Source:1599.c
+        -:    0:Graph:1599.gcno
+        -:    0:Data:1599.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:int main() {
+        -:    4:  _Bool b;
+        1:    5:  *(char *)&b = 123;
+        1:    6:  if (*(char *)&b != 123)
+    #####:    7:    __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}

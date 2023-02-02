@@ -1,0 +1,59 @@
+        -:    0:Source:3880.c
+        -:    0:Graph:3880.gcno
+        -:    0:Data:3880.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/65401 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned short s[64];
+        -:    5:};
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) void foo(struct S *x) {
+        -:    8:  unsigned int i;
+        -:    9:  unsigned char *s;
+        -:   10:
+        1:   11:  s = (unsigned char *)x->s;
+       65:   12:  for (i = 0; i < 64; i++)
+       64:   13:    x->s[i] = s[i * 2] | (s[i * 2 + 1] << 8);
+        1:   14:}
+        -:   15:
+        1:   16:__attribute__((noinline, noclone)) void bar(struct S *x) {
+        -:   17:  unsigned int i;
+        -:   18:  unsigned char *s;
+        -:   19:
+        1:   20:  s = (unsigned char *)x->s;
+       65:   21:  for (i = 0; i < 64; i++)
+       64:   22:    x->s[i] = (s[i * 2] << 8) | s[i * 2 + 1];
+        1:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  unsigned int i;
+        -:   27:  struct S s;
+        -:   28:  if (sizeof(unsigned short) != 2)
+        -:   29:    return 0;
+       65:   30:  for (i = 0; i < 64; i++)
+       64:   31:    s.s[i] = i + ((64 - i) << 8);
+        1:   32:  foo(&s);
+        -:   33:#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   34:  for (i = 0; i < 64; i++)
+        -:   35:    if (s.s[i] != (64 - i) + (i << 8))
+        -:   36:      __builtin_abort();
+        -:   37:#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+       65:   38:  for (i = 0; i < 64; i++)
+       64:   39:    if (s.s[i] != i + ((64 - i) << 8))
+    #####:   40:      __builtin_abort();
+        -:   41:#endif
+       65:   42:  for (i = 0; i < 64; i++)
+       64:   43:    s.s[i] = i + ((64 - i) << 8);
+        1:   44:  bar(&s);
+        -:   45:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+       65:   46:  for (i = 0; i < 64; i++)
+       64:   47:    if (s.s[i] != (64 - i) + (i << 8))
+    #####:   48:      __builtin_abort();
+        -:   49:#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        -:   50:  for (i = 0; i < 64; i++)
+        -:   51:    if (s.s[i] != i + ((64 - i) << 8))
+        -:   52:      __builtin_abort();
+        -:   53:#endif
+        1:   54:  return 0;
+        -:   55:}

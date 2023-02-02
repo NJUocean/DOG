@@ -1,0 +1,26 @@
+        -:    0:Source:1507.c
+        -:    0:Graph:1507.gcno
+        -:    0:Data:1507.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:short c, d;
+        -:    5:char e, f;
+        -:    6:
+    #####:    7:int fn1(int p1, char p2) { return p1 || p2 ? 0 : p2; }
+        -:    8:
+        1:    9:void fn2() {
+        1:   10:  for (; a;) {
+        -:   11:    int g;
+    #####:   12:    g = c = e;
+    #####:   13:    for (; a;)
+    #####:   14:      b = fn1(g = d = e, g);
+    #####:   15:    f = g;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  fn2();
+        1:   21:  return 0;
+        -:   22:}

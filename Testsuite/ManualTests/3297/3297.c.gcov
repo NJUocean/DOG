@@ -1,0 +1,15 @@
+        -:    0:Source:3297.c
+        -:    0:Graph:3297.gcno
+        -:    0:Data:3297.gcda
+        -:    0:Runs:1
+        1:    1:int main(int argc, char **argv) {
+        1:    2:  int size = 10;
+        -:    3:
+        -:    4:  {
+        1:    5:    int retframe_block() { return size + 5; }
+        -:    6:
+        1:    7:    if (retframe_block() != 15)
+    #####:    8:      abort();
+        1:    9:    exit(0);
+        -:   10:  }
+        -:   11:}

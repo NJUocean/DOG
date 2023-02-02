@@ -1,0 +1,17 @@
+        -:    0:Source:3909.c
+        -:    0:Graph:3909.gcno
+        -:    0:Data:3909.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        1:    2:int __attribute__((noinline)) foo(void) { return 123; }
+        -:    3:
+        1:    4:int __attribute__((noinline)) bar(void) {
+        1:    5:  int c = 1;
+        1:    6:  c |= 4294967295 ^ (foo() | 4073709551608);
+        1:    7:  return c;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  if (bar() != 0x83fd4005)
+    #####:   12:    __builtin_abort();
+        -:   13:}

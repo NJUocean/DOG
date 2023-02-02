@@ -1,0 +1,31 @@
+    1|       |/* PR target/6997.  Missing (set_attr "cc" "none") in sleu pattern in
+    2|       |   cris.md.  Testcase from hp@axis.com.  */
+    3|       |
+    4|       |int p;
+    5|       |int k;
+    6|       |unsigned int n;
+    7|       |
+    8|      1|void x() {
+    9|      1|  unsigned int h;
+   10|      1|
+   11|      1|  h = n <= 30;
+   12|      1|  if (h)
+   13|      1|    p = 1;
+   14|      0|  else
+   15|      0|    p = 0;
+   16|      1|
+   17|      1|  if (h)
+   18|      1|    k = 1;
+   19|      0|  else
+   20|      0|    k = 0;
+   21|      1|}
+   22|       |
+   23|       |unsigned int n = 30;
+   24|       |
+   25|      1|main() {
+   26|      1|  x();
+   27|      1|  if (p != 1 || k != 1)
+   28|      0|    abort();
+   29|      1|  exit(0);
+   30|      1|}
+

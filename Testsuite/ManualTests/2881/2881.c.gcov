@@ -1,0 +1,45 @@
+        -:    0:Source:2881.c
+        -:    0:Graph:2881.gcno
+        -:    0:Data:2881.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target { powerpc64le-*-* } } } */
+        -:    2:/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+        -:    3:/* { dg-final { scan-assembler "lxvd2x" } } */
+        -:    4:/* { dg-final { scan-assembler "stxvd2x" } } */
+        -:    5:/* { dg-final { scan-assembler-not "xxpermdi" } } */
+        -:    6:
+        -:    7:void abort();
+        -:    8:
+        -:    9:#define N 4096
+        -:   10:int ca[N] __attribute__((aligned(16)));
+        -:   11:int cb[N] __attribute__((aligned(16)));
+        -:   12:int cc[N] __attribute__((aligned(16)));
+        -:   13:int cd[N] __attribute__((aligned(16)));
+        -:   14:
+        1:   15:__attribute__((noinline)) void foo() {
+        -:   16:  int i;
+     4097:   17:  for (i = 0; i < N; i++) {
+     4096:   18:    ca[i] = (cb[i] + cc[i]) * cd[i];
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:__attribute__((noinline)) void init() {
+        -:   23:  int i;
+     4097:   24:  for (i = 0; i < N; ++i) {
+     4096:   25:    cb[i] = 3 * i - 2048;
+     4096:   26:    cc[i] = -5 * i + 93;
+     4096:   27:    cd[i] = i % 2 ? 1 : -1;
+        -:   28:  }
+        1:   29:}
+        -:   30:
+        1:   31:int main() {
+        -:   32:  int i;
+        1:   33:  init();
+        1:   34:  foo();
+     4097:   35:  for (i = 0; i < N; ++i)
+     4096:   36:    if (i % 2 == 1 && ca[i] != -2 * i - 1955)
+    #####:   37:      abort();
+     4096:   38:    else if (i % 2 == 0 && ca[i] != 1955 + 2 * i)
+    #####:   39:      abort();
+        1:   40:  return 0;
+        -:   41:}

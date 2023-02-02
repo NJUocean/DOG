@@ -1,0 +1,24 @@
+        -:    0:Source:3979.c
+        -:    0:Graph:3979.gcno
+        -:    0:Data:3979.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/82192 */
+        -:    2:
+        -:    3:unsigned long long int a = 0x95dd3d896f7422e2ULL;
+        -:    4:struct S {
+        -:    5:  unsigned int m : 13;
+        -:    6:} b;
+        -:    7:
+        1:    8:__attribute__((noinline, noclone)) void foo(void) {
+        1:    9:  b.m = ((unsigned)a) >>
+        1:   10:        (0x644eee9667723bf7LL | a & ~0xdee27af8U) - 0x644eee9667763bd8LL;
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  if (__INT_MAX__ != 0x7fffffffULL)
+        -:   15:    return 0;
+        1:   16:  foo();
+        1:   17:  if (b.m != 0)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,41 @@
+        -:    0:Source:223.c
+        -:    0:Graph:223.gcno
+        -:    0:Data:223.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:/* Verify that the cleanup handler receives the proper contents
+        -:    4:   of the variable.  */
+        -:    5:
+        -:    6:extern void exit(int);
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:static int expected;
+        -:   10:
+        2:   11:static void handler(int *p) {
+        2:   12:  if (*p != expected)
+    #####:   13:    abort();
+        2:   14:}
+        -:   15:
+        1:   16:static void __attribute__((noinline)) bar(void) {}
+        -:   17:
+        2:   18:static void doit(int x, int y) {
+        2:   19:  int r __attribute__((cleanup(handler)));
+        2:   20:  if (x < y) {
+        1:   21:    r = 0;
+        1:   22:    return;
+        -:   23:  }
+        -:   24:
+        1:   25:  bar();
+        1:   26:  r = x + y;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  expected = 0;
+        1:   31:  doit(1, 2);
+        -:   32:
+        1:   33:  expected = 3;
+        1:   34:  doit(2, 1);
+        -:   35:
+        1:   36:  return 0;
+        -:   37:}

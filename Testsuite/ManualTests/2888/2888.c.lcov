@@ -1,0 +1,41 @@
+    1|       |/* Test LOOP generation for do while.
+    2|       |   Ensure the post-condition "do while" is correctly translated
+    3|       |   to a pre-condition PRU LOOP instruction.  */
+    4|       |
+    5|       |/* { dg-do run } */
+    6|       |/* { dg-options "-O1 -mloop" } */
+    7|       |
+    8|       |/* -O1 in the options is significant.  Without it do-loop will not be
+    9|       |   run.  */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|       |volatile unsigned int int_12345 = 12345;
+   14|       |volatile unsigned int int_0 = 0;
+   15|       |volatile unsigned int int_1 = 1;
+   16|       |
+   17|      3|unsigned int test_loop(unsigned int n) {
+   18|      3|  unsigned int i = 0;
+   19|      3|  volatile unsigned int s = 0;
+   20|      3|
+   21|      3|  if (n >= 0x7fff)
+   22|      0|    return 0;
+   23|      3|
+   24|  12.3k|  do {
+   25|  12.3k|    s++;
+   26|  12.3k|    i++;
+   27|  12.3k|  } while (i < n);
+   28|      3|  return s;
+   29|      3|}
+   30|       |
+   31|      1|int main(int argc, char **argv) {
+   32|      1|  if (test_loop(int_0) != 1)
+   33|      0|    abort();
+   34|      1|  if (test_loop(int_1) != 1)
+   35|      0|    abort();
+   36|      1|  if (test_loop(int_12345) != 12345)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  return 0;
+   40|      1|}
+

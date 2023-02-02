@@ -1,0 +1,46 @@
+        -:    0:Source:2626.c
+        -:    0:Graph:2626.gcno
+        -:    0:Data:2626.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-fdump-tree-gimple" } */
+        -:    2:/* complex reductions.  */
+        -:    3:
+        -:    4:#define n 1000
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  int i;
+        -:    8:  __complex__ double result, array[n];
+        -:    9:  int lresult;
+        -:   10:
+        -:   11:  /* '+' reductions.  */
+        -:   12:#pragma acc parallel
+        -:   13:#pragma acc loop gang worker vector reduction(+ : result)
+     1001:   14:  for (i = 0; i < n; i++)
+     1000:   15:    result += array[i];
+        -:   16:
+        -:   17:    /* '*' reductions.  */
+        -:   18:#pragma acc parallel
+        -:   19:#pragma acc loop gang worker vector reduction(* : result)
+     1001:   20:  for (i = 0; i < n; i++)
+     1000:   21:    result *= array[i];
+        -:   22:
+        -:   23:    /* '&&' reductions.  */
+        -:   24:#pragma acc parallel
+        -:   25:#pragma acc loop gang worker vector reduction(&& : lresult)
+     1001:   26:  for (i = 0; i < n; i++)
+    1000*:   27:    lresult = lresult && (__real__(result) > __real__(array[i]));
+        -:   28:
+        -:   29:    /* '||' reductions.  */
+        -:   30:#pragma acc parallel
+        -:   31:#pragma acc loop gang worker vector reduction(|| : lresult)
+     1001:   32:  for (i = 0; i < n; i++)
+    1000*:   33:    lresult = lresult || (__real__(result) > __real__(array[i]));
+        -:   34:
+        1:   35:  return 0;
+        -:   36:}
+        -:   37:
+        -:   38:/* Check that default copy maps are generated for loop reductions.  */
+        -:   39:/* { dg-final { scan-tree-dump-times "map\\(tofrom:result \\\[len:
+        -:   40: * \[0-9\]+\\\]\\)" 2 "gimple" } } */
+        -:   41:/* { dg-final { scan-tree-dump-times "map\\(tofrom:lresult \\\[len:
+        -:   42: * \[0-9\]+\\\]\\)" 2 "gimple" } } */

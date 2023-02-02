@@ -1,0 +1,56 @@
+    1|       |/* Copyright 2002 Free Software Foundation, Inc.
+    2|       |
+    3|       |   Tests correct signedness of operations on bitfields; in particular
+    4|       |   that integer promotions are done correctly, including the case when
+    5|       |   casts are present.
+    6|       |
+    7|       |   The C front end was eliding the cast of an unsigned bitfield to
+    8|       |   unsigned as a no-op, when in fact it forces a conversion to a
+    9|       |   full-width unsigned int. (At the time of writing, the C++ front end
+   10|       |   has a different bug; it erroneously promotes the uncast unsigned
+   11|       |   bitfield to an unsigned int).
+   12|       |
+   13|       |   Source: Neil Booth, 25 Jan 2002, based on PR 3325 (and 3326, which
+   14|       |   is a different manifestation of the same bug).
+   15|       |*/
+   16|       |
+   17|       |extern void abort();
+   18|       |
+   19|      1|int main(int argc, char *argv[]) {
+   20|      1|  struct x {
+   21|      1|    signed int i : 7;
+   22|      1|    unsigned int u : 7;
+   23|      1|  } bit;
+   24|      1|
+   25|      1|  unsigned int u;
+   26|      1|  int i;
+   27|      1|  unsigned int unsigned_result = -13U % 61;
+   28|      1|  int signed_result = -13 % 61;
+   29|      1|
+   30|      1|  bit.u = 61, u = 61;
+   31|      1|  bit.i = -13, i = -13;
+   32|      1|
+   33|      1|  if (i % u != unsigned_result)
+   34|      0|    abort();
+   35|      1|  if (i % (unsigned int)u != unsigned_result)
+   36|      0|    abort();
+   37|      1|
+   38|      1|  /* Somewhat counter-intuitively, bit.u is promoted to an int, making
+   39|      1|     the operands and result an int.  */
+   40|      1|  if (i % bit.u != signed_result)
+   41|      0|    abort();
+   42|      1|
+   43|      1|  if (bit.i % bit.u != signed_result)
+   44|      0|    abort();
+   45|      1|
+   46|      1|  /* But with a cast to unsigned int, the unsigned int is promoted to
+   47|      1|     itself as a no-op, and the operands and result are unsigned.  */
+   48|      1|  if (i % (unsigned int)bit.u != unsigned_result)
+   49|      0|    abort();
+   50|      1|
+   51|      1|  if (bit.i % (unsigned int)bit.u != unsigned_result)
+   52|      0|    abort();
+   53|      1|
+   54|      1|  return 0;
+   55|      1|}
+

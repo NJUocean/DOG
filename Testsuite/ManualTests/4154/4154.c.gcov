@@ -1,0 +1,43 @@
+        -:    0:Source:4154.c
+        -:    0:Graph:4154.gcno
+        -:    0:Data:4154.gcda
+        -:    0:Runs:1
+        -:    1:/* This code is from the beginning of combine_reloads in reload.c in
+        -:    2:   GCC 3.1-20020117, with simplifications.  It compiled incorrectly
+        -:    3:   for -O2 -fprefetch-loop-arrays for ix86 targets.  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:/* { dg-options "-O2 -fprefetch-loop-arrays -w" } */
+        -:    7:/* { dg-options "-O2 -fprefetch-loop-arrays -mtune=pentium3 -w" { target { {
+        -:    8: * i?86-*-* x86_64-*-* } && ia32 } } } */
+        -:    9:
+        -:   10:struct reload {
+        -:   11:  int first_member;
+        -:   12:  int out;
+        -:   13:  int final_member;
+        -:   14:};
+        -:   15:
+        -:   16:int n_reloads;
+        -:   17:struct reload rld[10];
+        -:   18:
+        1:   19:static int combine_reloads() {
+        -:   20:  int i;
+        1:   21:  int output_reload = -1;
+        1:   22:  int secondary_out = -1;
+        -:   23:
+        5:   24:  for (i = 0; i < n_reloads; i++)
+        4:   25:    if (rld[i].out != 0) {
+        1:   26:      if (output_reload >= 0)
+    #####:   27:        return output_reload;
+        1:   28:      output_reload = i;
+        -:   29:    }
+        1:   30:  return output_reload;
+        -:   31:}
+        -:   32:
+        1:   33:int main() {
+        1:   34:  n_reloads = 4;
+        1:   35:  rld[2].out = 2;
+        1:   36:  if (combine_reloads() != 2)
+    #####:   37:    abort();
+        1:   38:  exit(0);
+        -:   39:}

@@ -1,0 +1,20 @@
+        -:    0:Source:4153.c
+        -:    0:Graph:4153.gcno
+        -:    0:Data:4153.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void exit(int);
+        -:    5:
+        -:    6:#define small __attribute__((mode(QI))) int
+        1:    7:int main() {
+        1:    8:  int x, y = 0x400;
+        -:    9:
+        1:   10:  x = (small)y;                      /* { dg-bogus "ignored" } */
+        -:   11:  if (sizeof(small) != sizeof(char)) /* { dg-bogus "ignored" } */
+        -:   12:    abort();
+        1:   13:  if (sizeof(x) != sizeof(char) && x == y)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

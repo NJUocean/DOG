@@ -1,0 +1,22 @@
+        -:    0:Source:4039.c
+        -:    0:Graph:4039.gcno
+        -:    0:Data:4039.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93582 */
+        -:    2:
+        -:    3:short a;
+        -:    4:int b, c;
+        -:    5:
+        1:    6:__attribute__((noipa)) void foo(void) {
+        1:    7:  b = c;
+        1:    8:  a &= 7;
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  c = 27;
+        1:   13:  a = 14;
+        1:   14:  foo();
+        1:   15:  if (b != 27 || a != 6)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

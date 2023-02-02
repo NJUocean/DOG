@@ -1,0 +1,28 @@
+        -:    0:Source:1395.c
+        -:    0:Graph:1395.gcno
+        -:    0:Data:1395.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:#if defined(STACK_SIZE)
+        -:    4:#define DUMMY_SIZE 9
+        -:    5:#else
+        -:    6:#define DUMMY_SIZE 399999
+        -:    7:#endif
+        -:    8:
+        3:    9:double g() { return 1.0; }
+        -:   10:
+        1:   11:f() {
+        -:   12:  char dummy[DUMMY_SIZE];
+        -:   13:  double f1, f2, f3;
+        1:   14:  f1 = g();
+        1:   15:  f2 = g();
+        1:   16:  f3 = g();
+        1:   17:  return f1 + f2 + f3;
+        -:   18:}
+        -:   19:
+        1:   20:main() {
+        1:   21:  if (f() != 3.0)
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

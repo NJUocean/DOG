@@ -1,0 +1,36 @@
+    1|       |/* PR middle-end/24003 */
+    2|       |/* Contributed by Eric Botcazou <ebotcazou@adacore.com> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-std=c99 -O -fno-inline" } */
+    6|       |/* { dg-options "-std=c99 -O -fno-inline -mtune=i686" { target { { i?86-*-*
+    7|       | * x86_64-*-* } && ia32 } } } */
+    8|       |
+    9|       |#include <limits.h>
+   10|       |
+   11|       |typedef unsigned long uns32_t;
+   12|       |typedef unsigned long long uns64_t;
+   13|       |
+   14|       |extern void abort(void);
+   15|       |
+   16|      1|uns32_t lo(uns64_t p) { return (uns32_t)p; }
+   17|       |
+   18|      1|uns64_t concat(uns32_t p1, uns32_t p2) {
+   19|      1|#if LLONG_MAX > 2147483647L
+   20|      1|  return ((uns64_t)p1 << 32) | p2;
+   21|       |#else
+   22|       |  return 0;
+   23|       |#endif
+   24|      1|}
+   25|       |
+   26|      1|uns64_t lshift32(uns64_t p1, uns32_t p2) { return concat(lo(p1), p2); }
+   27|       |
+   28|      1|int main(void) {
+   29|      1|#if LLONG_MAX > 2147483647L
+   30|      1|  if (lshift32(0xFFFFFFFF12345678ULL, 0x90ABCDEFUL) != 0x1234567890ABCDEFULL)
+   31|      0|    abort();
+   32|      1|#endif
+   33|      1|
+   34|      1|  return 0;
+   35|      1|}
+

@@ -1,0 +1,26 @@
+    1|       |/* Test for C99 mixed declarations and code.  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int i = 0;
+   11|      1|  if (i != 0)
+   12|      0|    abort();
+   13|      1|  i++;
+   14|      1|  if (i != 1)
+   15|      0|    abort();
+   16|      1|  int j = i;
+   17|      1|  if (j != 1)
+   18|      0|    abort();
+   19|      1|  struct foo {
+   20|      1|    int i0;
+   21|      1|  } k = {4};
+   22|      1|  if (k.i0 != 4)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+

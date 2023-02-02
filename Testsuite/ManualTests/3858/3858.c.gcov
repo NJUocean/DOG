@@ -1,0 +1,28 @@
+        -:    0:Source:3858.c
+        -:    0:Graph:3858.gcno
+        -:    0:Data:3858.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/63843 */
+        -:    2:
+        -:    3:static inline __attribute__((always_inline)) unsigned short
+        -:    4:foo(unsigned short v) {
+        1:    5:  return (v << 8) | (v >> 8);
+        -:    6:}
+        -:    7:
+        1:    8:unsigned short __attribute__((noinline, noclone, hot)) bar(unsigned char *x) {
+        -:    9:  unsigned int a;
+        -:   10:  unsigned short b;
+        1:   11:  __builtin_memcpy(&a, &x[0], sizeof(a));
+        1:   12:  a ^= 0x80808080U;
+        1:   13:  __builtin_memcpy(&x[0], &a, sizeof(a));
+        1:   14:  __builtin_memcpy(&b, &x[2], sizeof(b));
+        2:   15:  return foo(b);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  unsigned char x[8] = {0x01, 0x01, 0x01, 0x01};
+        1:   20:  if (__CHAR_BIT__ == 8 && sizeof(short) == 2 && sizeof(int) == 4 &&
+        1:   21:      bar(x) != 0x8181U)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

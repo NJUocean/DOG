@@ -1,0 +1,9 @@
+    1|       |/* Test for implicit return 0 from main in C99.  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors -Wreturn-type -O -fhosted" }
+    5|       | */
+    6|       |
+    7|      1|int main(void) {
+    8|      1|} /* { dg-bogus "control reaches end" "missing implicit return" } */
+

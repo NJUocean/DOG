@@ -1,0 +1,15 @@
+        -:    0:Source:12.c
+        -:    0:Graph:12.gcno
+        -:    0:Data:12.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/11420 */
+        -:    2:/* { dg-do link { target fpic } } */
+        -:    3:/* { dg-options "-O2 -fpic" } */
+        -:    4:
+        -:    5:void (*volatile fn)(void);
+    #####:    6:static void foo(void) {}
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  fn = foo;
+        1:   10:  return 0;
+        -:   11:}

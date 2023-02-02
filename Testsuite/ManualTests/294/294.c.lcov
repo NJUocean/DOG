@@ -1,0 +1,31 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-effective-target fopenmp }  */
+    3|       |/* { dg-options "-g -fopenmp -gdwarf-2 -femit-struct-debug-reduced" } */
+    4|       |
+    5|       |struct aa {
+    6|       |  int a;
+    7|       |};
+    8|       |
+    9|      1|int f7(void) {
+   10|      1|  int v7i = 6, v7j = 7, v7k = 9, v7l = 0, v7n = 0, v7o = 1;
+   11|      1|
+   12|      1|#pragma omp parallel
+   13|      1|  {
+   14|      1|#pragma omp master
+   15|      1|    v7o++;
+   16|      1|#pragma omp for private(v7i) firstprivate(v7k) reduction(+ : v7l)
+   17|      4|    for (v7n = 0; v7n < 3; v7n++) {
+   18|      3|      int v7m = v7j + v7k;
+   19|      3|      v7i = 8;
+   20|      3|      v7l++;
+   21|      3|    }
+   22|      1|  }
+   23|      1|
+   24|      1|  return v7i + v7j + v7k + v7l + v7n;
+   25|      1|}
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  f7();
+   29|      1|  return 0;
+   30|      1|}
+

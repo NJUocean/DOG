@@ -1,0 +1,30 @@
+    1|       |/* { dg-skip-if "small alignment" { pdp11-*-* } } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |typedef struct Bar {
+    6|       |  char c[129];
+    7|       |} Bar __attribute__((__aligned__(128)));
+    8|       |
+    9|       |typedef struct Foo {
+   10|       |  Bar bar[4];
+   11|       |} Foo;
+   12|       |
+   13|       |Foo foo[4];
+   14|       |
+   15|      1|int main() {
+   16|      1|  int i, j;
+   17|      1|  Foo *foop = &foo[0];
+   18|      1|
+   19|      5|  for (i = 0; i < 4; i++) {
+   20|      4|    Bar *bar = &foop->bar[i];
+   21|    520|    for (j = 0; j < 129; j++) {
+   22|    516|      bar->c[j] = 'a' + i;
+   23|    516|    }
+   24|      4|  }
+   25|      1|
+   26|      1|  if (foo[0].bar[3].c[128] != 'd')
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

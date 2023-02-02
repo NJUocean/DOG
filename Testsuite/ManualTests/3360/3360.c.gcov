@@ -1,0 +1,26 @@
+        -:    0:Source:3360.c
+        -:    0:Graph:3360.gcno
+        -:    0:Data:3360.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        1:    3:void test(int x, ...) {
+        -:    4:  va_list ap;
+        -:    5:  int i;
+        1:    6:  va_start(ap, x);
+        1:    7:  if (va_arg(ap, int) != 1)
+    #####:    8:    abort();
+        1:    9:  if (va_arg(ap, int) != 2)
+    #####:   10:    abort();
+        1:   11:  if (va_arg(ap, int) != 3)
+    #####:   12:    abort();
+        1:   13:  if (va_arg(ap, int) != 4)
+    #####:   14:    abort();
+        1:   15:}
+        -:   16:
+        -:   17:double a = 40.0;
+        -:   18:
+        1:   19:int main(int argc, char *argv[]) {
+        1:   20:  test(0, 1, 2, 3, (int)(a / 10.0));
+        1:   21:  exit(0);
+        -:   22:}

@@ -1,0 +1,29 @@
+        -:    0:Source:938.c
+        -:    0:Graph:938.gcno
+        -:    0:Data:938.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/56078 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=gnu99" } */
+        -:    4:
+        -:    5:typedef __SIZE_TYPE__ size_t;
+        -:    6:extern int memcmp(const void *, const void *, size_t);
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:struct T {
+        -:   10:  int a;
+        -:   11:  char b[];
+        -:   12:};
+        -:   13:struct T t1 = {.a = 1, .b = "abcd", .b[0] = '2'};
+        -:   14:struct T t2 = {.a = 1, .b = "2bcd"};
+        -:   15:struct T t3 = {.a = 1, .b[2] = 'a'};
+        -:   16:struct T t4 = {.a = 1, .b = {'\0', '\0', 'a'}};
+        -:   17:struct T t5 = {.a = 1, .b = {[0] = 'a', [1] = 'b', [2] = 'c'}};
+        -:   18:struct T t6 = {.a = 1, .b[2] = 'c', .b[1] = 'x', .b[0] = 'a', .b[1] = 'b'};
+        -:   19:
+        1:   20:int main() {
+        1:   21:  if (memcmp(t1.b, t2.b, sizeof("abcd")) != 0 || memcmp(t3.b, t4.b, 3) != 0 ||
+        1:   22:      memcmp(t5.b, t6.b, 3) != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

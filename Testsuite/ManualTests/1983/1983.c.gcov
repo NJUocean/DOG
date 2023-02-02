@@ -1,0 +1,33 @@
+        -:    0:Source:1983.c
+        -:    0:Graph:1983.gcno
+        -:    0:Data:1983.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/79327 - wrong code at -O2 and -fprintf-return-value
+        -:    2:   { dg-do run }
+        -:    3:   { dg-options "-O2 -Wall" }  */
+        -:    4:
+        -:    5:volatile int a, b = -1;
+        -:    6:char buf[64];
+        -:    7:
+        -:    8:#define FMT "%+03d%02d"
+        -:    9:const char *volatile fmt = FMT;
+        -:   10:
+        1:   11:int main() {
+        1:   12:  int c = a;
+        1:   13:  int d = b;
+        1:   14:  if (c >= -35791395 && c < 35791394 && d >= -1 && d < __INT_MAX__) {
+        -:   15:    /* In the following the range of return values can be computed
+        -:   16:       by GCC. */
+        1:   17:    int n1 = __builtin_sprintf(buf, FMT, c + 1, d + 1);
+        1:   18:    if (n1 > 7)
+    #####:   19:      __builtin_abort();
+        -:   20:
+        -:   21:    /* Here GCC can't see the format string so the return value
+        -:   22:       must be computed by a libc call.  */
+        1:   23:    int n2 = __builtin_sprintf(buf, fmt, c + 1, d + 1);
+        -:   24:
+        1:   25:    if (n1 != n2)
+    #####:   26:      __builtin_abort();
+        -:   27:  }
+        1:   28:  return 0;
+        -:   29:}

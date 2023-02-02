@@ -1,0 +1,17 @@
+        -:    0:Source:3740.c
+        -:    0:Graph:3740.gcno
+        -:    0:Data:3740.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49768 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main() {
+        -:    6:  static struct {
+        -:    7:    unsigned int : 1;
+        -:    8:    unsigned int s : 1;
+        -:    9:  } s = {.s = 1};
+        1:   10:  if (s.s != 1)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

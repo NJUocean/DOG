@@ -1,0 +1,27 @@
+        -:    0:Source:3942.c
+        -:    0:Graph:3942.gcno
+        -:    0:Data:3942.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/78477 */
+        -:    2:
+        -:    3:unsigned a;
+        -:    4:unsigned short b;
+        -:    5:
+        1:    6:unsigned foo(unsigned x) {
+        1:    7:  b = x;
+        1:    8:  a >>= (b & 1);
+        1:    9:  b = 1 | (b << 5);
+        1:   10:  b >>= 15;
+        1:   11:  x = (unsigned char)b > ((2 - (unsigned char)b) & 1);
+        1:   12:  b = 0;
+        1:   13:  return x;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        -:   17:  if (__CHAR_BIT__ != 8 || sizeof(short) != 2 || sizeof(int) < 4)
+        -:   18:    return 0;
+        1:   19:  unsigned x = foo(12345);
+        1:   20:  if (x != 0)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

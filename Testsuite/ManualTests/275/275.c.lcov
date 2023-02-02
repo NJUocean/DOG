@@ -1,0 +1,9 @@
+    1|       |
+    2|       |/* Test Darwin linker option -arch_errors_fatal.  */
+    3|       |/* Developed by Devang Patel <dpatel@apple.com>.  */
+    4|       |
+    5|       |/* { dg-options "-arch_errors_fatal" } */
+    6|       |/* { dg-do link { target *-*-darwin* } } */
+    7|       |
+    8|      1|int main() { return 0; }
+

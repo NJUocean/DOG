@@ -1,0 +1,18 @@
+        -:    0:Source:670.c
+        -:    0:Graph:670.gcno
+        -:    0:Data:670.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:int foo(int size) {
+        1:    4:  int a[size];
+        1:    5:  a[size - 10] = 42;
+        1:    6:  return a[size - 10] + size;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  int x = foo(20);
+        1:   11:  if (x != 62)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

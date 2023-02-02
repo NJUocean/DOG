@@ -1,0 +1,18 @@
+        -:    0:Source:3167.c
+        -:    0:Graph:3167.gcno
+        -:    0:Data:3167.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously gcc.misc-tests/dg-3.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-do link } */
+        -:    4:
+        1:    5:main() { return 0; }
+        -:    6:
+        -:    7:/* { dg-final { if [file exists dg-do-link-exp-P.exe] \{			} }
+        -:    8: */
+        -:    9:/* { dg-final {     pass "dg-do-link-exp-P.c (link: produce a.out test)"	}
+        -:   10: * } */
+        -:   11:/* { dg-final { \} else \{					} } */
+        -:   12:/* { dg-final {     fail "dg-do-link-exp-P.c (link: produce a.out test)"	}
+        -:   13: * } */
+        -:   14:/* { dg-final { \}						} } */

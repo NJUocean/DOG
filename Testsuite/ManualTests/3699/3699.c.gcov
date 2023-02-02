@@ -1,0 +1,28 @@
+        -:    0:Source:3699.c
+        -:    0:Graph:3699.gcno
+        -:    0:Data:3699.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/45695 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        2:    5:__attribute__((noinline)) void g(int x) { asm volatile("" : "+r"(x)); }
+        -:    6:
+        2:    7:__attribute__((noinline)) int f(int a, int b, int d) {
+        2:    8:  int r = -1;
+        2:    9:  b += d;
+        2:   10:  if (d == a)
+        1:   11:    r = b - d;
+        2:   12:  g(b);
+        2:   13:  return r;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        -:   17:  int l;
+        1:   18:  asm("" : "=r"(l) : "0"(0));
+        1:   19:  if (f(l + 0, l + 1, l + 4) != -1)
+    #####:   20:    abort();
+        1:   21:  if (f(l + 4, l + 1, l + 4) != 1)
+    #####:   22:    abort();
+        1:   23:  return 0;
+        -:   24:}

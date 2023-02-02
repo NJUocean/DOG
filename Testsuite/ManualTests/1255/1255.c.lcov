@@ -1,0 +1,33 @@
+    1|       |/* PR sanitizer/60613 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined" } */
+    4|       |
+    5|       |long long y;
+    6|       |
+    7|      1|__attribute__((noinline, noclone)) long long foo(long long x) {
+    8|      1|  asm("");
+    9|      1|  if (x >= 0 || x < -2040)
+   10|      0|    return 23;
+   11|      1|  x += 2040;
+   12|      1|  return x - y;
+   13|      1|}
+   14|       |
+   15|      1|__attribute__((noinline, noclone)) long long bar(long long x) {
+   16|      1|  asm("");
+   17|      1|  return 8LL - x;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  y = -__LONG_LONG_MAX__ + 6;
+   22|      1|  if (foo(8 - 2040) != -__LONG_LONG_MAX__)
+   23|      0|    __builtin_abort();
+   24|      1|  if (bar(-__LONG_LONG_MAX__ + 5) != -__LONG_LONG_MAX__ + 1)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+   28|       |
+   29|       |/* { dg-output "signed integer overflow: 8 \\- -9223372036854775801 cannot be
+   30|       | * represented in type 'long long int'\[^\n\r]*(\n|\r\n|\r)" } */
+   31|       |/* { dg-output "\[^\n\r]*signed integer overflow: 8 \\- -9223372036854775802
+   32|       | * cannot be represented in type 'long long int'" } */
+

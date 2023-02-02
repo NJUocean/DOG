@@ -1,0 +1,25 @@
+        -:    0:Source:2094.c
+        -:    0:Graph:2094.gcno
+        -:    0:Data:2094.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int foo(int k, int j) {
+        1:    7:  if (k >= 10) {
+        1:    8:    if (j > k) {
+        -:    9:      /* We should fold this to if (0).  */
+    #####:   10:      if (j < 10)
+    #####:   11:        abort();
+        -:   12:    }
+        -:   13:  }
+        -:   14:
+        1:   15:  return j;
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  foo(10, 3);
+        1:   20:  return 0;
+        -:   21:}

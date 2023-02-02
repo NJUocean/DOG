@@ -1,0 +1,21 @@
+        -:    0:Source:3301.c
+        -:    0:Graph:3301.gcno
+        -:    0:Data:3301.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/27671.
+        -:    2:   The combiner used to simplify "a ^ b == a" to "a" via
+        -:    3:   simplify_relational_operation_1 in simplify-rtx.c.  */
+        -:    4:
+        -:    5:extern void abort(void) __attribute__((noreturn));
+        -:    6:extern void exit(int) __attribute__((noreturn));
+        -:    7:
+        1:    8:static int __attribute__((noinline)) foo(int a, int b) {
+        1:    9:  int c = a ^ b;
+        1:   10:  if (c == a)
+    #####:   11:    abort();
+        1:   12:}
+        -:   13:
+        1:   14:int main(void) {
+        1:   15:  foo(0, 1);
+        1:   16:  exit(0);
+        -:   17:}

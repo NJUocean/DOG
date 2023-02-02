@@ -1,0 +1,24 @@
+        -:    0:Source:1383.c
+        -:    0:Graph:1383.gcno
+        -:    0:Data:1383.gcda
+        -:    0:Runs:1
+        -:    1:/* Undefined behavior from a call to a function cast to a different
+        -:    2:   type does not appear until after the function designator and
+        -:    3:   arguments have been evaluated.  PR 38483.  */
+        -:    4:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    5:/* { dg-require-effective-target untyped_assembly } */
+        -:    6:
+        -:    7:extern void exit(int);
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:int foo(void) {
+        1:   11:  exit(0);
+        -:   12:  return 0;
+        -:   13:}
+        -:   14:
+    #####:   15:void bar(void) {}
+        -:   16:
+        1:   17:int main(void) {
+       1*:   18:  ((long (*)(int))bar)(foo());
+    #####:   19:  abort();
+        -:   20:}

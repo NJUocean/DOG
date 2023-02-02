@@ -1,0 +1,21 @@
+        -:    0:Source:2556.c
+        -:    0:Graph:2556.gcno
+        -:    0:Data:2556.gcda
+        -:    0:Runs:1
+        -:    1:/* Test whether denormal floating point constants in hexadecimal notation
+        -:    2:   are parsed correctly.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c99" } */
+        -:    5:/* { dg-require-effective-target large_long_double } */
+        -:    6:
+        -:    7:long double d = 0x0.0000003ffffffff00000p-16357L;
+        -:    8:long double e = 0x0.0000003ffffffff00000p-16356L;
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  if (d != e / 2.0)
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

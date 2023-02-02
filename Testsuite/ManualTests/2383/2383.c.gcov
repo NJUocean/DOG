@@ -1,0 +1,61 @@
+        -:    0:Source:2383.c
+        -:    0:Graph:2383.gcno
+        -:    0:Data:2383.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:typedef unsigned int u32;
+        -:    6:
+        2:    7:u32 ngc_si(u32 a, u32 b, u32 c, u32 d) {
+        2:    8:  a = -b - (c < d);
+        2:    9:  return a;
+        -:   10:}
+        -:   11:
+        -:   12:typedef unsigned long long u64;
+        -:   13:
+        2:   14:u64 ngc_si_tst(u64 a, u32 b, u32 c, u32 d) {
+        2:   15:  a = -b - (c < d);
+        2:   16:  return a;
+        -:   17:}
+        -:   18:
+        2:   19:u64 ngc_di(u64 a, u64 b, u64 c, u64 d) {
+        2:   20:  a = -b - (c < d);
+        2:   21:  return a;
+        -:   22:}
+        -:   23:
+        1:   24:int main() {
+        -:   25:  int x;
+        -:   26:  u64 y;
+        -:   27:
+        1:   28:  x = ngc_si(29, 4, 5, 4);
+        1:   29:  if (x != -4)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  x = ngc_si(1024, 2, 20, 13);
+        1:   33:  if (x != -2)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  y = ngc_si_tst(0x130000029ll, 32, 50, 12);
+        1:   37:  if (y != 0xffffffe0)
+    #####:   38:    abort();
+        -:   39:
+        1:   40:  y = ngc_si_tst(0x5000500050005ll, 21, 2, 14);
+        1:   41:  if (y != 0xffffffea)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  y = ngc_di(0x130000029ll, 0x320000004ll, 0x505050505ll, 0x123123123ll);
+        1:   45:  if (y != 0xfffffffcdffffffc)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  y = ngc_di(0x5000500050005ll, 0x2111211121112ll, 0x0000000002020ll,
+        -:   49:             0x1414575046477ll);
+        1:   50:  if (y != 0xfffdeeedeeedeeed)
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  return 0;
+        -:   54:}
+        -:   55:
+        -:   56:/* { dg-final { scan-assembler-times "ngc\tw\[0-9\]+, w\[0-9\]+" 2 } } */
+        -:   57:/* { dg-final { scan-assembler-times "ngc\tx\[0-9\]+, x\[0-9\]+" 1 } } */

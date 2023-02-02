@@ -1,0 +1,13 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-g" } */
+    3|       |
+    4|      1|int *__attribute__((noipa)) consume(int *ptr) { return ptr; }
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  int x;
+    8|      1|  int *volatile ptr = consume(&x);
+    9|      1|  x = 0;
+   10|      1|  x = 1;    /* { dg-final { gdb-test . "*ptr" "0" } } */
+   11|      1|  return 0; /* { dg-final { gdb-test . "*ptr" "1" } } */
+   12|      1|}
+

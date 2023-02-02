@@ -1,0 +1,38 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |union U {
+    4|       |  long long i;
+    5|       |  long f;
+    6|       |};
+    7|       |struct a {
+    8|       |  union U u;
+    9|       |};
+   10|       |struct aa {
+   11|       |  struct a a;
+   12|       |};
+   13|       |struct b {
+   14|       |  union U u;
+   15|       |};
+   16|       |struct bb {
+   17|       |  struct b b;
+   18|       |};
+   19|       |
+   20|      1|long __attribute__((noipa)) foo(struct bb *bv, void *ptr) {
+   21|      1|  struct aa *a = ptr;
+   22|      1|  struct bb *b = ptr;
+   23|      1|  bv->b.u.f = 1;
+   24|      1|  a->a.u.i = 0;
+   25|      1|  b->b.u.f = 0;
+   26|      1|  return bv->b.u.f;
+   27|      1|}
+   28|       |
+   29|      1|int main() {
+   30|      1|  union C {
+   31|      1|    struct aa aa;
+   32|      1|    struct bb bb;
+   33|      1|  } v;
+   34|      1|  if (foo(&v.bb, &v) != 0)
+   35|      0|    __builtin_abort();
+   36|      1|  return 0;
+   37|      1|}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:469.c
+        -:    0:Graph:469.gcno
+        -:    0:Data:469.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-stack-check "generic" } */
+        -:    2:/* { dg-options "-O -fstack-check=generic -ftree-pre -fgraphite-identity" } */
+        -:    3:/* nvptx doesn't expose a stack.  */
+        -:    4:/* { dg-skip-if "" { nvptx-*-* } } */
+        -:    5:
+        1:    6:int main() {
+        -:    7:  int i, j;
+        -:    8:  int x[8][8];
+        9:    9:  for (i = 0; i < 8; i++)
+       44:   10:    for (j = i; j < 8; j++)
+       36:   11:      x[i][j] = 4;
+        -:   12:
+        9:   13:  for (i = 0; i < 8; i++)
+       44:   14:    for (j = i; j < 8; j++)
+       36:   15:      if (x[i][j] != 4)
+    #####:   16:        __builtin_abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

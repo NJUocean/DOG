@@ -1,0 +1,12 @@
+    1|       |/* Some versions of Solaris <math.h> give strict-aliasing warnings for
+    2|       |   signbit.  */
+    3|       |/* { dg-require-effective-target c99_runtime } */
+    4|       |/* { dg-options "-std=c99 -O2 -Wstrict-aliasing" } */
+    5|       |
+    6|       |#include <math.h>
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  return signbit(1.0f) | signbit(1.0) | signbit(1.0l);
+   10|      1|  ;
+   11|      0|}
+

@@ -1,0 +1,37 @@
+    1|     22|unsigned int f1(int diff) { return ((unsigned int)(diff < 0 ? -diff : diff)); }
+    2|       |
+    3|     22|unsigned int f2(unsigned int diff) {
+    4|     22|  return ((unsigned int)((signed int)diff < 0 ? -diff : diff));
+    5|     22|}
+    6|       |
+    7|     22|unsigned long long f3(long long diff) {
+    8|     22|  return ((unsigned long long)(diff < 0 ? -diff : diff));
+    9|     22|}
+   10|       |
+   11|     22|unsigned long long f4(unsigned long long diff) {
+   12|     22|  return ((unsigned long long)((signed long long)diff < 0 ? -diff : diff));
+   13|     22|}
+   14|       |
+   15|      1|main() {
+   16|      1|  int i;
+   17|     12|  for (i = 0; i <= 10; i++) {
+   18|     11|    if (f1(i) != i)
+   19|      0|      abort();
+   20|     11|    if (f1(-i) != i)
+   21|      0|      abort();
+   22|     11|    if (f2(i) != i)
+   23|      0|      abort();
+   24|     11|    if (f2(-i) != i)
+   25|      0|      abort();
+   26|     11|    if (f3((long long)i) != i)
+   27|      0|      abort();
+   28|     11|    if (f3((long long)-i) != i)
+   29|      0|      abort();
+   30|     11|    if (f4((long long)i) != i)
+   31|      0|      abort();
+   32|     11|    if (f4((long long)-i) != i)
+   33|      0|      abort();
+   34|     11|  }
+   35|      1|  exit(0);
+   36|      1|}
+

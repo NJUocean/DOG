@@ -1,0 +1,37 @@
+        -:    0:Source:3374.c
+        -:    0:Graph:3374.gcno
+        -:    0:Data:3374.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/19342 */
+        -:    2:typedef enum { A, B, C, D } E;
+        -:    3:
+        -:    4:struct S {
+        -:    5:  E __attribute__((mode(__byte__))) a;
+        -:    6:  E __attribute__((mode(__byte__))) b;
+        -:    7:  E __attribute__((mode(__byte__))) c;
+        -:    8:  E __attribute__((mode(__byte__))) d;
+        -:    9:};
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:extern void exit(int);
+        -:   13:
+        1:   14:void foo(struct S *s) {
+        1:   15:  if (s->a != s->b)
+    #####:   16:    abort();
+        1:   17:  if (s->c != C)
+    #####:   18:    abort();
+        1:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        -:   22:  struct S s[2];
+        1:   23:  s[0].a = B;
+        1:   24:  s[0].b = B;
+        1:   25:  s[0].c = C;
+        1:   26:  s[0].d = D;
+        1:   27:  s[1].a = D;
+        1:   28:  s[1].b = C;
+        1:   29:  s[1].c = B;
+        1:   30:  s[1].d = A;
+        1:   31:  foo(s);
+        1:   32:  exit(0);
+        -:   33:}

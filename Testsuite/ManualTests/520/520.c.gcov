@@ -1,0 +1,31 @@
+        -:    0:Source:520.c
+        -:    0:Graph:520.gcno
+        -:    0:Data:520.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/54693 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        -:    5:int v;
+        -:    6:
+        7:    7:__attribute__((noinline, noclone)) void bar(int i) {
+        7:    8:  v = i;
+        7:    9:  asm volatile("" : : "r"(i) : "memory");
+        7:   10:}
+        -:   11:
+        1:   12:__attribute__((noinline, noclone)) void foo(int x, int y, int z) {
+        1:   13:  int i = 0;
+        8:   14:  while (x > 3 && y > 3 &&
+        -:   15:         z > 3) { /* { dg-final { gdb-test .+2 "i" "v + 1" } } */
+        -:   16:                  /* { dg-final { gdb-test .+1 "x" "10 - i" } } */
+        7:   17:    bar(i);       /* { dg-final { gdb-test . "y" "20 - 2 * i" } } */
+        -:   18:                  /* { dg-final { gdb-test .-1 "z" "30 - 3 * i" } } */
+        7:   19:    i++, x--, y -= 2, z -= 3;
+        -:   20:  }
+        1:   21:}
+        -:   22:
+        1:   23:int main() {
+        1:   24:  v = -1;
+        1:   25:  foo(10, 20, 30);
+        1:   26:  return 0;
+        -:   27:}

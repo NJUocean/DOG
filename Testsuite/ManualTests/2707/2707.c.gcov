@@ -1,0 +1,23 @@
+        -:    0:Source:2707.c
+        -:    0:Graph:2707.gcno
+        -:    0:Data:2707.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -g" } */
+        -:    3:
+        -:    4:struct S1 {
+        -:    5:  int f0;
+        -:    6:  int f1;
+        -:    7:  int f2;
+        -:    8:  int : 4;
+        -:    9:} a, b;
+        -:   10:
+        1:   11:void fn1(struct S1 p1) {
+        1:   12:  a = p1;
+        1:   13:  int c = p1.f0;
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  fn1(b);
+        1:   18:  return 0;
+        -:   19:}

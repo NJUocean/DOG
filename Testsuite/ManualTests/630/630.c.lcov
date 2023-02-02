@@ -1,0 +1,39 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fno-unit-at-a-time" } */
+    3|       |
+    4|       |typedef unsigned char u8;
+    5|       |typedef unsigned long long u64;
+    6|       |
+    7|      1|static inline __attribute__((always_inline)) u64 __swab64p(const u64 *p) {
+    8|      1|  return (__builtin_constant_p((u64)(*p))
+    9|      1|              ? ((u64)((((u64)(*p) & (u64)0x00000000000000ffULL) << 56) |
+   10|      0|                       (((u64)(*p) & (u64)0x000000000000ff00ULL) << 40) |
+   11|      0|                       (((u64)(*p) & (u64)0x0000000000ff0000ULL) << 24) |
+   12|      0|                       (((u64)(*p) & (u64)0x00000000ff000000ULL) << 8) |
+   13|      0|                       (((u64)(*p) & (u64)0x000000ff00000000ULL) >> 8) |
+   14|      0|                       (((u64)(*p) & (u64)0x0000ff0000000000ULL) >> 24) |
+   15|      0|                       (((u64)(*p) & (u64)0x00ff000000000000ULL) >> 40) |
+   16|      0|                       (((u64)(*p) & (u64)0xff00000000000000ULL) >> 56)))
+   17|      1|              : __builtin_bswap64(*p));
+   18|      1|}
+   19|       |
+   20|      1|static inline u64 wwn_to_u64(void *wwn) { return __swab64p(wwn); }
+   21|       |
+   22|      1|void __attribute__((noinline, noclone)) broken(u64 *shost) {
+   23|      1|  u8 node_name[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+   24|      1|  *shost = wwn_to_u64(node_name);
+   25|      1|}
+   26|       |
+   27|      0|void __attribute__((noinline, noclone)) dummy(void) { __builtin_abort(); }
+   28|       |
+   29|      1|int main(int argc, char *argv[]) {
+   30|      1|  u64 v;
+   31|      1|
+   32|      1|  broken(&v);
+   33|      1|
+   34|      1|  if (v != (u64)-1)
+   35|      0|    __builtin_abort();
+   36|      1|
+   37|      1|  return 0;
+   38|      1|}
+

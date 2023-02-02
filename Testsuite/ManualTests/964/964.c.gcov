@@ -1,0 +1,19 @@
+        -:    0:Source:964.c
+        -:    0:Graph:964.gcno
+        -:    0:Data:964.gcda
+        -:    0:Runs:1
+        1:    1:f() {
+        -:    2:  long l2;
+        -:    3:  unsigned short us;
+        -:    4:  unsigned long ul;
+        -:    5:  short s2;
+        -:    6:
+        1:    7:  ul = us = l2 = s2 = -1;
+        1:    8:  return ul;
+        -:    9:}
+        -:   10:
+        1:   11:main() {
+        1:   12:  if (f() != (unsigned short)-1)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

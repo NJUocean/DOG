@@ -1,0 +1,25 @@
+        -:    0:Source:1644.c
+        -:    0:Graph:1644.gcno
+        -:    0:Data:1644.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:static struct state {
+        -:    4:  int k;
+        -:    5:  int dummy;
+        -:    6:} states[256];
+        -:    7:
+        1:    8:__attribute((noipa)) static void ismatch(int n) {
+        3:    9:  for (int j = 0; j < n; j++) {
+        2:   10:    states[j] = (struct state){0};
+        5:   11:    for (int i = 0; i <= j; i++) {
+        3:   12:      states[i].k++;
+        -:   13:    }
+        -:   14:  }
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  ismatch(2);
+        1:   19:  if (states[0].k != 2)
+    #####:   20:    __builtin_abort();
+        -:   21:}

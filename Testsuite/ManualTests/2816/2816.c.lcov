@@ -1,0 +1,25 @@
+    1|       |/* { dg-do link } */
+    2|       |
+    3|       |volatile int gv;
+    4|       |const char *ptrs[2];
+    5|       |
+    6|      1|void foo(volatile int *v, const char **ptrs) {
+    7|      1|  switch (*v & 1) {
+    8|      1|  case 0:
+    9|      1|    ptrs[0] = 0;
+   10|      1|    break;
+   11|      0|  case 1:
+   12|      0|    break;
+   13|      0|  default:
+   14|      0|    ptrs[1] = "Some text";
+   15|      0|    break;
+   16|      1|  }
+   17|      1|  while (*v > 0)
+   18|      0|    *v -= 1;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  foo(&gv, ptrs);
+   23|      1|  return 0;
+   24|      1|}
+

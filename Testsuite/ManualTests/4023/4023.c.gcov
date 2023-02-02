@@ -1,0 +1,25 @@
+        -:    0:Source:4023.c
+        -:    0:Graph:4023.gcno
+        -:    0:Data:4023.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/89434 */
+        -:    2:
+        -:    3:#if __SIZEOF_INT__ == 4 && __SIZEOF_LONG_LONG__ == 8 && __CHAR_BIT__ == 8
+        -:    4:long g = 0;
+        -:    5:
+        1:    6:static inline unsigned long long foo(unsigned long long u) {
+        -:    7:  unsigned x;
+        1:    8:  __builtin_mul_overflow(-1, g, &x);
+        1:    9:  u |= (unsigned)u < (unsigned short)x;
+        1:   10:  return x - u;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  unsigned long long x = foo(0x222222222ULL);
+        1:   15:  if (x != 0xfffffffddddddddeULL)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:#else
+        -:   20:int main() { return 0; }
+        -:   21:#endif

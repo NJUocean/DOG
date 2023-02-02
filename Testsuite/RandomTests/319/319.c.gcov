@@ -1,0 +1,54 @@
+        -:    0:Source:319.c
+        -:    0:Graph:319.gcno
+        -:    0:Data:319.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:static volatile int32_t g_2[3] = {0xF9B2CFB6L, 0xF9B2CFB6L, 0xF9B2CFB6L};
+        -:    7:static volatile int32_t g_3 = 0x6210B999L;
+        -:    8:static volatile int32_t g_4[2][5][3] = {{{(-9L), (-9L), (-9L)}, {1L, 1L, 1L}, {(-9L), (-9L), (-9L)}, {1L, 1L, 1L}, {(-9L), (-9L), (-9L)}}, {{1L, 1L, 1L}, {(-9L), (-9L), (-9L)}, {1L, 1L, 1L}, {(-9L), (-9L), (-9L)}, {1L, 1L, 1L}}};
+        -:    9:static volatile int32_t g_5 = 0x0D00585BL;
+        -:   10:static int32_t g_6 = (-10L);
+        -:   11:
+        -:   12:static int64_t func_1(void);
+        -:   13:
+        1:   14:static int64_t func_1(void) {
+        1:   15:  int8_t l_9 = 2L;
+       1*:   16:  for (g_6 = 0; (g_6 < 22); g_6 = safe_add_func_int64_t_s_s(g_6, 1)) {
+        1:   17:    if (g_3)
+        1:   18:      break;
+        -:   19:  }
+        1:   20:  return l_9;
+        -:   21:}
+        -:   22:
+        1:   23:int main(int argc, char *argv[]) {
+        -:   24:  int i, j, k;
+        1:   25:  int print_hash_value = 0;
+       1*:   26:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   27:    print_hash_value = 1;
+        1:   28:  platform_main_begin();
+        1:   29:  crc32_gentab();
+        1:   30:  func_1();
+        4:   31:  for (i = 0; i < 3; i++) {
+        3:   32:    transparent_crc(g_2[i], "g_2[i]", print_hash_value);
+        3:   33:    if (print_hash_value)
+    #####:   34:      printf("index = [%d]\n", i);
+        -:   35:  }
+        1:   36:  transparent_crc(g_3, "g_3", print_hash_value);
+        3:   37:  for (i = 0; i < 2; i++) {
+       12:   38:    for (j = 0; j < 5; j++) {
+       40:   39:      for (k = 0; k < 3; k++) {
+       30:   40:        transparent_crc(g_4[i][j][k], "g_4[i][j][k]", print_hash_value);
+       30:   41:        if (print_hash_value)
+    #####:   42:          printf("index = [%d][%d][%d]\n", i, j, k);
+        -:   43:      }
+        -:   44:    }
+        -:   45:  }
+        1:   46:  transparent_crc(g_5, "g_5", print_hash_value);
+        1:   47:  transparent_crc(g_6, "g_6", print_hash_value);
+        1:   48:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   49:  return 0;
+        -:   50:}

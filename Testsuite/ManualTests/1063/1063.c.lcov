@@ -1,0 +1,36 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|     16|#define VALUE 0x123456789abcdefLL
+    4|     16|#define AFTER 0x55
+    5|       |
+    6|      8|void test(int n, ...) {
+    7|      8|  va_list ap;
+    8|      8|  int i;
+    9|      8|
+   10|      8|  va_start(ap, n);
+   11|     36|  for (i = 2; i <= n; i++) {
+   12|     28|    if (va_arg(ap, int) != i)
+   13|      0|      abort();
+   14|     28|  }
+   15|      8|
+   16|      8|  if (va_arg(ap, long long) != VALUE)
+   17|      8|    abort();
+   18|      8|
+   19|      8|  if (va_arg(ap, int) != AFTER)
+   20|      8|    abort();
+   21|      8|
+   22|      8|  va_end(ap);
+   23|      8|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  test(1, VALUE, AFTER);
+   27|      1|  test(2, 2, VALUE, AFTER);
+   28|      1|  test(3, 2, 3, VALUE, AFTER);
+   29|      1|  test(4, 2, 3, 4, VALUE, AFTER);
+   30|      1|  test(5, 2, 3, 4, 5, VALUE, AFTER);
+   31|      1|  test(6, 2, 3, 4, 5, 6, VALUE, AFTER);
+   32|      1|  test(7, 2, 3, 4, 5, 6, 7, VALUE, AFTER);
+   33|      1|  test(8, 2, 3, 4, 5, 6, 7, 8, VALUE, AFTER);
+   34|      1|  exit(0);
+   35|      1|}
+

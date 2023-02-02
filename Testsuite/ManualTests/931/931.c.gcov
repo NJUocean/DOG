@@ -1,0 +1,17 @@
+        -:    0:Source:931.c
+        -:    0:Graph:931.gcno
+        -:    0:Data:931.gcda
+        -:    0:Runs:1
+        1:    1:double test(const double le, const double ri) {
+        1:    2:  double val = (ri - le) / (ri * (le + 1.0));
+        1:    3:  return val;
+        -:    4:}
+        -:    5:
+        1:    6:int main() {
+        -:    7:  double retval;
+        -:    8:
+        1:    9:  retval = test(1.0, 2.0);
+        1:   10:  if (retval < 0.24 || retval > 0.26)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

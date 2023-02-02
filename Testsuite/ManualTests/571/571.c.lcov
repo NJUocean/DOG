@@ -1,0 +1,21 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-ipa-icf-optimized -fno-inline"  } */
+    3|       |
+    4|      1|void destroy(void) { __asm__ __volatile__("" : : : "memory"); }
+    5|       |
+    6|      1|void remove(void) { __asm__ __volatile__("" : : : "memory"); }
+    7|       |
+    8|      1|void remove2(void) { __asm__ __volatile__("" : : :); }
+    9|       |
+   10|      1|int main() {
+   11|      1|  destroy();
+   12|      1|  remove();
+   13|      1|  remove2();
+   14|      1|
+   15|      1|  return 0;
+   16|      1|}
+   17|       |
+   18|       |/* { dg-final { scan-ipa-dump "Semantic equality
+   19|       | * hit:destroy/\[0-9+\]+->remove/\[0-9+\]+" "icf"  } } */
+   20|       |/* { dg-final { scan-ipa-dump "Equal symbols: 1" "icf"  } } */
+

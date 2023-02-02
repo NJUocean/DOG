@@ -1,0 +1,52 @@
+        -:    0:Source:4158.c
+        -:    0:Graph:4158.gcno
+        -:    0:Data:4158.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/5844
+        -:    2:   This testcase was miscompiled because of an rtx sharing bug.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:/* { dg-options "-O2 -mtune=i586" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    6: * } */
+        -:    7:/* { dg-xfail-if "doesn't support self-referential initializers" { nvptx-*-* } }
+        -:    8: */
+        -:    9:
+        -:   10:struct A {
+        -:   11:  struct A *a;
+        -:   12:  int b;
+        -:   13:};
+        -:   14:
+        -:   15:struct B {
+        -:   16:  struct A *c;
+        -:   17:  unsigned int d;
+        -:   18:};
+        -:   19:
+        -:   20:struct A p = {&p, -1};
+        -:   21:struct B q = {&p, 0};
+        -:   22:
+        -:   23:extern void abort(void);
+        -:   24:extern void exit(int);
+        -:   25:
+        1:   26:struct B *foo(void) {
+        1:   27:  return &q;
+        -:   28:}
+        -:   29:
+        1:   30:void bar(void) {
+        1:   31:  struct B *e = foo();
+        1:   32:  struct A *f = e->c;
+        1:   33:  int g = f->b;
+        -:   34:
+        1:   35:  if (++g == 0) {
+        1:   36:    e->d++;
+        1:   37:    e->c = f->a;
+        -:   38:  }
+        -:   39:
+        1:   40:  f->b = g;
+        1:   41:}
+        -:   42:
+        1:   43:int main() {
+        1:   44:  bar();
+        1:   45:  if (p.b != 0 || q.d != 1 || q.c != &p)
+    #####:   46:    abort();
+        1:   47:  exit(0);
+        -:   48:}

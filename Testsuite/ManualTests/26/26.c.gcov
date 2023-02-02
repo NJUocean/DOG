@@ -1,0 +1,18 @@
+        -:    0:Source:26.c
+        -:    0:Graph:26.gcno
+        -:    0:Data:26.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fwrapv" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  struct {
+        -:    9:    int count : 2;
+        1:   10:  } s = {-2};
+        1:   11:  while (s.count-- != -2)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

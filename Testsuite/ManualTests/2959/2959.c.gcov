@@ -1,0 +1,28 @@
+        -:    0:Source:2959.c
+        -:    0:Graph:2959.gcno
+        -:    0:Data:2959.gcda
+        -:    0:Runs:1
+        -:    1:/* Make sure the vector load and zero instruction is being used for
+        -:    2:   initializing a 32 bit vector with the first element taken from
+        -:    3:   memory.  */
+        -:    4:
+        -:    5:/* { dg-do run } */
+        -:    6:/* { dg-options "-O3 -mzarch -march=arch12 --save-temps" } */
+        -:    7:/* { dg-require-effective-target s390_vxe } */
+        -:    8:
+        -:    9:typedef unsigned int uv4si __attribute__((vector_size(16)));
+        -:   10:
+        1:   11:uv4si __attribute__((noinline)) foo(int *a) { return (uv4si){*a, 0, 0, 0}; }
+        -:   12:
+        1:   13:int main() {
+        1:   14:  int b = 4;
+        1:   15:  uv4si a = (uv4si){1, 2, 3, 4};
+        -:   16:
+        1:   17:  a = foo(&b);
+        -:   18:
+        1:   19:  if (a[0] != 4 || a[1] != 0 || a[2] != 0 || a[3] != 0)
+    #####:   20:    __builtin_abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:/* { dg-final { scan-assembler-times "vllezlf\t%v24,0\\(%r2\\)" 1 } } */

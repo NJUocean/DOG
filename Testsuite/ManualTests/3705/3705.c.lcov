@@ -1,0 +1,11 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-g" } */
+    3|       |
+    4|       |int i;
+    5|       |static int f(int) __attribute((noinline));
+    6|      1|static int f(int x) { return i; }
+    7|       |
+    8|      1|int main() { return f(42); }
+    9|       |
+   10|       |/* { dg-final { gdb-test 8 "sizeof (x)" "sizeof (int)" } } */
+

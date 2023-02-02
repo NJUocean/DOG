@@ -1,0 +1,30 @@
+        -:    0:Source:468.c
+        -:    0:Graph:468.gcno
+        -:    0:Data:468.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -fgraphite-identity" } */
+        -:    2:
+        -:    3:struct Foo {
+        -:    4:  int **p;
+        -:    5:  int **q;
+        -:    6:};
+        -:    7:
+        1:    8:int __attribute__((noinline)) bar(void) {
+        -:    9:  struct Foo f;
+        1:   10:  int j, i = 1;
+        -:   11:  char *p;
+        1:   12:  int *x = &i;
+        1:   13:  int *y = &j;
+        1:   14:  f.p = &y;
+        1:   15:  f.q = &x;
+        1:   16:  p = (char *)&f;
+        9:   17:  for (j = 0; j < sizeof(int *); ++j)
+        8:   18:    p++;
+        1:   19:  return ***(int ***)p;
+        -:   20:}
+        -:   21:extern void abort(void);
+        1:   22:int main() {
+        1:   23:  if (bar() != 1)
+    #####:   24:    abort();
+        1:   25:  return 0;
+        -:   26:}

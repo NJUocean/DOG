@@ -1,0 +1,81 @@
+        -:    0:Source:212.c
+        -:    0:Graph:212.gcno
+        -:    0:Data:212.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for C99 designated initializers */
+        -:    2:/* Origin: Jakub Jelinek <jakub@redhat.com> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+        -:    5:
+        -:    6:typedef __SIZE_TYPE__ size_t;
+        -:    7:typedef __WCHAR_TYPE__ wchar_t;
+        -:    8:extern int memcmp(const void *, const void *, size_t);
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:
+        -:   12:int a[10] = {10, 0, 12, 13, 14, 0, 0, 17, 0, 0};
+        -:   13:int b[10] = {10, [4] = 15, [2] = 12, [4] = 14, [7] = 17};
+        -:   14:int c[10] = {10, [4] = 15, [2] = 12, [3] = 13, 14, [7] = 17};
+        -:   15:struct A {
+        -:   16:  int B;
+        -:   17:  short C[2];
+        -:   18:};
+        -:   19:struct A d[] = {{0, {1, 2}}, {0, {0, 0}}, {10, {11, 12}}};
+        -:   20:struct A e[] = {0, 1, 2, [2] = 10, 11, 12};
+        -:   21:struct A f[] = {0, 1, 2, [2].C = 11, 12, 13};
+        -:   22:struct A g[] = {0, 1, 2, [2].C[1] = 12, 13, 14};
+        -:   23:struct A h[] = {0, 1, 2, [2] = {.C[1] = 12}, 13, 14};
+        -:   24:struct A i[] = {0, 1, 2, [2] = {.C = {[1] = 12}}, 13, 14};
+        -:   25:union D {
+        -:   26:  int E;
+        -:   27:  double F;
+        -:   28:  struct A G;
+        -:   29:};
+        -:   30:union D j[] = {[4] = 1, [4].F = 1.0, [1].G.C[1] = 4};
+        -:   31:struct H {
+        -:   32:  char I[6];
+        -:   33:  int J;
+        -:   34:} k[] = {{{"foo"}, 1}, [0].I[0] = 'b'};
+        -:   35:struct K {
+        -:   36:  wchar_t L[6];
+        -:   37:  int M;
+        -:   38:} l[] = {{{L"foo"}, 1}, [0].L[2] = L'x', [0].L[4] = L'y'};
+        -:   39:struct H m[] = {{{"foo"}, 1}, [0] = {.I[0] = 'b'}};
+        -:   40:struct H n[] = {{{"foo"}, 1}, [0].I = {"a"}, [0].J = 2};
+        -:   41:int o = {22};
+        -:   42:
+        1:   43:int main(void) {
+        1:   44:  if (b[3])
+    #####:   45:    abort();
+        1:   46:  b[3] = 13;
+        1:   47:  if (memcmp(a, b, sizeof(a)) || memcmp(a, c, sizeof(a)))
+    #####:   48:    abort();
+        1:   49:  if (memcmp(d, e, sizeof(d)) || sizeof(d) != sizeof(e))
+    #####:   50:    abort();
+        1:   51:  if (f[2].B != 0 || g[2].B != 0 || g[2].C[0] != 0)
+    #####:   52:    abort();
+        1:   53:  if (memcmp(g, h, sizeof(g)) || memcmp(g, i, sizeof(g)))
+    #####:   54:    abort();
+        1:   55:  f[2].B = 10;
+        1:   56:  g[2].B = 10;
+        1:   57:  g[2].C[0] = 11;
+        1:   58:  if (memcmp(d, f, sizeof(d)) || memcmp(d, g, sizeof(d)))
+    #####:   59:    abort();
+        1:   60:  if (f[3].B != 13 || g[3].B != 13 || g[3].C[0] != 14)
+    #####:   61:    abort();
+        1:   62:  if (j[0].E || j[1].G.B || j[1].G.C[0] || j[1].G.C[1] != 4)
+    #####:   63:    abort();
+        1:   64:  if (j[2].E || j[3].E || j[4].F != 1.0)
+    #####:   65:    abort();
+        1:   66:  if (memcmp(k[0].I, "boo\0\0", 6) || k[0].J != 1)
+    #####:   67:    abort();
+        1:   68:  if (memcmp(l[0].L, L"fox\0y", 6 * sizeof(wchar_t)) || l[0].M != 1)
+    #####:   69:    abort();
+        1:   70:  if (memcmp(m[0].I, "b\0\0\0\0", 6) || m[0].J)
+    #####:   71:    abort();
+        1:   72:  if (memcmp(n[0].I, "a\0\0\0\0", 6) || n[0].J != 2)
+    #####:   73:    abort();
+        1:   74:  if (o != 22)
+    #####:   75:    abort();
+        1:   76:  exit(0);
+        -:   77:}

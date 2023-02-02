@@ -1,0 +1,50 @@
+        -:    0:Source:2005.c
+        -:    0:Graph:2005.gcno
+        -:    0:Data:2005.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/84436 */
+        -:    2:/* { dg-options "-O2 -fdump-tree-switchconv -fdump-tree-optimized" } */
+        -:    3:/* { dg-do run } */
+        -:    4:
+        4:    5:signed char __attribute__((noipa)) foo(signed char how) {
+        4:    6:  switch (how) {
+        1:    7:  case -4:
+        1:    8:    how = 96;
+        1:    9:    break;
+        1:   10:  case -3:
+        1:   11:    how = -120;
+        1:   12:    break;
+    #####:   13:  case -2:
+    #####:   14:    how = -80;
+    #####:   15:    break;
+    #####:   16:  case -1:
+    #####:   17:    how = -40;
+    #####:   18:    break;
+        1:   19:  case 0:
+        1:   20:    how = 0;
+        1:   21:    break;
+    #####:   22:  case 1:
+    #####:   23:    how = 40;
+    #####:   24:    break;
+        -:   25:  }
+        4:   26:  return how;
+        -:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  if (foo(-4) != 96)
+    #####:   31:    __builtin_abort();
+        -:   32:
+        1:   33:  if (foo(-3) != -120)
+    #####:   34:    __builtin_abort();
+        -:   35:
+        1:   36:  if (foo(0) != 0)
+    #####:   37:    __builtin_abort();
+        -:   38:
+        1:   39:  if (foo(123) != 123)
+    #####:   40:    __builtin_abort();
+        -:   41:
+        1:   42:  return 0;
+        -:   43:}
+        -:   44:
+        -:   45:/* { dg-final { scan-tree-dump-times "40 *\\*" 1 "switchconv" } } */
+        -:   46:/* { dg-final { scan-tree-dump-not "switch" "optimized" } } */

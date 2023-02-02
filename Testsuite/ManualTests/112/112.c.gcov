@@ -1,0 +1,101 @@
+        -:    0:Source:112.c
+        -:    0:Graph:112.gcno
+        -:    0:Data:112.gcda
+        -:    0:Runs:1
+        -:    1:/* Test __atomic routines for existence and proper execution on 8 byte
+        -:    2:   values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target sync_long_long_runtime } */
+        -:    5:/* { dg-options "" } */
+        -:    6:/* { dg-options "-march=pentium" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+        -:    7: * } */
+        -:    8:
+        -:    9:/* Test the execution of __atomic_compare_exchange_n builtin for a long_long. */
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        -:   13:long long v = 0;
+        -:   14:long long expected = 0;
+        -:   15:long long max = ~0;
+        -:   16:long long desired = ~0;
+        -:   17:long long zero = 0;
+        -:   18:
+        -:   19:#define STRONG 0
+        -:   20:#define WEAK 1
+        -:   21:
+        1:   22:int main() {
+        -:   23:
+        1:   24:  if (!__atomic_compare_exchange_n(&v, &expected, max, STRONG, __ATOMIC_RELAXED,
+        -:   25:                                   __ATOMIC_RELAXED))
+    #####:   26:    abort();
+        1:   27:  if (expected != 0)
+    #####:   28:    abort();
+        -:   29:
+        1:   30:  if (__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_ACQUIRE,
+        -:   31:                                  __ATOMIC_RELAXED))
+    #####:   32:    abort();
+        1:   33:  if (expected != max)
+    #####:   34:    abort();
+        -:   35:
+        1:   36:  if (!__atomic_compare_exchange_n(&v, &expected, 0, STRONG, __ATOMIC_RELEASE,
+        -:   37:                                   __ATOMIC_ACQUIRE))
+    #####:   38:    abort();
+        1:   39:  if (expected != max)
+    #####:   40:    abort();
+        1:   41:  if (v != 0)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  if (__atomic_compare_exchange_n(&v, &expected, desired, WEAK,
+        -:   45:                                  __ATOMIC_ACQ_REL, __ATOMIC_ACQUIRE))
+    #####:   46:    abort();
+        1:   47:  if (expected != 0)
+    #####:   48:    abort();
+        -:   49:
+        1:   50:  if (!__atomic_compare_exchange_n(&v, &expected, desired, STRONG,
+        -:   51:                                   __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+    #####:   52:    abort();
+        1:   53:  if (expected != 0)
+    #####:   54:    abort();
+        1:   55:  if (v != max)
+    #####:   56:    abort();
+        -:   57:
+        -:   58:  /* Now test the generic version.  */
+        -:   59:
+        1:   60:  v = 0;
+        -:   61:
+        1:   62:  if (!__atomic_compare_exchange(&v, &expected, &max, STRONG, __ATOMIC_RELAXED,
+        -:   63:                                 __ATOMIC_RELAXED))
+    #####:   64:    abort();
+        1:   65:  if (expected != 0)
+    #####:   66:    abort();
+        -:   67:
+        1:   68:  if (__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_ACQUIRE,
+        -:   69:                                __ATOMIC_RELAXED))
+    #####:   70:    abort();
+        1:   71:  if (expected != max)
+    #####:   72:    abort();
+        -:   73:
+        1:   74:  if (!__atomic_compare_exchange(&v, &expected, &zero, STRONG, __ATOMIC_RELEASE,
+        -:   75:                                 __ATOMIC_ACQUIRE))
+    #####:   76:    abort();
+        1:   77:  if (expected != max)
+    #####:   78:    abort();
+        1:   79:  if (v != 0)
+    #####:   80:    abort();
+        -:   81:
+        1:   82:  if (__atomic_compare_exchange(&v, &expected, &desired, WEAK, __ATOMIC_ACQ_REL,
+        -:   83:                                __ATOMIC_ACQUIRE))
+    #####:   84:    abort();
+        1:   85:  if (expected != 0)
+    #####:   86:    abort();
+        -:   87:
+        1:   88:  if (!__atomic_compare_exchange(&v, &expected, &desired, STRONG,
+        -:   89:                                 __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+    #####:   90:    abort();
+        1:   91:  if (expected != 0)
+    #####:   92:    abort();
+        1:   93:  if (v != max)
+    #####:   94:    abort();
+        -:   95:
+        1:   96:  return 0;
+        -:   97:}

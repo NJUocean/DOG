@@ -1,0 +1,14 @@
+        -:    0:Source:2447.c
+        -:    0:Graph:2447.gcno
+        -:    0:Data:2447.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:unsigned int foo(unsigned int a) { return ((unsigned char)(a + 1)) * 4; }
+        -:    5:
+        1:    6:int main(void) {
+        1:    7:  if (foo((unsigned char)~0))
+    #####:    8:    abort();
+        1:    9:  exit(0);
+        -:   10:}

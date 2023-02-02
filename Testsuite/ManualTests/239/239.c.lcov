@@ -1,0 +1,22 @@
+    1|       |long val = 0x5e000000;
+    2|       |
+    3|      1|long f1(void) { return 0x132; }
+    4|       |
+    5|      1|long f2(void) { return 0x5e000000; }
+    6|       |
+    7|      1|void f3(long b) { val = b; }
+    8|       |
+    9|      1|void f4() {
+   10|      1|  long v = f1();
+   11|      1|  long o = f2();
+   12|      1|  v = (v & 0x00ffffff) | (o & 0xff000000);
+   13|      1|  f3(v);
+   14|      1|}
+   15|       |
+   16|      1|main() {
+   17|      1|  f4();
+   18|      1|  if (val != 0x5e000132)
+   19|      0|    abort();
+   20|      1|  exit(0);
+   21|      1|}
+

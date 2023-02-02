@@ -1,0 +1,49 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=bounds" } */
+    3|       |
+    4|       |/* Test negative bounds.  */
+    5|       |
+    6|       |struct S {
+    7|       |  int a[10];
+    8|       |};
+    9|       |
+   10|      1|__attribute__((noinline, noclone)) void fn1(void) {
+   11|      1|  volatile int i;
+   12|      1|  int m = -1;
+   13|      1|  volatile int a[7];
+   14|      1|  asm("" : : "r"(&a) : "memory");
+   15|      1|  i = a[-1];
+   16|      1|  asm("" : : "r"(&a) : "memory");
+   17|      1|  i = a[m];
+   18|      1|}
+   19|       |
+   20|      1|__attribute__((noinline, noclone)) void fn2(void) {
+   21|      1|  volatile int i;
+   22|      1|  int m = 7;
+   23|      1|  volatile int a[m];
+   24|      1|  asm("" : : "r"(&a) : "memory");
+   25|      1|  i = a[-1];
+   26|      1|}
+   27|       |
+   28|      1|__attribute__((noinline, noclone)) void fn3(void) {
+   29|      1|  volatile int i;
+   30|      1|  volatile struct S s;
+   31|      1|  asm("" : : "r"(&s.a) : "memory");
+   32|      1|  i = s.a[-1];
+   33|      1|}
+   34|       |
+   35|      1|int main(void) {
+   36|      1|  fn1();
+   37|      1|  fn2();
+   38|      1|  fn3();
+   39|      1|  return 0;
+   40|      1|}
+   41|       |
+   42|       |/* { dg-output "index -1 out of bounds for type 'int
+   43|       | * \\\[7\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+   44|       |/* { dg-output "\[^\n\r]*index -1 out of bounds for type 'int
+   45|       | * \\\[7\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+   46|       |/* { dg-output "\[^\n\r]*index -1 out of bounds for type 'int
+   47|       | * \\\[\\\*\\\]'\[^\n\r]*(\n|\r\n|\r)" } */
+   48|       |/* { dg-output "\[^\n\r]*index -1 out of bounds for type 'int \\\[10\\\]'" } */
+

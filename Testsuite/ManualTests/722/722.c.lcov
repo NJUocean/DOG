@@ -1,0 +1,28 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-require-effective-target vect_simd_clones } */
+    3|       |/* { dg-require-effective-target avx2 } */
+    4|       |/* { dg-lto-options { { -fopenmp-simd -O3 -ffast-math -mavx2 -flto
+    5|       | * -flto-partition=max } } } */
+    6|       |
+    7|  8.19k|#define SIZE 4096
+    8|       |float x[SIZE];
+    9|       |
+   10|       |#pragma omp declare simd
+   11|  8.19k|float __attribute__((noinline)) my_mul(float x, float y) { return x * y; }
+   12|       |
+   13|      1|__attribute__((noinline)) int foo() {
+   14|      1|  int i = 0;
+   15|      1|#pragma omp simd safelen(16)
+   16|  4.09k|  for (i = 0; i < SIZE; i++)
+   17|  4.09k|    x[i] = my_mul((float)i, 9932.3323);
+   18|      1|  return (int)x[0];
+   19|      1|}
+   20|       |
+   21|      1|int main() {
+   22|      1|  int i = 0;
+   23|  4.09k|  for (i = 0; i < SIZE; i++)
+   24|  4.09k|    x[i] = my_mul((float)i, 9932.3323);
+   25|      1|  foo();
+   26|      1|  return (int)x[0];
+   27|      1|}
+

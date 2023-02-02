@@ -1,0 +1,17 @@
+        -:    0:Source:4061.c
+        -:    0:Graph:4061.gcno
+        -:    0:Data:4061.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:
+        -:    3:#define _ 2
+        -:    4:#pragma push_macro("_")
+        -:    5:#undef _
+        -:    6:#define _ 1
+        -:    7:#pragma pop_macro("_")
+        -:    8:
+        1:    9:int main() {
+        -:   10:  if (_ != 2)
+        -:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

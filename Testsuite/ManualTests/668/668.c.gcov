@@ -1,0 +1,12 @@
+        -:    0:Source:668.c
+        -:    0:Graph:668.gcno
+        -:    0:Data:668.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-options "-mcpu=v9" { target sparc*-*-* } } */
+        -:    2:/* { dg-require-effective-target sync_char_short } */
+    #####:    3:void _cairo_clip_path_reference() {
+        -:    4:  int a;
+    #####:    5:  __sync_fetch_and_add(&a, 1);
+    #####:    6:}
+        -:    7:
+        1:    8:int main(void) { return 0; }

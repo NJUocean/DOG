@@ -1,0 +1,23 @@
+        -:    0:Source:1928.c
+        -:    0:Graph:1928.gcno
+        -:    0:Data:1928.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -ftree-vrp" } */
+        -:    3:
+        -:    4:/* PR tree-optimization/22230
+        -:    5:
+        -:    6:   The meet of the ranges in "i*i" was not computed correctly, leading
+        -:    7:   gcc to believe that a was equal to 0 after the loop.  */
+        -:    8:
+        -:    9:extern void abort(void) __attribute__((noreturn));
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  long a, i;
+        -:   13:
+        6:   14:  for (i = 0; i < 5; i++)
+        5:   15:    a = i * i;
+        1:   16:  if (a != 16)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

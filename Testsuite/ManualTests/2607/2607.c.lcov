@@ -1,0 +1,12 @@
+    1|       |/* PR ipa/84722.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-require-ifunc "" } */
+    4|       |
+    5|       |__attribute__((target_clones("avx", "arch=core-avx2", "default"))) int
+    6|      1|foo(int i) {
+    7|      1|  return i - 1;
+    8|      1|}
+    9|       |int weaks(int i) __attribute__((weak, alias("foo")));
+   10|       |
+   11|      1|int main(int argc, char **argv) { return weaks(argc); }
+

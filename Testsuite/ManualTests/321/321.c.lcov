@@ -1,0 +1,24 @@
+    1|       |/* PR ipa/60026 */
+    2|       |/* { dg-do compile } */
+    3|       |
+    4|       |struct S {
+    5|       |  int f;
+    6|       |} a;
+    7|       |
+    8|      0|__attribute__((optimize(0))) struct S foo(int x, struct S y) {
+    9|      0|  int b = y.f;
+   10|      0|  return a;
+   11|      0|}
+   12|       |
+   13|      1|void bar() {
+   14|      1|  while (a.f) {
+   15|      0|    struct S c = {0};
+   16|      0|    foo(0, c);
+   17|      0|  }
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  bar();
+   22|      1|  return 0;
+   23|      1|}
+

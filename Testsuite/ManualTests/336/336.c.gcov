@@ -1,0 +1,18 @@
+        -:    0:Source:336.c
+        -:    0:Graph:336.gcno
+        -:    0:Data:336.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fno-strict-overflow" } */
+        -:    3:
+        -:    4:short a;
+        -:    5:
+        1:    6:void foo(void) {
+    32769:    7:  for (a = 0; a >= 0; a++)
+        -:    8:    ;
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  foo();
+        1:   13:  return 0;
+        -:   14:}

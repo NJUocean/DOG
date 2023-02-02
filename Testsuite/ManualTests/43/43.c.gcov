@@ -1,0 +1,62 @@
+        -:    0:Source:43.c
+        -:    0:Graph:43.gcno
+        -:    0:Data:43.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target fpic } } */
+        -:    2:/* { dg-options "-O2 -fpic" } */
+        -:    3:
+        -:    4:extern void exit(int);
+        -:    5:
+       19:    6:void foo1(int a, char *b, int c) { c = a + c + 234; }
+        -:    7:
+       24:    8:int foo2(int d) { return d * d; }
+        -:    9:
+        -:   10:int bar1, bar2, bar3;
+        -:   11:char *bar4;
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int h;
+        1:   15:  bar1 = foo2(1);
+        1:   16:  bar2 = foo2(1);
+        -:   17:
+        1:   18:  h = foo2(1);
+        1:   19:  foo1(1, "a", foo2(1));
+        1:   20:  foo1(bar1, "a", foo2(1));
+        1:   21:  foo2(1);
+        -:   22:
+        1:   23:  h = foo2(1);
+        1:   24:  bar3 = 1;
+        1:   25:  bar4 = "a";
+        1:   26:  foo1(1, "n", foo2(1));
+        1:   27:  foo1(1, "o", foo2(1));
+        1:   28:  foo1(1, "p", foo2(1));
+        1:   29:  foo1(bar1, "a", foo2(1));
+        -:   30:
+        1:   31:  bar3 = h;
+        1:   32:  bar4 = "b";
+        1:   33:  foo1(bar1, "b", foo2(1));
+        1:   34:  foo1(1, "q", foo2(1));
+        1:   35:  bar4 = "c";
+        1:   36:  foo1(1, "c", foo2(1));
+        1:   37:  bar4 = "d";
+        1:   38:  foo1(1, "d", foo2(1));
+        1:   39:  bar4 = "e";
+        1:   40:  foo1(1, "e", foo2(1));
+        1:   41:  bar4 = "f";
+        1:   42:  foo1(1, "f", foo2(1));
+        1:   43:  bar4 = "g";
+        1:   44:  foo1(1, "g", foo2(1));
+        1:   45:  bar4 = "h";
+        1:   46:  foo1(1, "h", foo2(1));
+        1:   47:  bar4 = "i";
+        1:   48:  foo1(1, "i", foo2(1));
+        1:   49:  bar4 = "j";
+        1:   50:  foo1(1, "j", foo2(1));
+        1:   51:  bar4 = "k";
+        1:   52:  foo1(1, "k", foo2(1));
+        1:   53:  bar4 = "l";
+        1:   54:  foo1(1, "l", foo2(1));
+        1:   55:  bar4 = "m";
+        1:   56:  foo1(bar2, "m", foo2(1));
+        1:   57:  exit(0);
+        -:   58:}

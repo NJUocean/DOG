@@ -1,0 +1,42 @@
+        -:    0:Source:1634.c
+        -:    0:Graph:1634.gcno
+        -:    0:Data:1634.gcda
+        -:    0:Runs:1
+        -:    1:struct {
+        -:    2:  int input;
+        -:    3:  int output;
+        -:    4:} ffstesttab[] = {
+        -:    5:#if __INT_MAX__ >= 2147483647
+        -:    6:    /* at least 32-bit integers */
+        -:    7:    {0x80000000, 32},
+        -:    8:    {0xa5a5a5a5, 1},
+        -:    9:    {0x5a5a5a5a, 2},
+        -:   10:    {0xcafe0000, 18},
+        -:   11:#endif
+        -:   12:#if __INT_MAX__ >= 32767
+        -:   13:    /* at least 16-bit integers */
+        -:   14:    {0x8000, 16},
+        -:   15:    {0xa5a5, 1},
+        -:   16:    {0x5a5a, 2},
+        -:   17:    {0x0ca0, 6},
+        -:   18:#endif
+        -:   19:#if __INT_MAX__ < 32767
+        -:   20:#error integers are too small
+        -:   21:#endif
+        -:   22:};
+        -:   23:
+        -:   24:#define NFFSTESTS (sizeof(ffstesttab) / sizeof(ffstesttab[0]))
+        -:   25:
+        -:   26:extern void abort(void);
+        -:   27:extern void exit(int);
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  int i;
+        -:   31:
+        9:   32:  for (i = 0; i < NFFSTESTS; i++) {
+        8:   33:    if (__builtin_ffs(ffstesttab[i].input) != ffstesttab[i].output)
+    #####:   34:      abort();
+        -:   35:  }
+        -:   36:
+        1:   37:  exit(0);
+        -:   38:}

@@ -1,0 +1,7 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-lto-options { { -flto -g } } } */
+    3|       |
+    4|       |typedef int T;
+    5|      0|void fn(void) { static T t; }
+    6|      1|int main() {}
+

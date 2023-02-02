@@ -1,0 +1,57 @@
+        -:    0:Source:3205.c
+        -:    0:Graph:3205.gcno
+        -:    0:Data:3205.gcda
+        -:    0:Runs:1
+        -:    1:/* PR24716, scalar evolution returning the wrong result
+        -:    2:   for pdest.  */
+        -:    3:
+        -:    4:int Link[] = {-1};
+        -:    5:int W[] = {2};
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:int f(int k, int p) {
+        -:   10:  int pdest, j, D1361;
+        1:   11:  j = 0;
+        1:   12:  pdest = 0;
+        -:   13:  for (;;) {
+        2:   14:    if (pdest > 2)
+        -:   15:      do
+    #####:   16:        j--, pdest++;
+    #####:   17:      while (j > 2);
+        -:   18:
+        2:   19:    if (j == 1)
+        1:   20:      break;
+        -:   21:
+        1:   22:    while (pdest > p)
+    #####:   23:      if (j == p)
+    #####:   24:        pdest++;
+        -:   25:
+        -:   26:    do {
+        1:   27:      D1361 = W[k];
+        -:   28:      do
+        1:   29:        if (D1361 != 0)
+        1:   30:          pdest = 1, W[k] = D1361 = 0;
+        1:   31:      while (p < 1);
+        1:   32:    } while (k > 0);
+        -:   33:
+        -:   34:    do {
+        1:   35:      p = 0;
+        1:   36:      k = Link[k];
+        1:   37:      while (p < j)
+    #####:   38:        if (k != -1)
+    #####:   39:          pdest++, p++;
+        1:   40:    } while (k != -1);
+        1:   41:    j = 1;
+        -:   42:  }
+        -:   43:
+        -:   44:  /* The correct return value should be pdest (1 in the call from main).
+        -:   45:     DOM3 is mistaken and propagates a 0 here.  */
+        1:   46:  return pdest;
+        -:   47:}
+        -:   48:
+        1:   49:int main() {
+        1:   50:  if (!f(0, 2))
+    #####:   51:    abort();
+        1:   52:  return 0;
+        -:   53:}

@@ -1,0 +1,23 @@
+        -:    0:Source:2217.c
+        -:    0:Graph:2217.gcno
+        -:    0:Data:2217.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fno-inline" } */
+        -:    2:struct foo {
+        -:    3:  int a, b, c;
+        -:    4:};
+        -:    5:void abort(void);
+        -:    6:void exit(int);
+        -:    7:
+        1:    8:void brother(int a, int b, int c) {
+        1:    9:  if (a)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:void sister(struct foo f, int b, int c) { brother((f.b == b), b, c); }
+        -:   14:
+        1:   15:int main() {
+        1:   16:  struct foo f = {7, 8, 9};
+        1:   17:  sister(f, 1, 2);
+        1:   18:  exit(0);
+        -:   19:}

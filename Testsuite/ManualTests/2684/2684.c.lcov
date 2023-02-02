@@ -1,0 +1,54 @@
+    1|       |/* PR target/66691 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-require-effective-target ia32 } */
+    4|       |/* { dg-options "-O3 -g -mtune=generic -march=i686" } */
+    5|       |
+    6|       |unsigned int a;
+    7|       |int b[2], c, d, e, f, g, h, i, k[8], l, m, s, t, w;
+    8|       |static int j;
+    9|       |
+   10|      4|void fn1(long long p) {
+   11|      4|  int t = p;
+   12|      4|  c = c ^ b[c ^ (t & 1)];
+   13|      4|}
+   14|       |
+   15|      2|static void fn2(long long p) {
+   16|      2|  c = c ^ b[1 ^ (d & 1)];
+   17|      2|  fn1(p >> 1 & 1);
+   18|      2|  fn1(p >> 2);
+   19|      2|}
+   20|       |
+   21|      1|static void fn3() {
+   22|      1|  unsigned char p;
+   23|      1|  f = g = 0;
+   24|      7|  for (h = 0; h < 6; h++) {
+   25|     48|    for (s = 0; s < 7; s++)
+   26|     42|      if (k[s + 1])
+   27|      0|        g = 0;
+   28|     42|      else
+   29|    126|        for (j = 0; j < 2; j++)
+   30|     84|          ;
+   31|      6|    t = j > 2 ? 0 : 1 >> j;
+   32|      6|  }
+   33|      1|  if (l) {
+   34|      0|    short q[2];
+   35|      0|    q[0] = q[1] = 0;
+   36|      0|    if (m)
+   37|      0|      for (i = 0; i < 2; i++) {
+   38|      0|        unsigned char r = q[i];
+   39|      0|        p = f ? r % f : r;
+   40|      0|        e = ((p > 0) <= (q[i] ^ 1)) + a;
+   41|      0|        if (k[1])
+   42|      0|          for (e = 0; e != 18; ++e)
+   43|      0|            k[0] = 0;
+   44|      0|      }
+   45|      0|  }
+   46|      1|}
+   47|       |
+   48|      1|int main() {
+   49|      1|  fn3();
+   50|      1|  fn2(w);
+   51|      1|  fn2(j);
+   52|      1|  return 0;
+   53|      1|}
+

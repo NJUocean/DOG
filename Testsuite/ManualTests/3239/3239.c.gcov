@@ -1,0 +1,74 @@
+        -:    0:Source:3239.c
+        -:    0:Graph:3239.gcno
+        -:    0:Data:3239.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Test that optimizing ((c>=1) && (c<=127)) into (signed char)c < 0
+        -:    4:   doesn't cause any problems for the compiler and behaves correctly.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 8th May 2002.  */
+        -:    7:
+        -:    8:#include <limits.h>
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:
+        5:   12:void testc(unsigned char c, int ok) {
+        5:   13:  if ((c >= 1) && (c <= SCHAR_MAX)) {
+        2:   14:    if (!ok)
+    #####:   15:      abort();
+        3:   16:  } else if (ok)
+    #####:   17:    abort();
+        5:   18:}
+        -:   19:
+        5:   20:void tests(unsigned short s, int ok) {
+        5:   21:  if ((s >= 1) && (s <= SHRT_MAX)) {
+        2:   22:    if (!ok)
+    #####:   23:      abort();
+        3:   24:  } else if (ok)
+    #####:   25:    abort();
+        5:   26:}
+        -:   27:
+        5:   28:void testi(unsigned int i, int ok) {
+        5:   29:  if ((i >= 1) && (i <= INT_MAX)) {
+        2:   30:    if (!ok)
+    #####:   31:      abort();
+        3:   32:  } else if (ok)
+    #####:   33:    abort();
+        5:   34:}
+        -:   35:
+        5:   36:void testl(unsigned long l, int ok) {
+        5:   37:  if ((l >= 1) && (l <= LONG_MAX)) {
+        2:   38:    if (!ok)
+    #####:   39:      abort();
+        3:   40:  } else if (ok)
+    #####:   41:    abort();
+        5:   42:}
+        -:   43:
+        1:   44:int main() {
+        1:   45:  testc(0, 0);
+        1:   46:  testc(1, 1);
+        1:   47:  testc(SCHAR_MAX, 1);
+        1:   48:  testc(SCHAR_MAX + 1, 0);
+        1:   49:  testc(UCHAR_MAX, 0);
+        -:   50:
+        1:   51:  tests(0, 0);
+        1:   52:  tests(1, 1);
+        1:   53:  tests(SHRT_MAX, 1);
+        1:   54:  tests(SHRT_MAX + 1, 0);
+        1:   55:  tests(USHRT_MAX, 0);
+        -:   56:
+        1:   57:  testi(0, 0);
+        1:   58:  testi(1, 1);
+        1:   59:  testi(INT_MAX, 1);
+        1:   60:  testi(INT_MAX + 1U, 0);
+        1:   61:  testi(UINT_MAX, 0);
+        -:   62:
+        1:   63:  testl(0, 0);
+        1:   64:  testl(1, 1);
+        1:   65:  testl(LONG_MAX, 1);
+        1:   66:  testl(LONG_MAX + 1UL, 0);
+        1:   67:  testl(ULONG_MAX, 0);
+        -:   68:
+        1:   69:  return 0;
+        -:   70:}

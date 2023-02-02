@@ -1,0 +1,70 @@
+        -:    0:Source:1011.c
+        -:    0:Graph:1011.gcno
+        -:    0:Data:1011.gcda
+        -:    0:Runs:1
+        -:    1:struct tmp {
+        -:    2:  long long int pad : 12;
+        -:    3:  long long int field : 52;
+        -:    4:};
+        -:    5:
+        -:    6:struct tmp2 {
+        -:    7:  long long int field : 52;
+        -:    8:  long long int pad : 12;
+        -:    9:};
+        -:   10:
+        -:   11:struct tmp3 {
+        -:   12:  long long int pad : 11;
+        -:   13:  long long int field : 53;
+        -:   14:};
+        -:   15:
+        -:   16:struct tmp4 {
+        -:   17:  long long int field : 53;
+        -:   18:  long long int pad : 11;
+        -:   19:};
+        -:   20:
+        1:   21:struct tmp sub(struct tmp tmp) {
+        1:   22:  tmp.field ^= 0x0008765412345678LL;
+        1:   23:  return tmp;
+        -:   24:}
+        -:   25:
+        1:   26:struct tmp2 sub2(struct tmp2 tmp2) {
+        1:   27:  tmp2.field ^= 0x0008765412345678LL;
+        1:   28:  return tmp2;
+        -:   29:}
+        -:   30:
+        1:   31:struct tmp3 sub3(struct tmp3 tmp3) {
+        1:   32:  tmp3.field ^= 0x0018765412345678LL;
+        1:   33:  return tmp3;
+        -:   34:}
+        -:   35:
+        1:   36:struct tmp4 sub4(struct tmp4 tmp4) {
+        1:   37:  tmp4.field ^= 0x0018765412345678LL;
+        1:   38:  return tmp4;
+        -:   39:}
+        -:   40:
+        -:   41:struct tmp tmp = {0x123, 0x123456789ABCDLL};
+        -:   42:struct tmp2 tmp2 = {0x123456789ABCDLL, 0x123};
+        -:   43:struct tmp3 tmp3 = {0x123, 0x1FFFF00000000LL};
+        -:   44:struct tmp4 tmp4 = {0x1FFFF00000000LL, 0x123};
+        -:   45:
+        1:   46:main() {
+        -:   47:
+        -:   48:  if (sizeof(long long) != 8)
+        -:   49:    exit(0);
+        -:   50:
+        1:   51:  tmp = sub(tmp);
+        1:   52:  tmp2 = sub2(tmp2);
+        -:   53:
+        1:   54:  if (tmp.pad != 0x123 || tmp.field != 0xFFF9551175BDFDB5LL)
+    #####:   55:    abort();
+        1:   56:  if (tmp2.pad != 0x123 || tmp2.field != 0xFFF9551175BDFDB5LL)
+    #####:   57:    abort();
+        -:   58:
+        1:   59:  tmp3 = sub3(tmp3);
+        1:   60:  tmp4 = sub4(tmp4);
+        1:   61:  if (tmp3.pad != 0x123 || tmp3.field != 0xFFF989AB12345678LL)
+    #####:   62:    abort();
+        1:   63:  if (tmp4.pad != 0x123 || tmp4.field != 0xFFF989AB12345678LL)
+    #####:   64:    abort();
+        1:   65:  exit(0);
+        -:   66:}

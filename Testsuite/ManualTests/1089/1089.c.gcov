@@ -1,0 +1,22 @@
+        -:    0:Source:1089.c
+        -:    0:Graph:1089.gcno
+        -:    0:Data:1089.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=gnu11" } */
+        -:    3:
+        -:    4:typedef double v2df __attribute__((vector_size(2 * sizeof(double))));
+        -:    5:typedef long long v2di __attribute__((vector_size(2 * sizeof(long long))));
+        -:    6:
+        1:    7:void foo(v2df *res, v2df *src) {
+        1:    8:  v2df x = *src;
+        1:    9:  *res = __builtin_shuffle((v2df){1.0, 0.0}, x, (v2di){1, 3});
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  v2df x = (v2df){0.0, 2.0};
+        1:   14:  foo(&x, &x);
+        1:   15:  if (x[0] != 0.0 || x[1] != 2.0)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

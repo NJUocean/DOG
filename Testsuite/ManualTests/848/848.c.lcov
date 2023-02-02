@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1" } */
+    3|       |extern void abort(void);
+    4|      1|long long __attribute__((noinline)) get(void) { return -2; }
+    5|       |long long __attribute__((noinline)) get(void);
+    6|      1|int __attribute__((noinline)) check(void) {
+    7|      1|  long long lcn;
+    8|      1|
+    9|      1|  lcn = get();
+   10|      1|  if (lcn >= 0 || lcn == -1)
+   11|      0|    return 0;
+   12|      1|
+   13|      1|  return -1;
+   14|      1|}
+   15|      1|int main() {
+   16|      1|  if (check() == 0)
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

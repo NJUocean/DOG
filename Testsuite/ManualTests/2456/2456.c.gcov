@@ -1,0 +1,35 @@
+        -:    0:Source:2456.c
+        -:    0:Graph:2456.gcno
+        -:    0:Data:2456.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-fno-early-inlining -fno-ipa-cp" }  */
+        -:    2:struct a {
+        -:    3:  float *b;
+        -:    4:} * a;
+        -:    5:struct b {
+        -:    6:  int *b;
+        -:    7:} b;
+        -:    8:struct c {
+        -:    9:  float *b;
+        -:   10:} * c;
+        -:   11:int d;
+    #####:   12:use_a(struct a *a) {}
+        1:   13:set_b(int **a) { *a = &d; }
+    #####:   14:use_c(struct c *a) {}
+        1:   15:__attribute__((noinline)) int **retme(int **val) { return val; }
+        -:   16:int e;
+        -:   17:struct b b = {&e};
+        -:   18:struct b b2;
+        -:   19:struct b b3;
+        -:   20:int **ptr = &b2.b;
+        1:   21:main() {
+        1:   22:  a = (void *)0;
+        1:   23:  b.b = &e;
+        1:   24:  ptr = retme(&b.b);
+        1:   25:  set_b(ptr);
+        1:   26:  b3 = b;
+        1:   27:  if (b3.b != &d)
+    #####:   28:    __builtin_abort();
+        1:   29:  c = (void *)0;
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,58 @@
+    1|       |/* PR target/7042.  When reorg.c changed branches into return insns, it
+    2|       |   completely forgot about any current_function_epilogue_delay_list and
+    3|       |   dropped those insns.  Uncovered on cris-axis-elf, where an insn in an
+    4|       |   epilogue delay-slot set the return-value register with the testcase
+    5|       |   below.  Derived from ghostscript-6.52 (GPL) by hp@axis.com.  */
+    6|       |
+    7|       |typedef struct font_hints_s {
+    8|       |  int axes_swapped;
+    9|       |  int x_inverted, y_inverted;
+   10|       |} font_hints;
+   11|       |typedef struct gs_fixed_point_s {
+   12|       |  long x, y;
+   13|       |} gs_fixed_point;
+   14|       |
+   15|       |int line_hints(const font_hints *fh, const gs_fixed_point *p0,
+   16|      3|               const gs_fixed_point *p1) {
+   17|      3|  long dx = p1->x - p0->x;
+   18|      3|  long dy = p1->y - p0->y;
+   19|      3|  long adx, ady;
+   20|      3|  int xi = fh->x_inverted, yi = fh->y_inverted;
+   21|      3|  int hints;
+   22|      3|  if (xi)
+   23|      1|    dx = -dx;
+   24|      3|  if (yi)
+   25|      1|    dy = -dy;
+   26|      3|  if (fh->axes_swapped) {
+   27|      0|    long t = dx;
+   28|      0|    int ti = xi;
+   29|      0|    dx = dy, xi = yi;
+   30|      0|    dy = t, yi = ti;
+   31|      0|  }
+   32|      3|  adx = dx < 0 ? -dx : dx;
+   33|      3|  ady = dy < 0 ? -dy : dy;
+   34|      3|  if (dy != 0 && (adx <= ady >> 4)) {
+   35|      1|    hints = dy > 0 ? 2 : 1;
+   36|      1|    if (xi)
+   37|      1|      hints ^= 3;
+   38|      2|  } else if (dx != 0 && (ady <= adx >> 4)) {
+   39|      2|    hints = dx < 0 ? 8 : 4;
+   40|      2|    if (yi)
+   41|      1|      hints ^= 12;
+   42|      2|  } else
+   43|      0|    hints = 0;
+   44|      3|  return hints;
+   45|      3|}
+   46|      1|int main() {
+   47|      1|  static font_hints fh[] = {{0, 1, 0}, {0, 0, 1}, {0, 0, 0}};
+   48|      1|  static gs_fixed_point gsf[] = {{0x30000, 0x13958},
+   49|      1|                                 {0x30000, 0x18189},
+   50|      1|                                 {0x13958, 0x30000},
+   51|      1|                                 {0x18189, 0x30000}};
+   52|      1|  if (line_hints(fh, gsf, gsf + 1) != 1 ||
+   53|      1|      line_hints(fh + 1, gsf + 2, gsf + 3) != 8 ||
+   54|      1|      line_hints(fh + 2, gsf + 2, gsf + 3) != 4)
+   55|      0|    abort();
+   56|      1|  exit(0);
+   57|      1|}
+

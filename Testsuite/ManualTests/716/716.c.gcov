@@ -1,0 +1,13 @@
+        -:    0:Source:716.c
+        -:    0:Graph:716.gcno
+        -:    0:Data:716.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-require-effective-target gas } */
+        -:    3:/* { dg-lto-options { { -O0 -fipa-vrp -flto -Wa,--noexecstack -Wa,--noexecstack
+        -:    4: * -Wa,--execstack  -Wa,--execstack -Wa,--execstack -Wa,--execstack
+        -:    5: * -Wa,--execstack -Wa,--execstack -Wa,--execstack -Wa,--execstack
+        -:    6: * -Wa,--execstack -Wa,--execstack -Wa,--execstack -Wa,--execstack
+        -:    7: * -Wa,--execstack -Wa,--execstack } } } */
+        -:    8:
+        1:    9:int main() {}

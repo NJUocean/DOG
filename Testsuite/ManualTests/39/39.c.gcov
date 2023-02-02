@@ -1,0 +1,45 @@
+        -:    0:Source:39.c
+        -:    0:Graph:39.gcno
+        -:    0:Data:39.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-options "-O2 -fno-short-enums -Wl,--no-enum-size-warning" {target
+        -:    4: * arm_eabi} } */
+        -:    5:
+        -:    6:/* This testcase got misoptimized by combine due to a wrong setting of
+        -:    7:   subst_low_luid in try_combine.  */
+        -:    8:
+        -:    9:enum rtx_code { A, B };
+        -:   10:
+        -:   11:void abort(void);
+        -:   12:
+        -:   13:struct rtx_def {
+        -:   14:  __extension__ enum rtx_code code : 16;
+        -:   15:};
+        -:   16:typedef struct rtx_def *rtx;
+        -:   17:
+        1:   18:void __attribute__((noinline)) add_constraint(unsigned char is_a) {
+        1:   19:  if (is_a)
+    #####:   20:    abort();
+        1:   21:}
+        -:   22:
+        1:   23:void __attribute__((noinline)) foo(rtx defn) {
+        1:   24:  switch (defn->code) {
+        1:   25:  case A:
+        -:   26:  case B:
+        1:   27:    add_constraint(defn->code == A);
+        1:   28:    break;
+    #####:   29:  default:
+    #####:   30:    break;
+        -:   31:  }
+        1:   32:}
+        -:   33:
+        1:   34:int main() {
+        -:   35:  struct rtx_def r;
+        -:   36:
+        1:   37:  r.code = B;
+        -:   38:
+        1:   39:  foo(&r);
+        1:   40:  return 0;
+        -:   41:}

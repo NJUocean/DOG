@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=undefined -fsanitize-undefined-trap-on-error" } */
+    3|       |
+    4|      1|int __attribute__((noinline, noclone)) h(int a) {
+    5|      1|  return 2 * (a * (__INT_MAX__ / 2 + 1));
+    6|      1|}
+    7|      1|int __attribute__((noinline, noclone)) i(int a) {
+    8|      1|  return (2 * a) * (__INT_MAX__ / 2 + 1);
+    9|      1|}
+   10|      1|int __attribute__((noinline, noclone)) j(int a, int b) {
+   11|      1|  return (b * a) * (__INT_MAX__ / 2 + 1);
+   12|      1|}
+   13|      1|int __attribute__((noinline, noclone)) k(int a, int b) { return (2 * a) * b; }
+   14|      1|int main() {
+   15|      1|  volatile int tem = h(-1);
+   16|      1|  tem = i(-1);
+   17|      1|  tem = j(-1, 2);
+   18|      1|  tem = k(-1, __INT_MAX__ / 2 + 1);
+   19|      1|  return 0;
+   20|      1|}
+

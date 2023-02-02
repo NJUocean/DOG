@@ -1,0 +1,44 @@
+    1|       |/* { dg-do compile { target ia32 } } */
+    2|       |/* { dg-options "-O3 -march=x86-64" } */
+    3|       |/* { dg-final { scan-assembler-not "cmpl\[ \t]+(\[%a-z]+), \\1" } } */
+    4|       |
+    5|       |short a;
+    6|       |int b = 1, f;
+    7|       |char c, e = 1;
+    8|       |long long d;
+    9|       |
+   10|      1|static short foo() {
+   11|      1|  unsigned g, h = 0;
+   12|      1|  int i = 0 || d * (b | e);
+   13|      1|  char j = a << i, l = a;
+   14|      1|  short k;
+   15|      1|  int m = -b;
+   16|      1|  if (m < b) {
+   17|      1|    k = m = b;
+   18|      1|    g = (k || l) / (b / e);
+   19|      1|    if (b)
+   20|      1|      __builtin_printf("foo=%lld\n", (long long)a);
+   21|      1|  }
+   22|      1|  a = b = m;
+   23|      1|  if (j || e) {
+   24|      1|    h = g;
+   25|      1|    i = m;
+   26|      1|    g = j * k / (i - d);
+   27|      1|    if (m)
+   28|      1|      b = j && b;
+   29|      1|    e = b * (h & d) || g;
+   30|      1|  }
+   31|      1|  b = i;
+   32|      1|  char n = e || h | d;
+   33|      1|  e = i < d & k / n;
+   34|      1|  return f;
+   35|      1|}
+   36|       |
+   37|      1|int main() {
+   38|      1|  if (foo())
+   39|      0|    if (c)
+   40|      0|    lab:
+   41|      0|      goto lab;
+   42|      1|  return 0;
+   43|      1|}
+

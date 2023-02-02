@@ -1,0 +1,22 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-final { scan-assembler-not "unnecesary_static_initialized_variable" } }
+    4|       | */
+    5|       |
+    6|       |static int unnecesary_static_initialized_variable;
+    7|       |static int *unnecesary_static_initialized_variable2 =
+    8|       |    &unnecesary_static_initialized_variable;
+    9|      2|static inline int simplify_after_inline(int param1, int *param2) {
+   10|      2|  if (unnecesary_static_initialized_variable != param1)
+   11|      0|    return unnecesary_static_initialized_variable;
+   12|      2|  if (unnecesary_static_initialized_variable2 != param2)
+   13|      0|    return unnecesary_static_initialized_variable;
+   14|      2|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  return simplify_after_inline(unnecesary_static_initialized_variable,
+   18|      1|                               unnecesary_static_initialized_variable2) +
+   19|      1|         simplify_after_inline(unnecesary_static_initialized_variable,
+   20|      1|                               unnecesary_static_initialized_variable2);
+   21|      1|}
+

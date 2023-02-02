@@ -1,0 +1,24 @@
+        -:    0:Source:1616.c
+        -:    0:Graph:1616.gcno
+        -:    0:Data:1616.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef __UINT8_TYPE__ uint8_t;
+        -:    4:
+        6:    5:uint8_t __attribute__((noinline, noclone)) abs8(uint8_t x) {
+        6:    6:  if (x & 0x80)
+        3:    7:    x = -x;
+        -:    8:
+        6:    9:  if (x & 0x80)
+        1:   10:    x = 0x7f;
+        -:   11:
+        6:   12:  return x;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        2:   16:  if (abs8(0) != 0 || abs8(1) != 1 || abs8(127) != 127 || abs8(128) != 127 ||
+        2:   17:      abs8(129) != 127 || abs8(255) != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

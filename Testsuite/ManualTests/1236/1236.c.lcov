@@ -1,0 +1,26 @@
+    1|       |/* PR middle-end/56917 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+    4|       |
+    5|      2|#define INT_MIN (-__INT_MAX__ - 1)
+    6|      2|#define LONG_MIN (-__LONG_MAX__ - 1L)
+    7|      1|#define LLONG_MIN (-__LONG_LONG_MAX__ - 1LL)
+    8|       |
+    9|      1|int __attribute__((noinline, noclone)) fn1(unsigned int u) {
+   10|      1|  return (-(int)(u - 1U)) - 1;
+   11|      1|}
+   12|       |
+   13|      1|long __attribute__((noinline, noclone)) fn2(unsigned long int ul) {
+   14|      1|  return (-(long)(ul - 1UL)) - 1L;
+   15|      1|}
+   16|       |
+   17|      1|long long __attribute__((noinline, noclone)) fn3(unsigned long long int ull) {
+   18|      1|  return (-(long long)(ull - 1ULL)) - 1LL;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  if (fn1(__INT_MAX__ + 1U) != INT_MIN || fn2(__LONG_MAX__ + 1UL) != LONG_MIN ||
+   23|      1|      fn3(__LONG_LONG_MAX__ + 1ULL) != LLONG_MIN)
+   24|      1|    __builtin_abort();
+   25|      1|}
+

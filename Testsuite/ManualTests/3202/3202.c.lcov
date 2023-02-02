@@ -1,0 +1,10 @@
+    1|       |/* Test the tester; previously part of gcc.misc-tests/dg-9.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |
+    5|      0|f() { /* { dg-warning "return type" "warning test" } */
+    6|      0|} /* { dg-warning "control reaches end" "warning test" } */
+    7|       |
+    8|      1|main(int argc, char *argv[]) { /* { dg-warning "return type" "warning test" } */
+    9|      1|} /* { dg-warning "control reaches end" "warning test" } */
+

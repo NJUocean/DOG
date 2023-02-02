@@ -1,0 +1,24 @@
+        -:    0:Source:1888.c
+        -:    0:Graph:1888.gcno
+        -:    0:Data:1888.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target int128 } } */
+        -:    2:/* { dg-options "-O -fdump-tree-cddce1" } */
+        -:    3:
+        -:    4:typedef unsigned __int128 u128;
+        -:    5:
+        -:    6:u128 a, b;
+        -:    7:
+        1:    8:static inline u128 foo(u128 p1) {
+        1:    9:  p1 += ~b;
+        1:   10:  return -p1;
+        -:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  u128 x = foo(~0x7fffffffffffffff);
+        1:   15:  if (x != 0x8000000000000001)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-final { scan-tree-dump "if \\(b.0_\[0-9\]+ != 0\\)" "cddce1" } } */

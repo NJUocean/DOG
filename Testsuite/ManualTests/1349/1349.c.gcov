@@ -1,0 +1,11 @@
+        -:    0:Source:1349.c
+        -:    0:Graph:1349.gcno
+        -:    0:Data:1349.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/79897 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fsanitize=enum -O2" } */
+        -:    4:
+        -:    5:enum E { A = 0, B = ~0U + 1LL } x = A;
+        -:    6:
+        1:    7:int main() { return x != A; }

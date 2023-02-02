@@ -1,0 +1,17 @@
+        -:    0:Source:3388.c
+        -:    0:Graph:3388.gcno
+        -:    0:Data:3388.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/21850 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef int V2SI __attribute__((vector_size(8)));
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:#if (__INT_MAX__ == 2147483647) && (__LONG_LONG_MAX__ == 9223372036854775807LL)
+        1:    9:  if (((int)(long long)(V2SI){2, 2}) != 2)
+    #####:   10:    abort();
+        -:   11:#endif
+        1:   12:  return 0;
+        -:   13:}

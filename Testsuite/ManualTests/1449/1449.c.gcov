@@ -1,0 +1,27 @@
+        -:    0:Source:1449.c
+        -:    0:Graph:1449.gcno
+        -:    0:Data:1449.gcda
+        -:    0:Runs:1
+        1:    1:sub1(i) int i;
+        1:    2:{ return i - (5 - i); }
+        -:    3:
+        1:    4:sub2(i) int i;
+        1:    5:{ return i + (5 + i); }
+        -:    6:
+        1:    7:sub3(i) int i;
+        1:    8:{ return i - (5 + i); }
+        -:    9:
+        1:   10:sub4(i) int i;
+        1:   11:{ return i + (5 - i); }
+        -:   12:
+        1:   13:main() {
+        1:   14:  if (sub1(20) != 35)
+    #####:   15:    abort();
+        1:   16:  if (sub2(20) != 45)
+    #####:   17:    abort();
+        1:   18:  if (sub3(20) != -5)
+    #####:   19:    abort();
+        1:   20:  if (sub4(20) != 5)
+    #####:   21:    abort();
+        1:   22:  exit(0);
+        -:   23:}

@@ -1,0 +1,26 @@
+        -:    0:Source:1989.c
+        -:    0:Graph:1989.gcno
+        -:    0:Data:1989.gcda
+        -:    0:Runs:1
+        -:    1:/* Test gcse handling of IEEE 0/-0 rules.  */
+        -:    2:static double zero = 0.0;
+        -:    3:
+        1:    4:int negzero_check(double d) {
+        1:    5:  if (d == 0)
+        1:    6:    return !!memcmp((void *)&zero, (void *)&d, sizeof(double));
+    #####:    7:  return 0;
+        -:    8:}
+        -:    9:
+        1:   10:int sub(double d, double e) {
+       1*:   11:  if (d == 0.0 && e == 0.0 && negzero_check(d) == 0 && negzero_check(e) == 0)
+    #####:   12:    return 1;
+        -:   13:  else
+        1:   14:    return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  double minus_zero = -0.0;
+        1:   19:  if (sub(minus_zero, 0))
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

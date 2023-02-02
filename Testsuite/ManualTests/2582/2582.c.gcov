@@ -1,0 +1,30 @@
+        -:    0:Source:2582.c
+        -:    0:Graph:2582.gcno
+        -:    0:Data:2582.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -m8bit-idiv" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:void __attribute__((noinline))
+       12:    7:test(long long x, long long y, long long q, long long r) {
+       12:    8:  if ((x / y) != q || (x % y) != r)
+    #####:    9:    abort();
+       12:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  test(7, 6, 1, 1);
+        1:   14:  test(-7, -6, 1, -1);
+        1:   15:  test(-7, 6, -1, -1);
+        1:   16:  test(7, -6, -1, 1);
+        1:   17:  test(255, 254, 1, 1);
+        1:   18:  test(256, 254, 1, 2);
+        1:   19:  test(256, 256, 1, 0);
+        1:   20:  test(254, 256, 0, 254);
+        1:   21:  test(254, 255, 0, 254);
+        1:   22:  test(254, 1, 254, 0);
+        1:   23:  test(255, 2, 127, 1);
+        1:   24:  test(1, 256, 0, 1);
+        1:   25:  return 0;
+        -:   26:}

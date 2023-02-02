@@ -1,0 +1,22 @@
+        -:    0:Source:983.c
+        -:    0:Graph:983.gcno
+        -:    0:Data:983.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:int a, b = 10;
+        -:    5:char c;
+        -:    6:
+        1:    7:int main() {
+        -:    8:  char d;
+        1:    9:  int e = 5;
+       1*:   10:  for (a = 0; a; a--)
+    #####:   11:    e = 0;
+        1:   12:  c = (b & 15) ^ e;
+       1*:   13:  d = c > e ? c : c << e;
+        1:   14:  __builtin_printf("%d\n", d);
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-output "15" } */

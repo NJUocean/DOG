@@ -1,0 +1,49 @@
+        -:    0:Source:2014.c
+        -:    0:Graph:2014.gcno
+        -:    0:Data:2014.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:
+        -:    4:typedef unsigned long V __attribute__((__vector_size__(8)));
+        -:    5:typedef _Complex int Ci;
+        -:    6:typedef _Complex float Cf;
+        -:    7:
+        -:    8:union U {
+        -:    9:  Ci ci;
+        -:   10:  Cf cf;
+        -:   11:};
+        -:   12:
+        -:   13:volatile Ci vgi;
+        -:   14:
+        1:   15:Cf foo(Cf c) {
+        1:   16:  __real c = 0x1ffp10;
+        1:   17:  return c;
+        -:   18:}
+        -:   19:
+        1:   20:Ci ioo(Ci c) {
+        1:   21:  __real c = 50;
+        1:   22:  return c;
+        -:   23:}
+        -:   24:
+        1:   25:int main(int argc, char *argv[]) {
+        -:   26:  union U u;
+        -:   27:
+        1:   28:  __real u.ci = 500;
+        1:   29:  __imag u.ci = 1000;
+        1:   30:  vgi = u.ci;
+        -:   31:
+        1:   32:  u.ci = ioo(u.ci);
+        1:   33:  __imag u.ci = 100;
+        -:   34:
+        1:   35:  if (__real u.ci != 50 || __imag u.ci != 100)
+    #####:   36:    __builtin_abort();
+        -:   37:
+        1:   38:  u.cf = foo(u.cf);
+        1:   39:  __imag u.cf = 0x1p3;
+        -:   40:
+        1:   41:  if (__real u.cf != 0x1ffp10 || __imag u.cf != 0x1p3)
+    #####:   42:    __builtin_abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

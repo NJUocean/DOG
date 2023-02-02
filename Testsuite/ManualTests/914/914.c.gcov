@@ -1,0 +1,23 @@
+        -:    0:Source:914.c
+        -:    0:Graph:914.gcno
+        -:    0:Data:914.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/50161 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-tree-ter -funroll-loops" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int main() {
+        -:    8:  unsigned i;
+        -:    9:  unsigned long a[16];
+        -:   10:
+       17:   11:  for (i = 0; i < 16; i++)
+       16:   12:    a[i] = ~0UL;
+        -:   13:
+       17:   14:  for (i = 0; i < 16; i++)
+       16:   15:    if (__builtin_popcountl(a[i]) != sizeof(a[i]) * 8)
+    #####:   16:      abort();
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

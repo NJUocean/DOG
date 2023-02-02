@@ -1,0 +1,28 @@
+    1|       |/* Contributed by Joost VandeVondele  <jv244@cam.ac.uk> */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-profiling "-pg" } */
+    5|       |/* { dg-options "-O2 -pg" } */
+    6|       |/* { dg-options "-O2 -pg -mtune=core2" { target { i?86-*-* x86_64-*-* } } } */
+    7|       |/* { dg-options "-O2 -pg -static" { target hppa*-*-hpux* } } */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |int stack_pointer;
+   12|       |
+   13|      0|void __attribute__((noinline)) mystop() { abort(); }
+   14|       |
+   15|      1|void __attribute__((noinline)) add() {
+   16|      1|  if (stack_pointer + 1 > 10)
+   17|      0|    mystop();
+   18|      1|
+   19|      1|  stack_pointer = stack_pointer + 1;
+   20|      1|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  add();
+   24|      1|  return stack_pointer - 1;
+   25|      1|}
+   26|       |
+   27|       |/* { dg-final { cleanup-profile-file } } */
+

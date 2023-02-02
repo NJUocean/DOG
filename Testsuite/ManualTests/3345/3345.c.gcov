@@ -1,0 +1,21 @@
+        -:    0:Source:3345.c
+        -:    0:Graph:3345.gcno
+        -:    0:Data:3345.gcda
+        -:    0:Runs:1
+        1:    1:int sub1(int i, int j) {
+        1:    2:  typedef int c[i + 2];
+        -:    3:  int x[10], y[10];
+        -:    4:
+        1:    5:  if (j == 2) {
+    #####:    6:    memcpy(x, y, 10 * sizeof(int));
+    #####:    7:    return sizeof(c);
+        -:    8:  } else
+        1:    9:    return sizeof(c) * 3;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (sub1(20, 3) != 66 * sizeof(int))
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

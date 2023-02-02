@@ -1,0 +1,40 @@
+    1|       |/* Test AAPCS layout (alignment) for callee.  */
+    2|       |
+    3|       |/* { dg-do run { target aarch64*-*-* } } */
+    4|       |
+    5|       |extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+    6|       |extern void abort(void);
+    7|       |
+    8|       |/* The underlying struct here has alignment 8.  */
+    9|       |typedef struct __attribute__((__aligned__(16))) {
+   10|       |  long x;
+   11|       |  long y;
+   12|       |} overaligned;
+   13|       |
+   14|       |overaligned a = {2, 3};
+   15|       |overaligned b = {5, 8};
+   16|       |overaligned c = {13, 21};
+   17|       |
+   18|       |void test_passing_overaligned_struct(int x0, overaligned x1, int x3, int x4,
+   19|       |                                     overaligned x5, int x7, int stack,
+   20|      1|                                     overaligned stack8) {
+   21|      1|  if (x0 != 7 || x3 != 9 || x4 != 11 || x7 != 15 || stack != 10)
+   22|      0|    abort();
+   23|      1|  if (memcmp((void *)&x1, (void *)&a, sizeof(overaligned)))
+   24|      0|    abort();
+   25|      1|  if (memcmp((void *)&x5, (void *)&b, sizeof(overaligned)))
+   26|      0|    abort();
+   27|      1|  if (memcmp((void *)&stack8, (void *)&c, sizeof(overaligned)))
+   28|      0|    abort();
+   29|      1|  long addr = ((long)&stack8) & 15;
+   30|      1|  if (addr != 0) {
+   31|      0|    __builtin_printf("Alignment was %d\n", addr);
+   32|      0|    abort();
+   33|      0|  }
+   34|      1|}
+   35|       |
+   36|      1|int main(int argc, char **argv) {
+   37|      1|  test_passing_overaligned_struct(7, a, 9, 11, b, 15, 10, c);
+   38|      1|  return 0;
+   39|      1|}
+

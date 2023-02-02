@@ -1,0 +1,44 @@
+        -:    0:Source:148.c
+        -:    0:Graph:148.gcno
+        -:    0:Data:148.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_store routines for existence and proper execution on
+        -:    2:   2-byte values with each valid memory model.  */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    5:
+        -:    6:#include <stdatomic.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:_Atomic short v;
+        -:   11:short count;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  v = 0;
+        1:   15:  count = 0;
+        -:   16:
+        1:   17:  atomic_init(&v, count + 1);
+        1:   18:  if (v != ++count)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  atomic_store_explicit(&v, count + 1, memory_order_relaxed);
+        1:   22:  if (v != ++count)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  atomic_store_explicit(&v, count + 1, memory_order_release);
+        1:   26:  if (v != ++count)
+    #####:   27:    abort();
+        -:   28:
+        1:   29:  atomic_store_explicit(&v, count + 1, memory_order_seq_cst);
+        1:   30:  if (v != ++count)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  count++;
+        -:   34:
+        1:   35:  atomic_store(&v, count);
+        1:   36:  if (v != count)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}

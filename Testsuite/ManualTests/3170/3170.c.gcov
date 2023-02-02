@@ -1,0 +1,10 @@
+        -:    0:Source:3170.c
+        -:    0:Graph:3170.gcno
+        -:    0:Data:3170.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-xfail-run-if "" { empty-*-* } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() { return 0; /* This results in a pass.  */ }

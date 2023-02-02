@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int128 } */
+    3|       |/* { dg-options "-O -fschedule-insns" } */
+    4|       |
+    5|       |typedef unsigned char u8;
+    6|       |typedef unsigned __int128 u128;
+    7|       |
+    8|       |static u128 u128_0;
+    9|       |static u128 *p128;
+   10|       |
+   11|      1|u128 __attribute__((noinline, noclone)) foo(u8 u8_0) {
+   12|      1|  p128 = &u128_0;
+   13|      1|  u128_0 = u8_0;
+   14|      1|  u128_0 = u128_0 << 127 | u128_0 >> 1;
+   15|      1|  u128_0 >>= (u8)u128_0;
+   16|      1|  return 2 + u128_0;
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  u128 x = foo(5);
+   21|      1|  if (p128 != &u128_0)
+   22|      0|    __builtin_abort();
+   23|      1|  if (u128_0 != ((u128)2 << 124))
+   24|      0|    __builtin_abort();
+   25|      1|  if (x != ((u128)2 << 124) + 2)
+   26|      0|    __builtin_abort();
+   27|      1|  return 0;
+   28|      1|}
+

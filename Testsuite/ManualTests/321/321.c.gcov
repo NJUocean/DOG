@@ -1,0 +1,27 @@
+        -:    0:Source:321.c
+        -:    0:Graph:321.gcno
+        -:    0:Data:321.gcda
+        -:    0:Runs:1
+        -:    1:/* PR ipa/60026 */
+        -:    2:/* { dg-do compile } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int f;
+        -:    6:} a;
+        -:    7:
+    #####:    8:__attribute__((optimize(0))) struct S foo(int x, struct S y) {
+    #####:    9:  int b = y.f;
+    #####:   10:  return a;
+        -:   11:}
+        -:   12:
+        1:   13:void bar() {
+        1:   14:  while (a.f) {
+    #####:   15:    struct S c = {0};
+    #####:   16:    foo(0, c);
+        -:   17:  }
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  bar();
+        1:   22:  return 0;
+        -:   23:}

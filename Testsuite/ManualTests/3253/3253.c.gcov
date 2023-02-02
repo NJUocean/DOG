@@ -1,0 +1,22 @@
+        -:    0:Source:3253.c
+        -:    0:Graph:3253.gcno
+        -:    0:Data:3253.gcda
+        -:    0:Runs:1
+        -:    1:/* Distilled from try_pre_increment in flow.c.  If-conversion inserted
+        -:    2:   new instructions at the wrong place on ppc.  */
+        -:    3:
+        1:    4:int foo(int a) {
+        -:    5:  int x;
+        1:    6:  x = 0;
+        1:    7:  if (a > 0)
+        1:    8:    x = 1;
+        1:    9:  if (a < 0)
+    #####:   10:    x = 1;
+        1:   11:  return x;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  if (foo(1) != 1)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

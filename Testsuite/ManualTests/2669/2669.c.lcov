@@ -1,0 +1,38 @@
+    1|       |/* PR target/59644 */
+    2|       |/* { dg-do run { target lp64 } } */
+    3|       |/* { dg-options "-O2 -ffreestanding -mno-sse -mpreferred-stack-boundary=3
+    4|       | * -maccumulate-outgoing-args -mno-red-zone" } */
+    5|       |
+    6|       |/* This test uses __builtin_trap () instead of e.g. abort,
+    7|       |   because due to -mpreferred-stack-boundary=3 it should not call
+    8|       |   any library function from within main ().  */
+    9|       |
+   10|       |#include <stdarg.h>
+   11|       |
+   12|       |__attribute__((noinline, noclone)) int bar(int x, int y, int z, int w,
+   13|      1|                                           const char *fmt, va_list ap) {
+   14|      1|  if (x != 1 || y != 2 || z != 3 || w != 4)
+   15|      0|    __builtin_trap();
+   16|      1|  if (fmt[0] != 'f' || fmt[1] != 'o' || fmt[2] != 'o' || fmt[3])
+   17|      0|    __builtin_trap();
+   18|      1|  if (va_arg(ap, int) != 5 || va_arg(ap, int) != 6 ||
+   19|      1|      va_arg(ap, long long) != 7LL)
+   20|      0|    __builtin_trap();
+   21|      1|  return 9;
+   22|      1|}
+   23|       |
+   24|       |__attribute__((noinline, noclone, optimize("Os"))) int foo(const char *fmt,
+   25|      1|                                                           ...) {
+   26|      1|  va_list ap;
+   27|      1|  va_start(ap, fmt);
+   28|      1|  int r = bar(1, 2, 3, 4, fmt, ap);
+   29|      1|  va_end(ap);
+   30|      1|  return r;
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  if (foo("foo", 5, 6, 7LL) != 9)
+   35|      0|    __builtin_trap();
+   36|      1|  return 0;
+   37|      1|}
+

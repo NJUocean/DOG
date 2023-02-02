@@ -1,0 +1,22 @@
+    1|       |typedef struct {
+    2|       |  unsigned short b0, b1, b2, b3;
+    3|       |} four_quarters;
+    4|       |
+    5|       |four_quarters x;
+    6|       |int a, b;
+    7|       |
+    8|      1|void f(four_quarters j) {
+    9|      1|  b = j.b2;
+   10|      1|  a = j.b3;
+   11|      1|}
+   12|       |
+   13|      1|main() {
+   14|      1|  four_quarters x;
+   15|      1|  x.b0 = x.b1 = x.b2 = 0;
+   16|      1|  x.b3 = 38;
+   17|      1|  f(x);
+   18|      1|  if (a != 38)
+   19|      0|    abort();
+   20|      1|  exit(0);
+   21|      1|}
+

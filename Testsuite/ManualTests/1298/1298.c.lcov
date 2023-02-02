@@ -1,0 +1,51 @@
+    1|       |/* PR target/30665: bug in cris.md peephole2 condition.
+    2|       |   Original reduced testcase (fails on 3.2.1 derivate, not on trunk).  */
+    3|       |/* { dg-do run } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |extern void exit(int);
+    7|       |
+    8|       |struct t {
+    9|       |  unsigned int a : 12;
+   10|       |  unsigned int b : 12;
+   11|       |  unsigned int dummy1 : 8;
+   12|       |};
+   13|       |
+   14|       |struct area {
+   15|       |  int xa;
+   16|       |  int xb;
+   17|       |};
+   18|       |
+   19|       |struct c {
+   20|       |  struct area ii;
+   21|       |};
+   22|       |
+   23|       |static struct c c;
+   24|       |
+   25|      1|void __attribute__((__noinline__)) g(int a) {
+   26|      1|  if (a != 79)
+   27|      0|    abort();
+   28|      1|}
+   29|       |
+   30|      1|void __attribute__((__noinline__)) h(struct t tt) {
+   31|      1|  if (tt.a != 20 || tt.b != 79)
+   32|      0|    abort();
+   33|      1|}
+   34|       |
+   35|       |void __attribute__((__noinline__)) s(void);
+   36|       |
+   37|      1|int main(int argc, char **argv) {
+   38|      1|  c.ii.xa = 20;
+   39|      1|  c.ii.xb = 79;
+   40|      1|
+   41|      1|  s();
+   42|      1|
+   43|      1|  exit(0);
+   44|      1|}
+   45|       |
+   46|      1|void __attribute__((__noinline__)) s(void) {
+   47|      1|  struct t ii_x = {.a = c.ii.xa, .b = c.ii.xb};
+   48|      1|  g(c.ii.xb);
+   49|      1|  h(ii_x);
+   50|      1|}
+

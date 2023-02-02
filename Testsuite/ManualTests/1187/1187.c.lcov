@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=signed-integer-overflow" } */
+    3|       |
+    4|      2|#define INT_MIN (-__INT_MAX__ - 1)
+    5|       |
+    6|      1|int main() {
+    7|      1|  int x = INT_MIN;
+    8|      1|  int y;
+    9|      1|  asm("" : "+g"(x));
+   10|      1|  y = -(-x);
+   11|      1|  asm("" : "+g"(y));
+   12|      1|  y = -(-INT_MIN);
+   13|      1|  asm("" : "+g"(y));
+   14|      1|}
+   15|       |
+   16|       |/* { dg-output "negation of -2147483648 cannot be represented in type
+   17|       | * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+   18|       | * itself\[^\n\r]*(\n|\r\n|\r)" } */
+   19|       |/* { dg-output "\[^\n\r]*negation of -2147483648 cannot be represented in type
+   20|       | * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+   21|       | * itself\[^\n\r]*(\n|\r\n|\r)" } */
+   22|       |/* { dg-output "\[^\n\r]*negation of -2147483648 cannot be represented in type
+   23|       | * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to
+   24|       | * itself\[^\n\r]*(\n|\r\n|\r)" } */
+   25|       |/* { dg-output "\[^\n\r]*negation of -2147483648 cannot be represented in type
+   26|       | * 'int'\[^\n\r]*; cast to an unsigned type to negate this value to itself" } */
+

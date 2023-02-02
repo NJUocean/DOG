@@ -1,0 +1,20 @@
+        -:    0:Source:2824.c
+        -:    0:Graph:2824.gcno
+        -:    0:Data:2824.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:__attribute__((persistent)) int persistent_1_g = 1;
+        -:    4:__attribute__((persistent)) int persistent_2_g = 0;
+        -:    5:static __attribute__((persistent)) int persistent_3_g = 1;
+        -:    6:static __attribute__((persistent)) int persistent_4_g = 0;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  __attribute__((persistent)) int persistent_1 =
+        -:   10:      1; /* { dg-warning "attribute has no effect on automatic" } */
+        1:   11:  __attribute__((persistent)) int persistent_2 =
+        -:   12:      0; /* { dg-warning "attribute has no effect on automatic" } */
+        -:   13:  static __attribute__((persistent)) int persistent_3 = 1;
+        -:   14:  static __attribute__((persistent)) int persistent_4 = 0;
+        1:   15:  return 0;
+        -:   16:}

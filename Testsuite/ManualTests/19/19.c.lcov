@@ -1,0 +1,42 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |/* { dg-options "-O2 -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+    4|       | * } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|       |struct A {
+   10|       |  char p[6];
+   11|       |} __attribute__((packed));
+   12|       |struct B {
+   13|       |  struct A a;
+   14|       |  void *const b;
+   15|       |  struct A const *const c;
+   16|       |  struct A const *d;
+   17|       |};
+   18|       |
+   19|       |char v;
+   20|       |
+   21|      1|int __attribute__((noinline)) foo(struct B *b) {
+   22|      1|  int i;
+   23|      7|  for (i = 0; i < 6; ++i)
+   24|      6|    if (b->a.p[i])
+   25|      0|      abort();
+   26|      1|  if (b->b != &v || b->c || b->d)
+   27|      0|    abort();
+   28|      1|  return 12;
+   29|      1|}
+   30|       |
+   31|      1|int __attribute__((noinline)) bar(void *x) {
+   32|      1|  __asm __volatile("" : "=r"(x) : "0"(x));
+   33|      1|  struct B y = {.b = x, .c = (void *)0};
+   34|      1|  return foo(&y) + 1;
+   35|      1|}
+   36|       |
+   37|      1|int main(void) {
+   38|      1|  if (bar(&v) != 13)
+   39|      0|    abort();
+   40|      1|  exit(0);
+   41|      1|}
+

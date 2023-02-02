@@ -1,0 +1,13 @@
+    1|       |/* PR middle-end/50199 */
+    2|       |/* { dg-lto-options {{-O2 -flto -fno-merge-constants
+    3|       | * --param=lto-min-partition=1}} } */
+    4|       |
+    5|      1|__attribute__((noinline)) const char *foo(const char *x) { return x; }
+    6|       |
+    7|      1|int main() {
+    8|      1|  const char *a = "ab";
+    9|      1|  if (a != foo(a))
+   10|      0|    __builtin_abort();
+   11|      1|  return 0;
+   12|      1|}
+

@@ -1,0 +1,20 @@
+        -:    0:Source:916.c
+        -:    0:Graph:916.gcno
+        -:    0:Data:916.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/50310 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O3" } */
+        -:    4:/* { dg-options "-O3 -mavx -mno-avx2" { target avx_runtime } } */
+        -:    5:
+        -:    6:double s1[4], s2[4];
+        -:    7:long long e[4];
+        -:    8:
+        1:    9:int main() {
+        -:   10:  int i;
+        1:   11:  asm volatile("" : : : "memory");
+        5:   12:  for (i = 0; i < 4; i++)
+       4*:   13:    e[i] = __builtin_isunordered(s1[i], s2[i]) && s1[i] != s2[i] ? -1 : 0;
+        1:   14:  asm volatile("" : : : "memory");
+        1:   15:  return 0;
+        -:   16:}

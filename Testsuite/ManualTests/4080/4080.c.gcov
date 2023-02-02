@@ -1,0 +1,75 @@
+        -:    0:Source:4080.c
+        -:    0:Graph:4080.gcno
+        -:    0:Data:4080.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002  Free Software Foundation.
+        -:    2:
+        -:    3:   Test strcpy with various combinations of pointer alignments and lengths to
+        -:    4:   make sure any optimizations in the library are correct.  */
+        -:    5:
+        -:    6:#include <string.h>
+        -:    7:
+        -:    8:#ifndef MAX_OFFSET
+        -:    9:#define MAX_OFFSET (sizeof(long long))
+        -:   10:#endif
+        -:   11:
+        -:   12:#ifndef MAX_COPY
+        -:   13:#define MAX_COPY (10 * sizeof(long long))
+        -:   14:#endif
+        -:   15:
+        -:   16:#ifndef MAX_EXTRA
+        -:   17:#define MAX_EXTRA (sizeof(long long))
+        -:   18:#endif
+        -:   19:
+        -:   20:#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + 1 + MAX_EXTRA)
+        -:   21:
+        -:   22:/* Use a sequence length that is not divisible by two, to make it more
+        -:   23:   likely to detect when words are mixed up.  */
+        -:   24:#define SEQUENCE_LENGTH 31
+        -:   25:
+        -:   26:static union {
+        -:   27:  char buf[MAX_LENGTH];
+        -:   28:  long long align_int;
+        -:   29:  long double align_fp;
+        -:   30:} u1, u2;
+        -:   31:
+        1:   32:main() {
+        -:   33:  int off1, off2, len, i;
+        -:   34:  char *p, *q, c;
+        -:   35:
+        9:   36:  for (off1 = 0; off1 < MAX_OFFSET; off1++)
+       72:   37:    for (off2 = 0; off2 < MAX_OFFSET; off2++)
+     5120:   38:      for (len = 1; len < MAX_COPY; len++) {
+   495488:   39:        for (i = 0, c = 'A'; i < MAX_LENGTH; i++, c++) {
+   490432:   40:          u1.buf[i] = 'a';
+   490432:   41:          if (c >= 'A' + SEQUENCE_LENGTH)
+    15168:   42:            c = 'A';
+   490432:   43:          u2.buf[i] = c;
+        -:   44:        }
+     5056:   45:        u2.buf[off2 + len] = '\0';
+        -:   46:
+     5056:   47:        p = strcpy(u1.buf + off1, u2.buf + off2);
+     5056:   48:        if (p != u1.buf + off1)
+    #####:   49:          abort();
+        -:   50:
+     5056:   51:        q = u1.buf;
+    22752:   52:        for (i = 0; i < off1; i++, q++)
+    17696:   53:          if (*q != 'a')
+    #####:   54:            abort();
+        -:   55:
+   207296:   56:        for (i = 0, c = 'A' + off2; i < len; i++, q++, c++) {
+   202240:   57:          if (c >= 'A' + SEQUENCE_LENGTH)
+     4608:   58:            c = 'A';
+   202240:   59:          if (*q != c)
+    #####:   60:            abort();
+        -:   61:        }
+        -:   62:
+     5056:   63:        if (*q++ != '\0')
+    #####:   64:          abort();
+    45504:   65:        for (i = 0; i < MAX_EXTRA; i++, q++)
+    40448:   66:          if (*q != 'a')
+    #####:   67:            abort();
+        -:   68:      }
+        -:   69:
+        1:   70:  exit(0);
+        -:   71:}

@@ -1,0 +1,6 @@
+    1|       |/* { dg-lto-do run } */
+    2|       |
+    3|       |double a(double) __attribute__((optimize(1), used));
+    4|      0|double a(double r) { return r; }
+    5|      1|int main() { return 0; }
+

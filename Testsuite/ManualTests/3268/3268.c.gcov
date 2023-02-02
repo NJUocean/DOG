@@ -1,0 +1,31 @@
+        -:    0:Source:3268.c
+        -:    0:Graph:3268.gcno
+        -:    0:Data:3268.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/27260 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern void *memset(void *, int, __SIZE_TYPE__);
+        -:    5:
+        -:    6:char buf[65];
+        -:    7:
+        2:    8:void foo(int x) { memset(buf, x != 2 ? 1 : 0, 64); }
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  int i;
+        1:   12:  buf[64] = 2;
+       65:   13:  for (i = 0; i < 64; i++)
+       64:   14:    if (buf[i] != 0)
+    #####:   15:      abort();
+        1:   16:  foo(0);
+       65:   17:  for (i = 0; i < 64; i++)
+       64:   18:    if (buf[i] != 1)
+    #####:   19:      abort();
+        1:   20:  foo(2);
+       65:   21:  for (i = 0; i < 64; i++)
+       64:   22:    if (buf[i] != 0)
+    #####:   23:      abort();
+        1:   24:  if (buf[64] != 2)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

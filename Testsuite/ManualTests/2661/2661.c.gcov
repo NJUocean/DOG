@@ -1,0 +1,38 @@
+        -:    0:Source:2661.c
+        -:    0:Graph:2661.gcno
+        -:    0:Data:2661.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -march=native" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:#define N 1024
+        -:    7:
+        -:    8:float a[N], b[N], c[N];
+        -:    9:int k[N];
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void f(void) {
+        -:   12:  int i;
+     1025:   13:  for (i = 0; i < N; i++) {
+     1024:   14:    a[i] = b[k[i]];
+     1024:   15:    b[i] = c[i];
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        -:   20:  int i;
+        -:   21:
+     1025:   22:  for (i = 0; i < N; i++) {
+     1024:   23:    k[i] = i % 2;
+     1024:   24:    b[i] = i;
+     1024:   25:    c[i] = 179;
+        -:   26:  }
+        -:   27:
+        1:   28:  f();
+        -:   29:
+        1:   30:  if (a[2] != 179 || a[3] != 179)
+    #####:   31:    abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

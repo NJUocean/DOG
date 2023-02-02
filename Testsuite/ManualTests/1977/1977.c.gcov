@@ -1,0 +1,30 @@
+        -:    0:Source:1977.c
+        -:    0:Graph:1977.gcno
+        -:    0:Data:1977.gcda
+        -:    0:Runs:1
+        -:    1:struct tiny {
+        -:    2:  int c;
+        -:    3:};
+        -:    4:
+        1:    5:f(int n, struct tiny x, struct tiny y, struct tiny z, long l) {
+        1:    6:  if (x.c != 10)
+    #####:    7:    abort();
+        -:    8:
+        1:    9:  if (y.c != 11)
+    #####:   10:    abort();
+        -:   11:
+        1:   12:  if (z.c != 12)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  if (l != 123)
+    #####:   16:    abort();
+        1:   17:}
+        -:   18:
+        1:   19:main() {
+        -:   20:  struct tiny x[3];
+        1:   21:  x[0].c = 10;
+        1:   22:  x[1].c = 11;
+        1:   23:  x[2].c = 12;
+        1:   24:  f(3, x[0], x[1], x[2], (long)123);
+        1:   25:  exit(0);
+        -:   26:}

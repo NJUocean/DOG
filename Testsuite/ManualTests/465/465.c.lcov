@@ -1,0 +1,53 @@
+    1|       |/* { dg-options "-O2 -ftree-vectorize -fno-vect-cost-model -fno-tree-scev-cprop
+    2|       | * -fgraphite-identity" } */
+    3|       |/* { dg-require-effective-target vect_int } */
+    4|       |
+    5|       |/* gcc.dg/vect/no-scevccp-outer-4.c was miscompiled by Graphite.
+    6|       |   Adding it here to always test it with Graphite.  */
+    7|       |
+    8|       |#include <stdarg.h>
+    9|       |
+   10|       |extern void abort();
+   11|    964|#define N 40
+   12|       |
+   13|       |int a[N];
+   14|       |
+   15|       |/* induction variable k advances through inner and outer loops.  */
+   16|       |
+   17|      1|__attribute__((noinline)) int foo(int n) {
+   18|      1|  int i, j, k = 0;
+   19|      1|  int sum;
+   20|      1|
+   21|      1|  if (n <= 0)
+   22|      0|    return 0;
+   23|      1|
+   24|     41|  for (i = 0; i < N; i++) {
+   25|     40|    sum = 0;
+   26|    840|    for (j = 0; j < n; j += 2) {
+   27|    800|      sum += k++;
+   28|    800|    }
+   29|     40|    a[i] = sum + j;
+   30|     40|  }
+   31|      1|}
+   32|       |
+   33|      1|int main(void) {
+   34|      1|  int i, j, k = 0;
+   35|      1|  int sum;
+   36|      1|
+   37|     41|  for (i = 0; i < N; i++)
+   38|     40|    a[i] = i;
+   39|      1|
+   40|      1|  foo(N);
+   41|      1|
+   42|      1|  /* check results:  */
+   43|     41|  for (i = 0; i < N; i++) {
+   44|     40|    sum = 0;
+   45|    840|    for (j = 0; j < N; j += 2)
+   46|    800|      sum += k++;
+   47|     40|    if (a[i] != sum + j)
+   48|      0|      abort();
+   49|     40|  }
+   50|      1|
+   51|      1|  return 0;
+   52|      1|}
+

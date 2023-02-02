@@ -1,0 +1,30 @@
+        -:    0:Source:3315.c
+        -:    0:Graph:3315.gcno
+        -:    0:Data:3315.gcda
+        -:    0:Runs:1
+        -:    1:/* On IRIX 6, PB is passed partially in registers and partially on the
+        -:    2:   stack, with an odd number of words in the register part.  Check that
+        -:    3:   the long double stack argument (PC) is still accessed properly.  */
+        -:    4:
+        -:    5:struct s {
+        -:    6:  int val[16];
+        -:    7:};
+        -:    8:
+        1:    9:long double f(int pa, struct s pb, long double pc) {
+        -:   10:  int i;
+        -:   11:
+       17:   12:  for (i = 0; i < 16; i++)
+       16:   13:    pc += pb.val[i];
+        1:   14:  return pc;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  struct s x;
+        -:   19:  int i;
+        -:   20:
+       17:   21:  for (i = 0; i < 16; i++)
+       16:   22:    x.val[i] = i + 1;
+        1:   23:  if (f(1, x, 10000.0L) != 10136.0L)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

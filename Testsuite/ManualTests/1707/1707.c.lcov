@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct X {
+    4|       |  long x;
+    5|       |  long y;
+    6|       |};
+    7|       |
+    8|       |struct X a[1024], b[1024];
+    9|       |
+   10|      1|void foo() {
+   11|  1.02k|  for (int i = 0; i < 1024; ++i) {
+   12|  1.02k|    long tem = a[i].x;
+   13|  1.02k|    a[i].x = 0;
+   14|  1.02k|    b[i].x = tem;
+   15|  1.02k|    b[i].y = a[i].y;
+   16|  1.02k|  }
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|  1.02k|  for (int i = 0; i < 1024; ++i)
+   21|  1.02k|    a[i].x = i;
+   22|      1|  foo();
+   23|  1.02k|  for (int i = 0; i < 1024; ++i)
+   24|  1.02k|    if (b[i].x != i)
+   25|      0|      __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

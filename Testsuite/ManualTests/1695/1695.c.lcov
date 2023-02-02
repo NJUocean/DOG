@@ -1,0 +1,47 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |struct s {
+    5|       |  __INT64_TYPE__ e;
+    6|       |};
+    7|       |
+    8|      1|static void f(struct s *ps) {
+    9|      1|  volatile __INT64_TYPE__ m = 9223372036854775807;
+   10|      1|  const char *str = "11E";
+   11|      1|  int r;
+   12|      1|  __INT64_TYPE__ sum;
+   13|      1|
+   14|      1|  ps->e = 0;
+   15|      1|
+   16|      3|  for (;;) {
+   17|      3|    if (*str++ != '1')
+   18|      1|      break;
+   19|      2|    ps->e++;
+   20|      2|  }
+   21|      1|
+   22|      1|  r = 1;
+   23|      1|  sum = m;
+   24|      1|
+   25|      1|  if (sum >= 0 && ps->e >= 0) {
+   26|      1|    __UINT64_TYPE__ uc;
+   27|      1|    uc = (__UINT64_TYPE__)sum + (__UINT64_TYPE__)ps->e;
+   28|      1|    if (uc > 9223372036854775807)
+   29|      1|      r = 2;
+   30|      0|    else
+   31|      0|      sum = 17;
+   32|      1|  } else
+   33|      0|    sum = sum + ps->e;
+   34|      1|
+   35|      1|  if (sum != 9223372036854775807)
+   36|      0|    __builtin_abort();
+   37|      1|  if (r != 2)
+   38|      0|    __builtin_abort();
+   39|      1|  ps->e = sum;
+   40|      1|}
+   41|       |
+   42|      1|int main(void) {
+   43|      1|  struct s s;
+   44|      1|  f(&s);
+   45|      1|  return 0;
+   46|      1|}
+

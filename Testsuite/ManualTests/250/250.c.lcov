@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-set-compiler-env-var SOURCE_DATE_EPOCH "AAA" } */
+    3|       |
+    4|       |/* Make sure that SOURCE_DATE_EPOCH is only parsed once */
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  __builtin_printf("%s %s\n", __DATE__,
+    8|      1|                   __TIME__); /* { dg-error "environment variable
+    9|      1|                                 'SOURCE_DATE_EPOCH' must expand" } */
+   10|      1|  __builtin_printf("%s %s\n", __DATE__, __TIME__);
+   11|      1|  return 0;
+   12|      1|}
+

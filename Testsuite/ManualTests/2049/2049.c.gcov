@@ -1,0 +1,33 @@
+        -:    0:Source:2049.c
+        -:    0:Graph:2049.gcno
+        -:    0:Data:2049.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { ! "m68k*-*-* mmix*-*-* bfin*-*-* v850*-*-* moxie*-*-*
+        -:    2: * cris*-*-* m32c*-*-* fr30*-*-* mcore*-*-* powerpc*-*-* xtensa*-*-* hppa*-*-*
+        -:    3: * nios2*-*-* or1k-*-*-* pru*-*-*"} } } */
+        -:    4:
+        -:    5:/* { dg-options "-O2 -fno-inline -fdump-tree-reassoc1-details --param
+        -:    6: * logical-op-non-short-circuit=1" } */
+        -:    7:/* { dg-additional-options "-mbranch-cost=2" { target branch_cost } } */
+        -:    8:
+      111:    9:int test(int a, int b, int c) {
+      111:   10:  if (a == 43 || a == 75 || a == 44 || a == 78 || a == 77 || a == 46 ||
+      104:   11:      a == 76 || a == 45)
+        8:   12:    return b;
+        -:   13:  else
+      103:   14:    return c;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  volatile int n43, n47, n75, n79;
+        1:   19:  n43 = 43;
+        1:   20:  n47 = n43 + 4;
+        1:   21:  n75 = 75;
+        1:   22:  n79 = n75 + 4;
+        -:   23:  int i;
+      112:   24:  for (i = -10; i <= 100; i++)
+      111:   25:    if (test(i, 2, 3) != 3 - ((i >= n43 && i < n47) || (i >= n75 && i < n79)))
+    #####:   26:      __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}
+        -:   29:/* { dg-final { scan-tree-dump-times "Optimizing range tests" 3 "reassoc1"} }*/

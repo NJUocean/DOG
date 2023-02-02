@@ -1,0 +1,28 @@
+        -:    0:Source:3992.c
+        -:    0:Graph:3992.gcno
+        -:    0:Data:3992.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/84339 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int a;
+        -:    5:  char b[1];
+        -:    6:};
+        -:    7:
+        1:    8:__attribute__((noipa)) int foo(struct S *p) {
+        1:    9:  return __builtin_strlen(&p->b[0]);
+        -:   10:}
+        -:   11:
+        1:   12:__attribute__((noipa)) int bar(struct S *p) { return __builtin_strlen(p->b); }
+        -:   13:
+        1:   14:int main() {
+        1:   15:  struct S *p = __builtin_malloc(sizeof(struct S) + 16);
+        1:   16:  if (p) {
+        1:   17:    p->a = 1;
+        1:   18:    __builtin_strcpy(p->b, "abcdefg");
+        1:   19:    if (foo(p) != 7 || bar(p) != 7)
+    #####:   20:      __builtin_abort();
+        1:   21:    __builtin_free(p);
+        -:   22:  }
+        1:   23:  return 0;
+        -:   24:}

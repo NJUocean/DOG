@@ -1,0 +1,36 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |struct big {
+    3|       |  int data[1000000];
+    4|       |};
+    5|       |
+    6|       |struct small {
+    7|       |  int data[10];
+    8|       |};
+    9|       |
+   10|       |union both {
+   11|       |  struct big big;
+   12|       |  struct small small;
+   13|       |};
+   14|       |
+   15|       |extern void *calloc(__SIZE_TYPE__, __SIZE_TYPE__);
+   16|       |extern void free(void *);
+   17|       |
+   18|      1|static int __attribute__((noinline)) foo(int fail, union both *agg) {
+   19|      1|  int r;
+   20|      1|  if (fail)
+   21|      0|    r = agg->big.data[999999];
+   22|      1|  else
+   23|      1|    r = agg->small.data[0];
+   24|      1|  return r;
+   25|      1|}
+   26|       |
+   27|      1|int main(int argc, char *argv[]) {
+   28|      1|  union both *agg = calloc(1, sizeof(struct small));
+   29|      1|  int r;
+   30|      1|
+   31|      1|  r = foo((argc > 2000), agg);
+   32|      1|
+   33|      1|  free(agg);
+   34|      1|  return r;
+   35|      1|}
+

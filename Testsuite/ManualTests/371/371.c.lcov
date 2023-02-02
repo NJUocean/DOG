@@ -1,0 +1,15 @@
+    1|       |// { dg-do compile }
+    2|       |
+    3|       |extern int printf(const char *, ...);
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  double d = 6;
+    7|      1|  int i = 1;
+    8|      1|#pragma omp parallel shared(d) private(i) num_threads(4 + i)
+    9|      1|  {
+   10|      1|    i = 4;
+   11|      1|    printf("%s %d %g\n", "Hello, World!", i, d);
+   12|      1|  }
+   13|      1|  return 0;
+   14|      1|}
+

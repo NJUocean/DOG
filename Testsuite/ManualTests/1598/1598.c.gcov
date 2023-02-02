@@ -1,0 +1,21 @@
+        -:    0:Source:1598.c
+        -:    0:Graph:1598.gcno
+        -:    0:Data:1598.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fno-tree-forwprop -Wno-psabi -w" } */
+        -:    3:
+        -:    4:typedef unsigned short v64u16 __attribute__((vector_size(64)));
+        -:    5:
+        1:    6:v64u16 foo(v64u16 p1) {
+        1:    7:  p1[31] |= p1[1];
+        1:    8:  return p1;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  v64u16 x = foo((v64u16){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        -:   13:                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1});
+        1:   14:  if (x[31] != 1)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

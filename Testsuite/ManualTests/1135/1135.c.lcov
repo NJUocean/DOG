@@ -1,0 +1,44 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target size32plus } */
+    3|       |/* { dg-options "-O2 -fmodulo-sched -fdump-rtl-sms --param sms-min-sc=1" } */
+    4|       |/* { dg-options "-O2 -fmodulo-sched -fdump-rtl-sms --param sms-min-sc=1
+    5|       | * -fmodulo-sched-allow-regmoves -fno-sched-pressure" { target powerpc*-*-* } }
+    6|       | */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |__attribute__((noinline)) void foo(int *__restrict__ a, int *__restrict__ b,
+   11|      1|                                   int *__restrict__ c) {
+   12|      1|  int i;
+   13|     26|  for (i = 0; i < 100; i += 4) {
+   14|     25|    a[i] = b[i] * c[i];
+   15|     25|    a[i + 1] = b[i + 1] * c[i + 1];
+   16|     25|    a[i + 2] = b[i + 2] * c[i + 2];
+   17|     25|    a[i + 3] = b[i + 3] * c[i + 3];
+   18|     25|  }
+   19|      1|}
+   20|       |
+   21|       |int a[100], b[100], c[100];
+   22|       |
+   23|      1|int main() {
+   24|      1|  int i;
+   25|      1|  int res;
+   26|      1|
+   27|    101|  for (i = 0; i < 100; i++) {
+   28|    100|    b[i] = c[i] = i;
+   29|    100|  }
+   30|      1|  foo(a, b, c);
+   31|      1|
+   32|      1|  res = 0;
+   33|    101|  for (i = 0; i < 100; i++) {
+   34|    100|    res += a[i];
+   35|    100|  }
+   36|      1|  if (res != 328350)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  return 0;
+   40|      1|}
+   41|       |
+   42|       |/* { dg-final { scan-rtl-dump-times "SMS succeeded" 3 "sms" { target
+   43|       | * powerpc*-*-* } } } */
+

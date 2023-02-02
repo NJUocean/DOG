@@ -1,0 +1,16 @@
+    1|      1|long foo(long a, long b, long c) {
+    2|      1|  if (a != 12 || b != 1 || c != 11)
+    3|      0|    abort();
+    4|      1|  return 0;
+    5|      1|}
+    6|      1|long bar(long a, long b) { return b; }
+    7|      1|void baz(long a, long b, void *c) {
+    8|      1|  long d;
+    9|      1|  d = (long)c;
+   10|      1|  foo(d, bar(a, 1), b);
+   11|      1|}
+   12|      1|int main() {
+   13|      1|  baz(10, 11, (void *)12);
+   14|      1|  exit(0);
+   15|      1|}
+

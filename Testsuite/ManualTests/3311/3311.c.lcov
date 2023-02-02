@@ -1,0 +1,29 @@
+    1|       |void abort();
+    2|       |void exit(int);
+    3|       |
+    4|      0|void test(int x, int y) {
+    5|      0|  if (x == y)
+    6|      0|    abort();
+    7|      0|}
+    8|       |
+    9|      1|void foo(int x, int y) {
+   10|      1|  if (x == y)
+   11|      1|    goto a;
+   12|      0|  else {
+   13|      1|  a:;
+   14|      1|    if (x == y)
+   15|      1|      goto b;
+   16|      0|    else {
+   17|      1|    b:;
+   18|      1|      if (x != y)
+   19|      0|        test(x, y);
+   20|      1|    }
+   21|      1|  }
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  foo(0, 0);
+   26|      1|
+   27|      1|  exit(0);
+   28|      1|}
+

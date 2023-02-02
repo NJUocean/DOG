@@ -1,0 +1,16 @@
+        -:    0:Source:710.c
+        -:    0:Graph:710.gcno
+        -:    0:Data:710.gcda
+        -:    0:Runs:1
+        2:    1:fp(double a, int b) {
+        2:    2:  if (a != 33 || b != 11)
+    #####:    3:    abort();
+        2:    4:}
+        -:    5:
+        1:    6:main() {
+        1:    7:  int (*f)(double, int) = fp;
+        -:    8:
+        1:    9:  fp(33, 11);
+        1:   10:  f(33, 11);
+        1:   11:  exit(0);
+        -:   12:}

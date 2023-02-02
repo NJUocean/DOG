@@ -1,0 +1,19 @@
+        -:    0:Source:2844.c
+        -:    0:Graph:2844.gcno
+        -:    0:Data:2844.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 19515 */
+        -:    2:
+        -:    3:typedef union {
+        -:    4:  char a2[8];
+        -:    5:} aun;
+        -:    6:
+        -:    7:void abort(void);
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  aun a = {{0}};
+        -:   11:
+        1:   12:  if (a.a2[2] != 0)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

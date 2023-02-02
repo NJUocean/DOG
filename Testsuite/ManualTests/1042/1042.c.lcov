@@ -1,0 +1,35 @@
+    1|       |/* PR rtl-optimization/83393 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-forward-propagate -fno-tree-bit-ccp" } */
+    4|       |
+    5|       |typedef unsigned char u8;
+    6|       |typedef unsigned short u16;
+    7|       |typedef unsigned int u32;
+    8|       |typedef unsigned long long u64;
+    9|       |
+   10|       |u32 a, d;
+   11|       |u64 b;
+   12|       |u8 c;
+   13|       |
+   14|      1|static u64 __attribute__((noinline, noclone)) foo(u16 f, u64 g) {
+   15|      1|  f <<= 15;
+   16|      1|  f *= d;
+   17|      1|  f -= g %= 44;
+   18|      1|  f <<= f <= g;
+   19|      1|  c = 255;
+   20|      1|  c >>= (u8)f == 0;
+   21|      1|  f *= g;
+   22|      1|  c -= ~c;
+   23|      1|  return f + a + b + f;
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|#if (__SIZEOF_LONG_LONG__ == 8 && __SIZEOF_INT__ == 4 &&                       \
+   28|      1|     __SIZEOF_SHORT__ == 2 && __CHAR_BIT__ == 8)
+   29|      1|  u64 x = foo(3, 0xE6C0011BBA6DBD7LL);
+   30|      1|  if (x != 0x1f66e)
+   31|      0|    __builtin_abort();
+   32|      1|#endif
+   33|      1|  return 0;
+   34|      1|}
+

@@ -1,0 +1,19 @@
+        -:    0:Source:3261.c
+        -:    0:Graph:3261.gcno
+        -:    0:Data:3261.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target alloca } */
+        -:    2:
+        -:    3:/* This program tests a data flow bug that would cause constant propagation
+        -:    4:   to propagate constants through function calls.  */
+        -:    5:
+        1:    6:foo(int *p) { *p = 10; }
+        -:    7:
+        1:    8:main() {
+        1:    9:  int *ptr = alloca(sizeof(int));
+        1:   10:  *ptr = 5;
+        1:   11:  foo(ptr);
+        1:   12:  if (*ptr == 5)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

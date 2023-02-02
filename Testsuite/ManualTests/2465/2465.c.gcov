@@ -1,0 +1,20 @@
+        -:    0:Source:2465.c
+        -:    0:Graph:2465.gcno
+        -:    0:Data:2465.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct __attribute__((__may_alias__)) {
+        -:    2:  short x;
+        -:    3:} test;
+        -:    4:
+        1:    5:int f() {
+        1:    6:  int a = 10;
+        1:    7:  test *p = (test *)&a;
+        1:    8:  p->x = 1;
+        1:    9:  return a;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (f() == 10)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

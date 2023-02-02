@@ -1,0 +1,8 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-Wunused-value -Werror" } */
+    3|       |
+    4|      1|int main(void) { 0; } /* { dg-error "no effect" } */
+    5|       |
+    6|       |/* { dg-message "warnings being treated as errors" "" { target *-*-* } 0 } */
+    7|       |/* { dg-final { output-exists { target *-*-* } } } */
+

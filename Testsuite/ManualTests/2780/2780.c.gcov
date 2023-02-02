@@ -1,0 +1,25 @@
+        -:    0:Source:2780.c
+        -:    0:Graph:2780.gcno
+        -:    0:Data:2780.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target { ! ia32 } } }  */
+        -:    2:/* { dg-options "-mno-sse -Wvector-operation-performance" }  */
+        -:    3:#define vector(elcount, type)                                                  \
+        -:    4:  __attribute__((vector_size((elcount) * sizeof(type)))) type
+        -:    5:
+        1:    6:int main(int argc, char *argv[]) {
+        -:    7:  vector(16, signed char)
+        1:    8:      v0 = {argc, 1, 15, 38, 12, -1, argc, 2, argc, 1, 15, 38, 12, -1, argc, 2};
+        -:    9:  vector(16, signed char)
+        1:   10:      v1 = {-4, argc, 2, 11, 1, 17, -8, argc, argc, 1, 15, 38, 12, -1, argc, 2};
+        1:   11:  vector(16, signed char) res[] = {
+        1:   12:      v0 + v1,                      /* { dg-warning "expanded in parallel" }  */
+        1:   13:      v0 - v1,                      /* { dg-warning "expanded in parallel" }  */
+        1:   14:      v0 > v1,                      /* { dg-warning "expanded piecewise" }  */
+        1:   15:      v0 & v1,                      /* { dg-warning "expanded in parallel" }  */
+        1:   16:      __builtin_shuffle(v0, v1),    /* { dg-warning "expanded piecewise" }  */
+        1:   17:      __builtin_shuffle(v0, v1, v1) /* { dg-warning "expanded piecewise" }  */
+        -:   18:  };
+        -:   19:
+        1:   20:  return res[argc][argc];
+        -:   21:}

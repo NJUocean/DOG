@@ -1,0 +1,23 @@
+        -:    0:Source:1669.c
+        -:    0:Graph:1669.gcno
+        -:    0:Data:1669.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined
+        -:    3: * -fno-sanitize-recover=signed-integer-overflow" } */
+        -:    4:/* { dg-additional-options "-std=gnu11" { target c } } */
+        -:    5:/* { dg-additional-options "-std=c++11" { target c++ } } */
+        -:    6:
+        -:    7:volatile int w, z;
+        -:    8:
+        1:    9:__attribute__((noinline, noclone)) int foo(int x, int y) {
+        1:   10:  z++;
+        1:   11:  return x << y;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  w = foo(0, -__INT_MAX__);
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        -:   19:/* { dg-output "shift exponent -\[^\n\r]* is negative" } */

@@ -1,0 +1,20 @@
+    1|       |/* On IRIX 6, PA is passed partially in registers and partially on the
+    2|       |   stack.  We therefore have two potential uses of pretend_args_size:
+    3|       |   one for the partial argument and one for the varargs save area.
+    4|       |   Make sure that these uses don't conflict.  */
+    5|       |
+    6|       |struct s {
+    7|       |  int i[18];
+    8|       |};
+    9|       |
+   10|      1|int f(struct s pa, int pb, ...) { return pb; }
+   11|       |
+   12|       |struct s gs;
+   13|       |
+   14|      1|int main() {
+   15|      1|  if (f(gs, 0x1234) != 0x1234)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+

@@ -1,0 +1,19 @@
+    1|       |/* PR tree-optimization/89350 - Wrong -Wstringop-overflow warning
+    2|       |   on a variable offset from the end of an array
+    3|       |   { dg-do compile }
+    4|       |   { dg-options "-O2 -Wall" } */
+    5|       |
+    6|       |char buf[128];
+    7|       |char *src = "HCSparta";
+    8|       |
+    9|      1|int main(int argc, char **argv) {
+   10|      1|  char *dst = buf + sizeof(buf);
+   11|      1|
+   12|      1|  if (argc) {
+   13|      1|    dst -= argc;
+   14|      1|    __builtin_memcpy(
+   15|      1|        dst, src,
+   16|      1|        argc + 0); /* { dg-bogus "\\\[-Warray-bounds|-Wstringop-overflow" } */
+   17|      1|  }
+   18|      1|}
+

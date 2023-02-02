@@ -1,0 +1,21 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O -fdump-tree-ccp1" } */
+    3|       |
+    4|       |extern int printf(const char *, ...);
+    5|       |
+    6|      1|int main() {
+    7|      1|  int variable = 0;
+    8|      1|  int p = 1;
+    9|      1|  while (1) {
+   10|      1|    if (p)
+   11|      1|      break;
+   12|      0|    variable = variable + 1;
+   13|      0|    if (variable == 10)
+   14|      0|      break;
+   15|      0|  }
+   16|      1|  printf("%d\n", variable);
+   17|      1|}
+   18|       |
+   19|       |/* The argument to "printf" should be a constant, not a variable.  */
+   20|       |/* { dg-final { scan-tree-dump-times "printf.*, 0" 1 "ccp1"} } */
+

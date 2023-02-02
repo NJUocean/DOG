@@ -1,0 +1,19 @@
+        -:    0:Source:3939.c
+        -:    0:Graph:3939.gcno
+        -:    0:Data:3939.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/78378 */
+        -:    2:
+        -:    3:unsigned long long __attribute__((noinline, noclone))
+        1:    4:foo(unsigned long long x) {
+        1:    5:  x <<= 41;
+        1:    6:  x /= 232;
+        1:    7:  return 1 + (unsigned short)x;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  unsigned long long x = foo(1);
+        1:   12:  if (x != 0x2c24)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,18 @@
+        -:    0:Source:798.c
+        -:    0:Graph:798.gcno
+        -:    0:Data:798.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:void abort(void);
+        -:    5:
+        1:    6:__attribute__((noinline)) int f(unsigned short word) {
+       1*:    7:  return (word & 0x1) && (((unsigned short)(word & 0x8000)) == 0x8000);
+        -:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  if (!f(0x8001))
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

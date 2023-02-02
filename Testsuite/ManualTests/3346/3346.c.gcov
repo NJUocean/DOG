@@ -1,0 +1,26 @@
+        -:    0:Source:3346.c
+        -:    0:Graph:3346.gcno
+        -:    0:Data:3346.gcda
+        -:    0:Runs:1
+        1:    1:int sub1(int i, int j) {
+        1:    2:  typedef struct {
+        1:    3:    int c[i + 2];
+        -:    4:  } c;
+        -:    5:  int x[10], y[10];
+        -:    6:
+        1:    7:  if (j == 2) {
+    #####:    8:    memcpy(x, y, 10 * sizeof(int));
+    #####:    9:    return sizeof(c);
+        -:   10:  } else
+        1:   11:    return sizeof(c) * 3;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        -:   15:  typedef struct {
+        -:   16:    int c[22];
+        -:   17:  } c;
+        1:   18:  if (sub1(20, 3) != sizeof(c) * 3)
+    #####:   19:    abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

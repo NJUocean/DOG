@@ -1,0 +1,30 @@
+    1|       |/* PR middle-end/65958 */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99" } */
+    5|       |/* { dg-require-effective-target alloca } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|      1|int foo(int n) {
+   10|      1|  char *p, *q;
+   11|      1|
+   12|      1|  if (1) {
+   13|      1|    char i[n];
+   14|      1|    p = __builtin_alloca(8);
+   15|      1|    p[0] = 1;
+   16|      1|  }
+   17|      1|
+   18|      1|  q = __builtin_alloca(64);
+   19|      1|  __builtin_memset(q, 0, 64);
+   20|      1|
+   21|      1|  return !p[0];
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  if (foo(48) != 0)
+   26|      0|    abort();
+   27|      1|
+   28|      1|  return 0;
+   29|      1|}
+

@@ -1,0 +1,78 @@
+    1|       |/* PR tree-optimization/51315 */
+    2|       |/* Reported by Jurij Smakov <jurij@wooyd.org> */
+    3|       |
+    4|       |typedef __SIZE_TYPE__ size_t;
+    5|       |
+    6|       |extern void *memcpy(void *__restrict __dest, __const void *__restrict __src,
+    7|       |                    size_t __n) __attribute__((__nothrow__))
+    8|       |__attribute__((__nonnull__(1, 2)));
+    9|       |
+   10|       |extern size_t strlen(__const char *__s) __attribute__((__nothrow__))
+   11|       |__attribute__((__pure__)) __attribute__((__nonnull__(1)));
+   12|       |
+   13|       |typedef __INT16_TYPE__ int16_t;
+   14|       |typedef __INT32_TYPE__ int32_t;
+   15|       |
+   16|       |extern void abort(void);
+   17|       |
+   18|       |int a;
+   19|       |
+   20|      2|static void __attribute__((noinline, noclone)) do_something(int item) {
+   21|      2|  a = item;
+   22|      2|}
+   23|       |
+   24|      1|int pack_unpack(char *s, char *p) {
+   25|      1|  char *send, *pend;
+   26|      1|  char type;
+   27|      1|  int integer_size;
+   28|      1|
+   29|      1|  send = s + strlen(s);
+   30|      1|  pend = p + strlen(p);
+   31|      1|
+   32|      3|  while (p < pend) {
+   33|      2|    type = *p++;
+   34|      2|
+   35|      2|    switch (type) {
+   36|      1|    case 's':
+   37|      1|      integer_size = 2;
+   38|      1|      goto unpack_integer;
+   39|      0|
+   40|      1|    case 'l':
+   41|      1|      integer_size = 4;
+   42|      1|      goto unpack_integer;
+   43|      2|
+   44|      2|    unpack_integer:
+   45|      2|      switch (integer_size) {
+   46|      1|      case 2: {
+   47|      1|        union {
+   48|      1|          int16_t i;
+   49|      1|          char a[sizeof(int16_t)];
+   50|      1|        } v;
+   51|      1|        memcpy(v.a, s, sizeof(int16_t));
+   52|      1|        s += sizeof(int16_t);
+   53|      1|        do_something(v.i);
+   54|      1|      } break;
+   55|      0|
+   56|      1|      case 4: {
+   57|      1|        union {
+   58|      1|          int32_t i;
+   59|      1|          char a[sizeof(int32_t)];
+   60|      1|        } v;
+   61|      1|        memcpy(v.a, s, sizeof(int32_t));
+   62|      1|        s += sizeof(int32_t);
+   63|      1|        do_something(v.i);
+   64|      1|      } break;
+   65|      2|      }
+   66|      2|      break;
+   67|      2|    }
+   68|      2|  }
+   69|      1|  return (int)*s;
+   70|      1|}
+   71|       |
+   72|      1|int main(void) {
+   73|      1|  int n = pack_unpack("\200\001\377\376\035\300", "sl");
+   74|      1|  if (n != 0)
+   75|      0|    abort();
+   76|      1|  return 0;
+   77|      1|}
+

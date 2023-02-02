@@ -1,0 +1,80 @@
+        -:    0:Source:363.c
+        -:    0:Graph:363.gcno
+        -:    0:Data:363.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for GNU extensions to compound literals */
+        -:    2:/* Origin: Jakub Jelinek <jakub@redhat.com> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu89" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:struct A {
+        -:   10:  int i;
+        -:   11:  int j;
+        -:   12:  int k[4];
+        -:   13:};
+        -:   14:struct B {};
+        -:   15:struct C {
+        -:   16:  int i;
+        -:   17:};
+        -:   18:struct D {
+        -:   19:  int i;
+        -:   20:  struct C j;
+        -:   21:};
+        -:   22:
+        -:   23:/* As a GNU extension, we allow initialization of objects with static storage
+        -:   24:   duration by compound literals.  It is handled as if the object
+        -:   25:   was initialized only with the bracket enclosed list if compound literal's
+        -:   26:   and object types match.  If the object being initialized has array type
+        -:   27:   of unknown size, the size is determined by compound literal's initializer
+        -:   28:   list, not by size of the compound literal.  */
+        -:   29:
+        -:   30:struct A a = (struct A){.j = 6, .k[2] = 12};
+        -:   31:struct B b = (struct B){};
+        -:   32:int c[] = (int[]){[2] = 6, 7, 8};
+        -:   33:int d[] = (int[3]){1};
+        -:   34:int e[2] = (int[]){1, 2};
+        -:   35:int f[2] = (int[2]){1};
+        -:   36:struct C g[3] = {[2] = (struct C){13}, [1] = (const struct C){12}};
+        -:   37:struct D h = {.j = (struct C){15}, .i = 14};
+        -:   38:struct D i[2] = {[1].j = (const struct C){17}, [0] = {0, (struct C){16}}};
+        -:   39:struct C j[2][3] = {[0 ... 1] = {[0 ... 2] = (struct C){26}}};
+        -:   40:struct C k[3][2] = {[0 ... 2][0 ... 1] = (const struct C){27}};
+        -:   41:
+        1:   42:int main(void) {
+        1:   43:  if (a.i || a.j != 6 || a.k[0] || a.k[1] || a.k[2] != 12 || a.k[3])
+    #####:   44:    abort();
+        1:   45:  if (c[0] || c[1] || c[2] != 6 || c[3] != 7 || c[4] != 8)
+    #####:   46:    abort();
+        -:   47:  if (sizeof(c) != 5 * sizeof(int))
+        -:   48:    abort();
+        1:   49:  if (d[0] != 1 || d[1] || d[2])
+    #####:   50:    abort();
+        -:   51:  if (sizeof(d) != 3 * sizeof(int))
+        -:   52:    abort();
+        1:   53:  if (e[0] != 1 || e[1] != 2)
+    #####:   54:    abort();
+        -:   55:  if (sizeof(e) != 2 * sizeof(int))
+        -:   56:    abort();
+        1:   57:  if (f[0] != 1 || f[1])
+    #####:   58:    abort();
+        -:   59:  if (sizeof(f) != 2 * sizeof(int))
+        -:   60:    abort();
+        1:   61:  if (g[0].i || g[1].i != 12 || g[2].i != 13)
+    #####:   62:    abort();
+        1:   63:  if (h.i != 14 || h.j.i != 15)
+    #####:   64:    abort();
+        1:   65:  if (i[0].i || i[0].j.i != 16 || i[1].i || i[1].j.i != 17)
+    #####:   66:    abort();
+        1:   67:  if (j[0][0].i != 26 || j[0][1].i != 26 || j[0][2].i != 26)
+    #####:   68:    abort();
+        1:   69:  if (j[1][0].i != 26 || j[1][1].i != 26 || j[1][2].i != 26)
+    #####:   70:    abort();
+        1:   71:  if (k[0][0].i != 27 || k[0][1].i != 27 || k[1][0].i != 27)
+    #####:   72:    abort();
+        1:   73:  if (k[1][1].i != 27 || k[2][0].i != 27 || k[2][1].i != 27)
+    #####:   74:    abort();
+        1:   75:  exit(0);
+        -:   76:}

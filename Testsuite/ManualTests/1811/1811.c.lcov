@@ -1,0 +1,11 @@
+    1|       |/* It seems there is no way to avoid the other source of mulitple
+    2|       |   source testcase from being compiled independently.  Just avoid
+    3|       |   error.  */
+    4|       |#ifdef DOJOB
+    5|       |int one(int a) { return 1; }
+    6|       |
+    7|       |int two(int a) { return 0; }
+    8|       |#else
+    9|      1|int main() { return 0; }
+   10|       |#endif
+

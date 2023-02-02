@@ -1,0 +1,26 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-optimized" } */
+    3|       |
+    4|       |int a, b, c, d;
+    5|       |extern int printf(const char *, ...);
+    6|      1|int main(void) {
+    7|      1|  int e;
+    8|      1|  int f;
+    9|      1|  /* We should be able to transform these into the same expression, and only
+   10|      1|   * have two additions.  */
+   11|      1|  e = a + b;
+   12|      1|  e = e + c;
+   13|      1|  f = c + a;
+   14|      1|  f = f + b;
+   15|      1|  printf("%d %d\n", e, f);
+   16|      1|}
+   17|       |
+   18|       |/* We cannot reassociate these expressions because of undefined signed
+   19|       |   integer overflow.  Instead the value-numberer has to be extended
+   20|       |   to canonicalize these expressions.  */
+   21|       |
+   22|       |/* { dg-final { scan-tree-dump-times "b.._. \\\+ a.._." 1 "optimized" { xfail
+   23|       | * *-*-* } } } */
+   24|       |/* { dg-final { scan-tree-dump-times " \\\+ " 2 "optimized" { xfail *-*-* } } }
+   25|       | */
+

@@ -1,0 +1,22 @@
+        -:    0:Source:4139.c
+        -:    0:Graph:4139.gcno
+        -:    0:Data:4139.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "assumes absence of larger-than-word padding" { epiphany-*-* } }
+        -:    2: */
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef int word __attribute__((mode(word)));
+        -:    6:
+        -:    7:struct foo {
+        -:    8:  word x;
+        -:    9:  word y[0];
+        -:   10:};
+        -:   11:
+        1:   12:int main() {
+        -:   13:  if (sizeof(word) != sizeof(struct foo))
+        -:   14:    abort();
+        -:   15:  if (__alignof__(word) != __alignof__(struct foo))
+        -:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

@@ -1,0 +1,26 @@
+        -:    0:Source:3080.c
+        -:    0:Graph:3080.gcno
+        -:    0:Data:3080.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:extern void *memcpy(void *, const void *, __SIZE_TYPE__);
+        -:    5:int foo(void *, void *, unsigned int c);
+        -:    6:
+        -:    7:int src[10];
+        -:    8:int dst[10];
+        -:    9:
+        1:   10:int main() {
+        1:   11:  if (foo(dst, src, 10) != 0)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}
+        -:   15:
+        1:   16:int foo(void *a, void *b, unsigned int c) {
+        1:   17:  if (c == 0)
+    #####:   18:    return 1;
+        -:   19:
+        1:   20:  memcpy(a, b, c);
+        1:   21:  return 0;
+        -:   22:}

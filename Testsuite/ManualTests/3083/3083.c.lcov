@@ -1,0 +1,16 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      3|#define N (1 << (sizeof(int) * __CHAR_BIT__ - 2))
+    4|       |
+    5|      1|int f(int n) {
+    6|      1|  if (-N <= n && n <= N - 1)
+    7|      0|    return 1;
+    8|      1|  return 0;
+    9|      1|}
+   10|       |
+   11|      1|int main() {
+   12|      1|  if (f(N))
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

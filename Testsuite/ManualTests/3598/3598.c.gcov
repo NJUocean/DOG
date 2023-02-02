@@ -1,0 +1,28 @@
+        -:    0:Source:3598.c
+        -:    0:Graph:3598.gcno
+        -:    0:Data:3598.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void *memset(void *s, int c, __SIZE_TYPE__ n);
+        -:    3:struct S {
+        -:    4:  int i[16];
+        -:    5:};
+        -:    6:struct S *p;
+        1:    7:void __attribute__((noinline, noclone)) foo(struct S *a, struct S *b) {
+        1:    8:  a->i[0] = -1;
+        1:    9:  p = b;
+        1:   10:}
+        1:   11:void test(void) {
+        -:   12:  struct S a, b;
+        1:   13:  memset(&a.i[0], '\0', sizeof(a.i));
+        1:   14:  memset(&b.i[0], '\0', sizeof(b.i));
+        1:   15:  foo(&a, &b);
+        1:   16:  *p = a;
+        1:   17:  *p = b;
+        1:   18:  if (b.i[0] != -1)
+    #####:   19:    abort();
+        1:   20:}
+        1:   21:int main() {
+        1:   22:  test();
+        1:   23:  return 0;
+        -:   24:}

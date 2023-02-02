@@ -1,0 +1,21 @@
+        -:    0:Source:140.c
+        -:    0:Graph:140.gcno
+        -:    0:Data:140.gcda
+        -:    0:Runs:1
+        -:    1:/* Test atomic_kill_dependency.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    4:
+        -:    5:#include <stdatomic.h>
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:_Atomic int a = ATOMIC_VAR_INIT(1), b;
+        -:   10:
+        1:   11:int main() {
+        1:   12:  b = kill_dependency(a);
+        1:   13:  if (b != 1)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,18 @@
+        -:    0:Source:1619.c
+        -:    0:Graph:1619.gcno
+        -:    0:Data:1619.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=shift -w" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  unsigned long long int b : 40;
+        -:    6:} s;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  s.b = 2;
+        1:   10:  s.b <<= 120;
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:
+        -:   14:/* { dg-output "shift exponent 120 is too large" } */

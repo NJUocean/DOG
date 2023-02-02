@@ -1,0 +1,55 @@
+        -:    0:Source:2975.c
+        -:    0:Graph:2975.gcno
+        -:    0:Data:2975.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase to check generation of a SH2A specific instruction
+        -:    2:  'BSET #imm3,Rn'.  */
+        -:    3:/* { dg-do compile { target { sh2a } } }  */
+        -:    4:/* { dg-options "-O1" }  */
+        -:    5:/* { dg-final { scan-assembler "bset"} }  */
+        -:    6:
+        -:    7:struct a {
+        -:    8:  char a, b;
+        -:    9:  short c;
+        -:   10:};
+        -:   11:
+        -:   12:/* This function generates the instruction "BSET #imm3,Rn" only
+        -:   13:   on using optimization option "-O1" and above.  */
+        -:   14:
+        1:   15:int a2() {
+        -:   16:  volatile int j;
+        -:   17:  volatile static struct a x = {1, 66, ~1}, y = {1, 2, ~2};
+        -:   18:
+        1:   19:  if (j > 1)
+    #####:   20:    return (x.a == y.a && (x.b | 1) == y.b);
+        1:   21:  if (j > 2)
+    #####:   22:    return (x.a == y.a && (x.b | 2) == y.b);
+        1:   23:  if (j > 3)
+    #####:   24:    return (x.a == y.a && (x.b | 4) == y.b);
+        1:   25:  if (j > 4)
+    #####:   26:    return (x.a == y.a && (x.b | 8) == y.b);
+        1:   27:  if (j > 5)
+    #####:   28:    return (x.a == y.a && (x.b | 16) == y.b);
+        1:   29:  if (j > 6)
+    #####:   30:    return (x.a == y.a && (x.b | 32) == y.b);
+        1:   31:  if (j > 7)
+    #####:   32:    return (x.a == y.a && (x.b | 64) == y.b);
+        1:   33:  if (j > 8)
+    #####:   34:    return (x.a == y.a && (x.b | 128) == y.b);
+        1:   35:}
+        -:   36:
+        1:   37:int main() {
+        -:   38:  volatile unsigned char x;
+        -:   39:
+        1:   40:  x |= 0x1;
+        1:   41:  x |= 0x2;
+        1:   42:  x |= 0x4;
+        1:   43:  x |= 0x8;
+        1:   44:  x |= 0x16;
+        1:   45:  x |= 0x32;
+        1:   46:  x |= 0x64;
+        1:   47:  x |= 0x128;
+        -:   48:
+        1:   49:  if (!a2())
+        1:   50:    return 0;
+        -:   51:}

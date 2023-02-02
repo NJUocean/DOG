@@ -1,0 +1,14 @@
+        -:    0:Source:3730.c
+        -:    0:Graph:3730.gcno
+        -:    0:Data:3730.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:extern void link_error(void);
+        1:    5:int main() {
+        -:    6:  int a[4];
+        -:    7:  if (&a[2] - 1 != &a[1])
+        -:    8:    link_error();
+        1:    9:  return 0;
+        -:   10:}

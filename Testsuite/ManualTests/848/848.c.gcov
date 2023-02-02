@@ -1,0 +1,23 @@
+        -:    0:Source:848.c
+        -:    0:Graph:848.gcno
+        -:    0:Data:848.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1" } */
+        -:    3:extern void abort(void);
+        1:    4:long long __attribute__((noinline)) get(void) { return -2; }
+        -:    5:long long __attribute__((noinline)) get(void);
+        1:    6:int __attribute__((noinline)) check(void) {
+        -:    7:  long long lcn;
+        -:    8:
+        1:    9:  lcn = get();
+        1:   10:  if (lcn >= 0 || lcn == -1)
+    #####:   11:    return 0;
+        -:   12:
+        1:   13:  return -1;
+        -:   14:}
+        1:   15:int main() {
+        1:   16:  if (check() == 0)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

@@ -1,0 +1,43 @@
+        -:    0:Source:1812.c
+        -:    0:Graph:1812.gcno
+        -:    0:Data:1812.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef SIGNAL_SUPPRESS
+        -:    2:#include <signal.h>
+        -:    3:#endif
+        -:    4:
+        -:    5:double dnan = 1.0 / 0.0 - 1.0 / 0.0;
+        -:    6:double x = 1.0;
+        -:    7:
+    #####:    8:void leave() { exit(0); }
+        -:    9:
+        1:   10:main() {
+        -:   11:#if !defined(__vax__) && !defined(_CRAY)
+        -:   12:  /* Move this line earlier, for architectures (like alpha) that issue
+        -:   13:     SIGFPE on the first comparisons. */
+        -:   14:#ifndef SIGNAL_SUPPRESS
+        -:   15:  /* Some machines catches a SIGFPE when a NaN is compared.
+        -:   16:     Let this test succeed o such machines.  */
+        1:   17:  signal(SIGFPE, leave);
+        -:   18:#endif
+        -:   19:  /* NaN is an IEEE unordered operand.  All these test should be false.  */
+        1:   20:  if (dnan == dnan)
+    #####:   21:    abort();
+        1:   22:  if (dnan != x)
+        1:   23:    x = 1.0;
+        -:   24:  else
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  if (dnan < x)
+    #####:   28:    abort();
+        1:   29:  if (dnan > x)
+    #####:   30:    abort();
+        1:   31:  if (dnan <= x)
+    #####:   32:    abort();
+        1:   33:  if (dnan >= x)
+    #####:   34:    abort();
+        1:   35:  if (dnan == x)
+    #####:   36:    abort();
+        -:   37:#endif
+        1:   38:  exit(0);
+        -:   39:}

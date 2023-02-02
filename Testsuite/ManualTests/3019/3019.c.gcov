@@ -1,0 +1,28 @@
+        -:    0:Source:3019.c
+        -:    0:Graph:3019.gcno
+        -:    0:Data:3019.gcda
+        -:    0:Runs:1
+        -:    1:/* If some target has a Max alignment less than 32, please create
+        -:    2:   a #ifdef around the alignment and add your alignment.  */
+        -:    3:#ifdef __pdp11__
+        -:    4:#define alignment 2
+        -:    5:#else
+        -:    6:#define alignment 32
+        -:    7:#endif
+        -:    8:
+        -:    9:typedef struct x {
+        -:   10:  int a;
+        -:   11:  int b;
+        -:   12:} __attribute__((aligned(alignment))) X;
+        -:   13:typedef struct y {
+        -:   14:  X x[32];
+        -:   15:  int c;
+        -:   16:} Y;
+        -:   17:
+        -:   18:Y y[2];
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  if (((char *)&y[1] - (char *)&y[0]) & 31)
+        -:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

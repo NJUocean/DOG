@@ -1,0 +1,16 @@
+    1|       |/* { dg-options "-O2 -fgraphite-identity -flto" { target lto } } */
+    2|       |
+    3|       |typedef long ll;
+    4|      0|void foo(int n, ll *p) {
+    5|      0|  while (n--)
+    6|      0|    *p += *p;
+    7|      0|}
+    8|       |
+    9|       |typedef long long lll;
+   10|      0|void bar(int n, lll *p) {
+   11|      0|  while (n--)
+   12|      0|    *p += *p;
+   13|      0|}
+   14|       |
+   15|      1|int main() { return 0; }
+

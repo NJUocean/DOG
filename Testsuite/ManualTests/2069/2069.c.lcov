@@ -1,0 +1,19 @@
+    1|       |/* { dg-do compile { target int32plus } } */
+    2|       |/* { dg-options "-O1 -Wall" } */
+    3|       |/* PR/70013, SRA of constant-pool loads removes initialization of part of d.  */
+    4|       |#pragma pack(1)
+    5|       |struct S0 {
+    6|       |  unsigned f0 : 17;
+    7|       |};
+    8|       |
+    9|       |int c;
+   10|       |
+   11|      1|int main(int argc, char **argv) {
+   12|      1|  struct S0 d[] = {{1}, {2}};
+   13|      1|  struct S0 e = d[1];
+   14|      1|
+   15|      1|  c = d[0].f0;
+   16|      1|  __builtin_printf("%x\n", e.f0);
+   17|      1|  return 0;
+   18|      1|}
+

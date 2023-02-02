@@ -1,0 +1,8 @@
+        -:    0:Source:3184.c
+        -:    0:Graph:3184.gcno
+        -:    0:Data:3184.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { xfail *-*-* } } */
+        -:    2:/* { dg-shouldfail "required comment" } */
+        -:    3:
+        1:    4:int main() { return 0; /* We want nonzero but expect to fail; XFAIL.  */ }

@@ -1,0 +1,46 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |
+    3|       |/* Formerly known as ltrans-5.c */
+    4|       |
+    5|       |#define DEBUG 0
+    6|       |#if DEBUG
+    7|       |#include <stdio.h>
+    8|       |#endif
+    9|       |
+   10|   112k|#define N 100
+   11|   112k|#define M 1111
+   12|       |int A[N][M];
+   13|       |
+   14|      1|static int __attribute__((noinline)) foo(void) {
+   15|      1|  int i, j;
+   16|      1|
+   17|  1.11k|  for (i = 0; i < M; i++)
+   18|   112k|    for (j = 0; j < N; j++)
+   19|   111k|      A[j][i] = 5 * A[j][i];
+   20|      1|
+   21|      1|  return A[0][0] + A[N - 1][M - 1];
+   22|      1|}
+   23|       |
+   24|       |extern void abort();
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  int i, j, res;
+   28|      1|
+   29|    101|  for (i = 0; i < N; i++)
+   30|   111k|    for (j = 0; j < M; j++)
+   31|   111k|      A[i][j] = 2;
+   32|      1|
+   33|      1|  res = foo();
+   34|      1|
+   35|       |#if DEBUG
+   36|       |  fprintf(stderr, "res = %d \n", res);
+   37|       |#endif
+   38|      1|
+   39|      1|  if (res != 20)
+   40|      0|    abort();
+   41|      1|
+   42|      1|  return 0;
+   43|      1|}
+   44|       |
+   45|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

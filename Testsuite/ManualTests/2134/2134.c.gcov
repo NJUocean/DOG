@@ -1,0 +1,31 @@
+        -:    0:Source:2134.c
+        -:    0:Graph:2134.gcno
+        -:    0:Data:2134.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-xfail-if "" { powerpc-ibm-aix* } } */
+        -:    3:/* { dg-skip-if "" { ! ucn } } */
+        -:    4:/* { dg-options "-std=c99 -g" } */
+        -:    5:void abort(void);
+        -:    6:
+        -:    7:static int À = 1;
+        -:    8:static int Á = 2;
+        -:    9:static int Â = 3;
+        -:   10:static int whÿ = 4;
+        -:   11:static int aÄbсδe = 5;
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:
+        1:   15:  if (À != 1)
+    #####:   16:    abort();
+        1:   17:  if (Á != 2)
+    #####:   18:    abort();
+        1:   19:  if (Â != 3)
+    #####:   20:    abort();
+        1:   21:  if (whÿ != 4)
+    #####:   22:    abort();
+        1:   23:  if (aÄbсδe != 5)
+    #####:   24:    abort();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}

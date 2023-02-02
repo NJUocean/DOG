@@ -1,0 +1,31 @@
+        -:    0:Source:2086.c
+        -:    0:Graph:2086.gcno
+        -:    0:Data:2086.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/43904.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O1 -foptimize-sibling-calls" } */
+        -:    4:
+        -:    5:typedef __SIZE_TYPE__ size_t;
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:void *memcpy(void *dest, const void *src, size_t n);
+        -:    9:
+        1:   10:void buggy_init(void *ptr, size_t size) {
+        1:   11:  const char *str = "Hello world!";
+        1:   12:  memcpy(ptr, &str, size);
+        1:   13:}
+        -:   14:
+        1:   15:void expose_bug(void *ptr, size_t size) {
+        -:   16:  const char *str;
+        1:   17:  memcpy(&str, ptr, size);
+        1:   18:  if (*str != 'H')
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        -:   23:  const char *ptr;
+        1:   24:  buggy_init(&ptr, sizeof(ptr));
+        1:   25:  expose_bug(&ptr, sizeof(ptr));
+        1:   26:  return 0;
+        -:   27:}

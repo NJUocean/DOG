@@ -1,0 +1,21 @@
+        -:    0:Source:1856.c
+        -:    0:Graph:1856.gcno
+        -:    0:Data:1856.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O0 -fdump-ipa-profile" } */
+        -:    2:
+        1:    3:int main(int argc, char **argv) {
+        1:    4:  unsigned u = (argc - 1);
+        1:    5:  int counter = 0;
+        -:    6:
+      101:    7:  for (unsigned i = 0; i < 100; i++) {
+      100:    8:    unsigned x = i < 10 ? 16 : 15;
+      100:    9:    counter += u % x;
+        -:   10:  }
+        -:   11:
+        1:   12:  return counter;
+        -:   13:}
+        -:   14:
+        -:   15:/* autofdo does not do value profiling so far */
+        -:   16:/* { dg-final-use-not-autofdo { scan-ipa-dump "Pow2 counter pow2:10 nonpow2:90."
+        -:   17: * "profile" } } */

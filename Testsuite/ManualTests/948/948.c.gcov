@@ -1,0 +1,57 @@
+        -:    0:Source:948.c
+        -:    0:Graph:948.gcno
+        -:    0:Data:948.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-additional-options "-minline-all-stringops" { target { i?86-*-*
+        -:    4: * x86_64-*-* } } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:#define MAX_OFFSET (sizeof(long long))
+        -:    9:#define MAX_COPY (8 * sizeof(long long))
+        -:   10:#define MAX_EXTRA (sizeof(long long))
+        -:   11:
+        -:   12:#define MAX_LENGTH (MAX_OFFSET + MAX_COPY + MAX_EXTRA)
+        -:   13:
+        -:   14:static union {
+        -:   15:  char buf[MAX_LENGTH];
+        -:   16:  long long align_int;
+        -:   17:  long double align_fp;
+        -:   18:} u;
+        -:   19:
+        -:   20:char A[MAX_LENGTH];
+        -:   21:
+        1:   22:int main() {
+        -:   23:  int off, len, i;
+        -:   24:  char *p, *q;
+        -:   25:
+       81:   26:  for (i = 0; i < MAX_LENGTH; i++)
+       80:   27:    A[i] = 'A';
+        -:   28:
+        9:   29:  for (off = 0; off < MAX_OFFSET; off++)
+      512:   30:    for (len = 1; len < MAX_COPY; len++) {
+    40824:   31:      for (i = 0; i < MAX_LENGTH; i++)
+    40320:   32:        u.buf[i] = 'a';
+        -:   33:
+      504:   34:      p = __builtin_memcpy(u.buf + off, A, len);
+      504:   35:      if (p != u.buf + off)
+    #####:   36:        abort();
+        -:   37:
+      504:   38:      q = u.buf;
+     2268:   39:      for (i = 0; i < off; i++, q++)
+     1764:   40:        if (*q != 'a')
+    #####:   41:          abort();
+        -:   42:
+    16632:   43:      for (i = 0; i < len; i++, q++)
+    16128:   44:        if (*q != 'A')
+    #####:   45:          abort();
+        -:   46:
+     4536:   47:      for (i = 0; i < MAX_EXTRA; i++, q++)
+     4032:   48:        if (*q != 'a')
+    #####:   49:          abort();
+        -:   50:    }
+        -:   51:
+        1:   52:  return 0;
+        -:   53:}

@@ -1,0 +1,36 @@
+        -:    0:Source:4019.c
+        -:    0:Graph:4019.gcno
+        -:    0:Data:4019.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/88904 */
+        -:    2:
+        -:    3:volatile int v;
+        -:    4:
+    #####:    5:__attribute__((noipa)) void bar(const char *x, const char *y, int z) {
+    #####:    6:  if (!v)
+    #####:    7:    __builtin_abort();
+    #####:    8:  asm volatile("" : "+g"(x));
+    #####:    9:  asm volatile("" : "+g"(y));
+    #####:   10:  asm volatile("" : "+g"(z));
+    #####:   11:}
+        -:   12:
+        -:   13:#define my_assert(e) ((e) ? (void)0 : bar(#e, __FILE__, __LINE__))
+        -:   14:
+        -:   15:typedef struct {
+        -:   16:  unsigned M1;
+        -:   17:  unsigned M2 : 1;
+        -:   18:  int : 0;
+        -:   19:  unsigned M3 : 1;
+        -:   20:} S;
+        -:   21:
+        1:   22:S foo() {
+        1:   23:  S result = {0, 0, 1};
+        1:   24:  return result;
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  S ret = foo();
+       1*:   29:  my_assert(ret.M2 == 0);
+       1*:   30:  my_assert(ret.M3 == 1);
+        1:   31:  return 0;
+        -:   32:}

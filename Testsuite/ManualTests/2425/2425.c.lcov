@@ -1,0 +1,50 @@
+    1|       |/* { dg-options "-O2" } */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |typedef unsigned int __u32;
+    7|       |
+    8|      1|__u32 __rev16_32_alt(__u32 x) {
+    9|      1|  return (((__u32)(x) & (__u32)0xff00ff00UL) >> 8) |
+   10|      1|         (((__u32)(x) & (__u32)0x00ff00ffUL) << 8);
+   11|      1|}
+   12|       |
+   13|      1|__u32 __rev16_32(__u32 x) {
+   14|      1|  return (((__u32)(x) & (__u32)0x00ff00ffUL) << 8) |
+   15|      1|         (((__u32)(x) & (__u32)0xff00ff00UL) >> 8);
+   16|      1|}
+   17|       |
+   18|       |typedef unsigned long long __u64;
+   19|       |
+   20|      1|__u64 __rev16_64_alt(__u64 x) {
+   21|      1|  return (((__u64)(x) & (__u64)0xff00ff00ff00ff00UL) >> 8) |
+   22|      1|         (((__u64)(x) & (__u64)0x00ff00ff00ff00ffUL) << 8);
+   23|      1|}
+   24|       |
+   25|      1|__u64 __rev16_64(__u64 x) {
+   26|      1|  return (((__u64)(x) & (__u64)0x00ff00ff00ff00ffUL) << 8) |
+   27|      1|         (((__u64)(x) & (__u64)0xff00ff00ff00ff00UL) >> 8);
+   28|      1|}
+   29|       |
+   30|      1|int main(void) {
+   31|      1|  volatile __u32 in32 = 0x12345678;
+   32|      1|  volatile __u32 expected32 = 0x34127856;
+   33|      1|  volatile __u64 in64 = 0x1234567890abcdefUL;
+   34|      1|  volatile __u64 expected64 = 0x34127856ab90efcdUL;
+   35|      1|
+   36|      1|  if (__rev16_32(in32) != expected32)
+   37|      0|    abort();
+   38|      1|
+   39|      1|  if (__rev16_32_alt(in32) != expected32)
+   40|      0|    abort();
+   41|      1|
+   42|      1|  if (__rev16_64(in64) != expected64)
+   43|      0|    abort();
+   44|      1|
+   45|      1|  if (__rev16_64_alt(in64) != expected64)
+   46|      0|    abort();
+   47|      1|
+   48|      1|  return 0;
+   49|      1|}
+

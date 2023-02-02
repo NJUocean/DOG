@@ -1,0 +1,25 @@
+    1|       |/* PR target/13685 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-Os -msse" } */
+    4|       |
+    5|       |typedef float __m128 __attribute__((vector_size(16)));
+    6|       |typedef int __m64 __attribute__((vector_size(8)));
+    7|       |
+    8|       |int puts(const char *s);
+    9|       |void foo(__m128 *, __m64 *, int);
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  foo(0, 0, 0);
+   13|      1|  return 0;
+   14|      1|}
+   15|       |
+   16|      1|void foo(__m128 *dst, __m64 *src, int n) {
+   17|      1|  __m128 xmm0 = {0};
+   18|      1|  while (n > 64) {
+   19|      0|    puts("");
+   20|      0|    xmm0 = __builtin_ia32_cvtpi2ps(xmm0, *src);
+   21|      0|    *dst = xmm0;
+   22|      0|    n--;
+   23|      0|  }
+   24|      1|}
+

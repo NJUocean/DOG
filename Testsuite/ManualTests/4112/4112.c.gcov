@@ -1,0 +1,26 @@
+        -:    0:Source:4112.c
+        -:    0:Graph:4112.gcno
+        -:    0:Data:4112.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdarg.h>
+        -:    2:
+        -:    3:typedef double L;
+        1:    4:void f(L p0, L p1, L p2, L p3, L p4, L p5, L p6, L p7, L p8, ...) {
+        -:    5:  va_list select;
+        -:    6:
+        1:    7:  va_start(select, p8);
+        -:    8:
+        1:    9:  if (va_arg(select, int) != 10)
+    #####:   10:    abort();
+        1:   11:  if (va_arg(select, int) != 11)
+    #####:   12:    abort();
+        1:   13:  if (va_arg(select, int) != 12)
+    #####:   14:    abort();
+        -:   15:
+        1:   16:  va_end(select);
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  f(1., 2., 3., 4., 5., 6., 7., 8., 9., 10, 11, 12);
+        1:   21:  exit(0);
+        -:   22:}

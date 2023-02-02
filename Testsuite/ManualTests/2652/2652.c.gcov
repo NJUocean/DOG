@@ -1,0 +1,26 @@
+        -:    0:Source:2652.c
+        -:    0:Graph:2652.gcno
+        -:    0:Data:2652.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target tls_runtime } } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:__thread unsigned char tls_array[64];
+        -:    6:
+        -:    7:unsigned char __attribute__((noinline))
+       64:    8:tls_array_lookup_with_negative_constant(long long int position) {
+       64:    9:  return tls_array[position - 1];
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int i;
+        -:   14:
+       65:   15:  for (i = 0; i < sizeof(tls_array) / sizeof(tls_array[0]); i++)
+       64:   16:    tls_array[i] = i;
+        -:   17:
+       65:   18:  for (i = 0; i < sizeof(tls_array) / sizeof(tls_array[0]); i++)
+       64:   19:    if (i != tls_array_lookup_with_negative_constant(i + 1))
+    #####:   20:      __builtin_abort();
+        1:   21:  return 0;
+        -:   22:}

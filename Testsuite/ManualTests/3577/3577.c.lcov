@@ -1,0 +1,92 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|       |typedef struct PgHdr PgHdr;
+    4|       |typedef unsigned char u8;
+    5|       |struct PgHdr {
+    6|       |  int y;
+    7|       |  struct {
+    8|       |    unsigned int pgno;
+    9|       |    PgHdr *pNextHash, *pPrevHash;
+   10|       |    PgHdr *pNextFree, *pPrevFree;
+   11|       |    PgHdr *pNextAll;
+   12|       |    u8 inJournal;
+   13|       |    short int nRef;
+   14|       |    PgHdr *pDirty, *pPrevDirty;
+   15|       |    unsigned int notUsed;
+   16|       |  } x;
+   17|       |};
+   18|       |PgHdr **xx;
+   19|       |volatile int vx;
+   20|     27|static inline PgHdr *merge_pagelist(PgHdr *pA, PgHdr *pB) {
+   21|     27|  PgHdr result;
+   22|     27|  PgHdr *pTail;
+   23|     27|  xx = &result.x.pDirty;
+   24|     27|  pTail = &result;
+   25|     31|  while (pA && pB) {
+   26|      4|    if (pA->x.pgno < pB->x.pgno) {
+   27|      1|      pTail->x.pDirty = pA;
+   28|      1|      pTail = pA;
+   29|      1|      pA = pA->x.pDirty;
+   30|      3|    } else {
+   31|      3|      pTail->x.pDirty = pB;
+   32|      3|      pTail = pB;
+   33|      3|      pB = pB->x.pDirty;
+   34|      3|    }
+   35|      4|    vx = (*xx)->y;
+   36|      4|  }
+   37|     27|  if (pA) {
+   38|     24|    pTail->x.pDirty = pA;
+   39|     24|  } else if (pB) {
+   40|      2|    pTail->x.pDirty = pB;
+   41|      2|  } else {
+   42|      1|    pTail->x.pDirty = 0;
+   43|      1|  }
+   44|     27|  return result.x.pDirty;
+   45|     27|}
+   46|       |
+   47|      1|PgHdr *__attribute__((noinline)) sort_pagelist(PgHdr *pIn) {
+   48|      1|  PgHdr *a[25], *p;
+   49|      1|  int i;
+   50|      1|  __builtin_memset(a, 0, sizeof(a));
+   51|      5|  while (pIn) {
+   52|      4|    p = pIn;
+   53|      4|    pIn = p->x.pDirty;
+   54|      4|    p->x.pDirty = 0;
+   55|      7|    for (i = 0; i < 25 - 1; i++) {
+   56|      7|      if (a[i] == 0) {
+   57|      4|        a[i] = p;
+   58|      4|        break;
+   59|      4|      } else {
+   60|      3|        p = merge_pagelist(a[i], p);
+   61|      3|        a[i] = 0;
+   62|      3|        a[i] = 0;
+   63|      3|      }
+   64|      7|    }
+   65|      4|    if (i == 25 - 1) {
+   66|      0|      a[i] = merge_pagelist(a[i], p);
+   67|      0|    }
+   68|      4|  }
+   69|      1|  p = a[0];
+   70|     25|  for (i = 1; i < 25; i++) {
+   71|     24|    p = merge_pagelist(p, a[i]);
+   72|     24|  }
+   73|      1|  return p;
+   74|      1|}
+   75|       |
+   76|      1|int main() {
+   77|      1|  PgHdr a[5];
+   78|      1|  PgHdr *p;
+   79|      1|  a[0].x.pgno = 5;
+   80|      1|  a[0].x.pDirty = &a[1];
+   81|      1|  a[1].x.pgno = 4;
+   82|      1|  a[1].x.pDirty = &a[2];
+   83|      1|  a[2].x.pgno = 1;
+   84|      1|  a[2].x.pDirty = &a[3];
+   85|      1|  a[3].x.pgno = 3;
+   86|      1|  a[3].x.pDirty = 0;
+   87|      1|  p = sort_pagelist(&a[0]);
+   88|      1|  if (p->x.pDirty == p)
+   89|      0|    abort();
+   90|      1|  return 0;
+   91|      1|}
+

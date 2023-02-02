@@ -1,0 +1,40 @@
+        -:    0:Source:1024.c
+        -:    0:Graph:1024.gcno
+        -:    0:Data:1024.gcda
+        -:    0:Runs:1
+        -:    1:struct vc_data {
+        -:    2:  unsigned long space;
+        -:    3:  unsigned char vc_palette[16 * 3];
+        -:    4:};
+        -:    5:
+        -:    6:struct vc {
+        -:    7:  struct vc_data *d;
+        -:    8:};
+        -:    9:
+        -:   10:struct vc_data a_con;
+        -:   11:struct vc vc_cons[63] = {&a_con};
+        -:   12:int default_red[16];
+        -:   13:int default_grn[16];
+        -:   14:int default_blu[16];
+        -:   15:
+        -:   16:extern void bar(int);
+        -:   17:
+        1:   18:void reset_palette(int currcons) {
+        -:   19:  int j, k;
+       17:   20:  for (j = k = 0; j < 16; j++) {
+       16:   21:    (vc_cons[currcons].d->vc_palette)[k++] = default_red[j];
+       16:   22:    (vc_cons[currcons].d->vc_palette)[k++] = default_grn[j];
+       16:   23:    (vc_cons[currcons].d->vc_palette)[k++] = default_blu[j];
+        -:   24:  }
+        1:   25:  bar(k);
+        1:   26:}
+        -:   27:
+        1:   28:void bar(int k) {
+        1:   29:  if (k != 16 * 3)
+    #####:   30:    abort();
+        1:   31:}
+        -:   32:
+        1:   33:int main() {
+        1:   34:  reset_palette(0);
+        1:   35:  exit(0);
+        -:   36:}

@@ -1,0 +1,23 @@
+    1|       |/* The composite type of int and an enum compatible with int might be
+    2|       |   either of the two types, but it isn't an unsigned type.  */
+    3|       |/* Origin: Joseph Myers <jsm@polyomino.org.uk> */
+    4|       |
+    5|       |#include <limits.h>
+    6|       |
+    7|       |#include <stdio.h>
+    8|       |
+    9|       |extern void abort(void);
+   10|       |extern void exit(int);
+   11|       |
+   12|       |enum e { a = INT_MIN };
+   13|       |
+   14|       |int *p;
+   15|       |enum e *q;
+   16|      1|int main(void) {
+   17|      1|  enum e x = a;
+   18|      1|  q = &x;
+   19|      1|  if (*(1 ? q : p) > 0)
+   20|      0|    abort();
+   21|      1|  exit(0);
+   22|      1|}
+

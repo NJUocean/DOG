@@ -1,0 +1,52 @@
+        -:    0:Source:1770.c
+        -:    0:Graph:1770.gcno
+        -:    0:Data:1770.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/12503 */
+        -:    2:/* Origin: <pierre.nguyen-tuong@asim.lip6.fr> */
+        -:    3:
+        -:    4:/* Verify that __builtin_apply behaves correctly on targets
+        -:    5:   with pre-pushed arguments (e.g. SPARC).  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:
+        -:    9:/* arm_hf_eabi: Variadic funcs use Base AAPCS.  Normal funcs use VFP variant.
+        -:   10:   avr: Variadic funcs don't pass arguments in registers, while normal funcs
+        -:   11:        do.  */
+        -:   12:/* { dg-skip-if "Variadic funcs use different argument passing from normal
+        -:   13: * funcs" { arm_hf_eabi || { avr-*-* riscv*-*-* or1k*-*-* msp430-*-* amdgcn-*-*
+        -:   14: * pru-*-* } } } */
+        -:   15:/* { dg-skip-if "Variadic funcs have all args on stack. Normal funcs have args
+        -:   16: * in registers." { nds32*-*-* } { v850*-*-* } } */
+        -:   17:/* { dg-require-effective-target untyped_assembly } */
+        -:   18:
+        -:   19:#define INTEGER_ARG 5
+        -:   20:
+        -:   21:#if defined(__ARM_PCS) || defined(__epiphany__)
+        -:   22:/* For Base AAPCS, NAME is passed in r0.  D is passed in r2 and r3.
+        -:   23:   E, F and G are passed on stack.  So the size of the stack argument
+        -:   24:   data is 20.  */
+        -:   25:#define STACK_ARGUMENTS_SIZE 20
+        -:   26:#elif defined __aarch64__ || defined __arc__ || defined __MMIX__
+        -:   27:/* No parameters on stack for bar.  */
+        -:   28:#define STACK_ARGUMENTS_SIZE 0
+        -:   29:#else
+        -:   30:#define STACK_ARGUMENTS_SIZE 64
+        -:   31:#endif
+        -:   32:
+        -:   33:extern void abort(void);
+        -:   34:
+        1:   35:void foo(char *name, double d, double e, double f, int g) {
+        1:   36:  if (g != INTEGER_ARG)
+    #####:   37:    abort();
+        1:   38:}
+        -:   39:
+        1:   40:void bar(char *name, ...) {
+        1:   41:  __builtin_apply(foo, __builtin_apply_args(), STACK_ARGUMENTS_SIZE);
+        1:   42:}
+        -:   43:
+        1:   44:int main(void) {
+        1:   45:  bar("eeee", 5.444567, 8.90765, 4.567789, INTEGER_ARG);
+        -:   46:
+        1:   47:  return 0;
+        -:   48:}

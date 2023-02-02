@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run { target { powerpc*-*-linux* } } } */
+    2|       |/* { dg-skip-if "" { powerpc*-*-darwin* } } */
+    3|       |/* { dg-skip-if "" { powerpc*-*-*spe* } } */
+    4|       |/* { dg-require-effective-target vsx_hw } */
+    5|       |/* { dg-options "-O1 -mdejagnu-cpu=power7" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |typedef long long T;
+   10|       |typedef T vl_t __attribute__((vector_size(2 * sizeof(T))));
+   11|       |
+   12|      1|vl_t buggy_func(T x) {
+   13|      1|  vl_t w;
+   14|      1|  T *p = (T *)&w;
+   15|      1|  p[0] = p[1] = x;
+   16|      1|  return w;
+   17|      1|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  vl_t rval;
+   21|      1|  T *pl;
+   22|      1|
+   23|      1|  pl = (T *)&rval;
+   24|      1|  rval = buggy_func(2);
+   25|      1|
+   26|      1|  if (pl[0] != 2 || pl[1] != 2)
+   27|      0|    abort();
+   28|      1|
+   29|      1|  return 0;
+   30|      1|}
+

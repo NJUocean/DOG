@@ -1,0 +1,29 @@
+        -:    0:Source:2722.c
+        -:    0:Graph:2722.gcno
+        -:    0:Data:2722.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { ! x32 } && avx512f_runtime } } } */
+        -:    2:/* { dg-do compile { target { { ! x32 } && { ! avx512f_runtime } } } } */
+        -:    3:/* { dg-options "-Ofast -mabi=ms -mavx512f" } */
+        -:    4:/* { dg-require-effective-target avx512f } */
+        -:    5:
+        -:    6:/* Test when calling a sysv func.  */
+        -:    7:
+        -:    8:int a[56];
+        -:    9:int b;
+        -:   10:
+        1:   11:static void __attribute__((sysv_abi)) sysv() {}
+        -:   12:
+        -:   13:void __attribute__((sysv_abi)) (*volatile const sysv_noinfo)() = sysv;
+        -:   14:
+        1:   15:int main(int argc, char *argv[]) {
+        -:   16:  int c;
+        1:   17:  sysv_noinfo();
+       1*:   18:  for (; b; b++) {
+    #####:   19:    c = b;
+    #####:   20:    if (b & 1)
+    #####:   21:      c = 2;
+    #####:   22:    a[b] = c;
+        -:   23:  }
+        1:   24:  return 0;
+        -:   25:}

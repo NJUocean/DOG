@@ -1,0 +1,33 @@
+        -:    0:Source:1270.c
+        -:    0:Graph:1270.gcno
+        -:    0:Data:1270.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:typedef struct Foo {
+        -:    6:  int a;
+        -:    7:  int b;
+        -:    8:} Foo;
+        -:    9:
+        1:   10:Foo foo(Foo first, Foo last, _Bool ret_first) {
+        -:   11:  Foo t;
+       1*:   12:  Foo *t1 = (ret_first ? &first : &last);
+        1:   13:  first.a = 2;
+        1:   14:  last.b = 3;
+        1:   15:  t.a = t1->a;
+        1:   16:  t.b = t1->b;
+        1:   17:  t.a += first.a;
+        1:   18:  t.b += last.b;
+        1:   19:  return t;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  Foo first = (Foo){1, 2};
+        1:   24:  Foo last = (Foo){3, 4};
+        1:   25:  Foo ret = foo(first, last, 0);
+        1:   26:  if (ret.b != 6)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

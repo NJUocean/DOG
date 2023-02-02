@@ -1,0 +1,37 @@
+        -:    0:Source:1529.c
+        -:    0:Graph:1529.gcno
+        -:    0:Data:1529.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:int a, b, c, e, f;
+        -:    4:
+        1:    5:void fn1(int p) {}
+        -:    6:
+       1*:    7:int fn2(int p) { return a ? p % a : 0; }
+        -:    8:
+       1*:    9:short fn3(int p) { return (1 >> p) < 1 ? 1 : p; }
+        -:   10:
+        1:   11:int fn4() {
+        1:   12:  int g = 0, h = 1;
+        1:   13:  if (b)
+    #####:   14:    goto lbl;
+        1:   15:  fn2(0);
+        1:   16:  if (fn3(1))
+       1*:   17:    fn1(e && c);
+        1:   18:  if (h) {
+        1:   19:    int i = 1;
+        1:   20:  lbl:
+        1:   21:    if (i)
+        1:   22:      return 0;
+    #####:   23:    for (; g < 1; g++)
+        -:   24:      ;
+        -:   25:  }
+        -:   26:  for (;;)
+    #####:   27:    f || g > 0;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  fn4();
+        1:   32:  return 0;
+        -:   33:}

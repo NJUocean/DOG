@@ -1,0 +1,33 @@
+        -:    0:Source:2800.c
+        -:    0:Graph:2800.gcno
+        -:    0:Data:2800.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for a bug with passing __float80 in varargs.  The __float80
+        -:    2:   value was wrongly passed, leading to an abort.  */
+        -:    3:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "" } */
+        -:    6:
+        -:    7:#include <stdarg.h>
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:extern void exit(int);
+        -:   11:
+        -:   12:__float80 s = 1.234L;
+        -:   13:__float80 d;
+        -:   14:
+        -:   15:void vf(int a0, ...);
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  vf(0, s);
+        1:   19:  if (d != s)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}
+        -:   23:
+        1:   24:void vf(int a0, ...) {
+        -:   25:  va_list ap;
+        1:   26:  va_start(ap, a0);
+        1:   27:  d = va_arg(ap, __float80);
+        1:   28:  va_end(ap);
+        1:   29:}

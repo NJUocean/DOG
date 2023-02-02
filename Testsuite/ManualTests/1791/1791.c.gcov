@@ -1,0 +1,19 @@
+        -:    0:Source:1791.c
+        -:    0:Graph:1791.gcno
+        -:    0:Data:1791.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/19983 */
+        -:    2:
+        -:    3:typedef __SIZE_TYPE__ size_t;
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern int memcmp(const void *, const void *, size_t);
+        -:    7:
+        -:    8:double n1 = __builtin_nan("0x1");
+        -:    9:double n2 = __builtin_nan("0X1");
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (memcmp(&n1, &n2, sizeof(double)))
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

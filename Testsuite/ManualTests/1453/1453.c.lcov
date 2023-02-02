@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|       |int i, j, *pj = &j, **ppj = &pj;
+    6|       |int x, *px = &x;
+    7|       |
+    8|       |short s, *ps = &s, k;
+    9|       |
+   10|       |unsigned short u, *pu = &u, **ppu = &pu;
+   11|       |
+   12|       |char c, *pc = &c;
+   13|       |
+   14|       |unsigned char v = 48;
+   15|       |
+   16|      3|static int bar(int p) {
+   17|      3|  p = k;
+   18|      3|  *px = **ppu = i;
+   19|      3|  *ppj = &p;
+   20|      3|  if (**ppj)
+   21|      1|    *pj = p;
+   22|      3|  return p;
+   23|      3|}
+   24|       |
+   25|      1|void __attribute__((noinline)) foo() {
+   26|      5|  for (; i <= 3; i++)
+   27|      4|    for (; j; j--)
+   28|      0|      ;
+   29|      1|
+   30|      1|  u ^= bar(*pj);
+   31|      1|
+   32|      3|  for (k = 1; k >= 0; k--) {
+   33|      2|    int l;
+   34|      2|    bar(0);
+   35|     10|    for (l = 1; l < 5; l++) {
+   36|      8|      int m;
+   37|     56|      for (m = 6; m; m--) {
+   38|     48|        v--;
+   39|     48|        *ps = *pc;
+   40|     48|      }
+   41|      8|    }
+   42|      2|  }
+   43|      1|}
+   44|       |
+   45|      1|int main() {
+   46|      1|  foo();
+   47|      1|  if (v != 0)
+   48|      0|    abort();
+   49|      1|  return 0;
+   50|      1|}
+

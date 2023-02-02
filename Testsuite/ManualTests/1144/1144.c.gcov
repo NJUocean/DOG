@@ -1,0 +1,73 @@
+        -:    0:Source:1144.c
+        -:    0:Graph:1144.gcno
+        -:    0:Data:1144.gcda
+        -:    0:Runs:1
+        -:    1:/* Test support of scalar_storage_order pragma */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-require-effective-target int32plus } */
+        -:    5:
+        -:    6:#pragma scalar_storage_order /* { dg-warning "missing                          \
+        -:    7:                                .big-endian.little-endian.default." } */
+        -:    8:
+        -:    9:#pragma scalar_storage_order big - endian
+        -:   10:
+        -:   11:struct S1 {
+        -:   12:  int i;
+        -:   13:};
+        -:   14:
+        -:   15:struct __attribute__((scalar_storage_order("little-endian"))) S2 {
+        -:   16:  int i;
+        -:   17:};
+        -:   18:
+        -:   19:#pragma scalar_storage_order little - endian
+        -:   20:
+        -:   21:struct S3 {
+        -:   22:  int i;
+        -:   23:};
+        -:   24:
+        -:   25:struct __attribute__((scalar_storage_order("big-endian"))) S4 {
+        -:   26:  int i;
+        -:   27:};
+        -:   28:
+        -:   29:#pragma scalar_storage_order default
+        -:   30:
+        -:   31:struct S5 {
+        -:   32:  int i;
+        -:   33:};
+        -:   34:
+        -:   35:#pragma scalar_storage_order                                                   \
+        -:   36:    other /* { dg-warning "expected .big-endian.little-endian.default." } */
+        -:   37:
+        -:   38:struct S1 my_s1 = {0x12345678};
+        -:   39:struct S2 my_s2 = {0x12345678};
+        -:   40:struct S3 my_s3 = {0x12345678};
+        -:   41:struct S4 my_s4 = {0x12345678};
+        -:   42:struct S5 my_s5 = {0x12345678};
+        -:   43:
+        -:   44:unsigned char big_endian_pattern[4] = {0x12, 0x34, 0x56, 0x78};
+        -:   45:unsigned char little_endian_pattern[4] = {0x78, 0x56, 0x34, 0x12};
+        -:   46:
+        1:   47:int main(void) {
+        1:   48:  if (__builtin_memcmp(&my_s1, &big_endian_pattern, 4) != 0)
+    #####:   49:    __builtin_abort();
+        -:   50:
+        1:   51:  if (__builtin_memcmp(&my_s2, &little_endian_pattern, 4) != 0)
+    #####:   52:    __builtin_abort();
+        -:   53:
+        1:   54:  if (__builtin_memcmp(&my_s3, &little_endian_pattern, 4) != 0)
+    #####:   55:    __builtin_abort();
+        -:   56:
+        1:   57:  if (__builtin_memcmp(&my_s4, &big_endian_pattern, 4) != 0)
+    #####:   58:    __builtin_abort();
+        -:   59:
+        -:   60:#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        1:   61:  if (__builtin_memcmp(&my_s5, &little_endian_pattern, 4) != 0)
+    #####:   62:    __builtin_abort();
+        -:   63:#else
+        -:   64:  if (__builtin_memcmp(&my_s5, &big_endian_pattern, 4) != 0)
+        -:   65:    __builtin_abort();
+        -:   66:#endif
+        -:   67:
+        1:   68:  return 0;
+        -:   69:}

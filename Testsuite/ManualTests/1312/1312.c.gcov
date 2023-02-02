@@ -1,0 +1,27 @@
+        -:    0:Source:1312.c
+        -:    0:Graph:1312.gcno
+        -:    0:Data:1312.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fsanitize=unreachable" } */
+        -:    3:
+        -:    4:char a = -97;
+        -:    5:int b, c, d, e;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  int g = d, h = 0, i = 1;
+        4:    9:  for (; h < 3; h++) {
+        3:   10:    if (g > -1) {
+        -:   11:      int j;
+        3:   12:      g = j = 0;
+       18:   13:      for (; j < 5; j++)
+       15:   14:      L1:
+       15:   15:        if (!i)
+    #####:   16:          goto L1;
+        3:   17:      a = e;
+        -:   18:    } else
+    #####:   19:      i = 0;
+        -:   20:  }
+        1:   21:  b = c / ~(a | 114);
+        1:   22:  __builtin_exit(0);
+        -:   23:}

@@ -1,0 +1,30 @@
+        -:    0:Source:1401.c
+        -:    0:Graph:1401.gcno
+        -:    0:Data:1401.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-w -Wno-psabi" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:typedef int v4si __attribute__((vector_size(16)));
+        -:    6:struct T {
+        -:    7:  v4si i[2];
+        -:    8:  int j;
+        -:    9:} __attribute__((packed));
+        -:   10:
+        1:   11:static v4si __attribute__((noinline)) foo(struct T t) { return t.i[0]; }
+        -:   12:
+        1:   13:static struct T *__attribute__((noinline)) init() {
+        1:   14:  char *p = __builtin_malloc(sizeof(struct T) + 1);
+        1:   15:  p++;
+        1:   16:  __builtin_memset(p, 1, sizeof(struct T));
+        1:   17:  return (struct T *)p;
+        -:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  struct T *p;
+        1:   22:  p = init();
+        1:   23:  if (foo(*p)[0] != 0x01010101)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}

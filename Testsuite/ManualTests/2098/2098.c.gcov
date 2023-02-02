@@ -1,0 +1,35 @@
+        -:    0:Source:2098.c
+        -:    0:Graph:2098.gcno
+        -:    0:Data:2098.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/26361.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -std=gnu89" } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:
+        4:    7:__attribute__((noinline)) void gen_rtx_CONST_INT(long long x) {
+        4:    8:  if (-x > 10)
+    #####:    9:    abort();
+        4:   10:}
+        1:   11:__attribute__((noinline)) int alpha_expand_prologue(long frame_size) {
+        -:   12:  unsigned long long a;
+        -:   13:  int probed;
+        1:   14:  if (frame_size <= 1)
+    #####:   15:    return;
+        1:   16:  unsigned long long b = -2;
+        1:   17:  a = -2;
+        -:   18:  do {
+        4:   19:    int a1 = a;
+        4:   20:    probed = -a1;
+        4:   21:    gen_rtx_CONST_INT(a1);
+        4:   22:    a -= 2;
+        4:   23:    a1 = -a;
+        4:   24:    probed = a1;
+        4:   25:  } while (probed < frame_size);
+        -:   26:}
+        -:   27:
+        1:   28:int main(void) {
+        1:   29:  alpha_expand_prologue(10);
+        1:   30:  return 0;
+        -:   31:}

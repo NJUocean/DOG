@@ -1,0 +1,14 @@
+    1|       |/* PR tree-optimization/19283 */
+    2|       |
+    3|       |void abort(void);
+    4|       |
+    5|      1|static inline unsigned short foo(unsigned int *p) { return *p; };
+    6|       |
+    7|       |unsigned int u;
+    8|       |
+    9|      1|int main() {
+   10|      1|  if ((foo(&u) & 0x8000) != 0)
+   11|      0|    abort();
+   12|      1|  return 0;
+   13|      1|}
+

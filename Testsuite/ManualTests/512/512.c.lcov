@@ -1,0 +1,21 @@
+    1|       |int compare(x, y) unsigned int x;
+    2|       |unsigned int y;
+    3|      2|{
+    4|      2|  if (x == y)
+    5|      2|    return 0;
+    6|      0|  else
+    7|      0|    return 1;
+    8|      2|}
+    9|       |
+   10|      1|main() {
+   11|      1|  unsigned int i, j, k, l;
+   12|      1|  i = 5;
+   13|      1|  j = 2;
+   14|      1|  k = 0;
+   15|      1|  l = 2;
+   16|      1|  if (compare(5 % (~(unsigned)2), i % ~j) || compare(0, k % ~l))
+   17|      0|    abort();
+   18|      1|  else
+   19|      1|    exit(0);
+   20|      1|}
+

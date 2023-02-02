@@ -1,0 +1,17 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-common" { target { { hppa*-*-hpux* } && { ! lp64 } } } }
+    3|       | */
+    4|       |
+    5|       |typedef float V __attribute__((vector_size(16)));
+    6|       |V g;
+    7|       |
+    8|      1|int main() {
+    9|      1|  float d[4] = {4, 3, 2, 1};
+   10|      1|  V e;
+   11|      1|  __builtin_memcpy(&e, &d, sizeof(d));
+   12|      1|  V f = {5, 15, 25, 35};
+   13|      1|  e = e * f;
+   14|      1|  g = e;
+   15|      1|  return 0;
+   16|      1|}
+

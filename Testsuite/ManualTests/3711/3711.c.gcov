@@ -1,0 +1,70 @@
+        -:    0:Source:3711.c
+        -:    0:Graph:3711.gcno
+        -:    0:Data:3711.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/47337 */
+        -:    2:
+        -:    3:static unsigned int a[256], b = 0;
+        -:    4:static char c = 0;
+        -:    5:static int d = 0, *f = &d;
+        -:    6:static long long e = 0;
+        -:    7:
+        1:    8:static short foo(long long x, long long y) { return x / y; }
+        -:    9:
+        1:   10:static char bar(char x, char y) { return x - y; }
+        -:   11:
+        1:   12:static int baz(int x, int y) {
+        1:   13:  *f = (y != (short)(y * 3));
+       1*:   14:  for (c = 0; c < 2; c++) {
+        1:   15:  lab:
+        1:   16:    if (d) {
+        1:   17:      if (e)
+    #####:   18:        e = 1;
+        -:   19:      else
+        1:   20:        return x;
+        -:   21:    } else {
+    #####:   22:      d = 1;
+    #####:   23:      goto lab;
+        -:   24:    }
+    #####:   25:    f = &d;
+        -:   26:  }
+    #####:   27:  return x;
+        -:   28:}
+        -:   29:
+        2:   30:static void fnx(unsigned long long x, int y) {
+        2:   31:  if (!y) {
+        2:   32:    b = a[b & 1];
+        2:   33:    b = a[b & 1];
+        2:   34:    b = a[(b ^ (x & 1)) & 1];
+        2:   35:    b = a[(b ^ (x & 1)) & 1];
+        -:   36:  }
+        2:   37:}
+        -:   38:
+        -:   39:char *volatile w = "2";
+        -:   40:
+        1:   41:int main() {
+        1:   42:  int h = 0;
+        1:   43:  unsigned int k = 0;
+        -:   44:  int l[8];
+        -:   45:  int i, j;
+        -:   46:
+        1:   47:  if (__builtin_strcmp(w, "1") == 0)
+    #####:   48:    h = 1;
+        -:   49:
+      257:   50:  for (i = 0; i < 256; i++) {
+     2304:   51:    for (j = 8; j > 0; j--)
+     2048:   52:      k = 1;
+      256:   53:    a[i] = k;
+        -:   54:  }
+        9:   55:  for (i = 0; i < 8; i++)
+        8:   56:    l[i] = 0;
+        -:   57:
+        1:   58:  d = bar(c, c);
+        1:   59:  d = baz(c, 1 | foo(l[0], 10));
+        1:   60:  fnx(d, h);
+        1:   61:  fnx(e, h);
+        -:   62:
+        1:   63:  if (d != 0)
+    #####:   64:    __builtin_abort();
+        1:   65:  return 0;
+        -:   66:}

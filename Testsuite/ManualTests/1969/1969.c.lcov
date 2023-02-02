@@ -1,0 +1,21 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-effective-target int32 } */
+    3|       |/* { dg-options "-O -fdump-tree-gimple -fdump-tree-optimized" } */
+    4|       |
+    5|      1|int main() {
+    6|      1|  struct S {
+    7|      1|    char s;
+    8|      1|  } v;
+    9|      1|  v.s = 47;
+   10|      1|  unsigned int a = (unsigned int)v.s;
+   11|      1|  unsigned int b = (27005061 + (a + 680455));
+   12|      1|  unsigned int c =
+   13|      1|      ((1207142401u * (((8u * b) + 9483541u) - 230968044u)) + 469069442u);
+   14|      1|  if (c != 1676211843u)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+   18|       |
+   19|       |/* { dg-final { scan-tree-dump-times "b \\\* 1067204616" 1 "gimple" } } */
+   20|       |/* { dg-final { scan-tree-dump-not "abort" "optimized" } } */
+

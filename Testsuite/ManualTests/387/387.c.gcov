@@ -1,0 +1,51 @@
+        -:    0:Source:387.c
+        -:    0:Graph:387.gcno
+        -:    0:Data:387.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define N 200
+        -:    9:int a[N][N];
+        -:   10:
+        1:   11:static int __attribute__((noinline)) foo(void) {
+        -:   12:  int i, j;
+        1:   13:  int res = 0;
+        -:   14:
+        -:   15:  /* Interchange is not legal for loops 0 and 1.  */
+      200:   16:  for (i = 1; i < N; i++)
+    39601:   17:    for (j = 1; j < N - 1; j++)
+    39402:   18:      a[i][j] = a[i - 1][j + 1] * a[i - 1][j + 1] / 2;
+        -:   19:
+      201:   20:  for (i = 0; i < N; i++)
+      200:   21:    res += a[i][i];
+        -:   22:
+        1:   23:  return res;
+        -:   24:}
+        -:   25:
+        -:   26:extern void abort();
+        -:   27:
+        1:   28:int main(void) {
+        -:   29:  int i, j, res;
+        -:   30:
+      201:   31:  for (i = 0; i < N; i++)
+    40200:   32:    for (j = 0; j < N; j++)
+    40000:   33:      a[i][j] = i + j;
+        -:   34:
+        1:   35:  res = foo();
+        -:   36:
+        -:   37:#if DEBUG
+        -:   38:  fprintf(stderr, "res = %d \n", res);
+        -:   39:#endif
+        -:   40:
+        1:   41:  if (res != 204007516)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}
+        -:   46:
+        -:   47:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

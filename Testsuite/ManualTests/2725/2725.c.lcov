@@ -1,0 +1,21 @@
+    1|       |/* Origin: PR c/410 from Jan Echternach
+    2|       |   <jan.echternach@informatik.uni-rostock.de>,
+    3|       |   adapted to a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+    4|       |*/
+    5|       |
+    6|       |extern void exit(int);
+    7|       |
+    8|      1|static void foo(void) {
+    9|      1|  struct {
+   10|      1|    long a;
+   11|      1|    char b[1];
+   12|      1|  } x = {2, {0}};
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  int tmp;
+   17|      1|  foo();
+   18|      1|  tmp = 1;
+   19|      1|  exit(0);
+   20|      1|}
+

@@ -1,0 +1,21 @@
+        -:    0:Source:1597.c
+        -:    0:Graph:1597.gcno
+        -:    0:Data:1597.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S1 {
+        -:    4:  int f1 : 1;
+        -:    5:};
+        -:    6:
+        -:    7:volatile struct S1 b = {0};
+        -:    8:
+        1:    9:int main() {
+        1:   10:  char c = b.f1;
+        1:   11:  b.f1 = 1;
+        -:   12:
+        1:   13:  if (b.f1 > -1 || c)
+    #####:   14:    __builtin_abort();
+        -:   15:
+        1:   16:  return 0;
+        -:   17:}

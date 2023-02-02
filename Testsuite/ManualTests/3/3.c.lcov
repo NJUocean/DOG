@@ -1,0 +1,37 @@
+    1|       |/* PR middle-end/6950
+    2|       |   gcc 3.0.4 mistakenly set lhs.low to 0 at the beginning of the num_eq
+    3|       |   expansion; it should use a temporary.
+    4|       |/* { dg-do run } */
+    5|       |
+    6|       |typedef struct cpp_num cpp_num;
+    7|       |struct cpp_num {
+    8|       |  long high;
+    9|       |  long low;
+   10|       |  char overflow;
+   11|       |};
+   12|       |
+   13|      2|#define num_eq(num1, num2) (num1.low == num2.low && num1.high == num2.high)
+   14|       |
+   15|       |static cpp_num num_equality_op(lhs, rhs) cpp_num lhs, rhs;
+   16|      2|{
+   17|      2|  lhs.low = num_eq(lhs, rhs);
+   18|      2|  lhs.high = 0;
+   19|      2|  lhs.overflow = 0;
+   20|      2|  return lhs;
+   21|      2|}
+   22|       |
+   23|      1|int main() {
+   24|      1|  cpp_num a = {1, 2};
+   25|      1|  cpp_num b = {3, 4};
+   26|      1|
+   27|      1|  cpp_num result = num_equality_op(a, b);
+   28|      1|  if (result.low)
+   29|      0|    return 1;
+   30|      1|
+   31|      1|  result = num_equality_op(a, a);
+   32|      1|  if (!result.low)
+   33|      0|    return 2;
+   34|      1|
+   35|      1|  return 0;
+   36|      1|}
+

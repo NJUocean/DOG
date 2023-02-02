@@ -1,0 +1,25 @@
+        -:    0:Source:3685.c
+        -:    0:Graph:3685.gcno
+        -:    0:Data:3685.gcda
+        -:    0:Runs:1
+        -:    1:struct X {
+        -:    2:  struct Y {
+        -:    3:    struct YY {
+        -:    4:      struct Z {
+        -:    5:        int i;
+        -:    6:      } c;
+        -:    7:    } bb;
+        -:    8:  } b;
+        -:    9:} a;
+        1:   10:int __attribute__((noinline, noclone)) foo(struct Z *p) {
+        1:   11:  int i = p->i;
+        1:   12:  a.b = (struct Y){};
+        1:   13:  return p->i + i;
+        -:   14:}
+        -:   15:extern void abort(void);
+        1:   16:int main() {
+        1:   17:  a.b.bb.c.i = 1;
+        1:   18:  if (foo(&a.b.bb.c) != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

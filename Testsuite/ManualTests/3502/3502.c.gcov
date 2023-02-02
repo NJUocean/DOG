@@ -1,0 +1,27 @@
+        -:    0:Source:3502.c
+        -:    0:Graph:3502.gcno
+        -:    0:Data:3502.gcda
+        -:    0:Runs:1
+        -:    1:unsigned p;
+        -:    2:
+        6:    3:long __attribute__((noinline, noclone)) test(unsigned a) {
+        6:    4:  return (long)(p + a) - (long)p;
+        -:    5:}
+        -:    6:
+        1:    7:int main() {
+        1:    8:  p = (unsigned)-2;
+        1:    9:  if (test(0) != 0)
+    #####:   10:    __builtin_abort();
+        1:   11:  if (test(1) != 1)
+    #####:   12:    __builtin_abort();
+        1:   13:  if (test(2) != -(long)(unsigned)-2)
+    #####:   14:    __builtin_abort();
+        1:   15:  p = (unsigned)-1;
+        1:   16:  if (test(0) != 0)
+    #####:   17:    __builtin_abort();
+        1:   18:  if (test(1) != -(long)(unsigned)-1)
+    #####:   19:    __builtin_abort();
+        1:   20:  if (test(2) != -(long)(unsigned)-2)
+    #####:   21:    __builtin_abort();
+        1:   22:  return 0;
+        -:   23:}

@@ -1,0 +1,21 @@
+        -:    0:Source:1821.c
+        -:    0:Graph:1821.gcno
+        -:    0:Data:1821.gcda
+        -:    0:Runs:1
+        -:    1:/* PR bootstrap/47187 */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:char buf[64];
+        -:    5:char buf2[64];
+        -:    6:
+    65537:    7:void *foo(char *p, long size) { return __builtin_memcpy(buf, p, size); }
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  long i;
+    65537:   11:  for (i = 0; i < 65536; i++)
+    65536:   12:    if (foo("abcdefghijkl", 12) != buf)
+    #####:   13:      __builtin_abort();
+        1:   14:  if (foo(buf2, 64) != buf)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

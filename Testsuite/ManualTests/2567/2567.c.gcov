@@ -1,0 +1,21 @@
+        -:    0:Source:2567.c
+        -:    0:Graph:2567.gcno
+        -:    0:Data:2567.gcda
+        -:    0:Runs:1
+        -:    1:struct s {
+        -:    2:  unsigned long long a : 8, b : 32;
+        -:    3:};
+        -:    4:
+        1:    5:struct s f(struct s x) {
+        1:    6:  x.b = 0xcdef1234;
+        1:    7:  return x;
+        -:    8:}
+        -:    9:
+        1:   10:main() {
+        -:   11:  static struct s i;
+        1:   12:  i.a = 12;
+        1:   13:  i = f(i);
+        1:   14:  if (i.a != 12 || i.b != 0xcdef1234)
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

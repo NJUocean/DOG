@@ -1,0 +1,21 @@
+        -:    0:Source:1568.c
+        -:    0:Graph:1568.gcno
+        -:    0:Data:1568.gcda
+        -:    0:Runs:1
+        -:    1:#include <limits.h>
+        -:    2:
+        -:    3:extern void exit(int);
+        -:    4:extern void abort(void);
+        -:    5:
+        -:    6:volatile unsigned int i;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  unsigned short z = 0;
+        -:   10:
+        -:   11:  do
+    65536:   12:    ++i;
+    65536:   13:  while (--z > 0);
+        1:   14:  if (i != USHRT_MAX + 1U)
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:}

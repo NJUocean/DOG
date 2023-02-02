@@ -1,0 +1,38 @@
+    1|       |/* Test asm clobbers on x86. */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|int main() {
+    8|      1|  int i;
+    9|      1|  __asm__("movl $1,%0\n\txorl %%eax,%%eax" : "=r"(i) : : "eax");
+   10|      1|  if (i != 1)
+   11|      0|    abort();
+   12|      1|    /* On darwin you can't call external functions from non-pic code,
+   13|      1|       however, clobbering ebx isn't valid in pic code. Instead of
+   14|      1|       disabling the whole test, just disable the ebx clobbering part.
+   15|      1|       Ditto for any x86 system that is ilp32 && pic.
+   16|      1|    */
+   17|      1|#if !(defined(__MACH__))
+   18|      1|#if !defined(__PIC__) || defined(__x86_64__)
+   19|      1|  __asm__("movl $1,%0\n\txorl %%ebx,%%ebx" : "=r"(i) : : "ebx");
+   20|      1|  if (i != 1)
+   21|      0|    abort();
+   22|      1|#endif /* ! pic || lp64 */
+   23|      1|#endif
+   24|      1|  __asm__("movl $1,%0\n\txorl %%ecx,%%ecx" : "=r"(i) : : "ecx");
+   25|      1|  if (i != 1)
+   26|      0|    abort();
+   27|      1|  __asm__("movl $1,%0\n\txorl %%edx,%%edx" : "=r"(i) : : "edx");
+   28|      1|  if (i != 1)
+   29|      0|    abort();
+   30|      1|  __asm__("movl $1,%0\n\txorl %%esi,%%esi" : "=r"(i) : : "esi");
+   31|      1|  if (i != 1)
+   32|      0|    abort();
+   33|      1|  __asm__("movl $1,%0\n\txorl %%edi,%%edi" : "=r"(i) : : "edi");
+   34|      1|  if (i != 1)
+   35|      0|    abort();
+   36|      1|  return 0;
+   37|      1|}
+

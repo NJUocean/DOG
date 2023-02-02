@@ -1,0 +1,29 @@
+        -:    0:Source:1793.c
+        -:    0:Graph:1793.gcno
+        -:    0:Data:1793.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls_runtime } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:__thread int tls_ie __attribute__((tls_model("initial-exec"))) = 4;
+        -:    8:
+        1:    9:int get_ie(void) { return tls_ie; }
+        -:   10:
+        1:   11:int *get_iep(void) { return &tls_ie; }
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int val;
+        -:   15:
+        1:   16:  val = get_ie();
+        1:   17:  if (val != 4)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  val = *get_iep();
+        1:   21:  if (val != 4)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

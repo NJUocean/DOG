@@ -1,0 +1,46 @@
+        -:    0:Source:1146.c
+        -:    0:Graph:1146.gcno
+        -:    0:Data:1146.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-sra" } */
+        -:    3:
+        -:    4:struct __attribute__((scalar_storage_order("little-endian"))) LE {
+        -:    5:  int i;
+        -:    6:  int j;
+        -:    7:};
+        -:    8:
+        -:    9:struct __attribute__((scalar_storage_order("big-endian"))) BE {
+        -:   10:  int i;
+        -:   11:  int j;
+        -:   12:};
+        -:   13:
+        -:   14:struct LE gle;
+        -:   15:struct BE gbe;
+        -:   16:
+        -:   17:#define VAL 0x12345678
+        -:   18:
+        1:   19:void __attribute__((noipa)) fill(void) {
+        1:   20:  gle.i = VAL;
+        1:   21:  gle.j = 0xdeadbeef;
+        1:   22:  gbe.i = VAL;
+        1:   23:  gbe.j = 0x11223344;
+        1:   24:}
+        -:   25:
+        1:   26:static int __attribute__((noinline)) readLE(struct LE p) { return p.i; }
+        -:   27:
+        1:   28:static int __attribute__((noinline)) readBE(struct BE p) { return p.i; }
+        -:   29:
+        1:   30:int main(int argc, char *argv[]) {
+        -:   31:  int r;
+        1:   32:  fill();
+        -:   33:
+        1:   34:  r = readLE(gle);
+        1:   35:  if (r != VAL)
+    #####:   36:    __builtin_abort();
+        1:   37:  r = readBE(gbe);
+        1:   38:  if (r != VAL)
+    #####:   39:    __builtin_abort();
+        -:   40:
+        1:   41:  return 0;
+        -:   42:}

@@ -1,0 +1,83 @@
+        -:    0:Source:1884.c
+        -:    0:Graph:1884.gcno
+        -:    0:Data:1884.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -fdump-tree-original" } */
+        -:    3:
+        -:    4:char *buffer1;
+        -:    5:char *buffer2;
+        -:    6:
+        -:    7:#define SIZE 1000
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  const char *const foo1 = "hello world";
+        -:   11:
+        1:   12:  buffer1 = __builtin_malloc(SIZE);
+        1:   13:  __builtin_strcpy(buffer1, foo1);
+        1:   14:  buffer2 = __builtin_malloc(SIZE);
+        1:   15:  __builtin_strcpy(buffer2, foo1);
+        -:   16:
+        -:   17:  /* MEMCHR.  */
+        -:   18:  if (__builtin_memchr("hello world", 'x', 11))
+        -:   19:    __builtin_abort();
+        -:   20:  if (__builtin_memchr("hello world", 'x', 0) != 0)
+        -:   21:    __builtin_abort();
+        -:   22:  if (__builtin_memchr("hello world", 'w', 2))
+        -:   23:    __builtin_abort();
+        -:   24:  if (__builtin_memchr("hello world", 'd', 10))
+        -:   25:    __builtin_abort();
+        -:   26:  if (__builtin_memchr("hello world", '\0', 11))
+        -:   27:    __builtin_abort();
+        -:   28:
+        -:   29:  /* STRCMP.  */
+        -:   30:  if (__builtin_strcmp("hello", "aaaaa") <= 0)
+        -:   31:    __builtin_abort();
+        -:   32:  if (__builtin_strcmp("aaaaa", "aaaaa") != 0)
+        -:   33:    __builtin_abort();
+        -:   34:  if (__builtin_strcmp("aaaaa", "") <= 0)
+        -:   35:    __builtin_abort();
+        -:   36:  if (__builtin_strcmp("", "aaaaa") >= 0)
+        -:   37:    __builtin_abort();
+        -:   38:  if (__builtin_strcmp("ab", "ba") >= 0)
+        -:   39:    __builtin_abort();
+        -:   40:
+        -:   41:  /* STRNCMP.  */
+        -:   42:  if (__builtin_strncmp("hello", "aaaaa", 0) != 0)
+        -:   43:    __builtin_abort();
+        -:   44:  if (__builtin_strncmp("aaaaa", "aaaaa", 100) != 0)
+        -:   45:    __builtin_abort();
+        -:   46:  if (__builtin_strncmp("aaaaa", "", 100) <= 0)
+        -:   47:    __builtin_abort();
+        -:   48:  if (__builtin_strncmp("", "aaaaa", 100) >= 0)
+        -:   49:    __builtin_abort();
+        -:   50:  if (__builtin_strncmp("ab", "ba", 1) >= 0)
+        -:   51:    __builtin_abort();
+        -:   52:  if (__builtin_strncmp("aab", "aac", 2) != 0)
+        -:   53:    __builtin_abort();
+        -:   54:
+        -:   55:  /* STRCASECMP.  */
+        -:   56:  if (__builtin_strcasecmp("aaaaa", "aaaaa") != 0)
+        -:   57:    __builtin_abort();
+        -:   58:
+        -:   59:  /* STRNCASECMP.  */
+        -:   60:  if (__builtin_strncasecmp("hello", "aaaaa", 0) != 0)
+        -:   61:    __builtin_abort();
+        -:   62:  if (__builtin_strncasecmp("aaaaa", "aaaaa", 100) != 0)
+        -:   63:    __builtin_abort();
+        -:   64:  if (__builtin_strncasecmp("aab", "aac", 2) != 0)
+        -:   65:    __builtin_abort();
+        -:   66:
+        -:   67:  /* MEMCMP.  */
+        -:   68:  if (__builtin_memcmp("aaaaa", "aaaaa", 6) != 0)
+        -:   69:    __builtin_abort();
+        -:   70:
+        1:   71:  return 0;
+        -:   72:}
+        -:   73:
+        -:   74:/* { dg-final { scan-tree-dump-not "__builtin_strcmp" "original" } } */
+        -:   75:/* { dg-final { scan-tree-dump-not "__builtin_strcasecmp" "original" } } */
+        -:   76:/* { dg-final { scan-tree-dump-not "__builtin_strncmp" "original" } } */
+        -:   77:/* { dg-final { scan-tree-dump-not "__builtin_strncasecmp" "original" } } */
+        -:   78:/* { dg-final { scan-tree-dump-not "__builtin_memchr" "original" } } */
+        -:   79:/* { dg-final { scan-tree-dump-not "__builtin_memcmp" "original" } } */

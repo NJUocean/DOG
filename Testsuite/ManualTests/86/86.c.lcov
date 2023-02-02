@@ -1,0 +1,12 @@
+    1|       |// PR tree-optimization/79196
+    2|       |// { dg-do run }
+    3|       |
+    4|      1|int __attribute__((noinline)) test(char *a) {
+    5|      1|  if (__builtin_strstr(a, "DROP CONVERSION") == a)
+    6|      0|    return 1;
+    7|      1|
+    8|      1|  return 0;
+    9|      1|}
+   10|       |
+   11|      1|int main(int argc, char **argv) { return test("x"); }
+

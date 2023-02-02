@@ -1,0 +1,41 @@
+        -:    0:Source:2625.c
+        -:    0:Graph:2625.gcno
+        -:    0:Data:2625.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int __attribute__((noinline)) test(unsigned int *a, int b) {
+       1*:    7:  return b ? 1 : __builtin_parity(*a);
+        -:    8:}
+        -:    9:
+        1:   10:int __attribute__((noinline)) testl(unsigned long *a, int b) {
+       1*:   11:  return b ? 1 : __builtin_parityl(*a);
+        -:   12:}
+        -:   13:
+        1:   14:int __attribute__((noinline)) testll(unsigned long long *a, int b) {
+       1*:   15:  return b ? 1 : __builtin_parityll(*a);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  unsigned int a = 0;
+        -:   20:  unsigned long al;
+        -:   21:  unsigned long long all;
+        -:   22:
+        1:   23:  a = 0x12345670;
+        1:   24:  if (test(&a, 0))
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  al = 0x12345670ul;
+        1:   28:  if (testl(&al, 0))
+    #####:   29:    abort();
+        -:   30:
+        -:   31:#if 1
+        1:   32:  all = 0x12345678abcdef0ull;
+        1:   33:  if (testll(&all, 0))
+    #####:   34:    abort();
+        -:   35:#endif
+        1:   36:  return 0;
+        -:   37:}

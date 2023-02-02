@@ -1,0 +1,27 @@
+    1|       |/* The bit-field below would have a problem if __INT_MAX__ is too
+    2|       |   small.  */
+    3|       |#if __INT_MAX__ < 2147483647
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|       |struct foo {
+    7|       |  unsigned y : 1;
+    8|       |  unsigned x : 32;
+    9|       |};
+   10|       |
+   11|       |int f(x) struct foo x;
+   12|      1|{
+   13|      1|  int t = x.x;
+   14|      1|  if (t < 0)
+   15|      1|    return 1;
+   16|      0|  return t + 1;
+   17|      0|}
+   18|       |
+   19|      1|main() {
+   20|      1|  struct foo x;
+   21|      1|  x.x = -1;
+   22|      1|  if (f(x) == 0)
+   23|      0|    abort();
+   24|      1|  exit(0);
+   25|      1|}
+   26|       |#endif
+

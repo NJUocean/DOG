@@ -1,0 +1,20 @@
+        -:    0:Source:3915.c
+        -:    0:Graph:3915.gcno
+        -:    0:Data:3915.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/69403.  */
+        -:    2:
+        -:    3:int a, b, c;
+        -:    4:
+        1:    5:__attribute__((__noinline__)) int fn1() {
+        1:    6:  if ((b | (a != (a & c))) == 1)
+    #####:    7:    __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  a = 5;
+        1:   13:  c = 1;
+        1:   14:  b = 6;
+        1:   15:  return fn1();
+        -:   16:}

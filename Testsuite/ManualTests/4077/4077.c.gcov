@@ -1,0 +1,22 @@
+        -:    0:Source:4077.c
+        -:    0:Graph:4077.gcno
+        -:    0:Data:4077.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern int memcmp(const void *, const void *, __SIZE_TYPE__);
+        -:    3:
+        -:    4:typedef unsigned char v8qi __attribute__((vector_size(8)));
+        -:    5:
+        1:    6:v8qi foo(v8qi x, v8qi y) { return x * y; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  v8qi a = {1, 2, 3, 4, 5, 6, 7, 8};
+        1:   10:  v8qi b = {3, 3, 3, 3, 3, 3, 3, 3};
+        1:   11:  v8qi c = {3, 6, 9, 12, 15, 18, 21, 24};
+        -:   12:  v8qi r;
+        -:   13:
+        1:   14:  r = foo(a, b);
+        1:   15:  if (memcmp(&r, &c, 8) != 0)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

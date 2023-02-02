@@ -1,0 +1,17 @@
+        -:    0:Source:3419.c
+        -:    0:Graph:3419.gcno
+        -:    0:Data:3419.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:extern void abort(void);
+        -:    3:
+        1:    4:unsigned int bar(void) { return 32768; }
+        -:    5:
+        1:    6:int main() {
+        1:    7:  unsigned int nStyle = bar();
+        1:    8:  if (nStyle & 32768)
+        1:    9:    nStyle |= 65536;
+        1:   10:  if (nStyle != (32768 | 65536))
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

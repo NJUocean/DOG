@@ -1,0 +1,45 @@
+    1|       |/* PR middle-end/71691 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-fno-tree-vrp -O2 -funswitch-loops
+    4|       | * -fdump-tree-unswitch-details" } */
+    5|       |
+    6|       |/* Note: The -fno-tree-vrp above is only there to avoid VRP papering
+    7|       |   over the problem.  */
+    8|       |
+    9|       |char b;
+   10|       |short f;
+   11|       |unsigned e;
+   12|       |int g = 20;
+   13|       |
+   14|      1|void foo() {
+   15|      1|  int l, h;
+   16|      9|  for (l = 0; l <= 7; l++) {
+   17|      8|    int j = 38;
+   18|      8|    if (g)
+   19|      1|      h = 0;
+   20|     16|    for (; h <= 7; h++) {
+   21|      8|      int i, k = b % (j % 4);
+   22|      8|      g = f;
+   23|      8|      for (;;) {
+   24|      8|        j = 6 || b;
+   25|      8|        if (e) {
+   26|      0|          for (; j; --j)
+   27|      0|            if (k)
+   28|      0|              __builtin_printf("%d", 9);
+   29|      0|          if (i)
+   30|      0|            __builtin_printf("%d", j);
+   31|      0|        }
+   32|      8|        if (l)
+   33|      0|          continue;
+   34|      8|        break;
+   35|      8|      }
+   36|      8|      i = f || b;
+   37|      8|    }
+   38|      8|  }
+   39|      1|}
+   40|       |
+   41|      1|int main() {
+   42|      1|  foo();
+   43|      1|  return 0;
+   44|      1|}
+

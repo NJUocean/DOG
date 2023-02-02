@@ -1,0 +1,25 @@
+    1|       |/* { dg-add-options stack_size } */
+    2|       |
+    3|       |#if defined(STACK_SIZE)
+    4|       |#define DUMMY_SIZE 9
+    5|       |#else
+    6|       |#define DUMMY_SIZE 399999
+    7|       |#endif
+    8|       |
+    9|      3|double g() { return 1.0; }
+   10|       |
+   11|      1|f() {
+   12|      1|  char dummy[DUMMY_SIZE];
+   13|      1|  double f1, f2, f3;
+   14|      1|  f1 = g();
+   15|      1|  f2 = g();
+   16|      1|  f3 = g();
+   17|      1|  return f1 + f2 + f3;
+   18|      1|}
+   19|       |
+   20|      1|main() {
+   21|      1|  if (f() != 3.0)
+   22|      0|    abort();
+   23|      1|  exit(0);
+   24|      1|}
+

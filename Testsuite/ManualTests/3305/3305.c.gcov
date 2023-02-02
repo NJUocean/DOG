@@ -1,0 +1,61 @@
+        -:    0:Source:3305.c
+        -:    0:Graph:3305.gcno
+        -:    0:Data:3305.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/11087
+        -:    2:   This testcase was miscompiled on ppc64, because basic_induction_var called
+        -:    3:   convert_modes, yet did not expect it to emit any new instructions.
+        -:    4:   Those were emitted at the end of the function and destroyed during life
+        -:    5:   analysis, while the program used uninitialized pseudos created by
+        -:    6:   convert_modes.  */
+        -:    7:
+        -:    8:struct A {
+        -:    9:  unsigned short a1;
+        -:   10:  unsigned long a2;
+        -:   11:};
+        -:   12:
+        -:   13:struct B {
+        -:   14:  int b1, b2, b3, b4, b5;
+        -:   15:};
+        -:   16:
+        -:   17:struct C {
+        -:   18:  struct B c1[1];
+        -:   19:  int c2, c3;
+        -:   20:};
+        -:   21:
+        2:   22:static int foo(int x) { return x < 0 ? -x : x; }
+        -:   23:
+        1:   24:int bar(struct C *x, struct A *y) {
+        1:   25:  int a = x->c3;
+        1:   26:  const int b = y->a1 >> 9;
+        1:   27:  const unsigned long c = y->a2;
+        1:   28:  int d = a;
+        -:   29:  unsigned long e, f;
+        -:   30:
+        1:   31:  f = foo(c - x->c1[d].b4);
+        -:   32:  do {
+        1:   33:    if (d <= 0)
+        1:   34:      d = x->c2;
+        1:   35:    d--;
+        -:   36:
+        1:   37:    e = foo(c - x->c1[d].b4);
+        1:   38:    if (e < f)
+    #####:   39:      a = d;
+        1:   40:  } while (d != x->c3);
+        1:   41:  x->c1[a].b4 = c + b;
+        1:   42:  return a;
+        -:   43:}
+        -:   44:
+        1:   45:int main() {
+        -:   46:  struct A a;
+        -:   47:  struct C b;
+        -:   48:  int c;
+        -:   49:
+        1:   50:  a.a1 = 512;
+        1:   51:  a.a2 = 4242;
+        1:   52:  __builtin_memset(&b, 0, sizeof(b));
+        1:   53:  b.c1[0].b3 = 424242;
+        1:   54:  b.c2 = 1;
+        1:   55:  c = bar(&b, &a);
+        1:   56:  return 0;
+        -:   57:}

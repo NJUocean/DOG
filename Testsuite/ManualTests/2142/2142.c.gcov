@@ -1,0 +1,19 @@
+        -:    0:Source:2142.c
+        -:    0:Graph:2142.gcno
+        -:    0:Data:2142.gcda
+        -:    0:Runs:1
+        -:    1:#include <float.h>
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:static const double C = DBL_MAX;
+        -:    6:
+        1:    7:double foo(double x) { return (((x * C) * C) * C); }
+        -:    8:
+        1:    9:int main() {
+        1:   10:  double d = foo(0.0);
+        1:   11:  if (d != 0.0)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}

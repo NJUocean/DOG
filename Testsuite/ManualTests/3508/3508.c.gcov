@@ -1,0 +1,28 @@
+        -:    0:Source:3508.c
+        -:    0:Graph:3508.gcno
+        -:    0:Data:3508.gcda
+        -:    0:Runs:1
+        -:    1:#define bool _Bool
+        -:    2:
+        -:    3:bool f(int a, bool c) __attribute__((noinline));
+        4:    4:bool f(int a, bool c) {
+        4:    5:  if (!a)
+        2:    6:    c = !c;
+        4:    7:  return c;
+        -:    8:}
+        -:    9:
+        4:   10:void checkf(int a, bool b) {
+        4:   11:  bool c = f(a, b);
+        -:   12:  char d;
+        4:   13:  __builtin_memcpy(&d, &c, 1);
+        4:   14:  if (d != (a == 0) ^ b)
+    #####:   15:    __builtin_abort();
+        4:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  checkf(0, 0);
+        1:   20:  checkf(0, 1);
+        1:   21:  checkf(1, 1);
+        1:   22:  checkf(1, 0);
+        1:   23:  return 0;
+        -:   24:}

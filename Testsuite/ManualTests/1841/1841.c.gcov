@@ -1,0 +1,19 @@
+        -:    0:Source:1841.c
+        -:    0:Graph:1841.gcno
+        -:    0:Data:1841.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -ftracer -fdump-tree-tracer" } */
+        -:    2:volatile int a, b, c;
+        1:    3:int main() {
+        -:    4:  int i;
+     1001:    5:  for (i = 0; i < 1000; i++) {
+     1000:    6:    if (i % 17)
+      941:    7:      a++;
+        -:    8:    else
+       59:    9:      b++;
+     1000:   10:    c++;
+        -:   11:  }
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:/* Superblock formation should produce two copies of the increment of c */
+        -:   15:/* { dg-final-generate { scan-tree-dump-times "c =" 2 "tracer" } } */

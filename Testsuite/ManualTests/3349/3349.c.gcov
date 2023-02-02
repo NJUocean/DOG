@@ -1,0 +1,16 @@
+        -:    0:Source:3349.c
+        -:    0:Graph:3349.gcno
+        -:    0:Data:3349.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 16348: Make sure that condition-first false loops DTRT.  */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:
+        1:    5:int main() {
+        1:    6:  for (; 0;) {
+        -:    7:    abort();
+        1:    8:  label:
+        1:    9:    return 0;
+        -:   10:  }
+        1:   11:  goto label;
+        -:   12:}

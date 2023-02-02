@@ -1,0 +1,52 @@
+    1|       |/* Copyright (C) 2001 Free Software Foundation, Inc.  */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-Wno-multichar -fsigned-char" } */
+    5|       |
+    6|       |/* This tests how overly-long multichar charconsts are truncated, and
+    7|       |   whether "short" multichar charconsts are incorrectly sign extended
+    8|       |   (regardless of char signedness).  Preprocessor is used so that we
+    9|       |   have only one place where the too long warning is generated, so
+   10|       |   that the test works for all targets.
+   11|       |
+   12|       |   Neil Booth, 8 May 2002.  */
+   13|       |
+   14|       |#include <limits.h>
+   15|       |
+   16|       |extern void abort(void);
+   17|       |
+   18|       |#if INT_MAX == 32767
+   19|       |#define LONG_CHARCONST '!\234a'
+   20|       |#define SHORT_CHARCONST '\234a'
+   21|       |#define POS_CHARCONST '\1'
+   22|       |#elif INT_MAX == 2147483647
+   23|      1|#define LONG_CHARCONST '!\234abc'
+   24|      1|#define SHORT_CHARCONST '\234abc'
+   25|      1|#define POS_CHARCONST '\234a'
+   26|       |#elif INT_MAX == 9223372036854775807
+   27|       |#define LONG_CHARCONST '!\234abcdefg'
+   28|       |#define SHORT_CHARCONST '\234abcdefg'
+   29|       |#define POS_CHARCONST '\234a'
+   30|       |#else
+   31|       |/* Target int size not handled, do something that won't fail.  */
+   32|       |#define LONG_CHARCONST '\234a'
+   33|       |#define SHORT_CHARCONST '\234a'
+   34|       |#define POS_CHARCONST '\1'
+   35|       |#endif
+   36|       |
+   37|       |#if POS_CHARCONST < 0
+   38|       |#error Charconst incorrectly sign-extended
+   39|       |#endif
+   40|       |
+   41|       |#if LONG_CHARCONST != SHORT_CHARCONST /* { dg-warning "too long" } */
+   42|       |#error Overly long charconst truncates wrongly for preprocessor
+   43|       |#endif
+   44|       |
+   45|      1|int main() {
+   46|      1|  if (POS_CHARCONST < 0)
+   47|      0|    abort();
+   48|      1|  if (LONG_CHARCONST != SHORT_CHARCONST) /* { dg-warning "too long" } */
+   49|      1|    abort();
+   50|      1|  return 0;
+   51|      1|}
+

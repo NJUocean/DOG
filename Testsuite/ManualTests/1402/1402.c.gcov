@@ -1,0 +1,31 @@
+        -:    0:Source:1402.c
+        -:    0:Graph:1402.gcno
+        -:    0:Data:1402.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct {
+        -:    5:  int f1;
+        -:    6:} a[2];
+        -:    7:
+        -:    8:int *b, *const k = &a[1].f1;
+        -:    9:static int **c = &b;
+        -:   10:
+        -:   11:int e, f, d;
+        -:   12:
+        1:   13:int main() {
+        1:   14:  int **l = &b;
+        1:   15:  *l = k;
+        2:   16:  for (; d <= 0; d++) {
+        1:   17:    int *j = &e;
+        1:   18:    **c = 1;
+        1:   19:    *l = k;
+        1:   20:    *k ^= 0;
+        1:   21:    f = **l;
+        1:   22:    *j = f;
+        -:   23:  }
+        1:   24:  if (e != 1)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

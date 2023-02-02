@@ -1,0 +1,51 @@
+        -:    0:Source:2870.c
+        -:    0:Graph:2870.gcno
+        -:    0:Data:2870.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc*-*-linux* && { lp64 && p9vector_hw } } } } */
+        -:    2:/* { dg-require-effective-target powerpc_p9vector_ok } */
+        -:    3:/* { dg-options "-O3 -mdejagnu-cpu=power9" } */
+        -:    4:
+        -:    5:/* Verify that we get correct code when we vectorize this SAD loop using
+        -:    6:   vabsdub. */
+        -:    7:
+        -:    8:extern void abort();
+        -:    9:extern int abs(int __x) __attribute__((__nothrow__, __leaf__))
+        -:   10:__attribute__((__const__));
+        -:   11:
+        1:   12:static int foo(unsigned char *w, int i, unsigned char *x, int j) {
+        1:   13:  int tot = 0;
+       17:   14:  for (int a = 0; a < 16; a++) {
+      272:   15:    for (int b = 0; b < 16; b++)
+      256:   16:      tot += abs(w[b] - x[b]);
+       16:   17:    w += i;
+       16:   18:    x += j;
+        -:   19:  }
+        1:   20:  return tot;
+        -:   21:}
+        -:   22:
+        1:   23:void bar(unsigned char *w, unsigned char *x, int i, int *result) {
+        1:   24:  *result = foo(w, 16, x, i);
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        -:   28:  unsigned char m[256];
+        -:   29:  unsigned char n[256];
+        -:   30:  int sum, i;
+        -:   31:
+      257:   32:  for (i = 0; i < 256; ++i)
+      256:   33:    if (i % 2 == 0) {
+      128:   34:      m[i] = (i % 8) * 2 + 1;
+      128:   35:      n[i] = -(i % 8);
+        -:   36:    } else {
+      128:   37:      m[i] = -((i % 8) * 2 + 2);
+      128:   38:      n[i] = -((i % 8) >> 1);
+        -:   39:    }
+        -:   40:
+        1:   41:  bar(m, n, 16, &sum);
+        -:   42:
+        1:   43:  if (sum != 32384)
+    #####:   44:    abort();
+        -:   45:
+        1:   46:  return 0;
+        -:   47:}

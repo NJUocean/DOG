@@ -1,0 +1,46 @@
+        -:    0:Source:3748.c
+        -:    0:Graph:3748.gcno
+        -:    0:Data:3748.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/51877 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct A {
+        -:    5:  int a;
+        -:    6:  char b[32];
+        -:    7:} a, b;
+        -:    8:
+        4:    9:__attribute__((noinline, noclone)) struct A bar(int x) {
+        -:   10:  struct A r;
+        -:   11:  static int n;
+        4:   12:  r.a = ++n;
+        4:   13:  __builtin_memset(r.b, 0, sizeof(r.b));
+        4:   14:  r.b[0] = x;
+        4:   15:  return r;
+        -:   16:}
+        -:   17:
+        2:   18:__attribute__((noinline, noclone)) void baz(void) {
+        2:   19:  asm volatile("" : : : "memory");
+        2:   20:}
+        -:   21:
+        2:   22:__attribute__((noinline, noclone)) void foo(struct A *x, int y) {
+        2:   23:  if (y == 6)
+        1:   24:    a = bar(7);
+        -:   25:  else
+        1:   26:    *x = bar(7);
+        2:   27:  baz();
+        2:   28:}
+        -:   29:
+        1:   30:int main() {
+        1:   31:  a = bar(3);
+        1:   32:  b = bar(4);
+        1:   33:  if (a.a != 1 || a.b[0] != 3 || b.a != 2 || b.b[0] != 4)
+    #####:   34:    abort();
+        1:   35:  foo(&b, 0);
+        1:   36:  if (a.a != 1 || a.b[0] != 3 || b.a != 3 || b.b[0] != 7)
+    #####:   37:    abort();
+        1:   38:  foo(&b, 6);
+        1:   39:  if (a.a != 4 || a.b[0] != 7 || b.a != 3 || b.b[0] != 7)
+    #####:   40:    abort();
+        1:   41:  return 0;
+        -:   42:}

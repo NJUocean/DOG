@@ -1,0 +1,21 @@
+        -:    0:Source:1260.c
+        -:    0:Graph:1260.gcno
+        -:    0:Data:1260.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fipa-pta" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void *malloc(__SIZE_TYPE__);
+        -:    6:
+        -:    7:static int *p;
+        1:    8:static void __attribute__((noinline, noclone)) foo() {
+        1:    9:  p = (int *)malloc(24);
+        1:   10:  *p = 2;
+        1:   11:}
+        1:   12:int main() {
+        1:   13:  foo();
+        1:   14:  if (*p != 2)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

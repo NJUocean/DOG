@@ -1,0 +1,23 @@
+        -:    0:Source:660.c
+        -:    0:Graph:660.gcno
+        -:    0:Data:660.gcda
+        -:    0:Runs:1
+        -:    1:#if defined(_LP64)
+        -:    2:typedef unsigned long int uintptr_t;
+        -:    3:#elif defined(_WIN64)
+        -:    4:typedef unsigned long long int uintptr_t;
+        -:    5:#else
+        -:    6:typedef unsigned int uintptr_t;
+        -:    7:#endif
+        -:    8:
+        -:    9:extern void srand(uintptr_t);
+        -:   10:
+        1:   11:inline void __attribute__((gnu_inline)) foo(uintptr_t seed) {
+        1:   12:  srand(seed * seed);
+        1:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  foo(0);
+        1:   17:  srand((uintptr_t)(&foo));
+        1:   18:  return 0;
+        -:   19:}

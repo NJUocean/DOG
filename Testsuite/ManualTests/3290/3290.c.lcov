@@ -1,0 +1,12 @@
+    1|      1|int f(unsigned number_of_digits_to_use) {
+    2|      1|  if (number_of_digits_to_use > 1294)
+    3|      0|    return 0;
+    4|      1|  return (number_of_digits_to_use * 3321928 / 1000000 + 1) / 16;
+    5|      1|}
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  if (f(11) != 2)
+    9|      0|    __builtin_abort();
+   10|      1|  exit(0);
+   11|      1|}
+

@@ -1,0 +1,58 @@
+    1|       |/* PR target/55940 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Os" } */
+    4|       |/* { dg-additional-options "-mpreferred-stack-boundary=2" { target { { i?86-*-*
+    5|       | * x86_64-*-* } && ia32 } } } */
+    6|       |
+    7|       |struct S {
+    8|       |  int s;
+    9|       |  unsigned long t;
+   10|       |};
+   11|       |
+   12|       |__attribute__((noinline, noclone)) unsigned long long bar(struct S *x,
+   13|      0|                                                          unsigned long y) {
+   14|      0|  asm volatile("" : : "r"(x), "r"(y) : "memory");
+   15|      0|  return x->s + y;
+   16|      0|}
+   17|       |
+   18|       |__attribute__((noinline, noclone)) unsigned long long foo(struct S *x,
+   19|     66|                                                          unsigned long y) {
+   20|     66|  unsigned long a;
+   21|     66|  if (__builtin_expect(((__UINTPTR_TYPE__)(x) + 0x1000U < 0x2000U), 0))
+   22|     64|    return ~0ULL;
+   23|      2|  if (__builtin_expect(x->s <= 0 || x->s > 9, 0))
+   24|      0|    return ~0ULL;
+   25|      2|  a = x->t >> 12;
+   26|      2|  if (y == a)
+   27|      1|    return ~0ULL;
+   28|      1|  if (x->s == 3)
+   29|      1|    return x->t + y * 4096;
+   30|      0|  return bar(x, y);
+   31|      0|}
+   32|       |
+   33|       |int va, vb, vc, vd;
+   34|       |
+   35|      1|int main() {
+   36|      1|  struct S s;
+   37|      1|  asm volatile("" : : : "memory");
+   38|      1|  int a = va, b = vb, c = vc, d = vd;
+   39|      1|  asm volatile("" : : : "memory");
+   40|      1|  int i;
+   41|     65|  for (i = 0; i < 64; i++)
+   42|     64|    if (foo((struct S *)0, 0) != ~0ULL)
+   43|      0|      __builtin_abort();
+   44|      1|  s.s = 3;
+   45|      1|  s.t = 2 << 12;
+   46|      1|  if (foo(&s, 2) != ~0ULL)
+   47|      0|    __builtin_abort();
+   48|      1|  if (foo(&s, 3) != (2 << 12) + 3 * 4096)
+   49|      0|    __builtin_abort();
+   50|      1|  asm volatile("" : : : "memory");
+   51|      1|  va = a;
+   52|      1|  vb = b;
+   53|      1|  vc = c;
+   54|      1|  vd = d;
+   55|      1|  asm volatile("" : : : "memory");
+   56|      1|  return 0;
+   57|      1|}
+

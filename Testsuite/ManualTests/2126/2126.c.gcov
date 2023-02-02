@@ -1,0 +1,21 @@
+        -:    0:Source:2126.c
+        -:    0:Graph:2126.gcno
+        -:    0:Data:2126.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/81162 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -O2" } */
+        -:    4:
+        -:    5:short s;
+        -:    6:int i1 = 1;
+        -:    7:int i2 = 1;
+        -:    8:unsigned char uc = 147;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  s = (-uc + 2147483647) << 0;
+       1*:   12:  if (9031239389974324562ULL >= (-((i1 && i2) + uc) ^ -21096)) {
+        1:   13:    return 0;
+        -:   14:  } else {
+    #####:   15:    return -1;
+        -:   16:  }
+        -:   17:}

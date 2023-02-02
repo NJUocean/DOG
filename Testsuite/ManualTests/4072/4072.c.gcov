@@ -1,0 +1,70 @@
+        -:    0:Source:4072.c
+        -:    0:Graph:4072.gcno
+        -:    0:Data:4072.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: Aldy Hernandez <aldyh@redhat.com>
+        -:    2:
+        -:    3:   Purpose: Test generic SIMD support.  This test should work
+        -:    4:   regardless of if the target has SIMD instructions.
+        -:    5:*/
+        -:    6:
+        -:    7:typedef int __attribute__((mode(SI))) __attribute__((vector_size(16))) vecint;
+        -:    8:typedef int __attribute__((mode(SI))) siint;
+        -:    9:
+        -:   10:vecint i = {150, 100, 150, 200};
+        -:   11:vecint j = {10, 13, 20, 30};
+        -:   12:vecint k;
+        -:   13:
+        -:   14:union {
+        -:   15:  vecint v;
+        -:   16:  siint i[4];
+        -:   17:} res;
+        -:   18:
+        -:   19:/* This should go away once we can use == and != on vector types.  */
+        8:   20:void verify(siint a1, siint a2, siint a3, siint a4, siint b1, siint b2,
+        -:   21:            siint b3, siint b4) {
+        8:   22:  if (a1 != b1 || a2 != b2 || a3 != b3 || a4 != b4)
+    #####:   23:    abort();
+        8:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  k = i + j;
+        1:   28:  res.v = k;
+        -:   29:
+        1:   30:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 160, 113, 170, 230);
+        -:   31:
+        1:   32:  k = i * j;
+        1:   33:  res.v = k;
+        -:   34:
+        1:   35:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 1500, 1300, 3000, 6000);
+        -:   36:
+        1:   37:  k = i / j;
+        1:   38:  res.v = k;
+        -:   39:
+        1:   40:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 15, 7, 7, 6);
+        -:   41:
+        1:   42:  k = i & j;
+        1:   43:  res.v = k;
+        -:   44:
+        1:   45:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 2, 4, 20, 8);
+        -:   46:
+        1:   47:  k = i | j;
+        1:   48:  res.v = k;
+        -:   49:
+        1:   50:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 158, 109, 150, 222);
+        -:   51:
+        1:   52:  k = i ^ j;
+        1:   53:  res.v = k;
+        -:   54:
+        1:   55:  verify(res.i[0], res.i[1], res.i[2], res.i[3], 156, 105, 130, 214);
+        -:   56:
+        1:   57:  k = -i;
+        1:   58:  res.v = k;
+        1:   59:  verify(res.i[0], res.i[1], res.i[2], res.i[3], -150, -100, -150, -200);
+        -:   60:
+        1:   61:  k = ~i;
+        1:   62:  res.v = k;
+        1:   63:  verify(res.i[0], res.i[1], res.i[2], res.i[3], -151, -101, -151, -201);
+        -:   64:
+        1:   65:  exit(0);
+        -:   66:}

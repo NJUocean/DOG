@@ -1,0 +1,77 @@
+        -:    0:Source:215.c
+        -:    0:Graph:215.gcno
+        -:    0:Data:215.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:union U1 {
+        -:    7:  int32_t f0;
+        -:    8:};
+        -:    9:
+        -:   10:union U3 {
+        -:   11:  volatile uint16_t f0;
+        -:   12:  const signed f1 : 11;
+        -:   13:};
+        -:   14:
+        -:   15:static volatile uint64_t g_11 = 0xED0657689A5A40F2LL;
+        -:   16:static const int16_t g_12[4][3] = {{0x9B69L, 9L, (-1L)}, {1L, 9L, 1L}, {(-1L), 0x9B69L, (-1L)}, {(-1L), (-1L), 0x9B69L}};
+        -:   17:static int32_t g_15 = 0xC7E43439L;
+        -:   18:static int32_t *volatile g_14 = &g_15;
+        -:   19:static int32_t *volatile g_18 = (void *)0;
+        -:   20:static int32_t *volatile g_19 = &g_15;
+        -:   21:static int16_t g_31[2] = {0L, 0L};
+        -:   22:static const int32_t g_33 = 1L;
+        -:   23:static union U3 g_35 = {0UL};
+        -:   24:
+        -:   25:static union U3 func_1(void);
+        -:   26:static int32_t func_4(uint32_t p_5, const int32_t p_6);
+        -:   27:
+        1:   28:static union U3 func_1(void) {
+        1:   29:  int32_t l_28 = 0xC930F888L;
+        1:   30:  int16_t *l_29 = (void *)0;
+        1:   31:  int16_t *l_30[1][5][5] = {{{&g_31[1], &g_31[1], &g_31[1], &g_31[1], &g_31[1]}, {(void *)0, &g_31[1], &g_31[1], &g_31[1], (void *)0}, {&g_31[1], &g_31[1], &g_31[1], &g_31[1], &g_31[1]}, {(void *)0, &g_31[1], &g_31[1], &g_31[1], &g_31[1]}, {&g_31[1], &g_31[1], &g_31[0], &g_31[1], &g_31[1]}}};
+        1:   32:  const int32_t *l_32 = &g_33;
+        1:   33:  int32_t *l_34 = &g_15;
+        -:   34:  int i, j, k;
+       1*:   35:  (*l_34) = ((safe_sub_func_int8_t_s_s((func_4((safe_div_func_uint16_t_u_u((safe_rshift_func_uint32_t_u_u(g_11, 29)), 0x5A51L)), g_12[0][1]) > (safe_sub_func_int32_t_s_s((safe_add_func_int8_t_s_s(0xFBL, (((safe_mul_func_uint32_t_u_u(((safe_mod_func_int16_t_s_s((65531UL != 0xA3DEL), (g_31[1] = l_28))) | (((((g_12[2][1] != l_28) <= l_28), l_32) == &g_33) || (*l_32))), (*l_32))), 0UL) >= g_12[0][1]))), (*l_32)))), g_12[0][2])) >= g_33);
+        1:   36:  return g_35;
+        -:   37:}
+        -:   38:
+        1:   39:static int32_t func_4(uint32_t p_5, const int32_t p_6) {
+        -:   40:  const union U1 l_13[2][2] = {{{0xED890FC5L}, {0xED890FC5L}}, {{0xED890FC5L}, {0xED890FC5L}}};
+        -:   41:  int i, j;
+        1:   42:  (*g_14) = (g_12[0][1] == (l_13[0][0], 1L));
+        1:   43:  (*g_19) = (safe_add_func_int64_t_s_s(g_12[1][0], 0L));
+        1:   44:  return (*g_19);
+        -:   45:}
+        -:   46:
+        1:   47:int main(int argc, char *argv[]) {
+        -:   48:  int i, j;
+        1:   49:  int print_hash_value = 0;
+       1*:   50:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   51:    print_hash_value = 1;
+        1:   52:  platform_main_begin();
+        1:   53:  crc32_gentab();
+        1:   54:  func_1();
+        1:   55:  transparent_crc(g_11, "g_11", print_hash_value);
+        5:   56:  for (i = 0; i < 4; i++) {
+       16:   57:    for (j = 0; j < 3; j++) {
+       12:   58:      transparent_crc(g_12[i][j], "g_12[i][j]", print_hash_value);
+       12:   59:      if (print_hash_value)
+    #####:   60:        printf("index = [%d][%d]\n", i, j);
+        -:   61:    }
+        -:   62:  }
+        1:   63:  transparent_crc(g_15, "g_15", print_hash_value);
+        3:   64:  for (i = 0; i < 2; i++) {
+        2:   65:    transparent_crc(g_31[i], "g_31[i]", print_hash_value);
+        2:   66:    if (print_hash_value)
+    #####:   67:      printf("index = [%d]\n", i);
+        -:   68:  }
+        1:   69:  transparent_crc(g_33, "g_33", print_hash_value);
+        1:   70:  transparent_crc(g_35.f0, "g_35.f0", print_hash_value);
+        1:   71:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   72:  return 0;
+        -:   73:}

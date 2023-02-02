@@ -1,0 +1,11 @@
+        -:    0:Source:231.c
+        -:    0:Graph:231.gcno
+        -:    0:Data:231.gcda
+        -:    0:Runs:1
+        1:    1:f() { return (unsigned char)("\377"[0]); }
+        -:    2:
+        1:    3:main() {
+        1:    4:  if (f() != (unsigned char)(0377))
+    #####:    5:    abort();
+        1:    6:  exit(0);
+        -:    7:}

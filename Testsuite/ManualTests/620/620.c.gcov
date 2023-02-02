@@ -1,0 +1,31 @@
+        -:    0:Source:620.c
+        -:    0:Graph:620.gcno
+        -:    0:Data:620.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-Os" } */
+        -:    3:/* { dg-require-effective-target int32plus } */
+        -:    4:
+        -:    5:union U {
+        -:    6:  unsigned int f0;
+        -:    7:  int f1;
+        -:    8:};
+        -:    9:
+        -:   10:int a, d;
+        -:   11:
+        1:   12:void fn1(union U p) {
+        1:   13:  if (p.f1 <= 0)
+        1:   14:    if (a)
+    #####:   15:      d = 0;
+        1:   16:}
+        -:   17:
+        1:   18:void fn2() {
+        1:   19:  d = 0;
+        1:   20:  union U b = {4294967286U};
+        1:   21:  fn1(b);
+        1:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  fn2();
+        1:   26:  return 0;
+        -:   27:}

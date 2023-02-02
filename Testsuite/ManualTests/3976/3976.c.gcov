@@ -1,0 +1,42 @@
+        -:    0:Source:3976.c
+        -:    0:Graph:3976.gcno
+        -:    0:Data:3976.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/81588 */
+        -:    2:
+        2:    3:__attribute__((noinline, noclone)) int bar(int x) {
+        2:    4:  __asm volatile("" : : "g"(x) : "memory");
+        2:    5:}
+        -:    6:
+        6:    7:__attribute__((noinline, noclone)) int foo(unsigned x, long long y) {
+        6:    8:  if (y < 0)
+        2:    9:    return 0;
+        4:   10:  if (y < (long long)(4 * x)) {
+        2:   11:    bar(y);
+        2:   12:    return 1;
+        -:   13:  }
+        2:   14:  return 0;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        1:   18:  volatile unsigned x = 10;
+        1:   19:  volatile long long y = -10000;
+        1:   20:  if (foo(x, y) != 0)
+    #####:   21:    __builtin_abort();
+        1:   22:  y = -1;
+        1:   23:  if (foo(x, y) != 0)
+    #####:   24:    __builtin_abort();
+        1:   25:  y = 0;
+        1:   26:  if (foo(x, y) != 1)
+    #####:   27:    __builtin_abort();
+        1:   28:  y = 39;
+        1:   29:  if (foo(x, y) != 1)
+    #####:   30:    __builtin_abort();
+        1:   31:  y = 40;
+        1:   32:  if (foo(x, y) != 0)
+    #####:   33:    __builtin_abort();
+        1:   34:  y = 10000;
+        1:   35:  if (foo(x, y) != 0)
+    #####:   36:    __builtin_abort();
+        1:   37:  return 0;
+        -:   38:}

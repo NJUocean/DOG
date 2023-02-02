@@ -1,0 +1,10 @@
+        -:    0:Source:2140.c
+        -:    0:Graph:2140.gcno
+        -:    0:Data:2140.gcda
+        -:    0:Runs:1
+    #####:    1:foo(p) int *p;
+    #####:    2:{ return (*p & 255) == 0; }
+        -:    3:
+        2:    4:bar(a) { return (a & 0xfff00000) == 0; }
+        -:    5:
+        1:    6:main() { printf("%d%d\n", bar(-1), bar(0)); }

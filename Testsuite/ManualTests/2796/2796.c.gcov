@@ -1,0 +1,16 @@
+        -:    0:Source:2796.c
+        -:    0:Graph:2796.gcno
+        -:    0:Data:2796.gcda
+        -:    0:Runs:1
+        -:    1:/* Bug 14610 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:volatile __float80 x = 30.0;
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  double d = x;
+        1:    9:  if (d != 30.0)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

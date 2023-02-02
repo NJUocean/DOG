@@ -1,0 +1,63 @@
+    1|       |/* Test atomic operations on expressions of variably modified type
+    2|       |   with side effects.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=c11 -pedantic-errors" } */
+    5|       |
+    6|       |#include <stdatomic.h>
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |int s = 5;
+   11|       |
+   12|       |int count = 0;
+   13|       |
+   14|     10|int func(void) {
+   15|     10|  count++;
+   16|     10|  return 0;
+   17|     10|}
+   18|       |
+   19|      1|int main(void) {
+   20|      1|  int vla[s][s];
+   21|      1|  int(*_Atomic p)[s] = &vla[0];
+   22|      1|  int(*b)[s] = kill_dependency(++p);
+   23|      1|  if (b != &vla[1] || p != &vla[1])
+   24|      0|    abort();
+   25|      1|  int(*_Atomic * q)[s] = &p;
+   26|      1|  atomic_store_explicit(q + func(), &vla[0], memory_order_seq_cst);
+   27|      1|  if (count != 1)
+   28|      0|    abort();
+   29|      1|  atomic_store(q + func(), &vla[0]);
+   30|      1|  if (count != 2)
+   31|      0|    abort();
+   32|      1|  (void)atomic_load_explicit(q + func(), memory_order_seq_cst);
+   33|      1|  if (count != 3)
+   34|      0|    abort();
+   35|      1|  (void)atomic_load(q + func());
+   36|      1|  if (count != 4)
+   37|      0|    abort();
+   38|      1|  (void)atomic_exchange_explicit(q + func(), &vla[0], memory_order_seq_cst);
+   39|      1|  if (count != 5)
+   40|      0|    abort();
+   41|      1|  (void)atomic_exchange(q + func(), &vla[0]);
+   42|      1|  if (count != 6)
+   43|      0|    abort();
+   44|      1|  int vla2[s][s];
+   45|      1|  int(*p2)[s] = &vla2[0];
+   46|      1|  int(**qna)[s] = &p2;
+   47|      1|  (void)atomic_compare_exchange_strong_explicit(
+   48|      1|      q + func(), qna, &vla[0], memory_order_seq_cst, memory_order_seq_cst);
+   49|      1|  if (count != 7)
+   50|      0|    abort();
+   51|      1|  (void)atomic_compare_exchange_strong(q + func(), qna, &vla[0]);
+   52|      1|  if (count != 8)
+   53|      0|    abort();
+   54|      1|  (void)atomic_compare_exchange_weak_explicit(
+   55|      1|      q + func(), qna, &vla[0], memory_order_seq_cst, memory_order_seq_cst);
+   56|      1|  if (count != 9)
+   57|      0|    abort();
+   58|      1|  (void)atomic_compare_exchange_weak(q + func(), qna, &vla[0]);
+   59|      1|  if (count != 10)
+   60|      0|    abort();
+   61|      1|  return 0;
+   62|      1|}
+

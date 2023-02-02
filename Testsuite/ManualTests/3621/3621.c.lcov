@@ -1,0 +1,25 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|static int inv_J(int a[][2]) {
+    4|      1|  int i, j;
+    5|      1|  int det = 0.0;
+    6|      3|  for (j = 0; j < 2; ++j)
+    7|      2|    det += a[j][0] + a[j][1];
+    8|      1|  return det;
+    9|      1|}
+   10|       |
+   11|      1|int foo() {
+   12|      1|  int mat[2][2];
+   13|      1|  mat[0][0] = 1;
+   14|      1|  mat[0][1] = 2;
+   15|      1|  mat[1][0] = 4;
+   16|      1|  mat[1][1] = 8;
+   17|      1|  return inv_J(mat);
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  if (foo() != 15)
+   22|      0|    abort();
+   23|      1|  return 0;
+   24|      1|}
+

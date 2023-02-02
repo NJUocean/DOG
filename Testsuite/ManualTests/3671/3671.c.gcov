@@ -1,0 +1,24 @@
+        -:    0:Source:3671.c
+        -:    0:Graph:3671.gcno
+        -:    0:Data:3671.gcda
+        -:    0:Runs:1
+        -:    1:int i;
+        -:    2:struct X {
+        -:    3:  int *p;
+        -:    4:};
+        2:    5:struct X *__attribute__((malloc)) my_alloc(void) {
+        2:    6:  struct X *p = __builtin_malloc(sizeof(struct X));
+        2:    7:  p->p = &i;
+        2:    8:  return p;
+        -:    9:}
+        -:   10:extern void abort(void);
+        1:   11:int main() {
+        -:   12:  struct X *p, *q;
+        1:   13:  p = my_alloc();
+        1:   14:  q = my_alloc();
+        1:   15:  *(p->p) = 1;
+        1:   16:  *(q->p) = 0;
+        1:   17:  if (*(p->p) != 0)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,30 @@
+        -:    0:Source:2701.c
+        -:    0:Graph:2701.gcno
+        -:    0:Data:2701.gcda
+        -:    0:Runs:1
+        -:    1:
+        8:    2:void dummy(x, y) int *x;
+        -:    3:int y;
+        8:    4:{}
+        -:    5:
+        1:    6:int main(argc, argv) int argc;
+        -:    7:char **argv;
+        -:    8:{
+        1:    9:  int number_columns = 9;
+        1:   10:  int cnt0 = 0;
+        1:   11:  int cnt1 = 0;
+        -:   12:  int i, A1;
+        -:   13:
+        9:   14:  for (i = number_columns - 1; i != 0; i--) {
+        8:   15:    if (i == 1) {
+        1:   16:      dummy(&A1, i);
+        1:   17:      cnt0++;
+        -:   18:    } else {
+        7:   19:      dummy(&A1, i - 1);
+        7:   20:      cnt1++;
+        -:   21:    }
+        -:   22:  }
+        1:   23:  if (cnt0 != 1 || cnt1 != 7)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

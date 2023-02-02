@@ -1,0 +1,15 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void exit(int);
+    4|       |extern void abort(void);
+    5|       |int a[10];
+    6|      1|int foo() {
+    7|      1|  exit(0);
+    8|      1|  return 0;
+    9|      1|}
+   10|      1|int main() {
+   11|      1|  if (&a[foo()])
+   12|      0|    abort();
+   13|      1|  return 0;
+   14|      1|}
+

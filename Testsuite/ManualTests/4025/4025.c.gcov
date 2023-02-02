@@ -1,0 +1,20 @@
+        -:    0:Source:4025.c
+        -:    0:Graph:4025.gcno
+        -:    0:Data:4025.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned int u32;
+        -:    2:typedef unsigned long long u64;
+        -:    3:u64 a;
+        -:    4:u32 b;
+        -:    5:
+        1:    6:u64 foo(u32 d) {
+       1*:    7:  a -= d ? 0 : ~a;
+        1:    8:  return a + b;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  u64 x = foo(2);
+        1:   13:  if (x != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

@@ -1,0 +1,19 @@
+        -:    0:Source:3567.c
+        -:    0:Graph:3567.gcno
+        -:    0:Data:3567.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "requires alloca" { ! alloca } { "-O0" } { "" } } */
+        -:    2:/* { dg-require-effective-target trampolines } */
+        -:    3:
+        1:    4:f(n) {
+        1:    5:  int a[n];
+        1:    6:  int g(i) { return a[i]; }
+        1:    7:  a[1] = 4711;
+        1:    8:  return g(1);
+        -:    9:}
+        1:   10:main() {
+        1:   11:  if (f(2) != 4711)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  exit(0);
+        -:   15:}

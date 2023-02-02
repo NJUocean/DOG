@@ -1,0 +1,47 @@
+    1|       |/* Test LOOP generation for very short loops. */
+    2|       |
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O1 -mloop" } */
+    5|       |
+    6|       |/* -O1 in the options is significant.  Without it do-loop will not be
+    7|       |   run.  */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|       |volatile unsigned int int_12345 = 12345;
+   12|       |volatile unsigned int int_0 = 0;
+   13|       |volatile unsigned int int_1 = 1;
+   14|       |
+   15|      3|unsigned int test_loop_sum(unsigned int n) {
+   16|      3|  unsigned i;
+   17|      3|  volatile unsigned int s = 0;
+   18|  12.3k|  for (i = 0; i < n; i++) {
+   19|  12.3k|    s++;
+   20|  12.3k|  }
+   21|      3|  return s;
+   22|      3|}
+   23|       |
+   24|      2|unsigned int test_loop_shift20(unsigned int n) {
+   25|      2|  unsigned i;
+   26|     22|  for (i = 0; i < 10; i++) {
+   27|     20|    n <<= 2;
+   28|     20|  }
+   29|      2|  return n;
+   30|      2|}
+   31|       |
+   32|      1|int main(int argc, char **argv) {
+   33|      1|  if (test_loop_sum(int_0) != 0)
+   34|      0|    abort();
+   35|      1|  if (test_loop_sum(int_1) != 1)
+   36|      0|    abort();
+   37|      1|  if (test_loop_sum(int_12345) != 12345)
+   38|      0|    abort();
+   39|      1|
+   40|      1|  if (test_loop_shift20(int_0) != 0)
+   41|      0|    abort();
+   42|      1|  if (test_loop_shift20(int_1) != (1u << 20))
+   43|      0|    abort();
+   44|      1|
+   45|      1|  return 0;
+   46|      1|}
+

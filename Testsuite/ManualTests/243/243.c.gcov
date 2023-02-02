@@ -1,0 +1,22 @@
+        -:    0:Source:243.c
+        -:    0:Graph:243.gcno
+        -:    0:Data:243.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define D_2 1, 2
+        -:    4:#define C_2(X, I0, I1) X##_a = I0, X##_b = I1
+        -:    5:#define B_2(X, I) C_2(X, I)
+        -:    6:#define A(N, X) B_##N(X, D_##N)
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+        -:   11:int x_a, x_b;
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  A(2, x);
+        1:   15:  if (x_a != 1 || x_b != 2)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

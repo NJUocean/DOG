@@ -1,0 +1,44 @@
+    1|       |/* PR debug/48466 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+    5|       |
+    6|       |struct S {
+    7|       |  unsigned int a;
+    8|       |  unsigned int *b;
+    9|       |};
+   10|       |struct T {
+   11|       |  struct S a;
+   12|       |  struct S b;
+   13|       |};
+   14|       |struct U {
+   15|       |  const char *u;
+   16|       |};
+   17|       |int n[10];
+   18|       |volatile int v;
+   19|       |
+   20|      1|struct U foo(const char *s) {
+   21|      1|  struct U r;
+   22|      1|  r.u = s;
+   23|      1|  return r;
+   24|      1|}
+   25|       |
+   26|      1|void bar(struct T *s, int a, int b) {
+   27|      1|  s->a.a = a;
+   28|      1|  s->a.b = &s->a.a;
+   29|      1|  s->b.a = b;
+   30|      1|  s->b.b = &s->b.a;
+   31|      1|}
+   32|       |
+   33|      1|int main() {
+   34|      1|  struct T t;
+   35|      1|  struct U x = foo("this is x");
+   36|      1|  struct S y, z;
+   37|      1|  y.b = n;         /* { dg-final { gdb-test .+3 "t.a.a" "17" } } */
+   38|      1|  y.a = 0;         /* { dg-final { gdb-test .+2 "*t.a.b" "17" } } */
+   39|      1|  bar(&t, 17, 21); /* { dg-final { gdb-test .+1 "t.b.a" "21" } } */
+   40|      1|  v++;             /* { dg-final { gdb-test . "*t.b.b" "21" } } */
+   41|      1|  z = y;
+   42|      1|  return 0;
+   43|      1|}
+

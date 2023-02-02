@@ -1,0 +1,25 @@
+    1|      4|#define bool _Bool
+    2|       |
+    3|       |bool f(int a, bool c) __attribute__((noinline));
+    4|      4|bool f(int a, bool c) {
+    5|      4|  if (!a)
+    6|      2|    c = !c;
+    7|      4|  return c;
+    8|      4|}
+    9|       |
+   10|      4|void checkf(int a, bool b) {
+   11|      4|  bool c = f(a, b);
+   12|      4|  char d;
+   13|      4|  __builtin_memcpy(&d, &c, 1);
+   14|      4|  if (d != (a == 0) ^ b)
+   15|      0|    __builtin_abort();
+   16|      4|}
+   17|       |
+   18|      1|int main(void) {
+   19|      1|  checkf(0, 0);
+   20|      1|  checkf(0, 1);
+   21|      1|  checkf(1, 1);
+   22|      1|  checkf(1, 0);
+   23|      1|  return 0;
+   24|      1|}
+

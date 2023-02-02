@@ -1,0 +1,25 @@
+        -:    0:Source:288.c
+        -:    0:Graph:288.gcno
+        -:    0:Data:288.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/50983 */
+        -:    2:/* { dg-do compile { target *-*-gnu* } } */
+        -:    3:/* { dg-options "-O0 -gdwarf -gno-column-info" } */
+        -:    4:/* { dg-final { scan-assembler "is_stmt 1" } } */
+        -:    5:
+        -:    6:int i;
+        -:    7:void f() __attribute((section("foo")));
+        1:    8:void f() {
+        1:    9:  if (i)
+    #####:   10:    ++i;
+        -:   11:  else
+        1:   12:    --i;
+        1:   13:}
+        -:   14:
+        1:   15:void fun() { return; }
+        -:   16:
+        1:   17:int main() {
+        1:   18:  f();
+        1:   19:  fun();
+        1:   20:  return 0;
+        -:   21:}

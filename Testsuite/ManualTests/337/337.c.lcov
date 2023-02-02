@@ -1,0 +1,45 @@
+    1|       |/* Duff's device is legal C; test to make sure the compiler
+    2|       |   doesn't complain about it.
+    3|       |
+    4|       |   Jason Thorpe <thorpej@wasabisystems.com>
+    5|       |   Derived from PR 3846.  */
+    6|       |
+    7|       |/* { dg-do run } */
+    8|       |/* { dg-options "-O2" } */
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|       |typedef __SIZE_TYPE__ size_t;
+   14|       |extern int memcmp(const void *, const void *, size_t);
+   15|       |
+   16|      1|void duffcpy(char *dst, const char *src, unsigned long size) {
+   17|      1|  switch (size & 3) {
+   18|     11|    for (;;) {
+   19|     11|      *dst++ = *src++;
+   20|     11|    case 3:
+   21|     11|      *dst++ = *src++;
+   22|     12|    case 2:
+   23|     12|      *dst++ = *src++;
+   24|     12|    case 1:
+   25|     12|      *dst++ = *src++;
+   26|     12|    case 0:
+   27|     12|      if (size <= 3)
+   28|      1|        break;
+   29|     11|      size -= 4;
+   30|     11|    }
+   31|      1|  }
+   32|      1|}
+   33|       |
+   34|       |const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+   35|       |
+   36|      1|int main() {
+   37|      1|  char buf[64];
+   38|      1|
+   39|      1|  duffcpy(buf, testpat, sizeof(testpat));
+   40|      1|  if (memcmp(buf, testpat, sizeof(testpat)) != 0)
+   41|      0|    abort();
+   42|      1|
+   43|      1|  exit(0);
+   44|      1|}
+

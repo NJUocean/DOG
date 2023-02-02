@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O -fdump-tree-ccp1" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |static int g[1];
+    7|       |
+    8|       |static int *const p = &g[0];
+    9|       |static int *const q = &g[0];
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  g[0] = 1;
+   13|      1|  *p = 0;
+   14|      1|  *p = *q;
+   15|      1|  if (g[0] != 0)
+   16|      0|    abort();
+   17|      1|  return 0;
+   18|      1|}
+   19|       |
+   20|       |/* We should have replaced all loads from p and q with the constant
+   21|       |   initial value.  */
+   22|       |
+   23|       |/* { dg-final { scan-tree-dump-times "= p;" 0 "ccp1" } } */
+   24|       |/* { dg-final { scan-tree-dump-times "= q;" 0 "ccp1" } } */
+

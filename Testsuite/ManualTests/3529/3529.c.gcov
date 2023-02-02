@@ -1,0 +1,15 @@
+        -:    0:Source:3529.c
+        -:    0:Graph:3529.gcno
+        -:    0:Data:3529.gcda
+        -:    0:Runs:1
+        1:    1:x(const char *s) {
+        -:    2:  char a[1];
+        1:    3:  const char *ss = s;
+        1:    4:  a[*s++] |= 1;
+        1:    5:  return (int)ss + 1 == (int)s;
+        -:    6:}
+        1:    7:main() {
+        1:    8:  if (x("") != 1)
+    #####:    9:    abort();
+        1:   10:  exit(0);
+        -:   11:}

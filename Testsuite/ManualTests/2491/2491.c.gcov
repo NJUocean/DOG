@@ -1,0 +1,44 @@
+        -:    0:Source:2491.c
+        -:    0:Graph:2491.gcno
+        -:    0:Data:2491.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "--save-temps -mcmse
+        -:    3: * -Wl,--section-start,.gnu.sgstubs=0x00400000" } */
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  unsigned short a : 6;
+        -:    7:  unsigned char b : 3;
+        -:    8:  unsigned char c;
+        -:    9:  unsigned short d : 8;
+        -:   10:} test_st;
+        -:   11:
+        1:   12:test_st __attribute__((cmse_nonsecure_entry)) foo(void) {
+        -:   13:  test_st t;
+        1:   14:  t.a = 63u;
+        1:   15:  t.b = 7u;
+        1:   16:  t.c = 255u;
+        1:   17:  t.d = 255u;
+        1:   18:  return t;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        -:   22:  test_st t;
+        1:   23:  t = foo();
+        1:   24:  if (t.a != 63u || t.b != 7u || t.c != 255u || t.d != 255u)
+    #####:   25:    __builtin_abort();
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-assembler "vstr\tFPCXTNS, \\\[sp, #-4\\\]!" { target
+        -:   30: * arm_cmse_clear_ok } } } */
+        -:   31:/* { dg-final { scan-assembler "movw\tr1, #1855" } } */
+        -:   32:/* { dg-final { scan-assembler "movt\tr1, 65535" } } */
+        -:   33:/* { dg-final { scan-assembler "ands\tr0(, r0)?, r1" } } */
+        -:   34:/* { dg-final { scan-assembler "vscclrm\t\{s0-s15, VPR\}" { target
+        -:   35: * arm_cmse_clear_ok } } } */
+        -:   36:/* { dg-final { scan-assembler "clrm\t\{r1, r2, r3, ip, APSR\}" { target
+        -:   37: * arm_cmse_clear_ok } } } */
+        -:   38:/* { dg-final { scan-assembler "vldr\tFPCXTNS, \\\[sp\\\], #4" { target
+        -:   39: * arm_cmse_clear_ok } } } */
+        -:   40:/* { dg-final { scan-assembler "bxns" } } */

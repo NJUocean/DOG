@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |static struct state {
+    4|       |  int k;
+    5|       |  int dummy;
+    6|       |} states[256];
+    7|       |
+    8|      1|__attribute((noipa)) static void ismatch(int n) {
+    9|      3|  for (int j = 0; j < n; j++) {
+   10|      2|    states[j] = (struct state){0};
+   11|      5|    for (int i = 0; i <= j; i++) {
+   12|      3|      states[i].k++;
+   13|      3|    }
+   14|      2|  }
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  ismatch(2);
+   19|      1|  if (states[0].k != 2)
+   20|      0|    __builtin_abort();
+   21|      1|}
+

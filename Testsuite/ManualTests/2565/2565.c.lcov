@@ -1,0 +1,30 @@
+    1|       |/* Test for stack alignment when PREFERRED_STACK_BOUNDARY < alignment
+    2|       |   of local variable.  */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-O2 -mpreferred-stack-boundary=6 -mincoming-stack-boundary=6" }
+    5|       | */
+    6|       |/* { dg-final { scan-assembler "and\[lq\]?\[\\t \]*\\$-128,\[\\t \]*%\[re\]?sp"
+    7|       | * } } */
+    8|       |/* { dg-final { scan-assembler-not "and\[lq\]?\[\\t \]*\\$-64,\[\\t
+    9|       | * \]*%\[re\]?sp" } } */
+   10|       |/* { dg-skip-if "Options about stack-boundary aren't support" { x86_64-*-mingw*
+   11|       | * } } */
+   12|       |
+   13|       |#include <stddef.h>
+   14|       |
+   15|      1|#define ALIGNMENT 128
+   16|       |
+   17|       |typedef int aligned __attribute__((aligned(ALIGNMENT)));
+   18|       |extern void abort(void);
+   19|       |
+   20|      1|__attribute__((noinline)) void check(void *a) {
+   21|      1|  if (((ptrdiff_t)a & (ALIGNMENT - 1)) != 0)
+   22|      0|    abort();
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  aligned a = 1;
+   27|      1|  check(&a);
+   28|      1|  return 0;
+   29|      1|}
+

@@ -1,0 +1,22 @@
+        -:    0:Source:3623.c
+        -:    0:Graph:3623.gcno
+        -:    0:Data:3623.gcda
+        -:    0:Runs:1
+        1:    1:int __attribute__((noinline)) foo(int *__restrict p, int i) {
+        -:    2:  int *__restrict q;
+        -:    3:  int *__restrict r;
+        -:    4:  int v, w;
+        1:    5:  q = p + 1;
+        1:    6:  r = q - i;
+        1:    7:  v = *r;
+        1:    8:  *p = 1;
+        1:    9:  w = *r;
+        1:   10:  return v + w;
+        -:   11:}
+        -:   12:extern void abort(void);
+        1:   13:int main() {
+        1:   14:  int i = 0;
+        1:   15:  if (foo(&i, 1) != 1)
+    #####:   16:    abort();
+        1:   17:  return 0;
+        -:   18:}

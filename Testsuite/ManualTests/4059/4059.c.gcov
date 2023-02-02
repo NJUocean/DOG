@@ -1,0 +1,29 @@
+        -:    0:Source:4059.c
+        -:    0:Graph:4059.gcno
+        -:    0:Data:4059.gcda
+        -:    0:Runs:1
+        -:    1:struct Foo {
+        -:    2:  int *p;
+        -:    3:  int *q;
+        -:    4:};
+        -:    5:
+        1:    6:void __attribute__((noinline)) bar(int **x) {
+        1:    7:  struct Foo *f = (struct Foo *)(x - 1);
+        1:    8:  *(f->p) = 0;
+        1:    9:}
+        -:   10:
+        1:   11:int foo(void) {
+        -:   12:  struct Foo f;
+        1:   13:  int i = 1, j = 2;
+        1:   14:  f.p = &i;
+        1:   15:  f.q = &j;
+        1:   16:  bar(&f.q);
+        1:   17:  return i;
+        -:   18:}
+        -:   19:
+        -:   20:extern void abort(void);
+        1:   21:int main() {
+        1:   22:  if (foo() != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

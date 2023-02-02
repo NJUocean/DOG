@@ -1,0 +1,47 @@
+        -:    0:Source:69.c
+        -:    0:Graph:69.gcno
+        -:    0:Data:69.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* { dg-do run  } */
+        -:    3:/* { dg-options "-O0" } */
+        -:    4:
+        -:    5:#include <limits.h>
+        -:    6:#define ABS(x) (((x) >= 0) ? (x) : -(x))
+        -:    7:
+        -:    8:#define DEF_TEST(TYPE)                                                         \
+        -:    9:  void foo_##TYPE(signed TYPE x, unsigned TYPE y) {                            \
+        -:   10:    TYPE t = ABS(x);                                                           \
+        -:   11:    if (t != y)                                                                \
+        -:   12:      __builtin_abort();                                                       \
+        -:   13:  }
+        -:   14:
+       5*:   15:DEF_TEST(char);
+       4*:   16:DEF_TEST(short);
+       4*:   17:DEF_TEST(int);
+       4*:   18:DEF_TEST(long);
+        -:   19:
+        1:   20:int main() {
+        1:   21:  foo_char(SCHAR_MIN + 1, SCHAR_MAX);
+        1:   22:  foo_char(0, 0);
+        1:   23:  foo_char(-1, 1);
+        1:   24:  foo_char(1, 1);
+        1:   25:  foo_char(SCHAR_MAX, SCHAR_MAX);
+        -:   26:
+        1:   27:  foo_int(-1, 1);
+        1:   28:  foo_int(0, 0);
+        1:   29:  foo_int(INT_MAX, INT_MAX);
+        1:   30:  foo_int(INT_MIN + 1, INT_MAX);
+        -:   31:
+        1:   32:  foo_short(-1, 1);
+        1:   33:  foo_short(0, 0);
+        1:   34:  foo_short(SHRT_MAX, SHRT_MAX);
+        1:   35:  foo_short(SHRT_MIN + 1, SHRT_MAX);
+        -:   36:
+        1:   37:  foo_long(-1, 1);
+        1:   38:  foo_long(0, 0);
+        1:   39:  foo_long(LONG_MAX, LONG_MAX);
+        1:   40:  foo_long(LONG_MIN + 1, LONG_MAX);
+        -:   41:
+        1:   42:  return 0;
+        -:   43:}

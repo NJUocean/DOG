@@ -1,0 +1,32 @@
+        -:    0:Source:2018.c
+        -:    0:Graph:2018.gcno
+        -:    0:Data:2018.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -funroll-loops --param max-unroll-times=8
+        -:    3: * -fpredictive-commoning -fdump-tree-pcom-details" } */
+        -:    4:
+        -:    5:/* Test for predictive commoning of expressions, without reassociation.  */
+        -:    6:
+        -:    7:void abort(void);
+        -:    8:
+        -:    9:int a[1000], b[1000], c[1000];
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  int i;
+        -:   13:
+     1001:   14:  for (i = 0; i < 1000; i++)
+     1000:   15:    a[i] = b[i] = i;
+        -:   16:
+      998:   17:  for (i = 1; i < 998; i++)
+      997:   18:    c[i] = a[i + 2] * b[i + 1] - b[i - 1] * a[i];
+        -:   19:
+      998:   20:  for (i = 1; i < 998; i++)
+      997:   21:    if (c[i] != 4 * i + 2)
+    #####:   22:      abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* { dg-final { scan-tree-dump-times "Combination" 1 "pcom"} } */
+        -:   28:/* { dg-final { scan-tree-dump-times "Unrolling 3 times." 1 "pcom"} } */

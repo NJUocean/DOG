@@ -1,0 +1,94 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-mmicromips" } */
+    3|       |
+    4|      1|int __attribute__((noinline)) frob(int i) {
+    5|      1|  switch (i) {
+    6|      1|  case -5:
+    7|      1|    return -2;
+    8|      0|  case -3:
+    9|      0|    return -1;
+   10|      0|  case 0:
+   11|      0|    return 0;
+   12|      0|  case 3:
+   13|      0|    return 1;
+   14|      0|  case 5:
+   15|      0|    break;
+   16|      0|  default:
+   17|      0|    __builtin_unreachable();
+   18|      0|  }
+   19|      0|  return i;
+   20|      0|}
+   21|       |
+   22|      1|int main(int argc, char **argv) {
+   23|      1|  asm("" : "+r"(argc));
+   24|      1|  argc = frob((argc & 10) - 5);
+   25|      1|  asm("" : "+r"(argc));
+   26|      1|  return !argc;
+   27|      1|}
+   28|       |
+   29|       |/* This will result in assembly like:
+   30|       |
+   31|       |        .text
+   32|       |        .align	2
+   33|       |        .globl	frob
+   34|       |        .set	nomips16
+   35|       |        .set	micromips
+   36|       |        .ent	frob
+   37|       |        .type	frob, @function
+   38|       |frob:
+   39|       |        .frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
+   40|       |        .mask	0x00000000,0
+   41|       |        .fmask	0x00000000,0
+   42|       |        .set	noreorder
+   43|       |        .set	nomacro
+   44|       |        addiu	$3,$4,5
+   45|       |        sltu	$2,$3,11
+   46|       |        beqzc	$2,$L2
+   47|       |        lui	$2,%hi($L4)
+   48|       |        addiu	$2,$2,%lo($L4)
+   49|       |        lwxs	$3,$3($2)
+   50|       |        jrc	$3
+   51|       |        .rdata
+   52|       |        .align	2
+   53|       |        .align	2
+   54|       |$L4:
+   55|       |        .word	$L3
+   56|       |        .word	$L2
+   57|       |        .word	$L9
+   58|       |        .word	$L2
+   59|       |        .word	$L2
+   60|       |        .word	$L8
+   61|       |        .word	$L2
+   62|       |        .word	$L2
+   63|       |        .word	$L7
+   64|       |        .word	$L2
+   65|       |        .word	$L8
+   66|       |        .text
+   67|       |$L8:
+   68|       |        jr	$31
+   69|       |        move	$2,$4
+   70|       |
+   71|       |$L9:
+   72|       |        jr	$31
+   73|       |        li	$2,-1			# 0xffffffffffffffff
+   74|       |
+   75|       |$L3:
+   76|       |        jr	$31
+   77|       |        li	$2,-2			# 0xfffffffffffffffe
+   78|       |
+   79|       |$L7:
+   80|       |        jr	$31
+   81|       |        li	$2,1			# 0x1
+   82|       |
+   83|       |$L2:
+   84|       |        .insn
+   85|       |        .set	macro
+   86|       |        .set	reorder
+   87|       |        .end	frob
+   88|       |        .size	frob, .-frob
+   89|       |
+   90|       |  for `frob' and we want to make sure it links correctly owing to the
+   91|       |  `.insn' pseudo-op which needs to be there at `$L2' as there's no
+   92|       |  code following and the label is a microMIPS branch target (even though
+   93|       |  the branch is never taken.  See also insn-casesi.c.  */
+

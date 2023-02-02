@@ -1,0 +1,22 @@
+    1|       |/* PR tree-optimization/65215 */
+    2|       |
+    3|      4|static inline unsigned int foo(unsigned int x) {
+    4|      4|  return (x >> 24) | ((x >> 8) & 0xff00) | ((x << 8) & 0xff0000) | (x << 24);
+    5|      4|}
+    6|       |
+    7|       |__attribute__((noinline, noclone)) unsigned long long
+    8|      1|bar(unsigned long long *x) {
+    9|      1|  return ((unsigned long long)foo(*x) << 32) | foo(*x >> 32);
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  if (__CHAR_BIT__ != 8 || sizeof(unsigned int) != 4 ||
+   14|      1|      sizeof(unsigned long long) != 8)
+   15|      0|    return 0;
+   16|      1|  unsigned long long l =
+   17|      1|      foo(0xfeedbea8U) | ((unsigned long long)foo(0xdeadbeefU) << 32);
+   18|      1|  if (bar(&l) != 0xfeedbea8deadbeefULL)
+   19|      0|    __builtin_abort();
+   20|      1|  return 0;
+   21|      1|}
+

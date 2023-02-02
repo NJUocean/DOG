@@ -1,0 +1,9 @@
+    1|      1|void f(long i) {
+    2|      1|  if ((signed char)i < 0 || (signed char)i == 0)
+    3|      0|    abort();
+    4|      1|  else
+    5|      1|    exit(0);
+    6|      1|}
+    7|       |
+    8|      1|main() { f(0xffffff01); }
+

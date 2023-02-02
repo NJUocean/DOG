@@ -1,0 +1,15 @@
+        -:    0:Source:2874.c
+        -:    0:Graph:2874.gcno
+        -:    0:Data:2874.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that we don't ICE trying to put float data in .sdata2.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-require-effective-target powerpc_eabi_ok } */
+        -:    4:/* { dg-options "-msdata=eabi -mcall-eabi -G 8" } */
+        -:    5:
+        -:    6:double x;
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  x = x * 2;
+        1:   10:  return (0);
+        -:   11:}

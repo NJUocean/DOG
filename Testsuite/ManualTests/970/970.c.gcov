@@ -1,0 +1,34 @@
+        -:    0:Source:970.c
+        -:    0:Graph:970.gcno
+        -:    0:Data:970.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fno-tree-loop-ivcanon -fno-tree-vectorize" } */
+        -:    3:
+        -:    4:static int in[8][4];
+        -:    5:static int out[4];
+        -:    6:static const int check_result[] = {0, 16, 256, 4096};
+        -:    7:
+        1:    8:static inline void foo() {
+        -:    9:  int sum;
+        -:   10:  int i, j, k;
+        5:   11:  for (k = 0; k < 4; k++) {
+        4:   12:    sum = 1;
+       20:   13:    for (j = 0; j < 4; j++)
+       80:   14:      for (i = 0; i < 4; i++)
+       64:   15:        sum *= in[i + k][j];
+        4:   16:    out[k] = sum;
+        -:   17:  }
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        -:   21:  int i, j, k;
+        9:   22:  for (i = 0; i < 8; i++)
+       40:   23:    for (j = 0; j < 4; j++)
+       32:   24:      in[i][j] = (i + 2) / 3;
+        1:   25:  foo();
+        5:   26:  for (k = 0; k < 4; k++)
+        4:   27:    if (out[k] != check_result[k])
+    #####:   28:      __builtin_abort();
+        1:   29:  return 0;
+        -:   30:}

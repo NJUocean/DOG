@@ -1,0 +1,13 @@
+        -:    0:Source:3163.c
+        -:    0:Graph:3163.gcno
+        -:    0:Data:3163.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously part of gcc.misc-tests/dg-9.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-options "-Wall" } */
+        -:    4:
+        1:    5:main(int argc, char *argv[]) { /* { dg-bogus "return type" "bogus pass test" {
+        -:    6:                                  xfail *-*-* } } */
+        -:    7:}
+        -:    8:
+        -:    9:/* { dg-excess-errors "bogus pass test" { xfail *-*-* } } */

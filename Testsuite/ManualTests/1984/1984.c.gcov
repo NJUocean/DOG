@@ -1,0 +1,33 @@
+        -:    0:Source:1984.c
+        -:    0:Graph:1984.gcno
+        -:    0:Data:1984.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 79800 - wrong snprintf result range with precision in a narrow
+        -:    2:   negative-positive range
+        -:    3:   { dg-do "run" { target c99_runtime } }
+        -:    4:   { dg-options "-O2 -Wall" } */
+        -:    5:
+        -:    6:#define FMT "%.*a"
+        -:    7:char fmt[] = FMT;
+        -:    8:
+        -:    9:volatile double x = 1.23456789;
+        -:   10:
+        1:   11:void f(int p) {
+        1:   12:  if (p < -1 || 0 < p)
+    #####:   13:    p = -1;
+        -:   14:
+        -:   15:  char d[30];
+        1:   16:  int n1 = __builtin_sprintf(d, "%.*a", p, x);
+       1*:   17:  const char *s = n1 < 20 ? "< 20" : ">= 20";
+        -:   18:
+        1:   19:  if (__builtin_strcmp(s, ">= 20"))
+    #####:   20:    __builtin_abort();
+        1:   21:}
+        -:   22:
+        -:   23:volatile int i = -1;
+        -:   24:
+        1:   25:int main() {
+        1:   26:  f(i);
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

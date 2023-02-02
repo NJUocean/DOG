@@ -1,0 +1,41 @@
+    1|       |/* { dg-require-effective-target int32plus } */
+    2|       |
+    3|       |#include <stdio.h>
+    4|       |typedef struct {
+    5|       |  int x;
+    6|       |  int y;
+    7|       |} S;
+    8|       |extern int foo(S *);
+    9|       |int hi = 0, lo = 0;
+   10|       |
+   11|      1|int main() {
+   12|      1|  S a;
+   13|      1|  int r;
+   14|      1|  a.x = (int)0x00010000;
+   15|      1|  a.y = 1;
+   16|      1|  r = foo(&a);
+   17|      1|  if (r == 2 && lo == 0 && hi == 1) {
+   18|      1|    exit(0);
+   19|      1|  }
+   20|      0|  abort();
+   21|      0|}
+   22|       |
+   23|       |typedef unsigned short u16;
+   24|       |
+   25|      1|__attribute__((noinline)) int foo(S *ptr) {
+   26|      1|  int a = ptr->x;
+   27|      1|  int c = 0;
+   28|      1|  u16 b = (u16)a;
+   29|      1|  if (b != 0) {
+   30|      0|    lo = 1;
+   31|      0|    c += ptr->y;
+   32|      0|  }
+   33|      1|  b = a >> 16;
+   34|      1|  if (b != 0) {
+   35|      1|    hi = 1;
+   36|      1|    c += ptr->y;
+   37|      1|  }
+   38|      1|  c += ptr->y;
+   39|      1|  return c;
+   40|      1|}
+

@@ -1,0 +1,21 @@
+        -:    0:Source:2769.c
+        -:    0:Graph:2769.gcno
+        -:    0:Data:2769.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-skip-if "no stack realignment" { *-*-darwin* } } */
+        -:    4:/* { dg-options "-fstack-usage -msse2 -mforce-drap" } */
+        -:    5:
+        -:    6:typedef int __attribute__((vector_size(16))) vec;
+        -:    7:
+        1:    8:vec foo(vec v) { return v; }
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  vec V;
+        1:   12:  V = foo(V);
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-final { scan-stack-usage "main\t48\tdynamic,bounded" } } */
+        -:   17:/* { dg-final { cleanup-stack-usage } } */

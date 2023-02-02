@@ -1,0 +1,35 @@
+        -:    0:Source:3475.c
+        -:    0:Graph:3475.gcno
+        -:    0:Data:3475.gcda
+        -:    0:Runs:1
+        -:    1:void abort(void);
+        -:    2:
+        5:    3:int movegt(int x, int y, long long a) {
+        -:    4:  int i;
+        5:    5:  int ret = 0;
+       10:    6:  for (i = 0; i < y; i++) {
+        5:    7:    if (a >= (long long)0xf000000000000000LL)
+        3:    8:      ret = x;
+        -:    9:    else
+        2:   10:      ret = y;
+        -:   11:  }
+        5:   12:  return ret;
+        -:   13:}
+        -:   14:
+        -:   15:struct test {
+        -:   16:  long long val;
+        -:   17:  int ret;
+        -:   18:} tests[] = {
+        -:   19:    {0xf000000000000000LL, -1}, {0xefffffffffffffffLL, 1},
+        -:   20:    {0xf000000000000001LL, -1}, {0x0000000000000000LL, -1},
+        -:   21:    {0x8000000000000000LL, 1},
+        -:   22:};
+        -:   23:
+        1:   24:int main() {
+        -:   25:  int i;
+        6:   26:  for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
+        5:   27:    if (movegt(-1, 1, tests[i].val) != tests[i].ret)
+    #####:   28:      abort();
+        -:   29:  }
+        1:   30:  return 0;
+        -:   31:}

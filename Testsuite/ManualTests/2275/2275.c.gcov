@@ -1,0 +1,19 @@
+        -:    0:Source:2275.c
+        -:    0:Graph:2275.gcno
+        -:    0:Data:2275.gcda
+        -:    0:Runs:1
+        2:    1:static int f(int a) {
+        2:    2:  if (a == 0)
+        1:    3:    return 0;
+        -:    4:  do
+        1:    5:    if (a & 128)
+    #####:    6:      return 1;
+        1:    7:  while (f(0));
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (f(~128))
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

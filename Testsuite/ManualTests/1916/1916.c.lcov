@@ -1,0 +1,56 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+    3|       |/* { dg-require-effective-target size20plus } */
+    4|       |/* { dg-skip-if "too big data segment" { visium-*-* } } */
+    5|       |
+    6|  66.3k|#define M 256
+    7|       |int a[M][M], b[M][M], c[M], d[M];
+    8|      1|void __attribute__((noinline)) simple_reduc_1(int n) {
+    9|    257|  for (int j = 0; j < n; j++) {
+   10|    256|    int sum = c[j];
+   11|  65.7k|    for (int i = 0; i < n; i++)
+   12|  65.5k|      sum = sum + a[i][j] * b[i][j];
+   13|    256|
+   14|    256|    c[j] = sum;
+   15|    256|  }
+   16|      1|}
+   17|       |
+   18|      1|void __attribute__((noinline)) simple_reduc_2(int n) {
+   19|    257|  for (int j = 0; j < n; j++) {
+   20|    256|    int sum = d[j];
+   21|  65.7k|    for (int i = 0; i < n; i++)
+   22|  65.5k|      sum = sum + a[i][j] * b[i][j];
+   23|    256|
+   24|    256|    asm volatile("" ::: "memory");
+   25|    256|    d[j] = sum;
+   26|    256|  }
+   27|      1|}
+   28|       |
+   29|       |extern void abort();
+   30|       |
+   31|    256|static void __attribute__((noinline)) init(int i) {
+   32|    256|  c[i] = 0;
+   33|    256|  d[i] = 0;
+   34|  65.7k|  for (int j = 0; j < M; j++) {
+   35|  65.5k|    a[i][j] = i;
+   36|  65.5k|    b[i][j] = j;
+   37|  65.5k|  }
+   38|    256|}
+   39|       |
+   40|      1|int main(void) {
+   41|    257|  for (int i = 0; i < M; ++i)
+   42|    256|    init(i);
+   43|      1|
+   44|      1|  simple_reduc_1(M);
+   45|      1|  simple_reduc_2(M);
+   46|      1|
+   47|    257|  for (int i = 0; i < M; ++i)
+   48|    256|    if (c[i] != d[i])
+   49|      0|      abort();
+   50|      1|
+   51|      1|  return 0;
+   52|      1|}
+   53|       |
+   54|       |/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+   55|       | * interchanged" 1 "linterchange" } } */
+

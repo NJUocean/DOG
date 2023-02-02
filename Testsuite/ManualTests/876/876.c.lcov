@@ -1,0 +1,14 @@
+    1|       |/* PR debug/43084 */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O1 -fwhole-program -fcompare-debug" } */
+    4|       |
+    5|       |struct S {
+    6|       |  int a;
+    7|       |};
+    8|       |
+    9|      1|int main() {
+   10|      1|  struct S s;
+   11|      1|  struct S *p = &s;
+   12|      1|  return p->a;
+   13|      1|}
+

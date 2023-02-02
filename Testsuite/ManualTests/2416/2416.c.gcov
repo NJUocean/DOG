@@ -1,0 +1,31 @@
+        -:    0:Source:2416.c
+        -:    0:Graph:2416.gcno
+        -:    0:Data:2416.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target fpic } */
+        -:    3:/* { dg-require-effective-target aarch64_small_fpic } */
+        -:    4:/* { dg-options "-O2 -fpic -fno-inline --save-temps" } */
+        -:    5:/* { dg-skip-if "-fpic for AArch64 small code model" { aarch64*-*-* }  {
+        -:    6: * "-mcmodel=tiny" "-mcmodel=large" } { "" } } */
+        -:    7:
+        -:    8:void abort();
+        -:    9:int global_a;
+        -:   10:
+        1:   11:int initialize(void) {
+        1:   12:  global_a = 0x10;
+        1:   13:  return global_a - 1;
+        -:   14:}
+        -:   15:
+        1:   16:int main(int argc, char **argv) {
+        1:   17:  int a = initialize();
+        -:   18:
+        1:   19:  if (a != global_a - 1)
+    #####:   20:    abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-assembler-times "adrp\tx\[0-9\]+, _GLOBAL_OFFSET_TABLE" 2 }
+        -:   26: * } */
+        -:   27:/* { dg-final { cleanup-saved-temps } } */

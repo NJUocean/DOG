@@ -1,0 +1,17 @@
+        -:    0:Source:74.c
+        -:    0:Graph:74.gcno
+        -:    0:Data:74.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-additional-options "-fexceptions" } */
+        -:    2:/* TODO:is there a way to automatically run the tests on various
+        -:    3:   optimizations levels, and with/without debuginfo, rather than
+        -:    4:   hardcoding options?  Adapt from torture .exp, presumably.  */
+        -:    5:
+        -:    6:#include <stdio.h>
+        1:    7:int main() {
+        1:    8:  FILE *f = fopen("conftest.out", "w");
+       1*:    9:  return ferror(f) || fclose(f) != 0;
+        -:   10:
+        -:   11:  ;
+        -:   12:  return 0;
+        -:   13:}

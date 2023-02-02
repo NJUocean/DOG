@@ -1,0 +1,28 @@
+        -:    0:Source:1715.c
+        -:    0:Graph:1715.gcno
+        -:    0:Data:1715.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:unsigned long a, c;
+        -:    5:unsigned b;
+        -:    6:int d, e;
+        1:    7:long f() {
+        1:    8:  unsigned long g = 0;
+        4:    9:  for (d = 0; d < 5; d += 2)
+        9:   10:    for (e = 0; e < 5; e += 3) {
+        6:   11:      c = 4 + b;
+        6:   12:      g = -b - b;
+        6:   13:      b = 5 * (b << 24);
+        -:   14:    }
+        1:   15:  a = g;
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  f();
+        1:   21:  if (a)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

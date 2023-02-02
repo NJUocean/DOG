@@ -1,0 +1,60 @@
+    1|       |
+    2|       |typedef __SIZE_TYPE__ size_t;
+    3|       |typedef unsigned int index_ty;
+    4|       |typedef index_ty *index_list_ty;
+    5|       |
+    6|       |struct mult_index {
+    7|       |  index_ty index;
+    8|       |  unsigned int count;
+    9|       |};
+   10|       |
+   11|       |struct mult_index_list {
+   12|       |  struct mult_index *item;
+   13|       |  size_t nitems;
+   14|       |  size_t nitems_max;
+   15|       |
+   16|       |  struct mult_index *item2;
+   17|       |  size_t nitems2_max;
+   18|       |};
+   19|       |
+   20|      2|int __attribute__((noinline)) hash_find_entry(size_t *result) {
+   21|      2|  *result = 2;
+   22|      2|  return 0;
+   23|      2|}
+   24|       |
+   25|       |extern void abort(void);
+   26|      1|struct mult_index *__attribute__((noinline)) foo(size_t n) {
+   27|      1|  static count = 0;
+   28|      1|  if (count++ > 0)
+   29|      0|    abort();
+   30|      1|  return 0;
+   31|      1|}
+   32|       |
+   33|      1|int main(void) {
+   34|      1|  size_t nitems = 0;
+   35|      1|
+   36|      2|  for (;;) {
+   37|      2|    size_t list;
+   38|      2|
+   39|      2|    hash_find_entry(&list);
+   40|      2|    {
+   41|      2|      size_t len2 = list;
+   42|      2|      struct mult_index *destptr;
+   43|      2|      struct mult_index *dest;
+   44|      2|      size_t new_max = nitems + len2;
+   45|      2|
+   46|      2|      if (new_max != len2)
+   47|      1|        break;
+   48|      1|      dest = foo(new_max);
+   49|      1|
+   50|      1|      destptr = dest;
+   51|      3|      while (len2--)
+   52|      2|        destptr++;
+   53|      1|
+   54|      1|      nitems = destptr - dest;
+   55|      1|    }
+   56|      1|  }
+   57|      1|
+   58|      1|  return 0;
+   59|      1|}
+

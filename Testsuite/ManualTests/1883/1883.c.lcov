@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fdump-tree-gimple" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct S {
+    6|       |  int i;
+    7|       |};
+    8|       |struct S arr[32];
+    9|       |volatile int count = 0;
+   10|       |
+   11|      1|struct S __attribute__((noinline)) incr() {
+   12|      1|  ++count;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  arr[count++] = incr();
+   17|      1|  if (count != 2)
+   18|      0|    abort();
+   19|      1|  return 0;
+   20|      1|}
+   21|       |
+   22|       |/* { dg-final { scan-tree-dump-times " = count;" 3 "gimple" } } */
+

@@ -1,0 +1,22 @@
+        -:    0:Source:1065.c
+        -:    0:Graph:1065.gcno
+        -:    0:Data:1065.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:struct A {
+        -:    5:  int b : 1;
+        -:    6:};
+        -:    7:
+        -:    8:int d;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  struct A e = {0};
+        1:   12:  if (!d)
+        1:   13:    e.b = -1;
+        1:   14:  if (!e.b)
+    #####:   15:    __builtin_abort();
+        -:   16:
+        1:   17:  return 0;
+        -:   18:}

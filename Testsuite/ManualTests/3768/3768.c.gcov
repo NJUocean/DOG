@@ -1,0 +1,27 @@
+        -:    0:Source:3768.c
+        -:    0:Graph:3768.gcno
+        -:    0:Data:3768.gcda
+        -:    0:Runs:1
+        -:    1:typedef long mpt;
+        -:    2:
+        1:    3:int f(mpt us, mpt vs) {
+        -:    4:  long aus;
+        -:    5:  long avs;
+        -:    6:
+        1:    7:  aus = us >= 0 ? us : -us;
+        1:    8:  avs = vs >= 0 ? vs : -vs;
+        -:    9:
+        1:   10:  if (aus < avs) {
+        1:   11:    long t = aus;
+        1:   12:    aus = avs;
+        1:   13:    avs = aus;
+        -:   14:  }
+        -:   15:
+        1:   16:  return avs;
+        -:   17:}
+        -:   18:
+        1:   19:main() {
+        1:   20:  if (f((mpt)3, (mpt)17) != 17)
+    #####:   21:    abort();
+        1:   22:  exit(0);
+        -:   23:}

@@ -1,0 +1,33 @@
+    1|       |
+    2|       |
+    3|       |/* Test that (p!=0) + (q!=0) is computed as int,
+    4|       |    not boolean */
+    5|       |/* { dg-options "-O3" } */
+    6|       |/* { dg-do run } */
+    7|       |extern void abort(void);
+    8|      1|char *foo(char *p, char *q) {
+    9|      1|  int x = (p != 0) + (q != 0);
+   10|      1|  if (x == 2)
+   11|      1|    return "a";
+   12|      0|  else
+   13|      0|    return 0;
+   14|      1|}
+   15|       |extern char *bar(char *, char *) __attribute__((noinline));
+   16|      1|char *bar(char *first, char *last) {
+   17|      1|  int y;
+   18|      1|  if (!first)
+   19|      0|    return last;
+   20|      1|  if (!last)
+   21|      0|    return first;
+   22|      1|  if (*first == 'a')
+   23|      1|    return foo(first, last);
+   24|      0|  return 0;
+   25|      0|}
+   26|      1|int main() {
+   27|      1|  char *p = "a", *q = "b";
+   28|      1|  if (p)
+   29|      1|    if (bar(p, q))
+   30|      1|      return 0;
+   31|      0|  abort();
+   32|      0|}
+

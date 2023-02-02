@@ -1,0 +1,15 @@
+        -:    0:Source:1273.c
+        -:    0:Graph:1273.gcno
+        -:    0:Data:1273.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:extern void abort(void);
+        1:    5:int main() {
+        1:    6:  int a1 = 40000;
+        1:    7:  int c1 = (((int)(short)(a1 - 10000)) + 10000) * 2;
+        1:    8:  if (c1 != 80000)
+    #####:    9:    abort();
+        1:   10:  return 0;
+        -:   11:}

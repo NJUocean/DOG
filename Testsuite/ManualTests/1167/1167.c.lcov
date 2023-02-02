@@ -1,0 +1,120 @@
+    1|       |/* Simple alignment checks;
+    2|       |   looking for compiler/assembler alignment disagreements,
+    3|       |   agreement between struct initialization and access.  */
+    4|       |struct a_short {
+    5|       |  char c;
+    6|       |  short s;
+    7|       |} s_c_s = {'a', 13};
+    8|       |struct a_int {
+    9|       |  char c;
+   10|       |  int i;
+   11|       |} s_c_i = {'b', 14};
+   12|       |struct b_int {
+   13|       |  short s;
+   14|       |  int i;
+   15|       |} s_s_i = {15, 16};
+   16|       |struct a_float {
+   17|       |  char c;
+   18|       |  float f;
+   19|       |} s_c_f = {'c', 17.0};
+   20|       |struct b_float {
+   21|       |  short s;
+   22|       |  float f;
+   23|       |} s_s_f = {18, 19.0};
+   24|       |struct a_double {
+   25|       |  char c;
+   26|       |  double d;
+   27|       |} s_c_d = {'d', 20.0};
+   28|       |struct b_double {
+   29|       |  short s;
+   30|       |  double d;
+   31|       |} s_s_d = {21, 22.0};
+   32|       |struct c_double {
+   33|       |  int i;
+   34|       |  double d;
+   35|       |} s_i_d = {23, 24.0};
+   36|       |struct d_double {
+   37|       |  float f;
+   38|       |  double d;
+   39|       |} s_f_d = {25.0, 26.0};
+   40|       |struct a_ldouble {
+   41|       |  char c;
+   42|       |  long double ld;
+   43|       |} s_c_ld = {'e', 27.0};
+   44|       |struct b_ldouble {
+   45|       |  short s;
+   46|       |  long double ld;
+   47|       |} s_s_ld = {28, 29.0};
+   48|       |struct c_ldouble {
+   49|       |  int i;
+   50|       |  long double ld;
+   51|       |} s_i_ld = {30, 31.0};
+   52|       |struct d_ldouble {
+   53|       |  float f;
+   54|       |  long double ld;
+   55|       |} s_f_ld = {32.0, 33.0};
+   56|       |struct e_ldouble {
+   57|       |  double d;
+   58|       |  long double ld;
+   59|       |} s_d_ld = {34.0, 35.0};
+   60|       |
+   61|      1|int main() {
+   62|      1|  if (s_c_s.c != 'a')
+   63|      0|    abort();
+   64|      1|  if (s_c_s.s != 13)
+   65|      0|    abort();
+   66|      1|  if (s_c_i.c != 'b')
+   67|      0|    abort();
+   68|      1|  if (s_c_i.i != 14)
+   69|      0|    abort();
+   70|      1|  if (s_s_i.s != 15)
+   71|      0|    abort();
+   72|      1|  if (s_s_i.i != 16)
+   73|      0|    abort();
+   74|      1|  if (s_c_f.c != 'c')
+   75|      0|    abort();
+   76|      1|  if (s_c_f.f != 17.0)
+   77|      0|    abort();
+   78|      1|  if (s_s_f.s != 18)
+   79|      0|    abort();
+   80|      1|  if (s_s_f.f != 19.0)
+   81|      0|    abort();
+   82|      1|  if (s_c_d.c != 'd')
+   83|      0|    abort();
+   84|      1|  if (s_c_d.d != 20.0)
+   85|      0|    abort();
+   86|      1|  if (s_s_d.s != 21)
+   87|      0|    abort();
+   88|      1|  if (s_s_d.d != 22.0)
+   89|      0|    abort();
+   90|      1|  if (s_i_d.i != 23)
+   91|      0|    abort();
+   92|      1|  if (s_i_d.d != 24.0)
+   93|      0|    abort();
+   94|      1|  if (s_f_d.f != 25.0)
+   95|      0|    abort();
+   96|      1|  if (s_f_d.d != 26.0)
+   97|      0|    abort();
+   98|      1|  if (s_c_ld.c != 'e')
+   99|      0|    abort();
+  100|      1|  if (s_c_ld.ld != 27.0)
+  101|      0|    abort();
+  102|      1|  if (s_s_ld.s != 28)
+  103|      0|    abort();
+  104|      1|  if (s_s_ld.ld != 29.0)
+  105|      0|    abort();
+  106|      1|  if (s_i_ld.i != 30)
+  107|      0|    abort();
+  108|      1|  if (s_i_ld.ld != 31.0)
+  109|      0|    abort();
+  110|      1|  if (s_f_ld.f != 32.0)
+  111|      0|    abort();
+  112|      1|  if (s_f_ld.ld != 33.0)
+  113|      0|    abort();
+  114|      1|  if (s_d_ld.d != 34.0)
+  115|      0|    abort();
+  116|      1|  if (s_d_ld.ld != 35.0)
+  117|      0|    abort();
+  118|      1|  return 0;
+  119|      1|}
+

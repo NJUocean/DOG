@@ -1,0 +1,52 @@
+        -:    0:Source:683.c
+        -:    0:Graph:683.gcno
+        -:    0:Data:683.gcda
+        -:    0:Runs:1
+        -:    1:/* Limit this to known non-strict alignment targets.  */
+        -:    2:/* { dg-do run { target { i?86-*-linux* x86_64-*-linux* } } } */
+        -:    3:/* { dg-options "-O -fsanitize=alignment -fsanitize-undefined-trap-on-error
+        -:    4: * -Wno-address-of-packed-member -fdump-tree-sanopt-details" } */
+        -:    5:/* { dg-skip-if "" { *-*-* } { "-flto -fno-fat-lto-objects" } } */
+        -:    6:/* { dg-shouldfail "ubsan" } */
+        -:    7:
+        -:    8:struct S {
+        -:    9:  int a;
+        -:   10:  char b;
+        -:   11:  long long c;
+        -:   12:  short d[10];
+        -:   13:};
+        -:   14:struct T {
+        -:   15:  char a;
+        -:   16:  long long b;
+        -:   17:};
+        -:   18:struct U {
+        -:   19:  char a;
+        -:   20:  int b;
+        -:   21:  int c;
+        -:   22:  long long d;
+        -:   23:  struct S e;
+        -:   24:  struct T f;
+        -:   25:} __attribute__((packed));
+        -:   26:struct V {
+        -:   27:  long long a;
+        -:   28:  struct S b;
+        -:   29:  struct T c;
+        -:   30:  struct U u;
+        -:   31:} v;
+        -:   32:
+        1:   33:__attribute__((noinline, noclone)) int foo(struct S *p) {
+        -:   34:  volatile int i;
+        1:   35:  i = p->a;
+        1:   36:  i = p->a;
+        1:   37:  i = p->a;
+        1:   38:  i = p->a;
+        1:   39:  return p->a;
+        -:   40:}
+        -:   41:
+        1:   42:int main() {
+        1:   43:  if (foo(&v.u.e))
+    #####:   44:    __builtin_abort();
+        1:   45:  return 0;
+        -:   46:}
+        -:   47:
+        -:   48:/* { dg-final { scan-tree-dump-times "Optimizing" 4 "sanopt"} } */

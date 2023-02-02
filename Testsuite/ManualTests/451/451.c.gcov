@@ -1,0 +1,25 @@
+        -:    0:Source:451.c
+        -:    0:Graph:451.gcno
+        -:    0:Data:451.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options " -O1 -floop-nest-optimize" } */
+        -:    3:/* { dg-additional-options "-flto" { target lto } } */
+        -:    4:
+        -:    5:int a1, c1, cr, kt;
+        -:    6:int aa[2];
+        -:    7:
+        1:    8:int ce(void) {
+        2:    9:  while (a1 < 1) {
+        -:   10:    int g8;
+        4:   11:    for (g8 = 0; g8 < 3; ++g8)
+        3:   12:      if (c1 != 0)
+    #####:   13:        cr = aa[a1 * 2] = kt;
+        3:   14:    for (c1 = 0; c1 < 2; ++c1)
+        2:   15:      aa[c1] = cr;
+        1:   16:    ++a1;
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) { return ce(); }

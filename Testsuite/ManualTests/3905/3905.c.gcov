@@ -1,0 +1,22 @@
+        -:    0:Source:3905.c
+        -:    0:Graph:3905.gcno
+        -:    0:Data:3905.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        1:    4:__attribute__((noinline)) double direct(int x, ...) { return x * x; }
+        -:    5:
+        1:    6:__attribute__((noinline)) double broken(double (*indirect)(int x, ...), int v) {
+        1:    7:  return indirect(v);
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  double d1, d2;
+        1:   12:  int i = 2;
+        1:   13:  d1 = broken(direct, i);
+        1:   14:  if (d1 != i * i) {
+    #####:   15:    __builtin_abort();
+        -:   16:  }
+        1:   17:  return 0;
+        -:   18:}

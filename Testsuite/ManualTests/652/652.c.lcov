@@ -1,0 +1,8 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O1 -flive-patching -fwhole-program" } */
+    3|       |
+    4|      1|int main() { return 0; }
+    5|       |
+    6|       |/* { dg-message "'-fwhole-program' is incompatible with
+    7|       | * '-flive-patching=inline-only-static|inline-clone’" "" {target "*-*-*"} 0 } */
+

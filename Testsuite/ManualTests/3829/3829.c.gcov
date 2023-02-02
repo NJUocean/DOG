@@ -1,0 +1,15 @@
+        -:    0:Source:3829.c
+        -:    0:Graph:3829.gcno
+        -:    0:Data:3829.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/59388 */
+        -:    2:
+        -:    3:int a;
+        -:    4:struct S {
+        -:    5:  unsigned int f : 1;
+        -:    6:} b;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  a = (0 < b.f) | b.f;
+        1:   10:  return a;
+        -:   11:}

@@ -1,0 +1,19 @@
+        -:    0:Source:222.c
+        -:    0:Graph:222.gcno
+        -:    0:Data:222.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:/* Verify that cleanup works in the most basic of ways.  */
+        -:    4:
+        -:    5:extern void exit(int);
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:static void handler(void *p __attribute__((unused))) { exit(0); }
+        -:    9:
+       1*:   10:static void doit(void) { int x __attribute__((cleanup(handler))); }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  doit();
+    #####:   14:  abort();
+        -:   15:}

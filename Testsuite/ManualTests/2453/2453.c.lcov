@@ -1,0 +1,46 @@
+    1|       |/* PR rtl-optimization/20290  */
+    2|       |
+    3|       |/* We used to mis-optimize the second loop in main on at least ppc and
+    4|       |   arm, because tree loop would change the loop to something like:
+    5|       |
+    6|       |  ivtmp.65 = &l[i];
+    7|       |  ivtmp.16 = 113;
+    8|       |  goto <bb 4> (<L4>);
+    9|       |
+   10|       |<L3>:;
+   11|       |  *(ivtmp.65 + 4294967292B) = 9;
+   12|       |  i = i + 1;
+   13|       |
+   14|       |<L4>:;
+   15|       |  ivtmp.16 = ivtmp.16 - 1;
+   16|       |  ivtmp.65 = ivtmp.65 + 4B;
+   17|       |  if (ivtmp.16 != 0) goto <L3>;
+   18|       |
+   19|       |  We used to consider the increment of i as executed in every
+   20|       |  iteration, so we'd miscompute the final value.  */
+   21|       |
+   22|       |extern void abort(void);
+   23|       |
+   24|      1|void check(unsigned int *l) {
+   25|      1|  int i;
+   26|    289|  for (i = 0; i < 288; i++)
+   27|    288|    if (l[i] != 7 + (i < 256 || i >= 280) + (i >= 144 && i < 256))
+   28|      0|      abort();
+   29|      1|}
+   30|       |
+   31|      1|int main(void) {
+   32|      1|  int i;
+   33|      1|  unsigned int l[288];
+   34|      1|
+   35|    145|  for (i = 0; i < 144; i++)
+   36|    144|    l[i] = 8;
+   37|    113|  for (; i < 256; i++)
+   38|    112|    l[i] = 9;
+   39|     25|  for (; i < 280; i++)
+   40|     24|    l[i] = 7;
+   41|      9|  for (; i < 288; i++)
+   42|      8|    l[i] = 8;
+   43|      1|  check(l);
+   44|      1|  return 0;
+   45|      1|}
+

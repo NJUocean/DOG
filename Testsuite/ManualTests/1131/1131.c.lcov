@@ -1,0 +1,36 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-skip-if "" { ! { aarch64*-*-* } } } */
+    3|       |/* { dg-options "-O2 -fmodulo-sched -funroll-loops -fdump-rtl-sms --param
+    4|       | * sms-min-sc=1 -fmodulo-sched-allow-regmoves -fPIC" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |int X[1000] = {0};
+    9|       |int Y[1000] = {0};
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|      1|__attribute__((noinline)) int foo(int len, long a) {
+   14|      1|  int i;
+   15|      1|  long res = a;
+   16|      1|
+   17|      1|  len = 1000;
+   18|  1.00k|  for (i = 0; i < len; i++)
+   19|  1.00k|    res += X[i] * Y[i];
+   20|      1|
+   21|      1|  if (res != 601)
+   22|      0|    abort();
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  X[0] = Y[1] = 2;
+   27|      1|  Y[0] = X[1] = 21;
+   28|      1|  X[2] = Y[3] = 3;
+   29|      1|  Y[2] = X[3] = 31;
+   30|      1|  X[4] = Y[5] = 4;
+   31|      1|  Y[4] = X[5] = 41;
+   32|      1|
+   33|      1|  foo(6, 3);
+   34|      1|  return 0;
+   35|      1|}
+

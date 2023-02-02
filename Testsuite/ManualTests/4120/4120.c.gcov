@@ -1,0 +1,28 @@
+        -:    0:Source:4120.c
+        -:    0:Graph:4120.gcno
+        -:    0:Data:4120.gcda
+        -:    0:Runs:1
+        -:    1:long double C = 2;
+        -:    2:long double U = 1;
+        -:    3:long double Y2 = 3;
+        -:    4:long double Y1 = 1;
+        -:    5:long double X, Y, Z, T, R, S;
+        1:    6:main() {
+        1:    7:  X = (C + U) * Y2;
+        1:    8:  Y = C - U - U;
+        1:    9:  Z = C + U + U;
+        1:   10:  T = (C - U) * Y1;
+        1:   11:  X = X - (Z + U);
+        1:   12:  R = Y * Y1;
+        1:   13:  S = Z * Y2;
+        1:   14:  T = T - Y;
+        1:   15:  Y = (U - Y) + R;
+        1:   16:  Z = S - (Z + U + U);
+        1:   17:  R = (Y2 + U) * Y1;
+        1:   18:  Y1 = Y2 * Y1;
+        1:   19:  R = R - Y2;
+        1:   20:  Y1 = Y1 - 0.5L;
+        1:   21:  if (Z != 6)
+    #####:   22:    abort();
+        1:   23:  exit(0);
+        -:   24:}

@@ -1,0 +1,23 @@
+        -:    0:Source:3781.c
+        -:    0:Graph:3781.gcno
+        -:    0:Data:3781.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57130 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int a, b, c, d;
+        -:    5:} s[2] = {{6, 8, -8, -5}, {0, 2, -1, 2}};
+        -:    6:
+        2:    7:__attribute__((noinline, noclone)) void foo(struct S r) {
+        -:    8:  static int cnt;
+        2:    9:  if (__builtin_memcmp(&r, &s[cnt++], sizeof r) != 0)
+    #####:   10:    __builtin_abort();
+        2:   11:}
+        -:   12:
+        1:   13:int main() {
+        1:   14:  struct S r = {6, 8, -8, -5};
+        1:   15:  foo(r);
+        1:   16:  r = (struct S){0, 2, -1, 2};
+        1:   17:  foo(r);
+        1:   18:  return 0;
+        -:   19:}

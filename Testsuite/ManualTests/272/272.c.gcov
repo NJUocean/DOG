@@ -1,0 +1,26 @@
+        -:    0:Source:272.c
+        -:    0:Graph:272.gcno
+        -:    0:Data:272.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:void __attribute__((noinline, noclone)) foo(int *p, float *q) {
+        1:    4:  __asm__ volatile("" : : : "memory");
+        1:    5:}
+        -:    6:
+        1:    7:int main() {
+        -:    8:  if (sizeof(int) == sizeof(float)) {
+        -:    9:    int i;
+        -:   10:    float f;
+        -:   11:    int *p;
+        -:   12:    /* Prevent i and f from being rewritten into SSA form.  */
+        1:   13:    foo(&i, &f);
+        1:   14:    i = 0;
+        1:   15:    f = 1.0;
+        1:   16:    p = (int *)&f;
+        1:   17:    __builtin_memcpy(&i, p, 4);
+        1:   18:    if (*(float *)&i != 1.0)
+    #####:   19:      __builtin_abort();
+        -:   20:  }
+        1:   21:  return 0;
+        -:   22:}

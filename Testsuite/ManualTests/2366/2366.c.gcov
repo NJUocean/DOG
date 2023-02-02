@@ -1,0 +1,80 @@
+        -:    0:Source:2366.c
+        -:    0:Graph:2366.gcno
+        -:    0:Data:2366.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        2:    6:int bics_si_test1(int a, int b, int c) {
+        2:    7:  if ((a & b) == a)
+        1:    8:    return a;
+        -:    9:  else
+        1:   10:    return c;
+        -:   11:}
+        -:   12:
+        2:   13:int bics_si_test2(int a, int b, int c) {
+        2:   14:  if ((a & b) == b)
+        1:   15:    return b;
+        -:   16:  else
+        1:   17:    return c;
+        -:   18:}
+        -:   19:
+        -:   20:typedef long long s64;
+        -:   21:
+        2:   22:s64 bics_di_test1(s64 a, s64 b, s64 c) {
+        2:   23:  if ((a & b) == a)
+        1:   24:    return a;
+        -:   25:  else
+        1:   26:    return c;
+        -:   27:}
+        -:   28:
+        2:   29:s64 bics_di_test2(s64 a, s64 b, s64 c) {
+        2:   30:  if ((a & b) == b)
+        1:   31:    return b;
+        -:   32:  else
+        1:   33:    return c;
+        -:   34:}
+        -:   35:
+        1:   36:int main() {
+        -:   37:  int x;
+        -:   38:  s64 y;
+        -:   39:
+        1:   40:  x = bics_si_test1(0xf00d, 0xf11f, 0);
+        1:   41:  if (x != 0xf00d)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  x = bics_si_test1(0xf11f, 0xf00d, 0);
+        1:   45:  if (x != 0)
+    #####:   46:    abort();
+        -:   47:
+        1:   48:  x = bics_si_test2(0xf00d, 0xf11f, 0);
+        1:   49:  if (x != 0)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  x = bics_si_test2(0xf11f, 0xf00d, 0);
+        1:   53:  if (x != 0xf00d)
+    #####:   54:    abort();
+        -:   55:
+        1:   56:  y = bics_di_test1(0x10001000f00dll, 0x12341000f00dll, 0ll);
+        1:   57:  if (y != 0x10001000f00dll)
+    #####:   58:    abort();
+        -:   59:
+        1:   60:  y = bics_di_test1(0x12341000f00dll, 0x10001000f00dll, 0ll);
+        1:   61:  if (y != 0)
+    #####:   62:    abort();
+        -:   63:
+        1:   64:  y = bics_di_test2(0x10001000f00dll, 0x12341000f00dll, 0ll);
+        1:   65:  if (y != 0)
+    #####:   66:    abort();
+        -:   67:
+        1:   68:  y = bics_di_test2(0x12341000f00dll, 0x10001000f00dll, 0ll);
+        1:   69:  if (y != 0x10001000f00dll)
+    #####:   70:    abort();
+        -:   71:
+        1:   72:  return 0;
+        -:   73:}
+        -:   74:
+        -:   75:/* { dg-final { scan-assembler-times "bics\twzr, w\[0-9\]+, w\[0-9\]+" 2 } } */
+        -:   76:/* { dg-final { scan-assembler-times "bics\txzr, x\[0-9\]+, x\[0-9\]+" 2 } } */

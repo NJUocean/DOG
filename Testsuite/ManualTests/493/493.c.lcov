@@ -1,0 +1,38 @@
+    1|       |/* The bit-field below would have a problem if __INT_MAX__ is too
+    2|       |   small.  */
+    3|       |#if __INT_MAX__ < 2147483647
+    4|       |int main(void) { exit(0); }
+    5|       |#else
+    6|       |typedef struct {
+    7|       |  unsigned b0 : 1, f1 : 17, b18 : 1, b19 : 1, b20 : 1, f2 : 11;
+    8|       |} bf;
+    9|       |
+   10|       |typedef union {
+   11|       |  bf b;
+   12|       |  unsigned w;
+   13|       |} bu;
+   14|       |
+   15|      1|bu f(bu i) {
+   16|      1|  bu o = i;
+   17|      1|
+   18|      1|  if (o.b.b0)
+   19|      0|    o.b.b18 = 1, o.b.b20 = 1;
+   20|      1|  else
+   21|      1|    o.b.b18 = 0, o.b.b20 = 0;
+   22|      1|
+   23|      1|  return o;
+   24|      1|}
+   25|       |
+   26|      1|main() {
+   27|      1|  bu a;
+   28|      1|  bu r;
+   29|      1|
+   30|      1|  a.w = 0x4000000;
+   31|      1|  a.b.b0 = 0;
+   32|      1|  r = f(a);
+   33|      1|  if (a.w != r.w)
+   34|      0|    abort();
+   35|      1|  exit(0);
+   36|      1|}
+   37|       |#endif
+

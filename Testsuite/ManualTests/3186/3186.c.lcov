@@ -1,0 +1,10 @@
+    1|       |/* Test the tester; previously gcc.misc-tests/dg-8.c.  */
+    2|       |/* { dg-prms-id 42 } */
+    3|       |/* { dg-options "-Wall" } */
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-excess-errors "excess errors" } */
+    6|       |
+    7|       |/* should get warning about defaulting return type - excess error */
+    8|       |
+    9|      1|main() { return 0; }
+

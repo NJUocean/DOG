@@ -1,0 +1,64 @@
+        -:    0:Source:2662.c
+        -:    0:Graph:2662.gcno
+        -:    0:Data:2662.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57459 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fno-inline -O2 -minline-all-stringops -fno-omit-frame-pointer"
+        -:    4: * } */
+        -:    5:
+        -:    6:int total1[10], total2[10], total3[10], total4[10], total5[10], a[20];
+        -:    7:int len;
+        -:    8:
+        1:    9:void stackclean() {
+        1:   10:  void *ptr = __builtin_alloca(20000);
+        1:   11:  __builtin_memset(ptr, 0, 20000);
+        1:   12:}
+        -:   13:
+        1:   14:void foo(const char *s) {
+        1:   15:  int r1 = a[1];
+        1:   16:  int r2 = a[2];
+        1:   17:  int r3 = a[3];
+        1:   18:  int r4 = a[4];
+        1:   19:  int r5 = a[5];
+        -:   20:
+        1:   21:  len = __builtin_strlen(s);
+        -:   22:
+        1:   23:  if (s != 0)
+        1:   24:    return;
+        -:   25:
+    #####:   26:  while (r1) {
+    #####:   27:    total1[r1] = r1;
+    #####:   28:    r1--;
+        -:   29:  }
+        -:   30:
+    #####:   31:  while (r2) {
+    #####:   32:    total2[r2] = r2;
+    #####:   33:    r2--;
+        -:   34:  }
+        -:   35:
+    #####:   36:  while (r3) {
+    #####:   37:    total3[r3] = r3;
+    #####:   38:    r3--;
+        -:   39:  }
+        -:   40:
+    #####:   41:  while (r4) {
+    #####:   42:    total4[r4] = r4;
+    #####:   43:    r4--;
+        -:   44:  }
+        -:   45:
+    #####:   46:  while (r5) {
+    #####:   47:    total5[r5] = r5;
+    #####:   48:    r5--;
+        -:   49:  }
+        -:   50:}
+        -:   51:
+        -:   52:extern void abort(void);
+        -:   53:
+        1:   54:int main() {
+        1:   55:  stackclean();
+        1:   56:  foo("abcdefgh");
+        1:   57:  if (len != 8)
+    #####:   58:    abort();
+        1:   59:  return 0;
+        -:   60:}

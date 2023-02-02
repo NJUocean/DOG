@@ -1,0 +1,44 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -ftree-parallelize-loops=4 -fdump-tree-parloops2-details
+    3|       | * -fdump-tree-optimized" } */
+    4|       |
+    5|       |void abort(void);
+    6|       |
+    7|       |int x[500][500];
+    8|       |int y[500];
+    9|       |int g_sum = 0;
+   10|       |
+   11|   250k|__attribute__((noinline)) void init(int i, int j) { x[i][j] = 1; }
+   12|       |
+   13|      1|__attribute__((noinline)) void parloop(int N) {
+   14|      1|  int i, j;
+   15|      1|  int sum;
+   16|      1|
+   17|      1|  /* Inner cycle is currently not supported, outer loop is not
+   18|      1|     parallelized.  Inner reduction is detected, inner loop is
+   19|      1|     parallelized.  */
+   20|    501|  for (i = 0; i < N; i++) {
+   21|    500|    sum = 0;
+   22|   250k|    for (j = 0; j < N; j++)
+   23|   250k|      sum += x[i][j];
+   24|    500|    y[i] = sum;
+   25|    500|  }
+   26|      1|  g_sum = sum;
+   27|      1|}
+   28|       |
+   29|      1|int main(void) {
+   30|      1|  int i, j;
+   31|    501|  for (i = 0; i < 500; i++)
+   32|   250k|    for (j = 0; j < 500; j++)
+   33|   250k|      init(i, j);
+   34|      1|
+   35|      1|  parloop(500);
+   36|      1|
+   37|      1|  return 0;
+   38|      1|}
+   39|       |
+   40|       |/* { dg-final { scan-tree-dump-times "parallelizing outer loop" 1 "parloops2" {
+   41|       | * xfail *-*-* } } } */
+   42|       |/* { dg-final { scan-tree-dump-times "loopfn" 4 "optimized" { xfail *-*-* } } }
+   43|       | */
+

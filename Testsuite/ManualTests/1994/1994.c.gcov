@@ -1,0 +1,29 @@
+        -:    0:Source:1994.c
+        -:    0:Graph:1994.gcno
+        -:    0:Data:1994.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fno-tree-loop-vectorize -fdump-tree-pcom-details" } */
+        -:    3:
+        -:    4:int a[200];
+        -:    5:char b;
+        -:    6:void abort(void);
+        -:    7:
+        1:    8:int main() {
+        -:    9:  int i;
+        1:   10:  b = 100;
+      101:   11:  for (; b; b--) {
+      100:   12:    a[b] = 2;
+      100:   13:    a[b + 2] = 1;
+        -:   14:  }
+        -:   15:
+        1:   16:  if (a[0] != 0 || a[1] != 2 || a[2] != 2)
+    #####:   17:    abort();
+      101:   18:  for (i = 3; i < 103; i++)
+      100:   19:    if (a[i] != 1)
+    #####:   20:      abort();
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:/* { dg-final { scan-tree-dump-times "Store-stores chain" 1 "pcom" } } */

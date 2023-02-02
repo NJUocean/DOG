@@ -1,0 +1,35 @@
+    1|       |/* PR27363.  CSE was breaking on the arm store multiple insn used for
+    2|       |   structure copies.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-Os" } */
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct snd_mask {
+    8|       |  unsigned int bits[6];
+    9|       |};
+   10|       |
+   11|      1|static int __attribute__((noinline)) snd_mask_refine(struct snd_mask *mask) {
+   12|      1|  struct snd_mask old;
+   13|      1|
+   14|      1|  old = *mask;
+   15|      1|  if (mask->bits[0] == 0 && mask->bits[1] == 0)
+   16|      0|    return 1;
+   17|      1|
+   18|      1|  return old.bits[0] != mask->bits[0];
+   19|      1|}
+   20|       |
+   21|      1|int main(int argc, char *argv[]) {
+   22|      1|  struct snd_mask mask;
+   23|      1|
+   24|      1|  mask.bits[0] = 23;
+   25|      1|  mask.bits[1] = 42;
+   26|      1|  mask.bits[2] = 0;
+   27|      1|  mask.bits[3] = 0;
+   28|      1|  mask.bits[4] = 0;
+   29|      1|  mask.bits[5] = 0;
+   30|      1|
+   31|      1|  if (snd_mask_refine(&mask))
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

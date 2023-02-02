@@ -1,0 +1,28 @@
+    1|       |/* PR 6534 */
+    2|       |/* GCSE unified the two i<0 tests, but if-conversion to ui=abs(i)
+    3|       |   insertted the code at the wrong place corrupting the i<0 test.  */
+    4|       |
+    5|       |void abort(void);
+    6|      1|static char *inttostr(long i, char buf[128]) {
+    7|      1|  unsigned long ui = i;
+    8|      1|  char *p = buf + 127;
+    9|      1|  *p = '\0';
+   10|      1|  if (i < 0)
+   11|      1|    ui = -ui;
+   12|      1|  do
+   13|      1|    *--p = '0' + ui % 10;
+   14|      1|  while ((ui /= 10) != 0);
+   15|      1|  if (i < 0)
+   16|      1|    *--p = '-';
+   17|      1|  return p;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  char buf[128], *p;
+   22|      1|
+   23|      1|  p = inttostr(-1, buf);
+   24|      1|  if (*p != '-')
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

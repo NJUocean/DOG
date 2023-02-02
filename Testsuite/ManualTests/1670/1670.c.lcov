@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |
+    4|       |short var_9 = 19581;
+    5|       |unsigned char var_33 = 21;
+    6|       |long long int var_55 = 286697804684061197LL;
+    7|       |long long int var_59 = -1962393262513510540LL;
+    8|       |long long int var_71 = 4731868609112929952LL;
+    9|       |long long int var_773 = -4784633456247777769LL;
+   10|       |short var_776 = 5894;
+   11|       |long long int var_1321 = 7573221950916697355LL;
+   12|       |unsigned char uc = 217;
+   13|       |
+   14|      1|void foo() {
+   15|      1|  if (var_55)
+   16|      1|    var_71 = 0;
+   17|      1|  if (var_9 != ~(0 < uc))
+   18|      1|    var_773 = 0;
+   19|      0|  else
+   20|      0|    var_776 = 1 / ~var_9 * -1;
+   21|      1|  if (var_33)
+   22|      1|    var_59 = ~var_9 & 10393;
+   23|      1|  var_1321 = ~var_9;
+   24|      1|}
+   25|      1|int main() {
+   26|      1|  foo();
+   27|      1|  if (var_59 != 8320)
+   28|      0|    __builtin_abort();
+   29|      1|  return 0;
+   30|      1|}
+

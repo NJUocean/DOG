@@ -1,0 +1,26 @@
+        -:    0:Source:869.c
+        -:    0:Graph:869.gcno
+        -:    0:Data:869.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O1 -fno-strict-aliasing" } */
+        -:    2:/* PR rtl-optimization/41033 */
+        -:    3:
+        -:    4:struct X {
+        -:    5:  int i;
+        -:    6:  int j;
+        -:    7:};
+        -:    8:
+        1:    9:int foo(struct X *p, struct X *q) {
+        1:   10:  p->j = 1;
+        1:   11:  q->i = 0;
+        1:   12:  return p->j;
+        -:   13:}
+        -:   14:
+        -:   15:extern void abort(void);
+        -:   16:
+        1:   17:int main() {
+        -:   18:  struct X x;
+        1:   19:  if (foo(&x, (struct X *)&x.j) != 0)
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

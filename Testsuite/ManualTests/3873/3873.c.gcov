@@ -1,0 +1,25 @@
+        -:    0:Source:3873.c
+        -:    0:Graph:3873.gcno
+        -:    0:Data:3873.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65215 */
+        -:    2:
+        4:    3:static inline unsigned int foo(unsigned int x) {
+        4:    4:  return (x >> 24) | ((x >> 8) & 0xff00) | ((x << 8) & 0xff0000) | (x << 24);
+        -:    5:}
+        -:    6:
+        -:    7:__attribute__((noinline, noclone)) unsigned long long
+        1:    8:bar(unsigned long long *x) {
+        1:    9:  return ((unsigned long long)foo(*x) << 32) | foo(*x >> 32);
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  if (__CHAR_BIT__ != 8 || sizeof(unsigned int) != 4 ||
+        -:   14:      sizeof(unsigned long long) != 8)
+        -:   15:    return 0;
+        1:   16:  unsigned long long l =
+        1:   17:      foo(0xfeedbea8U) | ((unsigned long long)foo(0xdeadbeefU) << 32);
+        1:   18:  if (bar(&l) != 0xfeedbea8deadbeefULL)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,18 @@
+        -:    0:Source:1181.c
+        -:    0:Graph:1181.gcno
+        -:    0:Data:1181.gcda
+        -:    0:Runs:1
+        -:    1:static double one = 1.0;
+        -:    2:
+        1:    3:f() {
+        -:    4:  int colinear;
+        1:    5:  colinear = (one == 0.0);
+        1:    6:  if (colinear)
+    #####:    7:    abort();
+        1:    8:  return colinear;
+        -:    9:}
+        1:   10:main() {
+        1:   11:  if (f())
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

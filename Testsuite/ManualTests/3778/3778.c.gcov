@@ -1,0 +1,28 @@
+        -:    0:Source:3778.c
+        -:    0:Graph:3778.gcno
+        -:    0:Data:3778.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56962 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:long long v[144];
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) void bar(long long *x) {
+        1:    7:  if (x != &v[29])
+    #####:    8:    abort();
+        1:    9:}
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void foo(long long *x, long y, long z) {
+        -:   12:  long long a, b, c;
+        1:   13:  a = x[z * 4 + y * 3];
+        1:   14:  b = x[z * 5 + y * 3];
+        1:   15:  c = x[z * 5 + y * 4];
+        1:   16:  x[y * 4] = a;
+        1:   17:  bar(&x[z * 5 + y]);
+        1:   18:  x[z * 5 + y * 5] = b + c;
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  foo(v, 24, 1);
+        1:   23:  return 0;
+        -:   24:}

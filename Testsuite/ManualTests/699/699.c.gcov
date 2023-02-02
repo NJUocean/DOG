@@ -1,0 +1,16 @@
+        -:    0:Source:699.c
+        -:    0:Graph:699.gcno
+        -:    0:Data:699.gcda
+        -:    0:Runs:1
+        1:    1:int foo(int x, int y, int i, int j) {
+        1:    2:  double tmp1 = ((double)x / y);
+        1:    3:  double tmp2 = ((double)i / j);
+        -:    4:
+        1:    5:  return tmp1 < tmp2;
+        -:    6:}
+        -:    7:
+        1:    8:main() {
+        1:    9:  if (foo(2, 24, 3, 4) == 0)
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

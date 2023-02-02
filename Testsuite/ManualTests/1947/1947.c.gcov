@@ -1,0 +1,29 @@
+        -:    0:Source:1947.c
+        -:    0:Graph:1947.gcno
+        -:    0:Data:1947.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/70712 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:struct __attribute__((aligned(64))) S {
+        -:    5:  char s[4];
+        -:    6:};
+        -:    7:
+        -:    8:struct T {
+        -:    9:  char t[8];
+        -:   10:  char u[480];
+        -:   11:};
+        -:   12:
+        1:   13:__attribute__((noinline, noclone)) void foo(struct T *p, struct S *q) {
+        1:   14:  __builtin_memset(p->t, '\0', sizeof(p->t));
+        1:   15:  __builtin_memset(p->u, '\0', sizeof(p->u));
+        1:   16:  __builtin_memset(q->s, '\0', sizeof(q->s));
+        1:   17:}
+        -:   18:
+        1:   19:int main() {
+        -:   20:  struct S s;
+        -:   21:  struct T t;
+        1:   22:  foo(&t, &s);
+        1:   23:  asm volatile("" : : "r"(&t), "r"(&s) : "memory");
+        1:   24:  return 0;
+        -:   25:}

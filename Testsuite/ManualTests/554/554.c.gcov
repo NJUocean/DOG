@@ -1,0 +1,21 @@
+        -:    0:Source:554.c
+        -:    0:Graph:554.gcno
+        -:    0:Data:554.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Os -fdump-ipa-icf"  } */
+        -:    3:
+        -:    4:int a[2];
+        -:    5:static int *b = &a[0], *c = &a[1];
+        -:    6:
+        1:    7:int main() {
+        1:    8:  *c = 1;
+        1:    9:  *b = 0;
+        -:   10:
+        1:   11:  if (a[1] != 1)
+    #####:   12:    __builtin_abort();
+        -:   13:
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

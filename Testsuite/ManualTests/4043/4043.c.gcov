@@ -1,0 +1,21 @@
+        -:    0:Source:4043.c
+        -:    0:Graph:4043.gcno
+        -:    0:Data:4043.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/93744 */
+        -:    2:
+        -:    3:int w;
+        -:    4:
+        2:    5:int foo(int x, int y, int z) {
+        2:    6:  int r = z + ((w++ - z) & -(x < y));
+        2:    7:  return r;
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  w = 4;
+        1:   12:  if (foo(5, 7, 12) != 4 || w != 5)
+    #####:   13:    __builtin_abort();
+        1:   14:  if (foo(7, 5, 12) != 12 || w != 6)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

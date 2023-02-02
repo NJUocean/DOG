@@ -1,0 +1,30 @@
+        -:    0:Source:1771.c
+        -:    0:Graph:1771.gcno
+        -:    0:Data:1771.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target fstack_protector } */
+        -:    3:/* { dg-options "-fstack-protector-strong" } */
+        -:    4:/* { dg-set-target-env-var ASAN_OPTIONS "detect_stack_use_after_return=1" } */
+        -:    5:/* { dg-shouldfail "asan" } */
+        -:    6:
+        1:    7:__attribute__((noinline)) char *Ident(char *x) { return x; }
+        -:    8:
+        1:    9:__attribute__((noinline)) char *Func1() {
+        -:   10:  char local[1 << 12];
+        1:   11:  return Ident(local);
+        -:   12:}
+        -:   13:
+        1:   14:__attribute__((noinline)) void Func2(char *x) { *x = 1; }
+        1:   15:int main(int argc, char **argv) {
+        1:   16:  Func2(Func1());
+        1:   17:  return 0;
+        -:   18:}
+        -:   19:
+        -:   20:/* { dg-output "AddressSanitizer: stack-use-after-return on address
+        -:   21: * 0x\[0-9a-f\]+\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   22:/* { dg-output "WRITE of size 1 at .* thread T0.*" } */
+        -:   23:/* { dg-output "    #0.*(Func2)?.*pr64820.(c:21)?.*" } */
+        -:   24:/* { dg-output "is located in stack of thread T0 at offset.*" } */
+        -:   25:/* { dg-output "\'local\' \\(line 14\\) <== Memory access at offset 32 is inside
+        -:   26: * this variable" } */

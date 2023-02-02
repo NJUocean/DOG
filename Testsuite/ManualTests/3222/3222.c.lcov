@@ -1,0 +1,16 @@
+    1|       |/* This testcase failed at -O2 on powerpc64 due to andsi3 writing
+    2|       |   nonzero bits to the high 32 bits of a 64 bit register.  */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |extern void exit(int);
+    6|       |
+    7|      1|unsigned long foo(unsigned long base, unsigned int val) {
+    8|      1|  return base + (val & 0x80000001);
+    9|      1|}
+   10|       |
+   11|      1|int main(void) {
+   12|      1|  if (foo(0L, 0x0ffffff0) != 0L)
+   13|      0|    abort();
+   14|      1|  exit(0);
+   15|      1|}
+

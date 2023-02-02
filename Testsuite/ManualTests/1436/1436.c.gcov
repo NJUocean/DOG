@@ -1,0 +1,30 @@
+        -:    0:Source:1436.c
+        -:    0:Graph:1436.gcno
+        -:    0:Data:1436.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56443 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-ftree-vectorize" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:typedef int myint __attribute__((__aligned__(16)));
+        -:    7:
+        -:    8:int a1[1024] __attribute__((__aligned__(16)));
+        -:    9:int a2[1024] __attribute__((__aligned__(16)));
+        -:   10:
+        1:   11:__attribute__((noinline, noclone)) void test(int n, myint *__restrict__ p1,
+        -:   12:                                             myint *__restrict__ p2) {
+     1025:   13:  while (n--)
+     1024:   14:    *p1++ = *p2++ + 1;
+        1:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  int n;
+     1025:   19:  for (n = 0; n < 1024; n++)
+     1024:   20:    a2[n] = n;
+        1:   21:  test(1024, a1, a2);
+     1025:   22:  for (n = 0; n < 1024; n++)
+     1024:   23:    if (a1[n] != a2[n] + 1)
+    #####:   24:      abort();
+        1:   25:  return 0;
+        -:   26:}

@@ -1,0 +1,32 @@
+        -:    0:Source:2692.c
+        -:    0:Graph:2692.gcno
+        -:    0:Data:2692.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -g -w" } */
+        -:    3:
+        -:    4:int a, b, c = 7, d;
+        -:    5:static unsigned e, g;
+        -:    6:char f;
+        1:    7:static unsigned fn1() {
+        1:    8:  unsigned h = e - b ^ c;
+        1:    9:  int i = h / c & a * g, j = g * h;
+        1:   10:  if (h) {
+        1:   11:    if (d)
+    #####:   12:      h = e;
+        1:   13:    j = a;
+       1*:   14:    a = (a && (g % f && i) % h) | c | ~2;
+        1:   15:    if (b)
+    #####:   16:      printf("", 1);
+        -:   17:  }
+        1:   18:  c = i;
+        1:   19:  a = j;
+        1:   20:  return 2;
+        -:   21:}
+        -:   22:
+        1:   23:int main() {
+       1*:   24:  for (; b < -18; --b)
+    #####:   25:    g = 0;
+        1:   26:  fn1();
+        1:   27:  return 0;
+        -:   28:}

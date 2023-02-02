@@ -1,0 +1,13 @@
+        -:    0:Source:2196.c
+        -:    0:Graph:2196.gcno
+        -:    0:Data:2196.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target untyped_assembly } */
+        -:    2:
+        1:    3:foo(a, b) {
+        1:    4:  if ((a & (1 << b)) == 0)
+        1:    5:    return 1;
+    #####:    6:  return 0;
+        -:    7:}
+        -:    8:
+        1:    9:main() { printf("%d\n", foo()); }

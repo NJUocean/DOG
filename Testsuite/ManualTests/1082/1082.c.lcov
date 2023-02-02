@@ -1,0 +1,23 @@
+    1|       |/* PR rtl-optimization/89679 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-Og -frerun-cse-after-loop -fno-tree-fre" } */
+    4|       |
+    5|       |unsigned short g;
+    6|       |
+    7|      1|void foo(unsigned long long x) {
+    8|      1|  if (x != 0xffff)
+    9|      0|    __builtin_abort();
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|#if __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+   14|      1|  unsigned short d = 0;
+   15|      1|  unsigned long long x, c = ~0;
+   16|      1|  c = c >> d;
+   17|      1|  __builtin_memset(&d, c, 2);
+   18|      1|  x = d + g;
+   19|      1|  foo(x);
+   20|      1|#endif
+   21|      1|  return 0;
+   22|      1|}
+

@@ -1,0 +1,25 @@
+        -:    0:Source:3657.c
+        -:    0:Graph:3657.gcno
+        -:    0:Data:3657.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        -:    4:struct s {
+        -:    5:  int a, b, c, d;
+        -:    6:};
+        -:    7:
+        -:    8:struct s gs1 = {1, 2, 3, 4};
+        -:    9:struct s gs2 = {5, 6, 7, 8};
+        -:   10:
+        1:   11:struct s *__attribute__((noipa)) consume(struct s *ptr) {
+        1:   12:  return ptr;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:  struct s x;
+        1:   17:  struct s *volatile ptr = consume(&x);
+        1:   18:  x = gs1;
+        1:   19:  x = gs2;  /* { dg-final { gdb-test . "ptr->a" "1" } } */
+        1:   20:  return 0; /* { dg-final { gdb-test . "ptr->a" "5" } } */
+        -:   21:}

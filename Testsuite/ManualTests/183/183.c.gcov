@@ -1,0 +1,51 @@
+        -:    0:Source:183.c
+        -:    0:Graph:183.gcno
+        -:    0:Data:183.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that defining a type in __builtin_has_attribute triggers
+        -:    2:   the expected -Wc++-compat warning and evaluates as expected.
+        -:    3:   Also verify that the expression in __builtin_has_attribute is
+        -:    4:   not evaluated.
+        -:    5:
+        -:    6:  { dg-do compile }
+        -:    7:  { dg-options "-O2 -Wall -Wc++-compat -fdump-tree-optimized
+        -:    8:  -ftrack-macro-expansion=0" }  */
+        -:    9:
+        -:   10:#define ATTR(list) __attribute__(list)
+        -:   11:
+        -:   12:#define A(expect, sym, attr)                                                   \
+        -:   13:  typedef int Assert[1 - 2 * !(__builtin_has_attribute(sym, attr) == expect)]
+        -:   14:
+        -:   15:#define assert(expr)                                                           \
+        -:   16:  ((expr) ? (void)0                                                            \
+        -:   17:          : (__builtin_printf("Assertion failed on line %i: %s\n", __LINE__,   \
+        -:   18:                              #expr),                                          \
+        -:   19:             ++nfails))
+        -:   20:
+        -:   21:A(
+        -:   22:    0, struct A { int i; },
+        -:   23:    aligned); /* { dg-warning "expression is invalid in C\\\+\\\+" } */
+        -:   24:A(
+        -:   25:    1, struct ATTR((aligned)) B { int i; },
+        -:   26:    aligned); /* { dg-warning "expression is invalid in C\\\+\\\+" } */
+        -:   27:
+    #####:   28:static int f(void) { __builtin_abort(); }
+        -:   29:
+        1:   30:int main(void) {
+        1:   31:  int n = 0, nfails = 0;
+        -:   32:
+        -:   33:  assert(0 == __builtin_has_attribute(int[n++], aligned));
+        -:   34:  assert(1 == __builtin_has_attribute(ATTR((aligned)) int[n++], aligned));
+        -:   35:  assert(1 == __builtin_has_attribute(ATTR((aligned)) int[f()], aligned));
+        -:   36:  assert(1 == 1);
+        -:   37:
+        1:   38:  if (n)
+    #####:   39:    __builtin_abort();
+        -:   40:
+        1:   41:  if (nfails)
+    #####:   42:    __builtin_abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}
+        -:   46:
+        -:   47:/* { dg-final { scan-tree-dump-times "abort" 0 "optimized" } } */

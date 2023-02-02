@@ -1,0 +1,17 @@
+        -:    0:Source:2834.c
+        -:    0:Graph:2834.gcno
+        -:    0:Data:2834.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -msoft-stack" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:int f1(int a) { return a + 1; }
+        -:    5:
+        -:    6:int (*f2)(int) = f1;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  if (f2(100) != 101)
+    #####:   10:    __builtin_abort();
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

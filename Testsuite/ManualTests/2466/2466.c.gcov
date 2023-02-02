@@ -1,0 +1,29 @@
+        -:    0:Source:2466.c
+        -:    0:Graph:2466.gcno
+        -:    0:Data:2466.gcda
+        -:    0:Runs:1
+        -:    1:void adjust_xy(short *, short *);
+        -:    2:
+        -:    3:struct adjust_template {
+        -:    4:  short kx_x;
+        -:    5:  short kx_y;
+        -:    6:  short kx;
+        -:    7:  short kz;
+        -:    8:};
+        -:    9:
+        -:   10:static struct adjust_template adjust = {0, 0, 1, 1};
+        -:   11:
+        1:   12:main() {
+        1:   13:  short x = 1, y = 1;
+        -:   14:
+        1:   15:  adjust_xy(&x, &y);
+        -:   16:
+        1:   17:  if (x != 1)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  exit(0);
+        -:   21:}
+        -:   22:
+        1:   23:void adjust_xy(x, y) short *x;
+        -:   24:short *y;
+        1:   25:{ *x = adjust.kx_x * *x + adjust.kx_y * *y + adjust.kx; }

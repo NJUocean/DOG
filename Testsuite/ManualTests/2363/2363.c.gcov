@@ -1,0 +1,37 @@
+        -:    0:Source:2363.c
+        -:    0:Graph:2363.gcno
+        -:    0:Data:2363.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target aarch64*-*-* } } */
+        -:    2:/* { dg-options "-O2 --save-temps -fno-inline" } */
+        -:    3:/* { dg-require-effective-target aarch64_little_endian } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:typedef struct bitfield {
+        -:    8:  unsigned short eight1 : 8;
+        -:    9:  unsigned short four : 4;
+        -:   10:  unsigned short eight2 : 8;
+        -:   11:  unsigned short seven : 7;
+        -:   12:  unsigned int sixteen : 16;
+        -:   13:} bitfield;
+        -:   14:
+        1:   15:bitfield bfxil(bitfield a) {
+        -:   16:  /* { dg-final { scan-assembler "bfxil\tx\[0-9\]+, x\[0-9\]+, 16, 8" } } */
+        1:   17:  a.eight1 = a.eight2;
+        1:   18:  return a;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        -:   22:  static bitfield a;
+        -:   23:  bitfield b;
+        -:   24:
+        1:   25:  a.eight1 = 9;
+        1:   26:  a.eight2 = 57;
+        1:   27:  b = bfxil(a);
+        -:   28:
+        1:   29:  if (b.eight1 != a.eight2)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

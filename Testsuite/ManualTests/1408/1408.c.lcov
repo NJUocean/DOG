@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct pair {
+    4|       |  int x;
+    5|       |  int y;
+    6|       |};
+    7|       |
+    8|       |struct array {
+    9|       |  struct pair elems[2];
+   10|       |  unsigned index;
+   11|       |};
+   12|       |
+   13|       |extern void abort();
+   14|       |
+   15|       |void __attribute__((noinline, noclone))
+   16|      1|test_results(int x1, int y1, int x2, int y2) {
+   17|      1|  if (x1 != x2 || y1 != y2)
+   18|      0|    abort();
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  struct array arr = {{{1, 2}, {3, 4}}, 1};
+   23|      1|  struct pair last = arr.elems[arr.index];
+   24|      1|
+   25|      1|  test_results(last.x, last.y, arr.elems[1].x, arr.elems[1].y);
+   26|      1|
+   27|      1|  return 0;
+   28|      1|}
+

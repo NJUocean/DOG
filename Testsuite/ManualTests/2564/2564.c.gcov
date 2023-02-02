@@ -1,0 +1,26 @@
+        -:    0:Source:2564.c
+        -:    0:Graph:2564.gcno
+        -:    0:Data:2564.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target ia32 } */
+        -:    3:/* { dg-options "-O -ffast-math -mtune=i486" } */
+        -:    4:
+        -:    5:/* Test that floating point greater-than tests are compiled correctly with
+        -:    6:   -ffast-math.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        1:   10:static int gt(double a, double b) {
+        1:   11:  if (a > b)
+    #####:   12:    return 4;
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:static double zero = 0.0;
+        -:   17:
+        1:   18:int main() {
+        1:   19:  if (gt(zero, zero))
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

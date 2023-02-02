@@ -1,0 +1,58 @@
+        -:    0:Source:2802.c
+        -:    0:Graph:2802.gcno
+        -:    0:Data:2802.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O1 -ftree-vectorize" } */
+        -:    3:
+        -:    4:unsigned short v1[] __attribute__((aligned(16))) = {
+        -:    5:    0x8000, 0x9000, 1,      10,     0xa000, 0xb000, 2,  20,
+        -:    6:    3,      30,     0xd000, 0xe000, 0xf000, 0xe000, 25, 30};
+        -:    7:unsigned short v2[] __attribute__((aligned(16))) = {
+        -:    8:    4,      40,     0xb000, 0x8000, 5, 50, 0xc000, 0xf000,
+        -:    9:    0xd000, 0xa000, 6,      65,     7, 75, 0xe000, 0xc000};
+        -:   10:
+        -:   11:unsigned short max[] = {0x8000, 0x9000, 0xb000, 0x8000, 0xa000, 0xb000,
+        -:   12:                        0xc000, 0xf000, 0xd000, 0xa000, 0xd000, 0xe000,
+        -:   13:                        0xf000, 0xe000, 0xe000, 0xc000};
+        -:   14:
+        -:   15:unsigned short min[] = {4, 40, 1, 10, 5, 50, 2,  20,
+        -:   16:                        3, 30, 6, 65, 7, 75, 25, 30};
+        -:   17:
+        -:   18:unsigned short res[16] __attribute__((aligned(16)));
+        -:   19:
+        -:   20:extern void abort(void);
+        -:   21:
+        1:   22:void find_max(void) {
+        -:   23:  int i;
+        -:   24:
+       17:   25:  for (i = 0; i < 16; i++)
+       16:   26:    res[i] = v1[i] < v2[i] ? v2[i] : v1[i];
+        1:   27:}
+        -:   28:
+        1:   29:void find_min(void) {
+        -:   30:  int i;
+        -:   31:
+       17:   32:  for (i = 0; i < 16; i++)
+       16:   33:    res[i] = v1[i] > v2[i] ? v2[i] : v1[i];
+        1:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        -:   37:  int i;
+        1:   38:  int err = 0;
+        -:   39:
+        1:   40:  find_max();
+       17:   41:  for (i = 0; i < 16; i++)
+       16:   42:    if (res[i] != max[i])
+    #####:   43:      err++;
+        -:   44:
+        1:   45:  find_min();
+       17:   46:  for (i = 0; i < 16; i++)
+       16:   47:    if (res[i] != min[i])
+    #####:   48:      err++;
+        -:   49:
+        1:   50:  if (err)
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  return 0;
+        -:   54:}

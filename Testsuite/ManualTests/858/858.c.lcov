@@ -1,0 +1,7 @@
+    1|       |/* PR middle-end/37858 */
+    2|       |/* ??? With -dv removed, this test is a bit silly.  */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-O2 -fdump-ipa-build_ssa_passes" } */
+    5|       |
+    6|      1|int main(void) { return 0; }
+

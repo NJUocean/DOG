@@ -1,0 +1,15 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-Wno-overflow" } */
+    3|       |/* { dg-require-effective-target int32plus } */
+    4|       |
+    5|       |const signed char c = -84;
+    6|       |signed char s;
+    7|       |
+    8|      1|void foo() { s = (unsigned short)c / -55; }
+    9|       |
+   10|      1|int main() {
+   11|      1|  foo();
+   12|      1|  if (s != 90)
+   13|      0|    __builtin_abort();
+   14|      1|}
+

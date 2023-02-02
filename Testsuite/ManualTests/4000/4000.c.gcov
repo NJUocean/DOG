@@ -1,0 +1,23 @@
+        -:    0:Source:4000.c
+        -:    0:Graph:4000.gcno
+        -:    0:Data:4000.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/85331 */
+        -:    2:/* { dg-require-effective-target double64plus } */
+        -:    3:
+        -:    4:typedef double V __attribute__((vector_size(2 * sizeof(double))));
+        -:    5:typedef long long W __attribute__((vector_size(2 * sizeof(long long))));
+        -:    6:
+        1:    7:__attribute__((noipa)) void foo(V *r) {
+        1:    8:  V y = {1.0, 2.0};
+        1:    9:  W m = {10000000001LL, 0LL};
+        1:   10:  *r = __builtin_shuffle(y, m);
+        1:   11:}
+        -:   12:
+        1:   13:int main() {
+        -:   14:  V r;
+        1:   15:  foo(&r);
+        1:   16:  if (r[0] != 2.0 || r[1] != 1.0)
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

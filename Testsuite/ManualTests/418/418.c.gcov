@@ -1,0 +1,81 @@
+        -:    0:Source:418.c
+        -:    0:Graph:418.gcno
+        -:    0:Data:418.gcda
+        -:    0:Runs:1
+        -:    1:#define DEBUG 0
+        -:    2:#if DEBUG
+        -:    3:#include <stdio.h>
+        -:    4:#endif
+        -:    5:
+        -:    6:int B[4];
+        -:    7:int A[4][4][4][4];
+        -:    8:
+        1:    9:static int __attribute__((noinline)) foo(void) {
+        -:   10:  int i, j, k, l;
+        -:   11:
+        -:   12:  /* Loops (L, J) are interchanged, and then loops (J and K) are
+        -:   13:     interchanged.  The result is a nest starting with (K, J, L).  */
+        5:   14:  for (l = 0; l < 4; l++) {
+       20:   15:    for (k = 0; k < 4; k++) {
+       80:   16:      for (j = 0; j < 4; j++) {
+      192:   17:        for (i = 0; i < 2; i++) {
+      128:   18:          B[i] = A[i][k][j][l] + A[3 - i][k][j][l];
+      128:   19:          B[3 - i] = A[i][k][j][l] - A[3 - i][k][j][l];
+        -:   20:        }
+       64:   21:        A[0][k][j][l] = B[0] + B[1];
+       64:   22:        A[2][k][j][l] = B[0] - B[1];
+       64:   23:        A[1][k][j][l] = B[3] + B[2];
+       64:   24:        A[3][k][j][l] = B[3] - B[2];
+        -:   25:      }
+        -:   26:
+       80:   27:      for (i = 0; i < 4; i++) {
+      192:   28:        for (j = 0; j < 2; j++) {
+      128:   29:          B[j] = A[i][k][j][l] + A[i][k][3 - j][l];
+      128:   30:          B[3 - j] = A[i][k][j][l] - A[i][k][3 - j][l];
+        -:   31:        }
+       64:   32:        A[i][k][0][l] = B[0] + B[1];
+       64:   33:        A[i][k][2][l] = B[0] - B[1];
+       64:   34:        A[i][k][1][l] = B[3] + B[2];
+       64:   35:        A[i][k][3][l] = B[3] - B[2];
+        -:   36:      }
+        -:   37:    }
+        -:   38:  }
+        -:   39:
+        2:   40:  return A[0][1][0][2] + A[0][3][0][3] + A[0][2][0][2] + A[0][1][0][1] +
+        1:   41:         A[3][3][0][2];
+        -:   42:}
+        -:   43:
+        -:   44:extern void abort();
+        -:   45:
+        1:   46:int main(void) {
+        -:   47:  int i, j, k, l, res;
+        -:   48:
+        5:   49:  for (i = 0; i < 4; i++)
+        4:   50:    B[i] = 2;
+        -:   51:
+        5:   52:  for (i = 0; i < 4; i++)
+       20:   53:    for (j = 0; j < 4; j++)
+       80:   54:      for (k = 0; k < 4; k++)
+      320:   55:        for (l = 0; l < 4; l++)
+      256:   56:          A[i][j][k][l] = i + j + k + l;
+        -:   57:
+        1:   58:  res = foo();
+        -:   59:
+        -:   60:#if DEBUG
+        -:   61:  for (i = 0; i < 4; i++)
+        -:   62:    for (j = 0; j < 4; j++)
+        -:   63:      for (k = 0; k < 4; k++)
+        -:   64:        for (l = 0; l < 4; l++)
+        -:   65:          fprintf(stderr, "A[%d][%d][%d][%d] = %d \n", i, j, k, l,
+        -:   66:                  A[i][j][k][l]);
+        -:   67:
+        -:   68:  fprintf(stderr, "res = %d \n", res);
+        -:   69:#endif
+        -:   70:
+        1:   71:  if (res != 424)
+    #####:   72:    abort();
+        -:   73:
+        1:   74:  return 0;
+        -:   75:}
+        -:   76:
+        -:   77:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

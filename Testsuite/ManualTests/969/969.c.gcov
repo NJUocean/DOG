@@ -1,0 +1,19 @@
+        -:    0:Source:969.c
+        -:    0:Graph:969.gcno
+        -:    0:Data:969.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/64807 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:__uint128_t foo(void) {
+        1:    6:  __uint128_t a = -1;
+        1:    7:  __uint128_t b = -1;
+        1:    8:  return a / b;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  if (foo() != 1)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}

@@ -1,0 +1,71 @@
+        -:    0:Source:2762.c
+        -:    0:Graph:2762.gcno
+        -:    0:Data:2762.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/15296.  The delayed-branch scheduler caused code that
+        -:    2:   SEGV:d for CRIS; a register was set to -1 in a delay-slot for the
+        -:    3:   fall-through code, while that register held a pointer used in code at
+        -:    4:   the branch target.  */
+        -:    5:
+        -:    6:typedef __INTPTR_TYPE__ intptr_t;
+        -:    7:typedef intptr_t W;
+        -:    8:union u0 {
+        -:    9:  union u0 *r;
+        -:   10:  W i;
+        -:   11:};
+        -:   12:struct s1 {
+        -:   13:  union u0 **m0;
+        -:   14:  union u0 m1[4];
+        -:   15:};
+        -:   16:
+        -:   17:void f(void *, struct s1 *, const union u0 *, W, W, W)
+        -:   18:    __attribute__((__noinline__));
+        -:   19:void g(void *, char *) __attribute__((__noinline__));
+        -:   20:
+        1:   21:void f(void *a, struct s1 *b, const union u0 *h, W v0, W v1, W v4) {
+        1:   22:  union u0 *e = 0;
+        1:   23:  union u0 *k = 0;
+        1:   24:  union u0 **v5 = b->m0;
+        1:   25:  union u0 *c = b->m1;
+        1:   26:  union u0 **d = &v5[0];
+        1:   27:l0:;
+        1:   28:  if (v0 < v1)
+    #####:   29:    goto l0;
+        1:   30:  if (v0 == 0)
+    #####:   31:    goto l3;
+        1:   32:  v0 = v4;
+        1:   33:  if (v0 != 0)
+        1:   34:    goto l3;
+    #####:   35:  c[0].r = *d;
+    #####:   36:  v1 = -1;
+    #####:   37:  e = c[0].r;
+    #####:   38:  if (e != 0)
+    #####:   39:    g(a, "");
+    #####:   40:  k = e + 3;
+    #####:   41:  k->i = v1;
+    #####:   42:  goto l4;
+        1:   43:l3:;
+        1:   44:  c[0].i = v0;
+        1:   45:  e = c[1].r;
+        1:   46:  if (e != 0)
+    #####:   47:    g(a, "");
+        1:   48:  e = c[0].r;
+        1:   49:  if (e == 0)
+    #####:   50:    g(a, "");
+        1:   51:  k = e + 2;
+        1:   52:  k->r = c[1].r;
+        1:   53:l4:;
+        1:   54:}
+        -:   55:
+    #####:   56:void g(void *a, char *b) { abort(); }
+        -:   57:
+        1:   58:int main() {
+        1:   59:  union u0 uv[] = {{.i = 111}, {.i = 222}, {.i = 333}, {.i = 444}};
+        1:   60:  struct s1 s = {0, {{.i = 555}, {.i = 0}, {.i = 999}, {.i = 777}}};
+        1:   61:  f(0, &s, 0, 20000, 10000, (W)uv);
+        1:   62:  if (s.m1[0].i != (W)uv || s.m1[1].i != 0 || s.m1[2].i != 999 ||
+        1:   63:      s.m1[3].i != 777 || uv[0].i != 111 || uv[1].i != 222 || uv[2].i != 0 ||
+        1:   64:      uv[3].i != 444)
+    #####:   65:    abort();
+        1:   66:  exit(0);
+        -:   67:}

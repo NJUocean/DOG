@@ -1,0 +1,35 @@
+    1|       |/* PR rtl-optimization/33552 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |void __attribute__((noinline))
+    8|      1|foo(unsigned long *wp, unsigned long *up, long un, unsigned long *vp) {
+    9|      1|  long j;
+   10|      1|  unsigned long prod_low, prod_high;
+   11|      1|  unsigned long cy_dig;
+   12|      1|  unsigned long v_limb;
+   13|      1|  v_limb = vp[0];
+   14|      1|  cy_dig = 64;
+   15|      5|  for (j = un; j > 0; j--) {
+   16|      4|    unsigned long u_limb, w_limb;
+   17|      4|    u_limb = *up++;
+   18|      4|    __asm__("" : "=r"(prod_low), "=r"(prod_high) : "0"(u_limb), "1"(v_limb));
+   19|      4|    __asm__("mov %5, %1; add %5, %0"
+   20|      4|            : "=r"(cy_dig), "=&r"(w_limb)
+   21|      4|            : "0"(prod_high), "rm"(0), "1"(prod_low), "rm"(cy_dig));
+   22|      4|    *wp++ = w_limb;
+   23|      4|  }
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  unsigned long wp[4];
+   28|      1|  unsigned long up[4] = {0x1248, 0x248a, 0x1745, 0x1853};
+   29|      1|  unsigned long vp = 0xdead;
+   30|      1|  foo(wp, up, 4, &vp);
+   31|      1|  if (wp[0] != 0x40 || wp[1] != 0xdeed || wp[2] != 0x1bd9a || wp[3] != 0x29c47)
+   32|      0|    abort();
+   33|      1|  return 0;
+   34|      1|}
+

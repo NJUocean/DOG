@@ -1,0 +1,16 @@
+        -:    0:Source:2298.c
+        -:    0:Graph:2298.gcno
+        -:    0:Data:2298.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/32219 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-visibility "" } */
+        -:    4:/* { dg-require-effective-target weak_undefined } */
+        -:    5:/* { dg-options "-O2 -fPIC" { target fpic } } */
+        -:    6:
+        -:    7:extern void foo() __attribute__((weak, visibility("hidden")));
+        1:    8:int main() {
+        1:    9:  if (foo)
+    #####:   10:    foo();
+        1:   11:  return 0;
+        -:   12:}

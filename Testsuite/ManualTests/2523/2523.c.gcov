@@ -1,0 +1,35 @@
+        -:    0:Source:2523.c
+        -:    0:Graph:2523.gcno
+        -:    0:Data:2523.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target { arm32 } } } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:/* { dg-skip-if "FDPIC does not support sibcall optimization" {
+        -:    4: * arm*-*-uclinuxfdpiceabi } "*" "" } */
+        -:    5:
+        -:    6:#define noinline __attribute__((noinline))
+        -:    7:
+        -:    8:typedef struct {
+        -:    9:  int data[4];
+        -:   10:} arr16_t;
+        -:   11:
+        -:   12:int result = 0;
+        -:   13:
+        1:   14:void noinline func2(int i, int j, arr16_t arr) {
+       2*:   15:  result = (arr.data[0] != 1 || arr.data[1] != 2 || arr.data[2] != 3 ||
+        1:   16:            arr.data[3] != 4);
+        1:   17:}
+        -:   18:
+        1:   19:void func1(int i, int j, int k, int l, int m, int n, arr16_t a) {
+        1:   20:  func2(i, j, a);
+        1:   21:}
+        -:   22:
+        1:   23:int main(int argc, const char *argv[]) {
+        1:   24:  arr16_t arr = {{1, 2, 3, 4}};
+        -:   25:
+        1:   26:  func1(0, 0, 0, 0, 0, 0, arr);
+        1:   27:  return result;
+        -:   28:}
+        -:   29:
+        -:   30:/* The PLT marker may appear if the test is run with -fpic/-fPIC.  */
+        -:   31:/* { dg-final { scan-assembler "\tb\tfunc2(\\(PLT\\))?\n" } } */

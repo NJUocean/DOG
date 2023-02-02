@@ -1,0 +1,15 @@
+    1|      1|void foo(int *BM_tab) {
+    2|      1|  int *BM_tab_base;
+    3|      1|
+    4|      1|  BM_tab_base = BM_tab;
+    5|      1|  BM_tab += 0400;
+    6|    257|  while (BM_tab_base != BM_tab)
+    7|    256|    *--BM_tab = 6;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  int BM_tab[0400];
+   12|      1|  foo(BM_tab);
+   13|      1|  return 0;
+   14|      1|}
+

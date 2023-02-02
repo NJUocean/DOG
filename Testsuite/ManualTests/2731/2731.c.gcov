@@ -1,0 +1,37 @@
+        -:    0:Source:2731.c
+        -:    0:Graph:2731.gcno
+        -:    0:Data:2731.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 15262.  Similar to pr15262-1.c but with no obvious addresses
+        -:    2:   being taken in function foo().  Without IPA, by only looking inside
+        -:    3:   foo() we cannot tell for certain whether 'q' and 'b' alias each
+        -:    4:   other.  */
+        -:    5:struct A {
+        -:    6:  int t;
+        -:    7:  int i;
+        -:    8:};
+        -:    9:
+        -:   10:struct B {
+        -:   11:  int *p;
+        -:   12:  float b;
+        -:   13:};
+        -:   14:
+        -:   15:float X;
+        -:   16:
+        1:   17:foo(struct B b, struct A *q, float *h) {
+        1:   18:  X += *h;
+        1:   19:  *(b.p) = 3;
+        1:   20:  q->t = 2;
+        1:   21:  return *(b.p);
+        -:   22:}
+        -:   23:
+        1:   24:main() {
+        -:   25:  struct A a;
+        -:   26:  struct B b;
+        -:   27:
+        1:   28:  b.p = &a.t;
+        1:   29:  if (foo(b, &a, &X) == 3)
+    #####:   30:    abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

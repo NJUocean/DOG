@@ -1,0 +1,37 @@
+        -:    0:Source:955.c
+        -:    0:Graph:955.gcno
+        -:    0:Data:955.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -g" } */
+        -:    3:
+        -:    4:int a, c, d, e, f, g, h, i, j, k;
+        -:    5:
+        -:    6:struct S0 {
+        -:    7:  int f0;
+        -:    8:  int f1;
+        -:    9:  int f2;
+        -:   10:};
+        -:   11:
+        -:   12:struct S1 {
+        -:   13:  int f0;
+        -:   14:  int f1;
+        -:   15:  struct S0 f2;
+        -:   16:} b;
+        -:   17:
+        1:   18:void fn1(struct S1 p) {
+       1*:   19:  for (; k; k++)
+    #####:   20:    h = j ? a : a - 1;
+        1:   21:  d &= i;
+        1:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  int l[5] = {0};
+        1:   26:  fn1(b);
+        4:   27:  for (c = 0; c < 3; c++)
+       12:   28:    for (g = 0; g < 3; g++)
+        9:   29:      l[c * 2] = e = l[c];
+        1:   30:  if (f)
+    #####:   31:    fn1(b);
+        1:   32:  return 0;
+        -:   33:}

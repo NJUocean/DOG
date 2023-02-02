@@ -1,0 +1,22 @@
+        -:    0:Source:1930.c
+        -:    0:Graph:1930.gcno
+        -:    0:Data:1930.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O1 -fno-tree-vrp -fno-tree-copy-prop -fno-tree-ccp
+        -:    3: * -fdump-tree-optimized" } */
+        -:    4:
+        -:    5:volatile int x;
+        -:    6:
+        1:    7:int main() {
+        -:    8:  volatile int *vip;
+        1:    9:  vip = &x;
+        -:   10:  volatile int *cvip;
+        1:   11:  cvip = vip;
+        -:   12:
+        1:   13:  if (vip != cvip)
+    #####:   14:    return -1;
+        1:   15:  return 0;
+        -:   16:}
+        -:   17:
+        -:   18:/* { dg-final { scan-tree-dump-times "return 0" 1 "optimized" } } */

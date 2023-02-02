@@ -1,0 +1,25 @@
+        -:    0:Source:1381.c
+        -:    0:Graph:1381.gcno
+        -:    0:Data:1381.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-early-inlining" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:int i;
+        -:    6:static void foo(void);
+        2:    7:void __attribute__((noinline)) bar(void) {
+        2:    8:  if (!i)
+        1:    9:    foo();
+        2:   10:}
+        1:   11:static void foo(void) {
+        1:   12:  i = 1;
+        1:   13:  bar();
+        1:   14:}
+        1:   15:int main() {
+        1:   16:  i = 0;
+        1:   17:  bar();
+        1:   18:  if (i != 1)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

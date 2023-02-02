@@ -1,0 +1,20 @@
+        -:    0:Source:900.c
+        -:    0:Graph:900.gcno
+        -:    0:Data:900.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/47028 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -foptimize-sibling-calls -fno-forward-propagate
+        -:    4: * -fno-tree-copy-prop -fno-tree-dominator-opts" } */
+        -:    5:
+       15:    6:int fib(int n) {
+       15:    7:  if (n <= 1)
+        8:    8:    return 1;
+        7:    9:  return fib(n - 2) + fib(n - 1);
+        -:   10:}
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  if (fib(5) != 8)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

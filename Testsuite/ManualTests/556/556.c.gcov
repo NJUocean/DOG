@@ -1,0 +1,39 @@
+        -:    0:Source:556.c
+        -:    0:Graph:556.gcno
+        -:    0:Data:556.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O3 -c -fdump-ipa-inline-details -fno-early-inlining
+        -:    2: * -fno-ipa-cp"  } */
+        -:    3:/* { dg-add-options bind_pic_locally } */
+        -:    4:
+        -:    5:void abort(void);
+        -:    6:int scc_entry(int);
+        -:    7:int sum;
+        -:    8:int a[10];
+       45:    9:int scc_next(int c) {
+        -:   10:  int i;
+      165:   11:  for (i = 0; i < c; i++)
+      120:   12:    a[i] = c;
+       45:   13:  scc_entry(c);
+       45:   14:}
+       55:   15:int scc_entry(int c) {
+        -:   16:  int i;
+      220:   17:  for (i = 0; i < c; i++)
+      165:   18:    sum += a[i];
+       55:   19:  if (c--)
+       45:   20:    scc_next(c);
+       55:   21:  return sum;
+        -:   22:}
+        1:   23:int main() {
+        -:   24:  int sum;
+        -:   25:  int i;
+       11:   26:  for (i = 0; i < 10; i++)
+       10:   27:    scc_entry(i);
+        1:   28:  if (sum < 0)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:/* { dg-final { scan-ipa-dump "in_scc"  "inline"  } } */
+        -:   33:/* { dg-final { scan-ipa-dump "same_scc"  "inline"  } } */
+        -:   34:/* Main is not in scc, the two functions are.  */
+        -:   35:/* { dg-final { scan-ipa-dump-times "In SCC" 2 "inline"  } } */

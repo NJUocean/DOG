@@ -1,0 +1,28 @@
+    1|       |void add_unwind_adjustsp(long);
+    2|       |void abort(void);
+    3|       |
+    4|       |unsigned char bytes[5];
+    5|       |
+    6|      1|void add_unwind_adjustsp(long offset) {
+    7|      1|  int n;
+    8|      1|  unsigned long o;
+    9|      1|
+   10|      1|  o = (long)((offset - 0x204) >> 2);
+   11|      1|
+   12|      1|  n = 0;
+   13|      3|  while (o) {
+   14|      2|    bytes[n] = o & 0x7f;
+   15|      2|    o >>= 7;
+   16|      2|    if (o)
+   17|      1|      bytes[n] |= 0x80;
+   18|      2|    n++;
+   19|      2|  }
+   20|      1|}
+   21|       |
+   22|      1|int main(void) {
+   23|      1|  add_unwind_adjustsp(4132);
+   24|      1|  if (bytes[0] != 0x88 || bytes[1] != 0x07)
+   25|      0|    abort();
+   26|      1|  return 0;
+   27|      1|}
+

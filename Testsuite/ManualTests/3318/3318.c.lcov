@@ -1,0 +1,15 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|int main() {
+    4|      1|  int hicount = 0;
+    5|      1|  unsigned char *c;
+    6|      1|  char *str = "\x7f\xff";
+    7|      3|  for (c = (unsigned char *)str; *c; c++) {
+    8|      2|    if (!(((unsigned int)(*c)) < 0x80))
+    9|      1|      hicount++;
+   10|      2|  }
+   11|      1|  if (hicount != 1)
+   12|      0|    abort();
+   13|      1|  return 0;
+   14|      1|}
+

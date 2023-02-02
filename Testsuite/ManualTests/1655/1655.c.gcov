@@ -1,0 +1,21 @@
+        -:    0:Source:1655.c
+        -:    0:Graph:1655.gcno
+        -:    0:Data:1655.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+        -:    3:
+        1:    4:int foo(int x, int y) {
+        1:    5:  const int z = 2;
+        1:    6:  if (z & 1)
+    #####:    7:    return x << y;
+        1:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int bar(int x, int y) { return x + y; }
+        -:   12:
+        1:   13:int main(void) {
+        1:   14:  foo(3, 2);
+        1:   15:  bar(12, 42);
+        1:   16:  return 0;
+        -:   17:}

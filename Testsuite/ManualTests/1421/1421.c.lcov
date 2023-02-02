@@ -1,0 +1,9 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|      1|int main(void) {
+    4|      1|  int x = 1;
+    5|     33|  while (x)
+    6|     32|    x <<= 1;
+    7|      1|  return x;
+    8|      1|}
+

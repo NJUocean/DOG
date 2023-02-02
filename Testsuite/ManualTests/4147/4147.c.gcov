@@ -1,0 +1,35 @@
+        -:    0:Source:4147.c
+        -:    0:Graph:4147.gcno
+        -:    0:Data:4147.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fomit-frame-pointer" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:void die(long) __attribute__((noreturn));
+        -:    8:
+    #####:    9:void die(long e) {
+    #####:   10:  abort();
+        -:   11:  for (;;)
+        -:   12:    ;
+        -:   13:}
+        -:   14:
+        1:   15:long foo(double i) {
+        1:   16:  if (i != 2.0)
+    #####:   17:    abort();
+        1:   18:  return 26;
+        -:   19:}
+        -:   20:
+        1:   21:long bar(long i, double x) {
+        1:   22:  if (x < 0)
+    #####:   23:    die(1);
+        1:   24:  return foo(x);
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  if (bar(0, 2.0) != 26)
+    #####:   29:    abort();
+        1:   30:  exit(0);
+        -:   31:}

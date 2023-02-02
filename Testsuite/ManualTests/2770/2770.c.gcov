@@ -1,0 +1,37 @@
+        -:    0:Source:2770.c
+        -:    0:Graph:2770.gcno
+        -:    0:Data:2770.gcda
+        -:    0:Runs:1
+        -:    1:/* When the specified length exceeds one of the arguments of the call to memcmp,
+        -:    2:   the call to memcmp should NOT be inlined.  */
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O2 -Wno-stringop-overflow" } */
+        -:    5:
+        -:    6:typedef struct {
+        -:    7:  char s[8];
+        -:    8:  int x;
+        -:    9:} S;
+        -:   10:
+        1:   11:__attribute__((noinline)) int f1(S *s) {
+        1:   12:  int result = 0;
+        1:   13:  result += __builtin_memcmp(s->s, "a", 3);
+        1:   14:  return result;
+        -:   15:}
+        -:   16:
+        1:   17:__attribute__((noinline)) int f2(char *p) {
+        1:   18:  int result = 0;
+        1:   19:  result += __builtin_memcmp(p, "a", 3);
+        1:   20:  return result;
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  S ss = {{'a', 'b', 'c'}, 2};
+        1:   25:  char *s = "abcd";
+        -:   26:
+        1:   27:  if (f1(&ss) < 0 || f2(s) < 0)
+    #####:   28:    __builtin_abort();
+        -:   29:
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:
+        -:   33:/* { dg-final { scan-assembler-times "memcmp" 2 } } */

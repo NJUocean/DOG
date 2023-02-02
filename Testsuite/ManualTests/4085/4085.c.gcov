@@ -1,0 +1,22 @@
+        -:    0:Source:4085.c
+        -:    0:Graph:4085.gcno
+        -:    0:Data:4085.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  unsigned char a __attribute__((packed));
+        -:    3:  unsigned short b __attribute__((packed));
+        -:    4:} three_char_t;
+        -:    5:
+        1:    6:unsigned char my_set_a(void) { return 0xab; }
+        -:    7:
+        1:    8:unsigned short my_set_b(void) { return 0x1234; }
+        -:    9:
+        1:   10:main() {
+        -:   11:  three_char_t three_char;
+        -:   12:
+        1:   13:  three_char.a = my_set_a();
+        1:   14:  three_char.b = my_set_b();
+        1:   15:  if (three_char.a != 0xab || three_char.b != 0x1234)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

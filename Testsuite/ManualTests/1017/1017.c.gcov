@@ -1,0 +1,15 @@
+        -:    0:Source:1017.c
+        -:    0:Graph:1017.gcno
+        -:    0:Data:1017.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/78965 */
+        -:    2:/* { dg-do run { target c99_runtime } } */
+        -:    3:/* { dg-options "-O2" } */
+        -:    4:
+        1:    5:int main() {
+        1:    6:  int a = 5, b = 6;
+        1:    7:  int c = __builtin_snprintf(0, 0, "a%nb%nc", &a, &b);
+        1:    8:  if (a + b + c != 6)
+    #####:    9:    __builtin_abort();
+        1:   10:  return 0;
+        -:   11:}

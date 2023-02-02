@@ -1,0 +1,11 @@
+        -:    0:Source:2970.c
+        -:    0:Graph:2970.gcno
+        -:    0:Data:2970.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        1:    2:  int v = 42;
+        -:    3:
+        1:    4:  inline int fff(int x) { return x * 10; }
+        -:    5:
+        1:    6:  return (fff(v) != 420);
+        -:    7:}

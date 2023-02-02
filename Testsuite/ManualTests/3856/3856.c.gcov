@@ -1,0 +1,30 @@
+        -:    0:Source:3856.c
+        -:    0:Graph:3856.gcno
+        -:    0:Data:3856.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/63659 */
+        -:    2:
+        -:    3:int a, b, c, *d = &b, g, h, i;
+        -:    4:unsigned char e;
+        -:    5:char f;
+        -:    6:
+        1:    7:int main() {
+        1:    8:  while (a) {
+    #####:    9:    for (a = 0; a; a++)
+    #####:   10:      for (; c; c++)
+        -:   11:        ;
+    #####:   12:    if (i)
+    #####:   13:      break;
+        -:   14:  }
+        -:   15:
+        1:   16:  char j = c, k = -1, l;
+        1:   17:  l = g = j >> h;
+       1*:   18:  f = l == 0 ? k : k % l;
+        1:   19:  e = 0 ? 0 : f;
+        1:   20:  *d = e;
+        -:   21:
+        1:   22:  if (b != 255)
+    #####:   23:    __builtin_abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

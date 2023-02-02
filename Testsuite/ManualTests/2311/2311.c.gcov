@@ -1,0 +1,19 @@
+        -:    0:Source:2311.c
+        -:    0:Graph:2311.gcno
+        -:    0:Data:2311.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fstrict-volatile-bitfields" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:struct thing {
+        -:    6:  volatile unsigned short a : 8;
+        -:    7:  volatile unsigned short b : 8;
+        -:    8:} t = {1, 2};
+        -:    9:
+        1:   10:int main() {
+        1:   11:  t.a = 3;
+        1:   12:  if (t.a != 3 || t.b != 2)
+    #####:   13:    abort();
+        1:   14:  return 0;
+        -:   15:}

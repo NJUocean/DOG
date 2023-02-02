@@ -1,0 +1,13 @@
+    1|       |int v;
+    2|       |
+    3|      0|char *g() { return ""; }
+    4|       |
+    5|      1|char *f() { return (v == 0 ? g() : "abc"); }
+    6|       |
+    7|      1|main() {
+    8|      1|  v = 1;
+    9|      1|  if (!strcmp(f(), "abc"))
+   10|      1|    exit(0);
+   11|      0|  abort();
+   12|      0|}
+

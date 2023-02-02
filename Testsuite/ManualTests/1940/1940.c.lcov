@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct Bar {
+    6|       |  int p;
+    7|       |};
+    8|       |struct Foo {
+    9|       |  struct Bar *p;
+   10|       |};
+   11|       |struct Bar p0 = {0};
+   12|       |struct Bar p1 = {1};
+   13|      1|void bar(struct Foo *f) { f->p = &p0; }
+   14|      1|int foo(struct Foo *f) {
+   15|      1|  f->p->p = 1;
+   16|      1|  bar(f);
+   17|      1|  return f->p->p;
+   18|      1|}
+   19|      1|int main() {
+   20|      1|  struct Foo f;
+   21|      1|  f.p = &p1;
+   22|      1|  if (foo(&f) != 0)
+   23|      0|    abort();
+   24|      1|  return 0;
+   25|      1|}
+

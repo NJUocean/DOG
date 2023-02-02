@@ -1,0 +1,29 @@
+        -:    0:Source:252.c
+        -:    0:Graph:252.gcno
+        -:    0:Data:252.gcda
+        -:    0:Runs:1
+        1:    1:int ffs(x) int x;
+        -:    2:{
+        -:    3:  int bit, mask;
+        -:    4:
+        1:    5:  if (x == 0)
+    #####:    6:    return 0;
+        -:    7:
+       1*:    8:  for (bit = 1, mask = 1; !(x & mask); bit++, mask <<= 1)
+        -:    9:    ;
+        -:   10:
+        1:   11:  return bit;
+        -:   12:}
+        -:   13:
+        1:   14:f(x) int x;
+        -:   15:{
+        -:   16:  int y;
+        1:   17:  y = ffs(x) - 1;
+        1:   18:  if (y < 0)
+    #####:   19:    abort();
+        1:   20:}
+        -:   21:
+        1:   22:main() {
+        1:   23:  f(1);
+        1:   24:  exit(0);
+        -:   25:}

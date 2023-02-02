@@ -1,0 +1,23 @@
+        -:    0:Source:541.c
+        -:    0:Graph:541.gcno
+        -:    0:Data:541.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/86985 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        -:    5:struct {
+        -:    6:  int foo;
+        -:    7:  int bar[0];
+        -:    8:} zla; /* Zero length array.  */
+        -:    9:
+        -:   10:struct {
+        -:   11:  int foo;
+        -:   12:  int bar[];
+        -:   13:} fam; /* Flexible array member.  */
+        -:   14:
+        1:   15:int main() {
+        -:   16:  /* { dg-final { gdb-test . "type:zla" "struct { int foo; int bar[0]; }" } } */
+        -:   17:  /* { dg-final { gdb-test . "type:fam" "struct { int foo; int bar[]; }" } } */
+        1:   18:  return 0;
+        -:   19:}

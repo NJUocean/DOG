@@ -1,0 +1,29 @@
+        -:    0:Source:56.c
+        -:    0:Graph:56.gcno
+        -:    0:Data:56.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 35058: -Werror= works only with some warnings. */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-std=c99 -pedantic -Werror=declaration-after-statement" } */
+        -:    4:/* { dg-message "some warnings being treated as errors" "" {target "*-*-*"} 0 }
+        -:    5: */
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int i = 0;
+        1:   11:  if (i != 0)
+    #####:   12:    abort();
+        1:   13:  i++;
+        1:   14:  if (i != 1)
+    #####:   15:    abort();
+        1:   16:  int j = i; /* { dg-error "" "declaration-after-statement" } */
+        1:   17:  if (j != 1)
+    #####:   18:    abort();
+        -:   19:  struct foo {
+        -:   20:    int i0;
+        1:   21:  } k = {4}; /* { dg-error "" "declaration-after-statement" } */
+        1:   22:  if (k.i0 != 4)
+    #####:   23:    abort();
+        1:   24:  exit(0);
+        -:   25:}

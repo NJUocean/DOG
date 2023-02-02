@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -ffast-math" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|      1|static void foo(double a, double weight, const double *ring, double *phase) {
+    7|      1|  *phase = *ring * weight;
+    8|      1|}
+    9|       |
+   10|      0|void foo2(void) { foo(0, 1, (double *)0, (double *)0); }
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  double t1 = 1, c1;
+   14|      1|  foo(0, 1, &t1, &c1);
+   15|      1|  if (c1 < 0.5)
+   16|      0|    abort();
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+

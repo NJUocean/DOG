@@ -1,0 +1,55 @@
+        -:    0:Source:173.c
+        -:    0:Graph:173.gcno
+        -:    0:Data:173.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { pcc_bitfield_type_matters || default_packed } } } */
+        -:    2:/* { dg-options "" } */
+        -:    3:
+        -:    4:/* Check bitfields and non-bitfields are aligned & sized similarly.
+        -:    5:
+        -:    6:   Copyright (C) 2002 Free Software Foundation Inc
+        -:    7:   Contributed by Nathan Sidwell <nathan@codesourcery.com>
+        -:    8:*/
+        -:    9:
+        -:   10:#include <limits.h>
+        -:   11:#include <stdio.h>
+        -:   12:
+        -:   13:static int fail;
+        -:   14:
+        -:   15:#define CHECK1(N, T)                                                           \
+        -:   16:  do {                                                                         \
+        -:   17:    typedef struct Field_##N {                                                 \
+        -:   18:      char c;                                                                  \
+        -:   19:      T f;                                                                     \
+        -:   20:    } Field_##N;                                                               \
+        -:   21:    typedef struct BitField_##N {                                              \
+        -:   22:      char c;                                                                  \
+        -:   23:      T f : sizeof(T) * CHAR_BIT;                                              \
+        -:   24:    } BitField_##N;                                                            \
+        -:   25:    if (sizeof(Field_##N) != sizeof(BitField_##N)) {                           \
+        -:   26:      fail = 1;                                                                \
+        -:   27:      printf("sizeof %s failed\n", #T);                                        \
+        -:   28:    }                                                                          \
+        -:   29:    if (__alignof__(Field_##N) != __alignof__(BitField_##N)) {                 \
+        -:   30:      fail = 1;                                                                \
+        -:   31:      printf("__alignof__ %s failed\n", #T);                                   \
+        -:   32:    }                                                                          \
+        -:   33:  } while (0)
+        -:   34:
+        -:   35:#define CHECK(N, T)                                                            \
+        -:   36:  do {                                                                         \
+        -:   37:    CHECK1(N, T);                                                              \
+        -:   38:    CHECK1(s##N, signed T);                                                    \
+        -:   39:    CHECK1(u##N, unsigned T);                                                  \
+        -:   40:  } while (0)
+        -:   41:
+        1:   42:int main() {
+        -:   43:
+        -:   44:  CHECK(c, char);
+        -:   45:  CHECK(s, short);
+        -:   46:  CHECK(i, int);
+        -:   47:  CHECK(l, long);
+        -:   48:  CHECK(ll, long long);
+        -:   49:
+        1:   50:  return fail;
+        -:   51:}

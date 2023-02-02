@@ -1,0 +1,46 @@
+        -:    0:Source:1434.c
+        -:    0:Graph:1434.gcno
+        -:    0:Data:1434.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:extern int rand(void);
+        -:    5:
+        2:    6:static void copy(int *r, int *a, int na) {
+        -:    7:  int i;
+       12:    8:  for (i = 0; i < na; i++)
+       10:    9:    r[i] = a[i];
+        2:   10:}
+        -:   11:
+        2:   12:static void foo(int *a, int na) {
+        -:   13:  int i;
+       12:   14:  for (i = 0; i < na; i++)
+       10:   15:    a[i] = rand();
+        2:   16:}
+        -:   17:
+        2:   18:static int cmp(int *a, int *b, int n) {
+        -:   19:  int i;
+       12:   20:  for (i = 0; i < n; i++)
+       10:   21:    if (a[i] != b[i])
+    #####:   22:      return -1;
+        2:   23:  return 0;
+        -:   24:}
+        -:   25:
+        1:   26:void __attribute__((noinline, noclone)) test(int sz, int comm) {
+        -:   27:  int j, n;
+        -:   28:  int v[64], w[64];
+        3:   29:  for (j = 1; j <= sz; j++) {
+        2:   30:    n = (2 * j - 1) * (2 * j - 1);
+        2:   31:    foo(w, n);
+        2:   32:    copy(v, w, n);
+        2:   33:    if (comm)
+        2:   34:      if (cmp(v, w, n))
+    #####:   35:        abort();
+        -:   36:  }
+        1:   37:}
+        -:   38:
+        1:   39:int main() {
+        1:   40:  test(2, 1);
+        1:   41:  return 0;
+        -:   42:}

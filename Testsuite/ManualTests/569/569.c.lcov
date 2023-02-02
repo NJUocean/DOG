@@ -1,0 +1,13 @@
+    1|      1|void foo(unsigned int *p) {
+    2|      1|  if ((signed char)(*p & 0xFF) == 17 || (signed char)(*p & 0xFF) == 18)
+    3|      1|    return;
+    4|      0|  else
+    5|      0|    abort();
+    6|      1|}
+    7|       |
+    8|      1|int main() {
+    9|      1|  int i = 0x30011;
+   10|      1|  foo(&i);
+   11|      1|  exit(0);
+   12|      1|}
+

@@ -1,0 +1,19 @@
+    1|       |// { dg-do compile }
+    2|       |
+    3|       |extern int printf(const char *, ...);
+    4|       |extern void foo(int *);
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  double d = 6;
+    8|      1|  int i = 1, j = 6, k = 8;
+    9|      1|#pragma omp parallel shared(d) private(i) num_threads(4)
+   10|      1|  {
+   11|      1|    i = 4;
+   12|      1|#pragma omp for lastprivate(j)
+   13|      9|    for (j = 1; j <= k; j++)
+   14|      8|      printf("%s %d %d %d %p %g\n", "Hello, World!", i, j, k, &j, d);
+   15|      1|    printf("%s %d %g\n", "Hello, World!", i, d);
+   16|      1|  }
+   17|      1|  return 0;
+   18|      1|}
+

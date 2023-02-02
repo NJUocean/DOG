@@ -1,0 +1,16 @@
+    1|       |/* We used to handle pointer addition wrongly
+    2|       |   at the time of recombining to an ARRAY_REF
+    3|       |   in the case of
+    4|       |     p + -4B
+    5|       |   where -4B is represented as unsigned.  */
+    6|       |
+    7|       |void abort(void);
+    8|      1|int main() {
+    9|      1|  int a[10], *p, *q;
+   10|      1|  q = &a[1];
+   11|      1|  p = &q[-1];
+   12|      1|  if (p >= &a[9])
+   13|      0|    abort();
+   14|      1|  return 0;
+   15|      1|}
+

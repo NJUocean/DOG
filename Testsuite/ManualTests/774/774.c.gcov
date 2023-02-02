@@ -1,0 +1,15 @@
+        -:    0:Source:774.c
+        -:    0:Graph:774.gcno
+        -:    0:Data:774.gcda
+        -:    0:Runs:1
+        -:    1:char line[4] = {'1', '9', '9', '\0'};
+        -:    2:
+        1:    3:int main() {
+        1:    4:  char *ptr = line + 3;
+        -:    5:
+        3:    6:  while ((*--ptr += 1) > '9')
+        2:    7:    *ptr = '0';
+        1:    8:  if (line[0] != '2' || line[1] != '0' || line[2] != '0')
+    #####:    9:    abort();
+        1:   10:  return 0;
+        -:   11:}

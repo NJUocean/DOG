@@ -1,0 +1,20 @@
+        -:    0:Source:2192.c
+        -:    0:Graph:2192.gcno
+        -:    0:Data:2192.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-require-effective-target vect_int } */
+        -:    3:
+        -:    4:char bigDone[260];
+        -:    5:int runningOrder[260];
+        -:    6:
+        1:    7:int main() {
+        -:    8:  int i;
+      257:    9:  for (i = 0; i <= 255; i++) {
+      256:   10:    bigDone[i] = ((char)0);
+      256:   11:    runningOrder[i] = i;
+        -:   12:  }
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-final { scan-tree-dump-times "vectorized 1 loops" 1 "vect" } } */

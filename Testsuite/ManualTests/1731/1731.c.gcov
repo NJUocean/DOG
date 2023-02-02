@@ -1,0 +1,24 @@
+        -:    0:Source:1731.c
+        -:    0:Graph:1731.gcno
+        -:    0:Data:1731.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  _Bool x;
+        -:    5:};
+        -:    6:
+        1:    7:void foo(struct S *s) {
+        1:    8:  __builtin_memset(s, 0x11, sizeof(struct S));
+        1:    9:  s->x = 1;
+        1:   10:}
+        -:   11:
+        1:   12:int main() {
+        -:   13:  struct S s;
+        1:   14:  foo(&s);
+        -:   15:  char c;
+        1:   16:  __builtin_memcpy(&c, &s.x, 1);
+        1:   17:  if (c != 1)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

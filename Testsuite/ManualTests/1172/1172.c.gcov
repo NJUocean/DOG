@@ -1,0 +1,51 @@
+        -:    0:Source:1172.c
+        -:    0:Graph:1172.gcno
+        -:    0:Data:1172.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target store_merge } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-store-merging" } */
+        -:    4:
+        -:    5:/* Check that we can widen accesses to bitfields.  */
+        -:    6:
+        -:    7:struct bar {
+        -:    8:  int a : 3;
+        -:    9:  unsigned char b : 4;
+        -:   10:  unsigned char c : 1;
+        -:   11:  char d;
+        -:   12:  char e;
+        -:   13:  char f;
+        -:   14:  char g;
+        -:   15:};
+        -:   16:
+        1:   17:__attribute__((noinline)) void foozero(struct bar *p) {
+        1:   18:  p->b = 0;
+        1:   19:  p->a = 0;
+        1:   20:  p->c = 0;
+        1:   21:  p->d = 0;
+        1:   22:  p->e = 0;
+        1:   23:  p->f = 0;
+        1:   24:  p->g = 0;
+        1:   25:}
+        -:   26:
+        1:   27:__attribute__((noinline)) void foo1(struct bar *p) {
+        1:   28:  p->b = 3;
+        1:   29:  p->a = 2;
+        1:   30:  p->c = 1;
+        1:   31:  p->d = 4;
+        1:   32:  p->e = 5;
+        1:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        -:   36:  struct bar p;
+        1:   37:  foozero(&p);
+        1:   38:  foo1(&p);
+        1:   39:  if (p.a != 2 || p.b != 3 || p.c != 1 || p.d != 4 || p.e != 5 || p.f != 0 ||
+        1:   40:      p.g != 0)
+    #####:   41:    __builtin_abort();
+        -:   42:
+        1:   43:  return 0;
+        -:   44:}
+        -:   45:
+        -:   46:/* { dg-final { scan-tree-dump-times "Merging successful" 2 "store-merging" } }
+        -:   47: */

@@ -1,0 +1,10 @@
+    1|       |_Complex a;
+    2|       |void fn1();
+    3|       |
+    4|      1|int main() {
+    5|      1|  fn1(a);
+    6|      1|  return 0;
+    7|      1|}
+    8|       |
+    9|      1|void fn1(__complex__ long double p1) { __imag__ p1 = 6.0L; }
+

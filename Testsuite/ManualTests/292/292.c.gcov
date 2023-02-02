@@ -1,0 +1,22 @@
+        -:    0:Source:292.c
+        -:    0:Graph:292.gcno
+        -:    0:Data:292.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that the inline instance has no extra DW_TAG_lexical_block between
+        -:    2:   the DW_TAG_inlined_subroutine and the DW_TAG_variable for the local.  */
+        -:    3:/* { dg-options "-O -gdwarf -dA" } */
+        -:    4:/* { dg-do compile } */
+        -:    5:/* { dg-final { scan-assembler
+        -:    6: * "DW_TAG_inlined_subroutine\[^\\(\]*\\(\[^\\)\]*\\)\[^\\(\]*\\(DIE
+        -:    7: * \\(0x\[0-9a-f\]*\\) DW_TAG_formal_parameter\[^\\(\]*\\(DIE
+        -:    8: * \\(0x\[0-9a-f\]*\\) DW_TAG_variable" } } */
+        -:    9:/* { dg-final { scan-assembler-times "DW_TAG_inlined_subroutine" 2 } } */
+        -:   10:
+        1:   11:static int foo(int i) {
+        1:   12:  volatile int j = i + 3;
+        1:   13:  return j - 2;
+        -:   14:}
+        1:   15:int main() {
+        1:   16:  volatile int z = foo(-1);
+        1:   17:  return z;
+        -:   18:}

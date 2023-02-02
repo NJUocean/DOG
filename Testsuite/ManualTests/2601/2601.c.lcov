@@ -1,0 +1,13 @@
+    1|       |/* PR target/63534 */
+    2|       |/* Check correct mcount generation.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-require-effective-target fpic } */
+    5|       |/* { dg-require-effective-target ia32 } */
+    6|       |/* { dg-options "-O2 -fpic -pg -save-temps" } */
+    7|       |
+    8|      1|int main() { return 0; }
+    9|       |
+   10|       |/* { dg-final { scan-assembler "mcount" } } */
+   11|       |/* { dg-final { scan-assembler "get_pc_thunk" } } */
+   12|       |/* { dg-final { cleanup-profile-file } } */
+

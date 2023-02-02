@@ -1,0 +1,15 @@
+    1|      2|static int __attribute__((noinline, noclone)) swap(int x) {
+    2|      2|  return (unsigned short)((unsigned short)x << 8 | (unsigned short)x >> 8);
+    3|      2|}
+    4|       |
+    5|       |static int a = 0x1234;
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int b = 0x1234;
+    9|      1|  if (swap(a) != 0x3412)
+   10|      0|    __builtin_abort();
+   11|      1|  if (swap(b) != 0x3412)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

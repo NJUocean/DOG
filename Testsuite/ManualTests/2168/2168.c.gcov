@@ -1,0 +1,18 @@
+        -:    0:Source:2168.c
+        -:    0:Graph:2168.gcno
+        -:    0:Data:2168.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:
+        -:    4:typedef int vec __attribute__((vector_size(4 * sizeof(int))));
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) void f(vec *x) { *x = (*x & 1) ^ 1; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  vec x = {1, 2, 3, 4};
+        1:   10:  f(&x);
+        1:   11:  if (x[0] != 0 || x[1] != 1)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=float-divide-by-zero" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  volatile float a = 1.3f;
+    6|      1|  volatile double b = 0.0;
+    7|      1|  volatile int c = 4;
+    8|      1|  volatile float res;
+    9|      1|
+   10|      1|  res = a / b;
+   11|      1|  res = a / 0.0;
+   12|      1|  res = 2.7f / b;
+   13|      1|  res = 3.6 / (b = 0.0, b);
+   14|      1|  res = c / b;
+   15|      1|  res = b / c;
+   16|      1|
+   17|      1|  return 0;
+   18|      1|}
+   19|       |
+   20|       |/* { dg-output "division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   21|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   22|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   23|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*(\n|\r\n|\r)" } */
+   24|       |/* { dg-output "\[^\n\r]*division by zero\[^\n\r]*" } */
+

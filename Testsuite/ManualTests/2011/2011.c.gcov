@@ -1,0 +1,17 @@
+        -:    0:Source:2011.c
+        -:    0:Graph:2011.gcno
+        -:    0:Data:2011.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/28634.  On targets with delayed branches,
+        -:    2:   dbr_schedule could do the next iteration's addition in the
+        -:    3:   branch delay slot, then subtract the value again if the branch
+        -:    4:   wasn't taken.  This can lead to rounding errors.  */
+        -:    5:double x = -0x1.0p53;
+        -:    6:double y = 1;
+        1:    7:int main(void) {
+        2:    8:  while (y > 0)
+        1:    9:    y += x;
+        1:   10:  if (y != x + 1)
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

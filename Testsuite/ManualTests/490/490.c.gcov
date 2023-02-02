@@ -1,0 +1,20 @@
+        -:    0:Source:490.c
+        -:    0:Graph:490.gcno
+        -:    0:Data:490.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:/* { dg-skip-if "" { *-*-* }  { "*" } { "-O0" } } */
+        -:    4:
+        1:    5:void foo(int i) {
+        1:    6:  int j = 0;
+        1:    7:  i = 1;
+        1:    8:  j = j + 1; /* BREAK */
+        1:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  foo(0);
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        -:   16:/* { dg-final { gdb-test 10 "i" "1" } } */

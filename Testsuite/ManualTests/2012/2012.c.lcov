@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -fno-strict-aliasing" } */
+    3|       |
+    4|       |struct s {
+    5|       |  __INT32_TYPE__ x;
+    6|       |} __attribute__((packed));
+    7|       |struct t {
+    8|       |  __INT32_TYPE__ x;
+    9|       |};
+   10|       |
+   11|      1|void __attribute__((noinline, noipa)) swap(struct s *p, struct t *q) {
+   12|      1|  p->x = q->x;
+   13|      1|  q->x = p->x;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  struct t a[2];
+   18|      1|  a[0].x = 0x12345678;
+   19|      1|  a[1].x = 0x98765432;
+   20|      1|  swap((struct s *)((char *)a + 1), a);
+   21|      1|  if (a[0].x != 0x12345678)
+   22|      0|    __builtin_abort();
+   23|      1|  return 0;
+   24|      1|}
+

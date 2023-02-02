@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-Wno-psabi -w" } */
+    3|       |/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+    4|       |
+    5|       |typedef unsigned V __attribute__((__vector_size__(16)));
+    6|       |union U {
+    7|       |  V j;
+    8|       |  unsigned long long i __attribute__((__vector_size__(16)));
+    9|       |};
+   10|       |
+   11|      1|static inline __attribute__((always_inline)) V foo(unsigned long long a) {
+   12|      1|  union U z = {.j = (V){}};
+   13|      2|  for (unsigned long i = 0; i < 1; i++)
+   14|      1|    z.i[i] = a;
+   15|      1|  return z.j;
+   16|      1|}
+   17|       |
+   18|       |static inline __attribute__((always_inline)) V bar(V a, unsigned long long i,
+   19|      1|                                                   int q) {
+   20|      1|  union U z = {.j = a};
+   21|      1|  z.i[q] = i;
+   22|      1|  return z.j;
+   23|      1|}
+   24|       |
+   25|      1|int main() {
+   26|      1|  union U z = {.j = bar(foo(1729), 2, 1)};
+   27|      1|  if (z.i[0] != 1729)
+   28|      0|    __builtin_abort();
+   29|      1|  return 0;
+   30|      1|}
+

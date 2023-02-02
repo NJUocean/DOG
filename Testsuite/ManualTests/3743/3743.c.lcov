@@ -1,0 +1,24 @@
+    1|       |/* PR middle-end/50865 */
+    2|       |
+    3|      4|#define INT64_MIN (-__LONG_LONG_MAX__ - 1)
+    4|       |
+    5|      1|int main() {
+    6|      1|  volatile long long l1 = 1;
+    7|      1|  volatile long long l2 = -1;
+    8|      1|  volatile long long l3 = -1;
+    9|      1|
+   10|      1|  if ((INT64_MIN % 1LL) != 0)
+   11|      0|    __builtin_abort();
+   12|      1|  if ((INT64_MIN % l1) != 0)
+   13|      0|    __builtin_abort();
+   14|      1|  if (l2 == -1) {
+   15|      1|    if ((INT64_MIN % 1LL) != 0)
+   16|      0|      __builtin_abort();
+   17|      0|  } else if ((INT64_MIN % -l2) != 0)
+   18|      0|    __builtin_abort();
+   19|      1|  if ((INT64_MIN % -l3) != 0)
+   20|      0|    __builtin_abort();
+   21|      1|
+   22|      1|  return 0;
+   23|      1|}
+

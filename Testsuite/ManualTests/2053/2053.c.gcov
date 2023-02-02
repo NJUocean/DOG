@@ -1,0 +1,21 @@
+        -:    0:Source:2053.c
+        -:    0:Graph:2053.gcno
+        -:    0:Data:2053.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized -ffast-math" } */
+        -:    3:float a, b, c, d;
+        -:    4:extern int printf(const char *, ...);
+        1:    5:int main(void) {
+        -:    6:  float e;
+        -:    7:  float f;
+        -:    8:  /* We should not be able to transform these into the same expression, and only
+        -:    9:   * have two additions.  */
+        1:   10:  e = a + b;
+        1:   11:  e = e + c;
+        1:   12:  f = c + a;
+        1:   13:  f = f + b;
+        1:   14:  printf("%f %f\n", e, f);
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-final { scan-tree-dump-times "\\\+" 2 "optimized"} } */

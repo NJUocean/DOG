@@ -1,0 +1,28 @@
+    1|       |/* Limit this to known non-strict alignment targets.  */
+    2|       |/* { dg-do run { target { i?86-*-linux* x86_64-*-linux* } } } */
+    3|       |/* { dg-options "-O2 -fsanitize=alignment -fsanitize-recover=alignment" } */
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) void foo(void *p, const void *q) {
+    6|      1|  *(long int *)p = *(const long int *)q;
+    7|      1|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  struct S {
+   11|      1|    long c;
+   12|      1|    char f[64];
+   13|      1|    char d;
+   14|      1|    char e[2 * sizeof(long)];
+   15|      1|    char g[64];
+   16|      1|  } s;
+   17|      1|  __builtin_memset(&s, '\0', sizeof s);
+   18|      1|  foo(&s.e[0], &s.e[sizeof(long)]);
+   19|      1|  return 0;
+   20|      1|}
+   21|       |
+   22|       |/* { dg-output "\.c:8:\[0-9]*: \[^\n\r]*load of misaligned address
+   23|       | * 0x\[0-9a-fA-F]* for type 'const long int', which requires \[48] byte
+   24|       | * alignment.*" } */
+   25|       |/* { dg-output "\.c:8:\[0-9]*: \[^\n\r]*store to misaligned address
+   26|       | * 0x\[0-9a-fA-F]* for type 'long int', which requires \[48] byte alignment" }
+   27|       | */
+

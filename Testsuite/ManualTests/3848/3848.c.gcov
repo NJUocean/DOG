@@ -1,0 +1,20 @@
+        -:    0:Source:3848.c
+        -:    0:Graph:3848.gcno
+        -:    0:Data:3848.gcda
+        -:    0:Runs:1
+        -:    1:// Make sure that we properly handle trigraphs in raw strings when
+        -:    2:// trigraphs are disabled, too.
+        -:    3:// { dg-options "-std=gnu99" { target c } }
+        -:    4:// { dg-options "-std=gnu++0x" { target c++ } }
+        -:    5:// { dg-do run }
+        -:    6:
+        -:    7:const char b[] = "??>"; // { dg-message "-trigraphs" }
+        -:    8:const char a[] = R"(??>??)??/
+        -:    9:??)";
+        -:   10:
+        -:   11:#define TEST(str, val)                                                         \
+        -:   12:  if (sizeof(str) != sizeof(val) ||                                            \
+        -:   13:      __builtin_memcmp(str, val, sizeof(str)) != 0)                            \
+        -:   14:  __builtin_abort()
+        -:   15:
+        1:   16:int main() { TEST(a, "?\?>?\?)?\?/\n?\?"); }

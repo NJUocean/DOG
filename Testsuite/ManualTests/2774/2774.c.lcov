@@ -1,0 +1,25 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -mtune=atom" } */
+    3|       |
+    4|       |extern void exit(int);
+    5|       |
+    6|       |unsigned char cx = 7;
+    7|       |
+    8|      1|int main() {
+    9|      1|  unsigned char cy;
+   10|      1|  unsigned char cz = 1;
+   11|      1|  asm("" : "+q"(cz));
+   12|      1|
+   13|      1|  cy = cx / 6;
+   14|      1|  if (cy != cz)
+   15|      0|    exit(1);
+   16|      1|  cy = cx % 6;
+   17|      1|  if (cy != cz)
+   18|      0|    exit(1);
+   19|      1|
+   20|      1|  exit(0);
+   21|      1|}
+   22|       |
+   23|       |/* { dg-final { scan-assembler-times "divb" 1 } } */
+   24|       |/* { dg-final { scan-assembler-not "divw" } } */
+

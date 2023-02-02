@@ -1,0 +1,13 @@
+    1|       |/* Copyright (C) 2000  Free Software Foundation.  */
+    2|       |/* Added extra line-breaks to check that diagnostics refer to correct token.
+    3|       |   --Per Bothner. */
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-options "-Wunused" } */
+    6|       |
+    7|       |typedef short unused_type __attribute__((unused));
+    8|      1|int main() {
+    9|      1|  short x /* { dg-warning "unused variable" "unused variable warning" } */
+   10|      1|      ;
+   11|      1|  unused_type y;
+   12|      1|}
+

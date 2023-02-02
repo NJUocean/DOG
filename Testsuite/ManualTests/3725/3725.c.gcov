@@ -1,0 +1,18 @@
+        -:    0:Source:3725.c
+        -:    0:Graph:3725.gcno
+        -:    0:Data:3725.gcda
+        -:    0:Runs:1
+    #####:    1:int f(int a, int b) {}
+        -:    2:
+        1:    3:main() {
+        -:    4:  unsigned long addr1;
+        -:    5:  unsigned long addr2;
+        -:    6:
+        1:    7:  addr1 = (unsigned long)&f;
+        1:    8:  addr1 += 5;
+        1:    9:  addr2 = 5 + (unsigned long)&f;
+        -:   10:
+        1:   11:  if (addr1 != addr2)
+    #####:   12:    abort();
+        1:   13:  exit(0);
+        -:   14:}

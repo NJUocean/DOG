@@ -1,0 +1,19 @@
+    1|       |/* PR middle-end/77718 */
+    2|       |
+    3|       |char a[64] __attribute__((aligned(8)));
+    4|       |
+    5|      1|__attribute__((noinline, noclone)) int foo(void) {
+    6|      1|  return __builtin_memcmp("bbbbbb", a, 6);
+    7|      1|}
+    8|       |
+    9|      1|__attribute__((noinline, noclone)) int bar(void) {
+   10|      1|  return __builtin_memcmp(a, "bbbbbb", 6);
+   11|      1|}
+   12|       |
+   13|      1|int main() {
+   14|      1|  __builtin_memset(a, 'a', sizeof(a));
+   15|      1|  if (((foo() < 0) ^ ('a' > 'b')) || ((bar() < 0) ^ ('a' < 'b')))
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

@@ -1,0 +1,17 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -fdump-tree-profile_estimate" } */
+    3|       |
+    4|      1|int main(int argc, char **argv) {
+    5|      1|  if (argc == 123)
+    6|      0|    goto exit;
+    7|      1|  else {
+    8|      1|    return 0;
+    9|      1|  }
+   10|      0|
+   11|      0|exit:
+   12|      0|  return 1;
+   13|      1|}
+   14|       |
+   15|       |/* { dg-final { scan-tree-dump "goto heuristics of edge" "profile_estimate"} }
+   16|       | */
+

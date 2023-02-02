@@ -1,0 +1,34 @@
+    1|       |#include <stdarg.h>
+    2|       |
+    3|      1|f(int n, ...) {
+    4|      1|  va_list args;
+    5|      1|
+    6|      1|  va_start(args, n);
+    7|      1|
+    8|      1|  if (va_arg(args, int) != 10)
+    9|      0|    abort();
+   10|      1|  if (va_arg(args, long long) != 10000000000LL)
+   11|      0|    abort();
+   12|      1|  if (va_arg(args, int) != 11)
+   13|      0|    abort();
+   14|      1|  if (va_arg(args, long double) != 3.14L)
+   15|      0|    abort();
+   16|      1|  if (va_arg(args, int) != 12)
+   17|      0|    abort();
+   18|      1|  if (va_arg(args, int) != 13)
+   19|      0|    abort();
+   20|      1|  if (va_arg(args, long long) != 20000000000LL)
+   21|      0|    abort();
+   22|      1|  if (va_arg(args, int) != 14)
+   23|      0|    abort();
+   24|      1|  if (va_arg(args, double) != 2.72)
+   25|      0|    abort();
+   26|      1|
+   27|      1|  va_end(args);
+   28|      1|}
+   29|       |
+   30|      1|main() {
+   31|      1|  f(4, 10, 10000000000LL, 11, 3.14L, 12, 13, 20000000000LL, 14, 2.72);
+   32|      1|  exit(0);
+   33|      1|}
+

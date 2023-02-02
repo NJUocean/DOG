@@ -1,0 +1,67 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Test the support for char16_t character constants. */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    5|       |
+    6|       |typedef __CHAR16_TYPE__ char16_t;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |char16_t c0 = u'a';
+   11|       |char16_t c1 = u'\0';
+   12|       |char16_t c2 = u'\u0024';
+   13|       |char16_t c3 = u'\u2029';
+   14|       |char16_t c4 = u'\u8010';
+   15|       |
+   16|       |char16_t c5 = 'a';
+   17|       |char16_t c6 = U'a';
+   18|       |char16_t c7 = U'\u2029';
+   19|       |char16_t c8 = U'\u8010';
+   20|       |char16_t c9 = L'a';
+   21|       |char16_t ca = L'\u2029';
+   22|       |char16_t cb = L'\u8010';
+   23|       |
+   24|      4|#define A 0x0061
+   25|      1|#define D 0x0024
+   26|      3|#define X 0x2029
+   27|      3|#define Y 0x8010
+   28|       |
+   29|      1|int main() {
+   30|      1|  if (sizeof(u'a') != sizeof(char16_t))
+   31|      0|    abort();
+   32|      1|  if (sizeof(u'\0') != sizeof(char16_t))
+   33|      0|    abort();
+   34|      1|  if (sizeof(u'\u0024') != sizeof(char16_t))
+   35|      0|    abort();
+   36|      1|  if (sizeof(u'\u2029') != sizeof(char16_t))
+   37|      0|    abort();
+   38|      1|  if (sizeof(u'\u8010') != sizeof(char16_t))
+   39|      0|    abort();
+   40|      1|
+   41|      1|  if (c0 != A)
+   42|      1|    abort();
+   43|      1|  if (c1 != 0x0000)
+   44|      0|    abort();
+   45|      1|  if (c2 != D)
+   46|      1|    abort();
+   47|      1|  if (c3 != X)
+   48|      1|    abort();
+   49|      1|  if (c4 != Y)
+   50|      1|    abort();
+   51|      1|
+   52|      1|  if (c5 != A)
+   53|      1|    abort();
+   54|      1|  if (c6 != A)
+   55|      1|    abort();
+   56|      1|  if (c7 != X)
+   57|      1|    abort();
+   58|      1|  if (c8 != Y)
+   59|      1|    abort();
+   60|      1|  if (c9 != A)
+   61|      1|    abort();
+   62|      1|  if (ca != X)
+   63|      1|    abort();
+   64|      1|  if (cb != Y)
+   65|      1|    abort();
+   66|      1|}
+

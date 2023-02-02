@@ -1,0 +1,20 @@
+    1|       |typedef struct gs_imager_state_s {
+    2|       |  struct {
+    3|       |    int half_width;
+    4|       |    int cap;
+    5|       |    float miter_limit;
+    6|       |  } line_params;
+    7|       |} gs_imager_state;
+    8|       |static const gs_imager_state gstate_initial = {{1}};
+    9|      0|void gstate_path_memory(gs_imager_state *pgs) { *pgs = gstate_initial; }
+   10|      1|int gs_state_update_overprint(void) {
+   11|      1|  return gstate_initial.line_params.half_width;
+   12|      1|}
+   13|       |
+   14|       |extern void abort(void);
+   15|      1|int main() {
+   16|      1|  if (gs_state_update_overprint() != 1)
+   17|      0|    abort();
+   18|      1|  return 0;
+   19|      1|}
+

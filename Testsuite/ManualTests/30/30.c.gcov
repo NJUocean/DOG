@@ -1,0 +1,43 @@
+        -:    0:Source:30.c
+        -:    0:Graph:30.gcno
+        -:    0:Data:30.gcda
+        -:    0:Runs:1
+        -:    1:/* PR18191 Struct member is not getting default-initialized.
+        -:    2:   Origin: Grigory Zagorodnev  <grigory.zagorodnev@intel.com>  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:
+        -:    6:extern int printf(__const char *__restrict __format, ...);
+        -:    7:
+        -:    8:typedef struct S {
+        -:    9:  const char *s;
+        -:   10:  int i;
+        -:   11:} S;
+        -:   12:
+        1:   13:void foo(void) {
+        -:   14:  S dummy[2];
+        -:   15:  unsigned i;
+        -:   16:
+        -:   17:  /* Put some garbage on the stack.  */
+       33:   18:  for (i = 0; i < sizeof(dummy); i++)
+       32:   19:    ((char *)&dummy)[i] = -1;
+        1:   20:}
+        -:   21:
+        1:   22:int bar(void) {
+        -:   23:  /* Allocate object on the stack.  */
+        1:   24:  S obj[2] = {{"m0"}, {"m1"}};
+        -:   25:
+        -:   26:  /* Assume fields those not explicitly initialized
+        -:   27:     are default initialized to 0 [8.5.1/7 and 8.5/5].  */
+        1:   28:  if (obj[0].i == 0)
+        1:   29:    return 0;
+        -:   30:  else {
+    #####:   31:    printf("Failed: obj[0].i == '%d', expecting '0'\n", obj[0].i);
+    #####:   32:    return 1;
+        -:   33:  }
+        -:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        1:   37:  foo();
+        1:   38:  return bar();
+        -:   39:}

@@ -1,0 +1,21 @@
+        -:    0:Source:3925.c
+        -:    0:Graph:3925.gcno
+        -:    0:Data:3925.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned char V8 __attribute__((vector_size(32)));
+        -:    2:typedef unsigned int V32 __attribute__((vector_size(32)));
+        -:    3:typedef unsigned long long V64 __attribute__((vector_size(32)));
+        -:    4:
+        1:    5:static V32 __attribute__((noinline, noclone)) foo(V64 x) {
+        1:    6:  V64 y = (V64)(V8){((V8)(V64){65535, x[0]})[1]};
+        1:    7:  return (V32){y[0], 255};
+        -:    8:}
+        -:    9:
+        1:   10:int main() {
+        1:   11:  V32 x = foo((V64){});
+        -:   12:  //  __builtin_printf ("%08x %08x %08x %08x %08x %08x %08x %08x\n", x[0], x[1],
+        -:   13:  //  x[2], x[3], x[4], x[5], x[6], x[7]);
+        1:   14:  if (x[1] != 255)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

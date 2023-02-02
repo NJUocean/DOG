@@ -1,0 +1,24 @@
+        -:    0:Source:4036.c
+        -:    0:Graph:4036.gcno
+        -:    0:Data:4036.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/93402 */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  unsigned int a;
+        -:    5:  unsigned long long b;
+        -:    6:};
+        -:    7:
+        1:    8:__attribute__((noipa)) struct S foo(unsigned long long x) {
+        -:    9:  struct S ret;
+        1:   10:  ret.a = 0;
+        1:   11:  ret.b = x * 11111111111ULL + 111111111111ULL;
+        1:   12:  return ret;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  struct S a = foo(1);
+        1:   17:  if (a.a != 0 || a.b != 122222222222ULL)
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

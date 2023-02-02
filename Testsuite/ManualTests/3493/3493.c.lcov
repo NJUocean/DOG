@@ -1,0 +1,36 @@
+    1|       |extern void exit(int);
+    2|       |extern void abort(void);
+    3|       |
+    4|       |volatile int i;
+    5|       |unsigned char *volatile cp;
+    6|       |unsigned char d[32] = {0};
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  unsigned char c[32] = {0};
+   10|      1|  unsigned char *p = d + i;
+   11|      1|  int j;
+   12|     31|  for (j = 0; j < 30; j++) {
+   13|     30|    int x = 0xff;
+   14|     30|    int y = *++p;
+   15|     30|    switch (j) {
+   16|      1|    case 1:
+   17|      1|      x ^= 2;
+   18|      1|      break;
+   19|      1|    case 2:
+   20|      1|      x ^= 4;
+   21|      1|      break;
+   22|      1|    case 25:
+   23|      1|      x ^= 1;
+   24|      1|      break;
+   25|     27|    default:
+   26|     27|      break;
+   27|     30|    }
+   28|     30|    c[j] = y | x;
+   29|     30|    cp = p;
+   30|     30|  }
+   31|      1|  if (c[0] != 0xff || c[1] != 0xfd || c[2] != 0xfb || c[3] != 0xff ||
+   32|      1|      c[4] != 0xff || c[25] != 0xfe || cp != d + 30)
+   33|      0|    abort();
+   34|      1|  exit(0);
+   35|      1|}
+

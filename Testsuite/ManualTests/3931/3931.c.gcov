@@ -1,0 +1,32 @@
+        -:    0:Source:3931.c
+        -:    0:Graph:3931.gcno
+        -:    0:Data:3931.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/71631 */
+        -:    2:
+        -:    3:volatile char v;
+        -:    4:int a = 1, b = 1, c = 1;
+        -:    5:
+        1:    6:void foo(const char *s) {
+        3:    7:  while (*s++)
+        2:    8:    v = *s;
+        1:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  volatile int d = 1;
+        1:   13:  volatile int e = 1;
+        1:   14:  int f = 1 / a;
+        1:   15:  int g = 1U < f;
+        1:   16:  int h = 2 + g;
+        1:   17:  int i = 3 % h;
+       1*:   18:  int j = e && b;
+        1:   19:  int k = 1 == c;
+        1:   20:  int l = d != 0;
+        1:   21:  short m = (short)(-1 * i * l);
+        1:   22:  short x = j * (k * m);
+        1:   23:  if (i == 1)
+        1:   24:    foo("AB");
+        1:   25:  if (x != -1)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

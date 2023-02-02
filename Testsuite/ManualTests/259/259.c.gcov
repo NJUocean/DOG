@@ -1,0 +1,28 @@
+        -:    0:Source:259.c
+        -:    0:Graph:259.gcno
+        -:    0:Data:259.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options -w } */
+        -:    3:
+        -:    4:/* count() used to give 1 owing to a buggy test for varargs.  */
+        -:    5:#define count(y...) count1(, ##y)
+        -:    6:#define count1(y...) count2(y, 1, 0)
+        -:    7:#define count2(_, x0, n, y...) n
+        -:    8:#if count() != 0 || count(A) != 1
+        -:    9:#error Incorrect vararg argument counts
+        -:   10:#endif
+        -:   11:
+        -:   12:/* Test for changed behavior of the GNU varargs extension.
+        -:   13:   ##args, where args is a rest argument which received zero tokens,
+        -:   14:   used to delete the previous sequence of nonwhitespace characters.
+        -:   15:   Now it deletes the previous token.  */
+        -:   16:
+        -:   17:#include <string.h>
+        -:   18:
+        -:   19:#define S(str, args...) "  " str "\n", ##args
+        -:   20:
+        1:   21:int main() {
+        1:   22:  const char *s = S("foo");
+        1:   23:  return strchr(s, '\n') == NULL;
+        -:   24:}

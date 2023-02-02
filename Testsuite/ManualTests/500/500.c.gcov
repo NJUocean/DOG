@@ -1,0 +1,58 @@
+        -:    0:Source:500.c
+        -:    0:Graph:500.gcno
+        -:    0:Data:500.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/43051 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-g" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        6:    7:static void __attribute__((noinline)) foo(const char *x, long long y, int z) {
+        6:    8:  asm volatile("" : : "r"(x), "r"((int)y), "r"(z) : "memory");
+        6:    9:}
+        -:   10:
+        -:   11:struct S {
+        -:   12:  struct S *n;
+        -:   13:  int v;
+        -:   14:};
+        -:   15:
+        -:   16:struct S a[10];
+        -:   17:
+        1:   18:struct S *__attribute__((noinline)) bar(struct S *c, int v, struct S *e) {
+        -:   19:#ifdef __i386__
+        -:   20:  register int si asm("esi"), di asm("edi"),
+        -:   21:      bx
+        -:   22:#if !defined(__pic__) && !defined(__APPLE__)
+        -:   23:      asm("ebx")
+        -:   24:#endif
+        -:   25:      ;
+        -:   26:  asm volatile("" : "=r"(si), "=r"(di), "=r"(bx));
+        -:   27:#endif
+        2:   28:  while (c < e) {
+        1:   29:    foo("c", (__UINTPTR_TYPE__)c,
+        -:   30:        0);         /* { dg-final { gdb-test . "c" "\&a\[0\]" } } */
+        1:   31:    foo("v", v, 1); /* { dg-final { gdb-test . "v" "1" } } */
+        1:   32:    foo("e", (__UINTPTR_TYPE__)e,
+        -:   33:        2); /* { dg-final { gdb-test . "e" "\&a\[1\]" } } */
+        1:   34:    if (c->v == v)
+    #####:   35:      return c;
+        1:   36:    foo("c", (__UINTPTR_TYPE__)c,
+        -:   37:        3);         /* { dg-final { gdb-test . "c" "\&a\[0\]" } } */
+        1:   38:    foo("v", v, 4); /* { dg-final { gdb-test . "v" "1" } } */
+        1:   39:    foo("e", (__UINTPTR_TYPE__)e,
+        -:   40:        5); /* { dg-final { gdb-test . "e" "\&a\[1\]" } } */
+        1:   41:    c++;
+        -:   42:  }
+        -:   43:#ifdef __i386__
+        -:   44:  asm volatile("" : : "r"(si), "r"(di), "r"(bx));
+        -:   45:#endif
+        1:   46:  return 0;
+        -:   47:}
+        -:   48:
+        1:   49:int main() {
+        1:   50:  asm volatile("" : : "r"(&a[0]) : "memory");
+        1:   51:  if (bar(&a[a[0].v], a[0].v + 1, &a[a[0].v + 1]))
+    #####:   52:    abort();
+        1:   53:  return 0;
+        -:   54:}

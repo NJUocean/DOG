@@ -1,0 +1,32 @@
+        -:    0:Source:1219.c
+        -:    0:Graph:1219.gcno
+        -:    0:Data:1219.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=signed-integer-overflow" } */
+        -:    3:
+        8:    4:__attribute__((noinline, noclone)) int foo1(int x, int y) { return x - y; }
+        -:    5:
+        8:    6:__attribute__((noinline, noclone)) int foo2(int x, int y) {
+        8:    7:  unsigned int xa = (unsigned int)x - (__INT_MAX__ - 3);
+        8:    8:  xa &= 3;
+        8:    9:  x = __INT_MAX__ - 3 + xa;
+        8:   10:  unsigned int ya = y + 1U;
+        8:   11:  ya &= 1;
+        8:   12:  y = ya - 1;
+        8:   13:  return x - y;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        -:   17:  int xm1, y;
+        5:   18:  for (xm1 = __INT_MAX__ - 4; xm1 < __INT_MAX__; xm1++)
+       12:   19:    for (y = -1; y <= 0; y++)
+        8:   20:      if (foo1(xm1 + 1, y) != (int)(xm1 + 1U - y) ||
+        8:   21:          foo2(xm1 + 1, y) != (int)(xm1 + 1U - y))
+    #####:   22:        __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:/* { dg-output ":7:\[0-9]\[^\n\r]*signed integer overflow: 2147483647 - -1
+        -:   26: * cannot be represented in type 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+        -:   27:/* { dg-output "\[^\n\r]*:19:\[0-9]\[^\n\r]*signed integer overflow: 2147483647
+        -:   28: * - -1 cannot be represented in type 'int'" } */

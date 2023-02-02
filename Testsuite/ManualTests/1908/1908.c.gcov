@@ -1,0 +1,60 @@
+        -:    0:Source:1908.c
+        -:    0:Graph:1908.gcno
+        -:    0:Data:1908.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+        -:    3:/* { dg-require-effective-target size20plus } */
+        -:    4:/* { dg-skip-if "too big stack" { visium-*-* } } */
+        -:    5:
+        -:    6:/* Copied from graphite/interchange-6.c */
+        -:    7:
+        -:    8:#define DEBUG 0
+        -:    9:#if DEBUG
+        -:   10:#include <stdio.h>
+        -:   11:#endif
+        -:   12:
+        -:   13:#define N 100
+        -:   14:#define M 200
+        -:   15:
+        1:   16:static int __attribute__((noinline)) foo(int A[N][M]) {
+        -:   17:  int i, j;
+        -:   18:
+        -:   19:  /* This loop should be interchanged. */
+      201:   20:  for (j = 0; j < M; j++)
+    20200:   21:    for (i = 0; i < N; i++)
+    20000:   22:      A[i][j] = A[i][j] + A[i][j];
+        -:   23:
+        1:   24:  return A[0][0] + A[N - 1][M - 1];
+        -:   25:}
+        -:   26:
+        -:   27:extern void abort();
+        -:   28:
+      100:   29:static void __attribute__((noinline)) init(int *arr, int i) {
+        -:   30:  int j;
+        -:   31:
+    20100:   32:  for (j = 0; j < M; j++)
+    20000:   33:    arr[j] = 2;
+      100:   34:}
+        -:   35:
+        1:   36:int main(void) {
+        -:   37:  int A[N][M];
+        -:   38:  int i, j, res;
+        -:   39:
+      101:   40:  for (i = 0; i < N; i++)
+      100:   41:    init(A[i], i);
+        -:   42:
+        1:   43:  res = foo(A);
+        -:   44:
+        -:   45:#if DEBUG
+        -:   46:  fprintf(stderr, "res = %d \n", res);
+        -:   47:#endif
+        -:   48:
+        1:   49:  if (res != 8)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  return 0;
+        -:   53:}
+        -:   54:
+        -:   55:/* { dg-final { scan-tree-dump-times "Loop_pair<outer:., inner:.> is
+        -:   56: * interchanged" 1 "linterchange"} } */

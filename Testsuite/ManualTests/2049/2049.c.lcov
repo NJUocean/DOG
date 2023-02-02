@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run { target { ! "m68k*-*-* mmix*-*-* bfin*-*-* v850*-*-* moxie*-*-*
+    2|       | * cris*-*-* m32c*-*-* fr30*-*-* mcore*-*-* powerpc*-*-* xtensa*-*-* hppa*-*-*
+    3|       | * nios2*-*-* or1k-*-*-* pru*-*-*"} } } */
+    4|       |
+    5|       |/* { dg-options "-O2 -fno-inline -fdump-tree-reassoc1-details --param
+    6|       | * logical-op-non-short-circuit=1" } */
+    7|       |/* { dg-additional-options "-mbranch-cost=2" { target branch_cost } } */
+    8|       |
+    9|    111|int test(int a, int b, int c) {
+   10|    111|  if (a == 43 || a == 75 || a == 44 || a == 78 || a == 77 || a == 46 ||
+   11|    111|      a == 76 || a == 45)
+   12|      8|    return b;
+   13|    103|  else
+   14|    103|    return c;
+   15|    111|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  volatile int n43, n47, n75, n79;
+   19|      1|  n43 = 43;
+   20|      1|  n47 = n43 + 4;
+   21|      1|  n75 = 75;
+   22|      1|  n79 = n75 + 4;
+   23|      1|  int i;
+   24|    112|  for (i = -10; i <= 100; i++)
+   25|    111|    if (test(i, 2, 3) != 3 - ((i >= n43 && i < n47) || (i >= n75 && i < n79)))
+   26|      0|      __builtin_abort();
+   27|      1|  return 0;
+   28|      1|}
+   29|       |/* { dg-final { scan-tree-dump-times "Optimizing range tests" 3 "reassoc1"} }*/
+

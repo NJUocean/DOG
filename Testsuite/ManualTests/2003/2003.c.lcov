@@ -1,0 +1,42 @@
+    1|       |/* PR tree-optimization/84436 */
+    2|       |/* { dg-options "-O2 -fdump-tree-switchconv -fdump-tree-optimized" } */
+    3|       |/* { dg-do run } */
+    4|       |
+    5|      3|int __attribute__((noipa)) foo(int how) {
+    6|      3|  switch (how) {
+    7|      1|  case 2:
+    8|      1|    how = 205;
+    9|      1|    break; /* how = 100 * index + 5 */
+   10|      0|  case 3:
+   11|      0|    how = 305;
+   12|      0|    break;
+   13|      0|  case 4:
+   14|      0|    how = 405;
+   15|      0|    break;
+   16|      0|  case 5:
+   17|      0|    how = 505;
+   18|      0|    break;
+   19|      1|  case 6:
+   20|      1|    how = 605;
+   21|      1|    break;
+   22|      3|  }
+   23|      3|  return how;
+   24|      3|}
+   25|       |
+   26|      1|int main() {
+   27|      1|  if (foo(2) != 205)
+   28|      0|    __builtin_abort();
+   29|      1|
+   30|      1|  if (foo(6) != 605)
+   31|      0|    __builtin_abort();
+   32|      1|
+   33|      1|  if (foo(123) != 123)
+   34|      0|    __builtin_abort();
+   35|      1|
+   36|      1|  return 0;
+   37|      1|}
+   38|       |
+   39|       |/* { dg-final { scan-tree-dump-times "100 \\*" 1 "switchconv" } } */
+   40|       |/* { dg-final { scan-tree-dump-times ".* \\+ 5" 1 "switchconv" } } */
+   41|       |/* { dg-final { scan-tree-dump-not "switch" "optimized" } } */
+

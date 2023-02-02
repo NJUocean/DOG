@@ -1,0 +1,11 @@
+    1|      1|foo(a) {
+    2|      1|  int bar = 0;
+    3|      1|
+    4|      1|  return (unsigned)(a - 1) <= (unsigned)bar;
+    5|      1|}
+    6|       |
+    7|      1|main() {
+    8|      1|  if (foo(-1))
+    9|      0|    puts("The largest possible unsigned <= 0 on this machine...");
+   10|      1|}
+

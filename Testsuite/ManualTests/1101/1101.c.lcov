@@ -1,0 +1,83 @@
+    1|       |/* Darwin (Mac OS X) pragma exercises.  */
+    2|       |
+    3|       |/* { dg-do run { target *-*-darwin* } } */
+    4|       |/* { dg-options "-O -Wunused" } */
+    5|       |
+    6|       |/* The mark pragma is to help decorate IDEs.  */
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |#pragma mark hey hey ho
+   11|       |
+   12|       |/* The options pragma used to do a lot, now it's only for emulating
+   13|       |   m68k alignment rules in structs.  */
+   14|       |
+   15|       |#pragma options 23 /* { dg-warning "malformed '#pragma options'" } */
+   16|       |#pragma options align /* { dg-warning "malformed '#pragma options'" } */
+   17|       |#pragma options align natural /* { dg-warning "malformed '#pragma options'" }  \
+   18|       |                               */
+   19|       |#pragma options align = 45 /* { dg-warning "malformed '#pragma options'" } */
+   20|       |#pragma options align =                                                        \
+   21|       |    foo /* { dg-warning "malformed '#pragma options align" } */
+   22|       |
+   23|       |#ifndef __LP64__
+   24|       |#pragma options align = mac68k
+   25|       |struct s1 {
+   26|       |  short f1;
+   27|       |  int f2;
+   28|       |};
+   29|       |#endif
+   30|       |#pragma options align = power
+   31|       |struct s2 {
+   32|       |  short f1;
+   33|       |  int f2;
+   34|       |};
+   35|       |#ifndef __LP64__
+   36|       |#pragma options align = mac68k
+   37|       |struct s3 {
+   38|       |  short f1;
+   39|       |  int f2;
+   40|       |};
+   41|       |#endif
+   42|       |#pragma options align = reset
+   43|       |struct s4 {
+   44|       |  short f1;
+   45|       |  int f2;
+   46|       |};
+   47|       |
+   48|       |#pragma options align =                                                        \
+   49|       |    natural foo /* { dg-warning "junk at end of '#pragma options'" } */
+   50|       |/* { dg-warning "malformed '#pragma options align={mac68k|power|reset}',
+   51|       | * ignoring" "ignoring" { target *-*-* } .-1 } */
+   52|       |
+   53|       |/* Segment pragmas don't do anything anymore.  */
+   54|       |
+   55|       |#pragma segment foo
+   56|       |
+   57|      1|int main() {
+   58|      1|  int x, z; /* { dg-warning "unused variable 'z'" } */
+   59|      1|#pragma unused(x, y)
+   60|      1|
+   61|       |#ifndef __LP64__
+   62|       |  if (sizeof(struct s1) != 6)
+   63|       |    abort();
+   64|       |#endif
+   65|      1|  if (sizeof(struct s2) != 8)
+   66|      0|    abort();
+   67|       |#ifndef __LP64__
+   68|       |  if (sizeof(struct s3) != 6)
+   69|       |    abort();
+   70|       |#endif
+   71|      1|  if (sizeof(struct s4) != 8)
+   72|      0|    abort();
+   73|      1|  return 0;
+   74|      1|}
+   75|       |
+   76|      0|void unused_err_test() {
+   77|      0|  int a, b;
+   78|      0|  /* Trying to match on '(' or ')' gives regexp headaches, use . instead.  */
+   79|      0|#pragma unused /* { dg-warning "missing '.' after '#pragma unused" } */
+   80|      0|#pragma unused(a /* { dg-warning "missing '.' after '#pragma unused" } */
+   81|      0|#pragma unused(b) foo /* { dg-warning "junk at end of '#pragma unused'" } */
+   82|      0|}
+

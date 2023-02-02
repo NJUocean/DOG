@@ -1,0 +1,29 @@
+        -:    0:Source:1376.c
+        -:    0:Graph:1376.gcno
+        -:    0:Data:1376.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct S1 {
+        -:    5:  int f0;
+        -:    6:  int : 1;
+        -:    7:  int f3;
+        -:    8:  int : 1;
+        -:    9:  int : 0;
+        -:   10:  int f6 : 1;
+        -:   11:};
+        -:   12:int g_13 = 1;
+        -:   13:volatile struct S1 g_118 = {1};
+        -:   14:
+        1:   15:void __attribute__((noinline)) func_46() {
+        2:   16:  for (g_13 = 0; g_13 >= 0; g_13 -= 1)
+        1:   17:    g_118.f6 = 0;
+        1:   18:}
+        -:   19:
+        1:   20:int main() {
+        1:   21:  func_46();
+        1:   22:  if (g_13 != -1)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

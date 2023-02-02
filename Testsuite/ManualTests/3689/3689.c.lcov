@@ -1,0 +1,46 @@
+    1|       |/* PR target/44575 */
+    2|       |
+    3|       |#include <stdarg.h>
+    4|       |
+    5|       |int fails = 0;
+    6|       |struct S {
+    7|       |  float a[3];
+    8|       |};
+    9|       |struct S a[5];
+   10|       |
+   11|      1|void check(int z, ...) {
+   12|      1|  struct S arg, *p;
+   13|      1|  va_list ap;
+   14|      1|  int j = 0, k = 0;
+   15|      1|  int i;
+   16|      1|  va_start(ap, z);
+   17|      3|  for (i = 2; i < 4; ++i) {
+   18|      2|    p = 0;
+   19|      2|    j++;
+   20|      2|    k += 2;
+   21|      2|    switch ((z << 4) | i) {
+   22|      2|    case 0x12:
+   23|      2|    case 0x13:
+   24|      2|      p = &a[2];
+   25|      2|      arg = va_arg(ap, struct S);
+   26|      2|      break;
+   27|      2|    default:
+   28|      0|      ++fails;
+   29|      0|      break;
+   30|      2|    }
+   31|      2|    if (p && p->a[2] != arg.a[2])
+   32|      0|      ++fails;
+   33|      2|    if (fails)
+   34|      0|      break;
+   35|      2|  }
+   36|      1|  va_end(ap);
+   37|      1|}
+   38|       |
+   39|      1|int main() {
+   40|      1|  a[2].a[2] = -49026;
+   41|      1|  check(1, a[2], a[2]);
+   42|      1|  if (fails)
+   43|      0|    abort();
+   44|      1|  return 0;
+   45|      1|}
+

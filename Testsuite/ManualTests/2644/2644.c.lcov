@@ -1,0 +1,28 @@
+    1|       |/* PR target/46880 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-strict-aliasing -msse2" } */
+    4|       |/* { dg-require-effective-target sse2_runtime } */
+    5|       |
+    6|       |typedef double __m128d __attribute__((__vector_size__(16), __may_alias__));
+    7|       |typedef double (*T)[2];
+    8|       |
+    9|      1|static __attribute__((noinline, noclone)) __m128d foo(__m128d c, __m128d d) {
+   10|      1|  T cp = (T)&c;
+   11|      1|  T dp = (T)&d;
+   12|      1|  __m128d e = {(*cp)[1], (*dp)[1]};
+   13|      1|  return e;
+   14|      1|}
+   15|       |
+   16|      1|int main() {
+   17|      1|  __m128d c = {1.0, 2.0};
+   18|      1|  __m128d d = {3.0, 4.0};
+   19|      1|  union {
+   20|      1|    __m128d x;
+   21|      1|    double d[2];
+   22|      1|  } u;
+   23|      1|  u.x = foo(c, d);
+   24|      1|  if (u.d[0] != 2.0 || u.d[1] != 4.0)
+   25|      0|    __builtin_abort();
+   26|      1|  return 0;
+   27|      1|}
+

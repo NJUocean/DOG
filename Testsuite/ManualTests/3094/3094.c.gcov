@@ -1,0 +1,23 @@
+        -:    0:Source:3094.c
+        -:    0:Graph:3094.gcno
+        -:    0:Data:3094.gcda
+        -:    0:Runs:1
+        1:    1:int main() {
+        -:    2:#pragma acc parallel
+        -:    3:  {
+        -:    4:#pragma acc loop tile(*, *)
+       31:    5:    for (int ix = 0; ix < 30; ix++)
+        -:    6:      ; /* { dg-error "not enough" } */
+        -:    7:
+        -:    8:#pragma acc loop tile(*, *)
+       31:    9:    for (int ix = 0; ix < 30; ix++)
+      465:   10:      for (int jx = 0; jx < ix; jx++) /* { dg-error "condition expression" } */
+        -:   11:        ;
+        -:   12:
+        -:   13:#pragma acc loop tile(*)
+       31:   14:    for (int ix = 0; ix < 30; ix++)
+      465:   15:      for (int jx = 0; jx < ix; jx++) /* OK */
+        -:   16:        ;
+        -:   17:  }
+        1:   18:  return 0;
+        -:   19:}

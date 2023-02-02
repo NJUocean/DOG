@@ -1,0 +1,21 @@
+        -:    0:Source:1874.c
+        -:    0:Graph:1874.gcno
+        -:    0:Data:1874.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:struct s {
+        -:    5:  long long a : 12;
+        -:    6:  long long b : 12;
+        -:    7:  long long c : 40;
+        -:    8:};
+        -:    9:
+        -:   10:struct s s, *p = &s;
+        -:   11:
+        1:   12:int main() {
+        1:   13:  p->a = 1;
+        1:   14:  s.a = 0;
+        1:   15:  s.b = 0;
+        1:   16:  return p->a + s.b;
+        -:   17:}

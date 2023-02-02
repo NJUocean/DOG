@@ -1,0 +1,14 @@
+        -:    0:Source:3288.c
+        -:    0:Graph:3288.gcno
+        -:    0:Data:3288.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/9164 */
+        -:    2:/* The comparison operand was sign extended erraneously.  */
+        -:    3:
+        1:    4:int main(void) {
+        1:    5:  long j = 0x40000000;
+        -:    6:  if ((unsigned int)(0x40000000 + j) < 0L)
+        -:    7:    abort();
+        -:    8:
+        1:    9:  return 0;
+        -:   10:}

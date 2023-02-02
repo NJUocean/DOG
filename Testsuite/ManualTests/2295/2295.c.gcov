@@ -1,0 +1,25 @@
+        -:    0:Source:2295.c
+        -:    0:Graph:2295.gcno
+        -:    0:Data:2295.gcda
+        -:    0:Runs:1
+        -:    1:/* Test whether -fverbose-asm works.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fverbose-asm" } */
+        -:    4:
+        2:    5:void foo(int *x) { (*x)++; }
+        -:    6:
+        1:    7:int bar(int *y) {
+        -:    8:  int a, b;
+        1:    9:  b = 10;
+        1:   10:  a = 26;
+        1:   11:  foo(&a);
+        1:   12:  a += 10;
+        1:   13:  foo(&a);
+        1:   14:  *y--;
+        1:   15:  return b;
+        -:   16:}
+        -:   17:
+        1:   18:int main(int argc, char *argv[]) {
+        1:   19:  bar(&argc);
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,76 @@
+        -:    0:Source:1163.c
+        -:    0:Graph:1163.gcno
+        -:    0:Data:1163.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target store_merge } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-store-merging" } */
+        -:    4:
+        -:    5:struct bar {
+        -:    6:  int a;
+        -:    7:  unsigned char b;
+        -:    8:  unsigned char c;
+        -:    9:  short d;
+        -:   10:  unsigned char e;
+        -:   11:  unsigned char f;
+        -:   12:  unsigned char g;
+        -:   13:};
+        -:   14:
+        4:   15:__attribute__((noinline)) void foozero(struct bar *p) {
+        4:   16:  p->b = 0;
+        4:   17:  p->a = 0;
+        4:   18:  p->c = 0;
+        4:   19:  p->d = 0;
+        4:   20:  p->e = 0;
+        4:   21:  p->f = 0;
+        4:   22:  p->g = 0;
+        4:   23:}
+        -:   24:
+        1:   25:__attribute__((noinline)) void foo1(struct bar *p) {
+        1:   26:  p->b = 1;
+        1:   27:  p->a = 2;
+        1:   28:  p->c = 3;
+        1:   29:  p->d = 4;
+        1:   30:  p->e = 5;
+        1:   31:  p->f = 0;
+        1:   32:  p->g = 0xff;
+        1:   33:}
+        -:   34:
+        2:   35:__attribute__((noinline)) void foo2(struct bar *p, struct bar *p2) {
+        2:   36:  p->b = 0xff;
+        2:   37:  p2->b = 0xa;
+        2:   38:  p->a = 0xfffff;
+        2:   39:  p2->c = 0xc;
+        2:   40:  p->c = 0xff;
+        2:   41:  p2->d = 0xbf;
+        2:   42:  p->d = 0xfff;
+        2:   43:}
+        -:   44:
+        1:   45:int main(void) {
+        -:   46:  struct bar b1, b2;
+        1:   47:  foozero(&b1);
+        1:   48:  foozero(&b2);
+        -:   49:
+        1:   50:  foo1(&b1);
+        1:   51:  if (b1.b != 1 || b1.a != 2 || b1.c != 3 || b1.d != 4 || b1.e != 5 ||
+        1:   52:      b1.f != 0 || b1.g != 0xff)
+    #####:   53:    __builtin_abort();
+        -:   54:
+        1:   55:  foozero(&b1);
+        -:   56:  /* Make sure writes to aliasing struct pointers preserve the
+        -:   57:     correct order.  */
+        1:   58:  foo2(&b1, &b1);
+        1:   59:  if (b1.b != 0xa || b1.a != 0xfffff || b1.c != 0xff || b1.d != 0xfff)
+    #####:   60:    __builtin_abort();
+        -:   61:
+        1:   62:  foozero(&b1);
+        1:   63:  foo2(&b1, &b2);
+        1:   64:  if (b1.a != 0xfffff || b1.b != 0xff || b1.c != 0xff || b1.d != 0xfff ||
+        1:   65:      b2.b != 0xa || b2.c != 0xc || b2.d != 0xbf)
+    #####:   66:    __builtin_abort();
+        -:   67:
+        1:   68:  return 0;
+        -:   69:}
+        -:   70:
+        -:   71:/* { dg-final { scan-tree-dump-times "Merging successful" 2 "store-merging" } }
+        -:   72: */

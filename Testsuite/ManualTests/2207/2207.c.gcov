@@ -1,0 +1,10 @@
+        -:    0:Source:2207.c
+        -:    0:Graph:2207.gcno
+        -:    0:Data:2207.gcda
+        -:    0:Runs:1
+        -:    1:typedef int xtype;
+        -:    2:
+        1:    3:xtype foo(a) xtype a;
+        1:    4:{ return a | 0x7f; }
+        -:    5:
+        1:    6:main() { printf("%08x\n", foo(-1)); }

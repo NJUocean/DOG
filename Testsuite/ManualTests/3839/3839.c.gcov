@@ -1,0 +1,32 @@
+        -:    0:Source:3839.c
+        -:    0:Graph:3839.gcno
+        -:    0:Data:3839.gcda
+        -:    0:Runs:1
+        -:    1:#ifdef __UINT32_TYPE__
+        -:    2:typedef __UINT32_TYPE__ uint32_t;
+        -:    3:#else
+        -:    4:typedef unsigned uint32_t;
+        -:    5:#endif
+        -:    6:
+        -:    7:#define __fake_const_swab32(x)                                                 \
+        -:    8:  ((uint32_t)((((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) |               \
+        -:    9:              (((uint32_t)(x) & (uint32_t)0x0000ff00UL) << 8) |                \
+        -:   10:              (((uint32_t)(x) & (uint32_t)0x000000ffUL) << 8) |                \
+        -:   11:              (((uint32_t)(x) & (uint32_t)0x0000ff00UL)) |                     \
+        -:   12:              (((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24)))
+        -:   13:
+        -:   14:/* Previous version of bswap optimization would detect byte swap when none
+        -:   15:   happen. This test aims at catching such wrong detection to avoid
+        -:   16:   regressions.  */
+        -:   17:
+        1:   18:__attribute__((noinline, noclone)) uint32_t fake_swap32(uint32_t in) {
+        1:   19:  return __fake_const_swab32(in);
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        -:   23:  if (sizeof(uint32_t) * __CHAR_BIT__ != 32)
+        -:   24:    return 0;
+        1:   25:  if (fake_swap32(0x12345678UL) != 0x78567E12UL)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

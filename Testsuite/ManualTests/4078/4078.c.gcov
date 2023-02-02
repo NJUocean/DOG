@@ -1,0 +1,44 @@
+        -:    0:Source:4078.c
+        -:    0:Graph:4078.gcno
+        -:    0:Data:4078.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:extern int abs(int __x) __attribute__((__nothrow__, __leaf__))
+        -:    3:__attribute__((__const__));
+        -:    4:
+        1:    5:static int foo(signed char *w, int i, signed char *x, int j) {
+        1:    6:  int tot = 0;
+       17:    7:  for (int a = 0; a < 16; a++) {
+      272:    8:    for (int b = 0; b < 16; b++)
+      256:    9:      tot += abs(w[b] - x[b]);
+       16:   10:    w += i;
+       16:   11:    x += j;
+        -:   12:  }
+        1:   13:  return tot;
+        -:   14:}
+        -:   15:
+        1:   16:void bar(signed char *w, signed char *x, int i, int *result) {
+        1:   17:  *result = foo(w, 16, x, i);
+        1:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  signed char m[256];
+        -:   22:  signed char n[256];
+        -:   23:  int sum, i;
+        -:   24:
+      257:   25:  for (i = 0; i < 256; ++i)
+      256:   26:    if (i % 2 == 0) {
+      128:   27:      m[i] = (i % 8) * 2 + 1;
+      128:   28:      n[i] = -(i % 8);
+        -:   29:    } else {
+      128:   30:      m[i] = -((i % 8) * 2 + 2);
+      128:   31:      n[i] = -((i % 8) >> 1);
+        -:   32:    }
+        -:   33:
+        1:   34:  bar(m, n, 16, &sum);
+        -:   35:
+        1:   36:  if (sum != 2368)
+    #####:   37:    abort();
+        -:   38:
+        1:   39:  return 0;
+        -:   40:}

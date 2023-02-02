@@ -1,0 +1,25 @@
+        -:    0:Source:156.c
+        -:    0:Graph:156.gcno
+        -:    0:Data:156.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run }  */
+        -:    2:/* { dg-require-ifunc "" } */
+        -:    3:/* { dg-options "" } */
+        -:    4:
+        -:    5:#include <stdio.h>
+        -:    6:
+        2:    7:static int __attribute__((noinline)) implementation(void *ptr) {
+        2:    8:  if (ptr)
+        1:    9:    return ((int (*)(void *))ptr)(0);
+        -:   10:
+        1:   11:  printf("'ere I am JH\n");
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        1:   15:static __typeof__(implementation) *resolver(void) {
+        1:   16:  return (void *)implementation;
+        -:   17:}
+        -:   18:
+        -:   19:extern int magic(void *) __attribute__((ifunc("resolver")));
+        -:   20:
+        1:   21:int main() { return magic((void *)magic); }

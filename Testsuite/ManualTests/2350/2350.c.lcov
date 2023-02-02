@@ -1,0 +1,25 @@
+    1|       |
+    2|   819k|#define TRUE 1
+    3|  1.49M|#define FALSE 0
+    4|  3.32M|#define SIZE 8190
+    5|       |
+    6|       |char flags[SIZE + 1];
+    7|       |
+    8|      1|main() {
+    9|      1|  register int i, prime, k, count, iter;
+   10|    101|  for (iter = 1; iter <= 100; iter++) {
+   11|    100|    count = 0;
+   12|   819k|    for (i = 0; i <= SIZE; i++)
+   13|   819k|      flags[i] = TRUE;
+   14|   819k|    for (i = 0; i <= SIZE; i++) {
+   15|   819k|      if (flags[i]) {
+   16|   189k|        prime = i + i + 3;
+   17|  1.68M|        for (k = i + prime; k <= SIZE; k += prime)
+   18|  1.49M|          flags[k] = FALSE;
+   19|   189k|        count++;
+   20|   189k|      }
+   21|   819k|    }
+   22|    100|  }
+   23|      1|  return 0;
+   24|      1|}
+

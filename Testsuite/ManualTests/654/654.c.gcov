@@ -1,0 +1,28 @@
+        -:    0:Source:654.c
+        -:    0:Graph:654.gcno
+        -:    0:Data:654.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/11841 */
+        -:    2:/* Originator: Andrey Panov <panov@canopus.iacp.dvo.ru> */
+        -:    3:/* Reduced testcase by Volker Reichelt <reichelt@igpm.rwth-aachen.de> */
+        -:    4:
+        -:    5:/* Verify that the (old) loop unroller doesn't wrongly mark a pseudo
+        -:    6:   referenced in a note as local.  */
+        -:    7:
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-O2 -funroll-loops" } */
+        -:   10:
+        -:   11:int *a;
+        -:   12:
+        1:   13:int main() {
+        -:   14:  double d[6];
+        -:   15:  int i, j;
+        -:   16:
+        5:   17:  for (i = 0; i < 4; ++i)
+       16:   18:    for (j = 0; j < 3; ++j)
+       12:   19:      d[i + j] = 0;
+        -:   20:
+        1:   21:  a = &i;
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

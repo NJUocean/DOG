@@ -1,0 +1,24 @@
+        -:    0:Source:1282.c
+        -:    0:Graph:1282.gcno
+        -:    0:Data:1282.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright 2006 Free Software Foundation */
+        -:    2:
+        -:    3:/* Make sure a and a1 alias each other.
+        -:    4:   Incomplete array types used to not be unified, which broke aliasing.  */
+        -:    5:
+        -:    6:/* { dg-do run } */
+        -:    7:
+        -:    8:typedef long atype[];
+        -:    9:typedef long atype1[];
+        1:   10:int NumSift(atype *a, atype1 *a1) {
+        1:   11:  (*a)[0] = 0;
+        1:   12:  (*a1)[0] = 1;
+        1:   13:  return (*a)[0];
+        -:   14:}
+        1:   15:int main(void) {
+        -:   16:  long a[2];
+        1:   17:  if (!NumSift(&a, &a))
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

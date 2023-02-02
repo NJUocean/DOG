@@ -1,0 +1,23 @@
+    1|      2|static int Sub(int a, int b) { return b - a; }
+    2|       |
+    3|      1|static unsigned Select(unsigned a, unsigned b, unsigned c) {
+    4|      1|  const int pa_minus_pb = Sub((a >> 8) & 0xff, (b >> 8) & 0xff) +
+    5|      1|                          Sub((a >> 0) & 0xff, (b >> 0) & 0xff);
+    6|      1|  return (pa_minus_pb <= 0) ? a : b;
+    7|      1|}
+    8|       |
+    9|       |__attribute__((noinline)) unsigned Predictor(unsigned left,
+   10|      1|                                             const unsigned *const top) {
+   11|      1|  const unsigned pred = Select(top[1], left, top[0]);
+   12|      1|  return pred;
+   13|      1|}
+   14|       |
+   15|      1|int main(void) {
+   16|      1|  const unsigned top[2] = {0xff7a7a7a, 0xff7a7a7a};
+   17|      1|  const unsigned left = 0xff7b7b7b;
+   18|      1|  const unsigned pred = Predictor(left, top /*+ 1*/);
+   19|      1|  if (pred == left)
+   20|      1|    return 0;
+   21|      0|  return 1;
+   22|      0|}
+

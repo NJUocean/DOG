@@ -1,0 +1,19 @@
+        -:    0:Source:3460.c
+        -:    0:Graph:3460.gcno
+        -:    0:Data:3460.gcda
+        -:    0:Runs:1
+        -:    1:#include <limits.h>
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:static __attribute__((noinline)) void foo(int a) {
+        1:    6:  int b = (a - 1) + INT_MIN;
+        -:    7:
+        1:    8:  if (b != INT_MIN)
+    #####:    9:    abort();
+        1:   10:}
+        -:   11:
+        1:   12:int main(void) {
+        1:   13:  foo(1);
+        1:   14:  return 0;
+        -:   15:}

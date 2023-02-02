@@ -1,0 +1,33 @@
+        -:    0:Source:574.c
+        -:    0:Graph:574.gcno
+        -:    0:Data:574.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-icf" } */
+        -:    3:
+        2:    4:__attribute__((noinline, noclone)) int f1(int x, int (*p1)(void),
+        -:    5:                                          int (*p2)(void)) {
+        2:    6:  if (x)
+        1:    7:    return p1();
+        -:    8:  else
+        1:    9:    return p2();
+        -:   10:}
+        -:   11:
+        2:   12:__attribute__((noinline, noclone)) int f2(int x, int (*p1)(void),
+        -:   13:                                          int (*p2)(void)) {
+        2:   14:  if (x)
+        1:   15:    return p2();
+        -:   16:  else
+        1:   17:    return p1();
+        -:   18:}
+        -:   19:
+        2:   20:__attribute__((noinline, noclone)) int f3(void) { return 1; }
+        -:   21:
+        2:   22:__attribute__((noinline, noclone)) int f4(void) { return 2; }
+        -:   23:
+        1:   24:int main() {
+        2:   25:  if (f1(0, f3, f4) != 2 || f1(1, f3, f4) != 1 || f2(0, f3, f4) != 1 ||
+        1:   26:      f2(1, f3, f4) != 2)
+    #####:   27:    __builtin_abort();
+        1:   28:  return 0;
+        -:   29:}

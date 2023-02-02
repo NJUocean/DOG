@@ -1,0 +1,14 @@
+        -:    0:Source:small.c
+        -:    0:Graph:small.gcno
+        -:    0:Data:small.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        1:    1:int main()
+        -:    2:{
+        1:    3:    int v = 1;
+        1:    4:    if (v > 0) 
+        1:    5:        goto lbl;
+        -:    6:    if (v < 0) ;
+    #####:    7:lbl:
+        1:    8:    v++;
+        -:    9:}

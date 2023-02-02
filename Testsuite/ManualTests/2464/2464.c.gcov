@@ -1,0 +1,38 @@
+        -:    0:Source:2464.c
+        -:    0:Graph:2464.gcno
+        -:    0:Data:2464.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -save-temps -fno-inline -fno-vect-cost-model" } */
+        -:    3:
+        -:    4:extern void abort();
+        -:    5:
+        -:    6:#define TEST(name, subname, count)                                             \
+        -:    7:  void count_tz_##name(unsigned *__restrict a, int *__restrict b) {            \
+        -:    8:    int i;                                                                     \
+        -:    9:    for (i = 0; i < count; i++)                                                \
+        -:   10:      b[i] = __builtin_##subname(a[i]);                                        \
+        -:   11:  }
+        -:   12:
+        -:   13:#define CHECK(name, count, input, output)                                      \
+        -:   14:  count_tz_##name(input, output);                                              \
+        -:   15:  for (i = 0; i < count; i++) {                                                \
+        -:   16:    if (output[i] != r[i])                                                     \
+        -:   17:      abort();                                                                 \
+        -:   18:  }
+        -:   19:
+        5:   20:TEST(v4si, ctz, 4)
+        3:   21:TEST(v2si, ctz, 2)
+        -:   22:/* { dg-final { scan-assembler "clz\tv\[0-9\]+\.4s" } } */
+        -:   23:/* { dg-final { scan-assembler "clz\tv\[0-9\]+\.2s" } } */
+        -:   24:
+        1:   25:int main() {
+        1:   26:  unsigned int x4[4] = {0x0, 0xFF80, 0x1FFFF, 0xFF000000};
+        1:   27:  int r[4] = {32, 7, 0, 24};
+        -:   28:  int d[4], i;
+        -:   29:
+       5*:   30:  CHECK(v4si, 4, x4, d);
+       3*:   31:  CHECK(v2si, 2, x4, d);
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

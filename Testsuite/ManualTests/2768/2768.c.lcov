@@ -1,0 +1,16 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target ia32 } */
+    3|       |/* { dg-options "-mstackrealign -O2" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|      1|__attribute__((noinline)) static void foo(int i1, int i2, int i3) {
+    8|      1|  if (i3 != 3)
+    9|      0|    abort();
+   10|      1|}
+   11|       |
+   12|      1|int main(int argc, char **argv) {
+   13|      1|  foo(1, 2, 3);
+   14|      1|  return 0;
+   15|      1|}
+

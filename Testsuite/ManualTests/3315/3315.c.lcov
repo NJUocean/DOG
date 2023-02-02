@@ -1,0 +1,27 @@
+    1|       |/* On IRIX 6, PB is passed partially in registers and partially on the
+    2|       |   stack, with an odd number of words in the register part.  Check that
+    3|       |   the long double stack argument (PC) is still accessed properly.  */
+    4|       |
+    5|       |struct s {
+    6|       |  int val[16];
+    7|       |};
+    8|       |
+    9|      1|long double f(int pa, struct s pb, long double pc) {
+   10|      1|  int i;
+   11|      1|
+   12|     17|  for (i = 0; i < 16; i++)
+   13|     16|    pc += pb.val[i];
+   14|      1|  return pc;
+   15|      1|}
+   16|       |
+   17|      1|int main() {
+   18|      1|  struct s x;
+   19|      1|  int i;
+   20|      1|
+   21|     17|  for (i = 0; i < 16; i++)
+   22|     16|    x.val[i] = i + 1;
+   23|      1|  if (f(1, x, 10000.0L) != 10136.0L)
+   24|      0|    abort();
+   25|      1|  exit(0);
+   26|      1|}
+

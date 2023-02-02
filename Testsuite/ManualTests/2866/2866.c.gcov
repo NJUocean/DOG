@@ -1,0 +1,30 @@
+        -:    0:Source:2866.c
+        -:    0:Graph:2866.gcno
+        -:    0:Data:2866.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { { powerpc*-*-darwin* powerpc*-*-aix* rs6000-*-* } || {
+        -:    2: * powerpc*-*-linux* && lp64 } } } } */
+        -:    3:/* { dg-options "-mlong-double-128" } */
+        -:    4:
+        -:    5:/* Check that long double values are rounded correctly when being converted
+        -:    6:   to 32-bit integers.  All these values are of the form +/- 2 +/- 2^-60.  */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  long double l1 = 1.9999999999999999991326382620115964527941L;
+        1:   13:  long double l2 = 2.0000000000000000008673617379884035472059L;
+        1:   14:  long double l3 = -2.0000000000000000008673617379884035472059L;
+        1:   15:  long double l4 = -1.9999999999999999991326382620115964527941L;
+        -:   16:
+        1:   17:  if ((int)l1 != 1)
+    #####:   18:    abort();
+        1:   19:  if ((int)l2 != 2)
+    #####:   20:    abort();
+        1:   21:  if ((int)l3 != -2)
+    #####:   22:    abort();
+        1:   23:  if ((int)l4 != -1)
+    #####:   24:    abort();
+        1:   25:  exit(0);
+        -:   26:}

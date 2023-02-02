@@ -1,0 +1,154 @@
+    1|       |/* Test for new block scopes in C99.  Test for each new scope.  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern void exit(int);
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  struct foo {
+   11|      1|    int i0;
+   12|      1|  };
+   13|      1|  int a, b, c, d;
+   14|      1|  a = sizeof(struct foo);
+   15|      1|  if (b = sizeof(struct foo {
+   16|      1|        int i0;
+   17|      1|        int i1;
+   18|      1|      }))
+   19|      1|    c = sizeof(struct foo {
+   20|      1|      int i0;
+   21|      1|      int i1;
+   22|      1|      int i2;
+   23|      1|    });
+   24|      1|  if (!(a <= b && b <= c))
+   25|      0|    abort();
+   26|      1|  if ((b = sizeof(struct foo {
+   27|      1|         int i0;
+   28|      1|         int i1;
+   29|      1|       })),
+   30|      1|      0)
+   31|      0|    c = sizeof(struct foo {
+   32|      0|      int i0;
+   33|      0|      int i1;
+   34|      0|      int i2;
+   35|      0|    });
+   36|      1|  else
+   37|      1|    d = sizeof(struct foo {
+   38|      1|      int i0;
+   39|      1|      int i1;
+   40|      1|      int i2;
+   41|      1|      int i3;
+   42|      1|    });
+   43|      1|  if (!(a <= b && b <= d))
+   44|      0|    abort();
+   45|      1|  switch (b = sizeof(struct foo {
+   46|      1|            int i0;
+   47|      1|            int i1;
+   48|      1|          }))
+   49|      1|  default:
+   50|      1|    c = sizeof(struct foo {
+   51|      1|      int i0;
+   52|      1|      int i1;
+   53|      1|      int i2;
+   54|      1|    });
+   55|      1|  if (!(a <= b && b <= c))
+   56|      0|    abort();
+   57|      1|  do
+   58|      1|    c = sizeof(struct foo {
+   59|      1|      int i0;
+   60|      1|      int i1;
+   61|      1|      int i2;
+   62|      1|    });
+   63|      1|  while ((b = sizeof(struct foo {
+   64|      1|            int i0;
+   65|      1|            int i1;
+   66|      1|          })),
+   67|      1|         0);
+   68|      1|  if (!(a <= b && b <= c))
+   69|      0|    abort();
+   70|      1|  d = 1;
+   71|      2|  while ((b = sizeof(struct foo {
+   72|      2|            int i0;
+   73|      2|            int i1;
+   74|      2|          })),
+   75|      2|         d)
+   76|      1|    (c = sizeof(struct foo {
+   77|      1|       int i0;
+   78|      1|       int i1;
+   79|      1|       int i2;
+   80|      1|     })),
+   81|      1|        d--;
+   82|      1|  if (!(a <= b && b <= c))
+   83|      0|    abort();
+   84|      1|  d = 1;
+   85|      1|  for ((b = sizeof(struct foo {
+   86|      1|          int i0;
+   87|      1|          int i1;
+   88|      1|        }));
+   89|      2|       d; d--)
+   90|      1|    c = sizeof(struct foo {
+   91|      1|      int i0;
+   92|      1|      int i1;
+   93|      1|      int i2;
+   94|      1|    });
+   95|      1|  if (!(a <= b && b <= c))
+   96|      0|    abort();
+   97|      1|  d = 1;
+   98|      1|  for ((b = sizeof(struct foo {
+   99|      1|          int i0;
+  100|      1|          int i1;
+  101|      1|        }));
+  102|      2|       d; d--)
+  103|      1|    c = sizeof(struct foo);
+  104|      1|  if (!(a <= b && b == c))
+  105|      0|    abort();
+  106|      1|  d = 1;
+  107|      2|  for (; (b = sizeof(struct foo {
+  108|      2|            int i0;
+  109|      2|            int i1;
+  110|      2|          })),
+  111|      2|         d;
+  112|      1|       d--)
+  113|      1|    c = sizeof(struct foo {
+  114|      1|      int i0;
+  115|      1|      int i1;
+  116|      1|      int i2;
+  117|      1|    });
+  118|      1|  if (!(a <= b && b <= c))
+  119|      0|    abort();
+  120|      1|  d = 1;
+  121|      2|  for (; (b = sizeof(struct foo {
+  122|      2|            int i0;
+  123|      2|            int i1;
+  124|      2|          })),
+  125|      2|         d;
+  126|      1|       d--)
+  127|      1|    c = sizeof(struct foo);
+  128|      1|  if (!(a <= b && b == c))
+  129|      0|    abort();
+  130|      1|  d = 1;
+  131|      2|  for (; d; (b = sizeof(struct foo {
+  132|      1|               int i0;
+  133|      1|               int i1;
+  134|      1|             })),
+  135|      1|            d--)
+  136|      1|    c = sizeof(struct foo {
+  137|      1|      int i0;
+  138|      1|      int i1;
+  139|      1|      int i2;
+  140|      1|    });
+  141|      1|  if (!(a <= b && b <= c))
+  142|      0|    abort();
+  143|      1|  d = 1;
+  144|      2|  for (; d; (b = sizeof(struct foo {
+  145|      1|               int i0;
+  146|      1|               int i1;
+  147|      1|             })),
+  148|      1|            d--)
+  149|      1|    c = sizeof(struct foo);
+  150|      1|  if (!(a <= b && b == c))
+  151|      0|    abort();
+  152|      1|  exit(0);
+  153|      1|}
+

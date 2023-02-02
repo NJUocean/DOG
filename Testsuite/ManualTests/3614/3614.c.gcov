@@ -1,0 +1,60 @@
+        -:    0:Source:3614.c
+        -:    0:Graph:3614.gcno
+        -:    0:Data:3614.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/37573 */
+        -:    2:/* { dg-require-effective-target int32plus } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  unsigned int *a;
+        -:    6:  unsigned int b;
+        -:    7:  unsigned int c[624];
+        -:    8:};
+        -:    9:
+       23:   10:static unsigned char __attribute__((noinline)) foo(struct S *s) {
+        -:   11:  unsigned int r;
+       23:   12:  if (!--s->b) {
+        1:   13:    unsigned int *c = s->c;
+        -:   14:    unsigned int i;
+        1:   15:    s->a = c;
+      228:   16:    for (i = 0; i < 227; i++)
+      227:   17:      c[i] = ((((c[i] ^ c[i + 1]) & 0x7ffffffe) ^ c[i]) >> 1) ^
+      227:   18:             ((0 - (c[i + 1] & 1)) & 0x9908b0df) ^ c[i + 397];
+        -:   19:  }
+       23:   20:  r = *(s->a++);
+       23:   21:  r ^= (r >> 11);
+       23:   22:  r ^= ((r & 0xff3a58ad) << 7);
+       23:   23:  r ^= ((r & 0xffffdf8c) << 15);
+       23:   24:  r ^= (r >> 18);
+       23:   25:  return (unsigned char)(r >> 1);
+        -:   26:}
+        -:   27:
+        -:   28:static void __attribute__((noinline))
+        1:   29:bar(unsigned char *p, unsigned int q, unsigned int r) {
+        -:   30:  struct S s;
+        -:   31:  unsigned int i;
+        1:   32:  unsigned int *c = s.c;
+        1:   33:  *c = r;
+      624:   34:  for (i = 1; i < 624; i++)
+      623:   35:    c[i] = i + 0x6c078965 * ((c[i - 1] >> 30) ^ c[i - 1]);
+        1:   36:  s.b = 1;
+       24:   37:  while (q--)
+       23:   38:    *p++ ^= foo(&s);
+        1:   39:};
+        -:   40:
+        -:   41:static unsigned char p[23] = {0xc0, 0x49, 0x17, 0x32, 0x62, 0x1e, 0x2e, 0xd5,
+        -:   42:                              0x4c, 0x19, 0x28, 0x49, 0x91, 0xe4, 0x72, 0x83,
+        -:   43:                              0x91, 0x3d, 0x93, 0x83, 0xb3, 0x61, 0x38};
+        -:   44:
+        -:   45:static unsigned char q[23] = {0x3e, 0x41, 0x55, 0x54, 0x4f, 0x49, 0x54, 0x20,
+        -:   46:                              0x55, 0x4e, 0x49, 0x43, 0x4f, 0x44, 0x45, 0x20,
+        -:   47:                              0x53, 0x43, 0x52, 0x49, 0x50, 0x54, 0x3c};
+        -:   48:
+        1:   49:int main(void) {
+        -:   50:  unsigned int s;
+        1:   51:  s = 23;
+        1:   52:  bar(p, s, s + 0xa25e);
+        1:   53:  if (__builtin_memcmp(p, q, s) != 0)
+    #####:   54:    __builtin_abort();
+        1:   55:  return 0;
+        -:   56:}

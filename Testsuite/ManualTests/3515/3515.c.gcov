@@ -1,0 +1,40 @@
+        -:    0:Source:3515.c
+        -:    0:Graph:3515.gcno
+        -:    0:Data:3515.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/31448, this used to ICE during expand because
+        -:    2:   reduce_to_bit_field_precision was not ready to handle constants. */
+        -:    3:
+        -:    4:typedef struct _st {
+        -:    5:  long int iIndex : 24;
+        -:    6:  long int iIndex1 : 24;
+        -:    7:} st;
+        -:    8:st *next;
+    #####:    9:void g(void) {
+    #####:   10:  st *next = 0;
+        -:   11:  int nIndx;
+        -:   12:  const static int constreg[] = {
+        -:   13:      0,
+        -:   14:  };
+    #####:   15:  nIndx = 0;
+    #####:   16:  next->iIndex = constreg[nIndx];
+    #####:   17:}
+        1:   18:void f(void) {
+        -:   19:  int nIndx;
+        -:   20:  const static long int constreg[] = {
+        -:   21:      0xFEFEFEFE,
+        -:   22:  };
+        1:   23:  nIndx = 0;
+        1:   24:  next->iIndex = constreg[nIndx];
+        1:   25:  next->iIndex1 = constreg[nIndx];
+        1:   26:}
+        1:   27:int main(void) {
+        -:   28:  st a;
+        1:   29:  next = &a;
+        1:   30:  f();
+        1:   31:  if (next->iIndex != 0xFFFEFEFE)
+    #####:   32:    __builtin_abort();
+        1:   33:  if (next->iIndex1 != 0xFFFEFEFE)
+    #####:   34:    __builtin_abort();
+        1:   35:  return 0;
+        -:   36:}

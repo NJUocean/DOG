@@ -1,0 +1,23 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |typedef struct {
+    4|       |  unsigned char x;
+    5|       |} A;
+    6|       |typedef struct {
+    7|       |  unsigned char x;
+    8|       |} B;
+    9|       |
+   10|       |int idx = 0;
+   11|       |
+   12|       |A objs[1] = {{0}};
+   13|       |
+   14|      1|int main() {
+   15|      1|  B *b = (B *)&objs[idx];
+   16|      1|  b->x++;
+   17|      1|  if (b->x)
+   18|      1|    b->x = 0;
+   19|      1|  if (b->x)
+   20|      0|    __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+

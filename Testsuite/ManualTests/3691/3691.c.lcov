@@ -1,0 +1,13 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|static signed char foo(signed char si1, signed char si2) { return si1 * si2; }
+    4|       |
+    5|       |int a = 0x105F61CA;
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  int b = 0x0332F5C8;
+    9|      1|  if (foo(b, a) > 0)
+   10|      0|    abort();
+   11|      1|  return 0;
+   12|      1|}
+

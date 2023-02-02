@@ -1,0 +1,35 @@
+        -:    0:Source:1694.c
+        -:    0:Graph:1694.gcno
+        -:    0:Data:1694.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct foo {
+        -:    4:  __UINT32_TYPE__ x;
+        -:    5:};
+        -:    6:typedef struct foo foo;
+        -:    7:
+        1:    8:static inline __INT32_TYPE__ zot(foo *f) {
+        -:    9:  int ret;
+        -:   10:
+        1:   11:  if (f->x > 0x7FFFFFFF)
+        1:   12:    ret = (__INT32_TYPE__)(f->x - 0x7FFFFFFF);
+        -:   13:  else
+    #####:   14:    ret = (__INT32_TYPE__)f->x - 0x7FFFFFFF;
+        1:   15:  return ret;
+        -:   16:}
+        -:   17:
+        1:   18:void __attribute__((noinline, noclone)) bar(foo *f) {
+        1:   19:  __INT32_TYPE__ ret = zot(f);
+        1:   20:  volatile __INT32_TYPE__ x = ret;
+        1:   21:  if (ret < 1)
+    #####:   22:    __builtin_abort();
+        1:   23:}
+        -:   24:
+        1:   25:int main() {
+        -:   26:  foo f;
+        1:   27:  f.x = 0x800003f8;
+        -:   28:
+        1:   29:  bar(&f);
+        1:   30:  return 0;
+        -:   31:}

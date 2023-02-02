@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=shift-exponent -fno-sanitize=shift-base -w -std=c99"
+    3|       | * } */
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int a = -42;
+    7|      1|  int b = -43;
+    8|      1|  volatile int c = 129;
+    9|      1|  int d = 1;
+   10|      1|  b << c;
+   11|      1|  a << 1;
+   12|      1|  a << 1;
+   13|      1|  d <<= 31;
+   14|      1|  b << (c + 1);
+   15|      1|}
+   16|       |/* { dg-output "shift exponent 129 is too large for \[^\n\r]*-bit type
+   17|       | * 'int'\[^\n\r]*(\n|\r\n|\r)" } */
+   18|       |/* { dg-output "\[^\n\r]*shift exponent 130 is too large for \[^\n\r]*-bit type
+   19|       | * 'int'" } */
+

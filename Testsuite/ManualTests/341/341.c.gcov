@@ -1,0 +1,57 @@
+        -:    0:Source:341.c
+        -:    0:Graph:341.gcno
+        -:    0:Data:341.gcda
+        -:    0:Runs:1
+        -:    1:/* Duff's device is legal C; test to make sure the compiler
+        -:    2:   doesn't complain about it.
+        -:    3:
+        -:    4:   Roger Sayle <roger@eyesopen.com>
+        -:    5:   Derived from duff-2.c.  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:/* { dg-options "-O2" } */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:extern void exit(int);
+        -:   12:
+        -:   13:#if __INT_MAX__ >= 2147483647
+        -:   14:/* At least 32-bit integers. */
+        -:   15:typedef int type32;
+        -:   16:#else
+        -:   17:typedef long type32;
+        -:   18:#endif
+        -:   19:
+        1:   20:type32 cksum(const unsigned char *src, unsigned long size) {
+        1:   21:  type32 ck = 0;
+        -:   22:
+        1:   23:  switch (size & 3) {
+        -:   24:    do {
+        -:   25:    case 0:
+       11:   26:      ck ^= (type32)*src++ << 24;
+       11:   27:      --size;
+       11:   28:    case 3:
+       11:   29:      ck ^= (type32)*src++ << 16;
+       11:   30:      --size;
+       12:   31:    case 2:
+       12:   32:      ck ^= (type32)*src++ << 8;
+       12:   33:      --size;
+       12:   34:    case 1:
+       12:   35:      ck ^= (type32)*src++;
+       12:   36:      --size;
+       12:   37:    } while (size > 0);
+        -:   38:  }
+        -:   39:
+        1:   40:  return ck;
+        -:   41:}
+        -:   42:
+        -:   43:const char testpat[] = "The quick brown fox jumped over the lazy dog.";
+        -:   44:
+        1:   45:int main() {
+        -:   46:  type32 ck;
+        -:   47:
+        1:   48:  ck = cksum((const unsigned char *)testpat, sizeof(testpat));
+        1:   49:  if (ck != 925902908)
+    #####:   50:    abort();
+        -:   51:
+        1:   52:  exit(0);
+        -:   53:}

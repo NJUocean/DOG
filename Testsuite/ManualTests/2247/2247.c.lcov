@@ -1,0 +1,6 @@
+    1|       |/* { dg-options "-fsave-optimization-record -ftree-slp-vectorize --param
+    2|       | * ggc-min-expand=0 --param ggc-min-heapsize=1024" } */
+    3|      0|void te(void) {}
+    4|       |
+    5|      1|int main(void) { return 0; }
+

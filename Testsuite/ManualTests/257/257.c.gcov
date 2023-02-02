@@ -1,0 +1,19 @@
+        -:    0:Source:257.c
+        -:    0:Graph:257.gcno
+        -:    0:Data:257.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for bug in conversions from 5-byte UTF-8 sequences in
+        -:    2:   cpplib.  */
+        -:    3:/* { dg-do run { target { 4byte_wchar_t } } } */
+        -:    4:/* { dg-options "-std=gnu99 -w" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:__WCHAR_TYPE__ ws[] = L"û¿¿¿¿";
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (ws[0] != L'\U03FFFFFF' || ws[1] != 0)
+    #####:   13:    abort();
+        1:   14:  exit(0);
+        -:   15:}

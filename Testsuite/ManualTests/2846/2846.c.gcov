@@ -1,0 +1,21 @@
+        -:    0:Source:2846.c
+        -:    0:Graph:2846.gcno
+        -:    0:Data:2846.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target powerpc*-*-* } } */
+        -:    2:/* { dg-require-effective-target powerpc_altivec_ok } */
+        -:    3:/* { dg-skip-if "need to be able to execute AltiVec" { ! { powerpc_altivec_ok &&
+        -:    4: * vmx_hw } } } */
+        -:    5:/* { dg-options "-maltivec" } */
+        -:    6:
+        -:    7:/* With altivec turned on, Darwin wants to save the world but we did not mark lr
+        -:    8:   as being saved any more as saving the lr is not needed for saving altivec
+        -:    9:   registers.  */
+        -:   10:
+        1:   11:int main(void) {
+        -:   12:  __label__ l1;
+    #####:   13:  void __attribute__((used)) q(void) { goto l1; }
+        -:   14:
+        1:   15:l1:;
+        1:   16:  return 0;
+        -:   17:}

@@ -1,0 +1,32 @@
+        -:    0:Source:369.c
+        -:    0:Graph:369.gcno
+        -:    0:Data:369.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/87248 */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        4:    4:void foo(signed char *p, int q) {
+        4:    5:  *p = q & (-__SCHAR_MAX__ - 1) ? (-__SCHAR_MAX__ - 1) : 0;
+        4:    6:}
+        -:    7:
+        4:    8:int bar(long long x) { return x & (-__INT_MAX__ - 1) ? (-__INT_MAX__ - 1) : 0; }
+        -:    9:
+        1:   10:int main() {
+        -:   11:#if __INT_MAX__ > 4 * __SCHAR_MAX__
+        -:   12:  signed char a[4];
+        1:   13:  foo(a, __SCHAR_MAX__ + 1U);
+        1:   14:  foo(a + 1, 2 * (__SCHAR_MAX__ + 1U));
+        1:   15:  foo(a + 2, -__INT_MAX__ - 1);
+        1:   16:  foo(a + 3, (__SCHAR_MAX__ + 1U) / 2);
+        1:   17:  if (a[0] != (-__SCHAR_MAX__ - 1) || a[1] != a[0] || a[2] != a[0] || a[3] != 0)
+    #####:   18:    __builtin_abort();
+        -:   19:#endif
+        -:   20:#if __LONG_LONG_MAX__ > 4 * __INT_MAX__
+        2:   21:  if (bar(__INT_MAX__ + 1LL) != (-__INT_MAX__ - 1) ||
+        2:   22:      bar(2 * (__INT_MAX__ + 1LL)) != (-__INT_MAX__ - 1) ||
+        2:   23:      bar(-__LONG_LONG_MAX__ - 1) != (-__INT_MAX__ - 1) ||
+        1:   24:      bar((__INT_MAX__ + 1LL) / 2) != 0)
+    #####:   25:    __builtin_abort();
+        -:   26:#endif
+        1:   27:  return 0;
+        -:   28:}

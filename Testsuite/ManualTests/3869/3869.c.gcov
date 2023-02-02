@@ -1,0 +1,28 @@
+        -:    0:Source:3869.c
+        -:    0:Graph:3869.gcno
+        -:    0:Data:3869.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/65053 */
+        -:    2:
+        -:    3:int i;
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) unsigned int foo(void) { return 0; }
+        -:    6:
+        1:    7:int main() {
+        1:    8:  unsigned int u = -1;
+        1:    9:  if (u == -1) {
+        1:   10:    unsigned int n = foo();
+        1:   11:    if (n > 0)
+    #####:   12:      u = n - 1;
+        -:   13:  }
+        -:   14:
+        1:   15:  while (u != -1) {
+    #####:   16:    asm("" : "+g"(u));
+    #####:   17:    u = -1;
+    #####:   18:    i = 1;
+        -:   19:  }
+        -:   20:
+        1:   21:  if (i)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

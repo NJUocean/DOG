@@ -1,0 +1,13 @@
+        -:    0:Source:3277.c
+        -:    0:Graph:3277.gcno
+        -:    0:Data:3277.gcda
+        -:    0:Runs:1
+        -:    1:unsigned char x = 50;
+        -:    2:volatile short y = -5;
+        -:    3:
+        1:    4:int main() {
+        1:    5:  x /= y;
+        1:    6:  if (x != (unsigned char)-10)
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

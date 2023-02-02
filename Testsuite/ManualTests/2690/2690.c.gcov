@@ -1,0 +1,30 @@
+        -:    0:Source:2690.c
+        -:    0:Graph:2690.gcno
+        -:    0:Data:2690.gcda
+        -:    0:Runs:1
+        -:    1:struct c {
+        -:    2:  double a;
+        -:    3:} __attribute((packed)) __attribute((aligned));
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:double g_expect = 32.25;
+        -:    8:
+        2:    9:void f(unsigned x, struct c y) {
+        2:   10:  if (x != 0)
+    #####:   11:    abort();
+        -:   12:
+        2:   13:  if (y.a != g_expect)
+    #####:   14:    abort();
+        2:   15:}
+        -:   16:
+        -:   17:struct c e = {64.25};
+        -:   18:
+        1:   19:int main(void) {
+        1:   20:  struct c d = {32.25};
+        1:   21:  f(0, d);
+        -:   22:
+        1:   23:  g_expect = 64.25;
+        1:   24:  f(0, e);
+        1:   25:  return 0;
+        -:   26:}

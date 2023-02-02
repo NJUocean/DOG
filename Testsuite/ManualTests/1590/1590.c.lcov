@@ -1,0 +1,20 @@
+    1|       |/* Copyright (C) 2000 Free Software Foundation */
+    2|       |/* by Alexandre Oliva  <aoliva@redhat.com> */
+    3|       |
+    4|       |enum foo { FOO, BAR };
+    5|       |
+    6|       |/* Even though the underlying type of an enum is unspecified, the type
+    7|       |   of enumeration constants is explicitly defined as int (6.4.4.3/2 in
+    8|       |   the C99 Standard).  Therefore, `i' must not be promoted to
+    9|       |   `unsigned' in the comparison below; we must exit the loop when it
+   10|       |   becomes negative. */
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|      3|  for (i = BAR; i >= FOO; --i)
+   15|      2|    if (i == -1)
+   16|      0|      abort();
+   17|      1|
+   18|      1|  exit(0);
+   19|      1|}
+

@@ -1,0 +1,35 @@
+        -:    0:Source:1429.c
+        -:    0:Graph:1429.gcno
+        -:    0:Data:1429.gcda
+        -:    0:Runs:1
+        -:    1:/* PR fortran/55633 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) void bar(__int128_t *x) {
+        1:    7:  int c = sizeof(__int128_t) * __CHAR_BIT__;
+        1:    8:  if (c > 127)
+        1:    9:    c = 127;
+        1:   10:  if (*x != c)
+    #####:   11:    abort();
+        1:   12:}
+        -:   13:
+        1:   14:__attribute__((noinline)) void foo(void) {
+        -:   15:  __int128_t m, ma;
+        1:   16:  ma = 0;
+        1:   17:  m = 0;
+        1:   18:  m = ~m;
+        -:   19:  do {
+      128:   20:    if (m == 0 || ma > 126)
+        -:   21:      break;
+      127:   22:    ma = ma + 1;
+      127:   23:    m = ((__uint128_t)m) >> 1;
+        -:   24:  } while (1);
+        1:   25:  bar(&ma);
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        1:   29:  foo();
+        1:   30:  return 0;
+        -:   31:}

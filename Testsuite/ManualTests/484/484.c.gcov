@@ -1,0 +1,29 @@
+        -:    0:Source:484.c
+        -:    0:Graph:484.gcno
+        -:    0:Data:484.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { i?86-*-* x86_64-*-* } } } */
+        -:    2:/* { dg-options "-g -mforce-drap" } */
+        -:    3:
+        -:    4:volatile int v;
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) int bar(int a, int b) {
+        -:    7:#ifdef __x86_64__
+        1:    8:  asm volatile("movq %%rsp, %%r10" : : : "r10");
+        -:    9:#else
+        -:   10:  asm volatile("movl %%esp, %%ecx" : : : "ecx");
+        -:   11:#endif
+        1:   12:  return 0;
+        -:   13:}
+        -:   14:
+        1:   15:__attribute__((noinline, noclone)) int foo(int v0, int v1, int v2, int v3,
+        -:   16:                                           int v4, int v5, int a, int b) {
+        1:   17:  __attribute__((aligned(32))) int c = bar(a, b);
+        1:   18:  v++;              /* { dg-final { gdb-test . "a" "5" } } */
+        1:   19:  return a + b + c; /* { dg-final { gdb-test . "b" "6" } } */
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  foo(0, 0, 0, 0, 0, 0, 5, 6);
+        1:   24:  return 0;
+        -:   25:}

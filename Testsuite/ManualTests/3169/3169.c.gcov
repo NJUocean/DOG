@@ -1,0 +1,8 @@
+        -:    0:Source:3169.c
+        -:    0:Graph:3169.gcno
+        -:    0:Data:3169.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-shouldfail "required comment" } */
+        -:    3:
+        1:    4:int main() { return 0; /* We expect nonzero, so this fails.  */ }

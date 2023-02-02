@@ -1,0 +1,32 @@
+        -:    0:Source:1155.c
+        -:    0:Graph:1155.gcno
+        -:    0:Data:1155.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fstack-clash-protection -fno-optimize-sibling-calls
+        -:    3: * --param stack-clash-protection-probe-interval=12 --param
+        -:    4: * stack-clash-protection-guard-size=12" } */
+        -:    5:/* { dg-require-effective-target supports_stack_clash_protection } */
+        -:    6:
+        -:    7:/* For further testing, this can be run under valgrind where it's crashed
+        -:    8:   on aarch64 and ppc64le with -fstack-check=specific.  */
+        -:    9:
+        2:   10:__attribute__((noinline, noclone)) void foo(char *p) {
+        2:   11:  asm volatile("" : : "r"(p) : "memory");
+        2:   12:}
+        -:   13:
+        1:   14:__attribute__((noinline, noclone)) void bar(void) {
+        -:   15:  char buf[131072];
+        1:   16:  foo(buf);
+        1:   17:}
+        -:   18:
+        1:   19:__attribute__((noinline, noclone)) void baz(void) {
+        -:   20:  char buf[12000];
+        1:   21:  foo(buf);
+        1:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  bar();
+        1:   26:  baz();
+        1:   27:  return 0;
+        -:   28:}

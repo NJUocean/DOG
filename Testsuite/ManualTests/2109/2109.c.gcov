@@ -1,0 +1,20 @@
+        -:    0:Source:2109.c
+        -:    0:Graph:2109.gcno
+        -:    0:Data:2109.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/70875 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=bounds -fno-sanitize-recover=bounds" } */
+        -:    4:/* { dg-shouldfail "ubsan" } */
+        -:    5:
+        1:    6:int foo(int n, int k) {
+        1:    7:  struct S {
+        1:    8:    int i[n];
+        -:    9:    int value;
+        1:   10:  } s[2];
+        1:   11:  return s[k].value = 0;
+        -:   12:}
+        -:   13:
+        1:   14:int main() { return foo(2, 2); }
+        -:   15:
+        -:   16:/* { dg-output "index 2 out of bounds for type 'S \\\[2\\\]'" } */

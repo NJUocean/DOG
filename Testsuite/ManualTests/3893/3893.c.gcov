@@ -1,0 +1,26 @@
+        -:    0:Source:3893.c
+        -:    0:Graph:3893.gcno
+        -:    0:Data:3893.gcda
+        -:    0:Runs:1
+        -:    1:unsigned int b;
+        -:    2:int c;
+        -:    3:
+        1:    4:signed char fn1() {
+        -:    5:  signed char d;
+        2:    6:  for (int i = 0; i < 1; i++)
+        1:    7:    d = -15;
+        1:    8:  return d;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        2:   12:  for (c = 0; c < 1; c++)
+        1:   13:    b = 0;
+        1:   14:  char e = fn1();
+        1:   15:  signed char f = e ^ b;
+        1:   16:  volatile int g = (int)f;
+        -:   17:
+        1:   18:  if (g != -15)
+    #####:   19:    __builtin_abort();
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

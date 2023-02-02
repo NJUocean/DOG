@@ -1,0 +1,34 @@
+        -:    0:Source:2653.c
+        -:    0:Graph:2653.gcno
+        -:    0:Data:2653.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/54703 */
+        -:    2:/* { dg-do run { target sse2_runtime } } */
+        -:    3:/* { dg-options "-O -msse2" } */
+        -:    4:/* { dg-additional-options "-mavx -mtune=bdver1" { target avx_runtime } } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:typedef double V __attribute__((vector_size(16)));
+        -:    8:
+        -:    9:union {
+        -:   10:  unsigned long long m[2];
+        -:   11:  V v;
+        -:   12:} u = {{0xffffffffff000000ULL, 0xffffffffff000000ULL}};
+        -:   13:
+        2:   14:static inline V foo(V x) {
+        2:   15:  V y = __builtin_ia32_andpd(x, u.v);
+        2:   16:  V z = __builtin_ia32_subpd(x, y);
+        2:   17:  return __builtin_ia32_mulpd(y, z);
+        -:   18:}
+        -:   19:
+        1:   20:void test(V *x) {
+        1:   21:  V a = {2.1, 2.1};
+        1:   22:  *x = foo(foo(a));
+        1:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  test(&u.v);
+        1:   27:  if (u.m[0] != 0x3acbf487f0a30550ULL || u.m[1] != u.m[0])
+    #####:   28:    abort();
+        1:   29:  return 0;
+        -:   30:}

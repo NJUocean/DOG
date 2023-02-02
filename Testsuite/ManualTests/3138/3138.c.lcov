@@ -1,0 +1,17 @@
+    1|       |/* { dg-skip-if "small alignment" { pdp11-*-* } } */
+    2|       |
+    3|       |struct s1 {
+    4|       |  int __attribute__((aligned(8))) a;
+    5|       |};
+    6|       |
+    7|       |struct {
+    8|       |  char c;
+    9|       |  struct s1 m;
+   10|       |} v;
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  if ((int)&v.m & 7)
+   14|      0|    abort();
+   15|      1|  exit(0);
+   16|      1|}
+

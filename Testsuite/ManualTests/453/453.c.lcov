@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O -floop-nest-optimize -fdump-tree-graphite-details" } */
+    3|       |
+    4|       |int rx, in;
+    5|       |
+    6|      1|int main(void) {
+    7|      1|  const int tj = 3;
+    8|      1|  int as[tj];
+    9|      1|  static int l4;
+   10|      1|
+   11|      2|  while (l4 < 1) {
+   12|      4|    for (rx = 0; rx < tj; ++rx) {
+   13|     12|      for (in = 0; in < tj; ++in)
+   14|      9|        as[in] = 1;
+   15|      3|      as[rx] = 0;
+   16|      3|    }
+   17|      1|    ++l4;
+   18|      1|  }
+   19|      1|
+   20|      1|  if (as[tj - 1] != 0)
+   21|      0|    __builtin_abort();
+   22|      1|}
+   23|       |
+   24|       |/* { dg-final { scan-tree-dump "loop nest optimized" "graphite" } } */
+

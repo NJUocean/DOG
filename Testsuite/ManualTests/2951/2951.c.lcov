@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -mzarch -march=z13 --save-temps" } */
+    3|       |
+    4|       |struct a {
+    5|       |  int b;
+    6|       |  char c;
+    7|       |};
+    8|       |struct a d = {1, 16};
+    9|       |struct a *e = &d;
+   10|       |
+   11|       |int f = 0;
+   12|       |
+   13|      1|int main() {
+   14|      1|  struct a g = {0, 0};
+   15|      1|  f = 0;
+   16|      1|
+   17|      3|  for (; f <= 1; f++) {
+   18|      2|    g = d;
+   19|      2|    *e = g;
+   20|      2|  }
+   21|      1|
+   22|      1|  if (d.c != 16)
+   23|      0|    __builtin_abort();
+   24|      1|}
+

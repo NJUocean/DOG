@@ -1,0 +1,62 @@
+    1|       |/* PR rtl-optimization/28982.  Function foo() does the equivalent of:
+    2|       |
+    3|       |     float tmp_results[NVARS];
+    4|       |     for (int i = 0; i < NVARS; i++)
+    5|       |       {
+    6|       |         int inc = incs[i];
+    7|       |         float *ptr = ptrs[i], result = 0;
+    8|       |         for (int j = 0; j < n; j++)
+    9|       |           result += *ptr, ptr += inc;
+   10|       |         tmp_results[i] = result;
+   11|       |       }
+   12|       |     memcpy (results, tmp_results, sizeof (results));
+   13|       |
+   14|       |   but without the outermost loop.  The idea is to create high register
+   15|       |   pressure and ensure that some INC and PTR variables are spilled.
+   16|       |
+   17|       |   On ARM targets, sequences like "result += *ptr, ptr += inc" can
+   18|       |   usually be implemented using (mem (post_modify ...)), and we do
+   19|       |   indeed create such MEMs before reload for this testcase.  However,
+   20|       |   (post_modify ...) is not a valid address for coprocessor loads, so
+   21|       |   for -mfloat-abi=softfp, reload reloads the POST_MODIFY into a base
+   22|       |   register.  GCC did not deal correctly with cases where the base and
+   23|       |   index of the POST_MODIFY are themselves reloaded.  */
+   24|    122|#define NITER 4
+   25|    123|#define NVARS 20
+   26|       |#define MULTI(X)                                                               \
+   27|      7|  X(0), X(1), X(2), X(3), X(4), X(5), X(6), X(7), X(8), X(9), X(10), X(11),    \
+   28|      7|      X(12), X(13), X(14), X(15), X(16), X(17), X(18), X(19)
+   29|       |
+   30|     20|#define DECLAREI(INDEX) inc##INDEX = incs[INDEX]
+   31|     20|#define DECLAREF(INDEX) *ptr##INDEX = ptrs[INDEX], result##INDEX = 0
+   32|      4|#define LOOP(INDEX) result##INDEX += *ptr##INDEX, ptr##INDEX += inc##INDEX
+   33|     20|#define COPYOUT(INDEX) results[INDEX] = result##INDEX
+   34|       |
+   35|       |float *ptrs[NVARS];
+   36|       |float results[NVARS];
+   37|       |int incs[NVARS];
+   38|       |
+   39|      1|void __attribute__((noinline)) foo(int n) {
+   40|     20|  int MULTI(DECLAREI);
+   41|     20|  float MULTI(DECLAREF);
+   42|      5|  while (n--)
+   43|     77|    MULTI(LOOP);
+   44|     20|  MULTI(COPYOUT);
+   45|      1|}
+   46|       |
+   47|       |float input[NITER * NVARS];
+   48|       |
+   49|      1|int main(void) {
+   50|      1|  int i;
+   51|      1|
+   52|     21|  for (i = 0; i < NVARS; i++)
+   53|     20|    ptrs[i] = input + i, incs[i] = i;
+   54|     81|  for (i = 0; i < NITER * NVARS; i++)
+   55|     80|    input[i] = i;
+   56|      1|  foo(NITER);
+   57|     21|  for (i = 0; i < NVARS; i++)
+   58|     20|    if (results[i] != i * NITER * (NITER + 1) / 2)
+   59|      0|      return 1;
+   60|      1|  return 0;
+   61|      1|}
+

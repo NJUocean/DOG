@@ -1,0 +1,27 @@
+        -:    0:Source:3629.c
+        -:    0:Graph:3629.gcno
+        -:    0:Data:3629.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:extern void abort(void);
+        -:    3:
+        -:    4:volatile int a = 1;
+        -:    5:volatile int b = 0;
+        -:    6:volatile int x = 2;
+        -:    7:volatile signed int r = 8;
+        -:    8:
+        1:    9:void __attribute__((noinline)) foo(void) { exit(0); }
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  int si1 = a;
+        1:   13:  int si2 = b;
+        -:   14:  int i;
+        -:   15:
+       1*:   16:  for (i = 0; i < 100; ++i) {
+        1:   17:    foo();
+    #####:   18:    if (x == 8)
+    #####:   19:      i++;
+    #####:   20:    r += i + si1 % si2;
+        -:   21:  }
+    #####:   22:  abort();
+        -:   23:}

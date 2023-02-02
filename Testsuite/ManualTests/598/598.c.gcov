@@ -1,0 +1,18 @@
+        -:    0:Source:598.c
+        -:    0:Graph:598.gcno
+        -:    0:Data:598.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fipa-pta" } */
+        -:    3:
+        1:    4:static void __attribute__((noinline, noclone)) foo(int *p, int *q) {
+        1:    5:  __builtin_memcpy(p, q, sizeof(int));
+        1:    6:}
+        -:    7:extern void abort(void);
+        1:    8:int main() {
+        1:    9:  int i = 0, j = 1;
+        1:   10:  foo(&i, &j);
+        1:   11:  if (i != 1)
+    #####:   12:    abort();
+        1:   13:  return 0;
+        -:   14:}

@@ -1,0 +1,36 @@
+    1|       |/* PR optimization/11018 */
+    2|       |/* Originator: <partain@dcs.gla.ac.uk> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-require-effective-target ultrasparc_hw } */
+    6|       |/* { dg-options "-O2 -mcpu=ultrasparc" } */
+    7|       |
+    8|       |/* This used to fail on 32-bit Ultrasparc because
+    9|       |   of broken DImode shift patterns.  */
+   10|       |
+   11|       |extern void abort(void);
+   12|       |
+   13|       |typedef unsigned long long uint64_t;
+   14|       |typedef unsigned int size_t;
+   15|       |
+   16|      1|void to_octal(uint64_t value, char *where, size_t size) {
+   17|      1|  uint64_t v = value;
+   18|      1|  size_t i = size;
+   19|      1|
+   20|      6|  do {
+   21|      6|    where[--i] = '0' + (v & ((1 << 3) - 1));
+   22|      6|    v >>= 3;
+   23|      6|  } while (i);
+   24|      1|}
+   25|       |
+   26|      1|int main(void) {
+   27|      1|  char buf[8];
+   28|      1|
+   29|      1|  to_octal(010644, buf, 6);
+   30|      1|
+   31|      1|  if (buf[1] != '1')
+   32|      0|    abort();
+   33|      1|
+   34|      1|  return 0;
+   35|      1|}
+

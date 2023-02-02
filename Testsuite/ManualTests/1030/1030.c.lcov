@@ -1,0 +1,19 @@
+    1|       |/* PR target/82190 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-O2 -fno-optimize-strlen -fweb" } */
+    4|       |
+    5|       |char src[64] __attribute__((aligned)) = "aaaaaaa";
+    6|       |char dst[64] __attribute__((aligned));
+    7|       |
+    8|      1|int main() {
+    9|      1|  __builtin_memcpy(dst, src, 6);
+   10|      1|  if (__builtin_memcmp(dst, src, 6))
+   11|      0|    __builtin_abort();
+   12|      1|
+   13|      1|  __builtin_memcpy(dst, src, 7);
+   14|      1|  if (__builtin_memcmp(dst, src, 7))
+   15|      0|    __builtin_abort();
+   16|      1|
+   17|      1|  return 0;
+   18|      1|}
+

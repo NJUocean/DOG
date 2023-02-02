@@ -1,0 +1,11 @@
+        -:    0:Source:1502.c
+        -:    0:Graph:1502.gcno
+        -:    0:Data:1502.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        1:    3:int main(void) {
+        1:    4:  int a = 0;
+        1:    5:  unsigned b = (a * 64 & 192) | 63U;
+        1:    6:  return 0;
+        -:    7:}

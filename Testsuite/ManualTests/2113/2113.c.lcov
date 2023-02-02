@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=shift-base -fno-sanitize=shift-exponent -w -std=c99"
+    3|       | * } */
+    4|       |
+    5|      1|int main(void) {
+    6|      1|  int a = -42;
+    7|      1|  int b = -43;
+    8|      1|  volatile int c = 129;
+    9|      1|  int d = 1;
+   10|      1|  a << 1;
+   11|      1|  b << c;
+   12|      1|  a << 1;
+   13|      1|  d <<= 31;
+   14|      1|}
+   15|       |/* { dg-output "left shift of negative value -42\[^\n\r]*(\n|\r\n|\r)" } */
+   16|       |/* { dg-output "\[^\n\r]*left shift of negative value -42\[^\n\r]*(\n|\r\n|\r)"
+   17|       | * } */
+   18|       |/* { dg-output "\[^\n\r]*left shift of 1 by 31 places cannot be represented in
+   19|       | * type 'int'" } */
+

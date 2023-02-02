@@ -1,0 +1,20 @@
+        -:    0:Source:3570.c
+        -:    0:Graph:3570.gcno
+        -:    0:Data:3570.gcda
+        -:    0:Runs:1
+        -:    1:int abs(int j);
+        -:    2:extern void abort(void);
+        -:    3:
+        1:    4:__attribute__((noinline)) int lisp_atan2(long dy, long dx) {
+        1:    5:  if (dx <= 0)
+        1:    6:    if (dy > 0)
+        1:    7:      return abs(dx) <= abs(dy);
+    #####:    8:  return 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  volatile long dy = 63, dx = -77;
+        1:   13:  if (lisp_atan2(dy, dx))
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

@@ -1,0 +1,26 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fdump-tree-alias" } */
+    3|       |/* { dg-skip-if "" { *-*-* } { "-O0" "-fno-fat-lto-objects" } { "" } } */
+    4|       |
+    5|       |volatile int i;
+    6|      1|int **__attribute__((noinline, pure)) foo(int **p) {
+    7|      1|  i;
+    8|      1|  return p;
+    9|      1|}
+   10|      1|int bar(void) {
+   11|      1|  int i = 0, j = 1;
+   12|      1|  int *p, **q;
+   13|      1|  p = &i;
+   14|      1|  q = foo(&p);
+   15|      1|  *q = &j;
+   16|      1|  return *p;
+   17|      1|}
+   18|       |extern void abort(void);
+   19|      1|int main() {
+   20|      1|  if (bar() != 1)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|       |/* { dg-final { scan-tree-dump "p.._. = { i j }" "alias" } } */
+

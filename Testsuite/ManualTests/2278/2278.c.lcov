@@ -1,0 +1,26 @@
+    1|       |int loop_1 = 100;
+    2|       |int loop_2 = 7;
+    3|       |int flag = 0;
+    4|       |
+    5|      1|int test(void) {
+    6|      1|  int i;
+    7|      1|  int counter = 0;
+    8|      1|
+    9|     31|  while (loop_1 > counter) {
+   10|     30|    if (flag & 1) {
+   11|    120|      for (i = 0; i < loop_2; i++) {
+   12|    105|        counter++;
+   13|    105|      }
+   14|     15|    }
+   15|     30|    flag++;
+   16|     30|  }
+   17|      1|  return 1;
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  if (test() != 1)
+   22|      0|    abort();
+   23|      1|
+   24|      1|  exit(0);
+   25|      1|}
+

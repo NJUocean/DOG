@@ -1,0 +1,20 @@
+        -:    0:Source:1564.c
+        -:    0:Graph:1564.gcno
+        -:    0:Data:1564.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:
+        -:    3:typedef unsigned __int128 u128;
+        -:    4:
+        1:    5:u128 __attribute__((noinline, noclone)) foo(void) {
+        1:    6:  u128 u = -2;
+        1:    7:  u %= 0xffffffffffffffffllu;
+        1:    8:  return u;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  u128 x = foo();
+        1:   13:  if (x != 0xfffffffffffffffellu)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

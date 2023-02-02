@@ -1,0 +1,73 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-fopenmp" } */
+    3|       |
+    4|       |int x = 6;
+    5|       |
+    6|      1|int main() {
+    7|      1|  int v;
+    8|      1|#pragma omp atomic
+    9|      1|  x = x * 7 + 6; /* { dg-error "expected|invalid form of" } */
+   10|      1|#pragma omp atomic
+   11|      1|  x = x * 7 ^ 6; /* { dg-error "expected|invalid form of" } */
+   12|      1|#pragma omp atomic update
+   13|      1|  x = x - 8 + 6; /* { dg-error "expected|invalid form of" } */
+   14|      1|#pragma omp atomic
+   15|      1|  x = x ^ 7 | 2; /* { dg-error "expected|invalid form of" } */
+   16|      1|#pragma omp atomic
+   17|      1|  x = x / 7 * 2; /* { dg-error "expected|invalid form of" } */
+   18|      1|#pragma omp atomic
+   19|      1|  x = x / 7 / 2; /* { dg-error "expected|invalid form of" } */
+   20|      1|#pragma omp atomic capture
+   21|      1|  {
+   22|      1|    v = x;
+   23|      1|    x = x * 7 + 6;
+   24|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   25|      1|#pragma omp atomic capture
+   26|      1|  {
+   27|      1|    v = x;
+   28|      1|    x = x * 7 ^ 6;
+   29|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   30|      1|#pragma omp atomic capture
+   31|      1|  {
+   32|      1|    v = x;
+   33|      1|    x = x - 8 + 6;
+   34|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   35|      1|#pragma omp atomic capture
+   36|      1|  {
+   37|      1|    v = x;
+   38|      1|    x = x ^ 7 | 2;
+   39|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   40|      1|#pragma omp atomic capture
+   41|      1|  {
+   42|      1|    v = x;
+   43|      1|    x = x / 7 * 2;
+   44|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   45|      1|#pragma omp atomic capture
+   46|      1|  {
+   47|      1|    v = x;
+   48|      1|    x = x / 7 / 2;
+   49|      1|  } /* { dg-error "expected" "" { target c++ } } */
+   50|      1|#pragma omp atomic capture
+   51|      1|  {
+   52|      1|    x = x * 7 + 6;
+   53|      1|    v = x;
+   54|      1|  } /* { dg-error "expected|uses two different expressions for memory" } */
+   55|      1|#pragma omp atomic capture
+   56|      1|  {
+   57|      1|    x = x * 7 ^ 6;
+   58|      1|    v = x;
+   59|      1|  } /* { dg-error "expected|uses two different expressions for memory" } */
+   60|      1|#pragma omp atomic capture
+   61|      1|  {
+   62|      1|    x = x - 8 + 6;
+   63|      1|    v = x;
+   64|      1|  } /* { dg-error "expected|uses two different expressions for memory" } */
+   65|      1|#pragma omp atomic capture
+   66|      1|  {
+   67|      1|    x = x ^ 7 | 2;
+   68|      1|    v = x;
+   69|      1|  } /* { dg-error "expected|uses two different expressions for memory" } */
+   70|      1|  (void)v;
+   71|      1|  return 0;
+   72|      1|}
+

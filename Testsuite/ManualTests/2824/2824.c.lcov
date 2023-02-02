@@ -1,0 +1,17 @@
+    1|       |/* { dg-do compile } */
+    2|       |
+    3|       |__attribute__((persistent)) int persistent_1_g = 1;
+    4|       |__attribute__((persistent)) int persistent_2_g = 0;
+    5|       |static __attribute__((persistent)) int persistent_3_g = 1;
+    6|       |static __attribute__((persistent)) int persistent_4_g = 0;
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  __attribute__((persistent)) int persistent_1 =
+   10|      1|      1; /* { dg-warning "attribute has no effect on automatic" } */
+   11|      1|  __attribute__((persistent)) int persistent_2 =
+   12|      1|      0; /* { dg-warning "attribute has no effect on automatic" } */
+   13|      1|  static __attribute__((persistent)) int persistent_3 = 1;
+   14|      1|  static __attribute__((persistent)) int persistent_4 = 0;
+   15|      1|  return 0;
+   16|      1|}
+

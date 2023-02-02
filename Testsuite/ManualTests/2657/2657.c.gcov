@@ -1,0 +1,37 @@
+        -:    0:Source:2657.c
+        -:    0:Graph:2657.gcno
+        -:    0:Data:2657.gcda
+        -:    0:Runs:1
+        -:    1:struct A {
+        -:    2:  int one;
+        -:    3:  int two;
+        -:    4:  int three;
+        -:    5:  int four;
+        -:    6:  int five;
+        -:    7:  int six;
+        -:    8:};
+        -:    9:
+        1:   10:static int test(void) {
+        -:   11:  int base;
+        -:   12:
+        1:   13:  struct A Foo(void) {
+        -:   14:    struct A a;
+        -:   15:
+        1:   16:    a.one = base + 1;
+        1:   17:    a.two = base + 2;
+        1:   18:    a.three = base + 3;
+        1:   19:    a.four = base + 4;
+        1:   20:    a.five = base + 5;
+        1:   21:    a.six = base + 6;
+        -:   22:
+        1:   23:    return a;
+        -:   24:  }
+        -:   25:
+        1:   26:  base = 10;
+        1:   27:  struct A a = Foo();
+        -:   28:
+        1:   29:  return (a.one == 11 && a.two == 12 && a.three == 13 && a.four == 14 &&
+       2*:   30:          a.five == 15 && a.six == 16);
+        -:   31:}
+        -:   32:
+        1:   33:int main(void) { return !test(); }

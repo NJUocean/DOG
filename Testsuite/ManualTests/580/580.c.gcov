@@ -1,0 +1,34 @@
+        -:    0:Source:580.c
+        -:    0:Graph:580.gcno
+        -:    0:Data:580.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O0 -fipa-icf -fdump-ipa-icf"  } */
+        -:    3:
+        -:    4:typedef int v4si __attribute__((vector_size(16)));
+        -:    5:
+        1:    6:__attribute__((noinline)) int foo(void) {
+        1:    7:  v4si a = {1, 2, 3, 4};
+        1:    8:  v4si b = {3, 2, 1, 4};
+        -:    9:  v4si c;
+        -:   10:
+        1:   11:  return 54;
+        -:   12:}
+        -:   13:
+        1:   14:__attribute__((noinline)) int bar(void) {
+        1:   15:  v4si a = {1, 2, 3, 4};
+        1:   16:  v4si b = {3, 2, 5, 4};
+        -:   17:  v4si c;
+        -:   18:
+        1:   19:  return 54;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo();
+        1:   24:  bar();
+        -:   25:
+        1:   26:  return 0;
+        -:   27:}
+        -:   28:
+        -:   29:/* { dg-final { scan-ipa-dump-not "Semantic equality hit:" "icf"  } } */
+        -:   30:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */

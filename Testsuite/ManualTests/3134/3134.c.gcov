@@ -1,0 +1,36 @@
+        -:    0:Source:3134.c
+        -:    0:Graph:3134.gcno
+        -:    0:Data:3134.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options { -nostartfiles below100.o -Tbelow100.ld -O2 } } */
+        -:    2:/* { dg-final { scan-assembler "b\[np\] B100A,#0," } } */
+        -:    3:/* { dg-final { scan-assembler "b\[np\] B100B,#0," } } */
+        -:    4:
+        -:    5:typedef struct {
+        -:    6:  unsigned char b0 : 1;
+        -:    7:  unsigned char b1 : 1;
+        -:    8:  unsigned char b2 : 1;
+        -:    9:  unsigned char b3 : 1;
+        -:   10:  unsigned char b4 : 1;
+        -:   11:  unsigned char b5 : 1;
+        -:   12:  unsigned char b6 : 1;
+        -:   13:  unsigned char b7 : 1;
+        -:   14:} BitField;
+        -:   15:
+        -:   16:char acDummy[0xf0] __attribute__((__BELOW100__));
+        -:   17:BitField B100A __attribute__((__BELOW100__)) = {0, 0, 1, 0, 1, 1, 0, 0};
+        -:   18:unsigned char *pA = (unsigned char *)&B100A;
+        -:   19:BitField B100B __attribute__((__BELOW100__)) = {1, 1, 0, 1, 0, 0, 1, 1};
+        -:   20:unsigned char *pB = (unsigned char *)&B100B;
+        -:   21:
+        1:   22:char *Do(void) {
+        1:   23:  if (!B100A.b0) {
+        1:   24:    if (!B100B.b0)
+    #####:   25:      return "Fail";
+        -:   26:    else
+        1:   27:      return "Success";
+        -:   28:  } else
+    #####:   29:    return "Fail";
+        -:   30:}
+        -:   31:
+        1:   32:int main(void) { return Do()[0] == 'F'; }

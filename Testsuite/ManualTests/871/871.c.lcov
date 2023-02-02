@@ -1,0 +1,14 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|       |/* Make sure we do not ICE.  */
+    5|       |
+    6|       |__extension__ typedef __UINTPTR_TYPE__ uintptr_t;
+    7|       |
+    8|      1|int main(void) {
+    9|      1|  int var, *p = &var;
+   10|      1|  return (double)(uintptr_t)(p);
+   11|      1|}
+   12|       |
+   13|       |/* { dg-prune-output "-Wreturn-local-addr" } */
+

@@ -1,0 +1,23 @@
+        -:    0:Source:2744.c
+        -:    0:Graph:2744.gcno
+        -:    0:Data:2744.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/86334 */
+        -:    2:/* { dg-do run { target ia32 } } */
+        -:    3:/* { dg-options "-O -march=i386 -mtune=athlon -minline-all-stringops
+        -:    4: * -minline-stringops-dynamically -mmemcpy-strategy=libcall:-1:align -Wno-psabi"
+        -:    5: * } */
+        -:    6:
+        -:    7:typedef int V __attribute__((vector_size(64)));
+        -:    8:
+        1:    9:static inline V foo(V g) {
+        1:   10:  g[0] = 4;
+        1:   11:  return g;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  V x = foo((V){});
+        1:   16:  if (x[0] != 4 || x[1] || x[2] || x[3] || x[4] || x[5] || x[6] || x[7])
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

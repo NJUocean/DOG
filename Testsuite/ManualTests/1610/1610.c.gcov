@@ -1,0 +1,23 @@
+        -:    0:Source:1610.c
+        -:    0:Graph:1610.gcno
+        -:    0:Data:1610.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:static _Bool foo(_Bool a, _Bool b) {
+       1*:    4:  int x = a && !b;
+        1:    5:  return x != 0;
+        -:    6:}
+        -:    7:
+        -:    8:int y = 1;
+        1:    9:int main() {
+        -:   10:  register _Bool x
+        -:   11:  /* Add register spec for the argv parameter to main.  */
+        -:   12:#if __i386__ || __x86_64__
+        -:   13:      __asm__("%esi")
+        -:   14:#endif
+        -:   15:          ;
+        1:   16:  if (foo(x, y))
+    #####:   17:    __builtin_abort();
+        1:   18:  return 0;
+        -:   19:}

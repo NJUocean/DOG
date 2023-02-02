@@ -1,0 +1,43 @@
+        -:    0:Source:1240.c
+        -:    0:Graph:1240.gcno
+        -:    0:Data:1240.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fno-omit-frame-pointer" } */
+        -:    3:/* { dg-require-effective-target alloca } */
+        -:    4:
+        -:    5:#define alloca __builtin_alloca
+        -:    6:extern void abort(void);
+        -:    7:
+        4:    8:__attribute__((noinline)) static double bar(double a, double b, double c,
+        -:    9:                                            double d, char *h) {
+        4:   10:  *h = 0;
+        4:   11:  return a * b + b + c;
+        -:   12:}
+        -:   13:
+        2:   14:__attribute__((noinline)) static int boo(double a, double b, double c,
+        -:   15:                                         double d) {
+        2:   16:  return c * b + a + b;
+        -:   17:}
+        -:   18:
+        1:   19:__attribute__((noinline)) static double foo(double a, double b, double c,
+        -:   20:                                            double d) {
+        1:   21:  int aa = boo(b, c, d, a);
+        2:   22:  return bar(a, b, c, d, (char *)alloca(aa)) +
+        1:   23:         bar(d, c, b, a, (char *)alloca(aa));
+        -:   24:}
+        -:   25:
+        1:   26:int main() {
+        1:   27:  double a = 2.0, b = 3.0, c = 4.0, d = 5.0;
+        -:   28:  double r1, r2;
+        -:   29:  int aa;
+        -:   30:
+        1:   31:  aa = boo(b, c, d, a);
+        1:   32:  r1 =
+        1:   33:      bar(a, b, c, d, (char *)alloca(aa)) + bar(d, c, b, a, (char *)alloca(aa));
+        1:   34:  r2 = foo(a, b, c, d);
+        -:   35:
+        1:   36:  if (r1 != r2)
+    #####:   37:    abort();
+        1:   38:  return 0;
+        -:   39:}

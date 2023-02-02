@@ -1,0 +1,38 @@
+    1|       |/* Test AAPCS layout (alignment) for callee.  */
+    2|       |
+    3|       |/* { dg-do run { target arm_eabi } } */
+    4|       |/* { dg-require-effective-target arm32 } */
+    5|       |/* { dg-options "-O2 -fno-inline" } */
+    6|       |
+    7|       |/* Test AAPCS layout (alignment) for callee.  */
+    8|       |
+    9|       |extern int memcmp(const void *s1, const void *s2, __SIZE_TYPE__ n);
+   10|       |extern void abort(void);
+   11|       |
+   12|       |/* Struct will be aligned to 8.  */
+   13|       |struct s {
+   14|       |  int x;
+   15|       |  /* 4 bytes padding here.  */
+   16|       |  __attribute__((aligned(8))) int y;
+   17|       |  /* 4 bytes padding here.  */
+   18|       |};
+   19|       |
+   20|       |typedef struct s __attribute__((aligned(4))) underaligned;
+   21|       |
+   22|       |underaligned a = {1, 4};
+   23|       |underaligned b = {9, 16};
+   24|       |
+   25|      1|void f(int r0, underaligned r2, int stack8, underaligned stack16) {
+   26|      1|  if (r0 != 3 || stack8 != 6)
+   27|      0|    abort();
+   28|      1|  if (memcmp((void *)&r2, (void *)&a, sizeof(underaligned)))
+   29|      0|    abort();
+   30|      1|  if (memcmp((void *)&stack16, (void *)&b, sizeof(underaligned)))
+   31|      0|    abort();
+   32|      1|}
+   33|       |
+   34|      1|int main(int argc, char **argv) {
+   35|      1|  f(3, a, 6, b);
+   36|      1|  return 0;
+   37|      1|}
+

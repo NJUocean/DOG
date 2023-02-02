@@ -1,0 +1,13 @@
+    1|      1|f(const int x) {
+    2|      1|  int y = 0;
+    3|      1|  y = x ? y : -y;
+    4|      1|  { const int *p = &x; }
+    5|      1|  return y;
+    6|      1|}
+    7|       |
+    8|      1|main() {
+    9|      1|  if (f(0))
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

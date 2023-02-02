@@ -1,0 +1,35 @@
+        -:    0:Source:1810.c
+        -:    0:Graph:1810.gcno
+        -:    0:Data:1810.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target freorder } */
+        -:    2:/* { dg-options "-O2 -freorder-blocks-and-partition" } */
+        -:    3:
+        -:    4:#include <string.h>
+        -:    5:
+        -:    6:#define SIZE 1000
+        -:    7:int t0 = 0;
+        -:    8:const char *t2[SIZE];
+        -:    9:char buf[SIZE];
+        -:   10:
+        1:   11:void foo(void) {
+        1:   12:  char *s = buf;
+        1:   13:  t0 = 1;
+        -:   14:
+        -:   15:  for (;;) {
+        6:   16:    if (*s == '\0')
+        1:   17:      break;
+        -:   18:    else {
+        5:   19:      t2[t0] = s;
+        5:   20:      t0++;
+        -:   21:    }
+        5:   22:    *s++ = '\0';
+        -:   23:  }
+        1:   24:  t2[t0] = NULL;
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  strcpy(buf, "hello");
+        1:   29:  foo();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,62 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-common" { target hppa*-*-hpux* } } */
+    3|      1|#define vector __attribute__((vector_size(sizeof(int) * 4)))
+    4|       |
+    5|       |/* Check to make sure that we extract and insert the vector at the same
+    6|       |   location for vector subscripting (with constant indexes) and
+    7|       |   that vectors layout are the same as arrays. */
+    8|       |
+    9|       |struct TV4 {
+   10|       |  vector int v;
+   11|       |};
+   12|       |
+   13|       |typedef struct TV4 MYV4;
+   14|       |
+   15|      1|static inline MYV4 myfunc2(int x, int y, int z, int w) {
+   16|      1|  MYV4 temp;
+   17|      1|  temp.v[0] = x;
+   18|      1|  temp.v[1] = y;
+   19|      1|  temp.v[2] = z;
+   20|      1|  temp.v[3] = w;
+   21|      1|  return temp;
+   22|      1|}
+   23|       |MYV4 val3;
+   24|      1|__attribute__((noinline)) void modify(void) { val3 = myfunc2(1, 2, 3, 4); }
+   25|      1|int main(int argc, char *argv[]) {
+   26|      1|  int a[4];
+   27|      1|  int i;
+   28|      1|
+   29|      1|  /* Set up the vector.  */
+   30|      1|  modify();
+   31|      1|
+   32|      1|  /* Check the vector via the global variable.  */
+   33|      1|  if (val3.v[0] != 1)
+   34|      0|    __builtin_abort();
+   35|      1|  if (val3.v[1] != 2)
+   36|      0|    __builtin_abort();
+   37|      1|  if (val3.v[2] != 3)
+   38|      0|    __builtin_abort();
+   39|      1|  if (val3.v[3] != 4)
+   40|      0|    __builtin_abort();
+   41|      1|
+   42|      1|  vector int a1 = val3.v;
+   43|      1|
+   44|      1|  /* Check the vector via a local variable.  */
+   45|      1|  if (a1[0] != 1)
+   46|      0|    __builtin_abort();
+   47|      1|  if (a1[1] != 2)
+   48|      0|    __builtin_abort();
+   49|      1|  if (a1[2] != 3)
+   50|      0|    __builtin_abort();
+   51|      1|  if (a1[3] != 4)
+   52|      0|    __builtin_abort();
+   53|      1|
+   54|      1|  __builtin_memcpy(a, &val3, sizeof(a));
+   55|      1|  /* Check the vector via copying it to an array.  */
+   56|      5|  for (i = 0; i < 4; i++)
+   57|      4|    if (a[i] != i + 1)
+   58|      0|      __builtin_abort();
+   59|      1|
+   60|      1|  return 0;
+   61|      1|}
+

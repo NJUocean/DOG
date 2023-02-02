@@ -1,0 +1,33 @@
+        -:    0:Source:790.c
+        -:    0:Graph:790.gcno
+        -:    0:Data:790.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/23818 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-tree-dominator-opts" } */
+        -:    4:
+        -:    5:#include <stdarg.h>
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:void foo(int p[100], int k, ...) {
+        -:   10:  int j, *q;
+        -:   11:  va_list ap;
+        -:   12:
+        1:   13:  va_start(ap, k);
+        1:   14:  q = va_arg(ap, int *);
+      101:   15:  for (j = 0; j < 100; j++)
+      100:   16:    q[j] = p[j] + 10;
+        1:   17:  va_end(ap);
+        1:   18:}
+        -:   19:
+        1:   20:int main(void) {
+        -:   21:  int buf[100], buf2[100], i;
+      101:   22:  for (i = 0; i < 100; i++)
+      100:   23:    buf[i] = i + 1;
+        1:   24:  foo(buf, 0, buf2);
+      101:   25:  for (i = 0; i < 100; i++)
+      100:   26:    if (buf2[i] != buf[i] + 10)
+    #####:   27:      abort();
+        1:   28:  return 0;
+        -:   29:}

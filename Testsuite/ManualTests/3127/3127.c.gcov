@@ -1,0 +1,19 @@
+        -:    0:Source:3127.c
+        -:    0:Graph:3127.gcno
+        -:    0:Data:3127.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-fwrapv" } */
+        -:    2:#include <limits.h>
+        -:    3:extern void abort();
+        -:    4:extern void exit(int);
+        1:    5:void f(int i) {
+        1:    6:  i = i > 0 ? i : -i;
+        1:    7:  if (i < 0)
+        1:    8:    return;
+    #####:    9:  abort();
+        -:   10:}
+        -:   11:
+        1:   12:int main(int argc, char *argv[]) {
+        1:   13:  f(INT_MIN);
+        1:   14:  exit(0);
+        -:   15:}

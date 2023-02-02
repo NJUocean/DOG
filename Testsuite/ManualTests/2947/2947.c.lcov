@@ -1,0 +1,22 @@
+    1|       |/* This testcase is extracted from s390_emit_prologue.  The negation
+    2|       |   of a 64bit value got split incorrectly on 31 bit.  */
+    3|       |
+    4|       |/* { dg-do run { target { ! lp64 } } } */
+    5|       |/* { dg-options "-O2 -mesa" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|       |long long frame_size = 42;
+   10|       |
+   11|      1|int __attribute__((noinline)) foo(int a __attribute__((unused)), long long b) {
+   12|      1|  return (int)b;
+   13|      1|}
+   14|       |
+   15|      1|int main() {
+   16|      1|  if (frame_size > 0) {
+   17|      1|    if (foo(0, -frame_size) != -42)
+   18|      0|      abort();
+   19|      1|  }
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,24 @@
+        -:    0:Source:3353.c
+        -:    0:Graph:3353.gcno
+        -:    0:Data:3353.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target int32plus } */
+        -:    2:/* { dg-require-effective-target alloca } */
+        -:    3:
+        -:    4:/* Ensure that we deallocate X when branching back before its
+        -:    5:   declaration.  */
+        -:    6:
+        -:    7:void *volatile p;
+        -:    8:
+        1:    9:int main(void) {
+        1:   10:  int n = 0;
+  1000000:   11:lab:;
+  1000000:   12:  int x[n % 1000 + 1];
+  1000000:   13:  x[0] = 1;
+  1000000:   14:  x[n % 1000] = 2;
+  1000000:   15:  p = x;
+  1000000:   16:  n++;
+  1000000:   17:  if (n < 1000000)
+   999999:   18:    goto lab;
+        1:   19:  return 0;
+        -:   20:}

@@ -1,0 +1,45 @@
+    1|       |/* PR target/56866 */
+    2|       |
+    3|      1|int main() {
+    4|      1|#if __CHAR_BIT__ == 8 && __SIZEOF_LONG_LONG__ == 8 && __SIZEOF_INT__ == 4 &&   \
+    5|      1|    __SIZEOF_SHORT__ == 2
+    6|      1|  unsigned long long wq[256], rq[256];
+    7|      1|  unsigned int wi[256], ri[256];
+    8|      1|  unsigned short ws[256], rs[256];
+    9|      1|  unsigned char wc[256], rc[256];
+   10|      1|  int t;
+   11|      1|
+   12|      1|  __builtin_memset(wq, 0, sizeof wq);
+   13|      1|  __builtin_memset(wi, 0, sizeof wi);
+   14|      1|  __builtin_memset(ws, 0, sizeof ws);
+   15|      1|  __builtin_memset(wc, 0, sizeof wc);
+   16|      1|  wq[0] = 0x0123456789abcdefULL;
+   17|      1|  wi[0] = 0x01234567;
+   18|      1|  ws[0] = 0x4567;
+   19|      1|  wc[0] = 0x73;
+   20|      1|
+   21|      1|  asm volatile("" : : "g"(wq), "g"(wi), "g"(ws), "g"(wc) : "memory");
+   22|      1|
+   23|    257|  for (t = 0; t < 256; ++t)
+   24|    256|    rq[t] = (wq[t] >> 8) | (wq[t] << (sizeof(wq[0]) * __CHAR_BIT__ - 8));
+   25|    257|  for (t = 0; t < 256; ++t)
+   26|    256|    ri[t] = (wi[t] >> 8) | (wi[t] << (sizeof(wi[0]) * __CHAR_BIT__ - 8));
+   27|    257|  for (t = 0; t < 256; ++t)
+   28|    256|    rs[t] = (ws[t] >> 9) | (ws[t] << (sizeof(ws[0]) * __CHAR_BIT__ - 9));
+   29|    257|  for (t = 0; t < 256; ++t)
+   30|    256|    rc[t] = (wc[t] >> 5) | (wc[t] << (sizeof(wc[0]) * __CHAR_BIT__ - 5));
+   31|      1|
+   32|      1|  asm volatile("" : : "g"(rq), "g"(ri), "g"(rs), "g"(rc) : "memory");
+   33|      1|
+   34|      1|  if (rq[0] != 0xef0123456789abcdULL || rq[1])
+   35|      0|    __builtin_abort();
+   36|      1|  if (ri[0] != 0x67012345 || ri[1])
+   37|      0|    __builtin_abort();
+   38|      1|  if (rs[0] != 0xb3a2 || rs[1])
+   39|      0|    __builtin_abort();
+   40|      1|  if (rc[0] != 0x9b || rc[1])
+   41|      0|    __builtin_abort();
+   42|      1|#endif
+   43|      1|  return 0;
+   44|      1|}
+

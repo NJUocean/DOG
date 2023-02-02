@@ -1,0 +1,46 @@
+    1|       |/* PR rtl-optimization/57003 */
+    2|       |/* { dg-do run { target { ! x32 } } } */
+    3|       |/* { dg-options "-O2" } */
+    4|       |
+    5|  8.01k|#define N 2001
+    6|       |unsigned short *b, *c, *d;
+    7|       |
+    8|      1|__attribute__((noinline, noclone)) unsigned bar(void) {
+    9|      1|  asm volatile("" : : : "memory");
+   10|      1|  return N;
+   11|      1|}
+   12|       |
+   13|      1|__attribute__((noinline, noclone)) unsigned short *baz(unsigned long x) {
+   14|      1|  if (x != N * sizeof(unsigned short) + 20)
+   15|      0|    __builtin_abort();
+   16|      1|  asm volatile("" : : : "memory");
+   17|      1|  return d;
+   18|      1|}
+   19|       |
+   20|      1|__attribute__((ms_abi, noinline, noclone)) void foo(void) {
+   21|      1|  unsigned d;
+   22|      1|  unsigned short *e;
+   23|      1|  if ((d = bar())) {
+   24|      1|    e = baz(d * sizeof(unsigned short) + 20);
+   25|      1|    __builtin_memcpy(e, b, d * sizeof(unsigned short));
+   26|      1|    c = e;
+   27|      1|  }
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  unsigned short a[2 * N];
+   32|      1|  int i;
+   33|  4.00k|  for (i = 0; i < 2 * N; i++)
+   34|  4.00k|    a[i] = i + 1;
+   35|      1|  b = a;
+   36|      1|  d = a + N;
+   37|      1|  asm volatile("" : : : "memory");
+   38|      1|  foo();
+   39|  2.00k|  for (i = 0; i < N; i++)
+   40|  2.00k|    if (a[i] != i + 1 || a[i + N] != i + 1)
+   41|      0|      __builtin_abort();
+   42|      1|  if (c != a + N)
+   43|      1|    __builtin_abort();
+   44|      1|  return 0;
+   45|      1|}
+

@@ -1,0 +1,18 @@
+    1|       |/* Test whether denormal floating point constants in hexadecimal notation
+    2|       |   are parsed correctly.  */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=c99" } */
+    5|       |/* { dg-require-effective-target large_long_double } */
+    6|       |
+    7|       |long double d = 0x0.0000003ffffffff00000p-16357L;
+    8|       |long double e = 0x0.0000003ffffffff00000p-16356L;
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|      1|int main(void) {
+   14|      1|  if (d != e / 2.0)
+   15|      0|    abort();
+   16|      1|  exit(0);
+   17|      1|}
+

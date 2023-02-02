@@ -1,0 +1,22 @@
+// control flow context
+digraph {
+	__N5 [label="27-if-31, 31"]
+	__N5__N8 [label=24 style=dotted]
+	__N5 -> __N5__N8 [label=ON color=red]
+	__N8 [label="24-passive-32, 32"]
+	__N5__N8 -> __N8 [label=agent color=lightblue]
+	__N5__N9 [label=24 style=dotted]
+	__N5 -> __N5__N9 [label=ON color=red]
+	__N9 [label="24-if-33, 33"]
+	__N5__N9 -> __N9 [label=agent color=lightblue]
+	__N9 [label="24-if-33, 33"]
+	__N9__N11 [label=2 style=dotted]
+	__N9 -> __N9__N11 [label=ON color=red]
+	__N11 [label="2-passive-34, 34"]
+	__N9__N11 -> __N11 [label=agent color=lightblue]
+	__N9__N12 [label=1 style=dotted]
+	__N9 -> __N9__N12 [label=ON color=red]
+	__N12 [label="1-passive-36, 36"]
+	__N9__N12 -> __N12 [label=agent color=lightblue]
+	__N9 [color=yellow style=filled]
+}

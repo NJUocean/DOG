@@ -1,0 +1,28 @@
+        -:    0:Source:2729.c
+        -:    0:Graph:2729.gcno
+        -:    0:Data:2729.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:/* { dg-options "-O2 -fno-tree-dce -mno-push-args" } */
+        -:    3:
+        -:    4:typedef unsigned long long u64;
+        -:    5:typedef unsigned __int128 u128;
+        -:    6:
+        -:    7:u64 v;
+        -:    8:u64 g;
+        -:    9:
+        -:   10:u64 __attribute__((noinline, noclone))
+        1:   11:bar(u128 d, u64 e, u64 f, u64 g, u128 h) {
+        -:   12:  (void)d, (void)e, (void)f, (void)g, (void)h;
+        1:   13:  return 0;
+        -:   14:}
+        -:   15:
+        1:   16:static u64 __attribute__((noipa)) foo(void) {
+        1:   17:  (void)(v - bar(0, 0, 0, 0, 0));
+        1:   18:  return g;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        1:   22:  (void)foo();
+        1:   23:  return 0;
+        -:   24:}

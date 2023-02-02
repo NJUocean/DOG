@@ -1,0 +1,42 @@
+    1|       |/* { dg-do run { target aarch64*-*-* } } */
+    2|       |/* { dg-options "-O" } */
+    3|       |
+    4|       |typedef signed long long int S;
+    5|       |typedef unsigned long long int U;
+    6|       |typedef __int128 W;
+    7|  65.0k|__attribute__((noinline, noclone)) U upseu(U x, S y, int *ovf) {
+    8|  65.0k|  U res;
+    9|  65.0k|  *ovf = __builtin_add_overflow(x, y, &res);
+   10|  65.0k|  return res;
+   11|  65.0k|}
+   12|  65.0k|U usueu(U x, U y, int *ovf) {
+   13|  65.0k|  U res;
+   14|  65.0k|  *ovf = __builtin_sub_overflow(x, y, &res);
+   15|  65.0k|  return res;
+   16|  65.0k|}
+   17|  65.0k|U usseu(U x, S y, int *ovf) {
+   18|  65.0k|  U res;
+   19|  65.0k|  *ovf = __builtin_sub_overflow(x, y, &res);
+   20|  65.0k|  return res;
+   21|  65.0k|}
+   22|      1|int main() {
+   23|      1|  int i, j;
+   24|    256|  for (i = 0; i < ((unsigned char)~0); i++)
+   25|  65.2k|    for (j = 0; j < ((unsigned char)~0); j++) {
+   26|  65.0k|      U u1 = ((W)i << ((8 - 1) * 8));
+   27|  65.0k|      S s2 = ((W)j << ((8 - 1) * 8)) + (-0x7fffffffffffffffLL - 1);
+   28|  65.0k|      U u2 = ((W)j << ((8 - 1) * 8));
+   29|  65.0k|      W w;
+   30|  65.0k|      int ovf;
+   31|  65.0k|      w = ((W)u1) + ((W)s2);
+   32|  65.0k|      if (upseu(u1, s2, &ovf) != (U)w || ovf != (w != (U)w))
+   33|      0|        __builtin_abort();
+   34|  65.0k|      w = ((W)u1) - ((W)u2);
+   35|  65.0k|      if (usueu(u1, u2, &ovf) != (U)w || ovf != (w != (U)w))
+   36|      0|        __builtin_abort();
+   37|  65.0k|      w = ((W)u1) - ((W)s2);
+   38|  65.0k|      if (usseu(u1, s2, &ovf) != (U)w || ovf != (w != (U)w))
+   39|      0|        __builtin_abort();
+   40|  65.0k|    }
+   41|      1|}
+

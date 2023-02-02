@@ -1,0 +1,35 @@
+        -:    0:Source:1799.c
+        -:    0:Graph:1799.gcno
+        -:    0:Data:1799.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that vector extraction works correctly. */
+        -:    2:
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-msse" { target { i?86-*-* x86_64-*-* } } } */
+        -:    5:/* { dg-require-effective-target sse_runtime { target { i?86-*-* x86_64-*-* } }
+        -:    6: * } */
+        -:    7:/* { dg-options "-mabi=altivec" { target { powerpc-*-* powerpc64-*-* } } } */
+        -:    8:/* { dg-require-effective-target vmx_hw { target { powerpc-*-* powerpc64--*-* }
+        -:    9: * } } */
+        -:   10:
+        -:   11:#define vector __attribute__((vector_size(16)))
+        -:   12:
+        1:   13:int f0(vector int t) { return ((int *)&t)[0]; }
+        1:   14:int f1(vector int t) { return ((int *)&t)[1]; }
+        1:   15:int f2(vector int t) { return ((int *)&t)[2]; }
+        1:   16:int f3(vector int t) { return ((int *)&t)[3]; }
+        1:   17:int main(void) {
+        1:   18:  vector int a = {0, 1, 2, 3};
+        -:   19:  /* Make sure that we have the correct size for the vectors. */
+        -:   20:  if (sizeof(int) != 4)
+        -:   21:    __builtin_exit(0);
+        1:   22:  if (f0(a) != 0)
+    #####:   23:    __builtin_abort();
+        1:   24:  if (f1(a) != 1)
+    #####:   25:    __builtin_abort();
+        1:   26:  if (f2(a) != 2)
+    #####:   27:    __builtin_abort();
+        1:   28:  if (f3(a) != 3)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

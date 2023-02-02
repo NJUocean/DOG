@@ -1,0 +1,23 @@
+        -:    0:Source:3166.c
+        -:    0:Graph:3166.gcno
+        -:    0:Data:3166.gcda
+        -:    0:Runs:1
+        -:    1:extern void exit(int);
+        -:    2:
+        -:    3:static inline int foo(void) {
+        -:    4:#ifdef __OPTIMIZE__
+        -:    5:  extern int undefined_reference;
+        -:    6:  return undefined_reference;
+        -:    7:#else
+        -:    8:  return 0;
+        -:    9:#endif
+        -:   10:}
+        -:   11:
+        -:   12:static inline int bar(void) {
+        -:   13:  if (foo == foo)
+        -:   14:    return 1;
+        -:   15:  else
+        -:   16:    return foo();
+        -:   17:}
+        -:   18:
+        1:   19:int main(void) { exit(0); }

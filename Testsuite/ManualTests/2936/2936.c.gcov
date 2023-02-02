@@ -1,0 +1,46 @@
+        -:    0:Source:2936.c
+        -:    0:Graph:2936.gcno
+        -:    0:Data:2936.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O3 -march=z10 -mzarch --save-temps
+        -:    3: * -mfunction-return-mem=thunk-extern -mindirect-branch-table" } */
+        -:    4:
+        -:    5:int gl = 0;
+        -:    6:
+        3:    7:int __attribute__((noinline, noclone)) bar(int a) { return a + 2; }
+        -:    8:
+        1:    9:void __attribute__((noinline, noclone)) foo(int a) {
+        -:   10:  int i;
+        -:   11:
+        1:   12:  if (a == 42)
+    #####:   13:    return;
+        -:   14:
+        4:   15:  for (i = 0; i < a; i++)
+        3:   16:    gl += bar(i);
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  foo(3);
+        1:   21:  if (gl != 9)
+    #####:   22:    __builtin_abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        -:   27:/* With -march=z10 -mzarch the shrink wrapped returns use compare and
+        -:   28:   swap relative to jump to the exit block instead of making use of
+        -:   29:   the conditional return pattern.
+        -:   30:   FIXME: Use compare and branch register for that!!!! */
+        -:   31:
+        -:   32:/* 2 x foo, 1 x main
+        -:   33:/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 3 } } */
+        -:   34:
+        -:   35:/* No thunks due to thunk-extern.  */
+        -:   36:/* { dg-final { scan-assembler-not "exrl" } } */
+        -:   37:/* { dg-final { scan-assembler-not ".globl __s390_indirect_jump" } } */
+        -:   38:
+        -:   39:/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+        -:   40:/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+        -:   41:/* { dg-final { scan-assembler-not "section\t.s390_return_reg" } } */
+        -:   42:/* { dg-final { scan-assembler     "section\t.s390_return_mem" } } */

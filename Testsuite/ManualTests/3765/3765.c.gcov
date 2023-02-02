@@ -1,0 +1,36 @@
+        -:    0:Source:3765.c
+        -:    0:Graph:3765.gcno
+        -:    0:Data:3765.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:typedef struct st {
+        -:    3:  int a;
+        -:    4:} ST;
+        -:    5:
+        1:    6:int __attribute__((noinline, noclone)) foo(ST *s, int c) {
+        1:    7:  int first = 1;
+        1:    8:  int count = c;
+        1:    9:  ST *item = s;
+        1:   10:  int a = s->a;
+        -:   11:  int x;
+        -:   12:
+        3:   13:  while (count--) {
+        2:   14:    x = item->a;
+        2:   15:    if (first)
+        1:   16:      first = 0;
+        1:   17:    else if (x >= a)
+    #####:   18:      return 1;
+        2:   19:    a = x;
+        2:   20:    item++;
+        -:   21:  }
+        1:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:extern void abort(void);
+        -:   26:
+        1:   27:int main() {
+        1:   28:  ST _1[2] = {{2}, {1}};
+        1:   29:  if (foo(_1, 2) != 0)
+    #####:   30:    abort();
+        1:   31:  return 0;
+        -:   32:}

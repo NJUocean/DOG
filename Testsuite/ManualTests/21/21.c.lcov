@@ -1,0 +1,13 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O2 -W -Wall" } */
+    3|       |/*  PR c/13127
+    4|       |    On the tree-ssa this used to warn about an anonymous
+    5|       |    uninitialized variable.
+    6|       |
+    7|       |    The warning about "no return statement in function
+    8|       |    returning non-void" is PR 13000. */
+    9|       |
+   10|      1|static int foo(int a __attribute__((unused))) {
+   11|      1|} /* { dg-warning "no return statement" } */
+   12|      1|int main(void) { return foo(0); }
+

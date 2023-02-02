@@ -1,0 +1,18 @@
+        -:    0:Source:2054.c
+        -:    0:Graph:2054.gcno
+        -:    0:Data:2054.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-O2 -fdump-tree-optimized" } */
+        -:    3:extern int printf(const char *, ...);
+        1:    4:int main(int argc, int b) {
+        -:    5:  /* We should be able to get rid of the a - i.  */
+        -:    6:  int i;
+       51:    7:  for (i = 0; i < 50; i++) {
+       50:    8:    int a = b + i;
+       50:    9:    int c = a - i;
+       50:   10:    int d = argc + b;
+       50:   11:    printf("%d %d\n", c, d);
+        -:   12:  }
+        -:   13:}
+        -:   14:/* { dg-final { scan-tree-dump-times "a - i" 0 "optimized"} } */

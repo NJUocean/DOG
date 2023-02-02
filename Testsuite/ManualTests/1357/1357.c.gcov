@@ -1,0 +1,94 @@
+        -:    0:Source:1357.c
+        -:    0:Graph:1357.gcno
+        -:    0:Data:1357.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/45830 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-additional-options "-fno-tree-switch-conversion" { target avr-*-* } } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:long long va, vb, vc, vd, ve;
+        -:    8:
+       74:    9:__attribute__((noinline)) int foo(int x) {
+        -:   10:  long long a, b, c, d, e;
+       74:   11:  switch (x) {
+        5:   12:  case 0:
+        -:   13:  case 3:
+        -:   14:  case 1:
+        -:   15:  case 2:
+        -:   16:  case 4:
+        5:   17:    a = 1;
+        5:   18:    b = 129;
+        5:   19:    c = -12;
+        5:   20:    d = -4;
+        5:   21:    e = 128;
+        5:   22:    break;
+        5:   23:  case 23:
+        -:   24:  case 26:
+        -:   25:  case 19:
+        -:   26:  case 65:
+        -:   27:  case 5:
+        5:   28:    a = 2;
+        5:   29:    b = 138;
+        5:   30:    c = 115;
+        5:   31:    d = 128;
+        5:   32:    e = -16;
+        5:   33:    break;
+        8:   34:  case 21:
+        -:   35:  case 20:
+        -:   36:  case 22:
+        -:   37:  case 38:
+        -:   38:  case 27:
+        -:   39:  case 66:
+        -:   40:  case 45:
+        -:   41:  case 47:
+        8:   42:    a = 3;
+        8:   43:    b = 6;
+        8:   44:    c = 127;
+        8:   45:    d = 25;
+        8:   46:    e = 257;
+        8:   47:    break;
+       56:   48:  default:
+       56:   49:    a = 0;
+       56:   50:    b = 18;
+       56:   51:    c = 0;
+       56:   52:    d = 64;
+       56:   53:    e = 32768L;
+       56:   54:    break;
+        -:   55:  }
+       74:   56:  va = a;
+       74:   57:  vb = b;
+       74:   58:  vc = c;
+       74:   59:  vd = d;
+       74:   60:  ve = e;
+       74:   61:}
+        -:   62:
+       74:   63:int bar(int x) {
+       74:   64:  if (x < 0)
+        4:   65:    return 3;
+       70:   66:  if (x < 5)
+        5:   67:    return 0;
+       65:   68:  if (x == 5 || x == 19 || x == 23 | x == 26 || x == 65)
+        5:   69:    return 1;
+       60:   70:  if ((x >= 20 && x <= 22) || x == 27 || x == 38 || x == 45 || x == 47 ||
+        -:   71:      x == 66)
+        8:   72:    return 2;
+       52:   73:  return 3;
+        -:   74:}
+        -:   75:
+        -:   76:long long expected[] = {1, 129, -12, -4, 128, 2, 138, 115, 128, -16,
+        -:   77:                        3, 6,   127, 25, 257, 0, 18,  0,   64,  32768L};
+        -:   78:
+        1:   79:int main(void) {
+        -:   80:  int i, v;
+       75:   81:  for (i = -4; i < 70; i++) {
+       74:   82:    foo(i);
+       74:   83:    v = bar(i);
+       74:   84:    if (va != expected[5 * v] || vb != expected[5 * v + 1] ||
+       74:   85:        vc != expected[5 * v + 2] || vd != expected[5 * v + 3] ||
+       74:   86:        ve != expected[5 * v + 4])
+    #####:   87:      abort();
+        -:   88:  }
+        1:   89:  return 0;
+        -:   90:}

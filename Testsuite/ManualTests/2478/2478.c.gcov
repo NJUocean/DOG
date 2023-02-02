@@ -1,0 +1,36 @@
+        -:    0:Source:2478.c
+        -:    0:Graph:2478.gcno
+        -:    0:Data:2478.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment of varargs) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target arm_eabi } } */
+        -:    4:/* { dg-require-effective-target arm32 } */
+        -:    5:/* { dg-options "-O2 -fno-inline" } */
+        -:    6:
+        -:    7:#include <stdarg.h>
+        -:    8:
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:typedef __attribute__((aligned(8))) int alignedint;
+        -:   12:
+        1:   13:void foo(int i, ...) {
+        -:   14:  va_list va;
+        1:   15:  va_start(va, i);
+        -:   16:  /* Arguments should be passed in the same registers as if they were ints.  */
+        6:   17:  while (i-- > 0)
+        5:   18:    if (va_arg(va, int) != i)
+    #####:   19:      abort();
+        1:   20:  va_end(va);
+        1:   21:}
+        -:   22:
+        1:   23:int main(int argc, char **argv) {
+        1:   24:  alignedint a = 5;
+        1:   25:  alignedint b = 4;
+        1:   26:  alignedint c = 3;
+        1:   27:  alignedint d = 2;
+        1:   28:  alignedint e = 1;
+        1:   29:  alignedint f = 0;
+        1:   30:  foo(a, b, c, d, e, f);
+        1:   31:  return 0;
+        -:   32:}

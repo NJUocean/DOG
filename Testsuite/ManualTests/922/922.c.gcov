@@ -1,0 +1,23 @@
+        -:    0:Source:922.c
+        -:    0:Graph:922.gcno
+        -:    0:Data:922.gcda
+        -:    0:Runs:1
+        3:    1:unsigned test(unsigned one, unsigned bit) {
+        3:    2:  unsigned val = bit & 1;
+        3:    3:  unsigned zero = one >> 1;
+        -:    4:
+        3:    5:  val++;
+        3:    6:  return zero + (val >> 1);
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (test(1, 0) != 0)
+    #####:   11:    abort();
+        1:   12:  if (test(1, 1) != 1)
+    #####:   13:    abort();
+        1:   14:  if (test(1, 65535) != 1)
+    #####:   15:    abort();
+        1:   16:  exit(0);
+        -:   17:
+        -:   18:  return 0;
+        -:   19:}

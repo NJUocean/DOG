@@ -1,0 +1,20 @@
+    1|       |/* PR rtl-optimization/19296 */
+    2|       |/* Origin: Falk Hueffner <falk@debian.org> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O" } */
+    6|       |/* { dg-options "-O -mtune=i686" { target { { i?86-*-* x86_64-*-* } && ia32 } }
+    7|       | * } */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |
+   11|      1|void f(unsigned short ad) {
+   12|      1|  if (ad >= 0x4000 && ad < 0xc000)
+   13|      0|    abort();
+   14|      1|}
+   15|       |
+   16|      1|int main(void) {
+   17|      1|  f(0xff00);
+   18|      1|  return 0;
+   19|      1|}
+

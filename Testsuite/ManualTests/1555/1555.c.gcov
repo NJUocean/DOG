@@ -1,0 +1,23 @@
+        -:    0:Source:1555.c
+        -:    0:Graph:1555.gcno
+        -:    0:Data:1555.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  int x0 = INT_MIN;
+        1:    9:  long x1 = 0L;
+        1:   10:  int x2 = 0;
+        1:   11:  int t = (0 || (INT_MIN - (int)(x0 - x1)));
+        -:   12:
+        1:   13:  if (t != 0) {
+    #####:   14:    x2 = t;
+    #####:   15:    abort();
+        -:   16:  }
+        -:   17:
+        1:   18:  return 0;
+        -:   19:}

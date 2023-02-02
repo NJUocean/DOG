@@ -1,0 +1,27 @@
+        -:    0:Source:362.c
+        -:    0:Graph:362.gcno
+        -:    0:Data:362.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2003 Free Software Foundation.
+        -:    2:
+        -:    3:   Test that the -fno-wrapv command line option is accepted and enables
+        -:    4:   "unsafe" optimizations that rely on undefined arithmetic overflow.
+        -:    5:
+        -:    6:   Written by Roger Sayle, 31st May 2003.  */
+        -:    7:
+        -:    8:/* { dg-do run } */
+        -:    9:/* { dg-options "-O2 -fno-wrapv" } */
+        -:   10:
+        -:   11:#include <limits.h>
+        -:   12:
+        -:   13:extern void abort();
+        -:   14:
+        1:   15:int test(int x) { return (2 * x) / 2; }
+        -:   16:
+        1:   17:int main() {
+        1:   18:  int x = INT_MAX;
+        -:   19:
+        1:   20:  if (test(x) != x)
+    #####:   21:    abort();
+        1:   22:  return 0;
+        -:   23:}

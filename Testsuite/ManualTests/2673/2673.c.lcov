@@ -1,0 +1,28 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2" } */
+    3|       |extern void abort();
+    4|       |extern void exit(int);
+    5|       |
+    6|       |int x;
+    7|       |
+    8|      1|void foo() {
+    9|      1|  static int count;
+   10|      1|  count++;
+   11|      1|  if (count > 1)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|      2|static inline int frob() {
+   16|      2|  int a;
+   17|      2|  __asm__("mov %1, %0\n\t" : "=r"(a) : "m"(x));
+   18|      2|  x++;
+   19|      2|  return a;
+   20|      2|}
+   21|       |
+   22|      1|int main() {
+   23|      1|  int i;
+   24|      2|  for (i = 0; i < 10 && frob() == 0; i++)
+   25|      1|    foo();
+   26|      1|  exit(0);
+   27|      1|}
+

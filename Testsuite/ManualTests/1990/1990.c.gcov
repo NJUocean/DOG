@@ -1,0 +1,60 @@
+        -:    0:Source:1990.c
+        -:    0:Graph:1990.gcno
+        -:    0:Data:1990.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int32plus } } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:struct S0 {
+        -:    5:  unsigned a : 15;
+        -:    6:  int b;
+        -:    7:  int c;
+        -:    8:};
+        -:    9:
+        -:   10:struct S1 {
+        -:   11:  struct S0 s0;
+        -:   12:  int e;
+        -:   13:};
+        -:   14:
+        -:   15:struct Z {
+        -:   16:  char c;
+        -:   17:  int z;
+        -:   18:} __attribute__((packed));
+        -:   19:
+        -:   20:union U {
+        -:   21:  struct S1 s1;
+        -:   22:  struct Z z;
+        -:   23:};
+        -:   24:
+        1:   25:int __attribute__((noinline, noclone)) return_zero(void) { return 0; }
+        -:   26:
+        -:   27:volatile union U gu;
+        -:   28:struct S0 gs;
+        -:   29:
+        1:   30:int __attribute__((noinline, noclone)) check_outcome() {
+        1:   31:  if (gs.a != 6 || gs.b != 80000)
+    #####:   32:    __builtin_abort();
+        1:   33:}
+        -:   34:
+        1:   35:int main(int argc, char *argv[]) {
+        -:   36:  union U u;
+        -:   37:  struct S1 m;
+        -:   38:  struct S0 l;
+        -:   39:
+        1:   40:  if (return_zero())
+    #####:   41:    u.z.z = 20000;
+        -:   42:  else {
+        1:   43:    u.s1.s0.a = 6;
+        1:   44:    u.s1.s0.b = 80000;
+        1:   45:    u.s1.e = 2;
+        -:   46:
+        1:   47:    m = u.s1;
+        1:   48:    m.s0.c = 0;
+        1:   49:    l = m.s0;
+        1:   50:    gs = l;
+        -:   51:  }
+        -:   52:
+        1:   53:  gu = u;
+        1:   54:  check_outcome();
+        1:   55:  return 0;
+        -:   56:}

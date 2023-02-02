@@ -1,0 +1,38 @@
+        -:    0:Source:2563.c
+        -:    0:Graph:2563.gcno
+        -:    0:Data:2563.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for alignment handling when a variable is accessed by nested
+        -:    2:   function.  */
+        -:    3:/* Origin: Joey Ye <joey.ye@intel.com> */
+        -:    4:
+        -:    5:/* Force bigger stack alignment for PowerPC EABI targets.  */
+        -:    6:/* { dg-options "-mno-eabi" { target powerpc-*-eabi* } } */
+        -:    7:
+        -:    8:#include <stddef.h>
+        -:    9:
+        -:   10:typedef int aligned __attribute__((aligned));
+        -:   11:extern void abort(void);
+        -:   12:
+        1:   13:void check(int *i) {
+        1:   14:  *i = 20;
+        1:   15:  if ((((ptrdiff_t)i) & (__alignof__(aligned) - 1)) != 0)
+    #####:   16:    abort();
+        1:   17:}
+        -:   18:
+        1:   19:void foo(void) {
+        -:   20:  aligned jj;
+        1:   21:  void bar() { jj = -20; }
+        1:   22:  jj = 0;
+        1:   23:  bar();
+        1:   24:  if (jj != -20)
+    #####:   25:    abort();
+        1:   26:  check(&jj);
+        1:   27:  if (jj != 20)
+    #####:   28:    abort();
+        1:   29:}
+        -:   30:
+        1:   31:int main() {
+        1:   32:  foo();
+        1:   33:  return 0;
+        -:   34:}

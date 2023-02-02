@@ -1,0 +1,10 @@
+        -:    0:Source:44.c
+        -:    0:Graph:44.gcno
+        -:    0:Data:44.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-W -Wall -Werror" } */
+        -:    3:
+        -:    4:static inline int unused_fn(int dummyarg) { return dummyarg * dummyarg; }
+        -:    5:
+        1:    6:int main() { return 0; }

@@ -1,0 +1,37 @@
+        -:    0:Source:2615.c
+        -:    0:Graph:2615.gcno
+        -:    0:Data:2615.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-add-options stack_size } */
+        -:    2:
+        -:    3:/* Origin: hp@bitrange.com
+        -:    4:   Test that return values come out right from a 1000-level call chain to
+        -:    5:   functions without parameters that each need at least one "long"
+        -:    6:   preserved.  Exposed problems related to the MMIX port.  */
+        -:    7:
+        -:    8:long level = 0;
+        -:    9:extern long foo(void);
+        -:   10:extern long bar(void);
+        -:   11:
+        -:   12:#ifdef STACK_SIZE
+        -:   13:#define DEPTH ((STACK_SIZE) / 512 + 1)
+        -:   14:#else
+        -:   15:#define DEPTH 500
+        -:   16:#endif
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  if (foo() == -42)
+        1:   20:    exit(0);
+        -:   21:
+    #####:   22:  abort();
+        -:   23:}
+        -:   24:
+      500:   25:long foo(void) {
+      500:   26:  long tmp = ++level;
+      500:   27:  return bar() + tmp;
+        -:   28:}
+        -:   29:
+      500:   30:long bar(void) {
+      500:   31:  long tmp = level;
+      500:   32:  return tmp > DEPTH - 1 ? -42 - tmp : foo() - tmp;
+        -:   33:}

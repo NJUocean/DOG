@@ -1,0 +1,89 @@
+    1|       |/* PR middle-end/70025 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-additional-options "-mtune=z10" { target s390*-*-* } } */
+    4|       |/* { dg-require-effective-target int32plus } */
+    5|       |
+    6|       |typedef char (*F)(unsigned long, void *);
+    7|       |typedef union {
+    8|       |  struct A {
+    9|       |    char a1, a2, a3, a4;
+   10|       |    unsigned long a5;
+   11|       |    F a6;
+   12|       |    void *a7;
+   13|       |  } b;
+   14|       |  char c[1];
+   15|       |} B;
+   16|       |struct C {
+   17|       |  const char *c1;
+   18|       |  unsigned long c2;
+   19|       |};
+   20|       |typedef struct D {
+   21|       |  unsigned long d1;
+   22|       |  int d2;
+   23|       |  const char *d3;
+   24|       |  unsigned long d4, d5;
+   25|       |  struct C d6[49];
+   26|       |  char d7[8];
+   27|       |} E[1];
+   28|       |
+   29|      0|__attribute__((noinline, noclone)) void foo(register E p) {
+   30|      0|  asm volatile("" : : "r"(p) : "memory");
+   31|      0|}
+   32|       |
+   33|      1|__attribute__((noinline, noclone)) void bar(register E p) {
+   34|      1|  register unsigned long k = p[0].d1 + 1;
+   35|      1|  register struct C *l = &p[0].d6[p[0].d2];
+   36|      1|  register const char *m = l->c1;
+   37|      1|  p[0].d1 = k;
+   38|      1|  if (*m == '\0') {
+   39|      1|    register struct A *f = &((B *)m)->b;
+   40|      1|    register unsigned long n = l->c2;
+   41|      1|    register unsigned long o = n + f->a5;
+   42|      1|    if (k < o) {
+   43|      1|      register unsigned long i;
+   44|      1|      register unsigned long q = k + 8;
+   45|      1|      register F a6 = f->a6;
+   46|      1|      register void *a7 = f->a7;
+   47|      1|      if (q > o)
+   48|      0|        q = o;
+   49|      9|      for (i = k; i < q; i++)
+   50|      8|        p[0].d7[i - k] = (*a6)(i - n, a7);
+   51|      1|      p[0].d4 = k;
+   52|      1|      p[0].d3 = p[0].d7;
+   53|      1|      p[0].d5 = q;
+   54|      1|      return;
+   55|      1|    }
+   56|      0|  }
+   57|      0|  while (p[0].d2 > 0 && l[0].c2 != l[-1].c2) {
+   58|      0|    p[0].d2--;
+   59|      0|    l--;
+   60|      0|  }
+   61|      0|  if (p[0].d2 == 0) {
+   62|      0|    p[0].d2 = 0x55555555;
+   63|      0|    return;
+   64|      0|  }
+   65|      0|  p[0].d2--;
+   66|      0|  foo(p);
+   67|      0|}
+   68|       |
+   69|      8|char baz(unsigned long i, void *j) {
+   70|      8|  if (j != 0)
+   71|      0|    __builtin_abort();
+   72|      8|  return (char)i;
+   73|      8|}
+   74|       |
+   75|      1|int main() {
+   76|      1|  struct D p;
+   77|      1|  struct A f;
+   78|      1|  __builtin_memset(&f, 0, sizeof(f));
+   79|      1|  f.a2 = 4;
+   80|      1|  f.a5 = 13;
+   81|      1|  f.a6 = baz;
+   82|      1|  __builtin_memset(&p, 0, sizeof(p));
+   83|      1|  p.d6[0].c1 = (const char *)&f;
+   84|      1|  bar(&p);
+   85|      1|  if (p.d4 != 1 || p.d5 != 9 || p.d3 != p.d7)
+   86|      0|    __builtin_abort();
+   87|      1|  return 0;
+   88|      1|}
+

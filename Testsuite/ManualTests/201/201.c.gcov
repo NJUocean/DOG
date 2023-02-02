@@ -1,0 +1,45 @@
+        -:    0:Source:201.c
+        -:    0:Graph:201.gcno
+        -:    0:Data:201.gcda
+        -:    0:Runs:1
+        -:    1:/* Test complex divide does not have the bug identified in N1496.  */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-std=c11 -pedantic-errors" } */
+        -:    4:/* { dg-add-options ieee } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern void exit(int);
+        -:    8:
+        -:    9:#define CMPLX(x, y) __builtin_complex((double)(x), (double)(y))
+        -:   10:#define CMPLXF(x, y) __builtin_complex((float)(x), (float)(y))
+        -:   11:#define CMPLXL(x, y) __builtin_complex((long double)(x), (long double)(y))
+        -:   12:#define NAN __builtin_nanf("")
+        -:   13:#define isnan(x) __builtin_isnan(x)
+        -:   14:
+        -:   15:volatile _Complex float num_f = CMPLXF(1, 1);
+        -:   16:volatile _Complex float den_f = CMPLXF(0, NAN);
+        -:   17:volatile _Complex float res_f, cres_f = CMPLXF(1, 1) / CMPLXF(0, NAN);
+        -:   18:
+        -:   19:volatile _Complex double num_d = CMPLX(1, 1);
+        -:   20:volatile _Complex double den_d = CMPLX(0, NAN);
+        -:   21:volatile _Complex double res_d, cres_d = CMPLX(1, 1) / CMPLX(0, NAN);
+        -:   22:
+        -:   23:volatile _Complex long double num_ld = CMPLXL(1, 1);
+        -:   24:volatile _Complex long double den_ld = CMPLXL(0, NAN);
+        -:   25:volatile _Complex long double res_ld, cres_ld = CMPLXL(1, 1) / CMPLXL(0, NAN);
+        -:   26:
+        1:   27:int main(void) {
+        1:   28:  res_f = num_f / den_f;
+        1:   29:  if (!isnan(__real__ res_f) || !isnan(__imag__ res_f) ||
+        1:   30:      !isnan(__real__ cres_f) || !isnan(__imag__ cres_f))
+    #####:   31:    abort();
+        1:   32:  res_d = num_d / den_d;
+        1:   33:  if (!isnan(__real__ res_d) || !isnan(__imag__ res_d) ||
+        1:   34:      !isnan(__real__ cres_d) || !isnan(__imag__ cres_d))
+    #####:   35:    abort();
+        1:   36:  res_ld = num_ld / den_ld;
+        1:   37:  if (!isnan(__real__ res_ld) || !isnan(__imag__ res_ld) ||
+        1:   38:      !isnan(__real__ cres_ld) || !isnan(__imag__ cres_ld))
+    #####:   39:    abort();
+        1:   40:  exit(0);
+        -:   41:}

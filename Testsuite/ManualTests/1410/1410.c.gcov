@@ -1,0 +1,24 @@
+        -:    0:Source:1410.c
+        -:    0:Graph:1410.gcno
+        -:    0:Data:1410.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:
+        -:    3:typedef unsigned char __attribute__((vector_size(4))) uvec;
+        -:    4:
+        1:    5:int main(int argc, char *argv[]) {
+        -:    6:  int i;
+        1:    7:  int x = 0;
+        1:    8:  uvec uc0 = (uvec){argc, 1, 2, 10};
+        1:    9:  unsigned char uc1[4] = {0, 3, 2, 200};
+        1:   10:  signed char ucg[4] = {1, 0, 0, 0};
+        1:   11:  signed char ucl[4] = {0, 1, 0, 1};
+        -:   12:
+        -:   13:#define uc0_ ((unsigned char *)&uc0)
+        -:   14:
+        5:   15:  for (i = 0; i < 4; i++) {
+        4:   16:    x |= ucg[i] != (uc0_[i] > uc1[i]);
+        4:   17:    x |= ucl[i] != (uc0_[i] < uc1[i]);
+        -:   18:  }
+        1:   19:  return x;
+        -:   20:}

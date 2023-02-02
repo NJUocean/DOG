@@ -1,0 +1,49 @@
+        -:    0:Source:174.c
+        -:    0:Graph:174.gcno
+        -:    0:Data:174.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target untyped_assembly } */
+        -:    3:/* { dg-skip-if "Variadic funcs have all args on stack. Normal funcs have args
+        -:    4: * in registers." { "avr-*-* nds32*-*-* amdgcn-*-*" } } */
+        -:    5:/* { dg-skip-if "Variadic funcs use different argument passing from normal
+        -:    6: * funcs." { "riscv*-*-* or1k*-*-* msp430-*-* pru-*-*" } } */
+        -:    7:/* { dg-skip-if "Variadic funcs use Base AAPCS.  Normal funcs use VFP variant."
+        -:    8: * { arm*-*-* && arm_hf_eabi } } */
+        -:    9:
+        -:   10:/* PR target/12503 */
+        -:   11:/* Origin: <pierre.nguyen-tuong@asim.lip6.fr> */
+        -:   12:
+        -:   13:/* Verify that __builtin_apply behaves correctly on targets
+        -:   14:   with pre-pushed arguments (e.g. SPARC).  */
+        -:   15:
+        -:   16:#define INTEGER_ARG 5
+        -:   17:
+        -:   18:#if defined(__ARM_PCS) || defined(__epiphany__)
+        -:   19:/* For Base AAPCS, NAME is passed in r0.  D is passed in r2 and r3.
+        -:   20:   E, F and G are passed on stack.  So the size of the stack argument
+        -:   21:   data is 20.  */
+        -:   22:#define STACK_ARGUMENTS_SIZE 20
+        -:   23:#elif defined __MMIX__ || defined __arc__
+        -:   24:/* No parameters on stack for bar.  */
+        -:   25:#define STACK_ARGUMENTS_SIZE 0
+        -:   26:#else
+        -:   27:#define STACK_ARGUMENTS_SIZE 64
+        -:   28:#endif
+        -:   29:
+        -:   30:extern void abort(void);
+        -:   31:
+        1:   32:void foo(char *name, double d, double e, double f, int g) {
+        1:   33:  if (g != INTEGER_ARG)
+    #####:   34:    abort();
+        1:   35:}
+        -:   36:
+        1:   37:void bar(char *name, ...) {
+        1:   38:  __builtin_apply(foo, __builtin_apply_args(), STACK_ARGUMENTS_SIZE);
+        1:   39:}
+        -:   40:
+        1:   41:int main(void) {
+        1:   42:  bar("eeee", 5.444567, 8.90765, 4.567789, INTEGER_ARG);
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

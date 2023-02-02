@@ -1,0 +1,21 @@
+        -:    0:Source:1567.c
+        -:    0:Graph:1567.gcno
+        -:    0:Data:1567.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:char a;
+        -:    4:unsigned short b;
+        -:    5:int c, d;
+        -:    6:unsigned char e;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  int f = 1, g = ~a;
+        1:   10:  if (b > f) {
+    #####:   11:    e = b;
+    #####:   12:    d = b | e;
+    #####:   13:    g = 0;
+        -:   14:  }
+        1:   15:  c = 1 % g;
+        1:   16:  return 0;
+        -:   17:}

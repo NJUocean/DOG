@@ -1,0 +1,51 @@
+        -:    0:Source:607.c
+        -:    0:Graph:607.gcno
+        -:    0:Data:607.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+        -:    3:
+        -:    4:struct S {
+        -:    5:  int a;
+        -:    6:  char b;
+        -:    7:  long long c;
+        -:    8:  short d[10];
+        -:    9:};
+        -:   10:struct T {
+        -:   11:  char a;
+        -:   12:  long long b;
+        -:   13:};
+        -:   14:struct U {
+        -:   15:  char a;
+        -:   16:  int b;
+        -:   17:  int c;
+        -:   18:  long long d;
+        -:   19:  struct S e;
+        -:   20:  struct T f;
+        -:   21:};
+        -:   22:struct V {
+        -:   23:  long long a;
+        -:   24:  struct S b;
+        -:   25:  struct T c;
+        -:   26:  struct U u;
+        -:   27:} v;
+        -:   28:
+        1:   29:__attribute__((noinline, noclone)) void f1(int *p, int *q, char *r,
+        -:   30:                                           long long *s) {
+        1:   31:  *p = *q + *r + *s;
+        1:   32:}
+        -:   33:
+        1:   34:__attribute__((noinline, noclone)) int f2(struct S *p) { return p->a; }
+        -:   35:
+        1:   36:__attribute__((noinline, noclone)) long long f3(struct S *p, int i) {
+        1:   37:  return p->c + p->d[1] + p->d[i];
+        -:   38:}
+        -:   39:
+        1:   40:__attribute__((noinline, noclone)) long long f4(long long *p) { return *p; }
+        -:   41:
+        1:   42:int main() {
+        1:   43:  f1(&v.u.b, &v.u.c, &v.u.a, &v.u.d);
+        1:   44:  if (f2(&v.u.e) + f3(&v.u.e, 4) + f4(&v.u.f.b) != 0)
+    #####:   45:    __builtin_abort();
+        1:   46:  return 0;
+        -:   47:}

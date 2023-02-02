@@ -1,0 +1,31 @@
+        -:    0:Source:1445.c
+        -:    0:Graph:1445.gcno
+        -:    0:Data:1445.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:void abort(void);
+        -:    4:
+        -:    5:struct S0 {
+        -:    6:  int f0;
+        -:    7:};
+        -:    8:struct S1 {
+        -:    9:  struct S0 f0;
+        -:   10:};
+        -:   11:
+        -:   12:struct S1 x = {{0}};
+        -:   13:struct S1 y = {{1}};
+        -:   14:
+        1:   15:static void foo(struct S0 p) {
+        1:   16:  struct S0 *l = &y.f0;
+        1:   17:  *l = x.f0;
+        1:   18:  if (p.f0)
+        1:   19:    *l = *l;
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(y.f0);
+        1:   24:  if (y.f0.f0 != 0)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

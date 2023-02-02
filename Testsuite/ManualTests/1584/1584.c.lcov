@@ -1,0 +1,14 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target lp64 } */
+    3|       |
+    4|      1|unsigned long int foo(signed char b, signed char e) {
+    5|      1|  return ((2ULL * b) * (e * 13)) * (32 << 24);
+    6|      1|}
+    7|       |
+    8|      1|int main() {
+    9|      1|  if (__CHAR_BIT__ == 8 && sizeof(int) == 4 && sizeof(long long) == 8 &&
+   10|      1|      foo(-60, 1) != 0xffffff3d00000000ULL)
+   11|      0|    __builtin_abort();
+   12|      1|  return 0;
+   13|      1|}
+

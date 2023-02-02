@@ -1,0 +1,42 @@
+        -:    0:Source:1745.c
+        -:    0:Graph:1745.gcno
+        -:    0:Data:1745.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fno-tree-dse" } */
+        -:    3:
+        -:    4:union U {
+        -:    5:  long long i;
+        -:    6:  long f;
+        -:    7:};
+        -:    8:struct a {
+        -:    9:  union U u;
+        -:   10:};
+        -:   11:struct aa {
+        -:   12:  struct a a;
+        -:   13:};
+        -:   14:struct b {
+        -:   15:  union U u;
+        -:   16:};
+        -:   17:struct bb {
+        -:   18:  struct b b;
+        -:   19:};
+        -:   20:
+        1:   21:long __attribute__((noipa)) foo(struct bb *bv, void *ptr) {
+        1:   22:  struct aa *a = ptr;
+        1:   23:  struct bb *b = ptr;
+        1:   24:  bv->b.u.f = 1;
+        1:   25:  a->a.u.i = 0;
+        1:   26:  b->b.u.f = 0;
+        1:   27:  return bv->b.u.f;
+        -:   28:}
+        -:   29:
+        1:   30:int main() {
+        -:   31:  union C {
+        -:   32:    struct aa aa;
+        -:   33:    struct bb bb;
+        -:   34:  } v;
+        1:   35:  if (foo(&v.bb, &v) != 0)
+    #####:   36:    __builtin_abort();
+        1:   37:  return 0;
+        -:   38:}

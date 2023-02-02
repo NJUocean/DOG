@@ -1,0 +1,37 @@
+    1|       |struct a_struct {
+    2|       |  unsigned char a_character;
+    3|       |};
+    4|       |
+    5|       |struct a_struct an_array[5];
+    6|       |struct a_struct *a_ptr;
+    7|       |int yabba = 1;
+    8|       |
+    9|       |int f(a, b) unsigned char a;
+   10|       |unsigned long b;
+   11|      1|{
+   12|      1|  long i, j, p, q, r, s;
+   13|      1|
+   14|      1|  if (b != (unsigned long)0) {
+   15|      0|    if (yabba)
+   16|      0|      return -1;
+   17|      0|    s = 4000000 / b;
+   18|      0|    for (i = 0; i < 11; i++) {
+   19|      0|      for (j = 0; j < 256; j++) {
+   20|      0|        if (((p - s < 0) ? -s : 0) < ((q - s < 0) ? -s : q))
+   21|      0|          r = i;
+   22|      0|      }
+   23|      0|    }
+   24|      0|  }
+   25|      1|
+   26|      1|  if (yabba)
+   27|      1|    return 0;
+   28|      0|  a_ptr = &an_array[a];
+   29|      0|  a_ptr->a_character = (unsigned char)r;
+   30|      0|}
+   31|       |
+   32|      1|main() {
+   33|      1|  if (f(1, 0UL) != 0)
+   34|      0|    abort();
+   35|      1|  exit(0);
+   36|      1|}
+

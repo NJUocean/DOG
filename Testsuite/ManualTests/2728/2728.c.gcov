@@ -1,0 +1,31 @@
+        -:    0:Source:2728.c
+        -:    0:Graph:2728.gcno
+        -:    0:Data:2728.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target ia32 } } */
+        -:    2:/* { dg-options "-Os" } */
+        -:    3:
+    #####:    4:void __attribute__((noipa)) foo(const char *x) {
+    #####:    5:  asm volatile("" : "+g"(x) : : "memory");
+    #####:    6:  if (x)
+    #####:    7:    __builtin_abort();
+    #####:    8:}
+        -:    9:
+        -:   10:int a, b = 1;
+        -:   11:
+        1:   12:int main() {
+        -:   13:  while (1) {
+        1:   14:    unsigned long long d = 18446744073709551615UL;
+    #####:   15:    while (1) {
+        1:   16:      int e = b;
+        1:   17:      while (d < 2)
+    #####:   18:        foo("0");
+        1:   19:      if (a)
+    #####:   20:        d++;
+        1:   21:      if (b)
+        1:   22:        break;
+        -:   23:    }
+        1:   24:    break;
+        -:   25:  }
+        1:   26:  return 0;
+        -:   27:}

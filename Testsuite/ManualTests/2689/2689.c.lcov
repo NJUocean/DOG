@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "" } */
+    3|       |
+    4|      1|int __attribute__((noinline, noclone)) test(double y) {
+    5|      1|  int a, b;
+    6|      1|  asm("fistp{l (%1)| DWORD PTR [%1]}\n\t"
+    7|      1|      "mov{l (%1), %0| %0, DWORD PTR [%1]}"
+    8|      1|      : "=r"(a)
+    9|      1|      : "r"(&b), "t"(y)
+   10|      1|      : "st");
+   11|      1|  return a;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  int t = -10;
+   16|      1|
+   17|      1|  if (test(t) != t)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

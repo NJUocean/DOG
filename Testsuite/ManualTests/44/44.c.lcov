@@ -1,0 +1,7 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-W -Wall -Werror" } */
+    3|       |
+    4|      0|static inline int unused_fn(int dummyarg) { return dummyarg * dummyarg; }
+    5|       |
+    6|      1|int main() { return 0; }
+

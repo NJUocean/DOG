@@ -1,0 +1,64 @@
+    1|       |/* PR tree-optimization/88739 */
+    2|       |#if __SIZEOF_SHORT__ == 2 && __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+    3|       |struct A {
+    4|       |  unsigned int a, b, c;
+    5|       |  unsigned int d : 30;
+    6|       |  unsigned int e : 2;
+    7|       |};
+    8|       |
+    9|       |union U {
+   10|       |  struct A f;
+   11|       |  unsigned int g[4];
+   12|       |  unsigned short h[8];
+   13|       |  unsigned char i[16];
+   14|       |};
+   15|       |volatile union U v = {.f.d = 0x4089};
+   16|       |
+   17|      5|__attribute__((noipa)) void bar(int x) {
+   18|      5|  static int i;
+   19|      5|  switch (i++) {
+   20|      1|  case 0:
+   21|      1|    if (x != v.f.d)
+   22|      0|      __builtin_abort();
+   23|      1|    break;
+   24|      1|  case 1:
+   25|      1|    if (x != v.f.e)
+   26|      0|      __builtin_abort();
+   27|      1|    break;
+   28|      1|  case 2:
+   29|      1|    if (x != v.g[3])
+   30|      0|      __builtin_abort();
+   31|      1|    break;
+   32|      1|  case 3:
+   33|      1|    if (x != v.h[6])
+   34|      0|      __builtin_abort();
+   35|      1|    break;
+   36|      1|  case 4:
+   37|      1|    if (x != v.h[7])
+   38|      0|      __builtin_abort();
+   39|      1|    break;
+   40|      1|  default:
+   41|      0|    __builtin_abort();
+   42|      1|    break;
+   43|      5|  }
+   44|      5|}
+   45|       |
+   46|      1|void foo(unsigned int x) {
+   47|      1|  union U u;
+   48|      1|  u.f.d = x >> 2;
+   49|      1|  u.f.e = 0;
+   50|      1|  bar(u.f.d);
+   51|      1|  bar(u.f.e);
+   52|      1|  bar(u.g[3]);
+   53|      1|  bar(u.h[6]);
+   54|      1|  bar(u.h[7]);
+   55|      1|}
+   56|       |
+   57|      1|int main() {
+   58|      1|  foo(0x10224);
+   59|      1|  return 0;
+   60|      1|}
+   61|       |#else
+   62|       |int main() { return 0; }
+   63|       |#endif
+

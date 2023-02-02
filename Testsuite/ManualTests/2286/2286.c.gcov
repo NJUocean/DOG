@@ -1,0 +1,33 @@
+        -:    0:Source:2286.c
+        -:    0:Graph:2286.gcno
+        -:    0:Data:2286.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:static char arg0[] = "arg0";
+        -:    4:static char arg1[] = "arg1";
+        -:    5:
+        -:    6:static void attr_rtx(char *, char *);
+        -:    7:static char *attr_string(char *);
+        -:    8:static void attr_eq(char *, char *);
+        -:    9:
+        1:   10:static void attr_rtx(char *varg0, char *varg1) {
+        1:   11:  if (varg0 != arg0)
+    #####:   12:    abort();
+        -:   13:
+        1:   14:  if (varg1 != arg1)
+    #####:   15:    abort();
+        -:   16:
+        1:   17:  return;
+        -:   18:}
+        -:   19:
+        1:   20:static void attr_eq(name, value) char *name, *value;
+        1:   21:{ return attr_rtx(attr_string(name), attr_string(value)); }
+        -:   22:
+        2:   23:static char *attr_string(str) char *str;
+        2:   24:{ return str; }
+        -:   25:
+        1:   26:int main() {
+        1:   27:  attr_eq(arg0, arg1);
+        1:   28:  exit(0);
+        -:   29:}

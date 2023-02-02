@@ -1,0 +1,29 @@
+    1|       |/* PR target/31100 */
+    2|       |/* Reported by Erwin Unruh <Erwin.Unruh@fujitsu-siemens.com> */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-falign-labels=16" } */
+    6|       |
+    7|       |extern void abort(void);
+    8|       |
+    9|      1|int f(int i) {
+   10|      1|  int res;
+   11|      1|
+   12|      1|  switch (i) {
+   13|      0|  case 5:
+   14|      0|    res = i - i;
+   15|      0|    break;
+   16|      1|  default:
+   17|      1|    res = i * 2;
+   18|      1|    break;
+   19|      1|  }
+   20|      1|
+   21|      1|  return res;
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  if (f(2) != 4)
+   26|      0|    abort();
+   27|      1|  return 0;
+   28|      1|}
+

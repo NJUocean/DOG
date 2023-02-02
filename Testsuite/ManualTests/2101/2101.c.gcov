@@ -1,0 +1,21 @@
+        -:    0:Source:2101.c
+        -:    0:Graph:2101.gcno
+        -:    0:Data:2101.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        1:    4:int __attribute__((noinline)) foo(char c) {
+        1:    5:  unsigned short a = (unsigned short)c;
+        1:    6:  if (a >= -32000 && a <= 32000)
+        1:    7:    return c == 0;
+    #####:    8:  return -1;
+        -:    9:}
+        -:   10:
+        -:   11:extern void abort(void);
+        -:   12:
+        1:   13:int main() {
+        1:   14:  if (foo(1) == 1)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

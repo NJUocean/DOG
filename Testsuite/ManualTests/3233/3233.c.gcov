@@ -1,0 +1,59 @@
+        -:    0:Source:3233.c
+        -:    0:Graph:3233.gcno
+        -:    0:Data:3233.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/3711
+        -:    2:   This testcase ICEd on IA-32 at -O0 and was miscompiled otherwise,
+        -:    3:   because std_expand_builtin_va_arg didn't handle variable size types.  */
+        -:    4:/* { dg-require-effective-target alloca } */
+        -:    5:
+        -:    6:#include <stdarg.h>
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:extern void exit(int);
+        -:   10:
+       10:   11:void bar(int c) {
+        -:   12:  static int d = '0';
+        -:   13:
+       10:   14:  if (c != d++)
+    #####:   15:    abort();
+       10:   16:  if (c < '0' || c > '9')
+    #####:   17:    abort();
+       10:   18:}
+        -:   19:
+        1:   20:void foo(int size, ...) {
+        1:   21:  struct {
+        1:   22:    char x[size];
+        1:   23:  } d;
+        -:   24:  va_list ap;
+        -:   25:  int i;
+        -:   26:
+        1:   27:  va_start(ap, size);
+        1:   28:  d = va_arg(ap, typeof(d));
+        6:   29:  for (i = 0; i < size; i++)
+        5:   30:    bar(d.x[i]);
+        1:   31:  d = va_arg(ap, typeof(d));
+        6:   32:  for (i = 0; i < size; i++)
+        5:   33:    bar(d.x[i]);
+        1:   34:  va_end(ap);
+        1:   35:}
+        -:   36:
+        1:   37:int main(void) {
+        1:   38:  int z = 5;
+        1:   39:  struct {
+        1:   40:    char a[z];
+        1:   41:  } x, y;
+        -:   42:
+        1:   43:  x.a[0] = '0';
+        1:   44:  x.a[1] = '1';
+        1:   45:  x.a[2] = '2';
+        1:   46:  x.a[3] = '3';
+        1:   47:  x.a[4] = '4';
+        1:   48:  y.a[0] = '5';
+        1:   49:  y.a[1] = '6';
+        1:   50:  y.a[2] = '7';
+        1:   51:  y.a[3] = '8';
+        1:   52:  y.a[4] = '9';
+        1:   53:  foo(z, x, y);
+        1:   54:  exit(0);
+        -:   55:}

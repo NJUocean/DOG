@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target arm_neon_hw } */
+    3|       |/* { dg-options "-O2 -fno-common -ftree-vectorize -mno-unaligned-access" }  */
+    4|       |/* { dg-add-options arm_neon } */
+    5|       |
+    6|       |/* Test for-mno-unaligned-access and -ftree-vectorize  and results bus error. */
+    7|    129|#define N 128
+    8|       |
+    9|       |char ia[N];
+   10|       |char ib[N + 1];
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|    129|  for (i = 0; i < N; ++i) {
+   15|    128|    ia[i] = ib[i + 1];
+   16|    128|  }
+   17|      1|
+   18|      1|  return 0;
+   19|      1|}
+

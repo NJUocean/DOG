@@ -1,0 +1,15 @@
+        -:    0:Source:1826.c
+        -:    0:Graph:1826.gcno
+        -:    0:Data:1826.gcda
+        -:    0:Runs:1
+        -:    1:/* PR gcov-profile/52150 */
+        -:    2:/* { dg-options "-O0" } */
+        -:    3:
+        -:    4:void foo() __asm__("bar");
+        -:    5:
+        1:    6:void foo() {}
+        -:    7:
+        1:    8:int main() {
+        1:    9:  foo();
+        1:   10:  return 0;
+        -:   11:}

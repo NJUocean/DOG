@@ -1,0 +1,35 @@
+        -:    0:Source:811.c
+        -:    0:Graph:811.gcno
+        -:    0:Data:811.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/29215 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-O2 -fdump-tree-ccp1" } */
+        -:    4:
+        -:    5:char buf[5 * sizeof(int) + 1] __attribute__((aligned(__alignof__(int))));
+        -:    6:
+        1:    7:static void foo(int arg1, int arg2, int arg3, int arg4, int arg5) {
+        1:    8:  __builtin_memcpy(buf, &arg1, sizeof(int));
+        1:    9:  __builtin_memcpy(buf + sizeof(int), &arg2, sizeof(int));
+        1:   10:  __builtin_memcpy(buf + 2 * sizeof(int), &arg3, sizeof(int));
+        1:   11:  __builtin_memcpy(buf + 3 * sizeof(int), &arg4, sizeof(int));
+        1:   12:  __builtin_memcpy(buf + 4 * sizeof(int), &arg5, sizeof(int));
+        1:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:  union {
+        -:   17:    char buf[4];
+        -:   18:    int i;
+        -:   19:  } u;
+        1:   20:  u.i = 0;
+        1:   21:  u.buf[0] = 'a';
+        1:   22:  u.buf[1] = 'b';
+        1:   23:  u.buf[2] = 'c';
+        1:   24:  u.buf[3] = 'd';
+        1:   25:  foo(u.i, u.i, u.i, u.i, u.i);
+        1:   26:  buf[5 * sizeof(int)] = '\0';
+        1:   27:  __builtin_puts(buf);
+        1:   28:  return 0;
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final { scan-tree-dump-not "memcpy" "ccp1" } } */

@@ -1,0 +1,20 @@
+        -:    0:Source:3930.c
+        -:    0:Graph:3930.gcno
+        -:    0:Data:3930.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/71626 */
+        -:    2:
+        -:    3:typedef __INTPTR_TYPE__ V
+        -:    4:    __attribute__((__vector_size__(sizeof(__INTPTR_TYPE__))));
+        -:    5:
+        1:    6:__attribute__((noinline, noclone)) V foo() {
+        1:    7:  V v = {(__INTPTR_TYPE__)foo};
+        1:    8:  return v;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  V v = foo();
+        1:   13:  if (v[0] != (__INTPTR_TYPE__)foo)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

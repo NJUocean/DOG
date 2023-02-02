@@ -1,0 +1,25 @@
+        -:    0:Source:2730.c
+        -:    0:Graph:2730.gcno
+        -:    0:Data:2730.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -march=i686 -mtune=generic -fstack-clash-protection" } */
+        -:    3:/* { dg-require-effective-target ia32 } */
+        -:    4:
+        -:    5:__attribute__((noinline, noclone, weak, regparm(3))) int
+        1:    6:f1(long arg0, int (*pf)(long, void *)) {
+        -:    7:  unsigned char buf[32768];
+        1:    8:  return pf(arg0, buf);
+        -:    9:}
+        -:   10:
+        1:   11:__attribute__((noinline, noclone, weak)) int f2(long arg0, void *ignored) {
+        1:   12:  if (arg0 != 17)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 19;
+        -:   15:}
+        -:   16:
+        1:   17:int main(void) {
+        1:   18:  if (f1(17, f2) != 19)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

@@ -1,0 +1,15 @@
+        -:    0:Source:3772.c
+        -:    0:Graph:3772.gcno
+        -:    0:Data:3772.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/56250 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:int main() {
+        1:    6:  unsigned int x = 2;
+        1:    7:  unsigned int y = (0U - x / 2) / 2;
+        1:    8:  if (-1U / x != y)
+    #####:    9:    abort();
+        1:   10:  return 0;
+        -:   11:}

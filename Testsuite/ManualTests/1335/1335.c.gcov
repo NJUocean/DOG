@@ -1,0 +1,25 @@
+        -:    0:Source:1335.c
+        -:    0:Graph:1335.gcno
+        -:    0:Data:1335.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/39903 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-Wno-psabi" } */
+        -:    4:
+        -:    5:struct X {
+        -:    6:  double d;
+        -:    7:  double b[];
+        -:    8:};
+        -:    9:
+        1:   10:struct X __attribute__((noinline)) foo(double d) {
+        -:   11:  struct X x;
+        1:   12:  x.d = d;
+        1:   13:  return x;
+        -:   14:}
+        -:   15:extern void abort(void);
+        1:   16:int main() {
+        1:   17:  struct X x = foo(3.0);
+        1:   18:  if (x.d != 3.0)
+    #####:   19:    abort();
+        1:   20:  return 0;
+        -:   21:}

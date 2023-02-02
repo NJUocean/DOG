@@ -1,0 +1,16 @@
+        -:    0:Source:2536.c
+        -:    0:Graph:2536.gcno
+        -:    0:Data:2536.gcda
+        -:    0:Runs:1
+        -:    1:/* Verify that rmw instructions supported */
+        -:    2:/* { dg-do assemble } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:#ifdef __AVR_ISA_RMW__
+        -:    6:  __asm("xch Z, r12");
+        -:    7:  __asm("las Z, r12");
+        -:    8:  __asm("lac Z, r12");
+        -:    9:  __asm("lat Z, r12");
+        -:   10:#endif
+        1:   11:  return 0;
+        -:   12:}

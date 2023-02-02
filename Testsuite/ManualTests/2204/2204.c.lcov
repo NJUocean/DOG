@@ -1,0 +1,24 @@
+    1|       |/* { dg-add-options stack_size } */
+    2|       |
+    3|       |#ifdef STACK_SIZE
+    4|       |#define SIZE STACK_SIZE / 8
+    5|       |#else
+    6|    101|#define SIZE 65536
+    7|       |#endif
+    8|       |
+    9|    100|memtst(int *p, int a) {
+   10|  6.55M|  do {
+   11|  6.55M|    if (p[a] == 1)
+   12|      0|      break;
+   13|  6.55M|  } while (--a);
+   14|    100|}
+   15|       |
+   16|      1|main() {
+   17|      1|  int a[SIZE];
+   18|      1|  int i;
+   19|      1|  bzero(a, SIZE * 4);
+   20|    101|  for (i = 0; i < 100; i++) {
+   21|    100|    memtst(a, SIZE);
+   22|    100|  }
+   23|      1|}
+

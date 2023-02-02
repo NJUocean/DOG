@@ -1,0 +1,32 @@
+        -:    0:Source:2777.c
+        -:    0:Graph:2777.gcno
+        -:    0:Data:2777.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target sse2_runtime } } */
+        -:    2:/* { dg-options "-O2 -msse2 -ftree-vectorize -fdump-tree-vect-details
+        -:    3: * -save-temps" } */
+        -:    4:
+        -:    5:extern void abort();
+        -:    6:
+        -:    7:#define N 1024
+        -:    8:float a[N] = {0.0f,  -0.0f, 1.0f,  -1.0f, -2.0f,  3.0f,
+        -:    9:              -5.0f, -8.0f, 13.0f, 21.0f, -25.0f, 33.0f};
+        -:   10:int r[N];
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int i;
+        -:   14:
+     1025:   15:  for (i = 0; i < N; i++)
+     1024:   16:    r[i] = __builtin_signbitf(a[i]);
+        -:   17:
+        -:   18:  /* check results:  */
+     1025:   19:  for (i = 0; i < N; i++)
+     1024:   20:    if (__builtin_signbitf(a[i]) && !r[i])
+    #####:   21:      abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final { scan-tree-dump-times "vectorized 1 loops" 1 "vect" } } */
+        -:   27:/* { dg-final { scan-assembler-not "\\$-2147483648" } } */
+        -:   28:/* { dg-final { scan-assembler "psrld" } } */

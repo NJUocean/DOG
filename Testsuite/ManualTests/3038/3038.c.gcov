@@ -1,0 +1,16 @@
+        -:    0:Source:3038.c
+        -:    0:Graph:3038.gcno
+        -:    0:Data:3038.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:typedef __UINTPTR_TYPE__ uintptr_t;
+        1:    4:int main(void) {
+        1:    5:  int a = 0;
+        -:    6:  int *p;
+        -:    7:  uintptr_t b;
+        1:    8:  b = (uintptr_t)(p = &(int[]){0, 1, 2}[++a]);
+        1:    9:  if (a != 1 || *p != 1 || *(int *)b != 1)
+    #####:   10:    abort();
+        1:   11:  exit(0);
+        -:   12:}

@@ -1,0 +1,30 @@
+        -:    0:Source:3896.c
+        -:    0:Graph:3896.gcno
+        -:    0:Data:3896.gcda
+        -:    0:Runs:1
+        -:    1:#define NULL 0
+        -:    2:
+        -:    3:struct stuff {
+        -:    4:  int a;
+        -:    5:  int b;
+        -:    6:  int c;
+        -:    7:  int d;
+        -:    8:  int e;
+        -:    9:  char *f;
+        -:   10:  int g;
+        -:   11:};
+        -:   12:
+        1:   13:void __attribute__((noinline)) bar(struct stuff *x) {
+        1:   14:  if (x->g != 2)
+    #####:   15:    __builtin_abort();
+        1:   16:}
+        -:   17:
+        1:   18:int main(int argc, char **argv) {
+        1:   19:  struct stuff x = {0, 0, 0, 0, 0, NULL, 0};
+        1:   20:  x.a = 100;
+        1:   21:  x.d = 100;
+        1:   22:  x.g = 2;
+        -:   23:  /* Struct should now look like {100, 0, 0, 100, 0, 0, 0, 2}.  */
+        1:   24:  bar(&x);
+        1:   25:  return 0;
+        -:   26:}

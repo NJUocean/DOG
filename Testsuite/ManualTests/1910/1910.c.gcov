@@ -1,0 +1,78 @@
+        -:    0:Source:1910.c
+        -:    0:Graph:1910.gcno
+        -:    0:Data:1910.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        1:    3:void test(double f, double i) {
+        1:    4:  if (f == __builtin_huge_val())
+    #####:    5:    abort();
+        1:    6:  if (f == -__builtin_huge_val())
+    #####:    7:    abort();
+        1:    8:  if (i == -__builtin_huge_val())
+    #####:    9:    abort();
+        1:   10:  if (i != __builtin_huge_val())
+    #####:   11:    abort();
+        -:   12:
+        1:   13:  if (f >= __builtin_huge_val())
+    #####:   14:    abort();
+        1:   15:  if (f > __builtin_huge_val())
+    #####:   16:    abort();
+        1:   17:  if (i > __builtin_huge_val())
+    #####:   18:    abort();
+        1:   19:  if (f <= -__builtin_huge_val())
+    #####:   20:    abort();
+        1:   21:  if (f < -__builtin_huge_val())
+    #####:   22:    abort();
+        1:   23:}
+        -:   24:
+        1:   25:void testf(float f, float i) {
+        1:   26:  if (f == __builtin_huge_valf())
+    #####:   27:    abort();
+        1:   28:  if (f == -__builtin_huge_valf())
+    #####:   29:    abort();
+        1:   30:  if (i == -__builtin_huge_valf())
+    #####:   31:    abort();
+        1:   32:  if (i != __builtin_huge_valf())
+    #####:   33:    abort();
+        -:   34:
+        1:   35:  if (f >= __builtin_huge_valf())
+    #####:   36:    abort();
+        1:   37:  if (f > __builtin_huge_valf())
+    #####:   38:    abort();
+        1:   39:  if (i > __builtin_huge_valf())
+    #####:   40:    abort();
+        1:   41:  if (f <= -__builtin_huge_valf())
+    #####:   42:    abort();
+        1:   43:  if (f < -__builtin_huge_valf())
+    #####:   44:    abort();
+        1:   45:}
+        -:   46:
+        1:   47:void testl(long double f, long double i) {
+        1:   48:  if (f == __builtin_huge_vall())
+    #####:   49:    abort();
+        1:   50:  if (f == -__builtin_huge_vall())
+    #####:   51:    abort();
+        1:   52:  if (i == -__builtin_huge_vall())
+    #####:   53:    abort();
+        1:   54:  if (i != __builtin_huge_vall())
+    #####:   55:    abort();
+        -:   56:
+        1:   57:  if (f >= __builtin_huge_vall())
+    #####:   58:    abort();
+        1:   59:  if (f > __builtin_huge_vall())
+    #####:   60:    abort();
+        1:   61:  if (i > __builtin_huge_vall())
+    #####:   62:    abort();
+        1:   63:  if (f <= -__builtin_huge_vall())
+    #####:   64:    abort();
+        1:   65:  if (f < -__builtin_huge_vall())
+    #####:   66:    abort();
+        1:   67:}
+        -:   68:
+        1:   69:int main() {
+        1:   70:  test(34.0, __builtin_huge_val());
+        1:   71:  testf(34.0f, __builtin_huge_valf());
+        1:   72:  testl(34.0l, __builtin_huge_vall());
+        1:   73:  return 0;
+        -:   74:}

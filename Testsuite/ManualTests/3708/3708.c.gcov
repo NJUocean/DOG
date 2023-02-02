@@ -1,0 +1,16 @@
+        -:    0:Source:3708.c
+        -:    0:Graph:3708.gcno
+        -:    0:Data:3708.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/47155 */
+        -:    2:
+        -:    3:unsigned int a;
+        -:    4:static signed char b = -127;
+        -:    5:int c = 1;
+        -:    6:
+        1:    7:int main(void) {
+        1:    8:  a = b <= (unsigned char)(-6 * c);
+        1:    9:  if (!a)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

@@ -1,0 +1,33 @@
+        -:    0:Source:224.c
+        -:    0:Graph:224.gcno
+        -:    0:Data:224.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "" } */
+        -:    3:/* Verify cleanup execution on non-trivial exit from a block.  */
+        -:    4:
+        -:    5:extern void exit(int);
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:static int counter;
+        -:    9:
+        7:   10:static void handler(int *p) { counter += *p; }
+        -:   11:
+        6:   12:static void __attribute__((noinline)) bar(void) {}
+        -:   13:
+        1:   14:static void doit(int n, int n2) {
+        -:   15:  int i;
+        7:   16:  for (i = 0; i < n; ++i) {
+        7:   17:    int dummy __attribute__((cleanup(handler))) = i;
+        7:   18:    if (i == n2)
+        1:   19:      break;
+        6:   20:    bar();
+        -:   21:  }
+        1:   22:}
+        -:   23:
+        1:   24:int main() {
+        1:   25:  doit(10, 6);
+        1:   26:  if (counter != 0 + 1 + 2 + 3 + 4 + 5 + 6)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

@@ -1,0 +1,15 @@
+        -:    0:Source:3636.c
+        -:    0:Graph:3636.gcno
+        -:    0:Data:3636.gcda
+        -:    0:Runs:1
+        -:    1:/* PR libgomp/61200 */
+        -:    2:
+        1:    3:int main() {
+        1:    4:  int var = 1;
+        -:    5:#pragma omp parallel
+        1:    6:  if (var != 1)
+    #####:    7:    __builtin_abort();
+        -:    8:#pragma omp task shared(var)
+        1:    9:  var = 2;
+        1:   10:  return 0;
+        -:   11:}

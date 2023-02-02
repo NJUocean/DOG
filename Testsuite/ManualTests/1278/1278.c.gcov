@@ -1,0 +1,25 @@
+        -:    0:Source:1278.c
+        -:    0:Graph:1278.gcno
+        -:    0:Data:1278.gcda
+        -:    0:Runs:1
+        -:    1:/* PR sanitizer/65081 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    4:/* { dg-options "-fsanitize=object-size -fno-sanitize-recover=object-size" } */
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int a;
+        -:    8:  char p[1];
+        -:    9:};
+        -:   10:
+        -:   11:struct S b;
+        -:   12:
+        1:   13:struct S *foo() {
+        1:   14:  struct S *i = &b;
+        1:   15:  return i + 1;
+        -:   16:}
+        -:   17:
+        1:   18:int main(void) {
+        1:   19:  struct S *i = foo() - 1;
+        1:   20:  i->a = 1;
+        -:   21:}

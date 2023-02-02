@@ -1,0 +1,20 @@
+        -:    0:Source:3341.c
+        -:    0:Graph:3341.gcno
+        -:    0:Data:3341.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/14470 */
+        -:    2:/* Origin: Lodewijk Voge <lvoge@cs.vu.nl> */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int t[1025] = {1024}, d;
+        -:    8:
+        1:    9:  d = 0;
+        1:   10:  d = t[d]++;
+        1:   11:  if (t[0] != 1025)
+    #####:   12:    abort();
+        1:   13:  if (d != 1024)
+    #####:   14:    abort();
+        1:   15:  return 0;
+        -:   16:}

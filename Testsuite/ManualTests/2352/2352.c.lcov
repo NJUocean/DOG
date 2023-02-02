@@ -1,0 +1,56 @@
+    1|       |/* Simple test program:   bubble sort of a fixed table. 	*/
+    2|       |/* This demonstrates some of the compiler's common-subexpression*/
+    3|       |/* elimination capabilities.  For example, inspect the code	*/
+    4|       |/* generated for procedure Sort_array.	See the Programmer's    */
+    5|       |/* Guide for how to request an assembly listing on your host.	*/
+    6|       |
+    7|       |typedef unsigned char boolean;
+    8|       |
+    9|       |void Sort_array();
+   10|       |int Tab[100];
+   11|       |
+   12|      1|main() {
+   13|      1|  int I, J, K, L;
+   14|      1|
+   15|  1.00k|  for (L = 0; L < 1000; L++) {
+   16|  1.00k|    /* Initialize the table that will be sorted. */
+   17|  1.00k|    K = 0;
+   18|  11.0k|    for (I = 9; I >= 0; I--)
+   19|   110k|      for (J = I * 10; J < (I + 1) * 10; J++)
+   20|   100k|        Tab[K++] = J & 1 ? J + 1 : J - 1;
+   21|  1.00k|
+   22|  1.00k|    /*   Print_array(); */
+   23|  1.00k|    Sort_array(Tab, 99); /* Sort it. */
+   24|  1.00k|    /*   Print_array(); */
+   25|  1.00k|  }
+   26|      1|  return 0;
+   27|      1|}
+   28|       |
+   29|       |void Sort_array(Tab, Last) int Tab[];
+   30|       |int Last;
+   31|  1.00k|{
+   32|  1.00k|  boolean Swap;
+   33|  1.00k|  int Temp, I;
+   34|  92.0k|  do {
+   35|  92.0k|    Swap = 0;
+   36|  9.20M|    for (I = 0; I < Last; I++)
+   37|  9.10M|      if (Tab[I] > Tab[I + 1]) {
+   38|  4.53M|        Temp = Tab[I];
+   39|  4.53M|        Tab[I] = Tab[I + 1];
+   40|  4.53M|        Tab[I + 1] = Temp;
+   41|  4.53M|        Swap = 1;
+   42|  4.53M|      }
+   43|  92.0k|  } while (Swap);
+   44|  1.00k|}
+   45|       |
+   46|      0|void Print_array() {
+   47|      0|  int I, J;
+   48|      0|  /*printf("\nArray Contents:\n");*/
+   49|      0|  for (I = 0; I <= 9; I++) {
+   50|      0|    /*printf("%5d:",10*I); */
+   51|      0|    for (J = 0; J <= 9; J++)
+   52|      0|      ; /*printf("%5d",Tab[10*I+J]); */
+   53|      0|    /* printf("\n");*/
+   54|      0|  }
+   55|      0|}
+

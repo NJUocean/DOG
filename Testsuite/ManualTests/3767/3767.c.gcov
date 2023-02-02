@@ -1,0 +1,26 @@
+        -:    0:Source:3767.c
+        -:    0:Graph:3767.gcno
+        -:    0:Data:3767.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/55750 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:struct S {
+        -:    6:  int m : 1;
+        -:    7:  int n : 7;
+        -:    8:} arr[2];
+        -:    9:
+        2:   10:__attribute__((noinline, noclone)) void foo(unsigned i) { arr[i].n++; }
+        -:   11:
+        1:   12:int main() {
+        1:   13:  arr[0].m = -1;
+        1:   14:  arr[0].n = (1 << 6) - 1;
+        1:   15:  arr[1].m = 0;
+        1:   16:  arr[1].n = -1;
+        1:   17:  foo(0);
+        1:   18:  foo(1);
+        1:   19:  if (arr[0].m != -1 || arr[0].n != -(1 << 6) || arr[1].m != 0 || arr[1].n != 0)
+    #####:   20:    abort();
+        1:   21:  return 0;
+        -:   22:}

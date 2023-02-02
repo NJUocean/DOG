@@ -1,0 +1,27 @@
+        -:    0:Source:1796.c
+        -:    0:Graph:1796.gcno
+        -:    0:Data:1796.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls_runtime } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:extern int printf(char *, ...);
+        -:    6:extern void abort(void);
+        -:    7:
+        1:    8:int test_code(int b) {
+        -:    9:  static __thread int fstat = 1;
+        1:   10:  fstat += b;
+        1:   11:  return fstat;
+        -:   12:}
+        -:   13:
+        1:   14:int main(int ac, char *av[]) {
+        1:   15:  int a = test_code(1);
+        -:   16:
+        1:   17:  if (a != 2) {
+    #####:   18:    printf("a=%d\n", a);
+    #####:   19:    abort();
+        -:   20:  }
+        -:   21:
+        1:   22:  return 0;
+        -:   23:}

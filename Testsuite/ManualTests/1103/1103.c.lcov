@@ -1,0 +1,25 @@
+    1|       |/* PR c++/25294 */
+    2|       |/* { dg-options "-std=gnu99" } */
+    3|       |/* Epiphany makes struct S 8-byte aligned.  */
+    4|       |/* { dg-do run { target { ! epiphany-*-* } } } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |
+    8|       |struct S {
+    9|       |  char a[3];
+   10|       |#pragma pack(1) /* A block comment                                             \
+   11|       |                   that ends on the next line.  */
+   12|       |  struct T {
+   13|       |    char b;
+   14|       |    int c;
+   15|       |  } d;
+   16|       |#pragma pack /*/ */ () // C++ comment
+   17|       |  int e;
+   18|       |} s;
+   19|       |
+   20|      1|int main() {
+   21|      1|  if (sizeof(int) == 4 && sizeof(s) != 12)
+   22|      0|    abort();
+   23|      1|  return 0;
+   24|      1|}
+

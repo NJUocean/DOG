@@ -1,0 +1,11 @@
+        -:    0:Source:1772.c
+        -:    0:Graph:1772.gcno
+        -:    0:Data:1772.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for attribute non-translation.  */
+        -:    2:/* { dg-do compile }
+        -:    3:   { dg-require-iconv "IBM1047" }
+        -:    4:   { dg-final { scan-assembler "foo" } } */
+        -:    5:int walrus __attribute__((section(".foo")));
+        -:    6:
+        1:    7:int main(void) { return 0; }

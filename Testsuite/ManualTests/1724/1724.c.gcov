@@ -1,0 +1,20 @@
+        -:    0:Source:1724.c
+        -:    0:Graph:1724.gcno
+        -:    0:Data:1724.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        1:    3:int __attribute__((noipa, noinline)) foo(int i) {
+        -:    4:  int a[2];
+        1:    5:  a[1] = 1;
+        1:    6:  int j = a[1];
+        1:    7:  int *p = &a[0];
+        1:    8:  p[i] = 0;
+        1:    9:  return a[j];
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  if (foo(1) != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

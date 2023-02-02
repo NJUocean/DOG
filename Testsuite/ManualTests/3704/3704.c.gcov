@@ -1,0 +1,21 @@
+        -:    0:Source:3704.c
+        -:    0:Graph:3704.gcno
+        -:    0:Data:3704.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/46909 */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:
+       20:    5:int __attribute__((__noinline__)) foo(unsigned int x) {
+       20:    6:  if (!(x == 4 || x == 6) || (x == 2 || x == 6))
+       19:    7:    return 1;
+        1:    8:  return -1;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        -:   12:  int i;
+       21:   13:  for (i = -10; i < 10; i++)
+       20:   14:    if (foo(i) != 1 - 2 * (i == 4))
+    #####:   15:      abort();
+        1:   16:  return 0;
+        -:   17:}

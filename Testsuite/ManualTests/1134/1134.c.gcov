@@ -1,0 +1,48 @@
+        -:    0:Source:1134.c
+        -:    0:Graph:1134.gcno
+        -:    0:Data:1134.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fmodulo-sched -fmodulo-sched-allow-regmoves -funroll-loops
+        -:    3: * -fdump-rtl-sms --param sms-min-sc=1" } */
+        -:    4:/* This is the same test as loop-2e.c test.  It is related to a fix in
+        -:    5:   the generation of the prolog and epilog.  */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        1:    9:__attribute__((noinline)) void f(int *p, int **q) {
+        -:   10:  int i;
+       41:   11:  for (i = 0; i < 40; i++) {
+       40:   12:    *q++ = &p[i];
+        -:   13:  }
+        1:   14:}
+        -:   15:
+        1:   16:int main() {
+        -:   17:  void *p;
+        -:   18:  int *q[40];
+        -:   19:  __SIZE_TYPE__ start;
+        -:   20:
+        -:   21:  /* Find the signed middle of the address space.  */
+        -:   22:  if (sizeof(start) == sizeof(int))
+        -:   23:    start = (__SIZE_TYPE__)__INT_MAX__;
+        -:   24:  else if (sizeof(start) == sizeof(long))
+        1:   25:    start = (__SIZE_TYPE__)__LONG_MAX__;
+        -:   26:  else if (sizeof(start) == sizeof(long long))
+        -:   27:    start = (__SIZE_TYPE__)__LONG_LONG_MAX__;
+        -:   28:  else
+        -:   29:    return 0;
+        -:   30:
+        -:   31:  /* Arbitrarily align the pointer.  */
+        1:   32:  start &= -32;
+        -:   33:
+        -:   34:  /* Pretend that's good enough to start address arithmetic.  */
+        1:   35:  p = (void *)start;
+        -:   36:
+        -:   37:  /* Verify that GIV replacement computes the correct results.  */
+        1:   38:  q[39] = 0;
+        1:   39:  f(p, q);
+        1:   40:  if (q[39] != (int *)p + 39)
+    #####:   41:    abort();
+        -:   42:
+        1:   43:  return 0;
+        -:   44:}

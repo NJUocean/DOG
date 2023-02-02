@@ -1,0 +1,12 @@
+        -:    0:Source:275.c
+        -:    0:Graph:275.gcno
+        -:    0:Data:275.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:/* Test Darwin linker option -arch_errors_fatal.  */
+        -:    3:/* Developed by Devang Patel <dpatel@apple.com>.  */
+        -:    4:
+        -:    5:/* { dg-options "-arch_errors_fatal" } */
+        -:    6:/* { dg-do link { target *-*-darwin* } } */
+        -:    7:
+        1:    8:int main() { return 0; }

@@ -1,0 +1,37 @@
+        -:    0:Source:2968.c
+        -:    0:Graph:2968.gcno
+        -:    0:Data:2968.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that -mrelax works.  */
+        -:    2:/* { dg-do run { target { { sh-*-* sh?-*-* } && { ! { sh*-*-vxworks* && nonpic }
+        -:    3: * } } } } */
+        -:    4:/* { dg-options "-O1 -mrelax" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:extern int qwerty(int);
+        -:    8:
+        6:    9:int f(int i) { return qwerty(i) + 1; }
+        -:   10:
+        6:   11:int qwerty(int i) {
+        6:   12:  switch (i) {
+        1:   13:  case 1:
+        1:   14:    return 'q';
+        1:   15:  case 2:
+        1:   16:    return 'w';
+        1:   17:  case 3:
+        1:   18:    return 'e';
+        1:   19:  case 4:
+        1:   20:    return 'r';
+        1:   21:  case 5:
+        1:   22:    return 't';
+        1:   23:  case 6:
+        1:   24:    return 'y';
+        -:   25:  }
+    #####:   26:}
+        -:   27:
+        1:   28:int main() {
+        2:   29:  if (f(1) != 'q' + 1 || f(2) != 'w' + 1 || f(3) != 'e' + 1 ||
+        2:   30:      f(4) != 'r' + 1 || f(5) != 't' + 1 || f(6) != 'y' + 1)
+    #####:   31:    abort();
+        1:   32:  return 0;
+        -:   33:}

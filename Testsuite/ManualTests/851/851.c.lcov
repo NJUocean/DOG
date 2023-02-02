@@ -1,0 +1,34 @@
+    1|       |typedef struct {
+    2|       |  int v[4];
+    3|       |} Test1;
+    4|       |
+    5|       |Test1 func2();
+    6|       |
+    7|      1|int func1() {
+    8|      1|  Test1 test;
+    9|      1|  test = func2();
+   10|      1|
+   11|      1|  if (test.v[0] != 10)
+   12|      0|    abort();
+   13|      1|  if (test.v[1] != 20)
+   14|      0|    abort();
+   15|      1|  if (test.v[2] != 30)
+   16|      0|    abort();
+   17|      1|  if (test.v[3] != 40)
+   18|      0|    abort();
+   19|      1|}
+   20|       |
+   21|      1|Test1 func2() {
+   22|      1|  Test1 tmp;
+   23|      1|  tmp.v[0] = 10;
+   24|      1|  tmp.v[1] = 20;
+   25|      1|  tmp.v[2] = 30;
+   26|      1|  tmp.v[3] = 40;
+   27|      1|  return tmp;
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  func1();
+   32|      1|  exit(0);
+   33|      1|}
+

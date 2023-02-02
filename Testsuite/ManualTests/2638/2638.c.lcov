@@ -1,0 +1,33 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|      1|void t1(int x) {
+    5|      1|  if (x != 4100)
+    6|      0|    abort();
+    7|      1|}
+    8|       |
+    9|      1|int t2(void) {
+   10|      1|  int i;
+   11|      1|  t1((i = 4096) + 4);
+   12|      1|  return i;
+   13|      1|}
+   14|       |
+   15|      1|void t3(long long x) {
+   16|      1|  if (x != 0x80000fffULL)
+   17|      0|    abort();
+   18|      1|}
+   19|       |
+   20|      1|long long t4(void) {
+   21|      1|  long long i;
+   22|      1|  t3((i = 4096) + 0x7fffffffULL);
+   23|      1|  return i;
+   24|      1|}
+   25|       |
+   26|      1|main() {
+   27|      1|  if (t2() != 4096)
+   28|      0|    abort();
+   29|      1|  if (t4() != 4096)
+   30|      0|    abort();
+   31|      1|  exit(0);
+   32|      1|}
+

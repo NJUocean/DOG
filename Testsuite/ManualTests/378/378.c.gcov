@@ -1,0 +1,26 @@
+        -:    0:Source:378.c
+        -:    0:Graph:378.gcno
+        -:    0:Data:378.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/48716 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fopenmp" } */
+        -:    4:
+        1:    5:int main(void) {
+        -:    6:#pragma omp parallel default(none)
+        -:    7:  {
+        -:    8:    static int s;
+        1:    9:    int t = 0;
+        -:   10:#pragma omp atomic
+        1:   11:    s++;
+        1:   12:    t++;
+        -:   13:  }
+        -:   14:#pragma omp task default(none)
+        -:   15:  {
+        -:   16:    static int s;
+        1:   17:    int t = 0;
+        -:   18:#pragma omp atomic
+        1:   19:    s++;
+        1:   20:    t++;
+        -:   21:  }
+        -:   22:}

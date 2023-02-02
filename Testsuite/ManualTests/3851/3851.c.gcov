@@ -1,0 +1,15 @@
+        -:    0:Source:3851.c
+        -:    0:Graph:3851.gcno
+        -:    0:Data:3851.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/61725 */
+        -:    2:
+        1:    3:int main() {
+        -:    4:  int x;
+      258:    5:  for (x = -128; x <= 128; x++) {
+      257:    6:    int a = __builtin_ffs(x);
+      257:    7:    if (x == 0 && a != 0)
+    #####:    8:      __builtin_abort();
+        -:    9:  }
+        1:   10:  return 0;
+        -:   11:}

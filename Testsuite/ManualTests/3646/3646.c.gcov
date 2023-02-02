@@ -1,0 +1,16 @@
+        -:    0:Source:3646.c
+        -:    0:Graph:3646.gcno
+        -:    0:Data:3646.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        1:    4:int *__attribute__((noipa)) consume(int *ptr) { return ptr; }
+        -:    5:
+        1:    6:int main(void) {
+        -:    7:  int x;
+        1:    8:  int *volatile ptr = consume(&x);
+        1:    9:  x = 0;
+        1:   10:  x = 1;    /* { dg-final { gdb-test . "*ptr" "0" } } */
+        1:   11:  return 0; /* { dg-final { gdb-test . "*ptr" "1" } } */
+        -:   12:}

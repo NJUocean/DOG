@@ -1,0 +1,14 @@
+        -:    0:Source:4055.c
+        -:    0:Graph:4055.gcno
+        -:    0:Data:4055.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/94724 */
+        -:    2:
+        -:    3:short a, b;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  (0, (0, (a = 0 >= 0, b))) != 53601;
+        1:    7:  if (a != 1)
+    #####:    8:    __builtin_abort();
+        1:    9:  return 0;
+        -:   10:}

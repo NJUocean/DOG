@@ -1,0 +1,28 @@
+        -:    0:Source:3754.c
+        -:    0:Graph:3754.gcno
+        -:    0:Data:3754.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/52760 */
+        -:    2:
+        -:    3:struct T {
+        -:    4:  unsigned short a, b, c, d;
+        -:    5:};
+        -:    6:
+        1:    7:__attribute__((noinline, noclone)) void foo(int x, struct T *y) {
+        -:    8:  int i;
+        -:    9:
+        2:   10:  for (i = 0; i < x; i++) {
+        1:   11:    y[i].a = ((0x00ff & y[i].a >> 8) | (0xff00 & y[i].a << 8));
+        1:   12:    y[i].b = ((0x00ff & y[i].b >> 8) | (0xff00 & y[i].b << 8));
+        1:   13:    y[i].c = ((0x00ff & y[i].c >> 8) | (0xff00 & y[i].c << 8));
+        1:   14:    y[i].d = ((0x00ff & y[i].d >> 8) | (0xff00 & y[i].d << 8));
+        -:   15:  }
+        1:   16:}
+        -:   17:
+        1:   18:int main() {
+        1:   19:  struct T t = {0x0001, 0x0203, 0x0405, 0x0607};
+        1:   20:  foo(1, &t);
+        1:   21:  if (t.a != 0x0100 || t.b != 0x0302 || t.c != 0x0504 || t.d != 0x0706)
+    #####:   22:    __builtin_abort();
+        1:   23:  return 0;
+        -:   24:}

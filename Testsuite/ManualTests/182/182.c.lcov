@@ -1,0 +1,86 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O1 -Wall" } */
+    3|       |
+    4|       |#define choose __builtin_choose_expr
+    5|       |
+    6|       |/* Check the type of __builtin_choose_expr between E1 and E2, both
+    7|       |   ways round and with both 0 and 1 as the condition.  */
+    8|       |#define ASSERT_COND_TYPE(E1, E2)                                               \
+    9|     10|  do {                                                                         \
+   10|      9|    typedef __typeof(E1) T1;                                                   \
+   11|      9|    typedef __typeof(E2) T2;                                                   \
+   12|      9|    typedef T1 **T1pp;                                                         \
+   13|      9|    typedef T2 **T2pp;                                                         \
+   14|      9|    typedef __typeof(choose(1, (E1), (E2))) T1a;                               \
+   15|      9|    typedef __typeof(choose(0, (E2), (E1))) T1b;                               \
+   16|      9|    typedef __typeof(choose(1, (E2), (E1))) T2a;                               \
+   17|      9|    typedef __typeof(choose(0, (E1), (E2))) T2b;                               \
+   18|      9|    typedef T1a **T1app;                                                       \
+   19|      9|    typedef T1b **T1bpp;                                                       \
+   20|      9|    typedef T2a **T2app;                                                       \
+   21|      9|    typedef T2b **T2bpp;                                                       \
+   22|      9|    T1pp t1 = 0;                                                               \
+   23|      9|    T2pp t2 = 0;                                                               \
+   24|      9|    T1app t1a = 0;                                                             \
+   25|      9|    T1bpp t1b = 0;                                                             \
+   26|      9|    T2app t2a = 0;                                                             \
+   27|      9|    T2bpp t2b = 0;                                                             \
+   28|      9|    t1 = t1a;                                                                  \
+   29|      9|    t1 = t1b;                                                                  \
+   30|      9|    t2 = t2a;                                                                  \
+   31|      9|    t2 = t2b;                                                                  \
+   32|      9|    (void)t1;                                                                  \
+   33|      9|    (void)t2;                                                                  \
+   34|      9|  } while (0)
+   35|       |
+   36|       |extern void abort();
+   37|       |extern void exit();
+   38|       |
+   39|      0|void bad() { abort(); }
+   40|       |
+   41|      1|void good() { exit(0); }
+   42|       |
+   43|      1|int main(void) {
+   44|      1|  signed char sc1, sc2;
+   45|      1|  void *v1;
+   46|      1|  int i, j;
+   47|      1|  double dd;
+   48|      1|  float f;
+   49|      1|  typedef void (*fpt)(void);
+   50|      1|  fpt triple;
+   51|      1|  struct S {
+   52|      1|    int x, y;
+   53|      1|  } pour, some, sugar;
+   54|      1|  union u {
+   55|      1|    int p;
+   56|      1|  } united, nations;
+   57|      1|
+   58|      1|  if (__builtin_choose_expr(0, 12, 0) || !__builtin_choose_expr(45, 5, 0) ||
+   59|      1|      !__builtin_choose_expr(45, 3, 0))
+   60|      0|    abort();
+   61|      1|
+   62|      1|  ASSERT_COND_TYPE(sc1, sc2);
+   63|      1|  ASSERT_COND_TYPE(v1, sc1);
+   64|      1|  ASSERT_COND_TYPE(i, j);
+   65|      1|  ASSERT_COND_TYPE(dd, main);
+   66|      1|  ASSERT_COND_TYPE((float)dd, i);
+   67|      1|  ASSERT_COND_TYPE(4, f);
+   68|      1|  ASSERT_COND_TYPE(triple, some);
+   69|      1|  ASSERT_COND_TYPE(united, nations);
+   70|      1|  ASSERT_COND_TYPE(nations, main);
+   71|      1|
+   72|      1|  pour.y = 69;
+   73|      1|  __builtin_choose_expr(0, bad(), sugar) = pour;
+   74|      1|  if (sugar.y != 69)
+   75|      0|    abort();
+   76|      1|
+   77|      1|  __builtin_choose_expr(sizeof(int), f, bad()) = 3.5F;
+   78|      1|
+   79|      1|  if (f != 3.5F)
+   80|      0|    abort();
+   81|      1|
+   82|      1|  __builtin_choose_expr(1, good, bad)();
+   83|      1|
+   84|      1|  exit(0);
+   85|      1|}
+

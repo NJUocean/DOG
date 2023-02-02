@@ -1,0 +1,83 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -fopenmp-simd" } */
+    3|       |/* { dg-additional-options "-msse2" { target sse2_runtime } } */
+    4|       |/* { dg-additional-options "-mavx" { target avx_runtime } } */
+    5|       |
+    6|   343k|#define N 1024
+    7|       |extern
+    8|       |#ifdef __cplusplus
+    9|       |    "C"
+   10|       |#endif
+   11|       |    void
+   12|       |    abort(void);
+   13|       |
+   14|       |int last;
+   15|       |
+   16|  2.04k|void bar(unsigned char *a, int i, int safelen) {
+   17|  2.04k|  int j, k;
+   18|  2.04k|  if (i != last++)
+   19|      0|    abort();
+   20|   165k|  for (j = i - safelen - 32; j < i; j++)
+   21|   163k|    if (j >= 0 && a[j] != 2)
+   22|      0|      break;
+   23|  2.04k|  if (j <= i - safelen || a[j] != 1)
+   24|      0|    abort();
+   25|  4.09k|  for (k = j; k < i + safelen + 32; k++)
+   26|  4.09k|    if (k >= N || a[k] != 1)
+   27|  2.04k|      break;
+   28|  2.04k|  if (k <= i || k > j + safelen)
+   29|      0|    abort();
+   30|  2.04k|  if (k < N && a[k] != 0)
+   31|      0|    abort();
+   32|   163k|  for (; k < i + safelen + 32; k++)
+   33|   161k|    if (k < N && a[k] != 0)
+   34|      0|      abort();
+   35|  2.04k|}
+   36|       |
+   37|  1.02k|static inline void foo(unsigned char *a, int i) {
+   38|  1.02k|#pragma omp ordered simd
+   39|  1.02k|  bar(a, i, 64);
+   40|  1.02k|}
+   41|       |
+   42|      1|int main() {
+   43|      1|  unsigned char a[N], b[N];
+   44|      1|  int i;
+   45|      1|#pragma omp simd
+   46|  1.02k|  for (i = 0; i < N; i++)
+   47|  1.02k|    a[i] = 0;
+   48|      1|#pragma omp simd safelen(64)
+   49|  1.02k|  for (i = 0; i < N; i++) {
+   50|  1.02k|    a[i]++;
+   51|  1.02k|    foo(a, i);
+   52|  1.02k|    a[i]++;
+   53|  1.02k|  }
+   54|      1|#pragma omp simd
+   55|  1.02k|  for (i = 0; i < N; i++) {
+   56|  1.02k|    a[i] = 0;
+   57|  1.02k|    b[i] = 0;
+   58|  1.02k|  }
+   59|      1|  last = 0;
+   60|      1|#pragma omp simd safelen(32)
+   61|  1.02k|  for (i = 0; i < N; i++) {
+   62|  1.02k|    a[i]++;
+   63|  1.02k|#pragma omp ordered simd
+   64|  1.02k|    bar(a, i, 32);
+   65|  1.02k|    a[i]++;
+   66|  1.02k|  }
+   67|  1.02k|  for (i = 0; i < N; i++)
+   68|  1.02k|    if (a[i] != 2)
+   69|      0|      abort();
+   70|      1|#pragma omp simd safelen(32)
+   71|  1.02k|  for (i = 1; i < N; i++) {
+   72|  1.02k|#pragma omp ordered simd
+   73|  1.02k|    b[i] = b[i - 1] + 1;
+   74|  1.02k|    a[i]++;
+   75|  1.02k|#pragma omp ordered simd
+   76|  1.02k|    a[i] += a[i - 1];
+   77|  1.02k|  }
+   78|  1.02k|  for (i = 0; i < N; i++)
+   79|  1.02k|    if (a[i] != (unsigned char)(2 + 3 * i) || b[i] != (unsigned char)i)
+   80|      0|      abort();
+   81|      1|  return 0;
+   82|      1|}
+

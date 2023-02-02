@@ -1,0 +1,37 @@
+        -:    0:Source:2683.c
+        -:    0:Graph:2683.gcno
+        -:    0:Data:2683.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -mstringop-strategy=unrolled_loop -mtune=nocona" } */
+        -:    3:
+        -:    4:#define PATTERN 0xdeadbeef
+        -:    5:#define SIZE 32
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int i;
+        -:    9:  char str[SIZE];
+        -:   10:  int j;
+        -:   11:};
+        -:   12:
+        -:   13:void __attribute__((noclone, noinline))
+        -:   14:my_memcpy(char *, const char *, unsigned int);
+        -:   15:
+        1:   16:void my_memcpy(char *dst, const char *src, unsigned int len) {
+        1:   17:  if (len < 8)
+    #####:   18:    __builtin_abort();
+        -:   19:
+        1:   20:  __builtin_memcpy(dst, src, len);
+        1:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  const char str[SIZE] = "1234567890123456789012345678901";
+        1:   25:  struct S *s = __builtin_malloc(sizeof(struct S));
+        -:   26:
+        1:   27:  s->j = PATTERN;
+        1:   28:  my_memcpy(s->str, str, SIZE);
+        1:   29:  if (s->j != PATTERN)
+    #####:   30:    __builtin_abort();
+        -:   31:
+        1:   32:  return 0;
+        -:   33:}

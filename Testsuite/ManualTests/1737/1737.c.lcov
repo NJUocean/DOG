@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |union U {
+    3|       |  long long i;
+    4|       |  long f;
+    5|       |} v;
+    6|       |
+    7|      1|long foo(long *f) {
+    8|      1|  *f = 1;
+    9|      1|  v.i = 0;
+   10|      1|  v.f = 0;
+   11|      1|  return *f;
+   12|      1|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  if (foo(&v.f) != 0)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

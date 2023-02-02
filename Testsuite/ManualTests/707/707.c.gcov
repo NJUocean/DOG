@@ -1,0 +1,84 @@
+        -:    0:Source:707.c
+        -:    0:Graph:707.gcno
+        -:    0:Data:707.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fsanitize=bounds -fno-sanitize-recover=bounds -Wall" } */
+        -:    3:
+        -:    4:/* Don't fail on valid uses.  */
+        -:    5:
+        -:    6:struct S {
+        -:    7:  int a[10];
+        -:    8:};
+        -:    9:struct T {
+        -:   10:  int l;
+        -:   11:  int a[];
+        -:   12:};
+        -:   13:struct U {
+        -:   14:  int l;
+        -:   15:  int a[0];
+        -:   16:};
+        -:   17:struct V {
+        -:   18:  int l;
+        -:   19:  int a[1];
+        -:   20:};
+        -:   21:
+        3:   22:__attribute__((noinline, noclone)) void fn_p(int p) {}
+        -:   23:
+        2:   24:__attribute__((noinline, noclone)) void fn_a(volatile int a[]) {
+        -:   25:  /* This is not instrumented.  */
+        2:   26:  a[4] = 5;
+        2:   27:}
+        -:   28:
+        1:   29:__attribute__((noinline, noclone)) int foo_i(int i) {
+        1:   30:  int a[5] = {};
+       1*:   31:  int k = i ? a[i] : i;
+        1:   32:  return k;
+        -:   33:}
+        -:   34:
+        1:   35:int main(void) {
+        -:   36:  volatile int a[5];
+        1:   37:  a[4] = 1;
+        1:   38:  a[2] = a[3];
+        1:   39:  fn_p(a[4]);
+        1:   40:  fn_a(a);
+        -:   41:
+        1:   42:  int i = 4;
+        1:   43:  a[i] = 1;
+        1:   44:  a[2] = a[i];
+        1:   45:  fn_p(a[i]);
+        1:   46:  foo_i(i);
+        -:   47:
+        1:   48:  const int n = 5;
+        1:   49:  volatile int b[n];
+        1:   50:  b[4] = 1;
+        1:   51:  b[2] = b[3];
+        1:   52:  fn_p(b[4]);
+        1:   53:  fn_a(b);
+        -:   54:
+        1:   55:  volatile int c[n][n][n];
+        1:   56:  c[2][2][2] = 2;
+        1:   57:  i = c[4][4][4];
+        -:   58:
+        -:   59:  volatile struct S s;
+        1:   60:  s.a[9] = 1;
+        1:   61:  i = s.a[9];
+        -:   62:
+        -:   63:  /* Don't instrument flexible array members.  */
+        1:   64:  struct T *t = (struct T *)__builtin_malloc(sizeof(struct T) + 10);
+        1:   65:  t->a[1] = 1;
+        -:   66:
+        -:   67:  /* Don't instrument zero-sized arrays (GNU extension).  */
+        1:   68:  struct U *u = (struct U *)__builtin_malloc(sizeof(struct U) + 10);
+        1:   69:  u->a[1] = 1;
+        -:   70:
+        -:   71:  /* Don't instrument last array in a struct.  */
+        1:   72:  struct V *v = (struct V *)__builtin_malloc(sizeof(struct V) + 10);
+        1:   73:  v->a[1] = 1;
+        -:   74:
+        -:   75:  long int *d[10][5];
+        1:   76:  d[9][0] = (long int *)0;
+        1:   77:  d[8][3] = d[9][0];
+        -:   78:
+        1:   79:  return 0;
+        -:   80:}

@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O2 -floop-interchange -fdump-tree-linterchange-details" } */
+    3|       |/* { dg-require-effective-target size32plus } */
+    4|       |/* { dg-skip-if "too big data segment" { visium-*-* } } */
+    5|       |
+    6|       |/* Copied from graphite/interchange-4.c */
+    7|       |
+    8|       |#define DEBUG 0
+    9|       |#if DEBUG
+   10|       |#include <stdio.h>
+   11|       |#endif
+   12|       |
+   13|       |double u[1782225];
+   14|       |
+   15|      1|static void __attribute__((noinline)) foo(int N, double *res) {
+   16|      1|  int i, j;
+   17|      1|  double sum = 0;
+   18|  1.33k|  for (i = 0; i < N; i++)
+   19|  1.78M|    for (j = 0; j < N; j++)
+   20|  1.78M|      sum = sum + u[i + 1335 * j];
+   21|      1|
+   22|      1|  *res = sum;
+   23|      1|}
+   24|       |
+   25|       |extern void abort();
+   26|       |
+   27|      1|int main(void) {
+   28|      1|  int i, j;
+   29|      1|  double res;
+   30|      1|
+   31|  1.78M|  for (i = 0; i < 1782225; i++)
+   32|  1.78M|    u[i] = 0;
+   33|      1|  u[0] = __DBL_MAX__;
+   34|      1|  u[1335] = -__DBL_MAX__;
+   35|      1|  u[1] = __DBL_MAX__;
+   36|      1|  u[1336] = -__DBL_MAX__;
+   37|      1|
+   38|      1|  foo(1335, &res);
+   39|      1|
+   40|       |#if DEBUG
+   41|       |  fprintf(stderr, "res = %d \n", res);
+   42|       |#endif
+   43|      1|
+   44|      1|  if (res != 0.0)
+   45|      0|    abort();
+   46|      1|
+   47|      1|  return 0;
+   48|      1|}
+   49|       |
+   50|       |/* { dg-final { scan-tree-dump-not "is interchanged" "linterchange"} } */
+

@@ -1,0 +1,21 @@
+        -:    0:Source:3973.c
+        -:    0:Graph:3973.gcno
+        -:    0:Data:3973.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-Wno-volatile" { target c++ } } */
+        -:    3:
+        -:    4:/* Even on targets that don't need the optional failval parameter,
+        -:    5:   side-effects on the operand should still be calculated.  */
+        -:    6:
+        -:    7:int x = 3;
+        -:    8:volatile int y = 9;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  int z = __builtin_speculation_safe_value(x, y++);
+        1:   12:  if (z != 3 || y != 10)
+    #####:   13:    __builtin_abort();
+        1:   14:  return 0;
+        -:   15:}
+        -:   16:
+        -:   17:/* { dg-prune-output "this target does not define a speculation barrier;" } */

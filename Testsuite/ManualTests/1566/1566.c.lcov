@@ -1,0 +1,15 @@
+    1|       |/* PR tree-optimization/69546 */
+    2|       |/* { dg-do run { target int128 } } */
+    3|       |
+    4|      1|unsigned __int128 foo(void) {
+    5|      1|  unsigned __int128 a = 0xfffffffffffffffeULL;
+    6|      1|  unsigned __int128 b = 0xffffffffffffffffULL;
+    7|      1|  return a % b;
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  if (foo() != 0xfffffffffffffffeULL)
+   12|      0|    __builtin_abort();
+   13|      1|  return 0;
+   14|      1|}
+

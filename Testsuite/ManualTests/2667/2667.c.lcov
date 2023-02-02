@@ -1,0 +1,18 @@
+    1|       |/* PR middle-end/58956 */
+    2|       |/* PR middle-end/59470 */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-O2" } */
+    5|       |
+    6|       |int a, b, d[1024];
+    7|       |
+    8|      1|int main() {
+    9|      1|  int c = a;
+   10|      1|  asm("{movl $6, (%2); movl $1, %0|mov dword ptr [%2], 6; mov %0, 1}"
+   11|      1|      : "=r"(d[c])
+   12|      1|      : "rm"(b), "r"(&a)
+   13|      1|      : "memory");
+   14|      1|  if (d[0] != 1 || d[6] != 0)
+   15|      0|    __builtin_abort();
+   16|      1|  return 0;
+   17|      1|}
+

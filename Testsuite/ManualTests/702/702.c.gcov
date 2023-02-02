@@ -1,0 +1,10 @@
+        -:    0:Source:702.c
+        -:    0:Graph:702.gcno
+        -:    0:Data:702.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-lto-options { { -flto -g } } } */
+        -:    3:
+        -:    4:typedef int T;
+    #####:    5:void fn(void) { static T t; }
+        1:    6:int main() {}

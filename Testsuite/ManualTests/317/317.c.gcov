@@ -1,0 +1,18 @@
+        -:    0:Source:317.c
+        -:    0:Graph:317.gcno
+        -:    0:Data:317.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/41893 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-require-effective-target lto } */
+        -:    4:/* { dg-options "-flto -fwhole-program -O" } */
+        -:    5:/* { dg-additional-sources "pr41893-2.c" } */
+        -:    6:
+        -:    7:struct S {
+        -:    8:  int v;
+        -:    9:};
+        -:   10:struct S s;
+        -:   11:
+    #####:   12:void __attribute__((externally_visible)) func1(void) { struct S *p = &s; }
+        -:   13:
+        1:   14:int main() { return 0; }

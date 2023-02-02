@@ -1,0 +1,36 @@
+    1|       |/* Bombed with a segfault on powerpc-linux.  doloop.c generated wrong
+    2|       |   loop count.  */
+    3|     25|void foo(unsigned long *start, unsigned long *end) {
+    4|     25|  unsigned long *temp = end - 1;
+    5|     25|
+    6|     45|  while (end > start)
+    7|     20|    *end-- = *temp--;
+    8|     25|}
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  unsigned long a[5];
+   12|      1|  int start, end, k;
+   13|      1|
+   14|      6|  for (start = 0; start < 5; start++)
+   15|     30|    for (end = 0; end < 5; end++) {
+   16|    150|      for (k = 0; k < 5; k++)
+   17|    125|        a[k] = k;
+   18|     25|
+   19|     25|      foo(a + start, a + end);
+   20|     25|
+   21|    100|      for (k = 0; k <= start; k++)
+   22|     75|        if (a[k] != k)
+   23|      0|          abort();
+   24|     25|
+   25|     45|      for (k = start + 1; k <= end; k++)
+   26|     20|        if (a[k] != k - 1)
+   27|      0|          abort();
+   28|     25|
+   29|     75|      for (k = end + 1; k < 5; k++)
+   30|     50|        if (a[k] != k)
+   31|      0|          abort();
+   32|     25|    }
+   33|      1|
+   34|      1|  return 0;
+   35|      1|}
+

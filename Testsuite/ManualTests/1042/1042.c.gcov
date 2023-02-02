@@ -1,0 +1,38 @@
+        -:    0:Source:1042.c
+        -:    0:Graph:1042.gcno
+        -:    0:Data:1042.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/83393 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fno-forward-propagate -fno-tree-bit-ccp" } */
+        -:    4:
+        -:    5:typedef unsigned char u8;
+        -:    6:typedef unsigned short u16;
+        -:    7:typedef unsigned int u32;
+        -:    8:typedef unsigned long long u64;
+        -:    9:
+        -:   10:u32 a, d;
+        -:   11:u64 b;
+        -:   12:u8 c;
+        -:   13:
+        1:   14:static u64 __attribute__((noinline, noclone)) foo(u16 f, u64 g) {
+        1:   15:  f <<= 15;
+        1:   16:  f *= d;
+        1:   17:  f -= g %= 44;
+        1:   18:  f <<= f <= g;
+        1:   19:  c = 255;
+        1:   20:  c >>= (u8)f == 0;
+        1:   21:  f *= g;
+        1:   22:  c -= ~c;
+        1:   23:  return f + a + b + f;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        -:   27:#if (__SIZEOF_LONG_LONG__ == 8 && __SIZEOF_INT__ == 4 &&                       \
+        -:   28:     __SIZEOF_SHORT__ == 2 && __CHAR_BIT__ == 8)
+        1:   29:  u64 x = foo(3, 0xE6C0011BBA6DBD7LL);
+        1:   30:  if (x != 0x1f66e)
+    #####:   31:    __builtin_abort();
+        -:   32:#endif
+        1:   33:  return 0;
+        -:   34:}

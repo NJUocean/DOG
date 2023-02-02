@@ -1,0 +1,33 @@
+        -:    0:Source:2622.c
+        -:    0:Graph:2622.gcno
+        -:    0:Data:2622.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target *-*-linux* *-*-gnu* } } */
+        -:    2:/* { dg-options "-O2" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int __attribute__((__noinline__)) test_lt(__float128 x, __float128 y) {
+        1:    7:  return x < y;
+        -:    8:}
+        -:    9:
+        1:   10:int __attribute__((__noinline__)) test_gt(__float128 x, __float128 y) {
+        1:   11:  return x > y;
+        -:   12:}
+        -:   13:
+        1:   14:int main() {
+        1:   15:  __float128 a = 0.0;
+        1:   16:  __float128 b = 1.0;
+        -:   17:
+        -:   18:  int r;
+        -:   19:
+        1:   20:  r = test_lt(a, b);
+        1:   21:  if (r != ((double)a < (double)b))
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  r = test_gt(a, b);
+        1:   25:  if (r != ((double)a > (double)b))
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

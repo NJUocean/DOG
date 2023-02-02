@@ -1,0 +1,32 @@
+        -:    0:Source:1435.c
+        -:    0:Graph:1435.gcno
+        -:    0:Data:1435.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/56420 */
+        -:    2:/* { dg-do run { target int128 } } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        2:    6:__attribute__((noinline, noclone)) __uint128_t foo(__uint128_t x) {
+        2:    7:  return x * (((__uint128_t)-1) << 63);
+        -:    8:}
+        -:    9:
+        2:   10:__attribute__((noinline, noclone)) __uint128_t bar(__uint128_t x) {
+        2:   11:  return x * (((__uint128_t)1) << 63);
+        -:   12:}
+        -:   13:
+        2:   14:__attribute__((noinline, noclone)) __uint128_t baz(__uint128_t x) {
+        2:   15:  return x * -(((__uint128_t)1) << 62);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        2:   19:  if (foo(1) != (((__uint128_t)-1) << 63) ||
+        1:   20:      foo(8) != (((__uint128_t)-1) << 66))
+    #####:   21:    abort();
+        1:   22:  if (bar(1) != (((__uint128_t)1) << 63) || bar(8) != (((__uint128_t)1) << 66))
+    #####:   23:    abort();
+        2:   24:  if (baz(1) != -(((__uint128_t)1) << 62) ||
+        1:   25:      baz(8) != ((-(((__uint128_t)1) << 62)) << 3))
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

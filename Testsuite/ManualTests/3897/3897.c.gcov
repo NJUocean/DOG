@@ -1,0 +1,32 @@
+        -:    0:Source:3897.c
+        -:    0:Graph:3897.gcno
+        -:    0:Data:3897.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-skip-if "ptxas crashes or executes incorrectly" { nvptx-*-* } { "-O0"
+        -:    2: * "-Os" } { "" } } Reported 2015-11-20  */
+        -:    3:
+        -:    4:int a, b, d = 1, e, f, o, u, w = 1, z;
+        -:    5:short c, q, t;
+        -:    6:
+        1:    7:int main() {
+        -:    8:  char g;
+        2:    9:  for (; d; d--) {
+        1:   10:    while (o)
+    #####:   11:      for (; e;) {
+    #####:   12:        c = b;
+    #####:   13:        int h = o = z;
+    #####:   14:        for (; u;)
+    #####:   15:          for (; a;)
+        -:   16:            ;
+        -:   17:      }
+        1:   18:    if (t < 1)
+        1:   19:      g = w;
+        1:   20:    f = g;
+       1*:   21:    g && (q = 1);
+        -:   22:  }
+        -:   23:
+        1:   24:  if (q != 1)
+    #####:   25:    __builtin_abort();
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}

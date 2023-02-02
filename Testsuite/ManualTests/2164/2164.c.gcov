@@ -1,0 +1,20 @@
+        -:    0:Source:2164.c
+        -:    0:Graph:2164.gcno
+        -:    0:Data:2164.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:extern void abort(void);
+        -:    3:
+        1:    4:__attribute__((noinline)) int foo(int n) {
+        1:    5:  if (n < 0)
+        1:    6:    n = ~n;
+        -:    7:
+        1:    8:  return n;
+        -:    9:}
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  if (foo(-1) != 0)
+    #####:   13:    abort();
+        -:   14:
+        1:   15:  return 0;
+        -:   16:}

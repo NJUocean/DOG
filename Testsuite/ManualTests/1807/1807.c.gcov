@@ -1,0 +1,37 @@
+        -:    0:Source:1807.c
+        -:    0:Graph:1807.gcno
+        -:    0:Data:1807.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 24255 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:union wait {
+        -:    8:  int w_status;
+        -:    9:};
+        -:   10:
+        -:   11:typedef union {
+        -:   12:  union wait *uptr;
+        -:   13:  int *iptr;
+        -:   14:} WAIT_STATUS __attribute__((__transparent_union__));
+        -:   15:
+        -:   16:int status;
+        -:   17:union wait wstatus;
+        -:   18:
+        1:   19:void __attribute__((noinline)) test1(WAIT_STATUS s) {
+        1:   20:  if (s.iptr != &status)
+    #####:   21:    abort();
+        1:   22:}
+        -:   23:
+        1:   24:void __attribute__((noinline)) test2(WAIT_STATUS s) {
+        1:   25:  if (s.uptr != &wstatus)
+    #####:   26:    abort();
+        1:   27:}
+        -:   28:
+        1:   29:int main() {
+        1:   30:  test1(&status);
+        1:   31:  test2(&wstatus);
+        1:   32:  return 0;
+        -:   33:}

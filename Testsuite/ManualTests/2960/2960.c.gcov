@@ -1,0 +1,21 @@
+        -:    0:Source:2960.c
+        -:    0:Graph:2960.gcno
+        -:    0:Data:2960.gcda
+        -:    0:Runs:1
+        -:    1:/* Check that trapa / interrput_handler attributes can paired in
+        -:    2:   either order.  */
+        -:    3:/* { dg-do compile }  */
+        -:    4:/* { dg-options "-O" }  */
+        -:    5:/* { dg-final { scan-assembler "trapa\[ \t\]\[ \t\]*#4"} }  */
+        -:    6:/* { dg-final { scan-assembler-times "trapa" 1 } }  */
+        -:    7:
+        -:    8:void h0(void) __attribute__((trap_exit(4))) __attribute__((interrupt_handler));
+        -:    9:void h1(void) __attribute__((interrupt_handler)) __attribute__((trap_exit(5)));
+        -:   10:
+    #####:   11:void foo(void) {}
+        -:   12:
+    #####:   13:void h0(void) {}
+        -:   14:
+    #####:   15:void delay(int a) {}
+        -:   16:
+        1:   17:int main(void) { return 0; }

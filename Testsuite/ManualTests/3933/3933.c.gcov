@@ -1,0 +1,20 @@
+        -:    0:Source:3933.c
+        -:    0:Graph:3933.gcno
+        -:    0:Data:3933.gcda
+        -:    0:Runs:1
+        -:    1:struct S {
+        -:    2:  signed f0 : 16;
+        -:    3:  unsigned f1 : 1;
+        -:    4:};
+        -:    5:
+        -:    6:int b;
+        -:    7:static struct S c[] = {{-1, 0}, {-1, 0}};
+        -:    8:struct S d;
+        -:    9:
+        1:   10:int main() {
+        1:   11:  struct S e = c[0];
+        1:   12:  d = e;
+        1:   13:  if (d.f1 != 0)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

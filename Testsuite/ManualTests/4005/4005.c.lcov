@@ -1,0 +1,48 @@
+    1|       |/* PR target/85582 */
+    2|       |
+    3|       |#ifdef __SIZEOF_INT128__
+    4|       |typedef __int128 S;
+    5|       |typedef unsigned __int128 U;
+    6|       |#else
+    7|       |typedef long long S;
+    8|       |typedef unsigned long long U;
+    9|       |#endif
+   10|       |
+   11|      3|__attribute__((noipa)) U f1(U x, int y) { return x << (y & -2); }
+   12|       |
+   13|      3|__attribute__((noipa)) S f2(S x, int y) { return x >> (y & -2); }
+   14|       |
+   15|      3|__attribute__((noipa)) U f3(U x, int y) { return x >> (y & -2); }
+   16|       |
+   17|      1|int main() {
+   18|      1|  U a = (U)1 << (sizeof(U) * __CHAR_BIT__ - 7);
+   19|      1|  if (f1(a, 5) != ((U)1 << (sizeof(S) * __CHAR_BIT__ - 3)))
+   20|      0|    __builtin_abort();
+   21|      1|  S b = (U)0x101 << (sizeof(S) * __CHAR_BIT__ / 2 - 7);
+   22|      1|  if (f1(b, sizeof(S) * __CHAR_BIT__ / 2) !=
+   23|      1|      (U)0x101 << (sizeof(S) * __CHAR_BIT__ - 7))
+   24|      0|    __builtin_abort();
+   25|      1|  if (f1(b, sizeof(S) * __CHAR_BIT__ / 2 + 2) !=
+   26|      1|      (U)0x101 << (sizeof(S) * __CHAR_BIT__ - 5))
+   27|      0|    __builtin_abort();
+   28|      1|  S c = (U)1 << (sizeof(S) * __CHAR_BIT__ - 1);
+   29|      1|  if ((U)f2(c, 5) != ((U)0x1f << (sizeof(S) * __CHAR_BIT__ - 5)))
+   30|      0|    __builtin_abort();
+   31|      1|  if ((U)f2(c, sizeof(S) * __CHAR_BIT__ / 2) !=
+   32|      1|      ((U)-1 << (sizeof(S) * __CHAR_BIT__ / 2 - 1)))
+   33|      0|    __builtin_abort();
+   34|      1|  if ((U)f2(c, sizeof(S) * __CHAR_BIT__ / 2 + 2) !=
+   35|      1|      ((U)-1 << (sizeof(S) * __CHAR_BIT__ / 2 - 3)))
+   36|      0|    __builtin_abort();
+   37|      1|  U d = (U)1 << (sizeof(S) * __CHAR_BIT__ - 1);
+   38|      1|  if (f3(c, 5) != ((U)0x1 << (sizeof(S) * __CHAR_BIT__ - 5)))
+   39|      0|    __builtin_abort();
+   40|      1|  if (f3(c, sizeof(S) * __CHAR_BIT__ / 2) !=
+   41|      1|      ((U)1 << (sizeof(S) * __CHAR_BIT__ / 2 - 1)))
+   42|      0|    __builtin_abort();
+   43|      1|  if (f3(c, sizeof(S) * __CHAR_BIT__ / 2 + 2) !=
+   44|      1|      ((U)1 << (sizeof(S) * __CHAR_BIT__ / 2 - 3)))
+   45|      0|    __builtin_abort();
+   46|      1|  return 0;
+   47|      1|}
+

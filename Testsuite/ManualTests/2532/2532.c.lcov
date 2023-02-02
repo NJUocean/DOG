@@ -1,0 +1,62 @@
+    1|       |struct table_elt {
+    2|       |  void *exp;
+    3|       |  struct table_elt *next_same_hash;
+    4|       |  struct table_elt *prev_same_hash;
+    5|       |  struct table_elt *next_same_value;
+    6|       |  struct table_elt *prev_same_value;
+    7|       |  struct table_elt *first_same_value;
+    8|       |  struct table_elt *related_value;
+    9|       |  int cost;
+   10|       |  int mode;
+   11|       |  char in_memory;
+   12|       |  char in_struct;
+   13|       |  char is_const;
+   14|       |  char flag;
+   15|       |};
+   16|       |
+   17|       |struct write_data {
+   18|       |  int sp : 1;
+   19|       |  int var : 1;
+   20|       |  int nonscalar : 1;
+   21|       |  int all : 1;
+   22|       |};
+   23|       |
+   24|       |int cse_rtx_addr_varies_p(void *);
+   25|       |void remove_from_table(struct table_elt *, int);
+   26|       |static struct table_elt *table[32];
+   27|       |
+   28|       |void invalidate_memory(writes) struct write_data *writes;
+   29|      1|{
+   30|      1|  register int i;
+   31|      1|  register struct table_elt *p, *next;
+   32|      1|  int all = writes->all;
+   33|      1|  int nonscalar = writes->nonscalar;
+   34|      1|
+   35|     32|  for (i = 0; i < 31; i++)
+   36|     32|    for (p = table[i]; p; p = next) {
+   37|      1|      next = p->next_same_hash;
+   38|      1|      if (p->in_memory &&
+   39|      1|          (all || (nonscalar && p->in_struct) || cse_rtx_addr_varies_p(p->exp)))
+   40|      0|        remove_from_table(p, i);
+   41|      1|    }
+   42|      1|}
+   43|       |
+   44|      1|int cse_rtx_addr_varies_p(void *x) { return 0; }
+   45|      0|void remove_from_table(struct table_elt *x, int y) { abort(); }
+   46|       |
+   47|      1|int main() {
+   48|      1|  struct write_data writes;
+   49|      1|  struct table_elt elt;
+   50|      1|
+   51|      1|  __builtin_memset(&elt, 0, sizeof(elt));
+   52|      1|  elt.in_memory = 1;
+   53|      1|  table[0] = &elt;
+   54|      1|
+   55|      1|  __builtin_memset(&writes, 0, sizeof(writes));
+   56|      1|  writes.var = 1;
+   57|      1|  writes.nonscalar = 1;
+   58|      1|
+   59|      1|  invalidate_memory(&writes);
+   60|      1|  return 0;
+   61|      1|}
+

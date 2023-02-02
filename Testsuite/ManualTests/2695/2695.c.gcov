@@ -1,0 +1,74 @@
+        -:    0:Source:2695.c
+        -:    0:Graph:2695.gcno
+        -:    0:Data:2695.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:struct inode {
+        -:    3:  long long i_size;
+        -:    4:  struct super_block *i_sb;
+        -:    5:};
+        -:    6:
+        -:    7:struct file {
+        -:    8:  long long f_pos;
+        -:    9:};
+        -:   10:
+        -:   11:struct super_block {
+        -:   12:  int s_blocksize;
+        -:   13:  unsigned char s_blocksize_bits;
+        -:   14:  int s_hs;
+        -:   15:};
+        -:   16:
+        1:   17:static char *isofs_bread(unsigned int block) {
+        1:   18:  if (block)
+    #####:   19:    abort();
+        1:   20:  exit(0);
+        -:   21:}
+        -:   22:
+        1:   23:static int do_isofs_readdir(struct inode *inode, struct file *filp) {
+        1:   24:  int bufsize = inode->i_sb->s_blocksize;
+        1:   25:  unsigned char bufbits = inode->i_sb->s_blocksize_bits;
+        -:   26:  unsigned int block, offset;
+        1:   27:  char *bh = 0;
+        -:   28:  int hs;
+        -:   29:
+        1:   30:  if (filp->f_pos >= inode->i_size)
+    #####:   31:    return 0;
+        -:   32:
+        1:   33:  offset = filp->f_pos & (bufsize - 1);
+        1:   34:  block = filp->f_pos >> bufbits;
+        1:   35:  hs = inode->i_sb->s_hs;
+        -:   36:
+        1:   37:  while (filp->f_pos < inode->i_size) {
+        1:   38:    if (!bh)
+        1:   39:      bh = isofs_bread(block);
+        -:   40:
+    #####:   41:    hs += block << bufbits;
+        -:   42:
+    #####:   43:    if (hs == 0)
+    #####:   44:      filp->f_pos++;
+        -:   45:
+    #####:   46:    if (offset >= bufsize)
+    #####:   47:      offset &= bufsize - 1;
+        -:   48:
+    #####:   49:    if (*bh)
+    #####:   50:      filp->f_pos++;
+        -:   51:
+    #####:   52:    filp->f_pos++;
+        -:   53:  }
+    #####:   54:  return 0;
+        -:   55:}
+        -:   56:
+        -:   57:struct super_block s;
+        -:   58:struct inode i;
+        -:   59:struct file f;
+        -:   60:
+        1:   61:int main(int argc, char **argv) {
+        1:   62:  s.s_blocksize = 512;
+        1:   63:  s.s_blocksize_bits = 9;
+        1:   64:  i.i_size = 2048;
+        1:   65:  i.i_sb = &s;
+        1:   66:  f.f_pos = 0;
+        -:   67:
+        1:   68:  do_isofs_readdir(&i, &f);
+    #####:   69:  abort();
+        -:   70:}

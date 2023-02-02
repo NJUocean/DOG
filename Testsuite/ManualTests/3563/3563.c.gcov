@@ -1,0 +1,10 @@
+        -:    0:Source:3563.c
+        -:    0:Graph:3563.gcno
+        -:    0:Data:3563.gcda
+        -:    0:Runs:1
+        -:    1:/* REPRODUCED:RUN:SIGNAL MACHINE:i386 OPTIONS:-O */
+        1:    2:main() {
+        -:    3:  if (strcmp("X", "") < 0)
+        -:    4:    abort();
+        1:    5:  exit(0);
+        -:    6:}

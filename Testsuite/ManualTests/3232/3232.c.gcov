@@ -1,0 +1,26 @@
+        -:    0:Source:3232.c
+        -:    0:Graph:3232.gcno
+        -:    0:Data:3232.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/6177
+        -:    2:   This testcase ICEd because expr.c did not expect to see a CONCAT
+        -:    3:   as array rtl.  */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:__complex__ float foo(void) {
+        -:    9:  __complex__ float f[1];
+        1:   10:  __real__ f[0] = 1.0;
+        1:   11:  __imag__ f[0] = 1.0;
+        1:   12:  f[0] = __builtin_conjf(f[0]);
+        1:   13:  return f[0];
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) {
+        -:   17:  __complex__ double d[1];
+        1:   18:  d[0] = foo();
+        1:   19:  if (__real__ d[0] != 1.0 || __imag__ d[0] != -1.0)
+    #####:   20:    abort();
+        1:   21:  exit(0);
+        -:   22:}

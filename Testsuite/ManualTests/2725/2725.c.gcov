@@ -1,0 +1,24 @@
+        -:    0:Source:2725.c
+        -:    0:Graph:2725.gcno
+        -:    0:Data:2725.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/410 from Jan Echternach
+        -:    2:   <jan.echternach@informatik.uni-rostock.de>,
+        -:    3:   adapted to a testcase by Joseph Myers <jsm28@cam.ac.uk>.
+        -:    4:*/
+        -:    5:
+        -:    6:extern void exit(int);
+        -:    7:
+        1:    8:static void foo(void) {
+        -:    9:  struct {
+        -:   10:    long a;
+        -:   11:    char b[1];
+        1:   12:  } x = {2, {0}};
+        1:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        -:   16:  int tmp;
+        1:   17:  foo();
+        1:   18:  tmp = 1;
+        1:   19:  exit(0);
+        -:   20:}

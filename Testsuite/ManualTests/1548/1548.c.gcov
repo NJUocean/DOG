@@ -1,0 +1,34 @@
+        -:    0:Source:1548.c
+        -:    0:Graph:1548.gcno
+        -:    0:Data:1548.gcda
+        -:    0:Runs:1
+        -:    1:/* Test -f*sanitize*=all */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+        -:    4:/* { dg-skip-if "" { *-*-* } { "-flto -fno-fat-lto-objects" } } */
+        -:    5:/* { dg-options "-fsanitize=undefined -fsanitize-recover=all
+        -:    6: * -fdump-tree-optimized" } */
+        -:    7:
+        -:    8:int a[4];
+        -:    9:
+    #####:   10:int f1(int x, int y, int z) { return a[x] + (1 << y) + (100 / z); }
+        -:   11:
+    #####:   12:char *f2(int x) {
+    #####:   13:  char *p = (char *)__builtin_calloc(64, 1);
+    #####:   14:  p[x] = 3;
+    #####:   15:  return p;
+        -:   16:}
+        -:   17:
+    #####:   18:int f3(int x, int *y, double z, double w) {
+    #####:   19:  int a[*y];
+    #####:   20:  if (x)
+    #####:   21:    __builtin_unreachable();
+    #####:   22:  asm volatile("" : : "r"(&a[0]));
+    #####:   23:  return z / w;
+        -:   24:}
+        -:   25:
+        1:   26:int main() { return 0; }
+        -:   27:
+        -:   28:/* { dg-final { scan-tree-dump "__ubsan_" "optimized" } } */
+        -:   29:/* { dg-final { scan-tree-dump-not "__ubsan_\[a-z_\]*_abort" "optimized" } } */
+        -:   30:/* { dg-final { scan-tree-dump "UBSAN_CHECK_" "optimized" } } */

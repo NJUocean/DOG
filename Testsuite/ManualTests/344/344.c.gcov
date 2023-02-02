@@ -1,0 +1,42 @@
+        -:    0:Source:344.c
+        -:    0:Graph:344.gcno
+        -:    0:Data:344.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-falign-labels=8" } */
+        -:    3:/* { dg-skip-if "no label alignment > 2" { "pdp11-*-*" } } */
+        -:    4:
+        -:    5:/* On ARMv7-A CPUs, this test resulted in incorrect code generation.
+        -:    6:   The code generated for the switch statement expected the jump table
+        -:    7:   to immediately follow the jump instruction, but -falign-labels
+        -:    8:   caused the label preceding the table to be aligned.  */
+        -:    9:/* M68K and fido only support -falign-labels argument <= 2.  */
+        -:   10:
+        -:   11:volatile int x;
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int y;
+        -:   15:
+        1:   16:  x = 0;
+        -:   17:
+        1:   18:  switch (x) {
+        1:   19:  case 0:
+        1:   20:    y = 2 * x;
+        1:   21:    break;
+    #####:   22:  case 1:
+    #####:   23:    y = -3 * x;
+    #####:   24:    break;
+    #####:   25:  case 2:
+    #####:   26:    y = x + 5;
+    #####:   27:    break;
+    #####:   28:  case 3:
+    #####:   29:    y = x - 7;
+    #####:   30:    break;
+    #####:   31:  default:
+    #####:   32:    break;
+        -:   33:  }
+        -:   34:
+        1:   35:  x = y;
+        -:   36:
+        1:   37:  return 0;
+        -:   38:}

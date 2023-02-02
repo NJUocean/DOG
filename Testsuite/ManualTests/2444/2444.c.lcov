@@ -1,0 +1,28 @@
+    1|       |extern void abort(void);
+    2|       |extern void exit(int);
+    3|       |
+    4|       |struct baz {
+    5|       |  int a, b, c;
+    6|       |};
+    7|       |
+    8|       |struct baz *c;
+    9|       |
+   10|      1|void bar(int b) {
+   11|      1|  if (c->a != 1 || c->b != 2 || c->c != 3 || b != 4)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|      1|void foo(struct baz a, int b) {
+   16|      1|  c = &a;
+   17|      1|  bar(b);
+   18|      1|}
+   19|       |
+   20|      1|int main() {
+   21|      1|  struct baz a;
+   22|      1|  a.a = 1;
+   23|      1|  a.b = 2;
+   24|      1|  a.c = 3;
+   25|      1|  foo(a, 4);
+   26|      1|  exit(0);
+   27|      1|}
+

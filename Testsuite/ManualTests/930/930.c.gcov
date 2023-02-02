@@ -1,0 +1,12 @@
+        -:    0:Source:930.c
+        -:    0:Graph:930.gcno
+        -:    0:Data:930.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target powerpc*-*-* ia64-*-* i?86-*-* x86_64-*-* } } */
+        -:    2:/* { dg-options "-O -fschedule-insns -fselective-scheduling" } */
+        -:    3:
+        1:    4:int main() {
+        -:    5:  int a[3][3][3];
+        1:    6:  __builtin_memset(a, 0, sizeof a);
+        1:    7:  return 0;
+        -:    8:}

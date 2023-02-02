@@ -1,0 +1,56 @@
+        -:    0:Source:821.c
+        -:    0:Graph:821.gcno
+        -:    0:Data:821.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:#pragma pack(push)
+        -:    7:#pragma pack(1)
+        -:    8:struct S0 {
+        -:    9:  uint32_t f0;
+        -:   10:  uint64_t f1;
+        -:   11:  const volatile uint8_t f2;
+        -:   12:  volatile uint32_t f3;
+        -:   13:};
+        -:   14:#pragma pack(pop)
+        -:   15:
+        -:   16:static int32_t g_3 = 0xD26EC17EL;
+        -:   17:static volatile int32_t g_4 = (-1L);
+        -:   18:static struct S0 g_5 = {4294967295UL, 0x3C407858F9C25B05LL, 1UL, 0xE56890C5L};
+        -:   19:
+        -:   20:static struct S0 func_1(void);
+        -:   21:
+        1:   22:static struct S0 func_1(void) {
+        -:   23:  int32_t l_2[2][2];
+        -:   24:  int i, j;
+        3:   25:  for (i = 0; i < 2; i++) {
+        6:   26:    for (j = 0; j < 2; j++)
+        4:   27:      l_2[i][j] = 0x81D21F1EL;
+        -:   28:  }
+        3:   29:  for (g_3 = 0; g_3 < 2; g_3 += 1) {
+        6:   30:    for (g_4 = 0; g_4 < 2; g_4 += 1) {
+        4:   31:      l_2[g_3][g_4] = 1L;
+        -:   32:    }
+        -:   33:  }
+        1:   34:  return g_5;
+        -:   35:}
+        -:   36:
+        1:   37:int main(int argc, char *argv[]) {
+        1:   38:  int print_hash_value = 0;
+       1*:   39:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   40:    print_hash_value = 1;
+        1:   41:  platform_main_begin();
+        1:   42:  crc32_gentab();
+        1:   43:  func_1();
+        1:   44:  transparent_crc(g_3, "g_3", print_hash_value);
+        1:   45:  transparent_crc(g_4, "g_4", print_hash_value);
+        1:   46:  transparent_crc(g_5.f0, "g_5.f0", print_hash_value);
+        1:   47:  transparent_crc(g_5.f1, "g_5.f1", print_hash_value);
+        1:   48:  transparent_crc(g_5.f2, "g_5.f2", print_hash_value);
+        1:   49:  transparent_crc(g_5.f3, "g_5.f3", print_hash_value);
+        1:   50:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   51:  return 0;
+        -:   52:}

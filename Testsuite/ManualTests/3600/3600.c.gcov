@@ -1,0 +1,38 @@
+        -:    0:Source:3600.c
+        -:    0:Graph:3600.gcno
+        -:    0:Data:3600.gcda
+        -:    0:Runs:1
+        -:    1:/* PR preprocessor/57580 */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-fopenmp -save-temps -fdump-tree-gimple" } */
+        -:    4:
+        -:    5:#define PS                                                                     \
+        -:    6:  _Pragma("omp parallel num_threads(2)") {                                     \
+        -:    7:    _Pragma("omp single") { ret = 0; }                                         \
+        -:    8:  }
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int ret;
+        -:   12:  _Pragma("omp parallel num_threads(3)") {
+        1:   13:    _Pragma("omp single") { ret = 0; }
+        -:   14:  }
+        1:   15:  _Pragma("omp parallel num_threads(4)"){_Pragma("omp single"){ret = 0;
+        -:   16:}
+        -:   17:}
+        -:   18:{
+        -:   19:  _Pragma("omp parallel num_threads(5)") {
+        1:   20:    _Pragma("omp single") { ret = 0; }
+        -:   21:  }
+        -:   22:}
+        1:   23:PS PS return ret;
+        -:   24:}
+        -:   25:
+        -:   26:/* { dg-final { scan-tree-dump-times "#pragma omp
+        -:   27: * parallel\[^\n\r]*num_threads\\(2\\)" 2 "gimple" } } */
+        -:   28:/* { dg-final { scan-tree-dump-times "#pragma omp
+        -:   29: * parallel\[^\n\r]*num_threads\\(3\\)" 1 "gimple" } } */
+        -:   30:/* { dg-final { scan-tree-dump-times "#pragma omp
+        -:   31: * parallel\[^\n\r]*num_threads\\(4\\)" 1 "gimple" } } */
+        -:   32:/* { dg-final { scan-tree-dump-times "#pragma omp
+        -:   33: * parallel\[^\n\r]*num_threads\\(5\\)" 1 "gimple" } } */
+        -:   34:/* { dg-final { scan-tree-dump-times "#pragma omp single" 5 "gimple" } } */

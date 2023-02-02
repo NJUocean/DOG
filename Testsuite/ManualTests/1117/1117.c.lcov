@@ -1,0 +1,29 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-skip-if "" { *-*-* } { "*" } { "-O2" } } */
+    3|       |/* { dg-options "-fsanitize=object-size" } */
+    4|       |
+    5|      1|#define N 20
+    6|       |
+    7|       |struct S {
+    8|       |  int a;
+    9|       |};
+   10|       |
+   11|      1|__attribute__((noinline, noclone)) struct S f1(int i) {
+   12|      1|  struct S a[N];
+   13|      1|  struct S *p = a;
+   14|      1|  struct S s;
+   15|      1|  s = p[i];
+   16|      1|  return s;
+   17|      1|}
+   18|       |
+   19|      1|int main() {
+   20|      1|  f1(N);
+   21|      1|  return 0;
+   22|      1|}
+   23|       |
+   24|       |/* { dg-output "load of address \[^\n\r]* with insufficient space for an object
+   25|       | * of type\[^\n\r]*(\n|\r\n|\r)" } */
+   26|       |/* { dg-output "\[^\n\r]*note: pointer points here\[^\n\r]*(\n|\r\n|\r)" } */
+   27|       |/* { dg-output "\[^\n\r]*\[^\n\r]*(\n|\r\n|\r)" } */
+   28|       |/* { dg-output "\[^\n\r]*\\^" } */
+

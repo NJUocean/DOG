@@ -1,0 +1,27 @@
+        -:    0:Source:355.c
+        -:    0:Graph:355.gcno
+        -:    0:Data:355.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c11" } */
+        -:    3:
+        -:    4:/* Test that when compiling with -std=c11 and defining
+        -:    5:   __STDC_WANT_IEC_60559_TYPES_EXT__, we only see the ISO/IEC TS
+        -:    6:   18661-3 values for FLT_EVAL_METHOD.  */
+        -:    7:
+        -:    8:#define __STDC_WANT_IEC_60559_TYPES_EXT__
+        -:    9:
+        -:   10:#include <float.h>
+        -:   11:
+        1:   12:int main(int argc, char **argv) {
+        -:   13:  switch (__FLT_EVAL_METHOD__) {
+        -:   14:  case 0:
+        -:   15:  case 1:
+        -:   16:  case 2:
+        -:   17:  case 16:
+        -:   18:  case -1:
+        1:   19:    return 0;
+        -:   20:  default:
+        -:   21:    return 1;
+        -:   22:  }
+        -:   23:}

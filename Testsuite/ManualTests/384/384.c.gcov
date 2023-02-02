@@ -1,0 +1,60 @@
+        -:    0:Source:384.c
+        -:    0:Graph:384.gcno
+        -:    0:Data:384.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:/* { dg-require-effective-target run_expensive_tests }  PR testsuite/48283 */
+        -:    3:/* { dg-timeout-factor 4.0 } */
+        -:    4:
+        -:    5:#define DEBUG 0
+        -:    6:#if DEBUG
+        -:    7:#include <stdio.h>
+        -:    8:#endif
+        -:    9:
+        -:   10:#define N 24
+        -:   11:#define M 100
+        -:   12:
+        -:   13:int A[M][M][M], B[M][M], C[M][M];
+        -:   14:
+        1:   15:static int __attribute__((noinline)) foo(void) {
+        -:   16:  int i, j, k;
+        -:   17:
+        -:   18:  /* These loops contain too few iterations to be blocked.  */
+       25:   19:  for (i = 0; i < 24; i++)
+      600:   20:    for (j = 0; j < 24; j++)
+    14400:   21:      for (k = 0; k < 24; k++)
+    13824:   22:        A[i][j][k] = B[i][k] * C[k][j];
+        -:   23:
+        -:   24:  /* These loops should still be loop blocked.  */
+      101:   25:  for (i = 0; i < M; i++)
+    10100:   26:    for (j = 0; j < M; j++)
+  1010000:   27:      for (k = 0; k < M; k++)
+  1000000:   28:        A[i][j][k] = B[i][k] * C[k][j];
+        -:   29:
+        1:   30:  return A[0][0][0] + A[M - 1][M - 1][M - 1];
+        -:   31:}
+        -:   32:
+        -:   33:extern void abort();
+        -:   34:
+        1:   35:int main(void) {
+        -:   36:  int i, j, res;
+        -:   37:
+      101:   38:  for (i = 0; i < M; i++)
+    10100:   39:    for (j = 0; j < M; j++) {
+    10000:   40:      B[i][j] = i;
+    10000:   41:      C[i][j] = j;
+        -:   42:    }
+        -:   43:
+        1:   44:  res = foo();
+        -:   45:
+        -:   46:#if DEBUG
+        -:   47:  fprintf(stderr, "res = %d \n", res);
+        -:   48:#endif
+        -:   49:
+        1:   50:  if (res != 9801)
+    #####:   51:    abort();
+        -:   52:
+        1:   53:  return 0;
+        -:   54:}
+        -:   55:
+        -:   56:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

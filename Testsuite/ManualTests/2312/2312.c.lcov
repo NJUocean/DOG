@@ -1,0 +1,18 @@
+    1|       |/* Test for #pragma weak with declaration not at file scope.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-require-weak "" } */
+    4|       |/* { dg-options "" } */
+    5|       |/* NVPTX's weak is applied to the definition,  not declaration.  */
+    6|       |/* { dg-skip-if "" { nvptx-*-* } } */
+    7|       |
+    8|       |/* { dg-final { scan-assembler "weak\[^ \t\]*\[ \t\]_?foo" } } */
+    9|       |
+   10|       |#pragma weak foo
+   11|       |
+   12|      1|int main(void) {
+   13|      1|  extern int foo(void);
+   14|      1|  if (&foo)
+   15|      0|    return foo();
+   16|      1|  return 0;
+   17|      1|}
+

@@ -1,0 +1,23 @@
+        -:    0:Source:1251.c
+        -:    0:Graph:1251.gcno
+        -:    0:Data:1251.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* Check that find_scan_insn properly handles swapped FP comparisons.  */
+        -:    3:static double x;
+        -:    4:static int exit_code;
+        -:    5:
+        5:    6:void __attribute__((noinline)) check_int(int a, int b) {
+        5:    7:  exit_code += (a != b);
+        5:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        1:   11:  x = 0.0;
+        1:   12:  asm("" : "+m"(x));
+        1:   13:  check_int(__builtin_isgreater(x, 1.0), 0);
+        1:   14:  check_int(__builtin_isgreaterequal(x, 1.0), 0);
+        1:   15:  check_int(__builtin_isless(x, 1.0), 1);
+        1:   16:  check_int(__builtin_islessequal(x, 1.0), 1);
+        1:   17:  check_int(__builtin_islessgreater(x, 1.0), 1);
+        1:   18:  return exit_code;
+        -:   19:}

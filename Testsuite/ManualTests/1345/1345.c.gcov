@@ -1,0 +1,33 @@
+        -:    0:Source:1345.c
+        -:    0:Graph:1345.gcno
+        -:    0:Data:1345.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-fipa-pta" } */
+        -:    3:
+        -:    4:typedef unsigned long ulong;
+        -:    5:
+       25:    6:int __attribute__((noinline, noclone)) f4(int a, int b, int c, int d, int e) {
+       25:    7:  return a + b + c + d + e;
+        -:    8:}
+        -:    9:
+       25:   10:void __attribute__((noinline, noclone)) f3(int *p) { *p = f4(1, 2, 3, 4, 5); }
+        -:   11:
+       25:   12:void __attribute__((noinline, noclone)) f2() {
+        -:   13:  int unused;
+       25:   14:  f3(&unused);
+       25:   15:}
+        -:   16:
+       25:   17:void __attribute__((noinline, noclone)) f1(ulong e, ulong f) {
+       25:   18:  if (e > 5 || f > 5)
+    #####:   19:    __builtin_abort();
+       25:   20:  f2();
+       25:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:  ulong e, f;
+        6:   25:  for (e = 5; e > 0; e--)
+       30:   26:    for (f = 5; f > 0; f--)
+       25:   27:      f1(e, f);
+        1:   28:  return 0;
+        -:   29:}

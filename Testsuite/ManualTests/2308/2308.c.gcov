@@ -1,0 +1,39 @@
+        -:    0:Source:2308.c
+        -:    0:Graph:2308.gcno
+        -:    0:Data:2308.gcda
+        -:    0:Runs:1
+        -:    1:/* Bombed with a segfault on powerpc-linux.  doloop.c generated wrong
+        -:    2:   loop count.  */
+       25:    3:void foo(unsigned long *start, unsigned long *end) {
+       25:    4:  unsigned long *temp = end - 1;
+        -:    5:
+       45:    6:  while (end > start)
+       20:    7:    *end-- = *temp--;
+       25:    8:}
+        -:    9:
+        1:   10:int main(void) {
+        -:   11:  unsigned long a[5];
+        -:   12:  int start, end, k;
+        -:   13:
+        6:   14:  for (start = 0; start < 5; start++)
+       30:   15:    for (end = 0; end < 5; end++) {
+      150:   16:      for (k = 0; k < 5; k++)
+      125:   17:        a[k] = k;
+        -:   18:
+       25:   19:      foo(a + start, a + end);
+        -:   20:
+      100:   21:      for (k = 0; k <= start; k++)
+       75:   22:        if (a[k] != k)
+    #####:   23:          abort();
+        -:   24:
+       45:   25:      for (k = start + 1; k <= end; k++)
+       20:   26:        if (a[k] != k - 1)
+    #####:   27:          abort();
+        -:   28:
+       75:   29:      for (k = end + 1; k < 5; k++)
+       50:   30:        if (a[k] != k)
+    #####:   31:          abort();
+        -:   32:    }
+        -:   33:
+        1:   34:  return 0;
+        -:   35:}

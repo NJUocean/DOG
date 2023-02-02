@@ -1,0 +1,30 @@
+    1|       |/* { dg-options "-O2 -fno-inline-functions -std=gnu89" } */
+    2|       |/* { dg-do run } */
+    3|       |/* When there are no call-clobbered variables, we should still create
+    4|       |   a .GLOBAL_VAR to model the side effects of functions.  Without it,
+    5|       |   we were moving the call to Faref() inside the second call to
+    6|       |   Faset().  */
+    7|       |extern void abort(void);
+    8|       |extern void exit(int);
+    9|       |
+   10|      1|main() {
+   11|      1|  int table, c, elt;
+   12|      1|  int tem = Faref(table, elt);
+   13|      1|  Faset(table, elt, c);
+   14|      1|  Faset(table, c, tem); /* tem cannot be replaced with Faref (table, elt) */
+   15|      1|  exit(0);
+   16|      1|}
+   17|       |
+   18|       |int j = 0;
+   19|       |
+   20|      1|int __attribute__((noinline)) Faref(table, elt) {
+   21|      1|  j = 1;
+   22|      1|  return 0;
+   23|      1|}
+   24|       |
+   25|      2|int __attribute__((noinline)) Faset(table, elt, c) {
+   26|      2|  if (j != 1)
+   27|      0|    abort();
+   28|      2|  return 0;
+   29|      2|}
+

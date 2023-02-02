@@ -1,0 +1,24 @@
+        -:    0:Source:377.c
+        -:    0:Graph:377.gcno
+        -:    0:Data:377.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/48591 */
+        -:    2:/* { dg-do compile { target i?86-*-* x86_64-*-* ia64-*-* } } */
+        -:    3:/* { dg-options "-fopenmp" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        1:    7:int main() {
+        1:    8:  __float128 f = 0.0;
+        -:    9:  int i;
+        -:   10:#pragma omp parallel for reduction(+ : f)
+      129:   11:  for (i = 0; i < 128; i++)
+      128:   12:    f += 0.5Q;
+        1:   13:  if (f != 64.0Q)
+    #####:   14:    abort();
+        -:   15:#pragma omp atomic
+        1:   16:  f += 8.5Q;
+        1:   17:  if (f != 72.5Q)
+    #####:   18:    abort();
+        1:   19:  return 0;
+        -:   20:}

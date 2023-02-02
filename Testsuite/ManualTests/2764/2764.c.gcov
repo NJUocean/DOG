@@ -1,0 +1,32 @@
+        -:    0:Source:2764.c
+        -:    0:Graph:2764.gcno
+        -:    0:Data:2764.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/8746 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-require-effective-target ia32 } */
+        -:    4:/* { dg-options "-O1 -mtune=i586" } */
+        -:    5:
+        -:    6:extern void abort(void);
+        -:    7:
+        -:    8:volatile int j;
+        -:    9:
+    #####:   10:void f0() { j = 0; }
+        1:   11:void f1() { j = 1; }
+        -:   12:
+        1:   13:int foo(int x) {
+        1:   14:  if ((short int)(x & 0x8000) > (short int)0) {
+    #####:   15:    f0();
+    #####:   16:    return 0;
+        -:   17:  } else {
+        1:   18:    f1();
+        1:   19:    return 1;
+        -:   20:  }
+        -:   21:}
+        -:   22:
+        1:   23:int main(void) {
+        1:   24:  if (foo(0x8000) != 1)
+    #####:   25:    abort();
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}

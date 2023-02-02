@@ -1,0 +1,43 @@
+        -:    0:Source:3227.c
+        -:    0:Graph:3227.gcno
+        -:    0:Data:3227.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/5354 */
+        -:    2:/* Verify that GCC preserves relevant stack slots.  */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:extern void exit(int);
+        -:    6:
+        -:    7:struct large {
+        -:    8:  int x, y[9];
+        -:    9:};
+        -:   10:
+        1:   11:int main() {
+        -:   12:  int fixed;
+        -:   13:
+        1:   14:  fixed = ({
+        1:   15:            int temp1 = 2;
+        1:   16:            temp1;
+        -:   17:          }) -
+        -:   18:          ({
+        1:   19:            int temp2 = 1;
+        1:   20:            temp2;
+        -:   21:          });
+        1:   22:  if (fixed != 1)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  fixed = ({
+        -:   26:            struct large temp3;
+        1:   27:            temp3.x = 2;
+        1:   28:            temp3;
+        1:   29:          }).x -
+        -:   30:          ({
+        -:   31:            struct large temp4;
+        1:   32:            temp4.x = 1;
+        1:   33:            temp4;
+        1:   34:          }).x;
+        1:   35:  if (fixed != 1)
+    #####:   36:    abort();
+        -:   37:
+        1:   38:  exit(0);
+        -:   39:}

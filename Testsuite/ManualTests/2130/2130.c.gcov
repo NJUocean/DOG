@@ -1,0 +1,28 @@
+        -:    0:Source:2130.c
+        -:    0:Graph:2130.gcno
+        -:    0:Data:2130.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-std=c99 -g" } */
+        -:    3:void abort(void);
+        -:    4:
+        1:    5:int main(void) {
+        1:    6:  int \u00C0 = 1;
+        1:    7:  int \u00C1 = 2;
+        1:    8:  int \U000000C2 = 3;
+        1:    9:  int wh\u00ff = 4;
+        1:   10:  int a\u00c4b\u0441\U000003b4e = 5;
+        -:   11:
+        1:   12:  if (\u00C0 != 1)
+    #####:   13:    abort();
+        1:   14:  if (\u00c1 != 2)
+    #####:   15:    abort();
+        1:   16:  if (\u00C2 != 3)
+    #####:   17:    abort();
+        1:   18:  if (wh\u00ff != 4)
+    #####:   19:    abort();
+        1:   20:  if (a\u00c4b\u0441\U000003b4e != 5)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  return 0;
+        -:   24:}

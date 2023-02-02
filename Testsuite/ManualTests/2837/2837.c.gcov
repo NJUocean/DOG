@@ -1,0 +1,24 @@
+        -:    0:Source:2837.c
+        -:    0:Graph:2837.gcno
+        -:    0:Data:2837.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 -msoft-stack" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        1:    4:static __attribute__((noinline, noclone)) int f(int *p) {
+        1:    5:  return __sync_lock_test_and_set(p, 1);
+        -:    6:}
+        -:    7:
+        1:    8:static __attribute__((noinline, noclone)) int g(int n) {
+        -:    9:  /* Check that variable-length stack allocation works.  */
+        1:   10:  int v[n];
+        1:   11:  v[0] = 0;
+        -:   12:  /* Check that atomic operations can be applied to auto data.  */
+       1*:   13:  return f(v) == 0 && v[0] == 1;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        1:   17:  if (!g(1))
+    #####:   18:    __builtin_abort();
+        1:   19:  return 0;
+        -:   20:}

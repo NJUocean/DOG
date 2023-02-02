@@ -1,0 +1,31 @@
+        -:    0:Source:3310.c
+        -:    0:Graph:3310.gcno
+        -:    0:Data:3310.gcda
+        -:    0:Runs:1
+        -:    1:/* Test that we don't let stmt.c think that the enumeration's values are
+        -:    2:   the entire set of possibilities.  Such an assumption is false for C,
+        -:    3:   but true for other languages.  */
+        -:    4:
+        -:    5:enum X { X1 = 1, X2, X3, X4 };
+        -:    6:static volatile enum X test = 0;
+        -:    7:static void y(int);
+        -:    8:
+        1:    9:int main() {
+        1:   10:  switch (test) {
+    #####:   11:  case X1:
+    #####:   12:    y(1);
+    #####:   13:    break;
+    #####:   14:  case X2:
+    #####:   15:    y(2);
+    #####:   16:    break;
+    #####:   17:  case X3:
+    #####:   18:    y(3);
+    #####:   19:    break;
+    #####:   20:  case X4:
+    #####:   21:    y(4);
+    #####:   22:    break;
+        -:   23:  }
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+    #####:   27:static void y(int x) { abort(); }

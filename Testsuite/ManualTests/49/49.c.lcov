@@ -1,0 +1,29 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-options "-O3 -Wall" } */
+    3|       |/* based on PR 37861 */
+    4|       |
+    5|       |extern int printf(__const char *__restrict __format, ...);
+    6|       |
+    7|      4|static int f3(int v) {
+    8|      4|  int i, j = 0;
+    9|     14|  for (i = 0; i <= v; i++)
+   10|     10|    j++;
+   11|      4|  return j;
+   12|      4|}
+   13|       |
+   14|      1|static int f2(char formatstr[10][100]) {
+   15|      1|  printf("%d %s\n", 0, formatstr[f3(0)]);
+   16|      1|  printf("%d %s\n", 1, formatstr[f3(1)]);
+   17|      1|  printf("%d %s\n", 2, formatstr[f3(2)]);
+   18|      1|  printf("%d %s\n", 3, formatstr[f3(3)]);
+   19|      1|  return 3;
+   20|      1|}
+   21|       |
+   22|       |static char formatstr[10][100];
+   23|      1|int main(void) {
+   24|      1|  int anz;
+   25|      1|  anz = f2(formatstr);
+   26|      1|  printf("   %d\n", anz);
+   27|      1|  return 0;
+   28|      1|}
+

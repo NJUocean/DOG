@@ -1,0 +1,18 @@
+        -:    0:Source:572.c
+        -:    0:Graph:572.gcno
+        -:    0:Data:572.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile { target init_priority } } */
+        -:    2:/* { dg-options "-O2 -fdump-ipa-icf-details -fno-inline"  } */
+        -:    3:
+        2:    4:__attribute__((noinline, constructor(200))) int foo() { return 123; }
+        -:    5:
+        2:    6:__attribute__((noinline, constructor(400))) int bar() { return 123; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  foo() + bar();
+        -:   10:
+        1:   11:  return 0;
+        -:   12:}
+        -:   13:/* { dg-final { scan-ipa-dump "Equal symbols: 0" "icf"  } } */
+        -:   14:/* { dg-final { scan-ipa-dump "different decl attributes" "icf"  } } */

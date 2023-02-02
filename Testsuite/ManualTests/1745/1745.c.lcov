@@ -1,0 +1,39 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fno-tree-dse" } */
+    3|       |
+    4|       |union U {
+    5|       |  long long i;
+    6|       |  long f;
+    7|       |};
+    8|       |struct a {
+    9|       |  union U u;
+   10|       |};
+   11|       |struct aa {
+   12|       |  struct a a;
+   13|       |};
+   14|       |struct b {
+   15|       |  union U u;
+   16|       |};
+   17|       |struct bb {
+   18|       |  struct b b;
+   19|       |};
+   20|       |
+   21|      1|long __attribute__((noipa)) foo(struct bb *bv, void *ptr) {
+   22|      1|  struct aa *a = ptr;
+   23|      1|  struct bb *b = ptr;
+   24|      1|  bv->b.u.f = 1;
+   25|      1|  a->a.u.i = 0;
+   26|      1|  b->b.u.f = 0;
+   27|      1|  return bv->b.u.f;
+   28|      1|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  union C {
+   32|      1|    struct aa aa;
+   33|      1|    struct bb bb;
+   34|      1|  } v;
+   35|      1|  if (foo(&v.bb, &v) != 0)
+   36|      0|    __builtin_abort();
+   37|      1|  return 0;
+   38|      1|}
+

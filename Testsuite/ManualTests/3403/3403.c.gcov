@@ -1,0 +1,16 @@
+        -:    0:Source:3403.c
+        -:    0:Graph:3403.gcno
+        -:    0:Data:3403.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:
+        2:    3:int f(int x) { return (x >> (sizeof(x) * __CHAR_BIT__ - 1)) ? -1 : 1; }
+        -:    4:
+        -:    5:volatile int one = 1;
+        1:    6:int main(void) {
+        -:    7:  /* Test that the function above returns different values for
+        -:    8:     different signs.  */
+        1:    9:  if (f(one) == f(-one))
+    #####:   10:    abort();
+        1:   11:  return 0;
+        -:   12:}

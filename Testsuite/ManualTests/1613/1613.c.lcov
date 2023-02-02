@@ -1,0 +1,20 @@
+    1|       |/* { dg-do run { target lp64 } } */
+    2|       |/* { dg-additional-options "-w -Wno-psabi" } */
+    3|       |
+    4|       |typedef unsigned char v64u8 __attribute__((vector_size(64)));
+    5|       |typedef unsigned long v64u64 __attribute__((vector_size(64)));
+    6|       |typedef unsigned char u8;
+    7|       |
+    8|      1|static u8 __attribute__((noinline, noclone)) foo(v64u64 v64u64_0) {
+    9|      1|  return ((v64u8)(v64u64){0, v64u64_0[0]})[13];
+   10|      1|}
+   11|       |
+   12|      1|int main() {
+   13|      1|  u8 x = foo((v64u64){0x0706050403020100UL});
+   14|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   15|      1|  if (x != 5)
+   16|      0|    __builtin_abort();
+   17|      1|#endif
+   18|      1|  return 0;
+   19|      1|}
+

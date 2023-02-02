@@ -1,0 +1,22 @@
+    1|       |struct decision {
+    2|       |  char enforce_mode;
+    3|       |  struct decision *next;
+    4|       |};
+    5|       |
+    6|       |static void clear_modes(p) register struct decision *p;
+    7|      1|{
+    8|      1|  goto blah;
+    9|      0|
+   10|      0|foo:
+   11|      0|  p->enforce_mode = 0;
+   12|      1|blah:
+   13|      1|  if (p)
+   14|      0|    goto foo;
+   15|      1|}
+   16|       |
+   17|      1|main() {
+   18|      1|  struct decision *p = 0;
+   19|      1|  clear_modes(p);
+   20|      1|  exit(0);
+   21|      1|}
+

@@ -1,0 +1,31 @@
+        -:    0:Source:3795.c
+        -:    0:Graph:3795.gcno
+        -:    0:Data:3795.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/57861 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:short a = 1, f;
+        -:    5:int b, c, d, *g = &b, h, i, j;
+        -:    6:unsigned int e;
+        -:    7:
+        1:    8:static int foo(char p) {
+        -:    9:  int k;
+        3:   10:  for (c = 0; c < 2; c++) {
+       2*:   11:    i = (j = 0) || p;
+        2:   12:    k = i * p;
+        2:   13:    if (e < k) {
+        2:   14:      short *l = &f;
+       2*:   15:      a = d && h;
+        2:   16:      *l = 0;
+        -:   17:    }
+        -:   18:  }
+        1:   19:  return 0;
+        -:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  *g = foo(a);
+        1:   24:  if (a != 0)
+    #####:   25:    abort();
+        1:   26:  return 0;
+        -:   27:}

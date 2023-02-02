@@ -1,0 +1,47 @@
+    1|       |/* PR rtl-optimization/93908 */
+    2|       |
+    3|       |struct T {
+    4|       |  int b;
+    5|       |  int c;
+    6|       |  unsigned short d;
+    7|       |  unsigned e : 1, f : 1, g : 1, h : 2, i : 1, j : 1;
+    8|       |  signed int k : 2;
+    9|       |};
+   10|       |
+   11|       |struct S {
+   12|       |  struct T s;
+   13|       |  char c[64];
+   14|       |} buf[2];
+   15|       |
+   16|      2|__attribute__((noipa)) void *baz(void) {
+   17|      2|  static int cnt;
+   18|      2|  return (void *)&buf[cnt++];
+   19|      2|}
+   20|       |
+   21|      2|static inline __attribute__((always_inline)) struct T *bar(const char *a) {
+   22|      2|  struct T *s;
+   23|      2|  s = baz();
+   24|      2|  s->b = 1;
+   25|      2|  s->k = -1;
+   26|      2|  return s;
+   27|      2|}
+   28|       |
+   29|      1|__attribute__((noipa)) void foo(const char *x, struct T **y) {
+   30|      1|  struct T *l = bar(x);
+   31|      1|  struct T *m = bar(x);
+   32|      1|  y[0] = l;
+   33|      1|  y[1] = m;
+   34|      1|}
+   35|       |
+   36|      1|int main() {
+   37|      1|  struct T *r[2];
+   38|      1|  foo("foo", r);
+   39|      1|  if (r[0]->e || r[0]->f || r[0]->g || r[0]->h || r[0]->i || r[0]->j ||
+   40|      1|      r[0]->k != -1)
+   41|      0|    __builtin_abort();
+   42|      1|  if (r[1]->e || r[1]->f || r[1]->g || r[1]->h || r[1]->i || r[1]->j ||
+   43|      1|      r[1]->k != -1)
+   44|      0|    __builtin_abort();
+   45|      1|  return 0;
+   46|      1|}
+

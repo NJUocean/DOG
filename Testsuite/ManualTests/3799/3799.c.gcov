@@ -1,0 +1,26 @@
+        -:    0:Source:3799.c
+        -:    0:Graph:3799.gcno
+        -:    0:Data:3799.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:static const long long int TagTypeNumber = 0xffff000000000000ll;
+        -:    5:
+        -:    6:long long int x;
+        -:    7:
+        1:    8:void foo(void) { x = TagTypeNumber + 1; }
+        -:    9:
+        1:   10:int main(int argc, char **argv) {
+        1:   11:  if (argc > 0)
+        1:   12:    foo();
+        -:   13:
+        1:   14:  if ((x & TagTypeNumber) == TagTypeNumber) {
+        1:   15:    unsigned y = (unsigned)x;
+        1:   16:    __builtin_printf("v: %u\n", y);
+        1:   17:    if (y != 1)
+    #####:   18:      __builtin_abort();
+        -:   19:  }
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

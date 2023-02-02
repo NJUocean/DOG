@@ -1,0 +1,18 @@
+        -:    0:Source:2106.c
+        -:    0:Graph:2106.gcno
+        -:    0:Data:2106.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: PR c/675 from aj@suse.de.  */
+        -:    2:/* { dg-do compile } */
+        -:    3:/* { dg-options "-Wall" } */
+        -:    4:
+        -:    5:#include <stddef.h>
+        -:    6:
+        1:    7:int main(void) {
+        -:    8:  size_t len;
+        -:    9:
+        1:   10:  len = ~(sizeof(size_t) -
+        -:   11:          1); /* { dg-bogus "truncated" "bogus truncation warning" } */
+        -:   12:
+        1:   13:  return len - len;
+        -:   14:}

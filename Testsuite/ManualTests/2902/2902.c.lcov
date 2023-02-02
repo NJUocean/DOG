@@ -1,0 +1,29 @@
+    1|       |void b(int *);
+    2|       |void c(int, int);
+    3|       |void d(int);
+    4|       |
+    5|       |int e;
+    6|       |
+    7|      1|void a(int x, int y) {
+    8|      1|  int f = x ? e : 0;
+    9|      1|  int z = y;
+   10|      1|
+   11|      1|  b(&y);
+   12|      1|  c(z, y);
+   13|      1|  d(f);
+   14|      1|}
+   15|       |
+   16|      1|void b(int *y) { (*y)++; }
+   17|       |
+   18|      1|void c(int x, int y) {
+   19|      1|  if (x == y)
+   20|      0|    abort();
+   21|      1|}
+   22|       |
+   23|      1|void d(int x) {}
+   24|       |
+   25|      1|int main(void) {
+   26|      1|  a(0, 0);
+   27|      1|  exit(0);
+   28|      1|}
+

@@ -1,0 +1,24 @@
+    1|       |/* PR rtl-optimization/57876 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |int a, b = 1, c, *d = &c, f, *g, h, j;
+    5|       |static int e;
+    6|       |
+    7|      1|int main() {
+    8|      1|  int i;
+    9|      3|  for (i = 0; i < 2; i++) {
+   10|      2|    long long k = b;
+   11|      2|    int l;
+   12|     18|    for (f = 0; f < 8; f++) {
+   13|     16|      int *m = &e;
+   14|     16|      j = *d;
+   15|     16|      h = a * j - 1;
+   16|     16|      *m = (h == 0) < k;
+   17|     16|      g = &l;
+   18|     16|    }
+   19|      2|  }
+   20|      1|  if (e != 1)
+   21|      0|    abort();
+   22|      1|  return 0;
+   23|      1|}
+

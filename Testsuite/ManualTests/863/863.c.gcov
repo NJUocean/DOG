@@ -1,0 +1,19 @@
+        -:    0:Source:863.c
+        -:    0:Graph:863.gcno
+        -:    0:Data:863.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/38616 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O2 -fstack-protector" } */
+        -:    4:/* { dg-require-effective-target fstack_protector } */
+        -:    5:
+        -:    6:#include <stdio.h>
+        -:    7:
+        -:    8:extern int strcmp(const char *, const char *);
+        -:    9:
+        -:   10:#define BUFFER "1234567890abcdefghijklmno"
+        1:   11:int main(void) {
+        1:   12:  char buffer[1024] = "";
+        1:   13:  sprintf(buffer, "%s", BUFFER);
+        1:   14:  return strcmp(buffer, BUFFER);
+        -:   15:}

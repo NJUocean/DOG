@@ -1,0 +1,11 @@
+    1|       |static unsigned int expr_hash_table_size = 1;
+    2|       |
+    3|      1|int main() {
+    4|      1|  int del = 1;
+    5|      1|  unsigned int i = 0;
+    6|      1|
+    7|      1|  if (i < expr_hash_table_size && del)
+    8|      1|    exit(0);
+    9|      0|  abort();
+   10|      0|}
+

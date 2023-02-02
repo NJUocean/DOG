@@ -1,0 +1,20 @@
+        -:    0:Source:1060.c
+        -:    0:Graph:1060.gcno
+        -:    0:Data:1060.gcda
+        -:    0:Runs:1
+        -:    1:// PR target/86314
+        -:    2:// { dg-do run { target sync_int_long } }
+        -:    3:// { dg-options "-O2" }
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) unsigned long foo(unsigned long *p) {
+        1:    6:  unsigned long m = 1UL << ((*p & 1) ? 1 : 0);
+        1:    7:  unsigned long n = __atomic_fetch_or(p, m, __ATOMIC_SEQ_CST);
+        1:    8:  return (n & m) == 0;
+        -:    9:}
+        -:   10:
+        1:   11:int main() {
+        1:   12:  unsigned long v = 1;
+        1:   13:  if (foo(&v) != 1)
+    #####:   14:    __builtin_abort();
+        1:   15:  return 0;
+        -:   16:}

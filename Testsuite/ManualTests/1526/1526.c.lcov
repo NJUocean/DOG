@@ -1,0 +1,21 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |struct S {
+    4|       |  int f0;
+    5|       |  int f1;
+    6|       |};
+    7|       |
+    8|       |int b;
+    9|       |
+   10|      1|int main() {
+   11|      1|  struct S a[2] = {0};
+   12|      1|  struct S d = {0, 1};
+   13|      3|  for (b = 0; b < 2; b++) {
+   14|      2|    a[b] = d;
+   15|      2|    d = a[0];
+   16|      2|  }
+   17|      1|  if (d.f1 != 1)
+   18|      0|    __builtin_abort();
+   19|      1|  return 0;
+   20|      1|}
+

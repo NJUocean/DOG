@@ -1,0 +1,20 @@
+    1|       |/* PR debug/86985 */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-g" } */
+    4|       |
+    5|       |struct {
+    6|       |  int foo;
+    7|       |  int bar[0];
+    8|       |} zla; /* Zero length array.  */
+    9|       |
+   10|       |struct {
+   11|       |  int foo;
+   12|       |  int bar[];
+   13|       |} fam; /* Flexible array member.  */
+   14|       |
+   15|      1|int main() {
+   16|      1|  /* { dg-final { gdb-test . "type:zla" "struct { int foo; int bar[0]; }" } } */
+   17|      1|  /* { dg-final { gdb-test . "type:fam" "struct { int foo; int bar[]; }" } } */
+   18|      1|  return 0;
+   19|      1|}
+

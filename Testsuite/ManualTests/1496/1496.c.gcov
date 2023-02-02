@@ -1,0 +1,29 @@
+        -:    0:Source:1496.c
+        -:    0:Graph:1496.gcno
+        -:    0:Data:1496.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-weak "" } */
+        -:    3:/* { dg-skip-if "No undefined weak" { hppa*-*-hpux* && { ! lp64 } } } */
+        -:    4:/* { dg-skip-if "No undefined weak" { nvptx-*-* } } */
+        -:    5:/* { dg-additional-options "-Wl,-undefined,dynamic_lookup" { target *-*-darwin*
+        -:    6: * } } */
+        -:    7:/* { dg-additional-options "-Wl,-flat_namespace" { target *-*-darwin[89]* } } */
+        -:    8:
+        -:    9:typedef __SIZE_TYPE__ size_t;
+        -:   10:extern int posix_memalign(void **memptr, size_t alignment, size_t size)
+        -:   11:    __attribute__((weak));
+        -:   12:extern void abort(void);
+        1:   13:int main(void) {
+        -:   14:  void *p;
+        -:   15:  int ret;
+        -:   16:
+        1:   17:  if (!posix_memalign)
+    #####:   18:    return 0;
+        -:   19:
+        1:   20:  p = (void *)&ret;
+        1:   21:  ret = posix_memalign(&p, sizeof(void *), -1);
+        1:   22:  if (p != (void *)&ret)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

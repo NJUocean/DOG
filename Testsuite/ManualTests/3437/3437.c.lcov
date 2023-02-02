@@ -1,0 +1,12 @@
+    1|       |/* PR middle-end/34337 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      2|int foo(int x) { return ((x << 8) & 65535) | 255; }
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  if (foo(0x32) != 0x32ff || foo(0x174) != 0x74ff)
+    9|      0|    abort();
+   10|      1|  return 0;
+   11|      1|}
+

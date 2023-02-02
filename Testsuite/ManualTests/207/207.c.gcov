@@ -1,0 +1,32 @@
+        -:    0:Source:207.c
+        -:    0:Graph:207.gcno
+        -:    0:Data:207.gcda
+        -:    0:Runs:1
+        -:    1:typedef struct {
+        -:    2:  unsigned char a : 2;
+        -:    3:  unsigned char b : 3;
+        -:    4:  unsigned char c : 1;
+        -:    5:  unsigned char d : 1;
+        -:    6:  unsigned char e : 1;
+        -:    7:} a_struct;
+        -:    8:
+        1:    9:foo(flags) a_struct *flags;
+        -:   10:{
+       2*:   11:  return (flags->c != 0 || flags->d != 1 || flags->e != 1 || flags->a != 2 ||
+        1:   12:          flags->b != 3);
+        -:   13:}
+        -:   14:
+        1:   15:main() {
+        -:   16:  a_struct flags;
+        -:   17:
+        1:   18:  flags.c = 0;
+        1:   19:  flags.d = 1;
+        1:   20:  flags.e = 1;
+        1:   21:  flags.a = 2;
+        1:   22:  flags.b = 3;
+        -:   23:
+        1:   24:  if (foo(&flags) != 0)
+    #####:   25:    abort();
+        -:   26:  else
+        1:   27:    exit(0);
+        -:   28:}

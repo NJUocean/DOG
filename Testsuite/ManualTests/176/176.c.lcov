@@ -1,0 +1,13 @@
+    1|      8|#define SIZE 8
+    2|       |
+    3|      1|main() {
+    4|      1|  int a[SIZE] = {1};
+    5|      1|  int i;
+    6|      1|
+    7|      8|  for (i = 1; i < SIZE; i++)
+    8|      7|    if (a[i] != 0)
+    9|      0|      abort();
+   10|      1|
+   11|      1|  exit(0);
+   12|      1|}
+

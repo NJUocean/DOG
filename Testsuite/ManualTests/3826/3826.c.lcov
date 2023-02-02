@@ -1,0 +1,24 @@
+    1|       |int i;
+    2|       |
+    3|      6|__attribute__((noinline, noclone)) void bar(char *p) {
+    4|      6|  if (i < 1 || i > 6)
+    5|      0|    __builtin_abort();
+    6|      6|  if (__builtin_memcmp(p, "abcdefg", i + 1) != 0)
+    7|      0|    __builtin_abort();
+    8|      6|  __builtin_memset(p, ' ', 7);
+    9|      6|}
+   10|       |
+   11|     16|__attribute__((noinline, noclone)) void foo(char *p, unsigned long l) {
+   12|     16|  if (l < 1 || l > 6)
+   13|     10|    return;
+   14|      6|  char buf[7];
+   15|      6|  __builtin_memcpy(buf, p, l + 1);
+   16|      6|  bar(buf);
+   17|      6|}
+   18|       |
+   19|      1|int main() {
+   20|     17|  for (i = 0; i < 16; i++)
+   21|     16|    foo("abcdefghijklmnop", i);
+   22|      1|  return 0;
+   23|      1|}
+

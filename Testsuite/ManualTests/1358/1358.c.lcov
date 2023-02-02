@@ -1,0 +1,22 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |int b;
+    5|      1|void foo(void *p_, int *q) {
+    6|      1|  int *p;
+    7|      1|  int i;
+    8|      9|  for (i = 0; i < sizeof(int *); ++i)
+    9|      8|    ((char *)&p)[i] = ((char *)p_)[i];
+   10|      1|  if (b)
+   11|      0|    p = q;
+   12|      1|  *p = 1;
+   13|      1|}
+   14|      1|int main() {
+   15|      1|  int i = 0, j;
+   16|      1|  int *p = &i;
+   17|      1|  foo(&p, &j);
+   18|      1|  if (i != 1)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,22 @@
+        -:    0:Source:3830.c
+        -:    0:Graph:3830.gcno
+        -:    0:Data:3830.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/59413 */
+        -:    2:
+        -:    3:typedef unsigned int uint32_t;
+        -:    4:
+        -:    5:uint32_t a;
+        -:    6:int b;
+        -:    7:
+        1:    8:int main() {
+        -:    9:  uint32_t c;
+       1*:   10:  for (a = 7; a <= 1; a++) {
+    #####:   11:    char d = a;
+    #####:   12:    c = d;
+    #####:   13:    b = a == c;
+        -:   14:  }
+        1:   15:  if (a != 7)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

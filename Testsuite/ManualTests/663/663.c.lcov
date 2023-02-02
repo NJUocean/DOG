@@ -1,0 +1,8 @@
+    1|       |/* { dg-lto-do link } */
+    2|       |/* { dg-require-effective-target fpic } */
+    3|       |/* { dg-lto-options {{-fPIC -O2 -flto -flto-partition=1to1}} } */
+    4|       |/* { dg-extra-ld-options {-fno-PIC -r -nostdlib -O2 -flto -flto-partition=1to1
+    5|       | * -flinker-output=nolto-rel} } */
+    6|       |
+    7|      1|int main(int argc, char **argv) { return 0; }
+

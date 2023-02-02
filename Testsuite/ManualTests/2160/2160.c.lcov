@@ -1,0 +1,59 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* Test concatenation of char16_t* string literals. */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=gnu99 -Wall -Werror" } */
+    5|       |
+    6|       |typedef __CHAR16_TYPE__ char16_t;
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |char16_t *s0 = u"a"
+   11|       |               u"b";
+   12|       |
+   13|       |char16_t *s1 = u"a"
+   14|       |               "b";
+   15|       |char16_t *s2 = "a"
+   16|       |               u"b";
+   17|       |char16_t *s3 = u"a"
+   18|       |               "\u2029";
+   19|       |char16_t *s4 = "\u2029"
+   20|       |               u"b";
+   21|       |char16_t *s5 = u"a"
+   22|       |               "\U00064321";
+   23|       |char16_t *s6 = "\U00064321"
+   24|       |               u"b";
+   25|       |
+   26|     10|#define A 0x0061
+   27|     10|#define B 0x0062
+   28|      4|#define X 0x2029
+   29|      4|#define Y1 0xD950
+   30|      4|#define Y2 0xDF21
+   31|       |
+   32|      1|int main() {
+   33|      1|  if (sizeof((u"a"
+   34|      1|              u"b")[0]) != sizeof(char16_t))
+   35|      0|    abort();
+   36|      1|  if (sizeof((u"a"
+   37|      1|              "b")[0]) != sizeof(char16_t))
+   38|      0|    abort();
+   39|      1|  if (sizeof(("a"
+   40|      1|              u"b")[0]) != sizeof(char16_t))
+   41|      0|    abort();
+   42|      1|
+   43|      1|  if (s0[0] != A || s0[1] != B || s0[2] != 0x0000)
+   44|      0|    abort();
+   45|      1|
+   46|      1|  if (s1[0] != A || s1[1] != B || s1[2] != 0x0000)
+   47|      0|    abort();
+   48|      1|  if (s2[0] != A || s2[1] != B || s2[2] != 0x0000)
+   49|      0|    abort();
+   50|      1|  if (s3[0] != A || s3[1] != X || s3[2] != 0x0000)
+   51|      0|    abort();
+   52|      1|  if (s4[0] != X || s4[1] != B || s4[2] != 0x0000)
+   53|      0|    abort();
+   54|      1|  if (s5[0] != A || s5[1] != Y1 || s5[2] != Y2 || s5[3] != 0x0000)
+   55|      0|    abort();
+   56|      1|  if (s6[0] != Y1 || s6[1] != Y2 || s6[2] != B || s6[3] != 0x0000)
+   57|      0|    abort();
+   58|      1|}
+

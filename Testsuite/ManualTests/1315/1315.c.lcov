@@ -1,0 +1,30 @@
+    1|       |/* { dg-do run } */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |struct Foo {
+    5|       |  int *p;
+    6|       |};
+    7|       |struct Bar {
+    8|       |  struct Foo *x;
+    9|       |  int *q;
+   10|       |};
+   11|      1|struct Foo __attribute__((noinline)) bar(int *p) {
+   12|      1|  struct Foo f;
+   13|      1|  f.p = p;
+   14|      1|  return f;
+   15|      1|}
+   16|      1|void __attribute__((noinline)) foo(struct Foo f) { *f.p = 0; }
+   17|      1|int main() {
+   18|      1|  int a, b;
+   19|      1|  a = 0;
+   20|      1|  b = 1;
+   21|      1|  struct Bar f;
+   22|      1|  struct Foo g = bar(&b);
+   23|      1|  f.x = &g;
+   24|      1|  f.q = &a;
+   25|      1|  foo(*f.x);
+   26|      1|  if (b != 0)
+   27|      0|    abort();
+   28|      1|  return 0;
+   29|      1|}
+

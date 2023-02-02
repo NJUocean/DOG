@@ -1,0 +1,11 @@
+    1|       |/* Test insane -O argument.  */
+    2|       |/* { dg-do compile } */
+    3|       |/* { dg-options "-O16384" } */
+    4|       |
+    5|      1|__attribute__((__optimize__(16396), __noinline__)) void foo(void) {}
+    6|       |
+    7|      1|int main(void) {
+    8|      1|  foo();
+    9|      1|  return 0;
+   10|      1|}
+

@@ -1,0 +1,18 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3 -march=z900 --save-temps -mfunction-return-reg=thunk
+    3|       | * -mindirect-branch-table -fno-dwarf2-cfi-asm" } */
+    4|       |
+    5|       |/* Make sure that we do not emit .cfi directives when -fno-dwarf2-cfi-asm is
+    6|       | * being used.  */
+    7|       |
+    8|      1|int main() { return 0; }
+    9|       |
+   10|       |/* 1 x main
+   11|       |/* { dg-final { scan-assembler-times "jg\t__s390_indirect_jump" 1 } } */
+   12|       |/* { dg-final { scan-assembler "ex\t" } } */
+   13|       |
+   14|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_jump" } } */
+   15|       |/* { dg-final { scan-assembler-not "section\t.s390_indirect_call" } } */
+   16|       |/* { dg-final { scan-assembler     "section\t.s390_return_reg" } } */
+   17|       |/* { dg-final { scan-assembler-not "section\t.s390_return_mem" } } */
+

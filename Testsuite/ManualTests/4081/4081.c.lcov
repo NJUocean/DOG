@@ -1,0 +1,19 @@
+    1|       |/* Test to make sure strcpy works correctly. */
+    2|      1|#define STRING "Hi!THE"
+    3|       |
+    4|       |const char a[] = STRING;
+    5|       |
+    6|       |void f(char *a) __attribute__((noinline));
+    7|      1|void f(char *a) { __builtin_strcpy(a, STRING); }
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  int i;
+   11|      1|  char b[sizeof(a)] = {};
+   12|      1|  f(b);
+   13|      8|  for (i = 0; i < sizeof(b); i++) {
+   14|      7|    if (a[i] != b[i])
+   15|      0|      __builtin_abort();
+   16|      7|  }
+   17|      1|  return 0;
+   18|      1|}
+

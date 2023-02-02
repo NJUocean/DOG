@@ -1,0 +1,36 @@
+        -:    0:Source:1612.c
+        -:    0:Graph:1612.gcno
+        -:    0:Data:1612.gcda
+        -:    0:Runs:1
+        -:    1:/* The bit-field below would have a problem if __INT_MAX__ is too
+        -:    2:   small.  */
+        -:    3:#if __INT_MAX__ < 2147483647
+        -:    4:int main(void) { exit(0); }
+        -:    5:#else
+        -:    6:/* Failed on powerpc due to bad extzvsi pattern.  */
+        -:    7:
+        -:    8:struct ieee {
+        -:    9:  unsigned int negative : 1;
+        -:   10:  unsigned int exponent : 11;
+        -:   11:  unsigned int mantissa0 : 20;
+        -:   12:  unsigned int mantissa1 : 32;
+        -:   13:} x;
+        -:   14:
+        1:   15:unsigned int foo(void) {
+        -:   16:  unsigned int exponent;
+        -:   17:
+        1:   18:  exponent = x.exponent;
+        1:   19:  if (exponent == 0)
+    #####:   20:    return 1;
+        1:   21:  else if (exponent > 1)
+    #####:   22:    return 2;
+        1:   23:  return 0;
+        -:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  x.exponent = 1;
+        1:   28:  if (foo() != 0)
+    #####:   29:    abort();
+        1:   30:  return 0;
+        -:   31:}
+        -:   32:#endif

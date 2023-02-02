@@ -1,0 +1,17 @@
+        -:    0:Source:3783.c
+        -:    0:Graph:3783.gcno
+        -:    0:Data:3783.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:extern void exit(int);
+        -:    3:
+        1:    4:void __attribute__((noinline)) foo(int a) {
+        1:    5:  int z = a > 0 ? a : -a;
+        1:    6:  long long x = z;
+        1:    7:  if (x > 0x100000000LL)
+    #####:    8:    abort();
+        -:    9:  else
+        1:   10:    exit(0);
+        -:   11:}
+        -:   12:
+        1:   13:int main() { foo(1); }

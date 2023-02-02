@@ -1,0 +1,33 @@
+        -:    0:Source:2883.c
+        -:    0:Graph:2883.gcno
+        -:    0:Data:2883.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc64le-*-* } } } */
+        -:    2:/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+        -:    3:
+        -:    4:void abort();
+        -:    5:
+        -:    6:#define N 16
+        -:    7:
+        -:    8:signed char ca[N] __attribute__((aligned(16)));
+        -:    9:signed char cb[] __attribute__((aligned(16))) = {8, 7,  6,  5,  4,  3,  2,  1,
+        -:   10:                                                 0, -1, -2, -3, -4, -5, -6, -7};
+        -:   11:signed char cc[] __attribute__((aligned(16))) = {1, 1, 2, 2, 3,  3,  2,  2,
+        -:   12:                                                 1, 1, 0, 0, -1, -1, -2, -2};
+        -:   13:
+        1:   14:__attribute__((noinline)) void foo() {
+        -:   15:  int i;
+       17:   16:  for (i = 0; i < N; i++) {
+       16:   17:    ca[i] = cb[i] - cc[i];
+        -:   18:  }
+        1:   19:}
+        -:   20:
+        1:   21:int main() {
+        1:   22:  signed char cd[] = {7, 6, 4, 3, 1, 0, 0, -1, -1, -2, -2, -3, -3, -4, -4, -5};
+        -:   23:  int i;
+        1:   24:  foo();
+       17:   25:  for (i = 0; i < N; ++i)
+       16:   26:    if (ca[i] != cd[i])
+    #####:   27:      abort();
+        1:   28:  return 0;
+        -:   29:}

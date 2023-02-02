@@ -1,0 +1,25 @@
+        -:    0:Source:1712.c
+        -:    0:Graph:1712.gcno
+        -:    0:Data:1712.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-fipa-pta" } */
+        -:    3:
+        2:    4:static long bug(long depth, long *v) {
+        2:    5:  if (depth == 0) {
+        1:    6:    *v = 0;
+        1:    7:    return 1;
+        -:    8:  }
+        -:    9:
+        1:   10:  long r = 1;
+        1:   11:  long val = bug(depth - 1, &r);
+        1:   12:  return 2 * r + val;
+        -:   13:}
+        -:   14:
+        1:   15:static long ff(long depth) { return bug(depth, (long *)0); }
+        -:   16:
+        1:   17:int main() {
+        1:   18:  if (ff(1) != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

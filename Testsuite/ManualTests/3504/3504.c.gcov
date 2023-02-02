@@ -1,0 +1,48 @@
+        -:    0:Source:3504.c
+        -:    0:Graph:3504.gcno
+        -:    0:Data:3504.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:
+        -:    3:#define HOST_WIDE_INT long
+        -:    4:#define HOST_BITS_PER_WIDE_INT (sizeof(long) * 8)
+        -:    5:
+        -:    6:struct tree_type {
+        -:    7:  unsigned int precision : 9;
+        -:    8:};
+        -:    9:
+        1:   10:int sign_bit_p(struct tree_type *t, HOST_WIDE_INT val_hi,
+        -:   11:               unsigned HOST_WIDE_INT val_lo) {
+        -:   12:  unsigned HOST_WIDE_INT mask_lo, lo;
+        -:   13:  HOST_WIDE_INT mask_hi, hi;
+        1:   14:  int width = t->precision;
+        -:   15:
+        1:   16:  if (width > HOST_BITS_PER_WIDE_INT) {
+    #####:   17:    hi = (unsigned HOST_WIDE_INT)1 << (width - HOST_BITS_PER_WIDE_INT - 1);
+    #####:   18:    lo = 0;
+        -:   19:
+    #####:   20:    mask_hi =
+    #####:   21:        ((unsigned HOST_WIDE_INT) - 1 >> (2 * HOST_BITS_PER_WIDE_INT - width));
+    #####:   22:    mask_lo = -1;
+        -:   23:  } else {
+        1:   24:    hi = 0;
+        1:   25:    lo = (unsigned HOST_WIDE_INT)1 << (width - 1);
+        -:   26:
+        1:   27:    mask_hi = 0;
+        1:   28:    mask_lo =
+        1:   29:        ((unsigned HOST_WIDE_INT) - 1 >> (HOST_BITS_PER_WIDE_INT - width));
+        -:   30:  }
+        -:   31:
+        1:   32:  if ((val_hi & mask_hi) == hi && (val_lo & mask_lo) == lo)
+        1:   33:    return 1;
+        -:   34:
+    #####:   35:  return 0;
+        -:   36:}
+        -:   37:
+        1:   38:int main() {
+        -:   39:  struct tree_type t;
+        1:   40:  t.precision = 1;
+        1:   41:  if (!sign_bit_p(&t, 0, -1))
+    #####:   42:    abort();
+        1:   43:  return 0;
+        -:   44:}

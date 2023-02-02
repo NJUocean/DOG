@@ -1,0 +1,25 @@
+    1|       |/* Copyright (C) 2001 Free Software Foundation, Inc.  */
+    2|       |
+    3|       |/* Source: Neil Booth, 4 Nov 2001, derived from PR 2820 - field lookup in
+    4|       |   nested anonymous entities was broken.  */
+    5|       |
+    6|       |struct {
+    7|       |  int x;
+    8|       |  struct {
+    9|       |    int a;
+   10|       |    union {
+   11|       |      int b;
+   12|       |    };
+   13|       |  };
+   14|       |} foo;
+   15|       |
+   16|      1|int main(int argc, char *argv[]) {
+   17|      1|  foo.b = 6;
+   18|      1|  foo.a = 5;
+   19|      1|
+   20|      1|  if (foo.b != 6)
+   21|      0|    abort();
+   22|      1|
+   23|      1|  return 0;
+   24|      1|}
+

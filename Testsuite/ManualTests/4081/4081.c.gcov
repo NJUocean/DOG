@@ -1,0 +1,22 @@
+        -:    0:Source:4081.c
+        -:    0:Graph:4081.gcno
+        -:    0:Data:4081.gcda
+        -:    0:Runs:1
+        -:    1:/* Test to make sure strcpy works correctly. */
+        -:    2:#define STRING "Hi!THE"
+        -:    3:
+        -:    4:const char a[] = STRING;
+        -:    5:
+        -:    6:void f(char *a) __attribute__((noinline));
+        1:    7:void f(char *a) { __builtin_strcpy(a, STRING); }
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  int i;
+        1:   11:  char b[sizeof(a)] = {};
+        1:   12:  f(b);
+        8:   13:  for (i = 0; i < sizeof(b); i++) {
+        7:   14:    if (a[i] != b[i])
+    #####:   15:      __builtin_abort();
+        -:   16:  }
+        1:   17:  return 0;
+        -:   18:}

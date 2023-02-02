@@ -1,0 +1,13 @@
+        -:    0:Source:3566.c
+        -:    0:Graph:3566.gcno
+        -:    0:Data:3566.gcda
+        -:    0:Runs:1
+        1:    1:main() {
+        1:    2:  int j = 1081;
+        -:    3:  struct {
+        -:    4:    signed int m : 11;
+        -:    5:  } l;
+        1:    6:  if ((l.m = j) == j)
+    #####:    7:    abort();
+        1:    8:  exit(0);
+        -:    9:}

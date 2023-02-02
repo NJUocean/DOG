@@ -1,0 +1,53 @@
+        -:    0:Source:894.c
+        -:    0:Graph:894.gcno
+        -:    0:Data:894.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/46614 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-O -fno-rename-registers -fsched2-use-superblocks
+        -:    4: * -fschedule-insns2 -funroll-loops" } */
+        -:    5:/* { dg-require-effective-target scheduling } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:struct S {
+        -:   10:  unsigned char a;
+        -:   11:  unsigned char b;
+        -:   12:  unsigned int c;
+        -:   13:  unsigned int e;
+        -:   14:  unsigned char f;
+        -:   15:  unsigned int g;
+        -:   16:};
+        -:   17:
+        1:   18:void bar(struct S *x) {
+        -:   19:  int i;
+        1:   20:  struct S *p = x;
+        -:   21:  struct S r[16];
+        -:   22:  unsigned j;
+       17:   23:  for (i = 0; i < 16; i++) {
+       16:   24:    r[i].c = p->b + p->c;
+       16:   25:    j = p->c + p->f;
+       16:   26:    r[i].a = j + p->b;
+       16:   27:    r[i].f = p->f + p->e;
+       16:   28:    r[i].g = p->b + p->c;
+        -:   29:  }
+       17:   30:  for (i = 0; i < 16; i++) {
+       16:   31:    if (r[i].c != x[i].b + x[i].c || r[i].a != x[i].c + x[i].f + x[i].b ||
+       16:   32:        r[i].f != x[i].f + x[i].e || r[i].g != x[i].b + x[i].c)
+    #####:   33:      abort();
+        -:   34:  }
+       17:   35:  for (i = 0; i < 16; i++) {
+       16:   36:    r[i].b = p->c;
+       16:   37:    if (r[i].b != x[i].c)
+    #####:   38:      abort();
+        -:   39:  }
+        1:   40:}
+        -:   41:
+        1:   42:int main() {
+        -:   43:  int i;
+        -:   44:  struct S x[16];
+       17:   45:  for (i = 0; i < 16; i++)
+       16:   46:    x[i].b = x[i].c = x[i].e = x[i].f = 5;
+        1:   47:  bar(x);
+        1:   48:  return 0;
+        -:   49:}

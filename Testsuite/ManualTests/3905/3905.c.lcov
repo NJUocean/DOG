@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run }  */
+    2|       |/* { dg-options "-O2" } */
+    3|       |
+    4|      1|__attribute__((noinline)) double direct(int x, ...) { return x * x; }
+    5|       |
+    6|      1|__attribute__((noinline)) double broken(double (*indirect)(int x, ...), int v) {
+    7|      1|  return indirect(v);
+    8|      1|}
+    9|       |
+   10|      1|int main() {
+   11|      1|  double d1, d2;
+   12|      1|  int i = 2;
+   13|      1|  d1 = broken(direct, i);
+   14|      1|  if (d1 != i * i) {
+   15|      0|    __builtin_abort();
+   16|      0|  }
+   17|      1|  return 0;
+   18|      1|}
+

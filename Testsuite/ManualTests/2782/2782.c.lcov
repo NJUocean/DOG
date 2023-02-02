@@ -1,0 +1,34 @@
+    1|       |/* Test that the compiler properly optimizes floating point multiply and add
+    2|       |   instructions vector into pmacsdd/etc. on XOP systems.  */
+    3|       |
+    4|       |/* { dg-do compile } */
+    5|       |/* { dg-require-effective-target lp64 } */
+    6|       |/* { dg-options "-O2 -mxop -mno-avx2 -ftree-vectorize" } */
+    7|       |
+    8|       |extern void exit(int);
+    9|       |
+   10|       |typedef long __m128i __attribute__((__vector_size__(16), __may_alias__));
+   11|       |
+   12|  10.2k|#define SIZE 10240
+   13|       |
+   14|       |union {
+   15|       |  __m128i i_align;
+   16|       |  int i32[SIZE];
+   17|       |  long i64[SIZE];
+   18|       |} a, b, c, d;
+   19|       |
+   20|      1|void imul32_to_64(void) {
+   21|      1|  int i;
+   22|      1|
+   23|  10.2k|  for (i = 0; i < SIZE; i++)
+   24|  10.2k|    a.i64[i] = ((long)b.i32[i]) * ((long)c.i32[i]);
+   25|      1|}
+   26|       |
+   27|      1|int main() {
+   28|      1|  imul32_to_64();
+   29|      1|  exit(0);
+   30|      1|}
+   31|       |
+   32|       |/* { dg-final { scan-assembler "vpmuldq" } } */
+   33|       |/* { dg-final { scan-assembler "vpmacsdqh" } } */
+

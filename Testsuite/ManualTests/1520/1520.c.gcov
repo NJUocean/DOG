@@ -1,0 +1,38 @@
+        -:    0:Source:1520.c
+        -:    0:Graph:1520.gcno
+        -:    0:Data:1520.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  int f1;
+        -:    5:};
+        -:    6:
+        -:    7:static struct S a = {1};
+        -:    8:char b;
+        -:    9:static unsigned char *c = &b;
+        -:   10:int d, e, f;
+        -:   11:
+        4:   12:int fn1(int p) { return 0 ? 0 : p - 1; }
+        -:   13:
+        1:   14:static int fn2(struct S p) {
+        1:   15:  int g = 200;
+        5:   16:  for (e = 4; e; e = fn1(e)) {
+       4*:   17:    for (; d; d++)
+        -:   18:      ;
+        4:   19:    *c &= p.f1 & g;
+        4:   20:    g = --*c;
+        4:   21:    if (f)
+    #####:   22:      return 0;
+        -:   23:  }
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  fn2(a);
+        -:   29:
+        1:   30:  if (b != 0)
+    #####:   31:    __builtin_abort();
+        -:   32:
+        1:   33:  return 0;
+        -:   34:}

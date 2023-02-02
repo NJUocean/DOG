@@ -1,0 +1,19 @@
+    1|       |void spread_i1(int *rptr, int *sptr, int ncopies, int *extent, int rdelta,
+    2|      0|               int m) {
+    3|      0|  int *dest;
+    4|      0|  int n;
+    5|      0|
+    6|      0|  while (m--) {
+    7|      0|    dest = rptr;
+    8|      0|    for (n = 0; n < ncopies; n++) {
+    9|      0|      *dest = *sptr;
+   10|      0|      dest += rdelta;
+   11|      0|    }
+   12|      0|    if (extent[n])
+   13|      0|      if (n)
+   14|      0|        rptr++;
+   15|      0|  }
+   16|      0|}
+   17|       |
+   18|      1|int main() { return 0; }
+

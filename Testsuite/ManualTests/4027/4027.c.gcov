@@ -1,0 +1,18 @@
+        -:    0:Source:4027.c
+        -:    0:Graph:4027.gcno
+        -:    0:Data:4027.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/90311 */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:
+        1:    5:int main() {
+        -:    6:  unsigned long long x;
+        -:    7:  unsigned int c;
+        1:    8:  __builtin_add_overflow((unsigned char)a, b, &c);
+        1:    9:  b -= c < (unsigned char)a;
+        1:   10:  x = b;
+        1:   11:  if (x)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

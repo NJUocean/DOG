@@ -1,0 +1,32 @@
+        -:    0:Source:2717.c
+        -:    0:Graph:2717.gcno
+        -:    0:Data:2717.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target int128 } */
+        -:    3:/* { dg-options "-O -fschedule-insns" } */
+        -:    4:
+        -:    5:typedef unsigned char u8;
+        -:    6:typedef unsigned __int128 u128;
+        -:    7:
+        -:    8:static u128 u128_0;
+        -:    9:static u128 *p128;
+        -:   10:
+        1:   11:u128 __attribute__((noinline, noclone)) foo(u8 u8_0) {
+        1:   12:  p128 = &u128_0;
+        1:   13:  u128_0 = u8_0;
+        1:   14:  u128_0 = u128_0 << 127 | u128_0 >> 1;
+        1:   15:  u128_0 >>= (u8)u128_0;
+        1:   16:  return 2 + u128_0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  u128 x = foo(5);
+        1:   21:  if (p128 != &u128_0)
+    #####:   22:    __builtin_abort();
+        1:   23:  if (u128_0 != ((u128)2 << 124))
+    #####:   24:    __builtin_abort();
+        1:   25:  if (x != ((u128)2 << 124) + 2)
+    #####:   26:    __builtin_abort();
+        1:   27:  return 0;
+        -:   28:}

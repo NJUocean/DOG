@@ -1,0 +1,24 @@
+        -:    0:Source:2838.c
+        -:    0:Graph:2838.gcno
+        -:    0:Data:2838.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target powerpc*-*-* } }*/
+        -:    2:/* VxWorks only guarantees 64 bits of alignment (STACK_BOUNDARY == 64).  */
+        -:    3:/* { dg-skip-if "" { "powerpc*-*-vxworks*" } } */
+        -:    4:/* Force 128-bit stack alignment for eabi targets.  */
+        -:    5:/* { dg-options "-mno-eabi" { target powerpc*-*-eabi* } } */
+        -:    6:
+        -:    7:/* Test local alignment.  Test new target macro STARTING_FRAME_PHASE.  */
+        -:    8:/* Origin: Aldy Hernandez <aldyh@redhat.com>.  */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:
+        1:   12:int main() {
+        -:   13:  int darisa[4] __attribute__((aligned(16)));
+        1:   14:  int *stephanie = (int *)darisa;
+        -:   15:
+        1:   16:  if ((unsigned long)stephanie % 16 != 0)
+    #####:   17:    abort();
+        -:   18:
+        1:   19:  return 0;
+        -:   20:}

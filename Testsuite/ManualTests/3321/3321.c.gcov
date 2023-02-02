@@ -1,0 +1,33 @@
+        -:    0:Source:3321.c
+        -:    0:Graph:3321.gcno
+        -:    0:Data:3321.gcda
+        -:    0:Runs:1
+        -:    1:/* A reminder to process ops in generate_expr_as_of_bb exactly once.  */
+        -:    2:
+        -:    3:long __attribute__((noinline))
+        1:    4:foo(long ct, long cf, _Bool p1, _Bool p2, _Bool p3) {
+        -:    5:  long diff;
+        -:    6:
+        1:    7:  diff = ct - cf;
+        -:    8:
+        1:    9:  if (p1) {
+        1:   10:    if (p2) {
+        1:   11:      if (p3) {
+        1:   12:        long tmp = ct;
+        1:   13:        ct = cf;
+        1:   14:        cf = tmp;
+        -:   15:      }
+        1:   16:      diff = ct - cf;
+        -:   17:    }
+        -:   18:
+        1:   19:    return diff;
+        -:   20:  }
+        -:   21:
+    #####:   22:  abort();
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  if (foo(2, 3, 1, 1, 1) == 0)
+    #####:   27:    abort();
+        1:   28:  return 0;
+        -:   29:}

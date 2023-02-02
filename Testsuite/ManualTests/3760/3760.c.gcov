@@ -1,0 +1,29 @@
+        -:    0:Source:3760.c
+        -:    0:Graph:3760.gcno
+        -:    0:Data:3760.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/53465 */
+        -:    2:
+        -:    3:extern void abort();
+        -:    4:
+        -:    5:static const int a[] = {1, 2};
+        -:    6:
+        1:    7:void foo(const int *x, int y) {
+        -:    8:  int i;
+        1:    9:  int b = 0;
+        -:   10:  int c;
+        3:   11:  for (i = 0; i < y; i++) {
+        2:   12:    int d = x[i];
+        2:   13:    if (d == 0)
+    #####:   14:      break;
+        2:   15:    if (b && d <= c)
+    #####:   16:      abort();
+        2:   17:    c = d;
+        2:   18:    b = 1;
+        -:   19:  }
+        1:   20:}
+        -:   21:
+        1:   22:int main() {
+        1:   23:  foo(a, 2);
+        1:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,28 @@
+    1|       |/* PR optimization/12198
+    2|       |
+    3|       |   This was a miscompilation of a switch expressions because
+    4|       |   the "Case Ranges" extension wasn't handled in tree-cfg.c.  */
+    5|       |
+    6|       |/* { dg-do compile } */
+    7|       |/* { dg-options "-O -fdump-tree-optimized" } */
+    8|       |
+    9|       |extern void abort(void);
+   10|       |extern void exit(int);
+   11|       |
+   12|      1|int main() {
+   13|      1|  int i;
+   14|      1|  i = 2;
+   15|      1|  switch (i) {
+   16|      1|  case 1 ... 5:
+   17|      1|    goto L1;
+   18|      0|  default:
+   19|      0|    abort();
+   20|      0|    goto L1;
+   21|      1|  }
+   22|      1|L1:
+   23|      1|  exit(0);
+   24|      1|}
+   25|       |
+   26|       |/* The abort() call clearly is unreachable.  */
+   27|       |/* { dg-final { scan-tree-dump-times "abort" 0 "optimized"} } */
+

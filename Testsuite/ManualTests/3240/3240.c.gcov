@@ -1,0 +1,74 @@
+        -:    0:Source:3240.c
+        -:    0:Graph:3240.gcno
+        -:    0:Data:3240.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/6838 from cato@df.lth.se.
+        -:    2:   cris-elf got an ICE with -O2: the insn matching
+        -:    3:      (insn 49 48 52 (parallel[
+        -:    4:                  (set (mem/s:HI (plus:SI (reg/v/f:SI 0 r0 [24])
+        -:    5:                              (const_int 8 [0x8])) [5 <variable>.c+0 S2 A8])
+        -:    6:                      (reg:HI 2 r2 [27]))
+        -:    7:                  (set (reg/f:SI 2 r2 [31])
+        -:    8:                      (plus:SI (reg/v/f:SI 0 r0 [24])
+        -:    9:                          (const_int 8 [0x8])))
+        -:   10:              ] ) 24 {*mov_sidehi_mem} (nil)
+        -:   11:          (nil))
+        -:   12:   forced a splitter through the output pattern "#", but there was no
+        -:   13:   matching splitter.  */
+        -:   14:
+        -:   15:/* The ptx assembler appears to clobber 'b' inside foo during the f1 call.
+        -:   16:   Reported to nvidia 2016-05-18.  */
+        -:   17:/* { dg-skip-if "PTX assembler bug" { nvptx-*-* } { "-O0" } { "" } } */
+        -:   18:
+        -:   19:struct xx {
+        -:   20:  int a;
+        -:   21:  struct xx *b;
+        -:   22:  short c;
+        -:   23:};
+        -:   24:
+        -:   25:int f1(struct xx *);
+        -:   26:void f2(void);
+        -:   27:
+        2:   28:int foo(struct xx *p, int b, int c, int d) {
+        -:   29:  int a;
+        -:   30:
+        -:   31:  for (;;) {
+        2:   32:    a = f1(p);
+        2:   33:    if (a)
+        1:   34:      return (0);
+        1:   35:    if (b)
+    #####:   36:      continue;
+        1:   37:    p->c = d;
+        1:   38:    if (p->a)
+    #####:   39:      f2();
+        1:   40:    if (c)
+    #####:   41:      f2();
+        1:   42:    d = p->c;
+        1:   43:    switch (a) {
+    #####:   44:    case 1:
+    #####:   45:      if (p->b)
+    #####:   46:        f2();
+    #####:   47:      if (c)
+    #####:   48:        f2();
+        -:   49:    default:
+        1:   50:      break;
+        -:   51:    }
+        -:   52:  }
+        -:   53:  return d;
+        -:   54:}
+        -:   55:
+        1:   56:int main(void) {
+        1:   57:  struct xx s = {0, &s, 23};
+        1:   58:  if (foo(&s, 0, 0, 0) != 0 || s.a != 0 || s.b != &s || s.c != 0)
+    #####:   59:    abort();
+        1:   60:  exit(0);
+        -:   61:}
+        -:   62:
+        2:   63:int f1(struct xx *p) {
+        -:   64:  static int beenhere = 0;
+        2:   65:  if (beenhere++ > 1)
+    #####:   66:    abort();
+        2:   67:  return beenhere > 1;
+        -:   68:}
+        -:   69:
+    #####:   70:void f2(void) { abort(); }

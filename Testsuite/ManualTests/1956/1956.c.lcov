@@ -1,0 +1,51 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O3" } */
+    3|       |
+    4|       |#define PACKED __attribute__((packed))
+    5|       |
+    6|       |struct PACKED aostk_point_u8 {
+    7|       |  unsigned char x;
+    8|       |  unsigned char y;
+    9|       |};
+   10|       |
+   11|       |struct PACKED aostk_size_u8 {
+   12|       |  unsigned char width;
+   13|       |  unsigned char height;
+   14|       |};
+   15|       |
+   16|       |struct PACKED aostk_glyph {
+   17|       |  unsigned short i;
+   18|       |  struct aostk_size_u8 size;
+   19|       |  char top;
+   20|       |  struct aostk_point_u8 advance;
+   21|       |  unsigned char pitch;
+   22|       |  unsigned char *data;
+   23|       |  char left;
+   24|       |};
+   25|       |
+   26|       |struct PACKED aostk_font {
+   27|       |  unsigned short numglyphs;
+   28|       |  unsigned char height;
+   29|       |  struct aostk_glyph *glyphs;
+   30|       |};
+   31|       |
+   32|       |struct aostk_font glob_font;
+   33|       |
+   34|       |static struct aostk_glyph *aostk_get_glyph(struct aostk_font *f,
+   35|      1|                                           unsigned int c) {
+   36|      1|  return f->glyphs;
+   37|      1|}
+   38|       |
+   39|      1|int aostk_font_strwidth(struct aostk_font *font, const char *str) {
+   40|      1|  struct aostk_glyph *g = aostk_get_glyph(font, 0);
+   41|      1|  return (g != 0);
+   42|      1|}
+   43|       |
+   44|      1|struct aostk_font *__attribute__((noinline, noclone)) get_some_font(void) {
+   45|      1|  return &glob_font;
+   46|      1|}
+   47|       |
+   48|      1|int main(int argc, char *argv[]) {
+   49|      1|  return (int)aostk_font_strwidth(get_some_font(), "sth");
+   50|      1|}
+

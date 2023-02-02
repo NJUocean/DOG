@@ -1,0 +1,28 @@
+        -:    0:Source:1438.c
+        -:    0:Graph:1438.gcno
+        -:    0:Data:1438.gcda
+        -:    0:Runs:1
+        1:    1:__complex__ double f(__complex__ double x, __complex__ double y) {
+        1:    2:  x += y;
+        1:    3:  return x;
+        -:    4:}
+        -:    5:
+        -:    6:__complex__ double ag = 1.0 + 1.0i;
+        -:    7:__complex__ double bg = -2.0 + 2.0i;
+        -:    8:
+        1:    9:main() {
+        -:   10:  __complex__ double a, b, c;
+        -:   11:
+        1:   12:  a = ag;
+        1:   13:  b = -2.0 + 2.0i;
+        1:   14:  c = f(a, b);
+        -:   15:
+        1:   16:  if (a != 1.0 + 1.0i)
+    #####:   17:    abort();
+        1:   18:  if (b != -2.0 + 2.0i)
+    #####:   19:    abort();
+        1:   20:  if (c != -1.0 + 3.0i)
+    #####:   21:    abort();
+        -:   22:
+        1:   23:  exit(0);
+        -:   24:}

@@ -1,0 +1,23 @@
+        -:    0:Source:3571.c
+        -:    0:Graph:3571.gcno
+        -:    0:Data:3571.gcda
+        -:    0:Runs:1
+        -:    1:struct Foo {
+        -:    2:  int i;
+        -:    3:  int j[];
+        -:    4:};
+        -:    5:
+        -:    6:struct Foo x = {1, {2, 0, 2, 3}};
+        -:    7:
+        1:    8:int foo(void) {
+        1:    9:  x.j[0] = 1;
+        1:   10:  return x.j[1];
+        -:   11:}
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (foo() != 0)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

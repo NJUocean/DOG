@@ -1,0 +1,43 @@
+    1|       |const int n = 100;
+    2|       |
+    3|      0|int private_reduction() {
+    4|      0|  int i, r;
+    5|      0|
+    6|      0|#pragma acc parallel
+    7|      0|#pragma acc loop private(r) reduction(+ : r)
+    8|      0|  for (i = 0; i < 100; i++)
+    9|      0|    r += 10;
+   10|      0|
+   11|      0|  return r;
+   12|      0|}
+   13|       |
+   14|      0|int parallel_reduction() {
+   15|      0|  int sum = 0;
+   16|      0|  int dummy = 0;
+   17|      0|
+   18|      0|#pragma acc data copy(dummy)
+   19|      0|  {
+   20|      0|#pragma acc parallel num_gangs(10) copy(sum) reduction(+ : sum)
+   21|      0|    {
+   22|      0|      int v = 5;
+   23|      0|      sum += 10 + v;
+   24|      0|    }
+   25|      0|  }
+   26|      0|
+   27|      0|  return sum;
+   28|      0|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  int i, s = 0;
+   32|      1|
+   33|      1|#pragma acc parallel num_gangs(10) copy(s) reduction(+ : s)
+   34|    101|  for (i = 0; i < n; i++)
+   35|    100|    s += i + 1;
+   36|      1|
+   37|      1|#pragma acc parallel num_gangs(10) reduction(+ : s) copy(s)
+   38|    101|  for (i = 0; i < n; i++)
+   39|    100|    s += i + 1;
+   40|      1|
+   41|      1|  return 0;
+   42|      1|}
+

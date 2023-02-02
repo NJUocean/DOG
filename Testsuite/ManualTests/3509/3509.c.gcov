@@ -1,0 +1,18 @@
+        -:    0:Source:3509.c
+        -:    0:Graph:3509.gcno
+        -:    0:Data:3509.gcda
+        -:    0:Runs:1
+        -:    1:int f(long long a) __attribute__((noinline, noclone));
+        2:    2:int f(long long a) {
+        2:    3:  if (a & 0x3ffffffffffffffull)
+        1:    4:    return 1;
+        1:    5:  return 1024;
+        -:    6:}
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  if (f(0x48375d8000000000ull) != 1)
+    #####:   10:    __builtin_abort();
+        1:   11:  if (f(0xfc00000000000000ull) != 1024)
+    #####:   12:    __builtin_abort();
+        1:   13:  return 0;
+        -:   14:}

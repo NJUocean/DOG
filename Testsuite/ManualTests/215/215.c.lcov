@@ -1,0 +1,36 @@
+    1|       |/* Test for new block scopes in C99.  Inspired by C99 Rationale (N897).  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    5|       |
+    6|       |struct foo {
+    7|       |  char a;
+    8|       |};
+    9|       |
+   10|       |extern void abort(void);
+   11|       |extern void exit(int);
+   12|       |
+   13|      1|int sfoo(void) {
+   14|      1|  if (sizeof(struct foo {
+   15|      1|        int a;
+   16|      1|        double b;
+   17|      1|        char *c;
+   18|      1|        void *d;
+   19|      1|      }))
+   20|      1|    (void)0;
+   21|      1|  return sizeof(struct foo);
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  int t, u;
+   26|      1|  t = sfoo();
+   27|      1|  u = sizeof(struct foo);
+   28|      1|  /* With C90 scoping rules the new declaration of struct foo is in scope
+   29|      1|     above; with C99 it is local to the if.
+   30|      1|  */
+   31|      1|  if (t == u)
+   32|      1|    exit(0); /* C99 rules apply.  */
+   33|      0|  else
+   34|      0|    abort(); /* C90 rules apply.  */
+   35|      1|}
+

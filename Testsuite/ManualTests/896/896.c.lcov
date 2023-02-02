@@ -1,0 +1,32 @@
+    1|       |/* { dg-do compile } */
+    2|       |/* { dg-require-effective-target freorder } */
+    3|       |/* { dg-require-effective-target fpic } */
+    4|       |/* { dg-options "-O2 -freorder-blocks-and-partition -fpic" } */
+    5|       |
+    6|  1.00M|__attribute__((noinline, noclone)) void bar(void *x) {
+    7|  1.00M|  asm volatile("" : : "r"(x) : "memory");
+    8|  1.00M|}
+    9|       |
+   10|      0|__attribute__((noinline, noclone)) void baz(void) {
+   11|      0|  asm volatile("" : : : "memory");
+   12|      0|}
+   13|       |
+   14|  1.00M|__attribute__((noinline, noclone)) int foo(int x) {
+   15|  1.00M|  __label__ lab;
+   16|  1.00M|  if (__builtin_expect(x, 0)) {
+   17|      0|  lab:
+   18|      0|    baz();
+   19|      0|    return 2;
+   20|  1.00M|  }
+   21|  1.00M|  bar(&&lab);
+   22|  1.00M|  return 1;
+   23|  1.00M|}
+   24|       |
+   25|      1|int main(void) {
+   26|      1|  int x, i;
+   27|      1|  asm volatile("" : "=r"(x) : "0"(0));
+   28|  1.00M|  for (i = 0; i < 1000000; i++)
+   29|  1.00M|    foo(x);
+   30|      1|  return 0;
+   31|      1|}
+

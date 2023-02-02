@@ -1,0 +1,35 @@
+        -:    0:Source:967.c
+        -:    0:Graph:967.gcno
+        -:    0:Data:967.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/64309 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fdump-tree-original" } */
+        -:    4:
+        6:    5:int fn1(int n) { return ((1 << n) & 1) != 0; }
+        -:    6:
+        6:    7:int fn2(int n) { return (1 & (1 << n)) != 0; }
+        -:    8:
+        6:    9:int fn3(int n) { return ((1 << n) & 1) == 0; }
+        -:   10:
+        6:   11:int fn4(int n) { return (1 & (1 << n)) == 0; }
+        -:   12:
+        1:   13:int main(void) {
+        2:   14:  if (fn1(0) != 1 || fn1(1) != 0 || fn1(2) != 0 || fn1(3) != 0 || fn1(4) != 0 ||
+        1:   15:      fn1(5) != 0)
+    #####:   16:    __builtin_abort();
+        -:   17:
+        2:   18:  if (fn2(0) != 1 || fn2(1) != 0 || fn2(2) != 0 || fn2(3) != 0 || fn2(4) != 0 ||
+        1:   19:      fn2(5) != 0)
+    #####:   20:    __builtin_abort();
+        -:   21:
+        2:   22:  if (fn3(0) != 0 || fn3(1) != 1 || fn3(2) != 1 || fn3(3) != 1 || fn3(4) != 1 ||
+        1:   23:      fn3(5) != 1)
+    #####:   24:    __builtin_abort();
+        -:   25:
+        2:   26:  if (fn4(0) != 0 || fn4(1) != 1 || fn4(2) != 1 || fn4(3) != 1 || fn4(4) != 1 ||
+        1:   27:      fn4(5) != 1)
+    #####:   28:    __builtin_abort();
+        -:   29:}
+        -:   30:
+        -:   31:/* { dg-final { scan-tree-dump-not "(<<|>>)" "original" } } */

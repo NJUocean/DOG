@@ -1,0 +1,32 @@
+        -:    0:Source:1405.c
+        -:    0:Graph:1405.gcno
+        -:    0:Data:1405.gcda
+        -:    0:Runs:1
+        1:    1:f1(unsigned int x, unsigned int y) {
+        1:    2:  if (x == 0)
+    #####:    3:    dummy();
+        1:    4:  x -= y;
+        -:    5:  /* 0xfffffff2 < 0x80000000? */
+        1:    6:  if (x < ~(~(unsigned int)0 >> 1))
+    #####:    7:    abort();
+        1:    8:  return x;
+        -:    9:}
+        -:   10:
+        1:   11:f2(unsigned long int x, unsigned long int y) {
+        1:   12:  if (x == 0)
+    #####:   13:    dummy();
+        1:   14:  x -= y;
+        -:   15:  /* 0xfffffff2 < 0x80000000? */
+        1:   16:  if (x < ~(~(unsigned long int)0 >> 1))
+    #####:   17:    abort();
+        1:   18:  return x;
+        -:   19:}
+        -:   20:
+    #####:   21:dummy() {}
+        -:   22:
+        1:   23:main() {
+        -:   24:  /*      0x7ffffff3			0x80000001 */
+        1:   25:  f1((~(unsigned int)0 >> 1) - 12, ~(~(unsigned int)0 >> 1) + 1);
+        1:   26:  f2((~(unsigned long int)0 >> 1) - 12, ~(~(unsigned long int)0 >> 1) + 1);
+        1:   27:  exit(0);
+        -:   28:}

@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-ftree-loop-if-convert" } */
+    3|       |
+    4|       |void abort(void);
+    5|       |
+    6|       |int a, b, c, d, o = 1, p;
+    7|       |short e;
+    8|       |
+    9|      1|int fn1(int *p1) {
+   10|      1|  int f, g, h, j = 0, k = 0, l = 0;
+   11|      1|  unsigned int i;
+   12|      1|  int *m[1] = {&l};
+   13|      2|  for (; b >= 0; b--) {
+   14|      1|    if (*p1)
+   15|      1|      if (j >= 0) {
+   16|      1|        int n = 1;
+   17|      1|        e = 1;
+   18|      1|        h = a ? a : 1 % n;
+   19|      1|        g = h > 0 ? 0 : h + 1;
+   20|      1|        k = c + g;
+   21|      1|      } else
+   22|      0|        continue;
+   23|      0|    else {
+   24|      0|
+   25|      0|      f = d > 0 ? 0 : d + 1;
+   26|      0|      i = f;
+   27|      0|      j = 1 + i;
+   28|      0|    }
+   29|      1|    l++;
+   30|      1|  }
+   31|      1|  return k;
+   32|      1|}
+   33|       |
+   34|      1|int main() {
+   35|      1|  for (;; p++) {
+   36|      1|    fn1(&o);
+   37|      1|    break;
+   38|      1|  }
+   39|      1|  if (e != 1)
+   40|      0|    abort();
+   41|      1|  return 0;
+   42|      1|}
+

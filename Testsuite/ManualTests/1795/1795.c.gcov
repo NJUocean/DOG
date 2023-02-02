@@ -1,0 +1,29 @@
+        -:    0:Source:1795.c
+        -:    0:Graph:1795.gcno
+        -:    0:Data:1795.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target tls_runtime } */
+        -:    3:/* { dg-add-options tls } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:__thread int tls_le __attribute__((tls_model("local-exec"))) = 3;
+        -:    8:
+        1:    9:int get_le(void) { return tls_le; }
+        -:   10:
+        1:   11:int *get_lep(void) { return &tls_le; }
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  int val;
+        -:   15:
+        1:   16:  val = get_le();
+        1:   17:  if (val != 3)
+    #####:   18:    abort();
+        -:   19:
+        1:   20:  val = *get_lep();
+        1:   21:  if (val != 3)
+    #####:   22:    abort();
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}

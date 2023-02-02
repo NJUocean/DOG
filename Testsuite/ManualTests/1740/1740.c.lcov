@@ -1,0 +1,12 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fsanitize=vla-bound -fno-sanitize-recover=vla-bound" } */
+    3|       |
+    4|      1|int main(void) {
+    5|      1|  int x = 1;
+    6|      1|  /* Check that the size of an array is evaluated only once.  */
+    7|      1|  int a[++x];
+    8|      1|  if (x != 2)
+    9|      0|    __builtin_abort();
+   10|      1|  return 0;
+   11|      1|}
+

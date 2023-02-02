@@ -1,0 +1,33 @@
+    1|       |/* PR middle-end/87623 */
+    2|       |/* Testcase by George Thopas <george.thopas@gmail.com> */
+    3|       |
+    4|       |struct be {
+    5|       |  unsigned short pad[1];
+    6|       |  unsigned char a;
+    7|       |  unsigned char b;
+    8|       |} __attribute__((scalar_storage_order("big-endian")));
+    9|       |
+   10|       |typedef struct be t_be;
+   11|       |
+   12|       |struct le {
+   13|       |  unsigned short pad[3];
+   14|       |  unsigned char a;
+   15|       |  unsigned char b;
+   16|       |};
+   17|       |
+   18|       |typedef struct le t_le;
+   19|       |
+   20|      1|int a_or_b_different(t_be *x, t_le *y) {
+   21|      1|  return (x->a != y->a) || (x->b != y->b);
+   22|      1|}
+   23|       |
+   24|      1|int main(void) {
+   25|      1|  t_be x = {.a = 1, .b = 2};
+   26|      1|  t_le y = {.a = 1, .b = 2};
+   27|      1|
+   28|      1|  if (a_or_b_different(&x, &y))
+   29|      0|    __builtin_abort();
+   30|      1|
+   31|      1|  return 0;
+   32|      1|}
+

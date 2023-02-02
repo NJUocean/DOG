@@ -1,0 +1,47 @@
+        -:    0:Source:4030.c
+        -:    0:Graph:4030.gcno
+        -:    0:Data:4030.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/91597 */
+        -:    2:
+        -:    3:enum E { A, B, C };
+        -:    4:struct __attribute__((aligned(4))) S {
+        -:    5:  enum E e;
+        -:    6:};
+        -:    7:
+        8:    8:enum E foo(struct S *o) {
+        8:    9:  if (((__UINTPTR_TYPE__)(o)&1) == 0)
+        8:   10:    return o->e;
+        -:   11:  else
+    #####:   12:    return A;
+        -:   13:}
+        -:   14:
+       4*:   15:int bar(struct S *o) { return foo(o) == B || foo(o) == C; }
+        -:   16:
+        4:   17:static inline void baz(struct S *o, int d) {
+        4:   18:  if (__builtin_expect(!bar(o), 0))
+    #####:   19:    __builtin_abort();
+        4:   20:  if (d > 2)
+        1:   21:    return;
+        3:   22:  baz(o, d + 1);
+        -:   23:}
+        -:   24:
+        1:   25:void qux(struct S *o) {
+        1:   26:  switch (o->e) {
+    #####:   27:  case A:
+    #####:   28:    return;
+    #####:   29:  case B:
+    #####:   30:    baz(o, 0);
+    #####:   31:    break;
+        1:   32:  case C:
+        1:   33:    baz(o, 0);
+        1:   34:    break;
+        -:   35:  }
+        -:   36:}
+        -:   37:
+        -:   38:struct S s = {C};
+        -:   39:
+        1:   40:int main() {
+        1:   41:  qux(&s);
+        1:   42:  return 0;
+        -:   43:}

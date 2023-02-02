@@ -1,0 +1,38 @@
+        -:    0:Source:2358.c
+        -:    0:Graph:2358.gcno
+        -:    0:Data:2358.gcda
+        -:    0:Runs:1
+        -:    1:/* Test AAPCS layout (alignment of varargs) for callee.  */
+        -:    2:
+        -:    3:/* { dg-do run { target aarch64*-*-* } } */
+        -:    4:
+        -:    5:#include <stdarg.h>
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:typedef __attribute__((__aligned__(16))) long alignedlong;
+        -:   10:
+        1:   11:void test_pass_overaligned_long_vaargs(long l, ...) {
+        -:   12:  va_list va;
+        1:   13:  va_start(va, l);
+        -:   14:  /* Arguments should be passed in the same registers as if they were ints.  */
+       10:   15:  while (l-- > 0)
+        9:   16:    if (va_arg(va, long) != l)
+    #####:   17:      abort();
+        1:   18:  va_end(va);
+        1:   19:}
+        -:   20:
+        1:   21:int main(int argc, char **argv) {
+        1:   22:  alignedlong a = 9;
+        1:   23:  alignedlong b = 8;
+        1:   24:  alignedlong c = 7;
+        1:   25:  alignedlong d = 6;
+        1:   26:  alignedlong e = 5;
+        1:   27:  alignedlong f = 4;
+        1:   28:  alignedlong g = 3;
+        1:   29:  alignedlong h = 2;
+        1:   30:  alignedlong i = 1;
+        1:   31:  alignedlong j = 0;
+        1:   32:  test_pass_overaligned_long_vaargs(a, b, c, d, e, f, g, h, i, j);
+        1:   33:  return 0;
+        -:   34:}

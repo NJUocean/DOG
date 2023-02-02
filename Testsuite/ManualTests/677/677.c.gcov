@@ -1,0 +1,22 @@
+        -:    0:Source:677.c
+        -:    0:Graph:677.gcno
+        -:    0:Data:677.gcda
+        -:    0:Runs:1
+        -:    1:/* Stream an indirect edge in and out.  */
+        -:    2:
+        -:    3:/* { dg-lto-do link } */
+        -:    4:/* { dg-lto-options {{ -O3 -fno-early-inlining -flto }} } */
+        -:    5:
+        -:    6:volatile int something;
+        -:    7:
+        1:    8:static void hooray() { something = 1; }
+        -:    9:
+        1:   10:static void hiphip(void (*f)()) {
+        1:   11:  something = 2;
+        1:   12:  f();
+        1:   13:}
+        -:   14:
+        1:   15:int main(int argc, int *argv[]) {
+        1:   16:  hiphip(hooray);
+        1:   17:  return 0;
+        -:   18:}

@@ -1,0 +1,22 @@
+        -:    0:Source:3165.c
+        -:    0:Graph:3165.gcno
+        -:    0:Data:3165.gcda
+        -:    0:Runs:1
+        -:    1:/* Test the tester; previously gcc.misc-tests/dg-1.c.  */
+        -:    2:/* { dg-prms-id 42 } */
+        -:    3:/* { dg-do compile } */
+        -:    4:
+        1:    5:main() { return 0; }
+        -:    6:
+        -:    7:/* { dg-final { if ![file exists dg-do-compile-exp-P.s] { fail
+        -:    8: * "dg-do-compile-exp-P.c (compile)"; return; } } } */
+        -:    9:
+        -:   10:/* { dg-final { set tmp [grep dg-do-compile-exp-P.s main line]
+        -:   11: * } } */
+        -:   12:/* { dg-final { if ![string match "" $tmp] \{			} } */
+        -:   13:/* { dg-final {     pass "dg-do-compile-exp-P.c (main function present)"	}
+        -:   14: * } */
+        -:   15:/* { dg-final { \} else \{					} } */
+        -:   16:/* { dg-final {     fail "dg-do-compile-exp-P.c (main function not present)"
+        -:   17: * } } */
+        -:   18:/* { dg-final { \}						} } */

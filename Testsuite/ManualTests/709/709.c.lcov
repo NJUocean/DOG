@@ -1,0 +1,24 @@
+    1|       |/* { dg-options "-O1" } */
+    2|       |
+    3|       |extern void fn1(void);
+    4|       |
+    5|       |int a[2], b;
+    6|       |
+    7|      2|static void foo(int p) {
+    8|      2|  b = 1 ^ a[(b ^ 1) & 1];
+    9|      2|  b = 1 ^ a[b & 1];
+   10|      2|  if (p)
+   11|      0|    __builtin_abort();
+   12|      2|}
+   13|       |
+   14|      1|int main() {
+   15|      1|  foo(0);
+   16|      1|  b = 0;
+   17|      1|  foo(0);
+   18|      1|
+   19|      1|  if (b != 1)
+   20|      0|    __builtin_abort();
+   21|      1|
+   22|      1|  return 0;
+   23|      1|}
+

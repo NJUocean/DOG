@@ -1,0 +1,14 @@
+    1|       |/* PR target/36090 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|long double __attribute__((noinline)) foo(long double x) {
+    6|      1|  return __builtin_signbit(x) ? 3.1415926535897932384626433832795029L : 0.0;
+    7|      1|}
+    8|       |
+    9|      1|int main(void) {
+   10|      1|  if (foo(-1.0L) != 3.1415926535897932384626433832795029L)
+   11|      0|    abort();
+   12|      1|  return 0;
+   13|      1|}
+

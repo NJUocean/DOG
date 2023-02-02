@@ -1,0 +1,33 @@
+        -:    0:Source:3380.c
+        -:    0:Graph:3380.gcno
+        -:    0:Data:3380.gcda
+        -:    0:Runs:1
+        -:    1:/* Origin: Mikael Pettersson <mikpe@csd.uu.se> and the Linux kernel.  */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:unsigned long a = 0xc0000000, b = 0xd0000000;
+        -:    5:unsigned long c = 0xc01bb958, d = 0xc0264000;
+        -:    6:unsigned long e = 0xc0288000, f = 0xc02d4378;
+        -:    7:
+        1:    8:void foo(int x, int y, int z) {
+        1:    9:  if (x != 245 || y != 36 || z != 444)
+    #####:   10:    abort();
+        1:   11:}
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  unsigned long g;
+        1:   15:  int h = 0, i = 0, j = 0;
+        -:   16:
+        -:   17:  if (sizeof(unsigned long) < 4)
+        -:   18:    return 0;
+        -:   19:
+    65537:   20:  for (g = a; g < b; g += 0x1000)
+    65536:   21:    if (g < c)
+      444:   22:      h++;
+    65092:   23:    else if (g >= d && g < e)
+       36:   24:      j++;
+    65056:   25:    else if (g < f)
+      245:   26:      i++;
+        1:   27:  foo(i, j, h);
+        1:   28:  return 0;
+        -:   29:}

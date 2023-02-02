@@ -1,0 +1,25 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-Os" } */
+    3|       |
+    4|      1|unsigned int foo(unsigned int x) {
+    5|      1|  unsigned int r = x;
+    6|      5|  while (--x)
+    7|      4|    r *= x;
+    8|      1|  return r;
+    9|      1|}
+   10|       |
+   11|      1|unsigned long long bar(unsigned long long x) {
+   12|      1|  unsigned long long r = x;
+   13|      5|  while (--x)
+   14|      4|    r *= x;
+   15|      1|  return r;
+   16|      1|}
+   17|       |
+   18|       |extern void abort(void);
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  if (foo(5) != 120 || bar(5) != 120)
+   22|      0|    abort();
+   23|      1|  return 0;
+   24|      1|}
+

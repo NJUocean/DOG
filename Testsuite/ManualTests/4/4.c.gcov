@@ -1,0 +1,66 @@
+        -:    0:Source:4.c
+        -:    0:Graph:4.gcno
+        -:    0:Data:4.gcda
+        -:    0:Runs:1
+        -:    1:/* Copyright (C) 2002 Free Software Foundation.
+        -:    2:
+        -:    3:   Test for correctness of floating point comparisons.
+        -:    4:
+        -:    5:   Written by Roger Sayle, 3rd June 2002.  */
+        -:    6:
+        -:    7:/* { dg-do run } */
+        -:    8:/* { dg-options "-O2 -ffast-math" } */
+        -:    9:
+        -:   10:extern void abort(void);
+        -:   11:
+        3:   12:int test1(double x, int ok) {
+        3:   13:  if ((x - 1.0) > 0.0) {
+        1:   14:    if (!ok)
+    #####:   15:      abort();
+        2:   16:  } else if (ok)
+    #####:   17:    abort();
+        3:   18:}
+        -:   19:
+        3:   20:int test1f(float x, int ok) {
+        3:   21:  if ((x - 1.0f) > 0.0f) {
+        1:   22:    if (!ok)
+    #####:   23:      abort();
+        2:   24:  } else if (ok)
+    #####:   25:    abort();
+        3:   26:}
+        -:   27:
+        3:   28:int test2(double x, int ok) {
+        3:   29:  if ((x + 1.0) < 0.0) {
+        1:   30:    if (!ok)
+    #####:   31:      abort();
+        2:   32:  } else if (ok)
+    #####:   33:    abort();
+        3:   34:}
+        -:   35:
+        3:   36:int test2f(float x, int ok) {
+        3:   37:  if ((x + 1.0f) < 0.0f) {
+        1:   38:    if (!ok)
+    #####:   39:      abort();
+        2:   40:  } else if (ok)
+    #####:   41:    abort();
+        3:   42:}
+        -:   43:
+        1:   44:int main() {
+        1:   45:  test1(-2.0, 0);
+        1:   46:  test1(0.0, 0);
+        1:   47:  test1(2.0, 1);
+        -:   48:
+        1:   49:  test1f(-2.0f, 0);
+        1:   50:  test1f(0.0f, 0);
+        1:   51:  test1f(2.0f, 1);
+        -:   52:
+        1:   53:  test2(-2.0, 1);
+        1:   54:  test2(0.0, 0);
+        1:   55:  test2(2.0, 0);
+        -:   56:
+        1:   57:  test2f(-2.0f, 1);
+        1:   58:  test2f(0.0f, 0);
+        1:   59:  test2f(2.0f, 0);
+        -:   60:
+        1:   61:  return 0;
+        -:   62:}

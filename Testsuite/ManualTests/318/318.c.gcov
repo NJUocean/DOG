@@ -1,0 +1,13 @@
+        -:    0:Source:318.c
+        -:    0:Graph:318.gcno
+        -:    0:Data:318.gcda
+        -:    0:Runs:1
+        -:    1:/* PR debug/49032 */
+        -:    2:/* { dg-do link } */
+        -:    3:
+        -:    4:static int s = 42;
+        -:    5:
+        1:    6:int main() {
+        1:    7:  int *l[18] = {&s, &s, &s, &s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        1:    8:  return 0;
+        -:    9:}

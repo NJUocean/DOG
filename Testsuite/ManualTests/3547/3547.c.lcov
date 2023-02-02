@@ -1,0 +1,8 @@
+    1|      1|long f(short a, short b) { return (long)a / b; }
+    2|      1|main() {
+    3|      1|  if (f(-32768, -1) != 32768L)
+    4|      0|    abort();
+    5|      1|  else
+    6|      1|    exit(0);
+    7|      1|}
+

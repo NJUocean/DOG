@@ -1,0 +1,41 @@
+        -:    0:Source:3212.c
+        -:    0:Graph:3212.gcno
+        -:    0:Data:3212.gcda
+        -:    0:Runs:1
+        -:    1:/* This tests an insn length of sign extension on h8300 port.  */
+        -:    2:
+        -:    3:extern void exit(int);
+        -:    4:
+        -:    5:volatile signed char *q;
+        -:    6:volatile signed int n;
+        -:    7:
+    #####:    8:void foo(void) {
+        -:    9:  signed char *p;
+        -:   10:
+        -:   11:  for (;;) {
+    #####:   12:    p = (signed char *)q;
+    #####:   13:    n = p[2];
+    #####:   14:    p = (signed char *)q;
+    #####:   15:    n = p[2];
+    #####:   16:    p = (signed char *)q;
+    #####:   17:    n = p[2];
+    #####:   18:    p = (signed char *)q;
+    #####:   19:    n = p[2];
+    #####:   20:    p = (signed char *)q;
+    #####:   21:    n = p[2];
+    #####:   22:    p = (signed char *)q;
+    #####:   23:    n = p[2];
+    #####:   24:    p = (signed char *)q;
+    #####:   25:    n = p[2];
+    #####:   26:    p = (signed char *)q;
+    #####:   27:    n = p[2];
+    #####:   28:    p = (signed char *)q;
+    #####:   29:    n = p[2];
+    #####:   30:    p = (signed char *)q;
+    #####:   31:    n = p[2];
+    #####:   32:    p = (signed char *)q;
+    #####:   33:    n = p[2];
+        -:   34:  }
+        -:   35:}
+        -:   36:
+        1:   37:int main() { exit(0); }

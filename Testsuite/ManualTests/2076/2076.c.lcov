@@ -1,0 +1,57 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target int32plus } */
+    3|       |/* { dg-options "-O -fdump-tree-fre1 -fdump-tree-dse1" } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |union U {
+    8|       |  int i;
+    9|       |  char c[4];
+   10|       |  short s[2];
+   11|       |};
+   12|       |
+   13|      1|char __attribute__((noinline, noclone)) foo(int i) {
+   14|      1|  union U u;
+   15|      1|  u.i = i;
+   16|      1|  /* This should be equivalent to (char) i.  */
+   17|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   18|      1|  return u.c[0];
+   19|       |#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+   20|       |  return u.c[3];
+   21|       |#else
+   22|       |  return 0x04;
+   23|       |#endif
+   24|      1|}
+   25|       |
+   26|      1|short __attribute__((noinline, noclone)) baz(int i) {
+   27|      1|  union U u;
+   28|      1|  u.i = i;
+   29|      1|  /* This should be equivalent to (char) i.  */
+   30|      1|#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+   31|      1|  return u.s[0];
+   32|       |#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+   33|       |  return u.s[1];
+   34|       |#else
+   35|       |  return 0x0304;
+   36|       |#endif
+   37|      1|}
+   38|       |
+   39|      0|char __attribute__((noinline, noclone)) bar(int j) {
+   40|      0|  union U u;
+   41|      0|  u.i = j;
+   42|      0|  /* This gets simplified to a BIT_FIELD_REF.  */
+   43|      0|  return u.c[2];
+   44|      0|}
+   45|       |
+   46|      1|int main() {
+   47|      1|  if (foo(0x01020304) != 0x04)
+   48|      0|    abort();
+   49|      1|  if (baz(0x01020304) != 0x0304)
+   50|      0|    abort();
+   51|      1|  return 0;
+   52|      1|}
+   53|       |
+   54|       |/* { dg-final { scan-tree-dump "\\(char\\) i_" "fre1" } } */
+   55|       |/* { dg-final { scan-tree-dump "\\(short int\\) i_" "fre1" } } */
+   56|       |/* { dg-final { scan-tree-dump-not "u.i =" "dse1" } } */
+

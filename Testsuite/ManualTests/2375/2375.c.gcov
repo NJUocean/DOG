@@ -1,0 +1,32 @@
+        -:    0:Source:2375.c
+        -:    0:Graph:2375.gcno
+        -:    0:Data:2375.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "-O2 --save-temps" } */
+        -:    2:/* { dg-do run } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:int test_si(int a, int b) {
+        -:    7:  /* { dg-final { scan-assembler "extr\tw\[0-9\]+, w\[0-9\]+, w\[0-9\]+, 27\n" }
+        -:    8:   * } */
+        1:    9:  return (a << 5) | ((unsigned int)b >> 27);
+        -:   10:}
+        -:   11:
+        1:   12:long long test_di(long long a, long long b) {
+        -:   13:  /* { dg-final { scan-assembler "extr\tx\[0-9\]+, x\[0-9\]+, x\[0-9\]+, 45\n" }
+        -:   14:   * } */
+        1:   15:  return (a << 19) | ((unsigned long long)b >> 45);
+        -:   16:}
+        -:   17:
+        1:   18:int main() {
+        -:   19:  int v;
+        -:   20:  long long w;
+        1:   21:  v = test_si(0x00000004, 0x30000000);
+        1:   22:  if (v != 0x00000086)
+    #####:   23:    abort();
+        1:   24:  w = test_di(0x0001040040040004ll, 0x0070050066666666ll);
+        1:   25:  if (w != 0x2002002000200380ll)
+    #####:   26:    abort();
+        1:   27:  return 0;
+        -:   28:}

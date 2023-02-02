@@ -1,0 +1,19 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O -fschedule-insns" } */
+    3|       |
+    4|      1|int f4(int i, ...) {
+    5|      1|  int y = 0;
+    6|      1|  __builtin_va_list ap;
+    7|      1|  __builtin_va_start(ap, i);
+    8|      1|  if (i == 5)
+    9|      1|    y = __builtin_va_arg(ap, double);
+   10|      1|  __builtin_va_end(ap);
+   11|      1|  return y;
+   12|      1|}
+   13|       |
+   14|      1|int main(void) {
+   15|      1|  if (f4(5, 7.0) != 7)
+   16|      0|    __builtin_abort();
+   17|      1|  return 0;
+   18|      1|}
+

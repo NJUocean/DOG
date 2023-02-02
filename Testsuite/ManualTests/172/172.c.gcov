@@ -1,0 +1,62 @@
+        -:    0:Source:172.c
+        -:    0:Graph:172.gcno
+        -:    0:Data:172.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for bitfield alignment in structs and unions.  */
+        -:    2:/* { dg-do run { target pcc_bitfield_type_matters } }  */
+        -:    3:/* { dg-options "-O2" }  */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        -:    8:typedef long la __attribute__((aligned(8)));
+        -:    9:
+        -:   10:struct A {
+        -:   11:  char a;
+        -:   12:  union UA {
+        -:   13:    char x;
+        -:   14:    la y : 6;
+        -:   15:  } b;
+        -:   16:  char c;
+        -:   17:} a;
+        -:   18:
+        -:   19:struct B {
+        -:   20:  char a;
+        -:   21:  union UB {
+        -:   22:    char x;
+        -:   23:    long y : 6 __attribute__((aligned(8)));
+        -:   24:  } b;
+        -:   25:  char c;
+        -:   26:} b;
+        -:   27:
+        -:   28:struct C {
+        -:   29:  char a;
+        -:   30:  struct UC {
+        -:   31:    la y : 6;
+        -:   32:  } b;
+        -:   33:  char c;
+        -:   34:} c;
+        -:   35:
+        -:   36:struct D {
+        -:   37:  char a;
+        -:   38:  struct UD {
+        -:   39:    long y : 6 __attribute__((aligned(8)));
+        -:   40:  } b;
+        -:   41:  char c;
+        -:   42:} d;
+        -:   43:
+        1:   44:int main(void) {
+        -:   45:  if (sizeof(a) != sizeof(b))
+        -:   46:    abort();
+        -:   47:  if (sizeof(a) != sizeof(c))
+        -:   48:    abort();
+        -:   49:  if (sizeof(a) != sizeof(d))
+        -:   50:    abort();
+        -:   51:  if ((&a.c - &a.a) != (&b.c - &b.a))
+        -:   52:    abort();
+        -:   53:  if ((&a.c - &a.a) != (&c.c - &c.a))
+        -:   54:    abort();
+        -:   55:  if ((&a.c - &a.a) != (&d.c - &d.a))
+        -:   56:    abort();
+        1:   57:  exit(0);
+        -:   58:}

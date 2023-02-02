@@ -1,0 +1,41 @@
+    1|       |/* PR tree-optimization/78482 */
+    2|       |/* { dg-do run } */
+    3|       |
+    4|       |short a = 65531;
+    5|       |int b = 3, f;
+    6|       |signed char c, d;
+    7|      1|static void fn1(int p1) {
+    8|      1|  short e;
+    9|      1|  b = f;
+   10|      1|  if (f > p1 && p1)
+   11|      3|  L:
+   12|      3|    for (e = 0; 0;)
+   13|      0|      ;
+   14|      0|  else if (d)
+   15|      0|    b = 0 >= b;
+   16|      6|  for (; e <= 3; e++) {
+   17|      5|    if (b)
+   18|      4|      continue;
+   19|      1|    b = 3;
+   20|      1|    goto L;
+   21|      1|  }
+   22|      2|}
+   23|       |
+   24|      0|__attribute__((noinline, noclone)) int bar(const char *x, int y) {
+   25|      0|  asm volatile("" : "+g"(x), "+g"(y) : : "memory");
+   26|      0|  if (y == 2)
+   27|      0|    __builtin_abort();
+   28|      0|  return 0;
+   29|      0|}
+   30|       |
+   31|      1|int main() {
+   32|      2|  for (; c >= 0; c--) {
+   33|      1|    if (!b) {
+   34|      0|      bar("%d\n", 2);
+   35|      0|      continue;
+   36|      0|    }
+   37|      1|    fn1(a);
+   38|      1|  }
+   39|      1|  return 0;
+   40|      1|}
+

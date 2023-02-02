@@ -1,0 +1,42 @@
+        -:    0:Source:2877.c
+        -:    0:Graph:2877.gcno
+        -:    0:Data:2877.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target { powerpc64le-*-* } } } */
+        -:    2:/* { dg-options "-mdejagnu-cpu=power8 -O3" } */
+        -:    3:
+        -:    4:void abort();
+        -:    5:
+        -:    6:#define N 4096
+        -:    7:int ca[N] __attribute__((aligned(16)));
+        -:    8:int cb[N] __attribute__((aligned(16)));
+        -:    9:int cc[N] __attribute__((aligned(16)));
+        -:   10:int cd[N] __attribute__((aligned(16)));
+        -:   11:
+        1:   12:__attribute__((noinline)) void foo() {
+        -:   13:  int i;
+     4097:   14:  for (i = 0; i < N; i++) {
+     4096:   15:    ca[i] = ((cb[i] + cc[i]) * cd[i]) >> 3;
+        -:   16:  }
+        1:   17:}
+        -:   18:
+        1:   19:__attribute__((noinline)) void init() {
+        -:   20:  int i;
+     4097:   21:  for (i = 0; i < N; ++i) {
+     4096:   22:    cb[i] = 3 * i - 2048;
+     4096:   23:    cc[i] = -5 * i + 93;
+     4096:   24:    cd[i] = i % 2 ? 1 : -1;
+        -:   25:  }
+        1:   26:}
+        -:   27:
+        1:   28:int main() {
+        -:   29:  int i;
+        1:   30:  init();
+        1:   31:  foo();
+     4097:   32:  for (i = 0; i < N; ++i)
+     4096:   33:    if (i % 2 == 1 && ca[i] != (-2 * i - 1955) >> 3)
+    #####:   34:      abort();
+     4096:   35:    else if (i % 2 == 0 && ca[i] != (1955 + 2 * i) >> 3)
+    #####:   36:      abort();
+        1:   37:  return 0;
+        -:   38:}

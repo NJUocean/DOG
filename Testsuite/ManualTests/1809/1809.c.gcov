@@ -1,0 +1,70 @@
+        -:    0:Source:1809.c
+        -:    0:Graph:1809.gcno
+        -:    0:Data:1809.gcda
+        -:    0:Runs:1
+        -:    1:/* Testcase derived from gcc.c-torture/execute 20050826-2.c
+        -:    2:   which showed jump threading profile insanities.  */
+        -:    3:/* { dg-options "-Ofast -fdump-tree-dom2-all" } */
+        -:    4:
+        -:    5:struct rtattr {
+        -:    6:  unsigned short rta_len;
+        -:    7:  unsigned short rta_type;
+        -:    8:};
+        -:    9:
+      200:   10:__attribute__((noinline)) int inet_check_attr(void *r, struct rtattr **rta) {
+        -:   11:  int i;
+        -:   12:
+     2100:   13:  for (i = 1; i <= 14; i++) {
+     2000:   14:    struct rtattr *attr = rta[i - 1];
+     2000:   15:    if (attr) {
+     1900:   16:      if (attr->rta_len - sizeof(struct rtattr) < 4)
+      100:   17:        return -22;
+     1800:   18:      if (i != 9 && i != 8)
+     1600:   19:        rta[i - 1] = attr + 1;
+        -:   20:    }
+        -:   21:  }
+      100:   22:  return 0;
+        -:   23:}
+        -:   24:
+        -:   25:extern void abort(void);
+        -:   26:
+      100:   27:int test(void) {
+        -:   28:  struct rtattr rt[2];
+        -:   29:  struct rtattr *rta[14];
+        -:   30:  int i;
+        -:   31:
+      100:   32:  rt[0].rta_len = sizeof(struct rtattr) + 8;
+      100:   33:  rt[0].rta_type = 0;
+      100:   34:  rt[1] = rt[0];
+     1500:   35:  for (i = 0; i < 14; i++)
+     1400:   36:    rta[i] = &rt[0];
+      100:   37:  if (inet_check_attr(0, rta) != 0)
+    #####:   38:    abort();
+     1500:   39:  for (i = 0; i < 14; i++)
+     1400:   40:    if (rta[i] != &rt[i != 7 && i != 8])
+    #####:   41:      abort();
+     1500:   42:  for (i = 0; i < 14; i++)
+     1400:   43:    rta[i] = &rt[0];
+      100:   44:  rta[1] = 0;
+      100:   45:  rt[1].rta_len -= 8;
+      100:   46:  rta[5] = &rt[1];
+      100:   47:  if (inet_check_attr(0, rta) != -22)
+    #####:   48:    abort();
+     1500:   49:  for (i = 0; i < 14; i++)
+     1400:   50:    if (i == 1 && rta[i] != 0)
+    #####:   51:      abort();
+     1400:   52:    else if (i != 1 && i <= 5 && rta[i] != &rt[1])
+    #####:   53:      abort();
+     1400:   54:    else if (i > 5 && rta[i] != &rt[0])
+    #####:   55:      abort();
+      100:   56:  return 0;
+        -:   57:}
+        -:   58:
+        1:   59:int main(void) {
+        -:   60:  int i;
+      101:   61:  for (i = 0; i < 100; i++)
+      100:   62:    test();
+        1:   63:  return 0;
+        -:   64:}
+        -:   65:
+        -:   66:/* { dg-final-use-not-autofdo { scan-tree-dump-not "Invalid sum" "dom2"} } */

@@ -1,0 +1,33 @@
+        -:    0:Source:1458.c
+        -:    0:Graph:1458.gcno
+        -:    0:Data:1458.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:typedef long long V
+        -:    4:    __attribute__((vector_size(2 * sizeof(long long)), may_alias));
+        -:    5:
+        -:    6:struct s {
+        -:    7:  char u;
+        -:    8:  V v[2];
+        -:    9:} __attribute__((packed, aligned(1)));
+        -:   10:
+        3:   11:__attribute__((noinline, noclone)) long long foo(struct s *x, int y, V *z) {
+        3:   12:  V a = x->v[y];
+        3:   13:  x->v[y] = *z;
+        3:   14:  return a[1];
+        -:   15:}
+        -:   16:
+        -:   17:struct s a = {0, {{0, 0}, {0, 0}}};
+        1:   18:int main() {
+        1:   19:  V v1 = {0, 1};
+        1:   20:  V v2 = {0, 2};
+        -:   21:
+        1:   22:  if (foo(&a, 0, &v1) != 0)
+    #####:   23:    __builtin_abort();
+        1:   24:  if (foo(&a, 0, &v2) != 1)
+    #####:   25:    __builtin_abort();
+        1:   26:  if (foo(&a, 1, &v1) != 0)
+    #####:   27:    __builtin_abort();
+        1:   28:  return 0;
+        -:   29:}

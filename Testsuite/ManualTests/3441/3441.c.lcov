@@ -1,0 +1,13 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|unsigned long bar(void) { return 32768; }
+    4|       |
+    5|      1|int main() {
+    6|      1|  unsigned long nStyle = bar();
+    7|      1|  if (nStyle & 32768)
+    8|      1|    nStyle |= 65536;
+    9|      1|  if (nStyle != (32768 | 65536))
+   10|      0|    abort();
+   11|      1|  return 0;
+   12|      1|}
+

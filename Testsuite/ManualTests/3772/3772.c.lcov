@@ -1,0 +1,12 @@
+    1|       |/* PR tree-optimization/56250 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |
+    5|      1|int main() {
+    6|      1|  unsigned int x = 2;
+    7|      1|  unsigned int y = (0U - x / 2) / 2;
+    8|      1|  if (-1U / x != y)
+    9|      0|    abort();
+   10|      1|  return 0;
+   11|      1|}
+

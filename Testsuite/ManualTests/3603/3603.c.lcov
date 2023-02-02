@@ -1,0 +1,10 @@
+    1|       |extern void abort(void);
+    2|       |
+    3|      1|unsigned int test(unsigned int x) { return x / 0x80000001U / 0x00000002U; }
+    4|       |
+    5|      1|int main() {
+    6|      1|  if (test(2) != 0)
+    7|      0|    abort();
+    8|      1|  return 0;
+    9|      1|}
+

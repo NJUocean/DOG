@@ -1,0 +1,49 @@
+        -:    0:Source:2721.c
+        -:    0:Graph:2721.gcno
+        -:    0:Data:2721.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 15262.
+        -:    2:   The alias analyzer only considers relations between pointers and
+        -:    3:   symbols.  If two pointers P and Q point to the same symbol S, then
+        -:    4:   their respective memory tags will either be the same or they will
+        -:    5:   have S in their alias set.
+        -:    6:
+        -:    7:   However, if there are no common symbols between P and Q, TBAA will
+        -:    8:   currently miss their alias relationship altogether.  */
+        -:    9:struct A {
+        -:   10:  int t;
+        -:   11:  int i;
+        -:   12:};
+        -:   13:
+        1:   14:int foo() { return 3; }
+        -:   15:
+        1:   16:main() {
+        -:   17:  struct A loc, *locp;
+        -:   18:  float f, g, *p;
+        -:   19:  int T355, *T356;
+        -:   20:
+        -:   21:  /* Avoid the partial hack in TBAA that would consider memory tags if
+        -:   22:     the program had no addressable symbols.  */
+        1:   23:  f = 3;
+        1:   24:  g = 2;
+       1*:   25:  p = foo() ? &g : &f;
+        1:   26:  if (*p > 0.0)
+        1:   27:    g = 1;
+        -:   28:
+        -:   29:  /* Store into *locp and cache its current value.  */
+        1:   30:  locp = malloc(sizeof(*locp));
+        1:   31:  locp->i = 10;
+        1:   32:  T355 = locp->i;
+        -:   33:
+        -:   34:  /* Take the address of one of locp's fields and write to it.  */
+        1:   35:  T356 = &locp->i;
+        1:   36:  *T356 = 1;
+        -:   37:
+        -:   38:  /* Read the recently stored value.  If TBAA fails, this will appear
+        -:   39:     as a redundant load that will be replaced with '10'.  */
+        1:   40:  T355 = locp->i;
+        1:   41:  if (T355 != 1)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

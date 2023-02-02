@@ -1,0 +1,43 @@
+    1|       |/* PR tree-optimization/51877 */
+    2|       |
+    3|       |extern void abort(void);
+    4|       |struct A {
+    5|       |  int a;
+    6|       |  char b[32];
+    7|       |} a, b;
+    8|       |
+    9|      4|__attribute__((noinline, noclone)) struct A bar(int x) {
+   10|      4|  struct A r;
+   11|      4|  static int n;
+   12|      4|  r.a = ++n;
+   13|      4|  __builtin_memset(r.b, 0, sizeof(r.b));
+   14|      4|  r.b[0] = x;
+   15|      4|  return r;
+   16|      4|}
+   17|       |
+   18|      2|__attribute__((noinline, noclone)) void baz(void) {
+   19|      2|  asm volatile("" : : : "memory");
+   20|      2|}
+   21|       |
+   22|      2|__attribute__((noinline, noclone)) void foo(struct A *x, int y) {
+   23|      2|  if (y == 6)
+   24|      1|    a = bar(7);
+   25|      1|  else
+   26|      1|    *x = bar(7);
+   27|      2|  baz();
+   28|      2|}
+   29|       |
+   30|      1|int main() {
+   31|      1|  a = bar(3);
+   32|      1|  b = bar(4);
+   33|      1|  if (a.a != 1 || a.b[0] != 3 || b.a != 2 || b.b[0] != 4)
+   34|      0|    abort();
+   35|      1|  foo(&b, 0);
+   36|      1|  if (a.a != 1 || a.b[0] != 3 || b.a != 3 || b.b[0] != 7)
+   37|      0|    abort();
+   38|      1|  foo(&b, 6);
+   39|      1|  if (a.a != 4 || a.b[0] != 7 || b.a != 3 || b.b[0] != 7)
+   40|      0|    abort();
+   41|      1|  return 0;
+   42|      1|}
+

@@ -1,0 +1,12 @@
+        -:    0:Source:3106.c
+        -:    0:Graph:3106.gcno
+        -:    0:Data:3106.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do preprocess } */
+        -:    2:/* { dg-additional-options "-dD" } */
+        -:    3:
+        -:    4:#if __has_include("who cares")
+        -:    5:#endif
+        1:    6:int main() { return 0; }
+        -:    7:
+        -:    8:/* { dg-final { scan-file-not pr93452-2.i {__has_include} } } */

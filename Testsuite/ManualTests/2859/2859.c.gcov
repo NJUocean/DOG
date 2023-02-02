@@ -1,0 +1,20 @@
+        -:    0:Source:2859.c
+        -:    0:Graph:2859.gcno
+        -:    0:Data:2859.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:/* { dg-options "-mminimal-toc" { target { powerpc*-*-* && lp64 } } } */
+        -:    3:
+        -:    4:char *strchr(const char *, int);
+        -:    5:
+    #####:    6:int foo(int a) {
+        -:    7:  int b;
+        -:    8:
+    #####:    9:  b = 0;
+    #####:   10:  if ("/"[1] != '\0')
+    #####:   11:    if (strchr("/", a))
+    #####:   12:      b = 1;
+    #####:   13:  return b;
+        -:   14:}
+        -:   15:
+        1:   16:int main(void) { return 0; }

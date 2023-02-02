@@ -1,0 +1,29 @@
+        -:    0:Source:1725.c
+        -:    0:Graph:1725.gcno
+        -:    0:Data:1725.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct S {
+        -:    4:  __INT32_TYPE__ a : 24;
+        -:    5:  __INT32_TYPE__ b : 8;
+        -:    6:} s;
+        -:    7:
+        1:    8:int main() {
+        1:    9:  s.a = 0xfefefe;
+        1:   10:  s.b = 0xfe;
+        -:   11:  unsigned char c;
+        1:   12:  c = ((unsigned char *)&s)[0];
+        1:   13:  if (c != 0xfe)
+    #####:   14:    __builtin_abort();
+        1:   15:  c = ((unsigned char *)&s)[1];
+        1:   16:  if (c != 0xfe)
+    #####:   17:    __builtin_abort();
+        1:   18:  c = ((unsigned char *)&s)[2];
+        1:   19:  if (c != 0xfe)
+    #####:   20:    __builtin_abort();
+        1:   21:  c = ((unsigned char *)&s)[3];
+        1:   22:  if (c != 0xfe)
+    #####:   23:    __builtin_abort();
+        1:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,17 @@
+        -:    0:Source:3721.c
+        -:    0:Graph:3721.gcno
+        -:    0:Data:3721.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort(void);
+        -:    2:
+        -:    3:int arr[] = {1, 2, 3, 4};
+        -:    4:int count = 0;
+        -:    5:
+        1:    6:int incr(void) { return ++count; }
+        -:    7:
+        1:    8:int main() {
+        1:    9:  arr[count++] = incr();
+        1:   10:  if (count != 2 || arr[count] != 3)
+    #####:   11:    abort();
+        1:   12:  return 0;
+        -:   13:}

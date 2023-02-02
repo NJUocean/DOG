@@ -1,0 +1,17 @@
+        -:    0:Source:2289.c
+        -:    0:Graph:2289.gcno
+        -:    0:Data:2289.gcda
+        -:    0:Runs:1
+        -:    1:short int i = -1;
+        -:    2:const char *const wordlist[207];
+        -:    3:
+        1:    4:const char *const *foo(void) {
+        1:    5:  register const char *const *wordptr = &wordlist[207u + i];
+        1:    6:  return wordptr;
+        -:    7:}
+        -:    8:
+        1:    9:int main() {
+        1:   10:  if (foo() != &wordlist[206])
+    #####:   11:    abort();
+        1:   12:  exit(0);
+        -:   13:}

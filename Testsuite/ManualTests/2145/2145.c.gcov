@@ -1,0 +1,31 @@
+        -:    0:Source:2145.c
+        -:    0:Graph:2145.gcno
+        -:    0:Data:2145.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options "-Wall -w -O2" } */
+        -:    3:
+        -:    4:char a;
+        -:    5:int b;
+        -:    6:unsigned c, d;
+        -:    7:short e;
+        -:    8:int main_f;
+        1:    9:int main() {
+        1:   10:L0:
+        1:   11:  if (e)
+    #####:   12:    goto L1;
+       1*:   13:  b = c & d || a;
+        1:   14:  if (!c)
+        1:   15:    printf("", (long long)main_f);
+        1:   16:  if (d || !c) {
+        1:   17:    printf("%llu\n", (long long)main);
+        1:   18:    goto L2;
+        -:   19:  }
+    #####:   20:  unsigned g = b;
+    #####:   21:L1:
+    #####:   22:  b = g;
+        1:   23:L2:
+        1:   24:  if (b)
+    #####:   25:    goto L0;
+        1:   26:  return 0;
+        -:   27:}

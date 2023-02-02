@@ -1,0 +1,21 @@
+        -:    0:Source:2667.c
+        -:    0:Graph:2667.gcno
+        -:    0:Data:2667.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/58956 */
+        -:    2:/* PR middle-end/59470 */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-O2" } */
+        -:    5:
+        -:    6:int a, b, d[1024];
+        -:    7:
+        1:    8:int main() {
+        1:    9:  int c = a;
+        1:   10:  asm("{movl $6, (%2); movl $1, %0|mov dword ptr [%2], 6; mov %0, 1}"
+        -:   11:      : "=r"(d[c])
+        -:   12:      : "rm"(b), "r"(&a)
+        -:   13:      : "memory");
+        1:   14:  if (d[0] != 1 || d[6] != 0)
+    #####:   15:    __builtin_abort();
+        1:   16:  return 0;
+        -:   17:}

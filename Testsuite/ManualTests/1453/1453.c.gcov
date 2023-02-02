@@ -1,0 +1,54 @@
+        -:    0:Source:1453.c
+        -:    0:Graph:1453.gcno
+        -:    0:Data:1453.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        -:    5:int i, j, *pj = &j, **ppj = &pj;
+        -:    6:int x, *px = &x;
+        -:    7:
+        -:    8:short s, *ps = &s, k;
+        -:    9:
+        -:   10:unsigned short u, *pu = &u, **ppu = &pu;
+        -:   11:
+        -:   12:char c, *pc = &c;
+        -:   13:
+        -:   14:unsigned char v = 48;
+        -:   15:
+        3:   16:static int bar(int p) {
+        3:   17:  p = k;
+        3:   18:  *px = **ppu = i;
+        3:   19:  *ppj = &p;
+        3:   20:  if (**ppj)
+        1:   21:    *pj = p;
+        3:   22:  return p;
+        -:   23:}
+        -:   24:
+        1:   25:void __attribute__((noinline)) foo() {
+        5:   26:  for (; i <= 3; i++)
+       4*:   27:    for (; j; j--)
+        -:   28:      ;
+        -:   29:
+        1:   30:  u ^= bar(*pj);
+        -:   31:
+        3:   32:  for (k = 1; k >= 0; k--) {
+        -:   33:    int l;
+        2:   34:    bar(0);
+       10:   35:    for (l = 1; l < 5; l++) {
+        -:   36:      int m;
+       56:   37:      for (m = 6; m; m--) {
+       48:   38:        v--;
+       48:   39:        *ps = *pc;
+        -:   40:      }
+        -:   41:    }
+        -:   42:  }
+        1:   43:}
+        -:   44:
+        1:   45:int main() {
+        1:   46:  foo();
+        1:   47:  if (v != 0)
+    #####:   48:    abort();
+        1:   49:  return 0;
+        -:   50:}

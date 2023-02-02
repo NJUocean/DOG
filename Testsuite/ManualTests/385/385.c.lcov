@@ -1,0 +1,56 @@
+    1|       |/* { dg-require-effective-target size32plus } */
+    2|       |/* { dg-require-effective-target run_expensive_tests }  PR testsuite/48283 */
+    3|       |
+    4|       |#define DEBUG 0
+    5|       |#if DEBUG
+    6|       |#include <stdio.h>
+    7|       |#endif
+    8|       |
+    9|       |#define N 24
+   10|  1.00G|#define M 1000
+   11|       |
+   12|       |int A[M][M], B[M][M], C[M][M];
+   13|       |
+   14|      1|static int __attribute__((noinline)) foo(void) {
+   15|      1|  int i, j, k;
+   16|      1|
+   17|      1|  /* This should NOT be blocked.  */
+   18|     25|  for (i = 0; i < 24; i++)
+   19|    600|    for (j = 0; j < 24; j++)
+   20|  14.4k|      for (k = 0; k < 24; k++)
+   21|  13.8k|        A[i][j] = B[i][k] * C[k][j];
+   22|      1|
+   23|      1|  /* This should be blocked.  */
+   24|  1.00k|  for (i = 0; i < M; i++)
+   25|  1.00M|    for (j = 0; j < M; j++)
+   26|  1.00G|      for (k = 0; k < M; k++)
+   27|  1.00G|        A[i][j] = B[i][k] * C[k][j];
+   28|      1|
+   29|      1|  return A[0][0] + A[M - 1][M - 1];
+   30|      1|}
+   31|       |
+   32|       |extern void abort();
+   33|       |
+   34|      1|int main(void) {
+   35|      1|  int i, j, res;
+   36|      1|
+   37|  1.00k|  for (i = 0; i < M; i++)
+   38|  1.00M|    for (j = 0; j < M; j++) {
+   39|  1.00M|      B[i][j] = i;
+   40|  1.00M|      C[i][j] = j;
+   41|  1.00M|    }
+   42|      1|
+   43|      1|  res = foo();
+   44|      1|
+   45|       |#if DEBUG
+   46|       |  fprintf(stderr, "res = %d \n", res);
+   47|       |#endif
+   48|      1|
+   49|      1|  if (res != 998001)
+   50|      0|    abort();
+   51|      1|
+   52|      1|  return 0;
+   53|      1|}
+   54|       |
+   55|       |/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */
+

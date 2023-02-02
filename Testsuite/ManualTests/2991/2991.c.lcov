@@ -1,0 +1,27 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-O -mstd-struct-return" } */
+    3|       |/* { dg-require-effective-target ilp32 } */
+    4|       |
+    5|       |extern void abort(void);
+    6|       |
+    7|       |struct S {
+    8|       |  int x, y, z;
+    9|       |};
+   10|       |
+   11|       |extern void bar(struct S *s) __attribute__((noinline, noclone));
+   12|       |
+   13|      1|void bar(struct S *s) { s->x++; }
+   14|       |
+   15|      1|struct S foo(void) {
+   16|      1|  struct S s = {0, 2, 3};
+   17|      1|  bar(&s);
+   18|      1|  return s;
+   19|      1|}
+   20|       |
+   21|      1|int main(void) {
+   22|      1|  struct S s = foo();
+   23|      1|  if (s.x != 1)
+   24|      0|    abort();
+   25|      1|  return 0;
+   26|      1|}
+

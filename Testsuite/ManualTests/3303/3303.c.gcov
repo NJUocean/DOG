@@ -1,0 +1,34 @@
+        -:    0:Source:3303.c
+        -:    0:Graph:3303.gcno
+        -:    0:Data:3303.gcda
+        -:    0:Runs:1
+        -:    1:/* PR optimization/11320 */
+        -:    2:/* Origin: Andreas Schwab <schwab@suse.de> */
+        -:    3:
+        -:    4:/* Verify that the scheduler correctly computes the dependencies
+        -:    5:   in the presence of conditional instructions.  */
+        -:    6:
+        -:    7:int strcmp(const char *, const char *);
+        -:    8:int ap_standalone;
+        -:    9:
+        1:   10:const char *ap_check_cmd_context(void *a, int b) { return 0; }
+        -:   11:
+        1:   12:const char *server_type(void *a, void *b, char *arg) {
+        1:   13:  const char *err = ap_check_cmd_context(a, 0x01 | 0x02 | 0x04 | 0x08 | 0x10);
+        1:   14:  if (err)
+    #####:   15:    return err;
+        -:   16:
+        1:   17:  if (!strcmp(arg, "inetd"))
+    #####:   18:    ap_standalone = 0;
+        1:   19:  else if (!strcmp(arg, "standalone"))
+        1:   20:    ap_standalone = 1;
+        -:   21:  else
+    #####:   22:    return "ServerType must be either 'inetd' or 'standalone'";
+        -:   23:
+        1:   24:  return 0;
+        -:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  server_type(0, 0, "standalone");
+        1:   29:  return 0;
+        -:   30:}

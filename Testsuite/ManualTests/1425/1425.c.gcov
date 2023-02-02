@@ -1,0 +1,34 @@
+        -:    0:Source:1425.c
+        -:    0:Graph:1425.gcno
+        -:    0:Data:1425.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:struct {
+        -:    4:  int mallocFailed;
+        -:    5:} * a;
+        -:    6:
+        -:    7:struct StrAccum {
+        -:    8:  int useMalloc;
+        -:    9:} b, c;
+        -:   10:
+        1:   11:static void fn1(struct StrAccum *p1, int p2) {
+        1:   12:  if (p2 == 0)
+    #####:   13:    return;
+        1:   14:  if (p1->useMalloc)
+    #####:   15:    a->mallocFailed = 0;
+        -:   16:}
+        -:   17:
+    #####:   18:void fn2(struct StrAccum *p1) { fn1(p1, 1); }
+        -:   19:
+        1:   20:void fn3(struct StrAccum *p1) { fn1(p1, 1); }
+        -:   21:
+    #####:   22:void fn4() {
+    #####:   23:  c.useMalloc = 1;
+    #####:   24:  fn1(&c, 0);
+    #####:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  fn3(&b);
+        1:   29:  return 0;
+        -:   30:}

@@ -1,0 +1,21 @@
+        -:    0:Source:3668.c
+        -:    0:Graph:3668.gcno
+        -:    0:Data:3668.gcda
+        -:    0:Runs:1
+        -:    1:/* PR c/42721 */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:
+        1:    5:static unsigned long long foo(unsigned long long x, unsigned long long y) {
+        1:    6:  return x / y;
+        -:    7:}
+        -:    8:
+        -:    9:static int a, b;
+        -:   10:
+        1:   11:int main(void) {
+        1:   12:  unsigned long long c = 1;
+       1*:   13:  b ^= c && (foo(a, -1ULL) != 1L);
+        1:   14:  if (b != 1)
+    #####:   15:    abort();
+        1:   16:  return 0;
+        -:   17:}

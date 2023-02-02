@@ -1,0 +1,43 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-additional-options "-fstrict-overflow" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |
+    6|       |int a, b, c, d, e, f, g, h = 1, i;
+    7|       |
+    8|      2|int foo(int p) { return p < 0 && a < -__INT_MAX__ - 1 - p ? 0 : 1; }
+    9|       |
+   10|      2|int *bar() {
+   11|      2|  int j;
+   12|      2|  i = h ? 0 : 1 % h;
+   13|      4|  for (j = 0; j < 1; j++)
+   14|      2|    for (d = 0; d; d++)
+   15|      0|      for (e = 1; e;)
+   16|      0|        return 0;
+   17|      2|  return 0;
+   18|      2|}
+   19|       |
+   20|      1|int baz() {
+   21|      1|  for (; b >= 0; b--)
+   22|      2|    for (c = 1; c >= 0; c--) {
+   23|      2|      int *k = &c;
+   24|      2|      for (;;) {
+   25|      4|        for (f = 0; f < 1; f++) {
+   26|      2|          g = foo(*k);
+   27|      2|          bar();
+   28|      2|        }
+   29|      2|        if (*k)
+   30|      1|          break;
+   31|      1|        return 0;
+   32|      1|      }
+   33|      2|    }
+   34|      1|  return 0;
+   35|      1|}
+   36|       |
+   37|      1|int main() {
+   38|      1|  baz();
+   39|      1|  if (b != 0)
+   40|      0|    abort();
+   41|      1|  return 0;
+   42|      1|}
+

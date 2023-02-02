@@ -1,0 +1,29 @@
+        -:    0:Source:1236.c
+        -:    0:Graph:1236.gcno
+        -:    0:Data:1236.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/56917 */
+        -:    2:/* { dg-do run } */
+        -:    3:/* { dg-options "-fsanitize=undefined -fno-sanitize-recover=undefined" } */
+        -:    4:
+        -:    5:#define INT_MIN (-__INT_MAX__ - 1)
+        -:    6:#define LONG_MIN (-__LONG_MAX__ - 1L)
+        -:    7:#define LLONG_MIN (-__LONG_LONG_MAX__ - 1LL)
+        -:    8:
+        1:    9:int __attribute__((noinline, noclone)) fn1(unsigned int u) {
+        1:   10:  return (-(int)(u - 1U)) - 1;
+        -:   11:}
+        -:   12:
+        1:   13:long __attribute__((noinline, noclone)) fn2(unsigned long int ul) {
+        1:   14:  return (-(long)(ul - 1UL)) - 1L;
+        -:   15:}
+        -:   16:
+        1:   17:long long __attribute__((noinline, noclone)) fn3(unsigned long long int ull) {
+        1:   18:  return (-(long long)(ull - 1ULL)) - 1LL;
+        -:   19:}
+        -:   20:
+        1:   21:int main(void) {
+        2:   22:  if (fn1(__INT_MAX__ + 1U) != INT_MIN || fn2(__LONG_MAX__ + 1UL) != LONG_MIN ||
+        1:   23:      fn3(__LONG_LONG_MAX__ + 1ULL) != LLONG_MIN)
+    #####:   24:    __builtin_abort();
+        -:   25:}

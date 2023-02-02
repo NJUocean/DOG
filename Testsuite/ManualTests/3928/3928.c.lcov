@@ -1,0 +1,24 @@
+    1|       |
+    2|       |extern void exit(int);
+    3|       |
+    4|       |int a = 3, b, c, f, g, h;
+    5|       |unsigned d;
+    6|       |char *e;
+    7|       |
+    8|      1|int main() {
+    9|      4|  for (; a; a--) {
+   10|      3|    int i;
+   11|      3|    if (h && i)
+   12|      0|      __builtin_printf("%d%d", c, f);
+   13|      3|    i = 0;
+   14|      9|    for (; i < 2; i++)
+   15|      6|      if (g)
+   16|      0|        for (; d < 10; d++)
+   17|      0|          b = *e;
+   18|      3|    i = 0;
+   19|      6|    for (; i < 1; i++)
+   20|      3|      ;
+   21|      3|  }
+   22|      1|  exit(0);
+   23|      1|}
+

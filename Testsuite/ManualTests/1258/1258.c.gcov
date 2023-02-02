@@ -1,0 +1,24 @@
+        -:    0:Source:1258.c
+        -:    0:Graph:1258.gcno
+        -:    0:Data:1258.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do link } */
+        -:    2:
+        -:    3:extern inline void foo2(void) __attribute__((always_inline, gnu_inline));
+        -:    4:extern inline void foo1(void) __attribute__((always_inline, gnu_inline));
+        -:    5:void bar1(void);
+        -:    6:void bar2(void);
+        -:    7:
+        -:    8:extern inline void __attribute__((always_inline, gnu_inline)) foo2(void) {
+    #####:    9:  bar2();
+    #####:   10:}
+        -:   11:
+    #####:   12:void bar1(void) { foo2(); }
+        -:   13:
+    #####:   14:void bar2(void) { foo1(); }
+        -:   15:
+        -:   16:extern inline void __attribute__((always_inline, gnu_inline)) foo1(void) {
+    #####:   17:  bar1();
+    #####:   18:}
+        -:   19:
+        1:   20:int main() { return 0; }

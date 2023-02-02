@@ -1,0 +1,33 @@
+        -:    0:Source:2081.c
+        -:    0:Graph:2081.gcno
+        -:    0:Data:2081.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3 -fstrict-aliasing" } */
+        -:    3:
+        -:    4:union U {
+        -:    5:  struct A {
+        -:    6:    int : 2;
+        -:    7:    int x : 8;
+        -:    8:  } a;
+        -:    9:  struct B {
+        -:   10:    int : 6;
+        -:   11:    int x : 8;
+        -:   12:  } b;
+        -:   13:};
+        -:   14:
+        1:   15:int __attribute__((noipa)) foo(union U *p, union U *q) {
+        1:   16:  p->a.x = 1;
+        1:   17:  q->b.x = 1;
+        1:   18:  return p->a.x;
+        -:   19:}
+        -:   20:
+        1:   21:int main() {
+        -:   22:  union U x;
+        1:   23:  if (foo(&x, &x) != x.a.x)
+    #####:   24:    __builtin_abort();
+        1:   25:  return 0;
+        -:   26:}
+        -:   27:
+        -:   28:/* We support arbitrary punning through unions when it happens through
+        -:   29:   the union type and thus p == q is valid here.  */

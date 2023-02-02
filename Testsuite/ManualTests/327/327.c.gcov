@@ -1,0 +1,27 @@
+        -:    0:Source:327.c
+        -:    0:Graph:327.gcno
+        -:    0:Data:327.gcda
+        -:    0:Runs:1
+        -:    1:/* Test non-canonical BID significands: _Decimal32.  Bug 91226.  */
+        -:    2:/* { dg-do run { target i?86-*-* x86_64-*-* } } */
+        -:    3:/* { dg-options "-std=gnu2x -O2" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:extern void exit(int);
+        -:    7:
+        -:    8:union u {
+        -:    9:  _Decimal32 d32;
+        -:   10:  unsigned int u32;
+        -:   11:};
+        -:   12:
+        1:   13:int main(void) {
+        -:   14:  union u x;
+        -:   15:  _Decimal32 d32;
+        1:   16:  x.u32 = 0x6cb89681U;
+        1:   17:  d32 = x.d32;
+        1:   18:  volatile double d = d32;
+        1:   19:  if (d == 0)
+        1:   20:    exit(0);
+        -:   21:  else
+    #####:   22:    abort();
+        -:   23:}

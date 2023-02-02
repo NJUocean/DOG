@@ -1,0 +1,26 @@
+// control flow context
+digraph {
+	subgraph cluster_bh {
+		color=red
+		__N1 [label="1-passive-48, 60"]
+		__N5 [label="1-passive-63, 63"]
+		__N6 [label="2-if-64, 64" color=yellow style=filled]
+		__N9 [label="1-exit-80, 80"]
+	}
+	in__N0__N2 [label=-1 style=dotted]
+	in__N0__N2 -> __N6
+	in__N0 [label="1-func-entry-47, 47"]
+	in__N0 -> in__N0__N2
+	out__N6__N7 [label=-1 style=dotted]
+	__N6 -> out__N6__N7
+	out__N6__N7 [label="1-passive-65, 66"]
+	out__N6__N7 -> out__N6__N7
+	out__N6__N8 [label=-1 style=dotted]
+	__N6 -> out__N6__N8
+	out__N6__N8 [label="0-passive-68, 70"]
+	out__N6__N8 -> out__N6__N8
+	out__N6__N8 [label="0-while-for-71, 71"]
+	out__N6__N8 -> out__N6__N8
+	out__N6__N8 [label="0-passive-78, 78"]
+	out__N6__N8 -> out__N6__N8
+}

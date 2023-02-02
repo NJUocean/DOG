@@ -1,0 +1,65 @@
+    1|       |/* Test atomic_is_lock_free.  */
+    2|       |/* { dg-do run } */
+    3|       |/* { dg-options "-std=c11 -pedantic-errors" } */
+    4|       |
+    5|       |#include <stdatomic.h>
+    6|       |#include <stdint.h>
+    7|       |
+    8|       |extern void abort(void);
+    9|       |
+   10|       |_Atomic _Bool aba;
+   11|       |atomic_bool abt;
+   12|       |_Atomic char aca;
+   13|       |atomic_char act;
+   14|       |_Atomic __CHAR16_TYPE__ ac16a;
+   15|       |atomic_char16_t ac16t;
+   16|       |_Atomic __CHAR32_TYPE__ ac32a;
+   17|       |atomic_char32_t ac32t;
+   18|       |_Atomic __WCHAR_TYPE__ awca;
+   19|       |atomic_wchar_t awct;
+   20|       |_Atomic short asa;
+   21|       |atomic_short ast;
+   22|       |_Atomic int aia;
+   23|       |atomic_int ait;
+   24|       |_Atomic long ala;
+   25|       |atomic_long alt;
+   26|       |_Atomic long long alla;
+   27|       |atomic_llong allt;
+   28|       |void *_Atomic apa;
+   29|       |
+   30|       |#define CHECK_TYPE(MACRO, V1, V2)                                              \
+   31|     10|  do {                                                                         \
+   32|     10|    int r1 = MACRO;                                                            \
+   33|     10|    int r2 = atomic_is_lock_free(&V1);                                         \
+   34|     10|    int r3 = atomic_is_lock_free(&V2);                                         \
+   35|     10|    if (r1 != 0 && r1 != 1 && r1 != 2)                                         \
+   36|     10|      abort();                                                                 \
+   37|     10|    if (r2 != 0 && r2 != 1)                                                    \
+   38|     10|      abort();                                                                 \
+   39|     10|    if (r3 != 0 && r3 != 1)                                                    \
+   40|     10|      abort();                                                                 \
+   41|     10|    if (r1 == 2 && r2 != 1)                                                    \
+   42|     10|      abort();                                                                 \
+   43|     10|    if (r1 == 2 && r3 != 1)                                                    \
+   44|     10|      abort();                                                                 \
+   45|     10|    if (r1 == 0 && r2 != 0)                                                    \
+   46|     10|      abort();                                                                 \
+   47|     10|    if (r1 == 0 && r3 != 0)                                                    \
+   48|     10|      abort();                                                                 \
+   49|     10|  } while (0)
+   50|       |
+   51|      1|int main() {
+   52|      1|  CHECK_TYPE(ATOMIC_BOOL_LOCK_FREE, aba, abt);
+   53|      1|  CHECK_TYPE(ATOMIC_CHAR_LOCK_FREE, aca, act);
+   54|      1|  CHECK_TYPE(ATOMIC_CHAR16_T_LOCK_FREE, ac16a, ac16t);
+   55|      1|  CHECK_TYPE(ATOMIC_CHAR32_T_LOCK_FREE, ac32a, ac32t);
+   56|      1|  CHECK_TYPE(ATOMIC_WCHAR_T_LOCK_FREE, awca, awct);
+   57|      1|  CHECK_TYPE(ATOMIC_SHORT_LOCK_FREE, asa, ast);
+   58|      1|  CHECK_TYPE(ATOMIC_INT_LOCK_FREE, aia, ait);
+   59|      1|  CHECK_TYPE(ATOMIC_LONG_LOCK_FREE, ala, alt);
+   60|      1|  CHECK_TYPE(ATOMIC_LLONG_LOCK_FREE, alla, allt);
+   61|      1|  CHECK_TYPE(ATOMIC_POINTER_LOCK_FREE, apa, apa);
+   62|      1|
+   63|      1|  return 0;
+   64|      1|}
+

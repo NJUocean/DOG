@@ -1,0 +1,26 @@
+        -:    0:Source:1591.c
+        -:    0:Graph:1591.gcno
+        -:    0:Data:1591.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, b, c, *d, e;
+        -:    4:
+        1:    5:static int fn1() {
+        1:    6:  if (a)
+    #####:    7:    goto l1;
+        1:    8:l2:
+        1:    9:  while (b)
+    #####:   10:    if (*d)
+    #####:   11:      return c;
+       1*:   12:  for (e = 0; e; e++) {
+    #####:   13:    goto l2;
+    #####:   14:  l1:;
+        -:   15:  }
+        1:   16:  return 0;
+        -:   17:}
+        -:   18:
+        1:   19:int main() {
+        1:   20:  fn1();
+        1:   21:  return 0;
+        -:   22:}

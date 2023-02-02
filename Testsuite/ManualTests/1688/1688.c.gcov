@@ -1,0 +1,25 @@
+        -:    0:Source:1688.c
+        -:    0:Graph:1688.gcno
+        -:    0:Data:1688.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-w -Wno-psabi" } */
+        -:    3:
+        -:    4:typedef char U __attribute__((vector_size(16)));
+        -:    5:typedef unsigned V __attribute__((vector_size(16)));
+        -:    6:
+        -:    7:V g;
+        -:    8:
+        1:    9:V f(V v, U u) {
+        1:   10:  __builtin_memset(&u[v[0]], 0, 1);
+        1:   11:  g ^= u[0];
+        1:   12:  return g;
+        -:   13:}
+        -:   14:
+        1:   15:int main(void) {
+        1:   16:  V x = f((V){5}, (U){1});
+        -:   17:
+        1:   18:  if (x[0] != 1 || x[1] != 1 || x[2] != 1 || x[3] != 1)
+    #####:   19:    __builtin_abort();
+        1:   20:  return 0;
+        -:   21:}

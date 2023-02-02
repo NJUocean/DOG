@@ -1,0 +1,24 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-require-effective-target ia32 } */
+    3|       |/* { dg-options "-O2 -fomit-frame-pointer -fno-asynchronous-unwind-tables
+    4|       | * -mpush-args" } */
+    5|       |/* { dg-additional-options "-mno-accumulate-outgoing-args" { target { ! {
+    6|       | * *-*-mingw* *-*-cygwin* } } } } */
+    7|       |
+    8|       |void abort(void);
+    9|       |
+   10|      1|void __attribute__((noinline)) f(long double a) {
+   11|      1|  if (a != 1.23L)
+   12|      0|    abort();
+   13|      1|}
+   14|       |
+   15|      1|int __attribute__((noinline)) g(long double b) {
+   16|      1|  f(b);
+   17|      1|  return 0;
+   18|      1|}
+   19|       |
+   20|      1|int main(void) {
+   21|      1|  g(1.23L);
+   22|      1|  return 0;
+   23|      1|}
+

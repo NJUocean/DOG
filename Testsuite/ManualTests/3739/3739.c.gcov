@@ -1,0 +1,25 @@
+        -:    0:Source:3739.c
+        -:    0:Graph:3739.gcno
+        -:    0:Data:3739.gcda
+        -:    0:Runs:1
+        -:    1:/* PR tree-optimization/49712 */
+        -:    2:
+        -:    3:int a[2], b, c, d, e;
+        -:    4:
+    #####:    5:void foo(int x, int y) {}
+        -:    6:
+    #####:    7:int bar(void) {
+        -:    8:  int i;
+    #####:    9:  for (; d <= 0; d = 1)
+    #####:   10:    for (i = 0; i < 4; i++)
+    #####:   11:      for (e = 0; e; e = 1)
+        -:   12:        ;
+    #####:   13:  return 0;
+        -:   14:}
+        -:   15:
+        1:   16:int main() {
+        3:   17:  for (b = 0; b < 2; b++)
+        2:   18:    while (c)
+    #####:   19:      foo(a[b] = 0, bar());
+        1:   20:  return 0;
+        -:   21:}

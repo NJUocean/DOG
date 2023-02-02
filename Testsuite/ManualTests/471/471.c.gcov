@@ -1,0 +1,23 @@
+        -:    0:Source:471.c
+        -:    0:Graph:471.gcno
+        -:    0:Data:471.gcda
+        -:    0:Runs:1
+        -:    1:typedef unsigned short Uint16;
+        -:    2:typedef unsigned int Uint;
+        -:    3:
+        1:    4:Uint f() {
+        -:    5:  Uint16 token;
+        -:    6:  Uint count;
+        -:    7:  static Uint16 values[1] = {0x9300};
+        -:    8:
+        1:    9:  token = values[0];
+        1:   10:  count = token >> 8;
+        -:   11:
+        1:   12:  return count;
+        -:   13:}
+        -:   14:
+        1:   15:int main() {
+        1:   16:  if (f() != 0x93)
+    #####:   17:    abort();
+        1:   18:  exit(0);
+        -:   19:}

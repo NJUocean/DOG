@@ -1,0 +1,26 @@
+        -:    0:Source:3863.c
+        -:    0:Graph:3863.gcno
+        -:    0:Data:3863.gcda
+        -:    0:Runs:1
+        -:    1:/* PR rtl-optimization/64682 */
+        -:    2:
+        -:    3:int a, b = 1;
+        -:    4:
+        1:    5:__attribute__((noinline, noclone)) void foo(int x) {
+        1:    6:  if (x != 5)
+    #####:    7:    __builtin_abort();
+        1:    8:}
+        -:    9:
+        1:   10:int main() {
+        -:   11:  int i;
+       57:   12:  for (i = 0; i < 56; i++)
+      56*:   13:    for (; a; a--)
+        -:   14:      ;
+        1:   15:  int *c = &b;
+        1:   16:  if (*c)
+        1:   17:    *c = 1 % (unsigned int)*c | 5;
+        -:   18:
+        1:   19:  foo(b);
+        -:   20:
+        1:   21:  return 0;
+        -:   22:}

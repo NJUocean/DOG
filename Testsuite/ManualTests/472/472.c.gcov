@@ -1,0 +1,49 @@
+        -:    0:Source:472.c
+        -:    0:Graph:472.gcno
+        -:    0:Data:472.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-require-effective-target size32plus } */
+        -:    2:
+        -:    3:#define DEBUG 0
+        -:    4:#if DEBUG
+        -:    5:#include <stdio.h>
+        -:    6:#endif
+        -:    7:
+        -:    8:#define MAX 100
+        -:    9:
+        -:   10:extern void abort();
+        -:   11:
+        1:   12:int main(void) {
+        -:   13:  int i, j;
+        1:   14:  unsigned int sum = 0;
+        -:   15:  unsigned int A[MAX * MAX];
+        -:   16:  unsigned int B[MAX * MAX];
+        -:   17:
+        -:   18:  /* These loops should be loop blocked.  */
+      101:   19:  for (i = 0; i < MAX; i++)
+    10100:   20:    for (j = 0; j < MAX; j++) {
+    10000:   21:      A[i * MAX + j] = j;
+    10000:   22:      B[i * MAX + j] = j;
+        -:   23:    }
+        -:   24:
+        -:   25:  /* These loops should be loop blocked.  */
+      101:   26:  for (i = 0; i < MAX; i++)
+    10100:   27:    for (j = 0; j < MAX; j++)
+    10000:   28:      A[i * MAX + j] += B[j * MAX + i];
+        -:   29:
+        -:   30:  /* These loops should be loop blocked.  */
+      101:   31:  for (i = 0; i < MAX; i++)
+    10100:   32:    for (j = 0; j < MAX; j++)
+    10000:   33:      sum += A[i * MAX + j];
+        -:   34:
+        -:   35:#if DEBUG
+        -:   36:  fprintf(stderr, "sum = %d \n", sum);
+        -:   37:#endif
+        -:   38:
+        1:   39:  if (sum != 990000)
+    #####:   40:    abort();
+        -:   41:
+        1:   42:  return 0;
+        -:   43:}
+        -:   44:
+        -:   45:/* { dg-final { scan-tree-dump "tiled by" "graphite" } } */

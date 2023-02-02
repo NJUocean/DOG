@@ -1,0 +1,33 @@
+        -:    0:Source:2302.c
+        -:    0:Graph:2302.gcno
+        -:    0:Data:2302.gcda
+        -:    0:Runs:1
+        -:    1:/* Test for VLA size evaluation in va_arg.  */
+        -:    2:/* Origin: Joseph Myers <joseph@codesourcery.com> */
+        -:    3:/* { dg-do run } */
+        -:    4:/* { dg-options "-std=gnu99" } */
+        -:    5:
+        -:    6:#include <stdarg.h>
+        -:    7:
+        -:    8:extern void exit(int);
+        -:    9:extern void abort(void);
+        -:   10:
+        -:   11:int a[10];
+        -:   12:int i = 9;
+        -:   13:
+        1:   14:void f(int n, ...) {
+        -:   15:  va_list ap;
+        -:   16:  void *p;
+        1:   17:  va_start(ap, n);
+        1:   18:  p = va_arg(ap, typeof(int(*)[++i]));
+        1:   19:  if (p != a)
+    #####:   20:    abort();
+        1:   21:  if (i != n)
+    #####:   22:    abort();
+        1:   23:  va_end(ap);
+        1:   24:}
+        -:   25:
+        1:   26:int main(void) {
+        1:   27:  f(10, &a);
+        1:   28:  exit(0);
+        -:   29:}

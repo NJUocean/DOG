@@ -1,0 +1,13 @@
+        -:    0:Source:1153.c
+        -:    0:Graph:1153.gcno
+        -:    0:Data:1153.gcda
+        -:    0:Runs:1
+        1:    1:int main(int argc, char **argv) {
+        -:    2:  int c;
+        1:    3:  unsigned char out[][1] = {{71}, {71}, {71}};
+        -:    4:
+        4:    5:  for (int i = 0; i < 3; i++)
+        3:    6:    if (!out[i][0])
+    #####:    7:      __builtin_abort();
+        1:    8:  return 0;
+        -:    9:}

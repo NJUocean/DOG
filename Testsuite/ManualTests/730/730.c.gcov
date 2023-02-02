@@ -1,0 +1,39 @@
+        -:    0:Source:730.c
+        -:    0:Graph:730.gcno
+        -:    0:Data:730.gcda
+        -:    0:Runs:1
+        -:    1:/* PR middle-end/24003 */
+        -:    2:/* Contributed by Eric Botcazou <ebotcazou@adacore.com> */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-std=c99 -O -fno-inline" } */
+        -:    6:/* { dg-options "-std=c99 -O -fno-inline -mtune=i686" { target { { i?86-*-*
+        -:    7: * x86_64-*-* } && ia32 } } } */
+        -:    8:
+        -:    9:#include <limits.h>
+        -:   10:
+        -:   11:typedef unsigned long uns32_t;
+        -:   12:typedef unsigned long long uns64_t;
+        -:   13:
+        -:   14:extern void abort(void);
+        -:   15:
+        1:   16:uns32_t lo(uns64_t p) { return (uns32_t)p; }
+        -:   17:
+        1:   18:uns64_t concat(uns32_t p1, uns32_t p2) {
+        -:   19:#if LLONG_MAX > 2147483647L
+        1:   20:  return ((uns64_t)p1 << 32) | p2;
+        -:   21:#else
+        -:   22:  return 0;
+        -:   23:#endif
+        -:   24:}
+        -:   25:
+        1:   26:uns64_t lshift32(uns64_t p1, uns32_t p2) { return concat(lo(p1), p2); }
+        -:   27:
+        1:   28:int main(void) {
+        -:   29:#if LLONG_MAX > 2147483647L
+        1:   30:  if (lshift32(0xFFFFFFFF12345678ULL, 0x90ABCDEFUL) != 0x1234567890ABCDEFULL)
+    #####:   31:    abort();
+        -:   32:#endif
+        -:   33:
+        1:   34:  return 0;
+        -:   35:}

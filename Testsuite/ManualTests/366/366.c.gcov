@@ -1,0 +1,44 @@
+        -:    0:Source:366.c
+        -:    0:Graph:366.gcno
+        -:    0:Data:366.gcda
+        -:    0:Runs:1
+        -:    1:/* Exercise nested function decomposition, gcc/tree-nested.c.  */
+        -:    2:
+        1:    3:int main(void) {
+        1:    4:  int j = 0, k = 6, l = 7, m = 8;
+        1:    5:  void simple(void) {
+        -:    6:    int i;
+        -:    7:#pragma acc parallel
+        -:    8:    {
+        -:    9:#pragma acc loop
+        3:   10:      for (i = 0; i < m; i += k)
+        2:   11:        j = (m + i - j) * l;
+        -:   12:    }
+        1:   13:  }
+        1:   14:  void collapse(void) {
+        -:   15:    int x, y, z;
+        -:   16:#pragma acc parallel
+        -:   17:    {
+        -:   18:#pragma acc loop collapse(3)
+        7:   19:      for (x = 0; x < k; x++)
+       78:   20:        for (y = -5; y < l; y++)
+      648:   21:          for (z = 0; z < m; z++)
+      576:   22:            j += x + y + z;
+        -:   23:    }
+        1:   24:  }
+        1:   25:  void reduction(void) {
+        -:   26:    int x, y, z;
+        -:   27:#pragma acc parallel reduction(+ : j)
+        -:   28:    {
+        -:   29:#pragma acc loop reduction(+ : j) collapse(3)
+        7:   30:      for (x = 0; x < k; x++)
+       78:   31:        for (y = -5; y < l; y++)
+      648:   32:          for (z = 0; z < m; z++)
+      576:   33:            j += x + y + z;
+        -:   34:    }
+        1:   35:  }
+        1:   36:  simple();
+        1:   37:  collapse();
+        1:   38:  reduction();
+        1:   39:  return 0;
+        -:   40:}

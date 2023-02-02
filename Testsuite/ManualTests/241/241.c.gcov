@@ -1,0 +1,29 @@
+        -:    0:Source:241.c
+        -:    0:Graph:241.gcno
+        -:    0:Data:241.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do compile } */
+        -:    2:/* { dg-options -std=gnu89 } */
+        -:    3:
+        -:    4:/* GCC 2.95.2 used to get the following variable argument macro
+        -:    5:   expansions wrong.
+        -:    6:
+        -:    7:   Source: Neil Booth, from PR 3852 with persmission.  31 Jul 2001.  */
+        -:    8:
+        -:    9:#define TEST_WORSE(args...) (5, ##args)
+        -:   10:#define TEST_BAD(foo, args...) (2, (foo), ##args)
+        -:   11:
+        -:   12:extern void abort();
+        -:   13:
+        1:   14:static int add(int a, int b) { return a + b; }
+        -:   15:
+        1:   16:int main() {
+        -:   17:  /* Would expand to a single closing parenthesis, maybe because of
+        -:   18:     the "no args requires space" brokenness.  */
+        -:   19:  if (TEST_WORSE() != 5)
+        -:   20:    abort();
+        -:   21:  /* The macro would expand to (0, (0) with a missing closing parenthesis.  */
+        1:   22:  if (add TEST_BAD(5) != 7)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

@@ -1,0 +1,72 @@
+        -:    0:Source:482.c
+        -:    0:Graph:482.gcno
+        -:    0:Data:482.gcda
+        -:    0:Runs:1
+        -:    1:// Options:   --concise --max-struct-fields 5 --max-funcs 2 --max-array-len-per-dim 5 --max-block-depth 3 --max-block-size 2
+        -:    2:#include "csmith.h"
+        -:    3:
+        -:    4:static long __undefined;
+        -:    5:
+        -:    6:struct S0 {
+        -:    7:  unsigned f0 : 1;
+        -:    8:};
+        -:    9:
+        -:   10:#pragma pack(push)
+        -:   11:#pragma pack(1)
+        -:   12:struct S1 {
+        -:   13:  int32_t f0;
+        -:   14:  volatile uint32_t f1;
+        -:   15:  const int16_t f2;
+        -:   16:};
+        -:   17:#pragma pack(pop)
+        -:   18:
+        -:   19:static int32_t g_2 = 1L;
+        -:   20:static int32_t g_7 = (-4L);
+        -:   21:static struct S0 g_15 = {0};
+        -:   22:static struct S1 g_20 = {-9L, 0x2DDB74A7L, 0xA6E4L};
+        -:   23:
+        -:   24:static struct S1 func_1(void);
+        -:   25:static uint16_t func_10(struct S0 p_11, struct S0 p_12, int32_t p_13, int8_t p_14);
+        -:   26:
+        1:   27:static struct S1 func_1(void) {
+       1*:   28:  for (g_2 = (-28); (g_2 > (-13)); g_2 = safe_add_func_uint32_t_u_u(g_2, 7)) {
+    #####:   29:    if (g_2)
+    #####:   30:      break;
+        -:   31:  }
+       1*:   32:  for (g_2 = (-19); (g_2 >= (-7)); g_2 = safe_add_func_uint8_t_u_u(g_2, 5)) {
+    #####:   33:    struct S0 l_17[2] = {{0}, {0}};
+        -:   34:    int i;
+    #####:   35:    for (g_7 = 0; (g_7 >= (-26)); g_7--) {
+    #####:   36:      struct S0 *l_16 = &g_15;
+    #####:   37:      int32_t l_18[3][1][2] = {{{0L, 0L}}, {{0L, 0L}}, {{0L, 0L}}};
+        -:   38:      int i, j, k;
+    #####:   39:      if ((func_10(((*l_16) = g_15), l_17[0], g_2, l_18[1][0][0]), g_15.f0)) {
+    #####:   40:        if (g_7)
+    #####:   41:          break;
+        -:   42:      } else {
+    #####:   43:        struct S0 l_19 = {0};
+    #####:   44:        (*l_16) = l_19;
+        -:   45:      }
+        -:   46:    }
+        -:   47:  }
+        1:   48:  return g_20;
+        -:   49:}
+        -:   50:
+    #####:   51:static uint16_t func_10(struct S0 p_11, struct S0 p_12, int32_t p_13, int8_t p_14) { return g_15.f0; }
+        -:   52:
+        1:   53:int main(int argc, char *argv[]) {
+        1:   54:  int print_hash_value = 0;
+       1*:   55:  if (argc == 2 && strcmp(argv[1], "1") == 0)
+    #####:   56:    print_hash_value = 1;
+        1:   57:  platform_main_begin();
+        1:   58:  crc32_gentab();
+        1:   59:  func_1();
+        1:   60:  transparent_crc(g_2, "g_2", print_hash_value);
+        1:   61:  transparent_crc(g_7, "g_7", print_hash_value);
+        1:   62:  transparent_crc(g_15.f0, "g_15.f0", print_hash_value);
+        1:   63:  transparent_crc(g_20.f0, "g_20.f0", print_hash_value);
+        1:   64:  transparent_crc(g_20.f1, "g_20.f1", print_hash_value);
+        1:   65:  transparent_crc(g_20.f2, "g_20.f2", print_hash_value);
+        1:   66:  platform_main_end(crc32_context ^ 0xFFFFFFFFUL, print_hash_value);
+        1:   67:  return 0;
+        -:   68:}

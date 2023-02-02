@@ -1,0 +1,24 @@
+        -:    0:Source:2822.c
+        -:    0:Graph:2822.gcno
+        -:    0:Data:2822.gcda
+        -:    0:Runs:1
+        -:    1:extern void abort();
+        -:    2:extern void exit(int);
+        -:    3:
+        -:    4:struct s {
+        -:    5:  int value;
+        -:    6:  char *string;
+        -:    7:};
+        -:    8:
+        1:    9:int main(void) {
+        -:   10:  int i;
+        5:   11:  for (i = 0; i < 4; i++) {
+        4:   12:    struct s *t = &(struct s){3, "hey there"};
+        4:   13:    if (t->value != 3)
+    #####:   14:      abort();
+        4:   15:    t->value = 4;
+        4:   16:    if (t->value != 4)
+    #####:   17:      abort();
+        -:   18:  }
+        1:   19:  exit(0);
+        -:   20:}

@@ -1,0 +1,41 @@
+        -:    0:Source:493.c
+        -:    0:Graph:493.gcno
+        -:    0:Data:493.gcda
+        -:    0:Runs:1
+        -:    1:/* The bit-field below would have a problem if __INT_MAX__ is too
+        -:    2:   small.  */
+        -:    3:#if __INT_MAX__ < 2147483647
+        -:    4:int main(void) { exit(0); }
+        -:    5:#else
+        -:    6:typedef struct {
+        -:    7:  unsigned b0 : 1, f1 : 17, b18 : 1, b19 : 1, b20 : 1, f2 : 11;
+        -:    8:} bf;
+        -:    9:
+        -:   10:typedef union {
+        -:   11:  bf b;
+        -:   12:  unsigned w;
+        -:   13:} bu;
+        -:   14:
+        1:   15:bu f(bu i) {
+        1:   16:  bu o = i;
+        -:   17:
+        1:   18:  if (o.b.b0)
+    #####:   19:    o.b.b18 = 1, o.b.b20 = 1;
+        -:   20:  else
+        1:   21:    o.b.b18 = 0, o.b.b20 = 0;
+        -:   22:
+        1:   23:  return o;
+        -:   24:}
+        -:   25:
+        1:   26:main() {
+        -:   27:  bu a;
+        -:   28:  bu r;
+        -:   29:
+        1:   30:  a.w = 0x4000000;
+        1:   31:  a.b.b0 = 0;
+        1:   32:  r = f(a);
+        1:   33:  if (a.w != r.w)
+    #####:   34:    abort();
+        1:   35:  exit(0);
+        -:   36:}
+        -:   37:#endif

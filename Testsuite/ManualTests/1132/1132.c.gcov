@@ -1,0 +1,44 @@
+        -:    0:Source:1132.c
+        -:    0:Graph:1132.gcno
+        -:    0:Data:1132.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -fmodulo-sched -funroll-loops -fdump-rtl-sms --param
+        -:    3: * sms-min-sc=1 -fmodulo-sched-allow-regmoves" } */
+        -:    4:/* { dg-options "-O2 -fmodulo-sched -funroll-loops -fdump-rtl-sms --param
+        -:    5: * sms-min-sc=1 -fmodulo-sched-allow-regmoves -fno-sched-pressure" { target
+        -:    6: * powerpc*-*-* } } */
+        -:    7:
+        -:    8:extern void abort(void);
+        -:    9:
+        -:   10:int X[1000] = {0};
+        -:   11:int Y[1000] = {0};
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:
+        1:   15:__attribute__((noinline)) int foo(int len, long a) {
+        -:   16:  int i;
+        1:   17:  long res = a;
+        -:   18:
+        1:   19:  len = 1000;
+     1001:   20:  for (i = 0; i < len; i++)
+     1000:   21:    res += X[i] * Y[i];
+        -:   22:
+        1:   23:  if (res != 601)
+    #####:   24:    abort();
+        1:   25:}
+        -:   26:
+        1:   27:int main() {
+        1:   28:  X[0] = Y[1] = 2;
+        1:   29:  Y[0] = X[1] = 21;
+        1:   30:  X[2] = Y[3] = 3;
+        1:   31:  Y[2] = X[3] = 31;
+        1:   32:  X[4] = Y[5] = 4;
+        1:   33:  Y[4] = X[5] = 41;
+        -:   34:
+        1:   35:  foo(6, 3);
+        1:   36:  return 0;
+        -:   37:}
+        -:   38:
+        -:   39:/* { dg-final { scan-rtl-dump-times "SMS succeeded" 1 "sms" { target
+        -:   40: * powerpc*-*-* } } } */

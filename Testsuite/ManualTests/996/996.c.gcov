@@ -1,0 +1,35 @@
+        -:    0:Source:996.c
+        -:    0:Graph:996.gcno
+        -:    0:Data:996.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run { target int128 } } */
+        -:    2:/* { dg-options "-O -fno-tree-bit-ccp -fno-tree-reassoc" } */
+        -:    3:
+        -:    4:typedef unsigned char u8;
+        -:    5:typedef unsigned short u16;
+        -:    6:typedef unsigned int u32;
+        -:    7:typedef unsigned long long u64;
+        -:    8:typedef unsigned __int128 u128;
+        -:    9:
+        1:   10:void __attribute__((noinline, noclone)) dirtify_stack(void) {
+        1:   11:  volatile char a[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        -:   12:                      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        -:   13:                      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        -:   14:                      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        1:   15:}
+        -:   16:
+        -:   17:u128 __attribute__((noinline, noclone))
+        1:   18:foo(u32 u32_1, u64 u64_1, u128 u128_1, u8 u8_2, u16 u16_2, u32 u32_2, u8 u8_3) {
+        1:   19:  u128_1 /= ~u128_1 | 1;
+        1:   20:  u8_3 = ((u8_3 << 2) >> 1) << 7;
+        1:   21:  u32_2 >>= u8_3;
+        1:   22:  return u128_1 + u32_2 + u8_3;
+        -:   23:}
+        -:   24:
+        1:   25:int main() {
+        1:   26:  dirtify_stack();
+        1:   27:  u128 x = foo(1, 1, 1, 1, 1, 1, 0);
+        1:   28:  if (x != 1)
+    #####:   29:    __builtin_abort();
+        1:   30:  return 0;
+        -:   31:}

@@ -1,0 +1,24 @@
+        -:    0:Source:2419.c
+        -:    0:Graph:2419.gcno
+        -:    0:Data:2419.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O" } */
+        -:    3:extern unsigned long x1;
+        -:    4:
+    #####:    5:char *f(char *a, char *b) { return a; }
+        -:    6:
+    #####:    7:int g(char *a) { return 2; }
+        -:    8:
+    #####:    9:void h(char *p[]) {
+    #####:   10:  char n[x1][512];
+    #####:   11:  char *l = f(p[1], " ");
+    #####:   12:  if (g(p[0]))
+    #####:   13:    n[0][0] = '\0';
+    #####:   14:  while (l && *l) {
+        -:   15:  }
+    #####:   16:}
+        -:   17:
+        -:   18:unsigned long x1;
+        -:   19:
+        1:   20:int main() { return 0; }

@@ -1,0 +1,22 @@
+        -:    0:Source:539.c
+        -:    0:Graph:539.gcno
+        -:    0:Data:539.gcda
+        -:    0:Runs:1
+        -:    1:int a = 1;
+        -:    2:int b = -1;
+        -:    3:
+        -:    4:int c = 1;
+        -:    5:int d = 0;
+        -:    6:
+        1:    7:main() {
+        -:    8:  double e;
+        -:    9:  double f;
+        -:   10:  double g;
+        -:   11:
+        1:   12:  f = c;
+        1:   13:  g = d;
+       1*:   14:  e = (a < b) ? f : g;
+        1:   15:  if (e)
+    #####:   16:    abort();
+        1:   17:  exit(0);
+        -:   18:}

@@ -1,0 +1,22 @@
+    1|       |extern void abort();
+    2|       |
+    3|      5|int foo(unsigned short x) {
+    4|      5|  unsigned short y;
+    5|      5|  y = x > 32767 ? x - 32768 : 0;
+    6|      5|  return y;
+    7|      5|}
+    8|       |
+    9|      1|int main() {
+   10|      1|  if (foo(0) != 0)
+   11|      0|    abort();
+   12|      1|  if (foo(32767) != 0)
+   13|      0|    abort();
+   14|      1|  if (foo(32768) != 0)
+   15|      0|    abort();
+   16|      1|  if (foo(32769) != 1)
+   17|      0|    abort();
+   18|      1|  if (foo(65535) != 32767)
+   19|      0|    abort();
+   20|      1|  return 0;
+   21|      1|}
+

@@ -1,0 +1,11 @@
+        -:    0:Source:663.c
+        -:    0:Graph:663.gcno
+        -:    0:Data:663.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-lto-do link } */
+        -:    2:/* { dg-require-effective-target fpic } */
+        -:    3:/* { dg-lto-options {{-fPIC -O2 -flto -flto-partition=1to1}} } */
+        -:    4:/* { dg-extra-ld-options {-fno-PIC -r -nostdlib -O2 -flto -flto-partition=1to1
+        -:    5: * -flinker-output=nolto-rel} } */
+        -:    6:
+        1:    7:int main(int argc, char **argv) { return 0; }

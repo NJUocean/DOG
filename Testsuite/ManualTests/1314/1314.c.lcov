@@ -1,0 +1,31 @@
+    1|       |/* { dg-do run } */
+    2|       |/* { dg-options "-fno-tree-sra" } */
+    3|       |
+    4|       |extern void abort(void);
+    5|       |struct Foo {
+    6|       |  int *p;
+    7|       |};
+    8|       |struct Bar {
+    9|       |  struct Foo *x;
+   10|       |  int *q;
+   11|       |};
+   12|      1|struct Foo __attribute__((noinline)) bar(int *p) {
+   13|      1|  struct Foo f;
+   14|      1|  f.p = p;
+   15|      1|  return f;
+   16|      1|}
+   17|      1|void __attribute__((noinline)) foo(struct Foo f) { *f.p = 0; }
+   18|      1|int main() {
+   19|      1|  int a, b;
+   20|      1|  a = 0;
+   21|      1|  b = 1;
+   22|      1|  struct Bar f;
+   23|      1|  struct Foo g = bar(&b);
+   24|      1|  f.x = &g;
+   25|      1|  f.q = &a;
+   26|      1|  foo(*f.x);
+   27|      1|  if (b != 0)
+   28|      0|    abort();
+   29|      1|  return 0;
+   30|      1|}
+

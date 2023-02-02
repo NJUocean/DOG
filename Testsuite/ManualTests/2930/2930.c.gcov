@@ -1,0 +1,17 @@
+        -:    0:Source:2930.c
+        -:    0:Graph:2930.gcno
+        -:    0:Data:2930.gcda
+        -:    0:Runs:1
+        -:    1:/* Leaf functions with many arguments.  */
+        -:    2:
+        1:    3:int add(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j,
+        -:    4:        int k, int l, int m) {
+        1:    5:  return a + b + c + d + e + f + g + h + i + j + k + l + m;
+        -:    6:}
+        -:    7:
+        1:    8:int main(void) {
+        1:    9:  if (add(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13) != 91)
+    #####:   10:    abort();
+        -:   11:
+        1:   12:  exit(0);
+        -:   13:}

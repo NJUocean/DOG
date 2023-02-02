@@ -1,0 +1,17 @@
+        -:    0:Source:305.c
+        -:    0:Graph:305.gcno
+        -:    0:Data:305.gcda
+        -:    0:Runs:1
+        -:    1:/* PR 23190 */
+        -:    2:/* { dg-do compile }
+        -:    3:/* { dg-options "-O2 -gdwarf -dA" } */
+        -:    4:/* { dg-final { scan-assembler "DW_OP_addr\[\\n\\r\]+\[^\\n\\r\]+foo" } } */
+        -:    5:/* { dg-final { scan-assembler "DW_OP_addr\[\\n\\r\]+\[^\\n\\r\]+bar" } } */
+        -:    6:
+        -:    7:static int foo;
+        -:    8:int bar;
+        1:    9:int main(void) {
+        1:   10:  foo += 3;
+        1:   11:  bar *= 5;
+        1:   12:  return 0;
+        -:   13:}

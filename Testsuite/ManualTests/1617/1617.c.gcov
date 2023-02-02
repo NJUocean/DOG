@@ -1,0 +1,17 @@
+        -:    0:Source:1617.c
+        -:    0:Graph:1617.gcno
+        -:    0:Data:1617.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a, b;
+        -:    4:
+        1:    5:int main() {
+        1:    6:  long c = 1 % (2 ^ b);
+        1:    7:  c = -c & ~(~(b ^ ~b) || a);
+        -:    8:
+        1:    9:  if (c >= 0)
+    #####:   10:    __builtin_abort();
+        -:   11:
+        1:   12:  return 0;
+        -:   13:}

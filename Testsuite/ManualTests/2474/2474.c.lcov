@@ -1,0 +1,23 @@
+    1|       |typedef struct __attribute__((__may_alias__)) {
+    2|       |  short x;
+    3|       |} test;
+    4|       |
+    5|       |test *p;
+    6|       |
+    7|      1|int g(int *a) { p = (test *)a; }
+    8|       |
+    9|      1|int f() {
+   10|      1|  int a;
+   11|      1|  g(&a);
+   12|      1|  a = 10;
+   13|      1|  test s = {1};
+   14|      1|  *p = s;
+   15|      1|  return a;
+   16|      1|}
+   17|       |
+   18|      1|int main() {
+   19|      1|  if (f() == 10)
+   20|      0|    __builtin_abort();
+   21|      1|  return 0;
+   22|      1|}
+

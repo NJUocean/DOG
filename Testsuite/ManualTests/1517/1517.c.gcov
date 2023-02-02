@@ -1,0 +1,16 @@
+        -:    0:Source:1517.c
+        -:    0:Graph:1517.gcno
+        -:    0:Data:1517.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:int a = 0, b = 1, c = 0, d = 1, e, f, g, h;
+        1:    4:int main() {
+        1:    5:  e = 1 >> d;
+       1*:    6:  f = ((31 / (1 > e)) || c) / 2;
+       1*:    7:  g = b || a;
+        1:    8:  h = 31 / g;
+        1:    9:  if (!h)
+    #####:   10:    __builtin_abort();
+        1:   11:  return 0;
+        -:   12:}

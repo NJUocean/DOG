@@ -1,0 +1,16 @@
+    1|       |/* Test for C99 __func__.  */
+    2|       |/* Origin: Joseph Myers <jsm28@cam.ac.uk> */
+    3|       |/* { dg-do run } */
+    4|       |/* { dg-options "-std=iso9899:1999 -pedantic-errors" } */
+    5|       |
+    6|       |extern void abort(void);
+    7|       |extern int strcmp(const char *, const char *);
+    8|       |extern void exit(int);
+    9|       |
+   10|      1|int main(void) {
+   11|      1|  if (strcmp(__func__, "main") || sizeof(__func__) != 5)
+   12|      0|    abort();
+   13|      1|  else
+   14|      1|    exit(0);
+   15|      1|}
+

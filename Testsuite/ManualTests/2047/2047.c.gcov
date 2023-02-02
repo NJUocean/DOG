@@ -1,0 +1,10 @@
+        -:    0:Source:2047.c
+        -:    0:Graph:2047.gcno
+        -:    0:Data:2047.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-options "" } */
+        1:    2:int main(int a, int b, int c, int d) {
+        1:    3:  int e = (a & ~b) & (~c & d);
+        1:    4:  int f = (~c & a) & (b & ~d);
+        1:    5:  return (e & f);
+        -:    6:}

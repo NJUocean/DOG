@@ -1,0 +1,13 @@
+    1|       |/* The gimplifier was inserting unwanted temporaries for REALPART_EXPR
+    2|       |   nodes.  These need to be treated like a COMPONENT_REF so their address can
+    3|       |   be taken.  */
+    4|       |
+    5|      1|int main() {
+    6|      1|  __complex double dc;
+    7|      1|  double *dp = &(__real dc);
+    8|      1|  *dp = 3.14;
+    9|      1|  if ((__real dc) != 3.14)
+   10|      0|    abort();
+   11|      1|  exit(0);
+   12|      1|}
+

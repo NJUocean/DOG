@@ -1,0 +1,26 @@
+    1|       |/* Contributed by Kris Van Hees <kris.van.hees@oracle.com> */
+    2|       |/* If not gnu99, the u and U prefixes should be parsed as separate tokens. */
+    3|       |/* { dg-do compile } */
+    4|       |/* { dg-options "-std=gnu89" } */
+    5|       |
+    6|       |const unsigned short c0 = u'a'; /* { dg-error "undeclared" "undeclared" } */
+    7|       |/* { dg-error "expected ',' or ';'" "expected" { target *-*-* } .-1 } */
+    8|       |const unsigned long c1 = U'a'; /* { dg-error "undeclared" "undeclared" } */
+    9|       |/* { dg-error "expected ',' or ';'" "expected" { target *-*-* } .-1 } */
+   10|       |
+   11|       |#define u 1 +
+   12|       |#define U 2 +
+   13|       |
+   14|       |const unsigned short c2 = u'a';
+   15|       |const unsigned long c3 = U'a';
+   16|       |
+   17|       |#undef u
+   18|       |#undef U
+   19|       |#define u "a"
+   20|       |#define U "b"
+   21|       |
+   22|       |const void *s0 = u"a";
+   23|       |const void *s1 = U"a";
+   24|       |
+   25|      1|int main() {}
+

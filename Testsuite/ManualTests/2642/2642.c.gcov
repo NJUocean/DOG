@@ -1,0 +1,30 @@
+        -:    0:Source:2642.c
+        -:    0:Graph:2642.gcno
+        -:    0:Data:2642.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O2 -mtune=athlon64" } */
+        -:    3:
+        -:    4:extern void abort(void);
+        -:    5:
+        1:    6:long double __attribute__((noinline, noclone)) test(float num) {
+        -:    7:  unsigned int i;
+        -:    8:
+        1:    9:  if (num < 0.0)
+    #####:   10:    num = 0.0;
+        -:   11:
+        1:   12:  __builtin_memcpy(&i, &num, sizeof(unsigned int));
+        -:   13:
+        1:   14:  return (long double)(unsigned long long)i;
+        -:   15:}
+        -:   16:
+        1:   17:int main() {
+        -:   18:  long double x;
+        -:   19:
+        1:   20:  x = test(0.0);
+        -:   21:
+        1:   22:  if (x != 0.0)
+    #####:   23:    abort();
+        -:   24:
+        1:   25:  return 0;
+        -:   26:}

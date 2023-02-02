@@ -1,0 +1,23 @@
+        -:    0:Source:912.c
+        -:    0:Graph:912.gcno
+        -:    0:Data:912.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-require-effective-target size32plus } */
+        -:    3:/* { dg-options "-fno-strict-volatile-bitfields" } */
+        -:    4:
+        -:    5:extern void abort(void);
+        -:    6:
+        -:    7:#pragma pack(1)
+        -:    8:volatile struct S0 {
+        -:    9:  signed a : 7;
+        -:   10:  unsigned b : 28; /* b can't be fetched with an aligned 32-bit access, */
+        -:   11:  /* but it certainly can be fetched with an unaligned access */
+        -:   12:} g = {0, 0xfffffff};
+        -:   13:
+        1:   14:int main() {
+        1:   15:  unsigned b = g.b;
+        1:   16:  if (b != 0xfffffff)
+    #####:   17:    abort();
+        1:   18:  return 0;
+        -:   19:}

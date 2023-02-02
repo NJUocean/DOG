@@ -1,0 +1,17 @@
+    1|       |int count = 0;
+    2|       |int dummy;
+    3|       |
+    4|      1|static int *bar(void) {
+    5|      1|  ++count;
+    6|      1|  return &dummy;
+    7|      1|}
+    8|       |
+    9|      1|static void foo(void) { asm("" : "+r"(*bar())); }
+   10|       |
+   11|      1|main() {
+   12|      1|  foo();
+   13|      1|  if (count != 1)
+   14|      0|    abort();
+   15|      1|  exit(0);
+   16|      1|}
+

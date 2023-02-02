@@ -1,0 +1,22 @@
+        -:    0:Source:3954.c
+        -:    0:Graph:3954.gcno
+        -:    0:Data:3954.gcda
+        -:    0:Runs:1
+        -:    1:/* PR ipa/78791 */
+        -:    2:
+        -:    3:int val;
+        -:    4:
+        -:    5:int *ptr = &val;
+        -:    6:float *ptr2 = &val;
+        -:    7:
+        -:    8:static __attribute__((always_inline, optimize("-fno-strict-aliasing")))
+        -:    9:typepun() {
+        1:   10:  *ptr2 = 0;
+        1:   11:}
+        -:   12:
+        1:   13:main() {
+        1:   14:  *ptr = 1;
+        -:   15:  typepun();
+        1:   16:  if (*ptr)
+    #####:   17:    __builtin_abort();
+        -:   18:}

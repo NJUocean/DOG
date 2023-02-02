@@ -1,0 +1,33 @@
+        -:    0:Source:2906.c
+        -:    0:Graph:2906.gcno
+        -:    0:Data:2906.gcda
+        -:    0:Runs:1
+        -:    1:/* This test case used to abort due to a reload bug with
+        -:    2:   elimination offsets.  */
+        -:    3:
+        -:    4:/* { dg-do run } */
+        -:    5:/* { dg-options "-O2 -mpacked-stack" } */
+        -:    6:
+        -:    7:extern void abort(void);
+        -:    8:
+        -:    9:double bar(double) __attribute__((noinline));
+        2:   10:double bar(double x) { return x; }
+        -:   11:
+        -:   12:double foo(int j, double f0, double f2, double f4, double f6, double x)
+        -:   13:    __attribute__((noinline));
+        -:   14:
+        2:   15:double foo(int j, double f0, double f2, double f4, double f6, double x) {
+        2:   16:  if (j)
+        1:   17:    return bar(x) + 4.0;
+        -:   18:  else
+        1:   19:    return bar(x);
+        -:   20:}
+        -:   21:
+        1:   22:int main(void) {
+        1:   23:  if (foo(0, 0, 0, 0, 0, 10) != 10)
+    #####:   24:    abort();
+        1:   25:  if (foo(1, 0, 0, 0, 0, 10) != 14)
+    #####:   26:    abort();
+        -:   27:
+        1:   28:  return 0;
+        -:   29:}

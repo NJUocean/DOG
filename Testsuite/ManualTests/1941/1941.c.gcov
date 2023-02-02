@@ -1,0 +1,49 @@
+        -:    0:Source:1941.c
+        -:    0:Graph:1941.gcno
+        -:    0:Data:1941.gcda
+        -:    0:Runs:1
+        -:    1:/* Contributed by Jack Lloyd  <lloyd@randombit.net> */
+        -:    2:
+        -:    3:/* { dg-options "-O2 -ftree-vectorize" } */
+        -:    4:/* { dg-options "-O2 -ftree-vectorize -march=nocona" { target { i?86-*-*
+        -:    5: * x86_64-*-* } } } */
+        -:    6:
+        -:    7:typedef unsigned long long word;
+        -:    8:
+        -:    9:const unsigned int MP_WORD_BITS = 64;
+        -:   10:const word MP_WORD_MASK = ~((word)0);
+        -:   11:const word MP_WORD_TOP_BIT = (word)1 << (8 * sizeof(word) - 1);
+        -:   12:
+        -:   13:extern void abort(void);
+        -:   14:
+        1:   15:word do_div(word n1, word n0, word d) {
+        1:   16:  word high = n1 % d, quotient = 0;
+        -:   17:  unsigned int j;
+        -:   18:
+       65:   19:  for (j = 0; j != MP_WORD_BITS; ++j) {
+       64:   20:    word high_top_bit = (high & MP_WORD_TOP_BIT);
+        -:   21:
+       64:   22:    high <<= 1;
+       64:   23:    high |= (n0 >> (MP_WORD_BITS - 1 - j)) & 1;
+       64:   24:    quotient <<= 1;
+        -:   25:
+       64:   26:    if (high_top_bit || high >= d) {
+       12:   27:      high -= d;
+       12:   28:      quotient |= 1;
+        -:   29:    }
+        -:   30:  }
+        -:   31:
+        1:   32:  return quotient;
+        -:   33:}
+        -:   34:
+        1:   35:int main() {
+        -:   36:  word result;
+        -:   37:
+        -:   38:  result =
+        1:   39:      do_div(0x0000000000200000ll, 0x0000000000000000ll, 0x86E53497CE000000ll);
+        -:   40:
+        1:   41:  if (result != 0x3CBA83)
+    #####:   42:    abort();
+        -:   43:
+        1:   44:  return 0;
+        -:   45:}

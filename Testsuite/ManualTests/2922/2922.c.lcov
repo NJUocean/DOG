@@ -1,0 +1,81 @@
+    1|       |/* PR rtl-optimization/20527
+    2|       |   Mishandled postincrement.  This test-case is derived from the
+    3|       |   function BZ2_hbCreateDecodeTables in the file huffman.c from
+    4|       |   bzip2-1.0.2, hence requiring the following disclaimer copied here:  */
+    5|       |
+    6|       |/*--
+    7|       |  This file is a part of bzip2 and/or libbzip2, a program and
+    8|       |  library for lossless, block-sorting data compression.
+    9|       |
+   10|       |  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+   11|       |
+   12|       |  Redistribution and use in source and binary forms, with or without
+   13|       |  modification, are permitted provided that the following conditions
+   14|       |  are met:
+   15|       |
+   16|       |  1. Redistributions of source code must retain the above copyright
+   17|       |     notice, this list of conditions and the following disclaimer.
+   18|       |
+   19|       |  2. The origin of this software must not be misrepresented; you must
+   20|       |     not claim that you wrote the original software.  If you use this
+   21|       |     software in a product, an acknowledgment in the product
+   22|       |     documentation would be appreciated but is not required.
+   23|       |
+   24|       |  3. Altered source versions must be plainly marked as such, and must
+   25|       |     not be misrepresented as being the original software.
+   26|       |
+   27|       |  4. The name of the author may not be used to endorse or promote
+   28|       |     products derived from this software without specific prior written
+   29|       |     permission.
+   30|       |
+   31|       |  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+   32|       |  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+   33|       |  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   34|       |  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+   35|       |  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+   36|       |  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+   37|       |  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   38|       |  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+   39|       |  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   40|       |  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   41|       |  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   42|       |
+   43|       |  Julian Seward, Cambridge, UK.
+   44|       |  jseward@acm.org
+   45|       |  bzip2/libbzip2 version 1.0 of 21 March 2000
+   46|       |
+   47|       |  This program is based on (at least) the work of:
+   48|       |     Mike Burrows
+   49|       |     David Wheeler
+   50|       |     Peter Fenwick
+   51|       |     Alistair Moffat
+   52|       |     Radford Neal
+   53|       |     Ian H. Witten
+   54|       |     Robert Sedgewick
+   55|       |     Jon L. Bentley
+   56|       |
+   57|       |  For more information on these sources, see the manual.
+   58|       |--*/
+   59|       |
+   60|       |void f(long *limit, long *base, long minLen, long maxLen)
+   61|       |    __attribute__((__noinline__));
+   62|      1|void f(long *limit, long *base, long minLen, long maxLen) {
+   63|      1|  long i;
+   64|      1|  long vec;
+   65|      1|  vec = 0;
+   66|      4|  for (i = minLen; i <= maxLen; i++) {
+   67|      3|    vec += (base[i + 1] - base[i]);
+   68|      3|    limit[i] = vec - 1;
+   69|      3|  }
+   70|      1|}
+   71|       |extern void abort(void);
+   72|       |extern void exit(int);
+   73|       |long b[] = {1, 5, 11, 23};
+   74|      1|int main(void) {
+   75|      1|  long l[3];
+   76|      1|  f(l, b, 0, 2);
+   77|      1|  if (l[0] != 3 || l[1] != 9 || l[2] != 21)
+   78|      0|    abort();
+   79|      1|  exit(0);
+   80|      1|}
+

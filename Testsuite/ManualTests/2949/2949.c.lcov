@@ -1,0 +1,31 @@
+    1|       |/* PR69709 This testcase used to fail due to a broken risbg
+    2|       |   splitter.  */
+    3|       |
+    4|       |/* { dg-do run } */
+    5|       |/* { dg-options "-O3 -march=z10" } */
+    6|       |
+    7|       |typedef struct {
+    8|       |  unsigned int sig[2];
+    9|       |} val_t;
+   10|       |
+   11|      1|unsigned int __attribute__((noinline)) div_significands(const val_t *a) {
+   12|      1|  val_t u = *a;
+   13|      1|  int bit = 64;
+   14|      1|  unsigned int r;
+   15|     65|  do {
+   16|     65|    u.sig[1] = (u.sig[1] << 1) | (u.sig[0] >> 31);
+   17|     65|    u.sig[0] = 42;
+   18|     65|
+   19|     65|    if (bit == 64)
+   20|      1|      r = u.sig[1];
+   21|     65|  } while (--bit >= 0);
+   22|      1|  return r;
+   23|      1|}
+   24|       |
+   25|      1|int main(void) {
+   26|      1|  val_t a = {{0x1, 0x1}};
+   27|      1|  if (div_significands(&a) != 2)
+   28|      0|    __builtin_abort();
+   29|      1|  return 0;
+   30|      1|}
+

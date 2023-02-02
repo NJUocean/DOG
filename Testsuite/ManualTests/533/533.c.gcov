@@ -1,0 +1,32 @@
+        -:    0:Source:533.c
+        -:    0:Graph:533.gcno
+        -:    0:Data:533.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-g" } */
+        -:    3:
+        1:    4:void __attribute__((noinline)) optimize_me_not() {
+        1:    5:  __asm__ volatile("" : : : "memory");
+        1:    6:}
+        -:    7:char a;
+        -:    8:short b[7][1];
+        1:    9:int main() {
+        -:   10:  int i, c;
+        1:   11:  a = 0;
+        1:   12:  i = 0;
+        8:   13:  for (; i < 7; i++) {
+        7:   14:    c = 0;
+       14:   15:    for (; c < 1; c++)
+        7:   16:      b[i][c] = 0;
+        -:   17:  }
+        -:   18:  /* i may very well be optimized out, so we cannot test for i == 7.
+        -:   19:     Instead test i + 1 which will make the test UNSUPPORTED if i
+        -:   20:     is optimized out.  Since the test previously had wrong debug
+        -:   21:     with i == 0 this is acceptable.  Optimally we'd produce a
+        -:   22:     debug stmt for the final value of the loop during loop distribution
+        -:   23:     which would fix the UNSUPPORTED cases.
+        -:   24:     c is optimized out at -Og for no obvious reason.  */
+        1:   25:  optimize_me_not(); /* { dg-final { gdb-test . "i + 1" "8" } } */
+        -:   26:  /* { dg-final { gdb-test .-1 "c + 1" "2" } } */
+        1:   27:  return 0;
+        -:   28:}

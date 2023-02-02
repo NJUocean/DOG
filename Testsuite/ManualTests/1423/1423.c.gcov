@@ -1,0 +1,44 @@
+        -:    0:Source:1423.c
+        -:    0:Graph:1423.gcno
+        -:    0:Data:1423.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-additional-options "-DSYNC_FALLBACK" { target { ! cas_int } } } */
+        -:    3:
+        -:    4:#ifdef SYNC_FALLBACK
+        -:    5:/* The SYNC_FALLBACK code is just so we don't have to restrict this test
+        -:    6:   to any subset of targets.  For targets with no atomics support at
+        -:    7:   all, the cas_int effective-target is false and the fallback provides
+        -:    8:   a PASS.  Where the bug trigs (at the time this test-case was added),
+        -:    9:   cas_int is also false but the fallback isn't used.  */
+        -:   10:__attribute__((__noinline__, __noclone__)) unsigned
+        -:   11:#if __INT_MAX__ == 0x7fff
+        -:   12:__sync_fetch_and_add_2
+        -:   13:#else
+        -:   14:__sync_fetch_and_add_4
+        -:   15:#endif
+        -:   16:    (volatile void *at, unsigned val) {
+        -:   17:  unsigned tmp = *(volatile unsigned *)at;
+        -:   18:  asm("");
+        -:   19:  *(volatile unsigned *)at = tmp + val;
+        -:   20:  return tmp;
+        -:   21:}
+        -:   22:#endif
+        -:   23:
+        1:   24:__attribute__((__noinline__, __noclone__)) void g(unsigned *at, unsigned val) {
+        1:   25:  asm("");
+        1:   26:  __sync_fetch_and_add(at, val);
+        1:   27:}
+        -:   28:
+        1:   29:int main(void) {
+        -:   30:  /* On PTX it is not valid to perform atomic operations on auto
+        -:   31:     variables, which end up in .local.  Making this static places it
+        -:   32:     in .global.  */
+        -:   33:  static unsigned x = 41;
+        1:   34:  unsigned a = 1;
+        1:   35:  g(&x, a);
+        -:   36:
+        1:   37:  if (x != 42)
+    #####:   38:    __builtin_abort();
+        1:   39:  __builtin_exit(0);
+        -:   40:}

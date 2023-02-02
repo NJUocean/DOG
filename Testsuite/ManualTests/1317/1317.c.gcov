@@ -1,0 +1,29 @@
+        -:    0:Source:1317.c
+        -:    0:Graph:1317.gcno
+        -:    0:Data:1317.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:
+        -:    3:extern void abort(void);
+        -:    4:struct Foo {
+        -:    5:  int *p;
+        -:    6:  int *q;
+        -:    7:};
+        1:    8:struct Foo __attribute__((noinline)) bar(int *p) {
+        -:    9:  struct Foo f;
+        1:   10:  f.p = p;
+        1:   11:  return f;
+        -:   12:}
+        1:   13:void __attribute__((noinline)) foo(struct Foo f) { *f.p = 0; }
+        1:   14:int main() {
+        -:   15:  int a, b;
+        1:   16:  a = 0;
+        1:   17:  b = 1;
+        -:   18:  struct Foo f;
+        1:   19:  f = bar(&b);
+        1:   20:  f.q = &a;
+        1:   21:  foo(f);
+        1:   22:  if (b != 0)
+    #####:   23:    abort();
+        1:   24:  return 0;
+        -:   25:}

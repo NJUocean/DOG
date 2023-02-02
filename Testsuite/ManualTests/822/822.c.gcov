@@ -1,0 +1,29 @@
+        -:    0:Source:822.c
+        -:    0:Graph:822.gcno
+        -:    0:Data:822.gcda
+        -:    0:Runs:1
+        -:    1:/* PR target/32338 */
+        -:    2:/* { dg-do link } */
+        -:    3:/* { dg-options "-O2 -fno-omit-frame-pointer" } */
+        -:    4:
+        -:    5:struct S {};
+        -:    6:
+    #####:    7:int __attribute__((noinline)) foo(void) { return 2; }
+        -:    8:
+    #####:    9:int __attribute__((noinline)) bar(void) { return 4; }
+        -:   10:
+    #####:   11:int __attribute__((noinline)) fnl(void) { return 6; }
+        -:   12:
+    #####:   13:int __attribute__((noinline)) baz(void) {
+        -:   14:  unsigned int len;
+    #####:   15:  len = fnl();
+    #####:   16:  if (len > 512)
+    #####:   17:    return bar();
+    #####:   18:  return foo();
+        -:   19:}
+        -:   20:
+        1:   21:int main(int argc, char *argv[]) {
+        1:   22:  if (argc > 30)
+    #####:   23:    return baz();
+        1:   24:  return 0;
+        -:   25:}

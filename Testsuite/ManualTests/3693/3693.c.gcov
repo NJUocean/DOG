@@ -1,0 +1,22 @@
+        -:    0:Source:3693.c
+        -:    0:Graph:3693.gcno
+        -:    0:Data:3693.gcda
+        -:    0:Runs:1
+        1:    1:__attribute__((__noinline__)) char *sf(char *s, char *s0) {
+        1:    2:  asm("");
+        2:    3:  while (*--s == '9')
+        2:    4:    if (s == s0) {
+        1:    5:      *s = '0';
+        1:    6:      break;
+        -:    7:    }
+        1:    8:  ++*s++;
+        1:    9:  return s;
+        -:   10:}
+        -:   11:
+        1:   12:int main() {
+        1:   13:  char s[] = "999999";
+        1:   14:  char *x = sf(s + 2, s);
+        1:   15:  if (x != s + 1 || __builtin_strcmp(s, "199999") != 0)
+    #####:   16:    __builtin_abort();
+        1:   17:  return 0;
+        -:   18:}

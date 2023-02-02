@@ -1,0 +1,38 @@
+        -:    0:Source:611.c
+        -:    0:Graph:611.gcno
+        -:    0:Data:611.gcda
+        -:    0:Runs:1
+        -:    1:/* { dg-do run } */
+        -:    2:/* { dg-options "-O3" } */
+        -:    3:
+        -:    4:typedef unsigned int myint __attribute__((aligned(1)));
+        -:    5:
+        -:    6:typedef struct S {
+        -:    7:  unsigned a, b, c;
+        -:    8:} SS;
+        -:    9:
+        -:   10:typedef struct U {
+        -:   11:  SS s[2];
+        -:   12:} UU;
+        -:   13:
+        -:   14:typedef UU __attribute__((aligned(1))) UUU;
+        -:   15:
+        1:   16:static unsigned int __attribute__((noinline)) get_a(SS s) { return s.a; };
+        -:   17:
+        1:   18:static int __attribute__((noinline, noclone)) foo(UUU *p) {
+        1:   19:  int r = (int)get_a(p->s[0]) + 2;
+        1:   20:  return r;
+        -:   21:}
+        -:   22:
+        -:   23:char buf[512];
+        -:   24:
+        1:   25:static UUU *__attribute__((noinline, noclone)) get_uuu(void) {
+        1:   26:  return (UUU *)(buf + 1);
+        -:   27:}
+        -:   28:
+        1:   29:int main(int argc, char *argv[]) {
+        1:   30:  UUU *p = get_uuu();
+        1:   31:  if (foo(p) != 2)
+    #####:   32:    __builtin_abort();
+        1:   33:  return 0;
+        -:   34:}

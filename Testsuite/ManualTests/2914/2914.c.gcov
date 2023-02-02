@@ -1,0 +1,16 @@
+        -:    0:Source:2914.c
+        -:    0:Graph:2914.gcno
+        -:    0:Data:2914.gcda
+        -:    0:Runs:1
+        -:    1:/* Functional tests for the function hotpatching feature.  */
+        -:    2:
+        -:    3:/* { dg-do compile } */
+        -:    4:/* { dg-options "-O3 -mzarch" } */
+        -:    5:
+        -:    6:int a;
+        -:    7:
+        -:    8:__attribute__((hotpatch(a, 0))) int
+        1:    9:main(void) { /* { dg-error "attribute is not a comma separated pair of
+        -:   10:                non-negative integer constants or too large" } */
+        1:   11:  return 0;
+        -:   12:}
