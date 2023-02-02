@@ -1,13 +1,20 @@
 # The replication kit of DOG
-# Title: Uncovering bugs in code coverage profilers via control flow constraint solving
-This 
-### DOG/DOG:
-  Source code
-  
-### DOG/result:
-  Results that need to be manually checked
 
-### Bugs Found
+***
+
+## Title: Uncovering bugs in code coverage profilers via control flow constraint solving
+
+
+## 1.Folder Introduction:
+  - Testsuite
+  - Script
+  - result
+
+## 2.Execution Command:
+  python3 DOG.py --testsuite [path of test inputs] --compiler [type of related compiler]
+
+
+## 3.Bugs Found
 #### Gcov bugs:
 |  ID  |  REPORT STATUS  |  BUG STATUS  |
 |  ----  |  ----  |  ----  | 
@@ -42,3 +49,5 @@ This
 [#50611](https://github.com/llvm/llvm-project/issues/50611)  |  Closed  |  Fixed  |
 [#50614](https://github.com/llvm/llvm-project/issues/50614)  |  Closed  |  Fixed  |
 
+## 4.Contact us
+Mail: <njuwy@smail.nju.edu.cn>
