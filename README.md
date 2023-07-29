@@ -3,19 +3,21 @@
 ***
 
 ## Title: Uncovering bugs in code coverage profilers via control flow constraint solving
-
+The latest replication kit package: [Zenodo](https://zenodo.org/record/8189924)
 
 ## 1.Folder Introduction:
-  - [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite) It contains four tests uite can be directly fed to DOG. `ManuanalTests` and `RandomTests` are two testsuites for uncovering new bugs. `Gcov-bugs-old` and `llvm-cov-bugs-old` are two testsuites containing trigger programs of those bugs revealed in old versions by existing methods.
-  - [`Script`](https://github.com/NJUocean/DOG/tree/main/Script) It currently contains `DOG.py`, i.e.,the DOG prototype.
-  - [`Result`](https://github.com/NJUocean/DOG/tree/main/Result) It contains the results of using `DOG.py` to test `Gcov` and `llvm-cov` with the four input sets in [`Testsuite`](https://github.com/NJUocean/DOG/tree/main/Testsuite).
+  - `Testsuite`. It contains five tests uite can be directly fed to DOG. `ManuanalTests` and `RandomTests` are two testsuites for uncovering new bugs. `Gcov-bugs-old` and `llvm-cov-bugs-old` are two testsuites containing trigger programs of those bugs revealed in old versions by existing methods. `CsmithLarge` is 100 random programs with over 1000 lines, which is to demonstrate the scalability of our method. 
+  - `Script` It currently contains `DOG.py`, i.e.,the DOG prototype.
+  - `Result` It contains the results of using `DOG.py` to test `Gcov` and `llvm-cov` with the five input sets in `Testsuite`.
 
 ## 2.Execution Command:
-  `python3 DOG.py --testsuite [test inputs] --compiler [compiler]`
+  `python3 DOG.py --compiler=[compiler] --testsuite=[test inputs]  --output=[output dir]`
   
   In above command,
+
+-	`[compiler]` indicates the subject under test. DOG currently supports only `gcov` and `llvm-cov`.
 -	`[test inputs]` indicates the absolute path of a test input set.
--	`[compiler]` indicates the type of compiler associated with the coverage profiler under test. `gcc` corresponds to `Gcov` and `clang` to `llvm-cov`.
+-	`[output inputs]` indicates the absolute path of a test output. It defaults to `[test inputs]/input`
 
 ## 3.Bugs Found
 #### `Gcov` bugs:
